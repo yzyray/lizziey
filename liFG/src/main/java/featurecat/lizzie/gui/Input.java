@@ -387,7 +387,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_A:
-        if (e.isAltDown()) {
+        if (e.isShiftDown()) {
           Lizzie.frame.openAvoidMoveDialog();
         } else {
           shouldDisableAnalysis = false;
@@ -423,7 +423,11 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
         // Use Ctrl+Num to switching multiple engine
-      case VK_0:
+      case VK_BACK_QUOTE:
+        if (controlIsPressed(e)) {
+          Lizzie.switchEngine(0);
+        }
+        break;
       case VK_1:
       case VK_2:
       case VK_3:

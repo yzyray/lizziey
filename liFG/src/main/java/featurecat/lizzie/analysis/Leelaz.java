@@ -37,6 +37,7 @@ public class Leelaz {
   private int cmdNumber;
   private int currentCmdNum;
   private ArrayDeque<String> cmdQueue;
+  private JSONObject leelazConfig;
 
   private Process process;
 
@@ -317,8 +318,14 @@ public class Leelaz {
         } else if (isCheckingVersion) {
           String[] ver = params[1].split("\\.");
           int minor = Integer.parseInt(ver[1]);
+          try {
+            Lizzie.config.leelazConfig.putOpt("leela-version", minor);
+            Lizzie.config.save();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
           // Gtp support added in version 15
-          if (minor > 15) {
+          if (minor < 15) {
             JOptionPane.showMessageDialog(
                 Lizzie.frame,
                 "Lizzie requires version 0.15 or later of Leela Zero for analysis (found "

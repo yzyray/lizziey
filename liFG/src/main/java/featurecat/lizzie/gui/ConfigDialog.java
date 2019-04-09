@@ -62,6 +62,8 @@ public class ConfigDialog extends JDialog {
   private JRadioButton rdoBoardSize7;
   private JRadioButton rdoBoardSize5;
   private JRadioButton rdoBoardSize4;
+  private JRadioButton rdoWinrate;
+  private JRadioButton rdoLcb;
 
   public String enginePath = "";
   public String weightPath = "";
@@ -431,6 +433,23 @@ public class ConfigDialog extends JDialog {
     lblAnalyzeUpdateInterval.setBounds(331, 368, 157, 16);
     engineTab.add(lblAnalyzeUpdateInterval);
 
+    JLabel lblShowLcbWinrate =
+        new JLabel(resourceBundle.getString("LizzieConfig.title.showlcbwinrate"));
+    lblShowLcbWinrate.setBounds(331, 430, 157, 16);
+    engineTab.add(lblShowLcbWinrate);
+
+    rdoLcb = new JRadioButton("Lcb");
+    rdoLcb.setBounds(496, 428, 50, 23);
+    engineTab.add(rdoLcb);
+
+    rdoWinrate = new JRadioButton("Winrate");
+    rdoWinrate.setBounds(545, 428, 80, 23);
+    engineTab.add(rdoWinrate);
+
+    ButtonGroup wrgroup = new ButtonGroup();
+    wrgroup.add(rdoLcb);
+    wrgroup.add(rdoWinrate);
+
     JLabel lblAnalyzeUpdateIntervalCentisec =
         new JLabel(resourceBundle.getString("LizzieConfig.title.centisecond"));
     lblAnalyzeUpdateIntervalCentisec.setBounds(538, 368, 82, 16);
@@ -455,7 +474,7 @@ public class ConfigDialog extends JDialog {
     engineTab.add(lblPrintEngineLog);
 
     chkPrintEngineLog = new JCheckBox("");
-    chkPrintEngineLog.setBounds(167, 425, 201, 23);
+    chkPrintEngineLog.setBounds(167, 428, 80, 23);
     engineTab.add(chkPrintEngineLog);
     JPanel uiTab = new JPanel();
     tabbedPane.addTab(resourceBundle.getString("LizzieConfig.title.ui"), null, uiTab, null);
@@ -469,6 +488,7 @@ public class ConfigDialog extends JDialog {
     rdoBoardSize19 = new JRadioButton("19x19");
     rdoBoardSize19.setBounds(85, 2, 84, 23);
     uiTab.add(rdoBoardSize19);
+    // engineTab.add(rdoBoardSize19);
 
     rdoBoardSize13 = new JRadioButton("13x13");
     rdoBoardSize13.setBounds(170, 2, 84, 23);
@@ -562,6 +582,7 @@ public class ConfigDialog extends JDialog {
     curPath = (new File("")).getAbsoluteFile().toPath();
     osName = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
     setBoardSize();
+    setShowLcbWinrate();
     setLocationRelativeTo(getOwner());
   }
 
@@ -656,6 +677,7 @@ public class ConfigDialog extends JDialog {
           "analyze-update-interval-centisec", txtFieldValue(txtAnalyzeUpdateInterval));
       leelazConfig.putOpt("max-game-thinking-time-seconds", txtFieldValue(txtMaxGameThinkingTime));
       leelazConfig.putOpt("print-comms", chkPrintEngineLog.isSelected());
+      leelazConfig.putOpt("show-lcb-winrate", getShowLcbWinrate());
       leelazConfig.put("engine-command", txtEngine.getText().trim());
       leelazConfig.putOpt("max-suggestion-moves", txtFieldValue(txtMaxsuggestionmoves));
       JSONArray engines = new JSONArray();
@@ -702,6 +724,31 @@ public class ConfigDialog extends JDialog {
 
   public boolean isWindows() {
     return osName != null && !osName.contains("darwin") && osName.contains("win");
+  }
+
+  private void setShowLcbWinrate() {
+    int leelaversion = leelazConfig.getInt("leela-version");
+    if (leelaversion < 17) {
+      rdoLcb.setEnabled(false);
+      rdoWinrate.setEnabled(false);
+    } else {
+      if (Lizzie.config.config.getJSONObject("leelaz").getBoolean("show-lcb-winrate")) {
+        rdoLcb.setSelected(true);
+      } else {
+        rdoWinrate.setSelected(true);
+      }
+    }
+  }
+
+  private boolean getShowLcbWinrate() {
+
+    if (rdoLcb.isSelected()) {
+      return true;
+    }
+    if (rdoWinrate.isSelected()) {
+      return false;
+    }
+    return true;
   }
 
   private void setBoardSize() {
