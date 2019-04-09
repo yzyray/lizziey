@@ -213,9 +213,12 @@ public class Leelaz {
   public static List<MoveData> parseInfo(String line) {
     List<MoveData> bestMoves = new ArrayList<>();
     String[] variations = line.split(" info ");
+    int k = Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
     for (String var : variations) {
       if (!var.trim().isEmpty()) {
         bestMoves.add(MoveData.fromInfo(var));
+        k = k - 1;
+        if (k < 1) break;
       }
     }
     Lizzie.board.getData().tryToSetBestMoves(bestMoves);
@@ -315,7 +318,7 @@ public class Leelaz {
           String[] ver = params[1].split("\\.");
           int minor = Integer.parseInt(ver[1]);
           // Gtp support added in version 15
-          if (minor < 15) {
+          if (minor > 15) {
             JOptionPane.showMessageDialog(
                 Lizzie.frame,
                 "Lizzie requires version 0.15 or later of Leela Zero for analysis (found "

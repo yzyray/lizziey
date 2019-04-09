@@ -71,6 +71,7 @@ public class ConfigDialog extends JDialog {
   private BufferedInputStream inputStream;
   private JFormattedTextField txtMaxAnalyzeTime;
   private JFormattedTextField txtMaxGameThinkingTime;
+  private JFormattedTextField txtMaxsuggestionmoves;
   private JFormattedTextField txtAnalyzeUpdateInterval;
   private JCheckBox chkPrintEngineLog;
   private JSONObject leelazConfig;
@@ -403,6 +404,28 @@ public class ConfigDialog extends JDialog {
     txtMaxGameThinkingTime.setBounds(171, 395, 40, 26);
     engineTab.add(txtMaxGameThinkingTime);
 
+    JLabel lblMaxsuggestionmoves =
+        new JLabel(resourceBundle.getString("LizzieConfig.title.maxSuggestionmoves"));
+    lblMaxsuggestionmoves.setBounds(331, 400, 157, 16);
+    engineTab.add(lblMaxsuggestionmoves);
+
+    JLabel lblMaxsuggestionmovesnums =
+        new JLabel(resourceBundle.getString("LizzieConfig.title.numbers"));
+    lblMaxsuggestionmovesnums.setBounds(538, 400, 82, 16);
+    engineTab.add(lblMaxsuggestionmovesnums);
+
+    txtMaxsuggestionmoves =
+        new JFormattedTextField(
+            new InternationalFormatter(nf) {
+              protected DocumentFilter getDocumentFilter() {
+                return filter;
+              }
+
+              private DocumentFilter filter = new DigitOnlyFilter();
+            });
+    txtMaxsuggestionmoves.setColumns(10);
+    txtMaxsuggestionmoves.setBounds(496, 395, 40, 26);
+    engineTab.add(txtMaxsuggestionmoves);
     JLabel lblAnalyzeUpdateInterval =
         new JLabel(resourceBundle.getString("LizzieConfig.title.analyzeUpdateInterval"));
     lblAnalyzeUpdateInterval.setBounds(331, 368, 157, 16);
@@ -534,6 +557,7 @@ public class ConfigDialog extends JDialog {
         String.valueOf(leelazConfig.getInt("analyze-update-interval-centisec")));
     txtMaxGameThinkingTime.setText(
         String.valueOf(leelazConfig.getInt("max-game-thinking-time-seconds")));
+    txtMaxsuggestionmoves.setText(String.valueOf(leelazConfig.getInt("max-suggestion-moves")));
     chkPrintEngineLog.setSelected(leelazConfig.getBoolean("print-comms"));
     curPath = (new File("")).getAbsoluteFile().toPath();
     osName = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
@@ -633,6 +657,7 @@ public class ConfigDialog extends JDialog {
       leelazConfig.putOpt("max-game-thinking-time-seconds", txtFieldValue(txtMaxGameThinkingTime));
       leelazConfig.putOpt("print-comms", chkPrintEngineLog.isSelected());
       leelazConfig.put("engine-command", txtEngine.getText().trim());
+      leelazConfig.putOpt("max-suggestion-moves", txtFieldValue(txtMaxsuggestionmoves));
       JSONArray engines = new JSONArray();
       Arrays.asList(txts).forEach(t -> engines.put(t.getText().trim()));
       leelazConfig.put("engine-command-list", engines);

@@ -352,6 +352,7 @@ public class Config {
             "%s --gtp --lagbuffer 0 --weights %%network-file", getBestDefaultLeelazPath()));
     leelaz.put("engine-start-location", ".");
     leelaz.put("max-analyze-time-minutes", 5);
+    leelaz.put("max-suggestion-moves", 20);
     leelaz.put("max-game-thinking-time-seconds", 2);
     leelaz.put("print-comms", false);
     leelaz.put("analyze-update-interval-centisec", 10);
