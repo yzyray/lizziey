@@ -117,7 +117,7 @@ public class ConfigDialog extends JDialog {
     tabbedPane.addTab(resourceBundle.getString("LizzieConfig.title.engine"), null, engineTab, null);
     engineTab.setLayout(null);
 
-    JLabel lblEngine = new JLabel(resourceBundle.getString("LizzieConfig.title.engine"));
+    JLabel lblEngine = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 1");
     lblEngine.setBounds(6, 44, 92, 16);
     lblEngine.setHorizontalAlignment(SwingConstants.LEFT);
     engineTab.add(lblEngine);
@@ -127,7 +127,7 @@ public class ConfigDialog extends JDialog {
     engineTab.add(txtEngine);
     txtEngine.setColumns(10);
 
-    JLabel lblEngine1 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 1");
+    JLabel lblEngine1 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 2");
     lblEngine1.setHorizontalAlignment(SwingConstants.LEFT);
     lblEngine1.setBounds(6, 80, 92, 16);
     engineTab.add(lblEngine1);
@@ -137,7 +137,7 @@ public class ConfigDialog extends JDialog {
     txtEngine2.setBounds(87, 105, 502, 26);
     engineTab.add(txtEngine2);
 
-    JLabel lblEngine2 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 2");
+    JLabel lblEngine2 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 3");
     lblEngine2.setHorizontalAlignment(SwingConstants.LEFT);
     lblEngine2.setBounds(6, 110, 92, 16);
     engineTab.add(lblEngine2);
@@ -147,7 +147,7 @@ public class ConfigDialog extends JDialog {
     txtEngine1.setBounds(87, 75, 502, 26);
     engineTab.add(txtEngine1);
 
-    JLabel lblEngine3 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 3");
+    JLabel lblEngine3 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 4");
     lblEngine3.setHorizontalAlignment(SwingConstants.LEFT);
     lblEngine3.setBounds(6, 140, 92, 16);
     engineTab.add(lblEngine3);
@@ -157,7 +157,7 @@ public class ConfigDialog extends JDialog {
     txtEngine3.setBounds(87, 135, 502, 26);
     engineTab.add(txtEngine3);
 
-    JLabel lblEngine4 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 4");
+    JLabel lblEngine4 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 5");
     lblEngine4.setHorizontalAlignment(SwingConstants.LEFT);
     lblEngine4.setBounds(6, 170, 92, 16);
     engineTab.add(lblEngine4);
@@ -167,7 +167,7 @@ public class ConfigDialog extends JDialog {
     txtEngine4.setBounds(87, 165, 502, 26);
     engineTab.add(txtEngine4);
 
-    JLabel lblEngine5 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 5");
+    JLabel lblEngine5 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 6");
     lblEngine5.setHorizontalAlignment(SwingConstants.LEFT);
     lblEngine5.setBounds(6, 200, 92, 16);
     engineTab.add(lblEngine5);
@@ -177,7 +177,7 @@ public class ConfigDialog extends JDialog {
     txtEngine5.setBounds(87, 195, 502, 26);
     engineTab.add(txtEngine5);
 
-    JLabel lblEngine6 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 6");
+    JLabel lblEngine6 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 7");
     lblEngine6.setHorizontalAlignment(SwingConstants.LEFT);
     lblEngine6.setBounds(6, 230, 92, 16);
     engineTab.add(lblEngine6);
@@ -187,7 +187,7 @@ public class ConfigDialog extends JDialog {
     txtEngine6.setBounds(87, 225, 502, 26);
     engineTab.add(txtEngine6);
 
-    JLabel lblEngine7 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 7");
+    JLabel lblEngine7 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 8");
     lblEngine7.setHorizontalAlignment(SwingConstants.LEFT);
     lblEngine7.setBounds(6, 260, 92, 16);
     engineTab.add(lblEngine7);
@@ -197,7 +197,7 @@ public class ConfigDialog extends JDialog {
     txtEngine7.setBounds(87, 255, 502, 26);
     engineTab.add(txtEngine7);
 
-    JLabel lblEngine8 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 8");
+    JLabel lblEngine8 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 9");
     lblEngine8.setHorizontalAlignment(SwingConstants.LEFT);
     lblEngine8.setBounds(6, 290, 92, 16);
     engineTab.add(lblEngine8);
@@ -212,7 +212,7 @@ public class ConfigDialog extends JDialog {
     txtEngine9.setBounds(87, 315, 502, 26);
     engineTab.add(txtEngine9);
 
-    JLabel lblEngine9 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 9");
+    JLabel lblEngine9 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + " 10");
     lblEngine9.setHorizontalAlignment(SwingConstants.LEFT);
     lblEngine9.setBounds(6, 320, 92, 16);
     engineTab.add(lblEngine9);

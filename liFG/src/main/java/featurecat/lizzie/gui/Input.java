@@ -423,11 +423,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
         // Use Ctrl+Num to switching multiple engine
-      case VK_BACK_QUOTE:
-        if (controlIsPressed(e)) {
-          Lizzie.switchEngine(0);
-        }
-        break;
+
       case VK_1:
       case VK_2:
       case VK_3:
@@ -438,9 +434,15 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       case VK_8:
       case VK_9:
         if (controlIsPressed(e)) {
-          Lizzie.switchEngine(e.getKeyCode() - VK_0);
+          Lizzie.switchEngine(e.getKeyCode() - VK_1);
         }
         break;
+      case 0:
+        if (controlIsPressed(e)) {
+          Lizzie.switchEngine(9);
+        }
+        break;
+
       default:
         shouldDisableAnalysis = false;
     }
