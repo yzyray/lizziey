@@ -1289,6 +1289,31 @@ public class LizzieFrame extends JFrame {
     repaint();
   }
 
+  public void onRightClicked(int x, int y) {
+    // Check for board click
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+    int moveNumber = winrateGraph.moveNumber(x, y);
+
+    if (boardCoordinates.isPresent()) {
+      int[] coords = boardCoordinates.get();
+      if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
+      if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay))
+        //Lizzie.board.insert(coords[0], coords[1]);
+    	  Lizzie.board.insertMove(coords,false);
+    }
+    if (Lizzie.config.showWinrate && moveNumber >= 0) {
+      isPlayingAgainstLeelaz = false;
+      Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
+    }
+    if (Lizzie.config.showSubBoard && subBoardRenderer.isInside(x, y)) {
+      Lizzie.config.toggleLargeSubBoard();
+    }
+    if (Lizzie.config.showVariationGraph) {
+      variationTree.onClicked(x, y);
+    }
+    repaint();
+  }
+
   private final Consumer<String> placeVariation =
       v -> Board.asCoordinates(v).ifPresent(c -> Lizzie.board.place(c[0], c[1]));
 

@@ -15,7 +15,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     if (e.getButton() == MouseEvent.BUTTON1) // left click
     Lizzie.frame.onClicked(e.getX(), e.getY());
     else if (e.getButton() == MouseEvent.BUTTON3) // right click
-    undo();
+      // undo();
+      Lizzie.frame.onRightClicked(e.getX(), e.getY());
   }
 
   @Override
