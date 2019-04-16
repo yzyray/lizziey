@@ -4,7 +4,6 @@ import static java.awt.event.KeyEvent.*;
 
 import featurecat.lizzie.Lizzie;
 import java.awt.event.*;
-import javax.swing.*;
 
 public class Input implements MouseListener, KeyListener, MouseWheelListener, MouseMotionListener {
   @Override
@@ -16,7 +15,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     Lizzie.frame.onClicked(e.getX(), e.getY());
     else if (e.getButton() == MouseEvent.BUTTON3) // right click
       // undo();
-      Lizzie.frame.onRightClicked(e.getX(), e.getY());
+    	Lizzie.frame.openRightClickMenu(e.getX(), e.getY());
+    
+     // Lizzie.frame.onRightClicked(e.getX(), e.getY());
   }
 
   @Override
@@ -34,7 +35,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   }
 
   @Override
-  public void mouseMoved(MouseEvent e) {
+  public void mouseMoved(MouseEvent e) {	  
     Lizzie.frame.onMouseMoved(e.getX(), e.getY());
   }
 

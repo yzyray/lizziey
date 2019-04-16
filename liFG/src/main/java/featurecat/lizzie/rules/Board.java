@@ -1673,6 +1673,27 @@ public class Board implements LeelazListener {
     return true;
   }
   
+  public void insertmode() {
+	  int currentMoveNumber = history.getMoveNumber();
+	    Optional<BoardHistoryNode> changeNode = history.getCurrentHistoryNode().next();
+	    changeNode=changeNode.get().previous();
+	    Optional<BoardHistoryNode> relink = changeNode;
+	    Optional<BoardHistoryNode> node = relink;
+	    ArrayList<Integer> m = new ArrayList<Integer>();
+	    ArrayList<Boolean> oriisblack = new ArrayList<Boolean>();
+	    while (node.isPresent()) {
+	      Optional<int[]> lastMove = node.get().getData().lastMove;	    
+	      if (lastMove.isPresent()) {
+	    	  int[] n=lastMove.get();
+	        m.add(n[0]);
+	        m.add(n[1]);
+	        boolean oisblack=node.get().getData().lastMoveColor.isBlack();
+	        oriisblack.add(oisblack);
+	        node = node.get().next();
+	      }
+	    }
+  }
+  
   public boolean insertMove( int[] coords, boolean isblack) {
 	    int currentMoveNumber = history.getMoveNumber();
 	    Optional<BoardHistoryNode> changeNode = history.getCurrentHistoryNode().next();

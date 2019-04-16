@@ -17,15 +17,6 @@ import featurecat.lizzie.rules.BoardHistoryNode;
 import featurecat.lizzie.rules.GIBParser;
 import featurecat.lizzie.rules.SGFParser;
 import java.awt.*;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.FontMetrics;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -99,10 +90,12 @@ public class LizzieFrame extends JFrame {
 
   public static Font uiFont;
   public static Font winrateFont;
+  
 
   private final BufferStrategy bs;
 
   private static final int[] outOfBoundCoordinate = new int[] {-1, -1};
+
   public int[] mouseOverCoordinate = outOfBoundCoordinate;
   public boolean showControls = false;
   public boolean isPlayingAgainstLeelaz = false;
@@ -112,6 +105,7 @@ public class LizzieFrame extends JFrame {
 
   private long lastAutosaveTime = System.currentTimeMillis();
   private boolean isReplayVariation = false;
+  private RightClickMenu RightClickMenu = new RightClickMenu();
 
   // Save the player title
   private String playerTitle = "";
@@ -272,6 +266,17 @@ public class LizzieFrame extends JFrame {
     ChangeMoveDialog changeMoveDialog = new ChangeMoveDialog();
     changeMoveDialog.setVisible(true);
   }
+  
+  public  void openRightClickMenu(int x,int y) {
+	
+		  if(Lizzie.leelaz.isPondering())
+		  {
+			  Lizzie.leelaz.togglePonder();
+		  }
+	 
+	  RightClickMenu.show(this, x, y);	  
+	  
+	  }
 
   public static void openAvoidMoveDialog() {
     AvoidMoveDialog avoidMoveDialog = new AvoidMoveDialog();
@@ -1313,6 +1318,9 @@ public class LizzieFrame extends JFrame {
   }
 
   public void onMouseMoved(int x, int y) {
+	  if(RightClickMenu.isVisible()) {
+		  return;
+	  }
     mouseOverCoordinate = outOfBoundCoordinate;
     Optional<int[]> coords = boardRenderer.convertScreenToCoordinates(x, y);
     coords.filter(c -> !isMouseOver(c[0], c[1])).ifPresent(c -> repaint());
