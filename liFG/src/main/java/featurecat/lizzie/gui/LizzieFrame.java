@@ -1271,6 +1271,7 @@ public class LizzieFrame extends JFrame {
     int moveNumber = winrateGraph.moveNumber(x, y);
 
     if (boardCoordinates.isPresent()) {
+    	//增加判断是否为插入模式
       int[] coords = boardCoordinates.get();
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
       if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay))
@@ -1292,24 +1293,9 @@ public class LizzieFrame extends JFrame {
   public void onRightClicked(int x, int y) {
     // Check for board click
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
-    int moveNumber = winrateGraph.moveNumber(x, y);
-
     if (boardCoordinates.isPresent()) {
       int[] coords = boardCoordinates.get();
-      if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
-      if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay))
-        //Lizzie.board.insert(coords[0], coords[1]);
     	  Lizzie.board.insertMove(coords,false);
-    }
-    if (Lizzie.config.showWinrate && moveNumber >= 0) {
-      isPlayingAgainstLeelaz = false;
-      Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
-    }
-    if (Lizzie.config.showSubBoard && subBoardRenderer.isInside(x, y)) {
-      Lizzie.config.toggleLargeSubBoard();
-    }
-    if (Lizzie.config.showVariationGraph) {
-      variationTree.onClicked(x, y);
     }
     repaint();
   }
