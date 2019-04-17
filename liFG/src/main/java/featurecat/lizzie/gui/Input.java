@@ -402,7 +402,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_A:
-        if (e.isShiftDown()) {
+        if (e.isAltDown()||e.isControlDown()) {
           Lizzie.frame.openAvoidMoveDialog();
         } else {
           shouldDisableAnalysis = false;
