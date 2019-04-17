@@ -117,7 +117,7 @@ public class BoardHistoryNode {
             n.variations.stream().forEach(v -> v.previous = Optional.of(node));
             variations.set(0, node);
           });
-      
+
     } else {
       // Add node
       variations.add(node);

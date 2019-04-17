@@ -227,19 +227,19 @@ public class Leelaz {
   }
 
   public static List<MoveData> parseInfofromfile(String line) {
-	    List<MoveData> bestMoves = new ArrayList<>();
-	    String[] variations = line.split(" info ");
-	    //int k = Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
-	    for (String var : variations) {
-	      if (!var.trim().isEmpty()) {
-	        bestMoves.add(MoveData.fromInfofromfile(var));
-	     //   k = k - 1;
-	     //   if (k < 1) break;
-	      }
-	    }
-	    Lizzie.board.getData().tryToSetBestMoves(bestMoves);
-	    return bestMoves;
-	  }
+    List<MoveData> bestMoves = new ArrayList<>();
+    String[] variations = line.split(" info ");
+    // int k = Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
+    for (String var : variations) {
+      if (!var.trim().isEmpty()) {
+        bestMoves.add(MoveData.fromInfofromfile(var));
+        //   k = k - 1;
+        //   if (k < 1) break;
+      }
+    }
+    Lizzie.board.getData().tryToSetBestMoves(bestMoves);
+    return bestMoves;
+  }
   /**
    * Parse a line of Leelaz output
    *

@@ -90,7 +90,6 @@ public class LizzieFrame extends JFrame {
 
   public static Font uiFont;
   public static Font winrateFont;
-  
 
   private final BufferStrategy bs;
 
@@ -266,28 +265,23 @@ public class LizzieFrame extends JFrame {
     ChangeMoveDialog changeMoveDialog = new ChangeMoveDialog();
     changeMoveDialog.setVisible(true);
   }
-  
-  public  void openRightClickMenu(int x,int y) {
-	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
-	  
 
-	    if (!boardCoordinates.isPresent()) {
-	    	return;
-	    }
-	    if (isPlayingAgainstLeelaz) {
-	    	return;
-	    }
-	    
-	    
-		  if(Lizzie.leelaz.isPondering())
-		  {
-			  Lizzie.leelaz.togglePonder();
-		  }
-		  RightClickMenu.Store(x,y);
-	  RightClickMenu.show(this, x, y);	  
-	  
-	  
-	  }
+  public void openRightClickMenu(int x, int y) {
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+
+    if (!boardCoordinates.isPresent()) {
+      return;
+    }
+    if (isPlayingAgainstLeelaz) {
+      return;
+    }
+
+    if (Lizzie.leelaz.isPondering()) {
+      Lizzie.leelaz.togglePonder();
+    }
+    RightClickMenu.Store(x, y);
+    RightClickMenu.show(this, x, y);
+  }
 
   public static void openAvoidMoveDialog() {
     AvoidMoveDialog avoidMoveDialog = new AvoidMoveDialog();
@@ -1287,8 +1281,8 @@ public class LizzieFrame extends JFrame {
     int moveNumber = winrateGraph.moveNumber(x, y);
 
     if (boardCoordinates.isPresent()) {
-    	//增加判断是否为插入模式
-    	
+      // 增加判断是否为插入模式
+
       int[] coords = boardCoordinates.get();
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
       if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay))
@@ -1307,12 +1301,12 @@ public class LizzieFrame extends JFrame {
     repaint();
   }
 
-  public void insertMove(int x, int y,boolean isblack) {
+  public void insertMove(int x, int y, boolean isblack) {
     // Check for board click
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
     if (boardCoordinates.isPresent()) {
       int[] coords = boardCoordinates.get();
-    	  Lizzie.board.insertMove(coords,isblack);
+      Lizzie.board.insertMove(coords, isblack);
     }
     repaint();
   }
@@ -1330,9 +1324,9 @@ public class LizzieFrame extends JFrame {
   }
 
   public void onMouseMoved(int x, int y) {
-	  if(RightClickMenu.isVisible()) {
-		  return;
-	  }
+    if (RightClickMenu.isVisible()) {
+      return;
+    }
     mouseOverCoordinate = outOfBoundCoordinate;
     Optional<int[]> coords = boardRenderer.convertScreenToCoordinates(x, y);
     coords.filter(c -> !isMouseOver(c[0], c[1])).ifPresent(c -> repaint());

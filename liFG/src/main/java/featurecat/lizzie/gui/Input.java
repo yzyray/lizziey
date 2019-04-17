@@ -4,11 +4,11 @@ import static java.awt.event.KeyEvent.*;
 
 import featurecat.lizzie.Lizzie;
 import java.awt.event.*;
-
 import javax.swing.JOptionPane;
 
 public class Input implements MouseListener, KeyListener, MouseWheelListener, MouseMotionListener {
-	public static boolean isinsertmode=false;
+  public static boolean isinsertmode = false;
+
   @Override
   public void mouseClicked(MouseEvent e) {}
 
@@ -16,20 +16,16 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   public void mousePressed(MouseEvent e) {
     if (e.getButton() == MouseEvent.BUTTON1) // left click
     {
-    	 if(!isinsertmode)
-    		{
-    		 Lizzie.frame.onClicked(e.getX(), e.getY());
-    		}
-    	 else {
-    		 JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
-    	 }
-    
-   
-    }
-    else if (e.getButton() == MouseEvent.BUTTON3) // right click
+      if (!isinsertmode) {
+        Lizzie.frame.onClicked(e.getX(), e.getY());
+      } else {
+        JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+      }
+
+    } else if (e.getButton() == MouseEvent.BUTTON3) // right click
       // undo();
-    	Lizzie.frame.openRightClickMenu(e.getX(), e.getY());
-    
+      Lizzie.frame.openRightClickMenu(e.getX(), e.getY());
+
     //  Lizzie.frame.onRightClicked(e.getX(), e.getY());
   }
 
@@ -48,7 +44,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   }
 
   @Override
-  public void mouseMoved(MouseEvent e) {	  
+  public void mouseMoved(MouseEvent e) {
     Lizzie.frame.onMouseMoved(e.getX(), e.getY());
   }
 
@@ -402,7 +398,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_A:
-        if (e.isAltDown()||e.isControlDown()) {
+        if (e.isAltDown() || e.isControlDown()) {
           Lizzie.frame.openAvoidMoveDialog();
         } else {
           shouldDisableAnalysis = false;
@@ -489,11 +485,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
-	  if(isinsertmode)
-		{
-		  JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
-		  return;
-	 }
+    if (isinsertmode) {
+      JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+      return;
+    }
     if (Lizzie.frame.processCommentMouseWheelMoved(e)) {
       return;
     }

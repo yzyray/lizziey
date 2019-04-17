@@ -32,7 +32,7 @@ public class MoveData {
   public static MoveData fromInfo(String line) throws ArrayIndexOutOfBoundsException {
     MoveData result = new MoveData();
     String[] data = line.trim().split(" ");
-    //int k = Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
+    // int k = Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
     boolean islcb =
         (Lizzie.config.config.getJSONObject("leelaz").getInt("leela-version") >= 17)
             && Lizzie.config.config.getJSONObject("leelaz").getBoolean("show-lcb-winrate");
@@ -66,35 +66,34 @@ public class MoveData {
     return result;
   }
 
-  
   public static MoveData fromInfofromfile(String line) throws ArrayIndexOutOfBoundsException {
-	    MoveData result = new MoveData();
-	    String[] data = line.trim().split(" ");
-	   
-	    // Todo: Proper tag parsing in case gtp protocol is extended(?)/changed
-	    for (int i = 0; i < data.length; i++) {
-	      String key = data[i];
-	      if (key.equals("pv")) {
-	        // Read variation to the end of line
-	        result.variation = new ArrayList<>(Arrays.asList(data));
-	        result.variation = result.variation.subList(i + 1, data.length);
-	        break;
-	      } else {
-	        String value = data[++i];
-	        if (key.equals("move")) {
-	          result.coordinate = value;
-	        }
-	        if (key.equals("visits")) {
-	          result.playouts = Integer.parseInt(value);
-	        }	      
-	        if (key.equals("winrate")) {
-	          // support 0.16 0.15
-	          result.winrate = Integer.parseInt(value) / 100.0;
-	        }
-	      }
-	    }
-	    return result;
-	  }
+    MoveData result = new MoveData();
+    String[] data = line.trim().split(" ");
+
+    // Todo: Proper tag parsing in case gtp protocol is extended(?)/changed
+    for (int i = 0; i < data.length; i++) {
+      String key = data[i];
+      if (key.equals("pv")) {
+        // Read variation to the end of line
+        result.variation = new ArrayList<>(Arrays.asList(data));
+        result.variation = result.variation.subList(i + 1, data.length);
+        break;
+      } else {
+        String value = data[++i];
+        if (key.equals("move")) {
+          result.coordinate = value;
+        }
+        if (key.equals("visits")) {
+          result.playouts = Integer.parseInt(value);
+        }
+        if (key.equals("winrate")) {
+          // support 0.16 0.15
+          result.winrate = Integer.parseInt(value) / 100.0;
+        }
+      }
+    }
+    return result;
+  }
   /**
    * Parses a leelaz summary output line. For example:
    *
