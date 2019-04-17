@@ -268,13 +268,24 @@ public class LizzieFrame extends JFrame {
   }
   
   public  void openRightClickMenu(int x,int y) {
-	
+	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+	  
+
+	    if (!boardCoordinates.isPresent()) {
+	    	return;
+	    }
+	    if (isPlayingAgainstLeelaz) {
+	    	return;
+	    }
+	    
+	    
 		  if(Lizzie.leelaz.isPondering())
 		  {
 			  Lizzie.leelaz.togglePonder();
 		  }
-	 
+		  RightClickMenu.Store(x,y);
 	  RightClickMenu.show(this, x, y);	  
+	  
 	  
 	  }
 
@@ -1277,6 +1288,7 @@ public class LizzieFrame extends JFrame {
 
     if (boardCoordinates.isPresent()) {
     	//增加判断是否为插入模式
+    	
       int[] coords = boardCoordinates.get();
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
       if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay))
@@ -1295,12 +1307,12 @@ public class LizzieFrame extends JFrame {
     repaint();
   }
 
-  public void onRightClicked(int x, int y) {
+  public void insertMove(int x, int y,boolean isblack) {
     // Check for board click
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
     if (boardCoordinates.isPresent()) {
       int[] coords = boardCoordinates.get();
-    	  Lizzie.board.insertMove(coords,false);
+    	  Lizzie.board.insertMove(coords,isblack);
     }
     repaint();
   }

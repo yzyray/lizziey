@@ -1,18 +1,26 @@
 package featurecat.lizzie.gui;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Optional;
+
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.rules.Stone;
+
 public class RightClickMenu extends JPopupMenu {	
+	public int mousex;
+	public int mousey;
 	 private JMenuItem insertmode;
 	 private JMenuItem addblack;
 	 private JMenuItem addwhite;
 	 private JMenuItem quitinsert;
 	 private JMenuItem allow;
 	 private JMenuItem avoid;
-	
+	 private  BoardRenderer boardRenderer;
 	  public RightClickMenu() {
 		  insertmode = new JMenuItem("进入插入棋子模式");		
 		  quitinsert = new JMenuItem("退出插入棋子模式");		
@@ -73,7 +81,11 @@ public class RightClickMenu extends JPopupMenu {
 	  }
 	  
 		  private void insertmode() {
-			  this.remove(insertmode);
+			  
+			boolean isinsertmode;
+			isinsertmode=Lizzie.board.insertmode();
+			if(isinsertmode) {
+			this.remove(insertmode);
 			  this.remove(allow);
 			  this.remove(avoid);
 			  this.add(quitinsert);
@@ -81,6 +93,11 @@ public class RightClickMenu extends JPopupMenu {
 			  this.add(addwhite);	
 			  this.add(allow);
 			  this.add(avoid);
+			}
+			  if(!Lizzie.leelaz.isPondering())
+			  {
+				  Lizzie.leelaz.togglePonder();
+			  }
 		  }
 	  
 		  private void quitinsertmode() {			  
@@ -90,19 +107,35 @@ public class RightClickMenu extends JPopupMenu {
 			  this.add(insertmode);			 
 			  this.add(allow);
 			  this.add(avoid);
-		  }
+			  Lizzie.board.quitinsertmode();
+			  if(!Lizzie.leelaz.isPondering())
+			  {
+				  Lizzie.leelaz.togglePonder();
+			  }
+	     }
 	  
 		  private void addblack()
-		  {}
+		  {
+			
+			 Lizzie.frame.insertMove(mousex,mousey,true);
+			 
+		  }
 		  
 		  private void addwhite()
-		  {}
+		  {
+			  Lizzie.frame.insertMove(mousex,mousey,false);
+		  }
 		  
 		  private void allow()
 		  {}
 		  
 		  private void avoid()
 		  {}
+
+		public void Store(int x, int y) {
+			mousex=x;
+			mousey=y;			
+		}
 	 
 
 	  

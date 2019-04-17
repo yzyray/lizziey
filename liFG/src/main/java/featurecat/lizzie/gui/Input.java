@@ -5,19 +5,32 @@ import static java.awt.event.KeyEvent.*;
 import featurecat.lizzie.Lizzie;
 import java.awt.event.*;
 
+import javax.swing.JOptionPane;
+
 public class Input implements MouseListener, KeyListener, MouseWheelListener, MouseMotionListener {
+	public static boolean isinsertmode=false;
   @Override
   public void mouseClicked(MouseEvent e) {}
 
   @Override
   public void mousePressed(MouseEvent e) {
     if (e.getButton() == MouseEvent.BUTTON1) // left click
-    Lizzie.frame.onClicked(e.getX(), e.getY());
+    {
+    	 if(!isinsertmode)
+    		{
+    		 Lizzie.frame.onClicked(e.getX(), e.getY());
+    		}
+    	 else {
+    		 JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+    	 }
+    
+   
+    }
     else if (e.getButton() == MouseEvent.BUTTON3) // right click
       // undo();
     	Lizzie.frame.openRightClickMenu(e.getX(), e.getY());
     
-     // Lizzie.frame.onRightClicked(e.getX(), e.getY());
+    //  Lizzie.frame.onRightClicked(e.getX(), e.getY());
   }
 
   @Override
@@ -476,6 +489,11 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
+	  if(isinsertmode)
+		{
+		  JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+		  return;
+	 }
     if (Lizzie.frame.processCommentMouseWheelMoved(e)) {
       return;
     }

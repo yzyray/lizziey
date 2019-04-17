@@ -3,6 +3,7 @@ package featurecat.lizzie.rules;
 import static java.lang.Math.min;
 import static java.util.Collections.singletonList;
 
+import featurecat.lizzie.gui.Input;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.analysis.LeelazListener;
@@ -26,6 +27,10 @@ import org.json.JSONException;
 
 public class Board implements LeelazListener {
   public static int boardSize = Lizzie.config.config.getJSONObject("ui").optInt("board-size", 19);
+  public int insertoricurrentMoveNumber=0;
+  public ArrayList<Integer> inseroritmove = new ArrayList<Integer>();
+  public ArrayList<Boolean> insertoriisblack = new ArrayList<Boolean>();
+ 
   private static final String alphabet = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
 
   private BoardHistoryList history;
@@ -1673,48 +1678,84 @@ public class Board implements LeelazListener {
     return true;
   }
   
-  public void insertmode() {
-	  int currentMoveNumber = history.getMoveNumber();
+  public boolean insertmode() {
+	   insertoricurrentMoveNumber = history.getMoveNumber();
+	  int movenum=history.getMoveNumber();
 	    Optional<BoardHistoryNode> changeNode = history.getCurrentHistoryNode().next();
-	    changeNode=changeNode.get().previous();
+//	    if( history.getMoveNumber()==0)
+//	    {	    	
+//	    	 featurecat.lizzie.gui.Input.isinsertmode=true;
+//	    	return true;
+//	    }
+	    if( !changeNode.isPresent())
+	    {
+	    	 JOptionPane.showMessageDialog(null, "已经是当前分支最后一步,不能插入棋子");
+	    	 return false;
+	    }
+	    featurecat.lizzie.gui.Input.isinsertmode=true;
+	  //  changeNode=changeNode.get().previous();
 	    Optional<BoardHistoryNode> relink = changeNode;
 	    Optional<BoardHistoryNode> node = relink;
-	    ArrayList<Integer> m = new ArrayList<Integer>();
-	    ArrayList<Boolean> oriisblack = new ArrayList<Boolean>();
+	    //ArrayList<Integer> m = new ArrayList<Integer>();
+	   // ArrayList<Boolean> oriisblack = new ArrayList<Boolean>();
 	    while (node.isPresent()) {
 	      Optional<int[]> lastMove = node.get().getData().lastMove;	    
 	      if (lastMove.isPresent()) {
 	    	  int[] n=lastMove.get();
-	        m.add(n[0]);
-	        m.add(n[1]);
+	    	  inseroritmove.add(n[0]);
+	    	  inseroritmove.add(n[1]);
 	        boolean oisblack=node.get().getData().lastMoveColor.isBlack();
-	        oriisblack.add(oisblack);
+	        insertoriisblack.add(oisblack);
 	        node = node.get().next();
 	      }
 	    }
+	    return true;
   }
   
-  public boolean insertMove( int[] coords, boolean isblack) {
-	    int currentMoveNumber = history.getMoveNumber();
-	    Optional<BoardHistoryNode> changeNode = history.getCurrentHistoryNode().next();
-	    
-	    changeNode=changeNode.get().previous();
-	    Optional<BoardHistoryNode> relink = changeNode;
-	    Optional<BoardHistoryNode> node = relink;
-	    ArrayList<Integer> m = new ArrayList<Integer>();
-	    ArrayList<Boolean> oriisblack = new ArrayList<Boolean>();
-	    while (node.isPresent()) {
-	      Optional<int[]> lastMove = node.get().getData().lastMove;	    
-	      if (lastMove.isPresent()) {
-	    	  int[] n=lastMove.get();
-	        m.add(n[0]);
-	        m.add(n[1]);
-	        boolean oisblack=node.get().getData().lastMoveColor.isBlack();
-	        oriisblack.add(oisblack);
-	        node = node.get().next();
-	      }
+  public void quitinsertmode() {
+	  for (int j=0;j<insertoriisblack.size();j=j+1)
+	   {
+	       placeinsert(
+	        		  
+	    		   inseroritmove.get(2*j),
+	    		   inseroritmove.get(2*j+1),
+	        		  
+	    		   insertoriisblack.get(j)? Stone.BLACK : Stone.WHITE,
+	              
+	              false);
+	        
+	       
 	    }
+	    
+	    
+	    goToMoveNumber(insertoricurrentMoveNumber);//需要重新获取插入后的步数
+	    inseroritmove.clear();
+	    insertoriisblack.clear();
+	    featurecat.lizzie.gui.Input.isinsertmode=false;
+  }
+  
+  public void insertMove( int coords[], boolean isblack) {
+//	    int currentMoveNumber = history.getMoveNumber();
+//	    Optional<BoardHistoryNode> changeNode = history.getCurrentHistoryNode().next();
+//	    
+//	    changeNode=changeNode.get().previous();
+//	    Optional<BoardHistoryNode> relink = changeNode;
+//	    Optional<BoardHistoryNode> node = relink;
+//	    ArrayList<Integer> m = new ArrayList<Integer>();
+//	    ArrayList<Boolean> oriisblack = new ArrayList<Boolean>();
+//	    while (node.isPresent()) {
+//	      Optional<int[]> lastMove = node.get().getData().lastMove;	    
+//	      if (lastMove.isPresent()) {
+//	    	  int[] n=lastMove.get();
+//	        m.add(n[0]);
+//	        m.add(n[1]);
+//	        boolean oisblack=node.get().getData().lastMoveColor.isBlack();
+//	        oriisblack.add(oisblack);
+//	        node = node.get().next();
+//	      }
+//	    }
 	    //之前为进入插入模式
+	  
 	        if (Board.isValid(coords[0], coords[1])) {
 	          placeinsert(
 	        		  coords[0],
@@ -1723,28 +1764,28 @@ public class Board implements LeelazListener {
               
               false);
 	        }
-	        
-	   
-	        //完成插入模式后再补后续步数
-	   for (int j=0;j<oriisblack.size();j=j+1)
-	   {
-	       placeinsert(
-	        		  
-	        		  m.get(2*j),
-	        		  m.get(2*j+1),
-	        		  
-	        		  oriisblack.get(j)? Stone.BLACK : Stone.WHITE,
-	              
-	              false);
-	        
-	       
-	    }
+	        insertoricurrentMoveNumber=insertoricurrentMoveNumber+1; 
+	        Lizzie.leelaz.togglePonder();
+//	        //完成插入模式后再补后续步数
+//	   for (int j=0;j<oriisblack.size();j=j+1)
+//	   {
+//	       placeinsert(
+//	        		  
+//	        		  m.get(2*j),
+//	        		  m.get(2*j+1),
+//	        		  
+//	        		  oriisblack.get(j)? Stone.BLACK : Stone.WHITE,
+//	              
+//	              false);
+//	        
+//	       
+//	    }
+//
+//	    
+//	    
+//	    goToMoveNumber(currentMoveNumber+1);//需要重新获取插入后的步数
 
-	    
-	    
-	    goToMoveNumber(currentMoveNumber+1);//需要重新获取插入后的步数
-
-	    return true;
+	    //return ;
 	  }
   
 }
