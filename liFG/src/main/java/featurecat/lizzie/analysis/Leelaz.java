@@ -1,5 +1,6 @@
 package featurecat.lizzie.analysis;
 
+import featurecat.lizzie.gui.RightClickMenu;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.rules.BoardData;
 import featurecat.lizzie.rules.Stone;
@@ -273,8 +274,11 @@ public class Leelaz {
         if (isResponseUpToDate()) {
           // This should not be stale data when the command number match
           this.bestMoves = parseInfo(line.substring(5));
-          notifyBestMoveListeners();
-          Lizzie.frame.repaint();
+          //notifyBestMoveListeners();
+         // if(!Lizzie.frame.isshowrightmenu) {
+        	  Lizzie.frame.repaint();
+         // }
+          
           // don't follow the maxAnalyzeTime rule if we are in analysis mode
           if (System.currentTimeMillis() - startPonderTime > maxAnalyzeTimeMillis
               && !Lizzie.board.inAnalysisMode()) {
@@ -562,6 +566,12 @@ public class Leelaz {
   public void ponder() {
     isPondering = true;
     startPonderTime = System.currentTimeMillis();
+    int currentmove=Lizzie.board.getcurrentmovenumber();
+//    if(featurecat.lizzie.gui.RightClickMenu.move>0&&featurecat.lizzie.gui.RightClickMenu.move>=currentmove)
+//    {
+//    	featurecat.lizzie.gui.RightClickMenu.avoid();
+//    }
+//    else {
     sendCommand(
         "lz-analyze "
             + Lizzie.config
@@ -569,6 +579,7 @@ public class Leelaz {
                 .getJSONObject("leelaz")
                 .getInt("analyze-update-interval-centisec")); // until it responds to this, incoming
     // ponder results are obsolete
+//  }
   }
 
   public void togglePonder() {

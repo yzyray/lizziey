@@ -88,6 +88,7 @@ public class BoardRenderer {
 
   /** Draw a go board */
   public void draw(Graphics2D g) {
+	
     setupSizeParameters();
 
     //        Stopwatch timer = new Stopwatch();
@@ -114,6 +115,7 @@ public class BoardRenderer {
       drawMoveNumbers(g);
       //        timer.lap("movenumbers");
       if (!Lizzie.frame.isPlayingAgainstLeelaz && Lizzie.config.showBestMovesNow())
+    	  
         drawLeelazSuggestions(g);
 
       if (Lizzie.config.showNextMoves) {

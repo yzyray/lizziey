@@ -1,14 +1,15 @@
 package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.gui.Input;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 public class RightClickMenu extends JPopupMenu {
-  public int mousex;
-  public int mousey;
+  public static int mousex;
+  public static int mousey;
   private JMenuItem insertmode;
   private JMenuItem addblack;
   private JMenuItem addwhite;
@@ -17,24 +18,35 @@ public class RightClickMenu extends JPopupMenu {
   private JMenuItem quitinsert;
   private JMenuItem allow;
   private JMenuItem avoid;
+  private JMenuItem avoid2;
+  private static JMenuItem cancelavoid;
   private BoardRenderer boardRenderer;
-
+  public  String allowcoords="";
+  public static String avoidcoords="";
+  public static int move=0;
+ 
   public RightClickMenu() {
     insertmode = new JMenuItem("进入插入/删除棋子模式");
     quitinsert = new JMenuItem("退出插入棋子模式");
     addblack = new JMenuItem("插入黑子");
     addwhite = new JMenuItem("插入白子");
     addone = new JMenuItem("轮流插入棋子");
-    deleteone = new JMenuItem("删除棋子(改为PASS)");
+    deleteone = new JMenuItem("更改棋子位置");
     allow = new JMenuItem("强制分析此点");
     avoid = new JMenuItem("强制不分析此点");
-    this.add(insertmode);
+    avoid2 = new JMenuItem("设置强制不分析持续手数");
+    cancelavoid = new JMenuItem("清除强制分析/不分析");
+    
     // this.add(addblack);
     // this.add(addwhite);
     this.add(allow);
-    this.add(avoid);
-    // setVisible(true);
-    // this.repaint();
+    this.add(avoid);    
+    this.add(cancelavoid);
+    this.add(avoid2);
+    this.add(insertmode);
+    this.add(deleteone);
+
+  //Lizzie.frame.RightClickMenu.show(invoker, x, y);
     insertmode.addActionListener(
         new ActionListener() {
           @Override
@@ -89,17 +101,36 @@ public class RightClickMenu extends JPopupMenu {
           public void actionPerformed(ActionEvent e) {
             System.out.println("强制不分析");
             avoid();
+            
           }
         });
+    avoid2.addActionListener(
+            new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                System.out.println("设置强制不分析持续手数");
+                avoid2();
+              }
+            });
     deleteone.addActionListener(
     		new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          System.out.println("删除棋子(改为PASS)");
+          System.out.println("更改棋子位置");
           delete();
         }
       });
+    cancelavoid.addActionListener(
+    		new ActionListener() {
+    	        @Override
+    	        public void actionPerformed(ActionEvent e) {
+    	          System.out.println("清除所有强制分析设置");
+    	          cancelavoid();
+    	        }
+    	      });
+    
   }
+  
 
   private void insertmode() {
 
@@ -109,13 +140,17 @@ public class RightClickMenu extends JPopupMenu {
       this.remove(insertmode);
       this.remove(allow);
       this.remove(avoid);
+      this.remove(avoid2);      
       this.add(quitinsert);
       this.add(addblack);
       this.add(addwhite);
-      this.add(addone);
+      this.add(addone);   
       this.add(deleteone);
       this.add(allow);
-      this.add(avoid);      
+      this.add(avoid);  
+      this.add(cancelavoid);
+      this.add(avoid2);
+      
     }
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.ponder();
@@ -131,16 +166,26 @@ public class RightClickMenu extends JPopupMenu {
     this.add(insertmode);
     this.add(allow);
     this.add(avoid);
+    this.add(cancelavoid);
+    this.add(avoid2);
+    this.add(deleteone);    
     Lizzie.board.quitinsertmode();
     if (Lizzie.leelaz.isPondering()) {
         Lizzie.leelaz.ponder();
       }
     
   }
-
+  
   private void addblack() {
 
-    Lizzie.frame.insertMove(mousex, mousey, true);
+	    Lizzie.frame.insertMove(mousex, mousey, true);
+	  }
+
+  private void cancelavoid() {
+	  allowcoords="";
+	  avoidcoords="";
+	  move=0;	  
+		  Lizzie.leelaz.ponder();
   }
 
   private void addwhite() {
@@ -148,20 +193,54 @@ public class RightClickMenu extends JPopupMenu {
   }
   
   private void addone() {
-
 	    Lizzie.frame.insertMove(mousex, mousey);
 	  }
 
 
-  private void allow() {
+  private void allow() {	 
+	  String color=Lizzie.frame.getstonecolor(mousex,mousey);
+	  if (color!="N")
+	  { if (allowcoords=="")
+	 {
+			 allowcoords= Lizzie.frame.convertmousexy(mousex, mousey);
+	 }
+		 else
+		 {
+			 allowcoords=allowcoords+","+Lizzie.frame.convertmousexy(mousex, mousey);
+		 }
+	  Lizzie.leelaz.analyzeAvoid( "allow", color, allowcoords, 1);
+	 Lizzie.frame.isshowrightmenu=false;
 	 
+	  }
   }
 
-  private void avoid() {}
+  public static void avoid() {	  
+	  String color=Lizzie.frame.getstonecolor(mousex,mousey);
+	  if (color!="N")
+	  {  if (avoidcoords=="")
+			 {
+		  			avoidcoords= Lizzie.frame.convertmousexy(mousex, mousey);
+			 }
+				 else
+				 {
+					 avoidcoords=avoidcoords+","+Lizzie.frame.convertmousexy(mousex, mousey);
+				 }
+	  Lizzie.leelaz.analyzeAvoid( "avoid", color, avoidcoords, 99);
+	 Lizzie.frame.isshowrightmenu=false;	 
+	  }
+  }
 
+  private void avoid2() {	  
+	  Lizzie.frame.openAvoidmoves();
+  }
+  
   private void delete() {
 	int movenumber=Lizzie.frame.getmovenumber(mousex, mousey);
-	 System.out.println(movenumber);
+	System.out.println(movenumber);
+	 if(movenumber>0)
+	 {
+	 Lizzie.frame.openChangeMoveDialog2(movenumber);
+	 }
   }
   
   public void Store(int x, int y) {

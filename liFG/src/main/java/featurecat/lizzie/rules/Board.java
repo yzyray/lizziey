@@ -134,6 +134,8 @@ public class Board implements LeelazListener {
     ad.forEach(i -> name.append(alphabet.charAt(i)));
     return name.toString();
   }
+  
+  
 
   /**
    * Converts a x and y coordinate to a named coordinate eg C16, T5, K10, etc
@@ -320,12 +322,12 @@ public class Board implements LeelazListener {
    */
   public int getmovenumber(int coords[])
   {
-	  
-	int stones=history.getCurrentHistoryNode().getData().moveNumber;
-	int a=history.getCurrentHistoryNode().moveNumberOfNode();
-	int b=history.getCurrentHistoryNode().getDepth();
-	int MoveNumberList[]=  getMoveNumberList();
-	return MoveNumberList[Board.getIndex(coords[0], coords[1])] ;	  
+	Stone stones[]=history.getData().stones.clone();
+	if (!stones[getIndex(coords[0],coords[1])].isBlack()&&!stones[getIndex(coords[0],coords[1])].isWhite())
+	{		
+		return -1;
+	}
+	return  mvnumber[getIndex(coords[0],coords[1])];
   }
   
   
@@ -730,6 +732,12 @@ public class Board implements LeelazListener {
     }
   }
 
+  
+  public int getcurrentmovenumber()
+  {
+	  return history.getCurrentHistoryNode().getData().moveNumber;
+  }
+  
   /**
    * overloaded method for place(), chooses color in an alternating pattern
    *
@@ -739,11 +747,9 @@ public class Board implements LeelazListener {
   public void place(int x, int y) {
     place(x, y, history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
     mvnumber[getIndex(x,y)]=history.getCurrentHistoryNode().getData().moveNumber;
-    int xx=5;
-    int[] kankan =mvnumber;
-    int jhsda=1;
   }
 
+  
   public void insert(int x, int y) {
     insert(x, y, Stone.BLACK, false, false);
   }
@@ -913,11 +919,12 @@ public class Board implements LeelazListener {
           int[] lastMove = lastMoveOpt.get();
           String name = convertCoordinatesToName(lastMove[0], lastMove[1]);
           Lizzie.leelaz.playMove(history.getLastMoveColor(), name);
+          mvnumber[getIndex(lastMove[0],lastMove[1])]=history.getCurrentHistoryNode().getData().moveNumber;
         } else {
-	        	 Lizzie.leelaz.playMove(history.getLastMoveColor(), "pass");
-         
+	        	 Lizzie.leelaz.playMove(history.getLastMoveColor(), "pass");	    
         }
         Lizzie.frame.repaint();
+        
         return true;
       }
       return false;
@@ -1694,6 +1701,14 @@ public class Board implements LeelazListener {
 
 	    return true;
 	  }
+	  
+	  
+	  public  String getstonecolor(int x,int y)
+	  {	  
+		String color=  history.isBlacksTurn() ? "b" : "w";
+		return color;
+	  }
+	  
   public boolean insertmode() {
     insertoricurrentMoveNumber = history.getMoveNumber();
     int movenum = history.getMoveNumber();
@@ -1740,6 +1755,7 @@ public class Board implements LeelazListener {
       placeinsert(coords[0], coords[1], isblack ? Stone.BLACK : Stone.WHITE, false);
     }
     insertoricurrentMoveNumber = insertoricurrentMoveNumber + 1;
+    mvnumber[getIndex(coords[0],coords[1])]=history.getCurrentHistoryNode().getData().moveNumber;
     if (Lizzie.leelaz.isPondering()) {
         Lizzie.leelaz.ponder();
       }
@@ -1751,6 +1767,7 @@ public class Board implements LeelazListener {
 	      placeinsert(coords[0], coords[1], history.isBlacksTurn()  ? Stone.BLACK : Stone.WHITE, false);
 	    }
 	    insertoricurrentMoveNumber = insertoricurrentMoveNumber + 1;
+	    mvnumber[getIndex(coords[0],coords[1])]=history.getCurrentHistoryNode().getData().moveNumber;
 	    if (Lizzie.leelaz.isPondering()) {
 	        Lizzie.leelaz.ponder();
 	      }

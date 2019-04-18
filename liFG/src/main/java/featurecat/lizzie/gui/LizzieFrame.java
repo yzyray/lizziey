@@ -108,7 +108,8 @@ public class LizzieFrame extends JFrame {
 
   private long lastAutosaveTime = System.currentTimeMillis();
   private boolean isReplayVariation = false;
-  private RightClickMenu RightClickMenu = new RightClickMenu();
+  private RightClickMenu RightClickMenu;
+  private ChangeMoveDialog2 ChangeMoveDialog2 = new ChangeMoveDialog2();
 
   // Save the player title
   private String playerTitle = "";
@@ -269,23 +270,36 @@ public class LizzieFrame extends JFrame {
     ChangeMoveDialog changeMoveDialog = new ChangeMoveDialog();
     changeMoveDialog.setVisible(true);
   }
+  
+  public static void openAvoidmoves() {
+	  Avoidmoves Avoidmoves = new Avoidmoves();
+	  Avoidmoves.setVisible(true);
+	  }
+  
+  public  void openChangeMoveDialog2( int movenumber) {	 
+	    ChangeMoveDialog2.Store(movenumber);
+	    ChangeMoveDialog2.setVisible(true);
+	  }
 
   public void openRightClickMenu(int x, int y) {
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
-
+    isshowrightmenu=true;
     if (!boardCoordinates.isPresent()) {
+    	isshowrightmenu=false;
       return;
     }
     if (isPlayingAgainstLeelaz) {
+    	isshowrightmenu=false;
       return;
     }
 
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.sendCommand("name");
     }
-    isshowrightmenu=true;
-    RightClickMenu.Store(x, y);
+    RightClickMenu  = new RightClickMenu();
+    RightClickMenu.Store(x, y);   
     RightClickMenu.show(this, x, y);
+    
     
   }
 
@@ -1321,13 +1335,7 @@ public class LizzieFrame extends JFrame {
   {
 	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
 	  if (boardCoordinates.isPresent()) {
-	      int[] coords = boardCoordinates.get();
-	      int movenum =Lizzie.board.getmovenumber(coords);	
-	      int[] moveNumberList =
-	    		  LizzieFrame.boardRenderer.branchOpt.map(b -> b.data.moveNumberList).orElse(Lizzie.board.getMoveNumberList());
-	      int movenum2 =moveNumberList[Board.getIndex(coords[0], coords[1])];
-	      System.out.println(movenum);
-	      System.out.println(movenum2);
+	      int[] coords = boardCoordinates.get();	
 	      return Lizzie.board.getmovenumber(coords);	     
 	  }	  
 	  return -1;	  
@@ -1342,6 +1350,24 @@ public class LizzieFrame extends JFrame {
 	  //Lizzie.leelaz.analyzeAvoid();
   }
   
+  public String getstonecolor(int x, int y) {
+	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+	  if (boardCoordinates.isPresent()) {
+		  int[] coords = boardCoordinates.get();
+		  return  Lizzie.board.getstonecolor(coords[0],coords[1]);
+	  }
+	  return "N";
+  }
+  
+  public String convertmousexy(int x, int y) {
+	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+	  if (boardCoordinates.isPresent()) {
+		  int[] coords = boardCoordinates.get();
+		  return  Lizzie.board.convertCoordinatesToName(coords[0], coords[1]);
+	  }
+	  return "N";
+  }
+  
   public void insertMove(int x, int y) {
 	    // Check for board click
 	    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
@@ -1351,6 +1377,8 @@ public class LizzieFrame extends JFrame {
 	    }
 	    repaint();
 	  }
+  
+
 
   private final Consumer<String> placeVariation =
       v -> Board.asCoordinates(v).ifPresent(c -> Lizzie.board.place(c[0], c[1]));
