@@ -108,7 +108,7 @@ public class LizzieFrame extends JFrame {
 
   private long lastAutosaveTime = System.currentTimeMillis();
   private boolean isReplayVariation = false;
-  private RightClickMenu RightClickMenu;
+  private RightClickMenu RightClickMenu = new RightClickMenu();
   private ChangeMoveDialog2 ChangeMoveDialog2 = new ChangeMoveDialog2();
 
   // Save the player title
@@ -296,11 +296,10 @@ public class LizzieFrame extends JFrame {
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.sendCommand("name");
     }
-    RightClickMenu  = new RightClickMenu();
+   
     RightClickMenu.Store(x, y);   
+    //RightClickMenu.setVisible(true);    
     RightClickMenu.show(this, x, y);
-    
-    
   }
 
   public static void openAvoidMoveDialog() {
