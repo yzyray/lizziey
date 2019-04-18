@@ -3,6 +3,7 @@ package featurecat.lizzie;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.gui.GtpConsolePane;
 import featurecat.lizzie.gui.LizzieFrame;
+
 import featurecat.lizzie.rules.Board;
 import featurecat.lizzie.rules.BoardData;
 import java.io.File;

@@ -156,6 +156,8 @@ public class BoardData {
   public void tryToSetBestMoves(List<MoveData> moves) {
     // MoveData.getPlayouts(moves) > playouts
     if (MoveData.getPlayouts(moves) > playouts || isChanged) {
+	  //暂时测试改一下
+	 // if (MoveData.getPlayouts(moves) > playouts || true) {
     	//added for change bestmoves when playouts is not increased
       bestMoves = moves;
       setPlayouts(MoveData.getPlayouts(moves));

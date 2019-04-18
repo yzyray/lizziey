@@ -16,6 +16,9 @@ import featurecat.lizzie.rules.BoardData;
 import featurecat.lizzie.rules.BoardHistoryNode;
 import featurecat.lizzie.rules.GIBParser;
 import featurecat.lizzie.rules.SGFParser;
+import featurecat.lizzie.rules.Stone;
+import featurecat.lizzie.gui.BoardRenderer;
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -90,6 +93,7 @@ public class LizzieFrame extends JFrame {
 
   public static Font uiFont;
   public static Font winrateFont;
+  public boolean isshowrightmenu;
 
   private final BufferStrategy bs;
 
@@ -277,10 +281,12 @@ public class LizzieFrame extends JFrame {
     }
 
     if (Lizzie.leelaz.isPondering()) {
-      Lizzie.leelaz.togglePonder();
+      Lizzie.leelaz.sendCommand("name");
     }
+    isshowrightmenu=true;
     RightClickMenu.Store(x, y);
     RightClickMenu.show(this, x, y);
+    
   }
 
   public static void openAvoidMoveDialog() {
@@ -1310,6 +1316,41 @@ public class LizzieFrame extends JFrame {
     }
     repaint();
   }
+  
+  public int getmovenumber(int x,int y)
+  {
+	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+	  if (boardCoordinates.isPresent()) {
+	      int[] coords = boardCoordinates.get();
+	      int movenum =Lizzie.board.getmovenumber(coords);	
+	      int[] moveNumberList =
+	    		  LizzieFrame.boardRenderer.branchOpt.map(b -> b.data.moveNumberList).orElse(Lizzie.board.getMoveNumberList());
+	      int movenum2 =moveNumberList[Board.getIndex(coords[0], coords[1])];
+	      System.out.println(movenum);
+	      System.out.println(movenum2);
+	      return Lizzie.board.getmovenumber(coords);	     
+	  }	  
+	  return -1;	  
+  }
+  
+  
+  
+  
+  public void allow()
+  {
+	  
+	  //Lizzie.leelaz.analyzeAvoid();
+  }
+  
+  public void insertMove(int x, int y) {
+	    // Check for board click
+	    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+	    if (boardCoordinates.isPresent()) {
+	      int[] coords = boardCoordinates.get();
+	      Lizzie.board.insertMove(coords);
+	    }
+	    repaint();
+	  }
 
   private final Consumer<String> placeVariation =
       v -> Board.asCoordinates(v).ifPresent(c -> Lizzie.board.place(c[0], c[1]));
@@ -1324,9 +1365,19 @@ public class LizzieFrame extends JFrame {
   }
 
   public void onMouseMoved(int x, int y) {
+	  
     if (RightClickMenu.isVisible()) {
       return;
+    
     }
+    if(isshowrightmenu)
+	  {
+    	 if (Lizzie.leelaz.isPondering()) {
+    	      Lizzie.leelaz.ponder();
+    	    }
+    	 isshowrightmenu=false;
+	  }
+    //或许在void后需要改判断,或者改ponder
     mouseOverCoordinate = outOfBoundCoordinate;
     Optional<int[]> coords = boardRenderer.convertScreenToCoordinates(x, y);
     coords.filter(c -> !isMouseOver(c[0], c[1])).ifPresent(c -> repaint());

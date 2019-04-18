@@ -42,7 +42,7 @@ public class BoardRenderer {
 
   private JSONObject uiConfig, uiPersist;
   private int scaledMargin, availableLength, squareLength, stoneRadius;
-  private Optional<Branch> branchOpt = Optional.empty();
+  public Optional<Branch> branchOpt = Optional.empty();
   private List<MoveData> bestMoves;
 
   private BufferedImage cachedBackgroundImage = emptyImage;

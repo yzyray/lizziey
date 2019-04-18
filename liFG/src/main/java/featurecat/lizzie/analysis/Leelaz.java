@@ -559,7 +559,7 @@ public class Leelaz {
   // this is copyed from https://github.com/zsalch/lizzie/tree/n_avoiddialog
 
   /** This initializes leelaz's pondering mode at its current position */
-  private void ponder() {
+  public void ponder() {
     isPondering = true;
     startPonderTime = System.currentTimeMillis();
     sendCommand(
