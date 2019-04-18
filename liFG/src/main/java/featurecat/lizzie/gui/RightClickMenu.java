@@ -161,11 +161,7 @@ public class RightClickMenu extends JPopupMenu {
 
   private void delete() {
 	int movenumber=Lizzie.frame.getmovenumber(mousex, mousey);
-	if(movenumber>0)
-	{
-		Lizzie.board.changeMove(movenumber, "pass");
-	}
-	 
+	 System.out.println(movenumber);
   }
   
   public void Store(int x, int y) {

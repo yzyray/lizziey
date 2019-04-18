@@ -1283,7 +1283,7 @@ public class LizzieFrame extends JFrame {
    */
   public void onClicked(int x, int y) {
     // Check for board click
-    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);    
     int moveNumber = winrateGraph.moveNumber(x, y);
 
     if (boardCoordinates.isPresent()) {
