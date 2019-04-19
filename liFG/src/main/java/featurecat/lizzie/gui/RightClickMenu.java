@@ -5,6 +5,7 @@ import featurecat.lizzie.gui.Input;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 public class RightClickMenu extends JPopupMenu {
@@ -26,7 +27,7 @@ public class RightClickMenu extends JPopupMenu {
   public static int move=0;
  
   public RightClickMenu() {
-    insertmode = new JMenuItem("进入插入/删除棋子模式");
+    insertmode = new JMenuItem("进入插入棋子模式");
     quitinsert = new JMenuItem("退出插入棋子模式");
     addblack = new JMenuItem("插入黑子");
     addwhite = new JMenuItem("插入白子");
@@ -51,7 +52,7 @@ public class RightClickMenu extends JPopupMenu {
         new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
-            System.out.println("进入插入/删除棋子模式");
+            System.out.println("进入插入棋子模式");
             insertmode();
           }
         });
@@ -237,10 +238,38 @@ public class RightClickMenu extends JPopupMenu {
   
   private void delete() {
 	int movenumber=Lizzie.frame.getmovenumber(mousex, mousey);
-	System.out.println(movenumber);
-	 if(movenumber>0)
+	int movenumberinbranch=Lizzie.frame.getmovenumberinbranch(mousex, mousey);
+	if(movenumber<1) {
+		return;
+	}
+	if(featurecat.lizzie.gui.Input.isinsertmode&&movenumberinbranch<=0)
+	{
+		JOptionPane.showMessageDialog(null, "插入模式下只能修改当前分支的棋子");
+		return;
+	}
+	if(featurecat.lizzie.gui.Input.isinsertmode&&movenumberinbranch>0)
+	{
+		 Lizzie.frame.openChangeMoveDialog2(movenumber,true);
+		 return;
+	}
+	if (movenumberinbranch<=1)
+	{
+		
+int n = JOptionPane.showConfirmDialog(null, "修改当前分支以外的棋子(或者当前分支第一步)不能继承分支变化", "确认修改", JOptionPane.YES_NO_OPTION);
+		if (n == JOptionPane.YES_OPTION) {
+			Lizzie.frame.openChangeMoveDialog2(movenumber,false);
+		} else if (n == JOptionPane.NO_OPTION) {
+			return;
+		}
+
+		//Lizzie.frame.openChangeMoveDialog2(movenumber);
+	}
+	//System.out.println(movenumber);
+
+	else
 	 {
-	 Lizzie.frame.openChangeMoveDialog2(movenumber);
+	 Lizzie.frame.openChangeMoveDialog2(movenumber,true);
+	 return;
 	 }
   }
   

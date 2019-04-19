@@ -38,6 +38,7 @@ public class ChangeMoveDialog2 extends JDialog {
   private String changePosition;
   private static JTextField defaultText = new JTextField();
   public  int movenumber=-1;
+  public boolean isthisbranch=true;
 
   public ChangeMoveDialog2() {
     setTitle(resourceBundle.getString("LizzieChangeMove.title.config"));
@@ -148,8 +149,15 @@ public class ChangeMoveDialog2 extends JDialog {
   }
 
   private void applyChange() {
-	  int mv=movenumber;
-    Lizzie.board.changeMove(mv, getChangeToType());
+	  //int mv=movenumber;	  
+	  if(isthisbranch)
+	  {
+    Lizzie.board.changeMove(movenumber, getChangeToType());
+	  }
+	  else
+	  {
+		  Lizzie.board.changeMove2(movenumber, getChangeToType());
+	  }
   }
 
 //  private Integer txtFieldValue(JTextField txt) {
@@ -189,8 +197,9 @@ public class ChangeMoveDialog2 extends JDialog {
     }
   }
   
-  public  void Store(int x) {
+  public  void Store(int x,boolean thisbranch) {
 	  movenumber = x;
+	  isthisbranch=thisbranch;
 	  }
 
   private boolean checkMove() {

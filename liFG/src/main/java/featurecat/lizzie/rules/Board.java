@@ -331,7 +331,59 @@ public class Board implements LeelazListener {
   }
   
   
-  
+  public void passinsert(Stone color, boolean newBranch, boolean dummy) {
+	    synchronized (this) {
+
+	      // check to see if this move is being replayed in history
+	        if (history.getNext().map(n -> !n.lastMove.isPresent()).orElse(false) && !newBranch) {
+	            // this is the next move in history. Just increment history so that we don't erase the
+	            // redo's
+	            history.next();
+	            Lizzie.leelaz.playMove(color, "pass");
+	            if (Lizzie.frame.isPlayingAgainstLeelaz)
+	              Lizzie.leelaz.genmove((history.isBlacksTurn() ? "B" : "W"));
+
+	            return;
+	          }
+
+	      Stone[] stones = history.getStones().clone();
+	      Zobrist zobrist = history.getZobrist();
+	      
+	                      int moveNumber = history.getMoveNumber() + 1;
+	                      int[] moveNumberList =
+	                          newBranch && history.getNext().isPresent()
+	                              ? new int[Board.boardSize * Board.boardSize]
+	                              : history.getMoveNumberList().clone();
+
+	      // build the new game state
+	      BoardData newState =
+	          new BoardData(
+	              stones,
+	              Optional.empty(),
+	              color,
+	              color.equals(Stone.WHITE),
+	              zobrist,
+	              moveNumber,
+	              moveNumberList,
+	              history.getData().blackCaptures,
+	              history.getData().whiteCaptures,
+	              0,
+	              0);
+	      newState.dummy = dummy;
+	      // update leelaz with pass
+	  if (!Lizzie.leelaz.isInputCommand) Lizzie.leelaz.playMove(color, "pass");
+	    
+	      
+	      if (Lizzie.frame.isPlayingAgainstLeelaz)
+	        Lizzie.leelaz.genmove((history.isBlacksTurn() ? "W" : "B"));
+
+	      // update history with pass
+	      history.addOrGoto(newState, newBranch, false);
+
+	      Lizzie.frame.repaint();
+	    }
+	  }
+
   public void pass(Stone color, boolean newBranch, boolean dummy, boolean changeMove) {
     synchronized (this) {
 
@@ -736,6 +788,11 @@ public class Board implements LeelazListener {
   public int getcurrentmovenumber()
   {
 	  return history.getCurrentHistoryNode().getData().moveNumber;
+  }
+  
+  public int getmovenumberinbranch(int index)
+  {
+	  return history.getCurrentHistoryNode().getData().moveNumberList[index];
   }
   
   /**
@@ -1609,18 +1666,193 @@ public class Board implements LeelazListener {
       // computing. i think its fine.
     }
   }
-
-  public boolean changeMove(int moveNumber, String changeMove) {
+  
+  public boolean changeMove2(int moveNumber, String changeMove) {
 	    Optional<int[]> changeCoord = asCoordinates(changeMove);
 	    if ("pass".equalsIgnoreCase(changeMove)) {
-	      changeMove(moveNumber, (int[]) null);
+	      changeMove2(moveNumber, (int[]) null);
+	      return true;
+	    } else if (changeCoord.isPresent()
+	        && Board.isValid(changeCoord.get()[0], changeCoord.get()[1])) {
+	    	
+	    	if(
+	    	    	history.getStones()[getIndex(changeCoord.get()[0], changeCoord.get()[1])] != Stone.EMPTY 
+	    	    	)
+	    	    	{
+	    	    		JOptionPane.showMessageDialog(null, "更改的位置与现有棋子冲突");
+	    	    		return false;
+	    	    	}
+	      changeCoord.map(c -> changeMove2(moveNumber, c));
+	      return true;
+	      
+	    } else {
+	      return false;
+	    }
+	  }
+
+	  public boolean changeMove2(int moveNumber, int[] coords) {
+	    if (moveNumber <= 0) {
+	      return false;
+	    }
+
+	    int endMoveNumber = history.getEnd().moveNumberOfNode();
+	    if (moveNumber > endMoveNumber) {
+	      return false;
+	    }
+	    boolean isprevious=false;
+	    int currentMoveNumber = history.getMoveNumber();
+	    goToMoveNumber(moveNumber);
+//	    int ss= history.getCurrentHistoryNode().getData().moveMNNumber;
+//	    int sss=history.getCurrentHistoryNode().previous().get().getData().moveNumber;
+//	    BoardHistoryNode a=history.getCurrentHistoryNode();
+	    Optional<BoardHistoryNode> changeNode=null;
+	    Optional<BoardHistoryNode> relink=null;
+	    if(history.getCurrentHistoryNode().getData().moveMNNumber==1&&history.getCurrentHistoryNode().previous().get().getData().moveNumber>0)
+	    {
+	    	int coordshead[]=history.getCurrentHistoryNode().next().get().getData().lastMove.get();
+	    //	System.out.println("是分支头节点");	    	
+	    	goToMoveNumber(moveNumber -1);
+	    	boolean find=false;
+	    	int i=0;
+	    	while(!find)
+	    	{
+	    	changeNode = history.getCurrentHistoryNode().getVariation(i);
+	    	relink = changeNode.flatMap(n -> n.next());
+	    	int coordsnow[]=relink.get().getData().lastMove.get();
+	    	i=i+1;
+	    	if(coordsnow[0]==coordshead[0]&&coordsnow[1]==coordshead[1])
+	    		find=true;
+	    	}
+	    	
+	    }
+	    else {
+	   // goToMoveNumber(moveNumber +1);
+//	    Optional<int[]>  oricoords = history.getCurrentHistoryNode().getData().lastMove;
+//	    Optional<BoardHistoryNode> relink2=null;
+//	    if (history.getCurrentHistoryNode().getData().lastMove.isPresent())
+//	    {
+//	    	isprevious=true;
+//	    	relink2 = history.getCurrentHistoryNode().next().get().previous();
+//	    }
+	    goToMoveNumber(moveNumber - 1);	    
+	    changeNode = history.getCurrentHistoryNode().next();
+	    relink = changeNode.flatMap(n -> n.next());
+	    }
+//	    if(relink.isPresent()) {
+//	    Optional<int[]> relinkcoords=relink.get().getData().lastMove;
+//	    if(relink.get().getData().lastMove.isPresent()&&isprevious)
+//	    {	    
+//	    if(oricoords.get()[0]!=relinkcoords.get()[0]||oricoords.get()[1]!=relinkcoords.get()[1])
+//	    {
+//	    	 System.out.println("节点不对");
+//	    	 relink=relink2;
+//	    }
+//	    }
+//	    }
+	    // Change Move
+	       Optional<BoardHistoryNode> node = relink;
+	       Optional<int[]> passstep=Optional.empty();
+	       while (node.isPresent()) {
+	    	      Optional<int[]> lastMove = node.get().getData().lastMove;
+	    	      if(lastMove==passstep)
+	    	      {
+	    	    	  inseroritmove.add(-1);
+	    	    	  inseroritmove.add(-1);    	  
+	    	    	  boolean oisblack = node.get().getData().lastMoveColor.isBlack();
+	    	          insertoriisblack.add(oisblack);
+	    	          node = node.get().next();   
+	    	      }
+	    	      else {
+	    	      if (lastMove.isPresent()) {
+	    	        int[] n = lastMove.get();
+	    	        inseroritmove.add(n[0]);
+	    	        inseroritmove.add(n[1]);
+	    	        boolean oisblack = node.get().getData().lastMoveColor.isBlack();
+	    	        insertoriisblack.add(oisblack);
+	    	        node = node.get().next();
+	    	      }
+	    	      }
+	    	    }
+	    
+	    
+	   if (coords != null && Board.isValid(coords[0], coords[1])) {
+	        placeinsert(
+	            coords[0], coords[1], history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE,  false);
+	      } else {
+	    	 
+	    		if((changeNode.get().next().isPresent()&&changeNode.get().next().get().getData().lastMove==passstep)||(changeNode.get().previous().get().getData().moveNumber>0&&changeNode.get().previous().get().getData().lastMove==passstep))
+	        	{
+	        		JOptionPane.showMessageDialog(null, "修改失败,步连续两步PASS将导致终局");
+	        		 goToMoveNumber(currentMoveNumber);
+		    		return false;
+	        	}
+	    	  passinsert(history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE, false, false);
+	      }
+	   
+	    for (int j = 0; j < insertoriisblack.size(); j = j + 1) {
+	    	if(inseroritmove.get(2 * j)!=-1) {
+	      placeinsert(
+	          inseroritmove.get(2 * j),
+	          inseroritmove.get(2 * j + 1),
+	          insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE,
+	          false);
+	    }
+	    
+	    else {
+	    	passinsert(insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE,false, false);
+	    }
+	    }
+	   inseroritmove.clear();
+	    insertoriisblack.clear();
+//	    Optional<BoardHistoryNode> node = relink;
+//	    while (node.isPresent()) {
+//	      Optional<int[]> lastMove = node.get().getData().lastMove;
+//	      if (lastMove.isPresent()) {
+//	        int[] m = lastMove.get();
+//	        if (Board.isValid(m[0], m[1])) {
+//	          placeinsert(
+//	              m[0],
+//	              m[1],
+//	              history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE,
+//	              false);
+//	        } else {
+//	        	passinsert(history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE,
+//	              false,
+//	              false);
+//	        }
+//	        node = node.get().next();
+//	      }
+//	    }
+
+	    goToMoveNumber(currentMoveNumber);
+
+	    return true;
+	  }
+	  
+  
+
+  public boolean changeMove(int moveNumber, String changeMove) {	  
+	    Optional<int[]> changeCoord = asCoordinates(changeMove);
+	    if ("pass".equalsIgnoreCase(changeMove)) {
+	    	
+	    	
+	      changeMove(moveNumber, (int[]) null);	      
 	      return true;
 	    } else if ("swap".equalsIgnoreCase(changeMove)) {
 	      changeMove(moveNumber, null, true);
 	      return true;
-	    } else if (changeCoord.isPresent()
+	    } else if (changeCoord.isPresent()	    		
 	        && Board.isValid(changeCoord.get()[0], changeCoord.get()[1])) {
+	    	
+	    	if(
+	    	history.getStones()[getIndex(changeCoord.get()[0], changeCoord.get()[1])] != Stone.EMPTY 
+	    	)
+	    	{
+	    		JOptionPane.showMessageDialog(null, "修改失败,更改的位置与现有棋子冲突");
+	    		return false;
+	    	}
 	      changeCoord.map(c -> changeMove(moveNumber, c, false));
+	    	
 	      return true;
 	    } else {
 	      return false;
@@ -1640,14 +1872,56 @@ public class Board implements LeelazListener {
 	    if (moveNumber > endMoveNumber) {
 	      return false;
 	    }
-
+	    boolean isprevious=false;
 	    int currentMoveNumber = history.getMoveNumber();
-
-	    goToMoveNumber(moveNumber - 1);
-
-	    Optional<BoardHistoryNode> changeNode = history.getCurrentHistoryNode().next();
-	    Optional<BoardHistoryNode> relink = changeNode.flatMap(n -> n.next());
-
+	    goToMoveNumber(moveNumber);
+//	    int ss= history.getCurrentHistoryNode().getData().moveMNNumber;
+//	    int sss=history.getCurrentHistoryNode().previous().get().getData().moveNumber;
+//	    BoardHistoryNode a=history.getCurrentHistoryNode();
+	    Optional<BoardHistoryNode> changeNode=null;
+	    Optional<BoardHistoryNode> relink=null;
+	    if(history.getCurrentHistoryNode().getData().moveMNNumber==1&&history.getCurrentHistoryNode().previous().get().getData().moveNumber>0)
+	    {
+	    	int coordshead[]=history.getCurrentHistoryNode().next().get().getData().lastMove.get();
+	    //	System.out.println("是分支头节点");	    	
+	    	goToMoveNumber(moveNumber -1);
+	    	boolean find=false;
+	    	int i=0;
+	    	while(!find)
+	    	{
+	    	changeNode = history.getCurrentHistoryNode().getVariation(i);
+	    	relink = changeNode.flatMap(n -> n.next());
+	    	int coordsnow[]=relink.get().getData().lastMove.get();
+	    	i=i+1;
+	    	if(coordsnow[0]==coordshead[0]&&coordsnow[1]==coordshead[1])
+	    		find=true;
+	    	}
+	    	
+	    }
+	    else {
+	   // goToMoveNumber(moveNumber +1);
+//	    Optional<int[]>  oricoords = history.getCurrentHistoryNode().getData().lastMove;
+//	    Optional<BoardHistoryNode> relink2=null;
+//	    if (history.getCurrentHistoryNode().getData().lastMove.isPresent())
+//	    {
+//	    	isprevious=true;
+//	    	relink2 = history.getCurrentHistoryNode().next().get().previous();
+//	    }
+	    goToMoveNumber(moveNumber - 1);	    
+	    changeNode = history.getCurrentHistoryNode().next();
+	    relink = changeNode.flatMap(n -> n.next());
+	    }
+//	    if(relink.isPresent()) {
+//	    Optional<int[]> relinkcoords=relink.get().getData().lastMove;
+//	    if(relink.get().getData().lastMove.isPresent()&&isprevious)
+//	    {	    
+//	    if(oricoords.get()[0]!=relinkcoords.get()[0]||oricoords.get()[1]!=relinkcoords.get()[1])
+//	    {
+//	    	 System.out.println("节点不对");
+//	    	 relink=relink2;
+//	    }
+//	    }
+//	    }
 	    // Change Move
 	    if (swapColorOnly) {
 	      if (changeNode.isPresent()) {
@@ -1658,6 +1932,14 @@ public class Board implements LeelazListener {
 	              .map(d -> d.lastMoveColor)
 	              .ifPresent(s -> place(c.get()[0], c.get()[1], s.opposite(), false, true));
 	        } else {
+	        	
+	        	 Optional<int[]> passstep=Optional.empty();
+		    		if((changeNode.get().next().isPresent()&&changeNode.get().next().get().getData().lastMove==passstep)||(changeNode.get().previous().get().getData().moveNumber>0&&changeNode.get().previous().get().getData().lastMove==passstep))
+		        	{
+		        		JOptionPane.showMessageDialog(null, "修改失败,步连续两步PASS将导致终局");
+		        		 goToMoveNumber(currentMoveNumber);
+			    		return false;
+		        	}
 	          pass(history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE, false, false, true);
 	        }
 	      }
@@ -1666,13 +1948,29 @@ public class Board implements LeelazListener {
 	        place(
 	            coords[0], coords[1], history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE, false, true);
 	      } else {
+	    	  Optional<int[]> passstep=Optional.empty();
+	    		if((changeNode.get().next().isPresent()&&changeNode.get().next().get().getData().lastMove==passstep)||(changeNode.get().previous().get().getData().moveNumber>0&&changeNode.get().previous().get().getData().lastMove==passstep))
+	        	{
+	        		JOptionPane.showMessageDialog(null, "修改失败,步连续两步PASS将导致终局");
+	        		 goToMoveNumber(currentMoveNumber);
+		    		return false;
+	        	}
 	        pass(history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE, false, false, true);
 	      }
 	    }
 
 	    Optional<BoardHistoryNode> node = relink;
+	    Optional<int[]> passstep=Optional.empty();
 	    while (node.isPresent()) {
 	      Optional<int[]> lastMove = node.get().getData().lastMove;
+	      //这里还有问题
+	      if(lastMove==passstep)
+	      {
+	    	 
+	    	  node = node.get().next();
+		        }
+		        
+	      
 	      if (lastMove.isPresent()) {
 	        int[] m = lastMove.get();
 	        if (Board.isValid(m[0], m[1])) {
@@ -1720,8 +2018,18 @@ public class Board implements LeelazListener {
     featurecat.lizzie.gui.Input.isinsertmode = true;
     Optional<BoardHistoryNode> relink = changeNode;
     Optional<BoardHistoryNode> node = relink;
+    Optional<int[]> passstep=Optional.empty();
     while (node.isPresent()) {
       Optional<int[]> lastMove = node.get().getData().lastMove;
+      if(lastMove==passstep)
+      {
+    	  inseroritmove.add(-1);
+    	  inseroritmove.add(-1);    	  
+    	  boolean oisblack = node.get().getData().lastMoveColor.isBlack();
+          insertoriisblack.add(oisblack);
+          node = node.get().next();   
+      }
+      else {
       if (lastMove.isPresent()) {
         int[] n = lastMove.get();
         inseroritmove.add(n[0]);
@@ -1730,19 +2038,26 @@ public class Board implements LeelazListener {
         insertoriisblack.add(oisblack);
         node = node.get().next();
       }
+      }
     }
     return true;
   }
 
   public void quitinsertmode() {
     for (int j = 0; j < insertoriisblack.size(); j = j + 1) {
+    	if(inseroritmove.get(2 * j)!=-1) {
       placeinsert(
           inseroritmove.get(2 * j),
           inseroritmove.get(2 * j + 1),
           insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE,
           false);
     }
-
+    
+    else {
+    	passinsert(insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE,false, false);
+    }
+    	
+    }
     goToMoveNumber(insertoricurrentMoveNumber); // 需要重新获取插入后的步数
     inseroritmove.clear();
     insertoriisblack.clear();

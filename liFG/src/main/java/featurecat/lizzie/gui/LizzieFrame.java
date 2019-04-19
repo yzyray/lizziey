@@ -278,8 +278,8 @@ public class LizzieFrame extends JFrame {
 	  Avoidmoves.setVisible(true);
 	  }
   
-  public  void openChangeMoveDialog2( int movenumber) {	 
-	    ChangeMoveDialog2.Store(movenumber);
+  public  void openChangeMoveDialog2( int movenumber,boolean isthisbranch) {	 
+	    ChangeMoveDialog2.Store(movenumber,isthisbranch);
 	    ChangeMoveDialog2.setVisible(true);
 	  }
 
@@ -303,7 +303,7 @@ public class LizzieFrame extends JFrame {
     timer.schedule(new TimerTask(){  
     public void run(){      	
     	Lizzie.frame.showmenu(x,y);
-    this.cancel();}},150);
+    this.cancel();}},50);
     //System.out.println("弹出右键菜单");
   //  RightClickMenu.show(this, x, y);
   }
@@ -1353,7 +1353,15 @@ public class LizzieFrame extends JFrame {
   }
   
   
-  
+  public int getmovenumberinbranch(int x,int y)
+  {
+	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+	  if (boardCoordinates.isPresent()) {
+	      int[] coords = boardCoordinates.get();	
+	      return Lizzie.board.getmovenumberinbranch(Lizzie.board.getIndex(coords[0], coords[1]));	     
+	  }	  
+	  return -1;	  
+  }
   
   public void allow()
   {
@@ -1410,15 +1418,16 @@ public class LizzieFrame extends JFrame {
     
     }
       	
-    	    Timer timer=new Timer();
-    	    timer.schedule(new TimerTask(){  
-    	    public void run(){  
+    	 //   Timer timer=new Timer();
+    	  //  timer.schedule(new TimerTask(){  
+    	 //   public void run(){  
     	    	if(isshowrightmenu)
-    	    	isshowrightmenu=false;
+    	    	{isshowrightmenu=false;
     	    	 if (Lizzie.leelaz.isPondering()) {
     	    	      Lizzie.leelaz.ponder();
     	    	    }
-    	    this.cancel();}},180);
+    	    	}
+    	  //  this.cancel();}},180);
 	  
     //或许在void后需要改判断,或者改ponder
     mouseOverCoordinate = outOfBoundCoordinate;
