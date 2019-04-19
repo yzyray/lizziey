@@ -300,7 +300,9 @@ public class LizzieFrame extends JFrame {
     RightClickMenu.Store(x, y);   
     //RightClickMenu.setVisible(true);    
     RightClickMenu.show(this, x, y);
+    
   }
+
 
   public static void openAvoidMoveDialog() {
     AvoidMoveDialog avoidMoveDialog = new AvoidMoveDialog();

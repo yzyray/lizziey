@@ -230,7 +230,6 @@ public class RightClickMenu extends JPopupMenu {
 	  }
   }
   
-  
 
   private void avoid2() {	  
 	  Lizzie.frame.openAvoidmoves();
