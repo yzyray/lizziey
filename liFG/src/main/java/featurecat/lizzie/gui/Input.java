@@ -19,7 +19,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       if (!isinsertmode) {
         Lizzie.frame.onClicked(e.getX(), e.getY());
       } else {
-        JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+        Lizzie.frame.insertMove(e.getX(), e.getY());
       }
 
     } else if (e.getButton() == MouseEvent.BUTTON3) // right click

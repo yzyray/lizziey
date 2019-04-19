@@ -25,7 +25,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
-import javax.swing.text.InternationalFormatter;
 
 public class ChangeMoveDialog2 extends JDialog {
   public final ResourceBundle resourceBundle = ResourceBundle.getBundle("l10n.DisplayStrings");
@@ -37,8 +36,8 @@ public class ChangeMoveDialog2 extends JDialog {
   private int changeMoveNumber;
   private String changePosition;
   private static JTextField defaultText = new JTextField();
-  public  int movenumber=-1;
-  public boolean isthisbranch=true;
+  public int movenumber = -1;
+  public boolean isthisbranch = true;
 
   public ChangeMoveDialog2() {
     setTitle(resourceBundle.getString("LizzieChangeMove.title.config"));
@@ -105,41 +104,41 @@ public class ChangeMoveDialog2 extends JDialog {
         });
     group.add(rdoChangeCoord);
 
-//    rdoSwap = new JRadioButton(resourceBundle.getString("LizzieChangeMove.rdoSwap.text"));
-//    rdoSwap.setBounds(290, 91, 82, 23);
-//    buttonPane.add(rdoSwap);
-//    group.add(rdoSwap);
+    //    rdoSwap = new JRadioButton(resourceBundle.getString("LizzieChangeMove.rdoSwap.text"));
+    //    rdoSwap.setBounds(290, 91, 82, 23);
+    //    buttonPane.add(rdoSwap);
+    //    group.add(rdoSwap);
 
     rdoPass = new JRadioButton(resourceBundle.getString("LizzieChangeMove.rdoPass.text"));
     rdoPass.setBounds(189, 91, 83, 23);
     buttonPane.add(rdoPass);
     group.add(rdoPass);
 
-//    JLabel lblMoveNumber =
-//        new JLabel(resourceBundle.getString("LizzieChangeMove.title.moveNumber"));
-//    lblMoveNumber.setBounds(10, 67, 95, 14);
-//    buttonPane.add(lblMoveNumber);
+    //    JLabel lblMoveNumber =
+    //        new JLabel(resourceBundle.getString("LizzieChangeMove.title.moveNumber"));
+    //    lblMoveNumber.setBounds(10, 67, 95, 14);
+    //    buttonPane.add(lblMoveNumber);
 
-//    txtMoveNumber =
-//        new JFormattedTextField(
-//            new InternationalFormatter(nf) {
-//              protected DocumentFilter getDocumentFilter() {
-//                return filter;
-//              }
-//
-//              private DocumentFilter filter = new DigitOnlyFilter();
-//            });
-//    txtMoveNumber.setBounds(117, 64, 60, 20);
-//    buttonPane.add(txtMoveNumber);
-//    txtMoveNumber.setColumns(10);
+    //    txtMoveNumber =
+    //        new JFormattedTextField(
+    //            new InternationalFormatter(nf) {
+    //              protected DocumentFilter getDocumentFilter() {
+    //                return filter;
+    //              }
+    //
+    //              private DocumentFilter filter = new DigitOnlyFilter();
+    //            });
+    //    txtMoveNumber.setBounds(117, 64, 60, 20);
+    //    buttonPane.add(txtMoveNumber);
+    //    txtMoveNumber.setColumns(10);
 
-   //JLabel lblPrompt1 = new JLabel(resourceBundle.getString("LizzieChangeMove.lblPrompt1.text"));
-   // lblPrompt1.setBounds(10, 11, 398, 14);
-   // buttonPane.add(lblPrompt1);
+    // JLabel lblPrompt1 = new JLabel(resourceBundle.getString("LizzieChangeMove.lblPrompt1.text"));
+    // lblPrompt1.setBounds(10, 11, 398, 14);
+    // buttonPane.add(lblPrompt1);
 
     JLabel lblPrompt2 = new JLabel(resourceBundle.getString("LizzieChangeMove.lblPrompt4.text"));
     lblPrompt2.setBounds(30, 28, 398, 14);
-   buttonPane.add(lblPrompt2);
+    buttonPane.add(lblPrompt2);
 
     JLabel lblPrompt3 = new JLabel(resourceBundle.getString("LizzieChangeMove.lblPrompt3.text"));
     lblPrompt3.setBounds(10, 45, 349, 14);
@@ -149,25 +148,22 @@ public class ChangeMoveDialog2 extends JDialog {
   }
 
   private void applyChange() {
-	  //int mv=movenumber;	  
-	  if(isthisbranch)
-	  {
-    Lizzie.board.changeMove(movenumber, getChangeToType());
-	  }
-	  else
-	  {
-		  Lizzie.board.changeMove2(movenumber, getChangeToType());
-	  }
+    // int mv=movenumber;
+    if (isthisbranch) {
+      Lizzie.board.changeMove(movenumber, getChangeToType());
+    } else {
+      Lizzie.board.changeMove2(movenumber, getChangeToType());
+    }
   }
 
-//  private Integer txtFieldValue(JTextField txt) {
-//    if (txt.getText().trim().isEmpty()
-//        || txt.getText().trim().length() >= String.valueOf(Integer.MAX_VALUE).length()) {
-//      return 0;
-//    } else {
-//      return Integer.parseInt(txt.getText().trim());
-//    }
-//  }
+  //  private Integer txtFieldValue(JTextField txt) {
+  //    if (txt.getText().trim().isEmpty()
+  //        || txt.getText().trim().length() >= String.valueOf(Integer.MAX_VALUE).length()) {
+  //      return 0;
+  //    } else {
+  //      return Integer.parseInt(txt.getText().trim());
+  //    }
+  //  }
 
   private class DigitOnlyFilter extends DocumentFilter {
     @Override
@@ -192,20 +188,20 @@ public class ChangeMoveDialog2 extends JDialog {
   private String getChangeToType() {
     if (rdoPass.isSelected()) {
       return "pass";
-    }  else {
+    } else {
       return txtChangeCoord.getText().trim().toUpperCase();
     }
   }
-  
-  public  void Store(int x,boolean thisbranch) {
-	  movenumber = x;
-	  isthisbranch=thisbranch;
-	  }
+
+  public void Store(int x, boolean thisbranch) {
+    movenumber = x;
+    isthisbranch = thisbranch;
+  }
 
   private boolean checkMove() {
     boolean ret = true;
     changePosition = getChangeToType();
-    Color c = defaultText.getBackground();    
+    Color c = defaultText.getBackground();
     Optional<int[]> changeCoord = Board.asCoordinates(changePosition);
     if ("pass".equals(changePosition)
         || (changeCoord.isPresent() && Board.isValid(changeCoord.get()))) {

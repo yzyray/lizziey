@@ -16,9 +16,6 @@ import featurecat.lizzie.rules.BoardData;
 import featurecat.lizzie.rules.BoardHistoryNode;
 import featurecat.lizzie.rules.GIBParser;
 import featurecat.lizzie.rules.SGFParser;
-import featurecat.lizzie.rules.Stone;
-import featurecat.lizzie.gui.BoardRenderer;
-
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -33,6 +30,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -42,7 +40,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import java.util.Timer;
 
 /** The window used to display the game. */
 public class LizzieFrame extends JFrame {
@@ -95,7 +92,6 @@ public class LizzieFrame extends JFrame {
   public static Font uiFont;
   public static Font winrateFont;
   public boolean isshowrightmenu;
-  
 
   private final BufferStrategy bs;
 
@@ -272,47 +268,49 @@ public class LizzieFrame extends JFrame {
     ChangeMoveDialog changeMoveDialog = new ChangeMoveDialog();
     changeMoveDialog.setVisible(true);
   }
-  
+
   public static void openAvoidmoves() {
-	  Avoidmoves Avoidmoves = new Avoidmoves();
-	  Avoidmoves.setVisible(true);
-	  }
-  
-  public  void openChangeMoveDialog2( int movenumber,boolean isthisbranch) {	 
-	    ChangeMoveDialog2.Store(movenumber,isthisbranch);
-	    ChangeMoveDialog2.setVisible(true);
-	  }
+    Avoidmoves Avoidmoves = new Avoidmoves();
+    Avoidmoves.setVisible(true);
+  }
+
+  public void openChangeMoveDialog2(int movenumber, boolean isthisbranch) {
+    ChangeMoveDialog2.Store(movenumber, isthisbranch);
+    ChangeMoveDialog2.setVisible(true);
+  }
 
   public void openRightClickMenu(int x, int y) {
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
-    
+
     if (!boardCoordinates.isPresent()) {
-    	 
-    	      return;
+
+      return;
     }
     if (isPlayingAgainstLeelaz) {
-    	 
-    	      return;
+
+      return;
     }
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.sendCommand("name");
+    }
+    isshowrightmenu = true;
+    RightClickMenu.Store(x, y);
+    Timer timer = new Timer();
+    timer.schedule(
+        new TimerTask() {
+          public void run() {
+            Lizzie.frame.showmenu(x, y);
+            this.cancel();
           }
-    isshowrightmenu=true;
-    RightClickMenu.Store(x, y);       
-    Timer timer=new Timer();
-    timer.schedule(new TimerTask(){  
-    public void run(){      	
-    	Lizzie.frame.showmenu(x,y);
-    this.cancel();}},50);
-    //System.out.println("弹出右键菜单");
-  //  RightClickMenu.show(this, x, y);
+        },
+        50);
+    // System.out.println("弹出右键菜单");
+    //  RightClickMenu.show(this, x, y);
   }
 
- public void showmenu(int x, int y)
- {
-	 RightClickMenu.show(this,  x,  y);
-	
- }
+  public void showmenu(int x, int y) {
+    RightClickMenu.show(this, x, y);
+  }
 
   public static void openAvoidMoveDialog() {
     AvoidMoveDialog avoidMoveDialog = new AvoidMoveDialog();
@@ -1308,7 +1306,7 @@ public class LizzieFrame extends JFrame {
    */
   public void onClicked(int x, int y) {
     // Check for board click
-    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);    
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
     int moveNumber = winrateGraph.moveNumber(x, y);
 
     if (boardCoordinates.isPresent()) {
@@ -1341,63 +1339,56 @@ public class LizzieFrame extends JFrame {
     }
     repaint();
   }
-  
-  public int getmovenumber(int x,int y)
-  {
-	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
-	  if (boardCoordinates.isPresent()) {
-	      int[] coords = boardCoordinates.get();	
-	      return Lizzie.board.getmovenumber(coords);	     
-	  }	  
-	  return -1;	  
-  }
-  
-  
-  public int getmovenumberinbranch(int x,int y)
-  {
-	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
-	  if (boardCoordinates.isPresent()) {
-	      int[] coords = boardCoordinates.get();	
-	      return Lizzie.board.getmovenumberinbranch(Lizzie.board.getIndex(coords[0], coords[1]));	     
-	  }	  
-	  return -1;	  
-  }
-  
-  public void allow()
-  {
-	  
-	  //Lizzie.leelaz.analyzeAvoid();
-  }
-  
-  public String getstonecolor(int x, int y) {
-	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
-	  if (boardCoordinates.isPresent()) {
-		  int[] coords = boardCoordinates.get();
-		  return  Lizzie.board.getstonecolor(coords[0],coords[1]);
-	  }
-	  return "N";
-  }
-  
-  public String convertmousexy(int x, int y) {
-	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
-	  if (boardCoordinates.isPresent()) {
-		  int[] coords = boardCoordinates.get();
-		  return  Lizzie.board.convertCoordinatesToName(coords[0], coords[1]);
-	  }
-	  return "N";
-  }
-  
-  public void insertMove(int x, int y) {
-	    // Check for board click
-	    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
-	    if (boardCoordinates.isPresent()) {
-	      int[] coords = boardCoordinates.get();
-	      Lizzie.board.insertMove(coords);
-	    }
-	    repaint();
-	  }
-  
 
+  public int getmovenumber(int x, int y) {
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+    if (boardCoordinates.isPresent()) {
+      int[] coords = boardCoordinates.get();
+      return Lizzie.board.getmovenumber(coords);
+    }
+    return -1;
+  }
+
+  public int getmovenumberinbranch(int x, int y) {
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+    if (boardCoordinates.isPresent()) {
+      int[] coords = boardCoordinates.get();
+      return Lizzie.board.getmovenumberinbranch(Lizzie.board.getIndex(coords[0], coords[1]));
+    }
+    return -1;
+  }
+
+  public void allow() {
+
+    // Lizzie.leelaz.analyzeAvoid();
+  }
+
+  public boolean iscoordsempty(int x, int y) {
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+    if (boardCoordinates.isPresent()) {
+      return Lizzie.board.iscoordsempty(boardCoordinates.get()[0], boardCoordinates.get()[1]);
+    }
+    return false;
+  }
+
+  public String convertmousexy(int x, int y) {
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+    if (boardCoordinates.isPresent()) {
+      int[] coords = boardCoordinates.get();
+      return Lizzie.board.convertCoordinatesToName(coords[0], coords[1]);
+    }
+    return "N";
+  }
+
+  public void insertMove(int x, int y) {
+    // Check for board click
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+    if (boardCoordinates.isPresent()) {
+      int[] coords = boardCoordinates.get();
+      Lizzie.board.insertMove(coords);
+    }
+    repaint();
+  }
 
   private final Consumer<String> placeVariation =
       v -> Board.asCoordinates(v).ifPresent(c -> Lizzie.board.place(c[0], c[1]));
@@ -1412,24 +1403,23 @@ public class LizzieFrame extends JFrame {
   }
 
   public void onMouseMoved(int x, int y) {
-	  
+
     if (RightClickMenu.isVisible()) {
       return;
-    
     }
-      	
-    	 //   Timer timer=new Timer();
-    	  //  timer.schedule(new TimerTask(){  
-    	 //   public void run(){  
-    	    	if(isshowrightmenu)
-    	    	{isshowrightmenu=false;
-    	    	 if (Lizzie.leelaz.isPondering()) {
-    	    	      Lizzie.leelaz.ponder();
-    	    	    }
-    	    	}
-    	  //  this.cancel();}},180);
-	  
-    //或许在void后需要改判断,或者改ponder
+
+    //   Timer timer=new Timer();
+    //  timer.schedule(new TimerTask(){
+    //   public void run(){
+    if (isshowrightmenu) {
+      isshowrightmenu = false;
+      if (Lizzie.leelaz.isPondering()) {
+        Lizzie.leelaz.ponder();
+      }
+    }
+    //  this.cancel();}},180);
+
+    // 或许在void后需要改判断,或者改ponder
     mouseOverCoordinate = outOfBoundCoordinate;
     Optional<int[]> coords = boardRenderer.convertScreenToCoordinates(x, y);
     coords.filter(c -> !isMouseOver(c[0], c[1])).ifPresent(c -> repaint());

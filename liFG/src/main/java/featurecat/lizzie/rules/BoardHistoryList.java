@@ -71,8 +71,6 @@ public class BoardHistoryList {
 
     return Optional.of(head.getData());
   }
-  
-  
 
   public void toStart() {
     while (previous().isPresent()) ;
