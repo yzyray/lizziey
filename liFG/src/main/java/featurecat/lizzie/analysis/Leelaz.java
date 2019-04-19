@@ -245,115 +245,107 @@ public class Leelaz {
    *
    * @param line output line
    */
+  
   private void parseLine(String line) {
-    synchronized (this) {
-      if (printCommunication || gtpConsole) {
-        Lizzie.gtpConsole.addLine(line);
-      }
-      if (line.startsWith("komi=")) {
-        try {
-          dynamicKomi = Float.parseFloat(line.substring("komi=".length()).trim());
-        } catch (NumberFormatException nfe) {
-          dynamicKomi = Float.NaN;
-        }
-      } else if (line.startsWith("opp_komi=")) {
-        try {
-          dynamicOppKomi = Float.parseFloat(line.substring("opp_komi=".length()).trim());
-        } catch (NumberFormatException nfe) {
-          dynamicOppKomi = Float.NaN;
-        }
-      } else if (line.equals("\n")) {
-        // End of response
-      } else if (line.startsWith("info")) {
-        isLoaded = true;
-        // Clear switching prompt
-        switching = false;
-        // Display engine command in the title
-        Lizzie.frame.updateTitle();
-        if (isResponseUpToDate()) {
-          // This should not be stale data when the command number match
-          this.bestMoves = parseInfo(line.substring(5));
-          // notifyBestMoveListeners();
-          // if(!Lizzie.frame.isshowrightmenu) {
-          Lizzie.frame.repaint();
-          //  }
+	    synchronized (this) {
+	      if (printCommunication || gtpConsole) {
+	        Lizzie.gtpConsole.addLine(line);
+	      }
+	      if (line.startsWith("komi=")) {
+	        try {
+	          dynamicKomi = Float.parseFloat(line.substring("komi=".length()).trim());
+	        } catch (NumberFormatException nfe) {
+	          dynamicKomi = Float.NaN;
+	        }
+	      } else if (line.startsWith("opp_komi=")) {
+	        try {
+	          dynamicOppKomi = Float.parseFloat(line.substring("opp_komi=".length()).trim());
+	        } catch (NumberFormatException nfe) {
+	          dynamicOppKomi = Float.NaN;
+	        }
+	      } else if (line.equals("\n")) {
+	        // End of response
+	      } else if (line.startsWith("info")) {
+	        isLoaded = true;
+	        // Clear switching prompt
+	        switching = false;
+	        // Display engine command in the title
+	        Lizzie.frame.updateTitle();
+	        if (isResponseUpToDate()) {
+	          // This should not be stale data when the command number match
+	          this.bestMoves = parseInfo(line.substring(5));
+	          notifyBestMoveListeners();
+	          Lizzie.frame.repaint();
+	          // don't follow the maxAnalyzeTime rule if we are in analysis mode
+	          if (System.currentTimeMillis() - startPonderTime > maxAnalyzeTimeMillis
+	              && !Lizzie.board.inAnalysisMode()) {
+	            togglePonder();
+	          }
+	        }
+	      } else if (line.contains(" -> ")) {
+	        isLoaded = true;
+	        if (isResponseUpToDate()
+	            || isThinking
+	                && (!isPondering && Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand)) {
+	          bestMoves.add(MoveData.fromSummary(line));
+	          notifyBestMoveListeners();
+	          Lizzie.frame.repaint();
+	        }
+	      } else if (line.startsWith("play")) {
+	        // In lz-genmove_analyze
+	        if (Lizzie.frame.isPlayingAgainstLeelaz) {
+	          Lizzie.board.place(line.substring(5).trim());
+	        }
+	        isThinking = false;
 
-          // don't follow the maxAnalyzeTime rule if we are in analysis mode
-          if (System.currentTimeMillis() - startPonderTime > maxAnalyzeTimeMillis
-              && !Lizzie.board.inAnalysisMode()) {
-            togglePonder();
-          }
-        }
-      } else if (line.contains(" -> ")) {
-        isLoaded = true;
-        if (isResponseUpToDate()
-            || isThinking
-                && (!isPondering && Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand)) {
-          bestMoves.add(MoveData.fromSummary(line));
-          notifyBestMoveListeners();
-          Lizzie.frame.repaint();
-        }
-      } else if (line.startsWith("play")) {
-        // In lz-genmove_analyze
-        if (Lizzie.frame.isPlayingAgainstLeelaz) {
-          Lizzie.board.place(line.substring(5).trim());
-        }
-        isThinking = false;
+	      } else if (line.startsWith("=") || line.startsWith("?")) {
+	        if (printCommunication || gtpConsole) {
+	          System.out.print(line);
+	          Lizzie.gtpConsole.addLine(line);
+	        }
+	        String[] params = line.trim().split(" ");
+	        currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
 
-      } else if (line.startsWith("=") || line.startsWith("?")) {
-        if (printCommunication || gtpConsole) {
-          System.out.print(line);
-          Lizzie.gtpConsole.addLine(line);
-        }
-        String[] params = line.trim().split(" ");
-        currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
+	        trySendCommandFromQueue();
 
-        trySendCommandFromQueue();
+	        if (line.startsWith("?") || params.length == 1) return;
 
-        if (line.startsWith("?") || params.length == 1) return;
-
-        if (isSettingHandicap) {
-          bestMoves = new ArrayList<>();
-          for (int i = 1; i < params.length; i++) {
-            Lizzie.board
-                .asCoordinates(params[i])
-                .ifPresent(coords -> Lizzie.board.getHistory().setStone(coords, Stone.BLACK));
-          }
-          isSettingHandicap = false;
-        } else if (isThinking && !isPondering) {
-          if (Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand) {
-            Lizzie.board.place(params[1]);
-            togglePonder();
-            if (!isInputCommand) {
-              isPondering = false;
-            }
-            isThinking = false;
-            if (isInputCommand) {
-              isInputCommand = false;
-            }
-          }
-        } else if (isCheckingVersion) {
-          String[] ver = params[1].split("\\.");
-          int minor = Integer.parseInt(ver[1]);
-          try {
-            Lizzie.config.leelazConfig.putOpt("leela-version", minor);
-            Lizzie.config.save();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-          // Gtp support added in version 15
-          if (minor < 15) {
-            JOptionPane.showMessageDialog(
-                Lizzie.frame,
-                "Lizzie requires version 0.15 or later of Leela Zero for analysis (found "
-                    + params[1]
-                    + ")");
-          }
-          isCheckingVersion = false;
-        }
-      }
-    }
-  }
+	        if (isSettingHandicap) {
+	          bestMoves = new ArrayList<>();
+	          for (int i = 1; i < params.length; i++) {
+	            Lizzie.board
+	                .asCoordinates(params[i])
+	                .ifPresent(coords -> Lizzie.board.getHistory().setStone(coords, Stone.BLACK));
+	          }
+	          isSettingHandicap = false;
+	        } else if (isThinking && !isPondering) {
+	          if (Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand) {
+	            Lizzie.board.place(params[1]);
+	            togglePonder();
+	            if (!isInputCommand) {
+	              isPondering = false;
+	            }
+	            isThinking = false;
+	            if (isInputCommand) {
+	              isInputCommand = false;
+	            }
+	          }
+	        } else if (isCheckingVersion) {
+	          String[] ver = params[1].split("\\.");
+	          int minor = Integer.parseInt(ver[1]);
+	          // Gtp support added in version 15
+	          if (minor < 15) {
+	            JOptionPane.showMessageDialog(
+	                Lizzie.frame,
+	                "Lizzie requires version 0.15 or later of Leela Zero for analysis (found "
+	                    + params[1]
+	                    + ")");
+	          }
+	          isCheckingVersion = false;
+	        }
+	      }
+	    }
+	  }
 
   /**
    * Parse a move-data line of Leelaz output
