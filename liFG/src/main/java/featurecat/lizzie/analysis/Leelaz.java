@@ -275,9 +275,9 @@ public class Leelaz {
           // This should not be stale data when the command number match
           this.bestMoves = parseInfo(line.substring(5));
           //notifyBestMoveListeners();
-         // if(!Lizzie.frame.isshowrightmenu) {
+          //if(!Lizzie.frame.isshowrightmenu) {
         	  Lizzie.frame.repaint();
-         // }
+        //  }
           
           // don't follow the maxAnalyzeTime rule if we are in analysis mode
           if (System.currentTimeMillis() - startPonderTime > maxAnalyzeTimeMillis

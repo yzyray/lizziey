@@ -42,6 +42,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.util.Timer;
 
 /** The window used to display the game. */
 public class LizzieFrame extends JFrame {
@@ -94,6 +95,7 @@ public class LizzieFrame extends JFrame {
   public static Font uiFont;
   public static Font winrateFont;
   public boolean isshowrightmenu;
+  
 
   private final BufferStrategy bs;
 
@@ -283,26 +285,34 @@ public class LizzieFrame extends JFrame {
 
   public void openRightClickMenu(int x, int y) {
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
-    isshowrightmenu=true;
+    
     if (!boardCoordinates.isPresent()) {
-    	isshowrightmenu=false;
-      return;
+    	 
+    	      return;
     }
     if (isPlayingAgainstLeelaz) {
-    	isshowrightmenu=false;
-      return;
+    	 
+    	      return;
     }
-
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.sendCommand("name");
-    }
-   
-    RightClickMenu.Store(x, y);   
-    //RightClickMenu.setVisible(true);    
-    RightClickMenu.show(this, x, y);
-    
+          }
+    isshowrightmenu=true;
+    RightClickMenu.Store(x, y);       
+    Timer timer=new Timer();
+    timer.schedule(new TimerTask(){  
+    public void run(){      	
+    	Lizzie.frame.showmenu(x,y);
+    this.cancel();}},150);
+    //System.out.println("弹出右键菜单");
+  //  RightClickMenu.show(this, x, y);
   }
 
+ public void showmenu(int x, int y)
+ {
+	 RightClickMenu.show(this,  x,  y);
+	
+ }
 
   public static void openAvoidMoveDialog() {
     AvoidMoveDialog avoidMoveDialog = new AvoidMoveDialog();
@@ -1399,13 +1409,17 @@ public class LizzieFrame extends JFrame {
       return;
     
     }
-    if(isshowrightmenu)
-	  {
-    	 if (Lizzie.leelaz.isPondering()) {
-    	      Lizzie.leelaz.ponder();
-    	    }
-    	 isshowrightmenu=false;
-	  }
+      	
+    	    Timer timer=new Timer();
+    	    timer.schedule(new TimerTask(){  
+    	    public void run(){  
+    	    	if(isshowrightmenu)
+    	    	isshowrightmenu=false;
+    	    	 if (Lizzie.leelaz.isPondering()) {
+    	    	      Lizzie.leelaz.ponder();
+    	    	    }
+    	    this.cancel();}},180);
+	  
     //或许在void后需要改判断,或者改ponder
     mouseOverCoordinate = outOfBoundCoordinate;
     Optional<int[]> coords = boardRenderer.convertScreenToCoordinates(x, y);
