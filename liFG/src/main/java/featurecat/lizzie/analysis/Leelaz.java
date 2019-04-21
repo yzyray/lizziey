@@ -589,6 +589,9 @@ public class Leelaz {
         && currentmove >= featurecat.lizzie.gui.RightClickMenu.startmove) {
       featurecat.lizzie.gui.RightClickMenu.voidanalyze();
     } else {
+      featurecat.lizzie.gui.RightClickMenu.allowcoords = "";
+      featurecat.lizzie.gui.RightClickMenu.avoidcoords = "";
+      featurecat.lizzie.gui.RightClickMenu.move = 0;
       sendCommand(
           "lz-analyze "
               + Lizzie.config
@@ -609,6 +612,9 @@ public class Leelaz {
         && currentmove >= featurecat.lizzie.gui.RightClickMenu.startmove) {
       featurecat.lizzie.gui.RightClickMenu.voidanalyzeponder();
     } else {
+      featurecat.lizzie.gui.RightClickMenu.allowcoords = "";
+      featurecat.lizzie.gui.RightClickMenu.avoidcoords = "";
+      featurecat.lizzie.gui.RightClickMenu.move = 0;
       sendCommand(
           "lz-analyze "
               + Lizzie.config
@@ -650,6 +656,10 @@ public class Leelaz {
 
   public boolean isPondering() {
     return isPondering;
+  }
+
+  public void notPondering() {
+    isPondering = false;
   }
 
   public class WinrateStats {

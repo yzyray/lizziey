@@ -32,7 +32,7 @@ public class Avoidmoves extends JDialog {
   public Avoidmoves() {
     setType(Type.POPUP);
     setTitle("输入强制不分析的持续手数");
-    setBounds(0, 0, 240, 150);
+    setBounds(0, 0, 340, 150);
     getContentPane().setLayout(new BorderLayout());
     JPanel buttonPane = new JPanel();
     getContentPane().add(buttonPane, BorderLayout.CENTER);
@@ -55,7 +55,7 @@ public class Avoidmoves extends JDialog {
     nf.setGroupingUsed(false);
 
     JLabel lblChangeTo = new JLabel("设置往后多少手内不分析：");
-    lblChangeTo.setBounds(45, 34, 80, 20);
+    lblChangeTo.setBounds(45, 34, 180, 20);
     buttonPane.add(lblChangeTo);
     lblChangeTo.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -68,7 +68,7 @@ public class Avoidmoves extends JDialog {
 
               private DocumentFilter filter = new DigitOnlyFilter();
             });
-    txtMoveNumber.setBounds(110, 34, 60, 20);
+    txtMoveNumber.setBounds(210, 34, 60, 20);
     buttonPane.add(txtMoveNumber);
     txtMoveNumber.setColumns(10);
 
@@ -91,7 +91,6 @@ public class Avoidmoves extends JDialog {
     featurecat.lizzie.gui.RightClickMenu.startmove = Lizzie.board.getcurrentmovenumber();
     featurecat.lizzie.gui.RightClickMenu.move =
         changeMoveNumber + Lizzie.board.getcurrentmovenumber();
-    ;
     featurecat.lizzie.gui.RightClickMenu.voidanalyze();
   }
 

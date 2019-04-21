@@ -21,10 +21,11 @@ public class RightClickMenu extends JPopupMenu {
   private JMenuItem avoid2;
   private static JMenuItem cancelavoid;
   private BoardRenderer boardRenderer;
-  public String allowcoords = "";
+  public static String allowcoords = "";
   public static String avoidcoords = "";
   public static int move = 0;
   public static int startmove = 0;
+  public static boolean isforcing = false;
 
   public RightClickMenu() {
     insertmode = new JMenuItem("进入插入棋子模式");
@@ -180,11 +181,13 @@ public class RightClickMenu extends JPopupMenu {
 
   private void allow() {
     if (Lizzie.frame.iscoordsempty(mousex, mousey)) {
-      if (allowcoords == "") {
+      if (allowcoords != "") {
+        allowcoords = allowcoords + "," + Lizzie.frame.convertmousexy(mousex, mousey);
+      } else {
         allowcoords = Lizzie.frame.convertmousexy(mousex, mousey);
       }
-      allowcoords = allowcoords + "," + Lizzie.frame.convertmousexy(mousex, mousey);
     }
+    isforcing = true;
     Lizzie.leelaz.analyzeAvoid("allow", Lizzie.board.getcurrentturn(), allowcoords, 1);
     Lizzie.frame.isshowrightmenu = false;
   }
@@ -192,30 +195,39 @@ public class RightClickMenu extends JPopupMenu {
   public static void avoid() {
 
     if (Lizzie.frame.iscoordsempty(mousex, mousey)) {
-      if (avoidcoords == "") {
+      if (avoidcoords != "") {
+        avoidcoords = avoidcoords + "," + Lizzie.frame.convertmousexy(mousex, mousey);
+      } else {
         avoidcoords = Lizzie.frame.convertmousexy(mousex, mousey);
       }
-      avoidcoords = avoidcoords + "," + Lizzie.frame.convertmousexy(mousex, mousey);
     }
     voidanalyze();
     Lizzie.frame.isshowrightmenu = false;
   }
 
   public static void voidanalyzeponder() {
-
+    if (avoidcoords == "") {
+      avoidcoords = "A0";
+    }
     // String color=Lizzie.frame.getstonecolor(mousex,mousey);
-    Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturnponder(), avoidcoords, 99);
+    isforcing = true;
+    Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturnponder(), avoidcoords, 30);
     System.out.println("ana ponder");
   }
 
   public static void voidanalyze() {
 
     // String color=Lizzie.frame.getstonecolor(mousex,mousey);
-    Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturn(), avoidcoords, 99);
+    if (avoidcoords == "") {
+      avoidcoords = "A0";
+    }
+    isforcing = true;
+    Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturn(), avoidcoords, 30);
     System.out.println("ana ");
   }
 
   private void avoid2() {
+    Lizzie.leelaz.notPondering();
     Lizzie.frame.openAvoidmoves();
   }
 
