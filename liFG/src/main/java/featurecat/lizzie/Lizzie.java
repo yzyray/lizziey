@@ -1,5 +1,6 @@
 package featurecat.lizzie;
 
+
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.gui.GtpConsolePane;
 import featurecat.lizzie.gui.LizzieFrame;

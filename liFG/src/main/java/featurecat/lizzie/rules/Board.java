@@ -27,7 +27,7 @@ import org.json.JSONException;
 public class Board implements LeelazListener {
   public static int boardSize = Lizzie.config.config.getJSONObject("ui").optInt("board-size", 19);
   public int insertoricurrentMoveNumber = 0;
-  public ArrayList<Integer> inseroritmove = new ArrayList<Integer>();
+  public ArrayList<Integer> insertorimove = new ArrayList<Integer>();
   public ArrayList<Boolean> insertoriisblack = new ArrayList<Boolean>();
   public int[] mvnumber = new int[361];
 
@@ -1735,16 +1735,16 @@ public class Board implements LeelazListener {
     while (node.isPresent()) {
       Optional<int[]> lastMove = node.get().getData().lastMove;
       if (lastMove == passstep) {
-        inseroritmove.add(-1);
-        inseroritmove.add(-1);
+        insertorimove.add(-1);
+        insertorimove.add(-1);
         boolean oisblack = node.get().getData().lastMoveColor.isBlack();
         insertoriisblack.add(oisblack);
         node = node.get().next();
       } else {
         if (lastMove.isPresent()) {
           int[] n = lastMove.get();
-          inseroritmove.add(n[0]);
-          inseroritmove.add(n[1]);
+          insertorimove.add(n[0]);
+          insertorimove.add(n[1]);
           boolean oisblack = node.get().getData().lastMoveColor.isBlack();
           insertoriisblack.add(oisblack);
           node = node.get().next();
@@ -1768,17 +1768,17 @@ public class Board implements LeelazListener {
     }
 
     for (int j = 0; j < insertoriisblack.size(); j = j + 1) {
-      if (inseroritmove.get(2 * j) != -1) {
+      if (insertorimove.get(2 * j) != -1) {
         placeinsert(
-            inseroritmove.get(2 * j),
-            inseroritmove.get(2 * j + 1),
+        		insertorimove.get(2 * j),
+        		insertorimove.get(2 * j + 1),
             insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE,
             false);
       } else {
         passinsert(insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE, false, false);
       }
     }
-    inseroritmove.clear();
+    insertorimove.clear();
     insertoriisblack.clear();
     //	    Optional<BoardHistoryNode> node = relink;
     //	    while (node.isPresent()) {
@@ -1996,10 +1996,10 @@ public class Board implements LeelazListener {
     insertoricurrentMoveNumber = history.getMoveNumber();
     int movenum = history.getMoveNumber();
     Optional<BoardHistoryNode> changeNode = history.getCurrentHistoryNode().next();
-    if (!changeNode.isPresent()) {
+   // if (!changeNode.isPresent()) {
       // JOptionPane.showMessageDialog(null, "已经是当前分支最后一步,不能插入棋子");
       // return false;
-    }
+  //  }
     featurecat.lizzie.gui.Input.isinsertmode = true;
     Optional<BoardHistoryNode> relink = changeNode;
     Optional<BoardHistoryNode> node = relink;
@@ -2007,16 +2007,16 @@ public class Board implements LeelazListener {
     while (node.isPresent()) {
       Optional<int[]> lastMove = node.get().getData().lastMove;
       if (lastMove == passstep) {
-        inseroritmove.add(-1);
-        inseroritmove.add(-1);
+    	  insertorimove.add(-1);
+    	  insertorimove.add(-1);
         boolean oisblack = node.get().getData().lastMoveColor.isBlack();
         insertoriisblack.add(oisblack);
         node = node.get().next();
       } else {
         if (lastMove.isPresent()) {
           int[] n = lastMove.get();
-          inseroritmove.add(n[0]);
-          inseroritmove.add(n[1]);
+          insertorimove.add(n[0]);
+          insertorimove.add(n[1]);
           boolean oisblack = node.get().getData().lastMoveColor.isBlack();
           insertoriisblack.add(oisblack);
           node = node.get().next();
@@ -2028,10 +2028,10 @@ public class Board implements LeelazListener {
 
   public void quitinsertmode() {
     for (int j = 0; j < insertoriisblack.size(); j = j + 1) {
-      if (inseroritmove.get(2 * j) != -1) {
+      if (insertorimove.get(2 * j) != -1) {
         placeinsert(
-            inseroritmove.get(2 * j),
-            inseroritmove.get(2 * j + 1),
+        		insertorimove.get(2 * j),
+        		insertorimove.get(2 * j + 1),
             insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE,
             false);
       } else {
@@ -2039,7 +2039,7 @@ public class Board implements LeelazListener {
       }
     }
     goToMoveNumber(insertoricurrentMoveNumber); // 需要重新获取插入后的步数
-    inseroritmove.clear();
+    insertorimove.clear();
     insertoriisblack.clear();
     featurecat.lizzie.gui.Input.isinsertmode = false;
   }

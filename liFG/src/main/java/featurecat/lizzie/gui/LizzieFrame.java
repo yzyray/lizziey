@@ -408,8 +408,7 @@ public class LizzieFrame extends JFrame {
   public static void openFile() {
     FileNameExtensionFilter filter = new FileNameExtensionFilter("*.sgf or *.gib", "SGF", "GIB");
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
-    JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
-
+    JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));   
     chooser.setFileFilter(filter);
     chooser.setMultiSelectionEnabled(false);
     int result = chooser.showOpenDialog(null);
