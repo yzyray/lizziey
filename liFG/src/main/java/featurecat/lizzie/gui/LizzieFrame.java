@@ -800,12 +800,14 @@ public class LizzieFrame extends JFrame {
           }
           if (Lizzie.config.showComment) {
             drawComment(g, cx, cy, cw, ch);
+        	  
           }
         }
-
+//更改布局为大棋盘,一整条分支列表,小棋盘,评论放在左下,做到这里
         if (Lizzie.config.showSubBoard) {
           try {
             subBoardRenderer.setLocation(subBoardX, subBoardY);
+        //	  subBoardRenderer.setLocation( cx,cy);
             subBoardRenderer.setBoardLength(subBoardLength);
             subBoardRenderer.draw(g);
           } catch (Exception e) {

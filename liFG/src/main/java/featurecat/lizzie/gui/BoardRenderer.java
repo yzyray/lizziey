@@ -924,6 +924,8 @@ public class BoardRenderer {
       }
     }
   }
+  
+  
 
   /** Get scaled stone, if cached then return cached */
   private BufferedImage getScaleStone(boolean isBlack, int size) {
