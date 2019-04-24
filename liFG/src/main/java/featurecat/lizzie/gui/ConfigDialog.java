@@ -727,12 +727,11 @@ public class ConfigDialog extends JDialog {
   }
 
   private void setShowLcbWinrate() {
-    int leelaversion = leelazConfig.getInt("leela-version");
-    if (leelaversion < 17) {
+    if (Lizzie.config.leelaversion < 17) {
       rdoLcb.setEnabled(false);
       rdoWinrate.setEnabled(false);
     } else {
-      if (Lizzie.config.config.getJSONObject("leelaz").getBoolean("show-lcb-winrate")) {
+      if (Lizzie.config.showlcbwinrate) {
         rdoLcb.setSelected(true);
       } else {
         rdoWinrate.setSelected(true);
@@ -740,14 +739,15 @@ public class ConfigDialog extends JDialog {
     }
   }
 
-  private boolean getShowLcbWinrate() {
-
-    if (rdoLcb.isSelected()) {
-      return true;
-    }
-    if (rdoWinrate.isSelected()) {
-      return false;
-    }
+  private boolean getShowLcbWinrate() {	  
+	  if (rdoLcb.isSelected()) {
+	    	Lizzie.config.showlcbwinrate=true;
+	      return true;
+	    }
+	    if (rdoWinrate.isSelected()) {
+	    	Lizzie.config.showlcbwinrate=false;
+	      return false;
+	    }
     return true;
   }
 

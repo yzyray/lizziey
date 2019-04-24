@@ -33,6 +33,7 @@ public class Config {
   public double replayBranchIntervalSeconds = 1.0;
   public boolean showCoordinates = false;
   public boolean colorByWinrateInsteadOfVisits = false;
+  public boolean showlcbwinrate=true;
 
   public boolean showStatus = true;
   public boolean showBranch = true;
@@ -53,6 +54,7 @@ public class Config {
 
   public Theme theme;
   public float winrateStrokeWidth = 3;
+  public int leelaversion = 17;
   public int minimumBlunderBarWidth = 3;
   public int shadowSize = 100;
   public String fontName = null;
@@ -188,6 +190,7 @@ public class Config {
     winrateStrokeWidth = theme.winrateStrokeWidth();
     minimumBlunderBarWidth = theme.minimumBlunderBarWidth();
     shadowSize = theme.shadowSize();
+    showlcbwinrate = config.getJSONObject("leelaz").getBoolean("show-lcb-winrate");
 
     if (theme.fontName() != null) fontName = theme.fontName();
 
