@@ -34,6 +34,7 @@ public class Board implements LeelazListener {
   private static final String alphabet = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
 
   private BoardHistoryList history;
+  private BoardHistoryList a;
   private Stone[] capturedStones;
   private boolean scoreMode;
   private boolean analysisMode;
@@ -158,6 +159,17 @@ public class Board implements LeelazListener {
   public static boolean isValid(int[] c) {
     return c != null && c.length == 2 && isValid(c[0], c[1]);
   }
+  
+  
+  public void test() {
+	  System.out.println("测试board");	  
+	  a=history;
+	  }
+  
+  public void test2() {
+	  System.out.println("测试board2");	  
+	  history=a;
+	  }
 
   /**
    * Open board again when the SZ property is setup by sgf

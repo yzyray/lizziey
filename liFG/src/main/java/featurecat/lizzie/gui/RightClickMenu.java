@@ -20,6 +20,8 @@ public class RightClickMenu extends JPopupMenu {
   private JMenuItem avoid;
   private JMenuItem avoid2;
   private static JMenuItem cancelavoid;
+  private static JMenuItem test;
+  private static JMenuItem test2;
   private BoardRenderer boardRenderer;
   public static String allowcoords = "";
   public static String avoidcoords = "";
@@ -38,6 +40,8 @@ public class RightClickMenu extends JPopupMenu {
     avoid = new JMenuItem("不分析此点(强制)");
     avoid2 = new JMenuItem("设置不分析持续手数");
     cancelavoid = new JMenuItem("清除分析设置");
+    test=new JMenuItem("测试保存棋盘状态");
+    test2=new JMenuItem("测试恢复棋盘状态");
 
     // this.add(addblack);
     // this.add(addwhite);
@@ -47,7 +51,25 @@ public class RightClickMenu extends JPopupMenu {
     this.add(cancelavoid);
     this.add(deleteone);
     this.add(insertmode);
+    this.add(test);
+    this.add(test2);
 
+    
+    test.addActionListener( new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            System.out.println("测试");
+            test();
+          }
+        });
+    
+    test2.addActionListener( new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          System.out.println("测试2");
+          test2();
+        }
+      });
     // Lizzie.frame.RightClickMenu.show(invoker, x, y);
     insertmode.addActionListener(
         new ActionListener() {
@@ -131,6 +153,17 @@ public class RightClickMenu extends JPopupMenu {
         });
   }
 
+  
+  private void test() {
+
+	    Lizzie.board.test();
+	  }
+  
+  private void test2() {
+
+	    Lizzie.board.test2();
+	  }
+  
   private void insertmode() {
 
     boolean isinsertmode;

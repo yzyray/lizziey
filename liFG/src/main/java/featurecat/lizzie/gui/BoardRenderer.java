@@ -473,7 +473,9 @@ public class BoardRenderer {
           // Use a solid circle instead of
           fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
         } else {
-          drawCircle(g, stoneX, stoneY, lastMoveMarkerRadius);
+        	fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
+         // drawCircle(g, stoneX, stoneY, lastMoveMarkerRadius);
+        	//需要恢复的
         }
       } else if (board.getData().moveNumber != 0 && !board.inScoreMode()) {
         g.setColor(
@@ -901,8 +903,10 @@ public class BoardRenderer {
     if (color.isBlack() || color.isWhite()) {
       boolean isBlack = color.isBlack();
       boolean isGhost = (color == Stone.BLACK_GHOST || color == Stone.WHITE_GHOST);
-      if (uiConfig.getBoolean("fancy-stones")) {
-        drawShadow(gShadow, centerX, centerY, isGhost);
+     // if (uiConfig.getBoolean("fancy-stones")) {
+      //需要恢复的
+    	  if (false) {
+        //drawShadow(gShadow, centerX, centerY, isGhost);
         int size = stoneRadius * 2 + 1;
         g.drawImage(
             getScaleStone(isBlack, size),
@@ -912,7 +916,8 @@ public class BoardRenderer {
             size,
             null);
       } else {
-        drawShadow(gShadow, centerX, centerY, true);
+    	  //需要恢复的
+        //drawShadow(gShadow, centerX, centerY, true);
         Color blackColor = isGhost ? new Color(0, 0, 0) : Color.BLACK;
         Color whiteColor = isGhost ? new Color(255, 255, 255) : Color.WHITE;
         g.setColor(isBlack ? blackColor : whiteColor);
