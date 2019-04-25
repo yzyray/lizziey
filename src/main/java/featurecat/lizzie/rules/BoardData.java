@@ -11,8 +11,7 @@ public class BoardData {
   public Optional<int[]> lastMove;
   public int[] moveNumberList;
   public boolean blackToPlay;
-  public boolean dummy;
-  public static boolean isChanged=true;  
+  public boolean dummy; 
   //added for change bestmoves when playouts is not increased
 
   public Stone lastMoveColor;
@@ -154,15 +153,15 @@ public class BoardData {
   }
 
   public void tryToSetBestMoves(List<MoveData> moves) {
-    // MoveData.getPlayouts(moves) > playouts
-    if (MoveData.getPlayouts(moves) > playouts || isChanged) {
-	  //暂时测试改一下
-	 // if (MoveData.getPlayouts(moves) > playouts || true) {
+    // MoveData.getPlayouts(moves) > playouts	
+    //if (MoveData.getPlayouts(moves) > playouts ) {
+	  //暂时测试改一下    	
+	
     	//added for change bestmoves when playouts is not increased
       bestMoves = moves;
       setPlayouts(MoveData.getPlayouts(moves));
       winrate = getWinrateFromBestMoves(moves);
-    }
+   // }
   }
 
   public static double getWinrateFromBestMoves(List<MoveData> bestMoves) {

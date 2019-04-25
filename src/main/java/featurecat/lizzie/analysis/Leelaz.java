@@ -211,7 +211,7 @@ public class Leelaz {
     outputStream = new BufferedOutputStream(process.getOutputStream());
   }
 
-  public static List<MoveData> parseInfo(String line) {
+  public static List<MoveData> parseInfo(String line) {	  
     List<MoveData> bestMoves = new ArrayList<>();
     String[] variations = line.split(" info ");
     int k = Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
@@ -221,7 +221,7 @@ public class Leelaz {
         k = k - 1;
         if (k < 1) break;
       }
-    }
+    }  
     Lizzie.board.getData().tryToSetBestMoves(bestMoves);
     return bestMoves;
   }
@@ -549,16 +549,16 @@ public class Leelaz {
   }
 
   public void analyzeAvoid(String type, String color, String coordList, int untilMove) {
-    BoardData.isChanged = true;
+  
     // added for change bestmoves immediatly not wait until totalplayouts is bigger than previous
     // analyze result
     analyzeAvoid(
         String.format("%s %s %s %d", type, color, coordList, untilMove <= 0 ? 1 : untilMove));
-    BoardData.isChanged = true;
+   
   }
 
   public void analyzeAvoid(String parameters) {
-    BoardData.isChanged = true;
+   
     // added for change bestmoves immediatly not wait until totalplayouts is bigger than previous
     // analyze result
     bestMoves = new ArrayList<>();

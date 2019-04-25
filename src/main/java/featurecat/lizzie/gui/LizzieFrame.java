@@ -1418,14 +1418,10 @@ public class LizzieFrame extends JFrame {
     //  timer.schedule(new TimerTask(){
     //   public void run(){
     if (isshowrightmenu) {
-      isshowrightmenu = false;
-      if (Lizzie.leelaz.isPondering()) {
-        Lizzie.leelaz.ponder();
-      }
+      isshowrightmenu = false;      
     }
     //  this.cancel();}},180);
 
-    // 或许在void后需要改判断,或者改ponder
     mouseOverCoordinate = outOfBoundCoordinate;
     Optional<int[]> coords = boardRenderer.convertScreenToCoordinates(x, y);
     coords.filter(c -> !isMouseOver(c[0], c[1])).ifPresent(c -> repaint());

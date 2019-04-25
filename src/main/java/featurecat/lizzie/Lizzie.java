@@ -90,7 +90,7 @@ public class Lizzie {
    * @param index engine index
    */
   public static void switchEngine(int index) {
-    BoardData.isChanged = true;
+    //BoardData.isChanged = true;
     // added for change bestmoves immediatly not wait until totalplayouts>last engine's
     // totalplayouts
     String commandLine;

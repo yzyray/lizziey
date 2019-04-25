@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 public class RightClickMenu extends JPopupMenu {
   public static int mousex;
@@ -32,6 +34,25 @@ public class RightClickMenu extends JPopupMenu {
   public static boolean isforcing = false;
 
   public RightClickMenu() {
+	  
+	  PopupMenuListener listener =  new PopupMenuListener() {	     
+	      public void popupMenuCanceled(PopupMenuEvent e) {	    	  
+	      }
+	      
+	      public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+	    	  if (Lizzie.leelaz.isPondering()) {
+	  	        Lizzie.leelaz.ponder();
+	  	      }
+	    	  Lizzie.frame.isshowrightmenu=false;
+	      }
+
+	      public void popupMenuWillBecomeVisible(PopupMenuEvent e) {	   
+	    	 
+	      }
+	    };
+	    
+	this.addPopupMenuListener(listener);
+	  
     insertmode = new JMenuItem("进入插入棋子模式");
     quitinsert = new JMenuItem("退出插入棋子模式");
     addblack = new JMenuItem("插入黑子");
