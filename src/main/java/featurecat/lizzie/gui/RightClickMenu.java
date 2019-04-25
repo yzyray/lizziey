@@ -1,6 +1,7 @@
 package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.gui.Input;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
@@ -22,6 +23,7 @@ public class RightClickMenu extends JPopupMenu {
   private static JMenuItem cancelavoid;
   private static JMenuItem test;
   private static JMenuItem test2;
+  private static JMenuItem test3;
   private BoardRenderer boardRenderer;
   public static String allowcoords = "";
   public static String avoidcoords = "";
@@ -42,7 +44,7 @@ public class RightClickMenu extends JPopupMenu {
     cancelavoid = new JMenuItem("清除分析设置");
     test=new JMenuItem("测试保存棋盘状态");
     test2=new JMenuItem("测试恢复棋盘状态");
-
+    test3=new JMenuItem("测试进入拖动模式");
     // this.add(addblack);
     // this.add(addwhite);
     this.add(allow);
@@ -53,12 +55,13 @@ public class RightClickMenu extends JPopupMenu {
     this.add(insertmode);
     this.add(test);
     this.add(test2);
+    this.add(test3);
 
     
     test.addActionListener( new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
-            System.out.println("测试");
+            System.out.println("保存棋盘状态");
             test();
           }
         });
@@ -66,8 +69,15 @@ public class RightClickMenu extends JPopupMenu {
     test2.addActionListener( new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          System.out.println("测试2");
+          System.out.println("恢复棋盘状态");
           test2();
+        }
+      });
+    test3.addActionListener( new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          System.out.println("进入拖动模式");
+          test3();
         }
       });
     // Lizzie.frame.RightClickMenu.show(invoker, x, y);
@@ -157,12 +167,20 @@ public class RightClickMenu extends JPopupMenu {
   private void test() {
 
 	    Lizzie.board.test();
+	    //保存棋盘状态
 	  }
   
   private void test2() {
 
 	    Lizzie.board.test2();
+	    //恢复棋盘状态
 	  }
+  
+  private void test3() {
+	  featurecat.lizzie.gui.Input.Draggedmode=true;
+	    
+	  }
+
   
   private void insertmode() {
 

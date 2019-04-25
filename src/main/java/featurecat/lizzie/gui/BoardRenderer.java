@@ -50,6 +50,7 @@ public class BoardRenderer {
   private int cachedX, cachedY;
 
   private BufferedImage cachedStonesImage = emptyImage;
+  private BufferedImage cachedStonesImagedraged = emptyImage;
   private BufferedImage cachedBoardImage = emptyImage;
   private BufferedImage cachedWallpaperImage = emptyImage;
   private BufferedImage cachedStonesShadowImage = emptyImage;
@@ -128,6 +129,8 @@ public class BoardRenderer {
 
     //        timer.print();
   }
+
+  
 
   /**
    * Return the best move of Leelaz's suggestions
@@ -283,6 +286,21 @@ public class BoardRenderer {
       int centerY = y + scaledMargin + squareLength * gridDistance;
       fillCircle(g, centerX, centerY, starPointRadius);
     }
+  }
+  
+  
+  public void drawmovestone(int x ,int y,Stone stone) {
+	  cachedStonesImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+	  cachedStonesShadowImage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+	  Graphics2D g = cachedStonesImagedraged.createGraphics();
+	  g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+	  g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+	  Graphics2D gShadow = cachedStonesShadowImage.createGraphics();
+	  gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+	  gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+	  int stoneX = scaledMargin + squareLength * x;
+      int stoneY = scaledMargin + squareLength * y;
+	  drawStone(g, gShadow, stoneX, stoneY, stone, x, y);
   }
 
   /** Draw the stones. We cache the image for a performance boost. */
@@ -446,6 +464,7 @@ public class BoardRenderer {
       g.drawImage(branchStonesShadowImage, x, y, null);
     }
     g.drawImage(cachedStonesImage, x, y, null);
+    g.drawImage(cachedStonesImagedraged, x, y, null);
     if (Lizzie.config.showBranchNow()) {
       g.drawImage(branchStonesImage, x, y, null);
     }
@@ -930,6 +949,7 @@ public class BoardRenderer {
     }
   }
   
+
   
 
   /** Get scaled stone, if cached then return cached */

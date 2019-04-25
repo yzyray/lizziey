@@ -3,6 +3,7 @@ package featurecat.lizzie.rules;
 import static java.lang.Math.min;
 import static java.util.Collections.singletonList;
 
+import featurecat.lizzie.rules.Movelist;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.analysis.LeelazListener;
@@ -30,11 +31,12 @@ public class Board implements LeelazListener {
   public ArrayList<Integer> insertorimove = new ArrayList<Integer>();
   public ArrayList<Boolean> insertoriisblack = new ArrayList<Boolean>();
   public int[] mvnumber = new int[361];
+  public ArrayList<Movelist> tempmovelist;
 
   private static final String alphabet = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
 
   private BoardHistoryList history;
-  private BoardHistoryList a;
+  private BoardHistoryList temphistory;
   private Stone[] capturedStones;
   private boolean scoreMode;
   private boolean analysisMode;
@@ -162,13 +164,15 @@ public class Board implements LeelazListener {
   
   
   public void test() {
-	  System.out.println("测试board");	  
-	  a=history;
+	  System.out.println("测试board");	
+	  tempmovelist=getmovelist();
+	  temphistory=history;
 	  }
   
   public void test2() {
 	  System.out.println("测试board2");	  
-	  history=a;
+	  history=temphistory;
+	  setmovelist(tempmovelist);
 	  }
 
   /**
@@ -327,6 +331,62 @@ public class Board implements LeelazListener {
    * @param color the type of pass
    * @param newBranch add a new branch
    */
+  
+  public void setmovelist(ArrayList<Movelist> movelist) {
+	  while (previousMove());
+		int lenth= movelist.size();
+		  for(int i=1;i<lenth;i++)
+		  {
+			  Movelist move=movelist.get(lenth-i-1);
+			  if(!move.ispass)
+			  placeinsert(move.x,move.y,move.isblack? Stone.BLACK:Stone.WHITE);
+			  else {
+				  passinsert(move.isblack? Stone.BLACK:Stone.WHITE,false);
+			  }
+		  }
+	 // placeinsert(int x, int y, Stone color);
+	  	  
+  }
+  
+  public ArrayList<Movelist> getmovelist() {
+	  ArrayList<Movelist> movelist = new ArrayList<Movelist>();
+	  
+	  Optional<BoardHistoryNode> node = history.getCurrentHistoryNode().now();
+	    Optional<int[]> passstep = Optional.empty();
+	    while (node.isPresent()) {
+	      Optional<int[]> lastMove = node.get().getData().lastMove;
+	      if (lastMove == passstep) {
+	    	  Movelist move=new Movelist();
+	    	  move.ispass=true;
+	    	  move.isblack=node.get().getData().lastMoveColor.isBlack();
+	    	  movelist.add(move);
+	    	  node = node.get().previous();
+	      } else {
+	        if (lastMove.isPresent()) {
+	        	
+	          int[] n = lastMove.get();
+	          Movelist move=new Movelist();
+	          move.x=n[0];
+	          move.y=n[1];
+	          move.ispass=false;
+	          move.isblack=node.get().getData().lastMoveColor.isBlack();
+	          move.movenum=node.get().getData().moveNumber;
+	          movelist.add(move);
+	          node = node.get().previous();
+	        }
+	      }
+	    }
+	    return movelist;
+
+  }
+  
+  
+  public Stone getstonestat(int coords[])
+  {
+	  Stone stones[] = history.getData().stones.clone();
+	  return stones[getIndex(coords[0], coords[1])];	
+  }
+  
   public int getmovenumber(int coords[]) {
     Stone stones[] = history.getData().stones.clone();
     if (!stones[getIndex(coords[0], coords[1])].isBlack()
@@ -336,7 +396,7 @@ public class Board implements LeelazListener {
     return mvnumber[getIndex(coords[0], coords[1])];
   }
 
-  public void passinsert(Stone color, boolean newBranch, boolean dummy) {
+  public void passinsert(Stone color, boolean newBranch) {
     synchronized (this) {
 
       // check to see if this move is being replayed in history
@@ -375,8 +435,7 @@ public class Board implements LeelazListener {
               history.getData().blackCaptures,
               history.getData().whiteCaptures,
               0,
-              0);
-      newState.dummy = dummy;
+              0);      
       // update leelaz with pass
       if (!Lizzie.leelaz.isInputCommand) Lizzie.leelaz.playMove(color, "pass");
 
@@ -580,7 +639,7 @@ public class Board implements LeelazListener {
     }
   }
 
-  public void placeinsert(int x, int y, Stone color, boolean changeMove) {
+  public void placeinsert(int x, int y, Stone color) {
     synchronized (this) {
       if (!isValid(x, y) || (history.getStones()[getIndex(x, y)] != Stone.EMPTY)) return;
 
@@ -1765,7 +1824,7 @@ public class Board implements LeelazListener {
     }
 
     if (coords != null && Board.isValid(coords[0], coords[1])) {
-      placeinsert(coords[0], coords[1], history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE, false);
+      placeinsert(coords[0], coords[1], history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
     } else {
 
       if ((changeNode.get().next().isPresent()
@@ -1776,7 +1835,7 @@ public class Board implements LeelazListener {
         goToMoveNumber(currentMoveNumber);
         return false;
       }
-      passinsert(history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE, false, false);
+      passinsert(history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE, false);
     }
 
     for (int j = 0; j < insertoriisblack.size(); j = j + 1) {
@@ -1784,10 +1843,9 @@ public class Board implements LeelazListener {
         placeinsert(
         		insertorimove.get(2 * j),
         		insertorimove.get(2 * j + 1),
-            insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE,
-            false);
+            insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE);
       } else {
-        passinsert(insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE, false, false);
+        passinsert(insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE, false);
       }
     }
     insertorimove.clear();
@@ -1954,7 +2012,6 @@ public class Board implements LeelazListener {
             swapColorOnly
                 ? node.get().getData().lastMoveColor
                 : history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE,
-            false,
             false);
         // Lizzie.leelaz.sendCommand("play b pass");
         node = node.get().next();
@@ -2044,10 +2101,9 @@ public class Board implements LeelazListener {
         placeinsert(
         		insertorimove.get(2 * j),
         		insertorimove.get(2 * j + 1),
-            insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE,
-            false);
+            insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE);
       } else {
-        passinsert(insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE, false, false);
+        passinsert(insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE, false);
       }
     }
     goToMoveNumber(insertoricurrentMoveNumber); // 需要重新获取插入后的步数
@@ -2059,7 +2115,7 @@ public class Board implements LeelazListener {
   public void insertMove(int coords[], boolean isblack) {
 
     if (Board.isValid(coords[0], coords[1])) {
-      placeinsert(coords[0], coords[1], isblack ? Stone.BLACK : Stone.WHITE, false);
+      placeinsert(coords[0], coords[1], isblack ? Stone.BLACK : Stone.WHITE);
     }
     insertoricurrentMoveNumber = insertoricurrentMoveNumber + 1;
     mvnumber[getIndex(coords[0], coords[1])] = history.getCurrentHistoryNode().getData().moveNumber;
@@ -2071,7 +2127,7 @@ public class Board implements LeelazListener {
   public void insertMove(int coords[]) {
 
     if (Board.isValid(coords[0], coords[1])) {
-      placeinsert(coords[0], coords[1], history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE, false);
+      placeinsert(coords[0], coords[1], history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
     }
     insertoricurrentMoveNumber = insertoricurrentMoveNumber + 1;
     mvnumber[getIndex(coords[0], coords[1])] = history.getCurrentHistoryNode().getData().moveNumber;

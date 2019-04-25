@@ -6,7 +6,9 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.round;
 
+import featurecat.lizzie.rules.Stone;
 import com.jhlabs.image.GaussianFilter;
+import featurecat.lizzie.rules.Movelist;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
 import featurecat.lizzie.analysis.Leelaz;
@@ -92,6 +94,7 @@ public class LizzieFrame extends JFrame {
   public static Font uiFont;
   public static Font winrateFont;
   public boolean isshowrightmenu;
+  
 
   private final BufferStrategy bs;
 
@@ -124,7 +127,9 @@ public class LizzieFrame extends JFrame {
   private long lastPlayouts = 0;
   private String visitsString = "";
   public boolean isDrawVisitsInTitle = true;
-
+  private Stone draggedstone;
+  private int[] startcoords=new int[2];
+  private int draggedmovenumer;
   static {
     // load fonts
     try {
@@ -1694,4 +1699,52 @@ public class LizzieFrame extends JFrame {
     Thread thread = new Thread(runnable);
     thread.start();
   }
-}
+  
+  public void DraggedPress(int x,int y) {
+	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+	    if (boardCoordinates.isPresent()) {	    	
+	    	int[] coords = boardCoordinates.get();
+	    	startcoords[0]=coords[0];
+	    	startcoords[1]=coords[1];
+	    	draggedstone=Lizzie.board.getstonestat(coords);
+	    	draggedmovenumer=Lizzie.board.getmovenumber(coords);
+	    }
+  }
+  
+ public void DraggedMoved(int x,int y) {
+	 repaint();
+  }
+ 
+ public void DraggedDragged(int x,int y) {
+	 if (draggedstone!=Stone.EMPTY)
+	 {
+	 Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+	    if (boardCoordinates.isPresent()) {
+	      int[] coords = boardCoordinates.get();
+	    
+	 boardRenderer.drawmovestone(coords[0],coords[1],draggedstone);
+	 repaint();
+	    }
+	 }
+ }
+ 
+ public void DraggedReleased(int x,int y) {
+	 Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+	    if (boardCoordinates.isPresent()) {
+	      int[] coords = boardCoordinates.get();
+	      if(coords[0]==startcoords[0]&&coords[1]==startcoords[1])
+	      {
+	    	  System.out.println("拖动前后一致");
+	      }
+	      else {
+	    	  System.out.println("拖动前后不一致");
+	    	  System.out.println("拖动的棋子序号:"+draggedmovenumer);
+	    	 // ArrayList<Movelist> movelist=Lizzie.board.getmovelist();
+	    	//做到这里
+	    	 
+	      }
+	    }
+ }
+    
+  
+ }

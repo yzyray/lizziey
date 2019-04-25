@@ -12,7 +12,7 @@ public class BoardData {
   public int[] moveNumberList;
   public boolean blackToPlay;
   public boolean dummy;
-  public static boolean isChanged=false;  
+  public static boolean isChanged=true;  
   //added for change bestmoves when playouts is not increased
 
   public Stone lastMoveColor;

@@ -8,14 +8,21 @@ import javax.swing.JOptionPane;
 
 public class Input implements MouseListener, KeyListener, MouseWheelListener, MouseMotionListener {
   public static boolean isinsertmode = false;
+  public static boolean Draggedmode = false;
 
   @Override
   public void mouseClicked(MouseEvent e) {}
 
   @Override
   public void mousePressed(MouseEvent e) {
+	
     if (e.getButton() == MouseEvent.BUTTON1) // left click
     {
+    	  if(Draggedmode)
+    	  {
+    		  Lizzie.frame.DraggedPress(e.getX(), e.getY());
+    		  return;
+    	  }
       if (!isinsertmode) {
         Lizzie.frame.onClicked(e.getX(), e.getY());
       } else {
@@ -30,7 +37,13 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   }
 
   @Override
-  public void mouseReleased(MouseEvent e) {}
+  public void mouseReleased(MouseEvent e) {
+	  if(Draggedmode)
+	  {
+		  Lizzie.frame.DraggedReleased(e.getX(), e.getY());
+		  return;
+	  }
+  }
 
   @Override
   public void mouseEntered(MouseEvent e) {}
@@ -40,11 +53,21 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseDragged(MouseEvent e) {
+	  if(Draggedmode)
+	  {
+		  Lizzie.frame.DraggedDragged(e.getX(), e.getY());
+		  return;
+	  }
     Lizzie.frame.onMouseDragged(e.getX(), e.getY());
   }
 
   @Override
   public void mouseMoved(MouseEvent e) {
+	  if(Draggedmode)
+	  {
+		  Lizzie.frame.DraggedMoved(e.getX(), e.getY());
+		  return;
+	  }
     Lizzie.frame.onMouseMoved(e.getX(), e.getY());
   }
 
