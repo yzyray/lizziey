@@ -242,19 +242,16 @@ public class Config {
     return modified;
   }
 
-  
-  
   public void toggleShowLcbWinrate() {
-	    this.showlcbwinrate = !this.showlcbwinrate;
-	  }
-  
-  
+    this.showlcbwinrate = !this.showlcbwinrate;
+  }
+
   public void toggleShowMoveNumber() {
     if (this.onlyLastMoveNumber > 0) {
       allowMoveNumber =
-          (allowMoveNumber == -1 ? onlyLastMoveNumber : (allowMoveNumber == 0 ? -1 : 0));
+          (allowMoveNumber == 0 ? onlyLastMoveNumber : (allowMoveNumber == -1 ? 0 : -1));
     } else {
-      allowMoveNumber = (allowMoveNumber == 0 ? -1 : 0);
+      allowMoveNumber = (allowMoveNumber == -1 ? 0 : -1);
     }
   }
 
