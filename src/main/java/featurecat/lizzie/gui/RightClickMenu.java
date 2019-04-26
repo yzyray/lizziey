@@ -1,9 +1,13 @@
 package featurecat.lizzie.gui;
 
+
 import featurecat.lizzie.Lizzie;
-import featurecat.lizzie.gui.Input;
+import featurecat.lizzie.rules.Movelist;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -25,13 +29,16 @@ public class RightClickMenu extends JPopupMenu {
   private static JMenuItem cancelavoid;
   private static JMenuItem test;
   private static JMenuItem test2;
-  private static JMenuItem test3;
-  private BoardRenderer boardRenderer;
+  private static JMenuItem editmode;
+  private static JMenuItem quiteditmode;
+  private static JMenuItem restore;
+  //private BoardRenderer boardRenderer;
   public static String allowcoords = "";
   public static String avoidcoords = "";
   public static int move = 0;
   public static int startmove = 0;
   public static boolean isforcing = false;
+  ArrayList<Movelist> currentmovestat;
 
   public RightClickMenu() {
 	  
@@ -65,7 +72,9 @@ public class RightClickMenu extends JPopupMenu {
     cancelavoid = new JMenuItem("清除分析设置");
     test=new JMenuItem("测试保存棋盘状态");
     test2=new JMenuItem("测试恢复棋盘状态");
-    test3=new JMenuItem("测试进入拖动模式");
+    editmode=new JMenuItem("进入编辑模式");
+   quiteditmode=new JMenuItem("退出编辑模式");
+   restore=new JMenuItem("撤销上次编辑");
     // this.add(addblack);
     // this.add(addwhite);
     this.add(allow);
@@ -73,17 +82,26 @@ public class RightClickMenu extends JPopupMenu {
     this.add(avoid2);
     this.add(cancelavoid);
     this.add(deleteone);
-    this.add(insertmode);
-    this.add(test);
-    this.add(test2);
-    this.add(test3);
-
+   // this.add(insertmode);
+   // this.add(test);
+   // this.add(test2);
+    this.add(editmode);
+   // this.add(quiteditmode);
+    restore.addActionListener( new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          System.out.println("撤销上次编辑");
+          restore();
+        //  Lizzie.board.clear();
+        }
+      });
     
     test.addActionListener( new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
             System.out.println("保存棋盘状态");
-            test();
+            saveboard();
+          //  Lizzie.board.clear();
           }
         });
     
@@ -91,14 +109,21 @@ public class RightClickMenu extends JPopupMenu {
         @Override
         public void actionPerformed(ActionEvent e) {
           System.out.println("恢复棋盘状态");
-          test2();
+          setboard();
         }
       });
-    test3.addActionListener( new ActionListener() {
+    editmode.addActionListener( new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
           System.out.println("进入拖动模式");
-          test3();
+          editmode();
+        }
+      });
+    quiteditmode.addActionListener( new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          System.out.println("退出拖动模式");
+          quiteditmode();
         }
       });
     // Lizzie.frame.RightClickMenu.show(invoker, x, y);
@@ -185,23 +210,41 @@ public class RightClickMenu extends JPopupMenu {
   }
 
   
-  private void test() {
-
-	    Lizzie.board.test();
+  private void saveboard() {
+	
+	    Lizzie.board.savelist();
+	    
 	    //保存棋盘状态
 	  }
   
-  private void test2() {
-
-	    Lizzie.board.test2();
+  private void setboard() {
+	 
+	    Lizzie.board.setlist();
 	    //恢复棋盘状态
 	  }
   
-  private void test3() {
+  private void restore() {
+	  Lizzie.frame.pasteSgf();
+	  Lizzie.board.setmovelist(currentmovestat);
+	  this.remove(restore);
+  }
+  
+  private void editmode() {	  
 	  featurecat.lizzie.gui.Input.Draggedmode=true;
-	    
+	  Lizzie.frame.copySgf();	  
+	  this.add(quiteditmode);
+	  
+	  Lizzie.board.insertmode();
+	  currentmovestat= Lizzie.board.savelistforeditmode();	 
 	  }
 
+  private void quiteditmode() {
+	  featurecat.lizzie.gui.Input.Draggedmode=false;
+	  this.add(restore);
+	  Lizzie.board.setlistforeditmode();
+	    Lizzie.board.quitinsertmode();
+	    this.remove(quiteditmode);
+	  }
   
   private void insertmode() {
 

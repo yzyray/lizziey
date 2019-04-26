@@ -63,11 +63,11 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseMoved(MouseEvent e) {
-	  if(Draggedmode)
-	  {
-		  Lizzie.frame.DraggedMoved(e.getX(), e.getY());
-		  return;
-	  }
+//	  if(Draggedmode)
+//	  {
+//		  Lizzie.frame.DraggedMoved(e.getX(), e.getY());
+//		  return;
+//	  }
     Lizzie.frame.onMouseMoved(e.getX(), e.getY());
   }
 

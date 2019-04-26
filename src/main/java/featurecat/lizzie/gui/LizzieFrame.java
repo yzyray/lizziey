@@ -94,7 +94,7 @@ public class LizzieFrame extends JFrame {
   public static Font uiFont;
   public static Font winrateFont;
   public boolean isshowrightmenu;
-  
+  public ArrayList<Movelist> movelist;
 
   private final BufferStrategy bs;
 
@@ -1414,13 +1414,9 @@ public class LizzieFrame extends JFrame {
       return;
     }
 
-    //   Timer timer=new Timer();
-    //  timer.schedule(new TimerTask(){
-    //   public void run(){
     if (isshowrightmenu) {
       isshowrightmenu = false;      
     }
-    //  this.cancel();}},180);
 
     mouseOverCoordinate = outOfBoundCoordinate;
     Optional<int[]> coords = boardRenderer.convertScreenToCoordinates(x, y);
@@ -1696,6 +1692,8 @@ public class LizzieFrame extends JFrame {
     thread.start();
   }
   
+ 
+  
   public void DraggedPress(int x,int y) {
 	  Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
 	    if (boardCoordinates.isPresent()) {	    	
@@ -1705,9 +1703,26 @@ public class LizzieFrame extends JFrame {
 	    	draggedstone=Lizzie.board.getstonestat(coords);
 	    	draggedmovenumer=Lizzie.board.getmovenumber(coords);
 	    }
+	    if(draggedstone==Stone.BLACK||draggedstone==Stone.WHITE)
+	    {
+	    	Lizzie.board.savelist();
+	    }
+	    else
+	    {
+	    	draggedstone=Stone.EMPTY;
+	    	Lizzie.frame.insertMove(x,y);
+	    }
   }
   
  public void DraggedMoved(int x,int y) {
+	    if (RightClickMenu.isVisible()) {
+	        return;
+	      }
+
+	      if (isshowrightmenu) {
+	        isshowrightmenu = false;      
+	      }
+
 	 repaint();
   }
  
@@ -1723,23 +1738,47 @@ public class LizzieFrame extends JFrame {
 	    }
 	 }
  }
+
  
  public void DraggedReleased(int x,int y) {
 	 Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
 	    if (boardCoordinates.isPresent()) {
+	    	if(draggedstone!=Stone.BLACK&&draggedstone!=Stone.WHITE) {
+	    		draggedstone=Stone.EMPTY;
+	    		boardRenderer.removedrawmovestone();
+	    		return;
+	    	}
+	    	
 	      int[] coords = boardCoordinates.get();
 	      if(coords[0]==startcoords[0]&&coords[1]==startcoords[1])
 	      {
 	    	  System.out.println("拖动前后一致");
+	    	  draggedstone=Stone.EMPTY;
+	    	  boardRenderer.removedrawmovestone();
+	    		 repaint();
 	      }
 	      else {
 	    	  System.out.println("拖动前后不一致");
 	    	  System.out.println("拖动的棋子序号:"+draggedmovenumer);
-	    	 // ArrayList<Movelist> movelist=Lizzie.board.getmovelist();
-	    	//做到这里
-	    	 
+	    	  
+	    	  Stone stone=Lizzie.board.getstonestat(coords);
+	    	 if(stone!=Stone.EMPTY)
+	    	 {
+	    		 boardRenderer.removedrawmovestone();
+	    		 repaint();
+	    		 draggedstone=Stone.EMPTY;
+	    		 return;}
+	    	  Lizzie.board.editmovelist(Lizzie.board.tempmovelist,draggedmovenumer,coords[0],coords[1]);
+
+	    	  Lizzie.board.clear();
+	    	  Lizzie.board.setlist();
+	    	  repaint();
 	      }
 	    }
+	    
+	    boardRenderer.removedrawmovestone();
+	    draggedstone=Stone.EMPTY;
+	    
  }
     
   

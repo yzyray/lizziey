@@ -288,7 +288,9 @@ public class BoardRenderer {
     }
   }
   
-  
+  public void removedrawmovestone() {
+	  cachedStonesImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+  }
   public void drawmovestone(int x ,int y,Stone stone) {
 	  cachedStonesImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
 	  cachedStonesShadowImage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
