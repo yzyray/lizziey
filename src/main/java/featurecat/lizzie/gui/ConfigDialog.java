@@ -739,15 +739,15 @@ public class ConfigDialog extends JDialog {
     }
   }
 
-  private boolean getShowLcbWinrate() {	  
-	  if (rdoLcb.isSelected()) {
-	    	Lizzie.config.showlcbwinrate=true;
-	      return true;
-	    }
-	    if (rdoWinrate.isSelected()) {
-	    	Lizzie.config.showlcbwinrate=false;
-	      return false;
-	    }
+  private boolean getShowLcbWinrate() {
+    if (rdoLcb.isSelected()) {
+      Lizzie.config.showlcbwinrate = true;
+      return true;
+    }
+    if (rdoWinrate.isSelected()) {
+      Lizzie.config.showlcbwinrate = false;
+      return false;
+    }
     return true;
   }
 

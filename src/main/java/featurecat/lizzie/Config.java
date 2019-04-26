@@ -33,7 +33,7 @@ public class Config {
   public double replayBranchIntervalSeconds = 1.0;
   public boolean showCoordinates = false;
   public boolean colorByWinrateInsteadOfVisits = false;
-  public boolean showlcbwinrate=true;
+  public boolean showlcbwinrate = true;
 
   public boolean showStatus = true;
   public boolean showBranch = true;

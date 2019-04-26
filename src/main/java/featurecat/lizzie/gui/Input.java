@@ -15,14 +15,13 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mousePressed(MouseEvent e) {
-	
+
     if (e.getButton() == MouseEvent.BUTTON1) // left click
     {
-    	  if(Draggedmode)
-    	  {
-    		  Lizzie.frame.DraggedPress(e.getX(), e.getY());
-    		  return;
-    	  }
+      if (Draggedmode) {
+        Lizzie.frame.DraggedPress(e.getX(), e.getY());
+        return;
+      }
       if (!isinsertmode) {
         Lizzie.frame.onClicked(e.getX(), e.getY());
       } else {
@@ -38,11 +37,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseReleased(MouseEvent e) {
-	  if(Draggedmode)
-	  {
-		  Lizzie.frame.DraggedReleased(e.getX(), e.getY());
-		  return;
-	  }
+    if (Draggedmode) {
+      Lizzie.frame.DraggedReleased(e.getX(), e.getY());
+      return;
+    }
   }
 
   @Override
@@ -53,21 +51,20 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseDragged(MouseEvent e) {
-	  if(Draggedmode)
-	  {
-		  Lizzie.frame.DraggedDragged(e.getX(), e.getY());
-		  return;
-	  }
+    if (Draggedmode) {
+      Lizzie.frame.DraggedDragged(e.getX(), e.getY());
+      return;
+    }
     Lizzie.frame.onMouseDragged(e.getX(), e.getY());
   }
 
   @Override
   public void mouseMoved(MouseEvent e) {
-//	  if(Draggedmode)
-//	  {
-//		  Lizzie.frame.DraggedMoved(e.getX(), e.getY());
-//		  return;
-//	  }
+    //	  if(Draggedmode)
+    //	  {
+    //		  Lizzie.frame.DraggedMoved(e.getX(), e.getY());
+    //		  return;
+    //	  }
     Lizzie.frame.onMouseMoved(e.getX(), e.getY());
   }
 
@@ -211,47 +208,47 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         Lizzie.frame.toggleGtpConsole();
         break;
       case VK_RIGHT:
-    		if (isinsertmode) {
-    	        JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
-    	        return;
-    	      }
+        if (isinsertmode) {
+          JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+          return;
+        }
         if (e.isShiftDown()) {
           moveBranchDown();
         } else {
-        
+
           nextBranch();
         }
         break;
 
       case VK_LEFT:
-    		if (isinsertmode) {
-    	        JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
-    	        return;
-    	      }
+        if (isinsertmode) {
+          JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+          return;
+        }
         if (e.isShiftDown()) {
           moveBranchUp();
         } else if (controlIsPressed(e)) {
           undoToFirstParentWithVariations();
         } else {
-        
+
           previousBranch();
         }
         break;
 
       case VK_UP:
-    		if (isinsertmode) {
-    	        JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
-    	        return;
-    	      }
+        if (isinsertmode) {
+          JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+          return;
+        }
         if (controlIsPressed(e) && e.isShiftDown()) {
           goCommentNode(false);
         } else if (e.isShiftDown()) {
           undoToChildOfPreviousWithVariation();
         } else if (controlIsPressed(e)) {
-        
+
           undo(10);
         } else {
-        	
+
           undo();
         }
         break;
@@ -260,19 +257,19 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         if (controlIsPressed(e) && e.isShiftDown()) {
           Lizzie.frame.increaseMaxAlpha(-5);
         } else {
-        	if (isinsertmode) {
-    	        JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
-    	        return;
-    	      }
+          if (isinsertmode) {
+            JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+            return;
+          }
           redo(10);
         }
         break;
 
       case VK_DOWN:
-    	  if (isinsertmode) {
-  	        JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
-  	        return;
-  	      }
+        if (isinsertmode) {
+          JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+          return;
+        }
         if (controlIsPressed(e) && e.isShiftDown()) {
           goCommentNode(true);
         } else if (controlIsPressed(e)) {
@@ -284,10 +281,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_N:
         // stop the ponder
-    		if (isinsertmode) {
-    	        JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
-    	        return;
-    	      }
+        if (isinsertmode) {
+          JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+          return;
+        }
         if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
         LizzieFrame.startNewGame();
         break;
@@ -309,10 +306,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_M:
         if (e.isAltDown()) {
-        	if (isinsertmode) {
-    	        JOptionPane.showMessageDialog(null,"请先退出插入棋子模式,或使用右键菜单落子");
-    	        return;
-    	      }   
+          if (isinsertmode) {
+            JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+            return;
+          }
           Lizzie.frame.openChangeMoveDialog();
         } else {
           Lizzie.config.toggleShowMoveNumber();
@@ -331,10 +328,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         if (controlIsPressed(e) && e.isShiftDown()) {
           Lizzie.frame.increaseMaxAlpha(5);
         } else {
-        	if (isinsertmode) {
-    	        JOptionPane.showMessageDialog(null,"请先退出插入棋子模式,或使用右键菜单落子");
-    	        return;
-    	      }   
+          if (isinsertmode) {
+            JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+            return;
+          }
           undo(10);
         }
         break;
@@ -357,10 +354,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_V:
         if (controlIsPressed(e)) {
-        	if (isinsertmode) {
-    	        JOptionPane.showMessageDialog(null,"请先退出插入棋子模式,或使用右键菜单落子");
-    	        return;
-    	      }   
+          if (isinsertmode) {
+            JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+            return;
+          }
           Lizzie.frame.pasteSgf();
         } else {
           Lizzie.config.toggleShowBranch();
@@ -368,10 +365,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_HOME:
-    	  if (isinsertmode) {
-  	        JOptionPane.showMessageDialog(null,"请先退出插入棋子模式,或使用右键菜单落子");
-  	        return;
-  	      }   
+        if (isinsertmode) {
+          JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+          return;
+        }
         if (controlIsPressed(e)) {
           Lizzie.board.clear();
         } else {
@@ -380,10 +377,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_END:
-    	  if (isinsertmode) {
-  	        JOptionPane.showMessageDialog(null,"请先退出插入棋子模式,或使用右键菜单落子");
-  	        return;
-  	      }   
+        if (isinsertmode) {
+          JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+          return;
+        }
         while (Lizzie.board.nextMove()) ;
         break;
 
@@ -437,10 +434,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_ENTER:
-    		if (isinsertmode) {
-    	        JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
-    	        return;
-    	      }
+        if (isinsertmode) {
+          JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+          return;
+        }
         if (!Lizzie.leelaz.isThinking) {
           Lizzie.leelaz.sendCommand(
               "time_settings 0 "
@@ -457,10 +454,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_DELETE:
       case VK_BACK_SPACE:
-    		if (isinsertmode) {
-    	        JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
-    	        return;
-    	      }
+        if (isinsertmode) {
+          JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+          return;
+        }
         if (e.isShiftDown()) {
           deleteBranch();
         } else {
@@ -497,10 +494,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_R:
-    	  if (isinsertmode) {
-  	        JOptionPane.showMessageDialog(null,"请先退出插入棋子模式,或使用右键菜单落子");
-  	        return;
-  	      }   
+        if (isinsertmode) {
+          JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
+          return;
+        }
         Lizzie.frame.replayBranch();
         break;
 

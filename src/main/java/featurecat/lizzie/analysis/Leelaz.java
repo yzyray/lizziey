@@ -211,7 +211,7 @@ public class Leelaz {
     outputStream = new BufferedOutputStream(process.getOutputStream());
   }
 
-  public static List<MoveData> parseInfo(String line) {	  
+  public static List<MoveData> parseInfo(String line) {
     List<MoveData> bestMoves = new ArrayList<>();
     String[] variations = line.split(" info ");
     int k = Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
@@ -221,7 +221,7 @@ public class Leelaz {
         k = k - 1;
         if (k < 1) break;
       }
-    }  
+    }
     Lizzie.board.getData().tryToSetBestMoves(bestMoves);
     return bestMoves;
   }
@@ -332,7 +332,7 @@ public class Leelaz {
         } else if (isCheckingVersion) {
           String[] ver = params[1].split("\\.");
           int minor = Integer.parseInt(ver[1]);
-          Lizzie.config.leelaversion=minor;
+          Lizzie.config.leelaversion = minor;
           // Gtp support added in version 15
           if (minor < 15) {
             JOptionPane.showMessageDialog(
@@ -549,16 +549,15 @@ public class Leelaz {
   }
 
   public void analyzeAvoid(String type, String color, String coordList, int untilMove) {
-  
+
     // added for change bestmoves immediatly not wait until totalplayouts is bigger than previous
     // analyze result
     analyzeAvoid(
         String.format("%s %s %s %d", type, color, coordList, untilMove <= 0 ? 1 : untilMove));
-   
   }
 
   public void analyzeAvoid(String parameters) {
-   
+
     // added for change bestmoves immediatly not wait until totalplayouts is bigger than previous
     // analyze result
     bestMoves = new ArrayList<>();

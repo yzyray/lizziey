@@ -33,8 +33,7 @@ public class MoveData {
     MoveData result = new MoveData();
     String[] data = line.trim().split(" ");
     // int k = Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
-    boolean islcb =
-        (Lizzie.config.leelaversion>=17&&Lizzie.config.showlcbwinrate);
+    boolean islcb = (Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbwinrate);
     // Todo: Proper tag parsing in case gtp protocol is extended(?)/changed
     for (int i = 0; i < data.length; i++) {
       String key = data[i];

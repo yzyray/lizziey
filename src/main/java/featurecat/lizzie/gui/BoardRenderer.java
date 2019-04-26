@@ -130,8 +130,6 @@ public class BoardRenderer {
     //        timer.print();
   }
 
-  
-
   /**
    * Return the best move of Leelaz's suggestions
    *
@@ -287,22 +285,23 @@ public class BoardRenderer {
       fillCircle(g, centerX, centerY, starPointRadius);
     }
   }
-  
+
   public void removedrawmovestone() {
-	  cachedStonesImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+    cachedStonesImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
   }
-  public void drawmovestone(int x ,int y,Stone stone) {
-	  cachedStonesImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
-	  cachedStonesShadowImage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
-	  Graphics2D g = cachedStonesImagedraged.createGraphics();
-	  g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-	  g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-	  Graphics2D gShadow = cachedStonesShadowImage.createGraphics();
-	  gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-	  gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-	  int stoneX = scaledMargin + squareLength * x;
-      int stoneY = scaledMargin + squareLength * y;
-	  drawStone(g, gShadow, stoneX, stoneY, stone, x, y);
+
+  public void drawmovestone(int x, int y, Stone stone) {
+    cachedStonesImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+    cachedStonesShadowImage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+    Graphics2D g = cachedStonesImagedraged.createGraphics();
+    g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+    Graphics2D gShadow = cachedStonesShadowImage.createGraphics();
+    gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+    int stoneX = scaledMargin + squareLength * x;
+    int stoneY = scaledMargin + squareLength * y;
+    drawStone(g, gShadow, stoneX, stoneY, stone, x, y);
   }
 
   /** Draw the stones. We cache the image for a performance boost. */
@@ -494,9 +493,9 @@ public class BoardRenderer {
           // Use a solid circle instead of
           fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
         } else {
-        	fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
-         // drawCircle(g, stoneX, stoneY, lastMoveMarkerRadius);
-        	//需要恢复的
+          fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
+          // drawCircle(g, stoneX, stoneY, lastMoveMarkerRadius);
+          // 需要恢复的
         }
       } else if (board.getData().moveNumber != 0 && !board.inScoreMode()) {
         g.setColor(
@@ -924,10 +923,10 @@ public class BoardRenderer {
     if (color.isBlack() || color.isWhite()) {
       boolean isBlack = color.isBlack();
       boolean isGhost = (color == Stone.BLACK_GHOST || color == Stone.WHITE_GHOST);
-     // if (uiConfig.getBoolean("fancy-stones")) {
-      //需要恢复的
-    	  if (false) {
-        //drawShadow(gShadow, centerX, centerY, isGhost);
+      // if (uiConfig.getBoolean("fancy-stones")) {
+      // 需要恢复的
+      if (false) {
+        // drawShadow(gShadow, centerX, centerY, isGhost);
         int size = stoneRadius * 2 + 1;
         g.drawImage(
             getScaleStone(isBlack, size),
@@ -937,8 +936,8 @@ public class BoardRenderer {
             size,
             null);
       } else {
-    	  //需要恢复的
-        //drawShadow(gShadow, centerX, centerY, true);
+        // 需要恢复的
+        // drawShadow(gShadow, centerX, centerY, true);
         Color blackColor = isGhost ? new Color(0, 0, 0) : Color.BLACK;
         Color whiteColor = isGhost ? new Color(255, 255, 255) : Color.WHITE;
         g.setColor(isBlack ? blackColor : whiteColor);
@@ -950,9 +949,6 @@ public class BoardRenderer {
       }
     }
   }
-  
-
-  
 
   /** Get scaled stone, if cached then return cached */
   private BufferedImage getScaleStone(boolean isBlack, int size) {

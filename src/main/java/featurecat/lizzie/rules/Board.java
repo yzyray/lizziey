@@ -3,7 +3,6 @@ package featurecat.lizzie.rules;
 import static java.lang.Math.min;
 import static java.util.Collections.singletonList;
 
-import featurecat.lizzie.rules.Movelist;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.analysis.LeelazListener;
@@ -162,39 +161,43 @@ public class Board implements LeelazListener {
   public static boolean isValid(int[] c) {
     return c != null && c.length == 2 && isValid(c[0], c[1]);
   }
-  
-  
-  public void savelist() {
-	  System.out.println("保存board");	
-	  tempmovelist=getmovelist();
-	  temphistory=history;
-	  clear();
-	  setlist();
-	  }
-  
-  public ArrayList<Movelist> savelistforeditmode() {
-	  System.out.println("保存board");	
-	  tempmovelist=getmovelist();
-	  tempallmovelist=getallmovelist();
-	  clear();
-	  setlist();
-	  return tempmovelist;
-	  }
-  
-  public void setlistforeditmode() {
-	  tempmovelist=getmovelist();	  
-	  System.out.println("恢复board和branch");	 
-	  setmovelist(tempallmovelist);
-	  setmovelist(tempmovelist);
-	  }
-  
-  public void setlist() {
-	  System.out.println("恢复board不恢复branch");	
-	  setmovelist(tempmovelist);
-	  }
 
-  
-  
+  public void savelist() {
+    System.out.println("保存board");
+    tempmovelist = getmovelist();
+    temphistory = history;
+    clear();
+    setlist();
+  }
+
+  public ArrayList<Movelist> savelistforeditmode() {
+    System.out.println("保存board");
+    tempmovelist = getmovelist();
+    tempallmovelist = getallmovelist();
+    clear();
+    setlist();
+    return tempmovelist;
+  }
+
+  public void resetlistforeditmode() {
+
+    // System.out.println("恢复board和branch");
+    setmovelist(tempallmovelist);
+    setmovelist(tempmovelist);
+  }
+
+  public void setlistforeditmode() {
+    tempmovelist = getmovelist();
+    // System.out.println("恢复board和branch");
+    setmovelist(tempallmovelist);
+    setmovelist(tempmovelist);
+  }
+
+  public void setlist() {
+    //   System.out.println("恢复board不恢复branch");
+    setmovelist(tempmovelist);
+  }
+
   /**
    * Open board again when the SZ property is setup by sgf
    *
@@ -351,116 +354,102 @@ public class Board implements LeelazListener {
    * @param color the type of pass
    * @param newBranch add a new branch
    */
-  
-  public void editmovelist(ArrayList<Movelist> movelist,int movenum,int x,int y) {
-	  int lenth= movelist.size();
-	  movelist.get(lenth-movenum).x=x;
-	  movelist.get(lenth-movenum).y=y;
-	  
+  public void editmovelist(ArrayList<Movelist> movelist, int movenum, int x, int y) {
+    int lenth = movelist.size();
+    movelist.get(lenth - movenum).x = x;
+    movelist.get(lenth - movenum).y = y;
   }
-  
-  public void editmovelistdelete(ArrayList<Movelist> movelist,int movenum) {
-	  int lenth= movelist.size();
-	  movelist.remove(lenth-movenum);
-	  
+
+  public void editmovelistdelete(ArrayList<Movelist> movelist, int movenum) {
+    int lenth = movelist.size();
+    movelist.remove(lenth - movenum);
   }
-  
-  
+
   public void setmovelist(ArrayList<Movelist> movelist) {
-	  while (previousMove());
-		int lenth= movelist.size();
-		  for(int i=0;i<lenth;i++)
-		  {
-			  Movelist move=movelist.get(lenth-1-i);
-			  if(!move.ispass)
-			  {
-			  placeinsert(move.x,move.y,move.isblack? Stone.BLACK:Stone.WHITE);
-			  mvnumber[getIndex(move.x,move.y)]=i+1;
-			  }
-			  else {
-				  passinsert(move.isblack? Stone.BLACK:Stone.WHITE,false);
-			  }
-		  }
-	 // placeinsert(int x, int y, Stone color);
-	  	  
+    while (previousMove()) ;
+    int lenth = movelist.size();
+    for (int i = 0; i < lenth; i++) {
+      Movelist move = movelist.get(lenth - 1 - i);
+      if (!move.ispass) {
+        placeinsert(move.x, move.y, move.isblack ? Stone.BLACK : Stone.WHITE);
+        mvnumber[getIndex(move.x, move.y)] = i + 1;
+      } else {
+        passinsert(move.isblack ? Stone.BLACK : Stone.WHITE, false);
+      }
+    }
+    // placeinsert(int x, int y, Stone color);
+
   }
-  
-  
+
   public ArrayList<Movelist> getallmovelist() {
-	  ArrayList<Movelist> movelist = new ArrayList<Movelist>();
-	  while (nextMove());
-	  Optional<BoardHistoryNode> node = history.getCurrentHistoryNode().now();
-	    Optional<int[]> passstep = Optional.empty();
-	    while (node.isPresent()) {
-	      Optional<int[]> lastMove = node.get().getData().lastMove;
-	      if (lastMove == passstep) {
-	    	  Movelist move=new Movelist();
-	    	  move.ispass=true;
-	    	  move.isblack=node.get().getData().lastMoveColor.isBlack();
-	    	  movelist.add(move);
-	    	  node = node.get().previous();
-	      } else {
-	        if (lastMove.isPresent()) {
-	        	
-	          int[] n = lastMove.get();
-	          Movelist move=new Movelist();
-	          move.x=n[0];
-	          move.y=n[1];
-	          move.ispass=false;
-	          move.isblack=node.get().getData().lastMoveColor.isBlack();
-	          move.movenum=node.get().getData().moveNumber;
-	          movelist.add(move);
-	          node = node.get().previous();
-	        }
-	      }
-	    }	    
-	    movelist.remove(movelist.size()-1);
-	    return movelist;
+    ArrayList<Movelist> movelist = new ArrayList<Movelist>();
+    while (nextMove()) ;
+    Optional<BoardHistoryNode> node = history.getCurrentHistoryNode().now();
+    Optional<int[]> passstep = Optional.empty();
+    while (node.isPresent()) {
+      Optional<int[]> lastMove = node.get().getData().lastMove;
+      if (lastMove == passstep) {
+        Movelist move = new Movelist();
+        move.ispass = true;
+        move.isblack = node.get().getData().lastMoveColor.isBlack();
+        movelist.add(move);
+        node = node.get().previous();
+      } else {
+        if (lastMove.isPresent()) {
 
+          int[] n = lastMove.get();
+          Movelist move = new Movelist();
+          move.x = n[0];
+          move.y = n[1];
+          move.ispass = false;
+          move.isblack = node.get().getData().lastMoveColor.isBlack();
+          move.movenum = node.get().getData().moveNumber;
+          movelist.add(move);
+          node = node.get().previous();
+        }
+      }
+    }
+    movelist.remove(movelist.size() - 1);
+    return movelist;
   }
-  
-  
-  
+
   public ArrayList<Movelist> getmovelist() {
-	  ArrayList<Movelist> movelist = new ArrayList<Movelist>();
-	  
-	  Optional<BoardHistoryNode> node = history.getCurrentHistoryNode().now();
-	    Optional<int[]> passstep = Optional.empty();
-	    while (node.isPresent()) {
-	      Optional<int[]> lastMove = node.get().getData().lastMove;
-	      if (lastMove == passstep) {
-	    	  Movelist move=new Movelist();
-	    	  move.ispass=true;
-	    	  move.isblack=node.get().getData().lastMoveColor.isBlack();
-	    	  movelist.add(move);
-	    	  node = node.get().previous();
-	      } else {
-	        if (lastMove.isPresent()) {
-	        	
-	          int[] n = lastMove.get();
-	          Movelist move=new Movelist();
-	          move.x=n[0];
-	          move.y=n[1];
-	          move.ispass=false;
-	          move.isblack=node.get().getData().lastMoveColor.isBlack();
-	          move.movenum=node.get().getData().moveNumber;
-	          movelist.add(move);
-	          node = node.get().previous();
-	        }
-	      }
-	    }	    
-	    movelist.remove(movelist.size()-1);
-	    return movelist;
+    ArrayList<Movelist> movelist = new ArrayList<Movelist>();
 
+    Optional<BoardHistoryNode> node = history.getCurrentHistoryNode().now();
+    Optional<int[]> passstep = Optional.empty();
+    while (node.isPresent()) {
+      Optional<int[]> lastMove = node.get().getData().lastMove;
+      if (lastMove == passstep) {
+        Movelist move = new Movelist();
+        move.ispass = true;
+        move.isblack = node.get().getData().lastMoveColor.isBlack();
+        movelist.add(move);
+        node = node.get().previous();
+      } else {
+        if (lastMove.isPresent()) {
+
+          int[] n = lastMove.get();
+          Movelist move = new Movelist();
+          move.x = n[0];
+          move.y = n[1];
+          move.ispass = false;
+          move.isblack = node.get().getData().lastMoveColor.isBlack();
+          move.movenum = node.get().getData().moveNumber;
+          movelist.add(move);
+          node = node.get().previous();
+        }
+      }
+    }
+    movelist.remove(movelist.size() - 1);
+    return movelist;
   }
-  
-  
-  public Stone getstonestat(int coords[])
-  {
-	  Stone stones[] = history.getData().stones.clone();
-	  return stones[getIndex(coords[0], coords[1])];	
+
+  public Stone getstonestat(int coords[]) {
+    Stone stones[] = history.getData().stones.clone();
+    return stones[getIndex(coords[0], coords[1])];
   }
-  
+
   public int getmovenumber(int coords[]) {
     Stone stones[] = history.getData().stones.clone();
     if (!stones[getIndex(coords[0], coords[1])].isBlack()
@@ -509,7 +498,7 @@ public class Board implements LeelazListener {
               history.getData().blackCaptures,
               history.getData().whiteCaptures,
               0,
-              0);      
+              0);
       // update leelaz with pass
       if (!Lizzie.leelaz.isInputCommand) Lizzie.leelaz.playMove(color, "pass");
 
@@ -1915,8 +1904,8 @@ public class Board implements LeelazListener {
     for (int j = 0; j < insertoriisblack.size(); j = j + 1) {
       if (insertorimove.get(2 * j) != -1) {
         placeinsert(
-        		insertorimove.get(2 * j),
-        		insertorimove.get(2 * j + 1),
+            insertorimove.get(2 * j),
+            insertorimove.get(2 * j + 1),
             insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE);
       } else {
         passinsert(insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE, false);
@@ -2139,10 +2128,10 @@ public class Board implements LeelazListener {
     insertoricurrentMoveNumber = history.getMoveNumber();
     int movenum = history.getMoveNumber();
     Optional<BoardHistoryNode> changeNode = history.getCurrentHistoryNode().next();
-   // if (!changeNode.isPresent()) {
-      // JOptionPane.showMessageDialog(null, "已经是当前分支最后一步,不能插入棋子");
-      // return false;
-  //  }
+    // if (!changeNode.isPresent()) {
+    // JOptionPane.showMessageDialog(null, "已经是当前分支最后一步,不能插入棋子");
+    // return false;
+    //  }
     featurecat.lizzie.gui.Input.isinsertmode = true;
     Optional<BoardHistoryNode> relink = changeNode;
     Optional<BoardHistoryNode> node = relink;
@@ -2150,8 +2139,8 @@ public class Board implements LeelazListener {
     while (node.isPresent()) {
       Optional<int[]> lastMove = node.get().getData().lastMove;
       if (lastMove == passstep) {
-    	  insertorimove.add(-1);
-    	  insertorimove.add(-1);
+        insertorimove.add(-1);
+        insertorimove.add(-1);
         boolean oisblack = node.get().getData().lastMoveColor.isBlack();
         insertoriisblack.add(oisblack);
         node = node.get().next();
@@ -2173,8 +2162,8 @@ public class Board implements LeelazListener {
     for (int j = 0; j < insertoriisblack.size(); j = j + 1) {
       if (insertorimove.get(2 * j) != -1) {
         placeinsert(
-        		insertorimove.get(2 * j),
-        		insertorimove.get(2 * j + 1),
+            insertorimove.get(2 * j),
+            insertorimove.get(2 * j + 1),
             insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE);
       } else {
         passinsert(insertoriisblack.get(j) ? Stone.BLACK : Stone.WHITE, false);
