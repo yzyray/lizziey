@@ -1752,14 +1752,14 @@ public class LizzieFrame extends JFrame {
 	      int[] coords = boardCoordinates.get();
 	      if(coords[0]==startcoords[0]&&coords[1]==startcoords[1])
 	      {
-	    	  System.out.println("拖动前后一致");
+	    	 // System.out.println("拖动前后一致");
 	    	  draggedstone=Stone.EMPTY;
 	    	  boardRenderer.removedrawmovestone();
 	    		 repaint();
 	      }
 	      else {
-	    	  System.out.println("拖动前后不一致");
-	    	  System.out.println("拖动的棋子序号:"+draggedmovenumer);
+	    	//  System.out.println("拖动前后不一致");
+	    	//  System.out.println("拖动的棋子序号:"+draggedmovenumer);
 	    	  
 	    	  Stone stone=Lizzie.board.getstonestat(coords);
 	    	 if(stone!=Stone.EMPTY)
@@ -1774,6 +1774,23 @@ public class LizzieFrame extends JFrame {
 	    	  Lizzie.board.setlist();
 	    	  repaint();
 	      }
+	    }
+	    else {
+	    	if(draggedstone!=Stone.EMPTY)
+	    	{
+	    	int option= JOptionPane.showConfirmDialog(this, "是否删除该棋子? ", "提示 ",JOptionPane.YES_NO_OPTION);
+	    	if(option==JOptionPane.YES_OPTION)	    
+	    	{
+	    		Lizzie.board.editmovelistdelete(Lizzie.board.tempmovelist,draggedmovenumer);
+	    		Lizzie.board.clear();
+		    	  Lizzie.board.setlist();
+		    	  repaint();
+	    	}
+	    	else
+	    	{
+	    	
+	    	}
+	    }
 	    }
 	    
 	    boardRenderer.removedrawmovestone();

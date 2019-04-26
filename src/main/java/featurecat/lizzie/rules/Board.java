@@ -182,8 +182,7 @@ public class Board implements LeelazListener {
 	  }
   
   public void setlistforeditmode() {
-	  tempmovelist=getmovelist();
-	  
+	  tempmovelist=getmovelist();	  
 	  System.out.println("恢复board和branch");	 
 	  setmovelist(tempallmovelist);
 	  setmovelist(tempmovelist);
@@ -194,6 +193,8 @@ public class Board implements LeelazListener {
 	  setmovelist(tempmovelist);
 	  }
 
+  
+  
   /**
    * Open board again when the SZ property is setup by sgf
    *
@@ -355,6 +356,12 @@ public class Board implements LeelazListener {
 	  int lenth= movelist.size();
 	  movelist.get(lenth-movenum).x=x;
 	  movelist.get(lenth-movenum).y=y;
+	  
+  }
+  
+  public void editmovelistdelete(ArrayList<Movelist> movelist,int movenum) {
+	  int lenth= movelist.size();
+	  movelist.remove(lenth-movenum);
 	  
   }
   
