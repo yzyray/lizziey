@@ -124,15 +124,14 @@ public class MoveData {
       MoveData result = new MoveData();
       result.coordinate = match.group(1);
       result.playouts = Integer.parseInt(match.group(2));
-      result.winrate = Double.parseDouble(match.group(3));
-      result.variation = Arrays.asList(match.group(4).split(" "));
+      result.winrate = Double.parseDouble(match.group(Lizzie.config.showlcbwinrate ? 4 : 3));
+      result.variation = Arrays.asList(match.group(5).split(" "));
       return result;
     }
   }
 
   private static Pattern summaryPattern =
-      Pattern.compile(
-          "^ *(\\w\\d*) -> *(\\d+) \\([^\\)]+\\) \\(LCB: ([^%)]+)%\\) \\([^\\)]+\\) PV: (.+).*$");
+      Pattern.compile("^ *(\\w\\d*) -> *(\\d+) \\(V: ([^%)]+)%\\) \\(LCB: ([^%)]+)%\\) \\([^\\)]+\\) PV: (.+).*$");
   private static Pattern summaryPatternold =
       Pattern.compile("^ *(\\w\\d*) -> *(\\d+) \\(V: ([^%)]+)%\\) \\([^\\)]+\\) PV: (.+).*$");
   // support 0.16 0.15

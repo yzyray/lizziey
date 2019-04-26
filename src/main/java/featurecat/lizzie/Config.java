@@ -242,6 +242,13 @@ public class Config {
     return modified;
   }
 
+  
+  
+  public void toggleShowLcbWinrate() {
+	    this.showlcbwinrate = !this.showlcbwinrate;
+	  }
+  
+  
   public void toggleShowMoveNumber() {
     if (this.onlyLastMoveNumber > 0) {
       allowMoveNumber =
