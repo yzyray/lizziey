@@ -586,6 +586,7 @@ public class Leelaz {
       featurecat.lizzie.gui.RightClickMenu.allowcoords = "";
       featurecat.lizzie.gui.RightClickMenu.avoidcoords = "";
       featurecat.lizzie.gui.RightClickMenu.move = 0;
+      featurecat.lizzie.gui.RightClickMenu.isforcing = false;
       sendCommand(
           "lz-analyze "
               + Lizzie.config
@@ -609,6 +610,7 @@ public class Leelaz {
       featurecat.lizzie.gui.RightClickMenu.allowcoords = "";
       featurecat.lizzie.gui.RightClickMenu.avoidcoords = "";
       featurecat.lizzie.gui.RightClickMenu.move = 0;
+      featurecat.lizzie.gui.RightClickMenu.isforcing = false;
       sendCommand(
           "lz-analyze "
               + Lizzie.config
@@ -650,6 +652,10 @@ public class Leelaz {
 
   public boolean isPondering() {
     return isPondering;
+  }
+
+  public void Pondering() {
+    isPondering = true;
   }
 
   public void notPondering() {

@@ -35,6 +35,7 @@ public class RightClickMenu extends JPopupMenu {
   public static int move = 0;
   public static int startmove = 0;
   public static boolean isforcing = false;
+  public static boolean isallow = false;
   ArrayList<Movelist> currentmovestat;
 
   public RightClickMenu() {
@@ -44,7 +45,14 @@ public class RightClickMenu extends JPopupMenu {
           public void popupMenuCanceled(PopupMenuEvent e) {}
 
           public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-            if (Lizzie.leelaz.isPondering()) {
+            if (Lizzie.leelaz.isPondering() && isforcing) {
+              if (isallow) {
+                Lizzie.leelaz.analyzeAvoid("allow", Lizzie.board.getcurrentturn(), allowcoords, 1);
+              } else {
+                Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturn(), avoidcoords, 30);
+              }
+            }
+            if (Lizzie.leelaz.isPondering() && !isforcing) {
               Lizzie.leelaz.ponder();
             }
             Lizzie.frame.isshowrightmenu = false;
@@ -328,6 +336,8 @@ public class RightClickMenu extends JPopupMenu {
       }
     }
     isforcing = true;
+    isallow = true;
+    Lizzie.leelaz.Pondering();
     Lizzie.leelaz.analyzeAvoid("allow", Lizzie.board.getcurrentturn(), allowcoords, 1);
     Lizzie.frame.isshowrightmenu = false;
   }
@@ -351,6 +361,8 @@ public class RightClickMenu extends JPopupMenu {
     }
     // String color=Lizzie.frame.getstonecolor(mousex,mousey);
     isforcing = true;
+    isallow = false;
+    Lizzie.leelaz.Pondering();
     Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturnponder(), avoidcoords, 30);
     // System.out.println("ana ponder");
   }
@@ -362,6 +374,8 @@ public class RightClickMenu extends JPopupMenu {
       avoidcoords = "A0";
     }
     isforcing = true;
+    isallow = false;
+    Lizzie.leelaz.Pondering();
     Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturn(), avoidcoords, 30);
     //  System.out.println("ana ");
   }
