@@ -163,15 +163,27 @@ public class Board implements LeelazListener {
   }
 
   public void savelist() {
-    System.out.println("保存board");
+    //  System.out.println("保存board");
     tempmovelist = getmovelist();
-    temphistory = history;
+    //   temphistory = history;
     clear();
     setlist();
   }
 
+  public void savelist(int movenumber) {
+    //  System.out.println("保存board");
+    tempmovelist = getmovelist();
+    int length = tempmovelist.size() - movenumber;
+    for (int i = 0; i < length; i++) {
+      tempmovelist.remove(0);
+    }
+    //  temphistory = history;
+    // clear();
+    //  setlist();
+  }
+
   public ArrayList<Movelist> savelistforeditmode() {
-    System.out.println("保存board");
+    //   System.out.println("保存board");
     tempmovelist = getmovelist();
     tempallmovelist = getallmovelist();
     clear();
@@ -182,14 +194,21 @@ public class Board implements LeelazListener {
   public void resetlistforeditmode() {
 
     // System.out.println("恢复board和branch");
-    setmovelist(tempallmovelist);
+    //    setmovelist(tempallmovelist);
     setmovelist(tempmovelist);
   }
 
-  public void setlistforeditmode() {
+  public void setlistforeditmode1() {
     tempmovelist = getmovelist();
     // System.out.println("恢复board和branch");
-    setmovelist(tempallmovelist);
+    // setmovelist(tempallmovelist);
+    // setmovelist(tempmovelist);
+  }
+
+  public void setlistforeditmode2() {
+    // tempmovelist = getmovelist();
+    // System.out.println("恢复board和branch");
+    // setmovelist(tempallmovelist);
     setmovelist(tempmovelist);
   }
 
@@ -705,7 +724,7 @@ public class Board implements LeelazListener {
   public void placeinsert(int x, int y, Stone color) {
     synchronized (this) {
       if (!isValid(x, y) || (history.getStones()[getIndex(x, y)] != Stone.EMPTY)) return;
-
+      mvnumber[getIndex(x, y)] = history.getCurrentHistoryNode().getData().moveNumber + 1;
       updateWinrate();
       double nextWinrate = -100;
       if (history.getData().winrate >= 0) nextWinrate = 100 - history.getData().winrate;
@@ -811,7 +830,7 @@ public class Board implements LeelazListener {
 
       if (!isValid(x, y) || (history.getStones()[getIndex(x, y)] != Stone.EMPTY && !newBranch))
         return;
-
+      mvnumber[getIndex(x, y)] = history.getCurrentHistoryNode().getData().moveNumber + 1;
       updateWinrate();
       double nextWinrate = -100;
       if (history.getData().winrate >= 0) nextWinrate = 100 - history.getData().winrate;
@@ -826,6 +845,7 @@ public class Board implements LeelazListener {
         // this is the next coordinate in history. Just increment history so that we don't erase the
         // redo's
         history.next();
+
         // should be opposite from the bottom case
         if (Lizzie.frame.isPlayingAgainstLeelaz
             && Lizzie.frame.playerIsBlack != getData().blackToPlay) {
@@ -925,7 +945,6 @@ public class Board implements LeelazListener {
    */
   public void place(int x, int y) {
     place(x, y, history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
-    mvnumber[getIndex(x, y)] = history.getCurrentHistoryNode().getData().moveNumber;
   }
 
   public void insert(int x, int y) {
@@ -2193,7 +2212,7 @@ public class Board implements LeelazListener {
       placeinsert(coords[0], coords[1], history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
     }
     insertoricurrentMoveNumber = insertoricurrentMoveNumber + 1;
-    mvnumber[getIndex(coords[0], coords[1])] = history.getCurrentHistoryNode().getData().moveNumber;
+
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.ponder();
     }

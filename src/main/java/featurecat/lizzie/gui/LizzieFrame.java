@@ -87,7 +87,7 @@ public class LizzieFrame extends JFrame {
   };
   private static final String DEFAULT_TITLE = resourceBundle.getString("LizzieFrame.title");
   private static BoardRenderer boardRenderer;
-  private static BoardRenderer subBoardRenderer;
+  private static SubBoardRenderer subBoardRenderer;
   private static VariationTree variationTree;
   private static WinrateGraph winrateGraph;
 
@@ -156,7 +156,7 @@ public class LizzieFrame extends JFrame {
     super(DEFAULT_TITLE);
 
     boardRenderer = new BoardRenderer(true);
-    subBoardRenderer = new BoardRenderer(false);
+    subBoardRenderer = new SubBoardRenderer(false);
     variationTree = new VariationTree();
     winrateGraph = new WinrateGraph();
 
@@ -755,6 +755,21 @@ public class LizzieFrame extends JFrame {
             }
           }
         }
+        int tempx = cx;
+        int tempy = cy;
+        int tempw = cw;
+        int temph = ch;
+        if (subBoardWidth > subBoardHeight) {
+          cx = subBoardX - (subBoardWidth - subBoardHeight) / 2;
+        } else {
+          cx = subBoardX;
+        }
+        cy = subBoardY;
+        cw = subBoardWidth;
+        ch = subBoardHeight;
+        subBoardX = tempx;
+        subBoardY = tempy;
+        subBoardLength = Math.min(tempw, temph);
       }
 
       // initialize
@@ -1384,6 +1399,16 @@ public class LizzieFrame extends JFrame {
       return Lizzie.board.convertCoordinatesToName(coords[0], coords[1]);
     }
     return "N";
+  }
+
+  public void onDoubleClicked(int x, int y) {
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+    if (boardCoordinates.isPresent()) {
+      int[] coords = boardCoordinates.get();
+      int movenumber = Lizzie.board.getmovenumber(coords);
+      Lizzie.board.savelist(Lizzie.board.getmovenumber(coords));
+      Lizzie.board.setlist();
+    }
   }
 
   public void insertMove(int x, int y) {

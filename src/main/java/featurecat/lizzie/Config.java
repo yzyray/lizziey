@@ -14,7 +14,7 @@ public class Config {
 
   public boolean showBorder = false;
   public boolean showMoveNumber = false;
-  public int onlyLastMoveNumber = 0;
+  public int onlyLastMoveNumber = 10;
   // 0: Do not show; -1: Show all move number; other: Show last move number
   public int allowMoveNumber = -1;
   public boolean newMoveNumberInBranch = true;
@@ -73,7 +73,7 @@ public class Config {
   public Optional<Map<Double, Color>> blunderNodeColors;
   public int nodeColorMode = 0;
   public boolean appendWinrateToComment = true;
-  public int boardPositionProportion = 4;
+  public int boardPositionProportion = 3;
   public String gtpConsoleStyle = "";
   private final String defaultGtpConsoleStyle =
       "body {background:#000000; color:#d0d0d0; font-family:Consolas, Menlo, Monaco, 'Ubuntu Mono', monospace; margin:4px;} .command {color:#ffffff;font-weight:bold;} .winrate {color:#ffffff;font-weight:bold;} .coord {color:#ffffff;font-weight:bold;}";
@@ -185,7 +185,7 @@ public class Config {
     showCoordinates = uiConfig.optBoolean("show-coordinates");
     replayBranchIntervalSeconds = uiConfig.optDouble("replay-branch-interval-seconds", 1.0);
     colorByWinrateInsteadOfVisits = uiConfig.optBoolean("color-by-winrate-instead-of-visits");
-    boardPositionProportion = uiConfig.optInt("board-postion-proportion", 4);
+    boardPositionProportion = uiConfig.optInt("board-postion-proportion", 3);
 
     winrateStrokeWidth = theme.winrateStrokeWidth();
     minimumBlunderBarWidth = theme.minimumBlunderBarWidth();
@@ -249,9 +249,9 @@ public class Config {
   public void toggleShowMoveNumber() {
     if (this.onlyLastMoveNumber > 0) {
       allowMoveNumber =
-          (allowMoveNumber == 0 ? onlyLastMoveNumber : (allowMoveNumber == -1 ? 0 : -1));
+          (allowMoveNumber == -1 ? onlyLastMoveNumber : (allowMoveNumber == 0 ? -1 : 0));
     } else {
-      allowMoveNumber = (allowMoveNumber == -1 ? 0 : -1);
+      allowMoveNumber = (allowMoveNumber == 0 ? -1 : 0);
     }
   }
 
@@ -363,7 +363,7 @@ public class Config {
     leelaz.put("max-game-thinking-time-seconds", 2);
     leelaz.put("print-comms", false);
     leelaz.put("analyze-update-interval-centisec", 10);
-    leelaz.put("show-lcb-winrate", true);
+    leelaz.put("show-lcb-winrate", false);
     leelaz.put("leela-version", 17);
     config.put("leelaz", leelaz);
 
@@ -402,7 +402,7 @@ public class Config {
     ui.put("show-dynamic-komi", true);
     ui.put("min-playout-ratio-for-stats", 0.0);
     ui.put("theme", "default");
-    ui.put("only-last-move-number", 0);
+    ui.put("only-last-move-number", 10);
     ui.put("new-move-number-in-branch", true);
     ui.put("append-winrate-to-comment", false);
     ui.put("replay-branch-interval-seconds", 1.0);

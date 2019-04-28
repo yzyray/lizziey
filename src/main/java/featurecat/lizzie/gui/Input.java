@@ -23,8 +23,13 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         return;
       }
       if (!isinsertmode) {
-        Lizzie.frame.onClicked(e.getX(), e.getY());
+        if (e.getClickCount() == 2) { // TODO: Maybe need to delay check
+          Lizzie.frame.onDoubleClicked(e.getX(), e.getY());
+        } else {
+          Lizzie.frame.onClicked(e.getX(), e.getY());
+        }
       } else {
+
         Lizzie.frame.insertMove(e.getX(), e.getY());
       }
 
@@ -364,6 +369,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           }
           Lizzie.frame.pasteSgf();
         } else {
+          //    Lizzie.config.toggleLargeSubBoard();
           Lizzie.config.toggleShowBranch();
         }
         break;

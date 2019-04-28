@@ -2,8 +2,10 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.rules.Movelist;
+import featurecat.lizzie.rules.SGFParser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -20,6 +22,7 @@ public class RightClickMenu extends JPopupMenu {
   //  private JMenuItem deleteone;
   //  private JMenuItem quitinsert;
   private JMenuItem allow;
+  private JMenuItem allow2;
   private JMenuItem avoid;
   private JMenuItem avoid2;
   private static JMenuItem cancelavoid;
@@ -29,6 +32,8 @@ public class RightClickMenu extends JPopupMenu {
   private static JMenuItem quiteditmode;
   private static JMenuItem restore;
   private static JMenuItem reedit;
+  private String saveString;
+  private String saveString2;
   // private BoardRenderer boardRenderer;
   public static String allowcoords = "";
   public static String avoidcoords = "";
@@ -37,6 +42,7 @@ public class RightClickMenu extends JPopupMenu {
   public static boolean isforcing = false;
   public static boolean isallow = false;
   ArrayList<Movelist> currentmovestat;
+  ArrayList<Movelist> currentmovestat2;
 
   public RightClickMenu() {
 
@@ -58,7 +64,14 @@ public class RightClickMenu extends JPopupMenu {
             Lizzie.frame.isshowrightmenu = false;
           }
 
-          public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+          public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+
+            if (allowcoords != "") {
+              allow2.setVisible(true);
+            } else {
+              allow2.setVisible(false);
+            }
+          }
         };
 
     this.addPopupMenuListener(listener);
@@ -69,7 +82,8 @@ public class RightClickMenu extends JPopupMenu {
     addwhite = new JMenuItem("插入白子");
     addone = new JMenuItem("轮流插入棋子");
     //   deleteone = new JMenuItem("更改棋子位置");
-    allow = new JMenuItem("分析此点(强制)");
+    allow = new JMenuItem("只分析此点(强制)");
+    allow2 = new JMenuItem("增加分析此点(强制)");
     avoid = new JMenuItem("不分析此点(强制)");
     avoid2 = new JMenuItem("设置不分析持续手数");
     cancelavoid = new JMenuItem("清除分析设置");
@@ -82,15 +96,27 @@ public class RightClickMenu extends JPopupMenu {
     // this.add(addblack);
     // this.add(addwhite);
     this.add(allow);
+    this.add(allow2);
     this.add(avoid);
     this.add(avoid2);
     this.add(cancelavoid);
+
     //  this.add(deleteone);
     // this.add(insertmode);
     // this.add(test);
     // this.add(test2);
     this.add(editmode);
     // this.add(quiteditmode);
+
+    allow2.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            //  System.out.println("撤销上次编辑");
+            allow2();
+            //  Lizzie.board.clear();
+          }
+        });
     restore.addActionListener(
         new ActionListener() {
           @Override
@@ -240,22 +266,42 @@ public class RightClickMenu extends JPopupMenu {
   }
 
   private void restore() {
-    Lizzie.frame.pasteSgf();
-    Lizzie.board.setmovelist(currentmovestat);
+    // Lizzie.frame.pasteSgf();
+    try {
+      saveString2 = SGFParser.saveToString();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    currentmovestat2 = Lizzie.board.savelistforeditmode();
+    if (!saveString.isEmpty()) {
+      SGFParser.loadFromString(saveString);
+
+      Lizzie.board.setmovelist(currentmovestat);
+    }
     this.remove(restore);
     this.add(reedit);
   }
 
   private void reedit() {
-    Lizzie.board.resetlistforeditmode();
-    Lizzie.board.quitinsertmode();
+    if (!saveString2.isEmpty()) {
+      SGFParser.loadFromString(saveString2);
+
+      Lizzie.board.setmovelist(currentmovestat2);
+    }
     this.remove(reedit);
     this.add(restore);
   }
 
   private void editmode() {
     featurecat.lizzie.gui.Input.Draggedmode = true;
-    Lizzie.frame.copySgf();
+    // Lizzie.frame.copySgf();
+    try {
+      saveString = SGFParser.saveToString();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     this.remove(reedit);
     this.remove(editmode);
     this.add(addblack);
@@ -274,7 +320,11 @@ public class RightClickMenu extends JPopupMenu {
     this.remove(addblack);
     this.remove(addwhite);
     this.remove(addone);
-    Lizzie.board.setlistforeditmode();
+    Lizzie.board.setlistforeditmode1();
+    if (!saveString.isEmpty()) {
+      SGFParser.loadFromString(saveString);
+    }
+    Lizzie.board.setlistforeditmode2();
     Lizzie.board.quitinsertmode();
     this.remove(quiteditmode);
   }
@@ -329,6 +379,19 @@ public class RightClickMenu extends JPopupMenu {
 
   private void allow() {
     if (Lizzie.frame.iscoordsempty(mousex, mousey)) {
+
+      allowcoords = Lizzie.frame.convertmousexy(mousex, mousey);
+    }
+    isforcing = true;
+    isallow = true;
+    avoidcoords = "";
+    Lizzie.leelaz.Pondering();
+    Lizzie.leelaz.analyzeAvoid("allow", Lizzie.board.getcurrentturn(), allowcoords, 1);
+    Lizzie.frame.isshowrightmenu = false;
+  }
+
+  private void allow2() {
+    if (Lizzie.frame.iscoordsempty(mousex, mousey)) {
       if (allowcoords != "") {
         allowcoords = allowcoords + "," + Lizzie.frame.convertmousexy(mousex, mousey);
       } else {
@@ -337,6 +400,7 @@ public class RightClickMenu extends JPopupMenu {
     }
     isforcing = true;
     isallow = true;
+    avoidcoords = "";
     Lizzie.leelaz.Pondering();
     Lizzie.leelaz.analyzeAvoid("allow", Lizzie.board.getcurrentturn(), allowcoords, 1);
     Lizzie.frame.isshowrightmenu = false;
@@ -362,8 +426,10 @@ public class RightClickMenu extends JPopupMenu {
     // String color=Lizzie.frame.getstonecolor(mousex,mousey);
     isforcing = true;
     isallow = false;
+    allowcoords = "";
     Lizzie.leelaz.Pondering();
     Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturnponder(), avoidcoords, 30);
+
     // System.out.println("ana ponder");
   }
 
@@ -373,6 +439,7 @@ public class RightClickMenu extends JPopupMenu {
     if (avoidcoords == "") {
       avoidcoords = "A0";
     }
+    allowcoords = "";
     isforcing = true;
     isallow = false;
     Lizzie.leelaz.Pondering();
