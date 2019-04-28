@@ -32,6 +32,7 @@ public class RightClickMenu extends JPopupMenu {
   private static JMenuItem quiteditmode;
   private static JMenuItem restore;
   private static JMenuItem reedit;
+  private static JMenuItem cleanupedit;
   private String saveString;
   private String saveString2;
   // private BoardRenderer boardRenderer;
@@ -43,6 +44,8 @@ public class RightClickMenu extends JPopupMenu {
   public static boolean isallow = false;
   ArrayList<Movelist> currentmovestat;
   ArrayList<Movelist> currentmovestat2;
+  ArrayList<Movelist> orimovestat;
+  private String oriString = "";
 
   public RightClickMenu() {
 
@@ -71,6 +74,11 @@ public class RightClickMenu extends JPopupMenu {
             } else {
               allow2.setVisible(false);
             }
+            if (oriString != "") {
+              cleanupedit.setVisible(true);
+            } else {
+              cleanupedit.setVisible(false);
+            }
           }
         };
 
@@ -93,6 +101,7 @@ public class RightClickMenu extends JPopupMenu {
     quiteditmode = new JMenuItem("退出编辑模式");
     restore = new JMenuItem("撤销最近一次编辑");
     reedit = new JMenuItem("恢复最近一次编辑");
+    cleanupedit = new JMenuItem("清除所有编辑结果");
     // this.add(addblack);
     // this.add(addwhite);
     this.add(allow);
@@ -106,7 +115,18 @@ public class RightClickMenu extends JPopupMenu {
     // this.add(test);
     // this.add(test2);
     this.add(editmode);
+
     // this.add(quiteditmode);
+
+    cleanupedit.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            //  System.out.println("撤销上次编辑");
+            cleanupedit();
+            //  Lizzie.board.clear();
+          }
+        });
 
     allow2.addActionListener(
         new ActionListener() {
@@ -252,17 +272,16 @@ public class RightClickMenu extends JPopupMenu {
         });
   }
 
-  private void saveboard() {
-
-    Lizzie.board.savelist();
-
-    // 保存棋盘状态
-  }
-
-  private void setboard() {
-
-    Lizzie.board.setlist();
-    // 恢复棋盘状态
+  private void cleanupedit() {
+    if (!oriString.isEmpty()) {
+      SGFParser.loadFromString(oriString);
+      Lizzie.board.setmovelist(orimovestat);
+    }
+    oriString = "";
+    saveString = "";
+    saveString2 = "";
+    this.remove(restore);
+    this.remove(reedit);
   }
 
   private void restore() {
@@ -302,6 +321,7 @@ public class RightClickMenu extends JPopupMenu {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+
     this.remove(reedit);
     this.remove(editmode);
     this.add(addblack);
@@ -310,12 +330,17 @@ public class RightClickMenu extends JPopupMenu {
     this.add(quiteditmode);
     Lizzie.board.insertmode();
     currentmovestat = Lizzie.board.savelistforeditmode();
+    if (oriString == "") {
+      oriString = saveString;
+      orimovestat = currentmovestat;
+    }
   }
 
   private void quiteditmode() {
     featurecat.lizzie.gui.Input.Draggedmode = false;
     this.add(editmode);
     this.add(restore);
+    this.add(cleanupedit);
     this.remove(quiteditmode);
     this.remove(addblack);
     this.remove(addwhite);
