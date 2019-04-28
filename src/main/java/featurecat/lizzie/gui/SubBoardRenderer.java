@@ -1116,7 +1116,8 @@ public class SubBoardRenderer {
 
   /** Draws the outline of a circle centered at (centerX, centerY) with radius $radius$ */
   private void drawCircle(Graphics2D g, int centerX, int centerY, int radius) {
-    g.drawOval(centerX - radius, centerY - radius, 2 * radius + 1, 2 * radius + 1);
+
+    g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
   }
 
   /**

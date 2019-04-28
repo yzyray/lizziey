@@ -1111,12 +1111,14 @@ public class BoardRenderer {
 
   /** Fills in a circle centered at (centerX, centerY) with radius $radius$ */
   private void fillCircle(Graphics2D g, int centerX, int centerY, int radius) {
+
     g.fillOval(centerX - radius, centerY - radius, 2 * radius + 1, 2 * radius + 1);
   }
 
   /** Draws the outline of a circle centered at (centerX, centerY) with radius $radius$ */
   private void drawCircle(Graphics2D g, int centerX, int centerY, int radius) {
-    g.drawOval(centerX - radius, centerY - radius, 2 * radius + 1, 2 * radius + 1);
+    g.setStroke(new BasicStroke(2f));
+    g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
   }
 
   /**
