@@ -39,7 +39,7 @@ public class Leelaz {
   private ArrayDeque<String> cmdQueue;
   private JSONObject leelazConfig;
 
-  private Process process;
+  public Process process;
 
   private BufferedInputStream inputStream;
   private BufferedOutputStream outputStream;
@@ -169,7 +169,7 @@ public class Leelaz {
     // start a thread to continuously read Leelaz output
     // new Thread(this::read).start();
     // can stop engine for switching weights
-    executor = Executors.newSingleThreadScheduledExecutor();
+    executor = Executors.newSingleThreadScheduledExecutor();    
     executor.execute(this::read);
   }
 

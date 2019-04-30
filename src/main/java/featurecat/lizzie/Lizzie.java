@@ -104,9 +104,15 @@ public class Lizzie {
       }
       commandLine = enginesOpt.get().getString(index - 1);
     }
-    if (commandLine.trim().isEmpty() || index == Lizzie.leelaz.currentEngineN()) {
-      return;
-    }
+    if (commandLine.trim().isEmpty() )
+    	{
+    	 return;
+    	}
+    if( index == Lizzie.leelaz.currentEngineN()&&Lizzie.leelaz.process.isAlive())
+    { 
+    	return;
+    }     
+    
 
     // Workaround for leelaz no exiting when restarting
     if (leelaz.isThinking) {
