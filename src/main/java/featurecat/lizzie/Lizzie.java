@@ -1,6 +1,7 @@
 package featurecat.lizzie;
 
 import featurecat.lizzie.analysis.Leelaz;
+import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.gui.GtpConsolePane;
 import featurecat.lizzie.gui.LizzieFrame;
 import featurecat.lizzie.rules.Board;
@@ -15,6 +16,8 @@ public class Lizzie {
   public static Config config;
   public static GtpConsolePane gtpConsole;
   public static LizzieFrame frame;
+  public static JDialog analysisDialog;
+  public static AnalysisFrame analysisFrame;
   public static Board board;
   public static Leelaz leelaz;
   public static String lizzieVersion = "0.7";
@@ -27,6 +30,8 @@ public class Lizzie {
     config = new Config();
     board = new Board();
     frame = new LizzieFrame();
+    analysisDialog = AnalysisFrame.createAnalysisDialog(frame);
+    analysisFrame = (AnalysisFrame) analysisDialog.getContentPane();
     gtpConsole = new GtpConsolePane(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
     try {

@@ -858,4 +858,6 @@ public class Leelaz {
   public void toggleGtpConsole() {
     gtpConsole = !gtpConsole;
   }
+  
+  
 }

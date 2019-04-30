@@ -13,6 +13,8 @@ public class MoveData {
   public int playouts;
   public double winrate;
   public List<String> variation;
+  public double lcb;
+  public double oriwinrate;
 
   private MoveData() {}
 
@@ -51,13 +53,19 @@ public class MoveData {
           result.playouts = Integer.parseInt(value);
         }
         if (islcb && key.equals("lcb")) {
-          // LCB support
-          result.winrate = Integer.parseInt(value) / 100.0;
+        	// LCB support          
+          result.lcb = Integer.parseInt(value) / 100.0;
+          if(islcb) {
+              result.winrate = Integer.parseInt(value) / 100.0;
+              }
         }
 
         if (!islcb && key.equals("winrate")) {
           // support 0.16 0.15
+          result.oriwinrate = Integer.parseInt(value) / 100.0;
+          if(!islcb) {
           result.winrate = Integer.parseInt(value) / 100.0;
+          }
         }
       }
     }

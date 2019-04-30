@@ -210,7 +210,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
     switch (e.getKeyCode()) {
       case VK_E:
-        Lizzie.frame.toggleGtpConsole();
+    	  Lizzie.analysisDialog.setVisible(true);
+    //    Lizzie.frame.toggleGtpConsole();
         break;
       case VK_RIGHT:
         if (isinsertmode) {
