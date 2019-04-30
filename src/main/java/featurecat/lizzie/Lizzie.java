@@ -126,7 +126,9 @@ public class Lizzie {
     board.saveMoveNumber();
     try {
       leelaz.restartEngine(commandLine, index);
+      board.clearbestmovesafter(board.getHistory().getStart());
       board.restoreMoveNumber();
+      
     } catch (IOException e) {
       e.printStackTrace();
     }

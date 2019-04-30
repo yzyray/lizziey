@@ -154,14 +154,16 @@ public class BoardData {
 
   public void tryToSetBestMoves(List<MoveData> moves) {
     // MoveData.getPlayouts(moves) > playouts	
-    //if (MoveData.getPlayouts(moves) > playouts ) {
+    if (MoveData.getPlayouts(moves) > playouts ) {
 	  //这里还有问题
 	
     	//added for change bestmoves when playouts is not increased
       bestMoves = moves;
       setPlayouts(MoveData.getPlayouts(moves));
       winrate = getWinrateFromBestMoves(moves);
-   // }
+    }
+  int a=  MoveData.getPlayouts(moves) ;
+  int b=3;
   }
 
   public static double getWinrateFromBestMoves(List<MoveData> bestMoves) {
@@ -191,6 +193,9 @@ public class BoardData {
     }
   }
 
+  public void setPlayoutsForce(int playouts) {	   
+	      this.playouts = playouts;	    
+	  }
   public int getPlayouts() {
     return playouts;
   }

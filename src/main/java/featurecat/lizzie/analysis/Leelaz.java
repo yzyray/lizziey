@@ -554,6 +554,7 @@ public class Leelaz {
     // analyze result
     analyzeAvoid(
         String.format("%s %s %s %d", type, color, coordList, untilMove <= 0 ? 1 : untilMove));
+    Lizzie.board.clearbestmoves();
   }
 
   public void analyzeAvoid(String parameters) {
@@ -570,6 +571,7 @@ public class Leelaz {
             "lz-analyze %d %s",
             Lizzie.config.config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec"),
             parameters));
+    Lizzie.board.clearbestmoves();
   }
   // this is copyed from https://github.com/zsalch/lizzie/tree/n_avoiddialog
 

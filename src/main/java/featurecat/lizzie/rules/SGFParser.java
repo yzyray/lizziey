@@ -212,8 +212,8 @@ public class SGFParser {
             int numPlayouts =
                 Integer.parseInt(
                     line1[2]
-                        .replaceAll("k", "000")
-                        .replaceAll("m", "000000")
+                        .replaceAll("k", "00")
+                        .replaceAll("m", "00000")
                         .replaceAll("[^0-9]", ""));
             Lizzie.board.getData().setPlayouts(numPlayouts);
             if (numPlayouts > 0 && !line2.isEmpty()) {

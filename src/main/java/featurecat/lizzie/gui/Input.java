@@ -462,17 +462,23 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         }
         break;
 
-      case VK_DELETE:
+      
+      case VK_DELETE:    	  
       case VK_BACK_SPACE:
         if (isinsertmode) {
           JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
           return;
         }
-        if (e.isShiftDown()) {
+        if(e.isAltDown())
+        {
+            Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
+            JOptionPane.showMessageDialog(null, "已清空所有Lizzie推荐点缓存");
+        }
+        else if (e.isShiftDown()) {
           deleteBranch();
         } else {
           deleteMove();
-        }
+        }        
         break;
 
       case VK_Z:

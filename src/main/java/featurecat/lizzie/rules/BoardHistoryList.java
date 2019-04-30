@@ -232,6 +232,13 @@ public class BoardHistoryList {
   public int mainTrunkLength() {
     return root().getDepth();
   }
+  public BoardHistoryNode getStart() {
+	    BoardHistoryNode e = head;
+	    while (e.previous().isPresent()) {
+	      e = e.previous().get();
+	    }
+	    return e;
+	  }
 
   public BoardHistoryNode getEnd() {
     BoardHistoryNode e = head;

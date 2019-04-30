@@ -161,6 +161,23 @@ public class Board implements LeelazListener {
   public static boolean isValid(int[] c) {
     return c != null && c.length == 2 && isValid(c[0], c[1]);
   }
+  
+  public void clearbestmovesafter(BoardHistoryNode node) {
+	  
+	  node.getData().setPlayoutsForce(1);
+      if (node.numberOfChildren() > 1) {
+          // Variation
+          for (BoardHistoryNode sub : node.getVariations()) {
+        	  clearbestmovesafter(sub);
+          }
+        } else if (node.numberOfChildren() == 1) {
+        	clearbestmovesafter(node.next().orElse(null));
+        }
+  }
+  
+ public void clearbestmoves() {	  
+	  history.getCurrentHistoryNode().getData().setPlayoutsForce(1);
+  }
 
   public void savelist() {
     //  System.out.println("保存board");
@@ -1176,7 +1193,7 @@ public class Board implements LeelazListener {
       if (stone.isBlack() || stone.isWhite()) {
         int y = i % Board.boardSize;
         int x = (i - y) / Board.boardSize;
-        Lizzie.leelaz.playMove(stone, convertCoordinatesToName(x, y));
+        Lizzie.leelaz.playMove(stone, convertCoordinatesToName(x, y));        
       }
     }
     int moveNumber = node.getData().moveNumber;
