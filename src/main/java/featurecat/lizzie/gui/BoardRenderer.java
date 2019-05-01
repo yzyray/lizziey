@@ -930,7 +930,7 @@ public class BoardRenderer {
       Graphics2D g, int centerX, int centerY, boolean isGhost, float shadowStrength) {
     if (!uiConfig.getBoolean("shadows-enabled")) return;
 
-    double r = stoneRadius * Lizzie.config.shadowSize / 100;
+    double r = stoneRadius * 0.55;
     final int shadowSize = (int) (r * 0.2) == 0 ? 1 : (int) (r * 0.2);
     final int fartherShadowSize = (int) (r * 0.17) == 0 ? 1 : (int) (r * 0.17);
 
