@@ -54,9 +54,11 @@ public class BoardRenderer {
 
   private BufferedImage cachedStonesImage = emptyImage;
   private BufferedImage cachedStonesImagedraged = emptyImage;
+  
   private BufferedImage cachedBoardImage = emptyImage;
   private BufferedImage cachedWallpaperImage = emptyImage;
   private BufferedImage cachedStonesShadowImage = emptyImage;
+  private BufferedImage cachedStonesShadowImagedraged = emptyImage;
   private Zobrist cachedZhash = new Zobrist(); // defaults to an empty board
 
   private BufferedImage cachedBlackStoneImage = emptyImage;
@@ -313,17 +315,21 @@ public class BoardRenderer {
 
   public void removedrawmovestone() {
     cachedStonesImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+    cachedStonesShadowImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
   }
 
   public void drawmovestone(int x, int y, Stone stone) {
     cachedStonesImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
-    cachedStonesShadowImage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+    cachedStonesShadowImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
     Graphics2D g = cachedStonesImagedraged.createGraphics();
-    g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-    g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-    Graphics2D gShadow = cachedStonesShadowImage.createGraphics();
+    Graphics2D gShadow = cachedStonesShadowImagedraged.createGraphics();
     gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-    gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+   // gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+    //g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+   
+   // gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+   // gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
     int stoneX = scaledMargin + squareLength * x;
     int stoneY = scaledMargin + squareLength * y;
     drawStone(g, gShadow, stoneX, stoneY, stone, x, y);
@@ -486,6 +492,7 @@ public class BoardRenderer {
   private void renderImages(Graphics2D g) {
     g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_OFF);
     g.drawImage(cachedStonesShadowImage, x, y, null);
+    g.drawImage(cachedStonesShadowImagedraged, x, y, null);
     if (Lizzie.config.showBranchNow()) {
       g.drawImage(branchStonesShadowImage, x, y, null);
     }
@@ -506,7 +513,7 @@ public class BoardRenderer {
         int[] lastMove = lastMoveOpt.get();
 
         // Mark the last coordinate
-        int lastMoveMarkerRadius = stoneRadius / 3;
+        int lastMoveMarkerRadius = stoneRadius / 2;
         int stoneX = x + scaledMargin + squareLength * lastMove[0];
         int stoneY = y + scaledMargin + squareLength * lastMove[1];
 
@@ -518,8 +525,8 @@ public class BoardRenderer {
           // Use a solid circle instead of
           fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
         } else {
-          fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.70));
-           //drawCircle(g, stoneX, stoneY, lastMoveMarkerRadius);
+         // fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.70));
+           drawCircle(g, stoneX, stoneY, lastMoveMarkerRadius);
           // 需要恢复的
         }
       } else if (board.getData().moveNumber != 0 && !board.inScoreMode()) {
@@ -924,7 +931,7 @@ public class BoardRenderer {
     if (!uiConfig.getBoolean("shadows-enabled")) return;
 
     double r = stoneRadius * Lizzie.config.shadowSize / 100;
-    final int shadowSize = (int) (r * 0.3) == 0 ? 1 : (int) (r * 0.3);
+    final int shadowSize = (int) (r * 0.2) == 0 ? 1 : (int) (r * 0.2);
     final int fartherShadowSize = (int) (r * 0.17) == 0 ? 1 : (int) (r * 0.17);
 
     final Paint TOP_GRADIENT_PAINT;
@@ -989,10 +996,10 @@ public class BoardRenderer {
     if (color.isBlack() || color.isWhite()) {
       boolean isBlack = color.isBlack();
       boolean isGhost = (color == Stone.BLACK_GHOST || color == Stone.WHITE_GHOST);
-      // if (uiConfig.getBoolean("fancy-stones")) {
+       if (uiConfig.getBoolean("fancy-stones")) {
       // 需要恢复的
-      if (false) {
-        // drawShadow(gShadow, centerX, centerY, isGhost);
+      //if (false) {
+         drawShadow(gShadow, centerX, centerY, isGhost);
         int size = stoneRadius * 2 + 1;
         g.drawImage(
             getScaleStone(isBlack, size),
@@ -1003,7 +1010,7 @@ public class BoardRenderer {
             null);
       } else {
         // 需要恢复的
-        // drawShadow(gShadow, centerX, centerY, true);
+         drawShadow(gShadow, centerX, centerY, true);
         Color blackColor = isGhost ? new Color(0, 0, 0) : Color.BLACK;
         Color whiteColor = isGhost ? new Color(255, 255, 255) : Color.WHITE;
         g.setColor(isBlack ? blackColor : whiteColor);
@@ -1187,13 +1194,6 @@ public class BoardRenderer {
     g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
   }
   
-  private void drawCircle2(Graphics2D g, int centerX, int centerY, int radius) {
-	   // g.setStroke(new BasicStroke(radius / 3f));
-	   // g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
-	    int[] xPoints = {centerX-5 , centerX-5 , centerX +10};
-	    int[] yPoints = {centerY +10, centerY -10, centerY };
-	    g.fillPolygon(xPoints, yPoints, 3); 
-	  }
 
   /**
    * Draws a string centered at (x, y) of font $fontString$, whose contents are $string$. The
