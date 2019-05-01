@@ -1,11 +1,13 @@
 package featurecat.lizzie.analysis;
 
-import featurecat.lizzie.Lizzie;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import featurecat.lizzie.Lizzie;
 
 /** Holds the data from Leelaz's pondering mode */
 public class MoveData {
@@ -15,6 +17,8 @@ public class MoveData {
   public List<String> variation;
   public double lcb;
   public double oriwinrate;
+  public double policy;
+  public int equalplayouts;
 
   private MoveData() {}
 
@@ -52,15 +56,18 @@ public class MoveData {
         if (key.equals("visits")) {
           result.playouts = Integer.parseInt(value);
         }
-        if (islcb && key.equals("lcb")) {
+        if (key.equals("lcb")) {
         	// LCB support          
           result.lcb = Integer.parseInt(value) / 100.0;
           if(islcb) {
               result.winrate = Integer.parseInt(value) / 100.0;
               }
         }
+        if (key.equals("prior")) {
+            result.policy = Integer.parseInt(value)/ 100.0;;
+          }
 
-        if (!islcb && key.equals("winrate")) {
+        if ( key.equals("winrate")) {
           // support 0.16 0.15
           result.oriwinrate = Integer.parseInt(value) / 100.0;
           if(!islcb) {
@@ -152,4 +159,22 @@ public class MoveData {
     }
     return playouts;
   }
+
+
+
+
+public static Comparator policyComparator = new Comparator() {
+		@Override
+	public int compare(Object o1, Object o2) {
+			MoveData e1=(MoveData)o1;
+			MoveData e2=(MoveData)o2;
+			if(e1.policy>e2.policy) 
+				return 1; 
+			if(e1.policy<e2.policy) 
+			return -1; 
+			else 
+			return 0; 
+	}
+	 };
+
 }

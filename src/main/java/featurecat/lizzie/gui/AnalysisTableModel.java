@@ -2,7 +2,6 @@ package featurecat.lizzie.gui;
 
 import com.google.common.collect.ImmutableList;
 import featurecat.lizzie.Lizzie;
-import featurecat.lizzie.analysis.BestMoveObserver;
 import featurecat.lizzie.analysis.MoveData;
 import featurecat.lizzie.rules.Board;
 
@@ -18,14 +17,19 @@ public class AnalysisTableModel extends AbstractTableModel {
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
-		return 5;
+		
+		return Lizzie.board.getData().bestMoves.size();
 	}
 
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
+		
 		return 5;
 	}
+	
+
+	 
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -39,12 +43,13 @@ public class AnalysisTableModel extends AbstractTableModel {
 	            case 2:
 	                return data.oriwinrate;
 	            case 3:
-	                return data.playouts;
+	                return (double)data.playouts;
 	            case 4:
-	                return data.winrate;
+	                return data.policy;
 	            default:
 	                return "";
 	        }
 	}
+
  
 }

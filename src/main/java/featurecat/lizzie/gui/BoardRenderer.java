@@ -20,7 +20,10 @@ import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -182,6 +185,17 @@ public class BoardRenderer {
       // Draw the lines
       g.setColor(Color.BLACK);
       for (int i = 0; i < Board.boardSize; i++) {
+    	//  g.setStroke(new BasicStroke(stoneRadius / 15f));
+    	  if (i==0||i==Board.boardSize-1)
+    	  {
+    		  g.setStroke(new BasicStroke(stoneRadius / 10f));
+    		  g.drawLine(
+    		            x + scaledMargin,
+    		            y + scaledMargin + squareLength * i,
+    		            x + scaledMargin + availableLength - 1,
+    		            y + scaledMargin + squareLength * i);
+    	  }
+    	  g.setStroke(new BasicStroke(1f));
         g.drawLine(
             x + scaledMargin,
             y + scaledMargin + squareLength * i,
@@ -189,6 +203,17 @@ public class BoardRenderer {
             y + scaledMargin + squareLength * i);
       }
       for (int i = 0; i < Board.boardSize; i++) {
+    	//  g.setStroke(new BasicStroke(stoneRadius / 15f));
+    	  if (i==0||i==Board.boardSize-1)
+    	  {
+    		  g.setStroke(new BasicStroke(stoneRadius / 10f));
+    		  g.drawLine(
+    				  x + scaledMargin + squareLength * i,
+    		            y + scaledMargin,
+    		            x + scaledMargin + squareLength * i,
+    		            y + scaledMargin + availableLength - 1);
+    	  }
+    	  g.setStroke(new BasicStroke(1f));
         g.drawLine(
             x + scaledMargin + squareLength * i,
             y + scaledMargin,
@@ -206,7 +231,7 @@ public class BoardRenderer {
           drawString(
               g,
               x + scaledMargin + squareLength * i,
-              y + scaledMargin / 2,
+              y + scaledMargin / 3,
               LizzieFrame.uiFont,
               Board.asName(i),
               stoneRadius * 4 / 5,
@@ -214,7 +239,7 @@ public class BoardRenderer {
           drawString(
               g,
               x + scaledMargin + squareLength * i,
-              y - scaledMargin / 2 + boardLength,
+              y - scaledMargin / 3 + boardLength,
               LizzieFrame.uiFont,
               Board.asName(i),
               stoneRadius * 4 / 5,
@@ -223,7 +248,7 @@ public class BoardRenderer {
         for (int i = 0; i < Board.boardSize; i++) {
           drawString(
               g,
-              x + scaledMargin / 2,
+              x + scaledMargin / 3,
               y + scaledMargin + squareLength * i,
               LizzieFrame.uiFont,
               "" + (Board.boardSize - i),
@@ -231,7 +256,7 @@ public class BoardRenderer {
               stoneRadius);
           drawString(
               g,
-              x - scaledMargin / 2 + +boardLength,
+              x - scaledMargin / 3 + +boardLength,
               y + scaledMargin + squareLength * i,
               LizzieFrame.uiFont,
               "" + (Board.boardSize - i),
@@ -481,20 +506,20 @@ public class BoardRenderer {
         int[] lastMove = lastMoveOpt.get();
 
         // Mark the last coordinate
-        int lastMoveMarkerRadius = stoneRadius / 2;
+        int lastMoveMarkerRadius = stoneRadius / 3;
         int stoneX = x + scaledMargin + squareLength * lastMove[0];
         int stoneY = y + scaledMargin + squareLength * lastMove[1];
 
         // Set color to the opposite color of whatever is on the board
         boolean isWhite = board.getStones()[Board.getIndex(lastMove[0], lastMove[1])].isWhite();
-        g.setColor(isWhite ? Color.BLACK : Color.WHITE);
+        g.setColor(Lizzie.board.getData().blackToPlay ? Color.BLACK : Color.WHITE);
 
         if (Lizzie.config.solidStoneIndicator) {
           // Use a solid circle instead of
           fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
         } else {
-          fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
-          // drawCircle(g, stoneX, stoneY, lastMoveMarkerRadius);
+          fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.70));
+           //drawCircle(g, stoneX, stoneY, lastMoveMarkerRadius);
           // 需要恢复的
         }
       } else if (board.getData().moveNumber != 0 && !board.inScoreMode()) {
@@ -585,11 +610,52 @@ public class BoardRenderer {
     float cyanHue = Color.RGBtoHSB(0, 255, 255, null)[0];
 
     if (bestMoves != null && !bestMoves.isEmpty()) {
-
+    	
+    	//Collections.sort(bestMoves);
+    	
       int maxPlayouts = 0;
       double maxWinrate = 0;
       double minWinrate = 100.0;
-      for (MoveData move : bestMoves) {
+      List<MoveData> tempbest1=new ArrayList();
+      List<MoveData> tempbest2=new ArrayList();      
+      for(int i=0;i<bestMoves.size();i++)
+      {
+    	  tempbest1.add(bestMoves.get(i));//开始复制一个list的内容到另外一个list
+    	  tempbest2.add(bestMoves.get(i));
+      }
+      Collections.sort(tempbest1, new Comparator<MoveData>() {
+
+			@Override
+			public int compare(MoveData s1, MoveData s2) {
+				// 降序						
+				if(s1.lcb<s2.lcb) 
+					return 1; 
+				if(s1.lcb>s2.lcb) 
+				return -1; 
+				else 
+				return 0; 
+			}});
+      
+      Collections.sort(tempbest2, new Comparator<MoveData>() {
+
+			@Override
+			public int compare(MoveData s1, MoveData s2) {
+				// 降序						
+				if(s1.playouts<s2.playouts) 
+					return 1; 
+				if(s1.playouts>s2.playouts) 
+				return -1; 
+				else 
+				return 0; 
+			}});
+      if(Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbwinrate)
+      {
+      for(int i=0;i<tempbest1.size();i++)
+      {
+    	  tempbest1.get(i).equalplayouts=tempbest2.get(i).playouts;    	  
+      }
+      }
+      for (MoveData move : bestMoves) {    	  
         if (move.playouts > maxPlayouts) maxPlayouts = move.playouts;
         if (move.winrate > maxWinrate) maxWinrate = move.winrate;
         if (move.winrate < minWinrate) minWinrate = move.winrate;
@@ -600,6 +666,7 @@ public class BoardRenderer {
           Optional<MoveData> moveOpt = Optional.empty();
 
           // This is inefficient but it looks better with shadows
+          
           for (MoveData m : bestMoves) {
             Optional<int[]> coord = Board.asCoordinates(m.coordinate);
             if (coord.isPresent()) {
@@ -616,7 +683,7 @@ public class BoardRenderer {
           }
           MoveData move = moveOpt.get();
 
-          boolean isBestMove = bestMoves.get(0) == move;
+          boolean isBestMove = tempbest1.get(0) == move;
           boolean hasMaxWinrate = move.winrate == maxWinrate;
           boolean flipWinrate =
               uiConfig.getBoolean("win-rate-always-black") && !Lizzie.board.getData().blackToPlay;
@@ -625,7 +692,7 @@ public class BoardRenderer {
             continue; // This actually can happen
           }
 
-          float percentPlayouts = (float) move.playouts / maxPlayouts;
+          float percentPlayouts =(Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbwinrate)? (float) move.equalplayouts / maxPlayouts: (float) move.playouts / maxPlayouts;
           double percentWinrate =
               Math.min(
                   1,
@@ -688,7 +755,7 @@ public class BoardRenderer {
 
           boolean isMouseOver = Lizzie.frame.isMouseOver(coords[0], coords[1]);
           if (!branchOpt.isPresent()) {
-            drawShadow(g, suggestionX, suggestionY, true, alpha / 255.0f);
+            //drawShadow(g, suggestionX, suggestionY, true, alpha / 255.0f);
             g.setColor(color);
             fillCircle(g, suggestionX, suggestionY, stoneRadius);
           }
@@ -836,8 +903,7 @@ public class BoardRenderer {
     int availableLength;
 
     // decrease boardLength until the availableLength will result in square board intersections
-    double margin =
-        (showCoordinates() ? 1.5 / (Board.boardSize + 2) : 1.0d / (Board.boardSize + 1));
+    double margin = (showCoordinates()  ? 0.045 : 0.03) / Board.boardSize * 19.0;
     boardLength++;
     do {
       boardLength--;
@@ -1117,9 +1183,17 @@ public class BoardRenderer {
 
   /** Draws the outline of a circle centered at (centerX, centerY) with radius $radius$ */
   private void drawCircle(Graphics2D g, int centerX, int centerY, int radius) {
-    g.setStroke(new BasicStroke(radius/7.5f));
+    g.setStroke(new BasicStroke(radius / 11.5f));
     g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
   }
+  
+  private void drawCircle2(Graphics2D g, int centerX, int centerY, int radius) {
+	   // g.setStroke(new BasicStroke(radius / 3f));
+	   // g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+	    int[] xPoints = {centerX-5 , centerX-5 , centerX +10};
+	    int[] yPoints = {centerY +10, centerY -10, centerY };
+	    g.fillPolygon(xPoints, yPoints, 3); 
+	  }
 
   /**
    * Draws a string centered at (x, y) of font $fontString$, whose contents are $string$. The
