@@ -57,10 +57,10 @@ public class AnalysisFrame extends JPanel {
     timer.start();
     this.add(scrollpane);
 
-    table.getColumnModel().getColumn(0).setPreferredWidth(35);
-    table.getColumnModel().getColumn(1).setPreferredWidth(60);
-    table.getColumnModel().getColumn(2).setPreferredWidth(50);
-    table.getColumnModel().getColumn(3).setPreferredWidth(50);
+    table.getColumnModel().getColumn(0).setPreferredWidth(20);
+    table.getColumnModel().getColumn(1).setPreferredWidth(75);
+    table.getColumnModel().getColumn(2).setPreferredWidth(30);
+    table.getColumnModel().getColumn(3).setPreferredWidth(60);
     table.getColumnModel().getColumn(4).setPreferredWidth(50);
     // scrollpane.setBounds(0, 10, 470, 400);
     JTableHeader header = table.getTableHeader();
@@ -112,13 +112,14 @@ public class AnalysisFrame extends JPanel {
     int[] coords = Lizzie.board.convertNameToCoordinates(aa);
     Lizzie.frame.suggestionclick = coords;
     Lizzie.frame.mouseOverCoordinate = Lizzie.frame.outOfBoundCoordinate;
+    Lizzie.frame.repaint();
   }
 
   private void handleTableDoubleClick(int row, int col) {
     int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 0).toString());
     Lizzie.frame.mouseOverCoordinate = coords;
     Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
-    // 做到这
+    Lizzie.frame.repaint();
   }
 
   public AbstractTableModel getTableModel() {
@@ -135,7 +136,7 @@ public class AnalysisFrame extends JPanel {
 
       public String getColumnName(int column) {
         if (column == 0) return "坐标";
-        if (column == 1) return "Lcb(%)";
+        if (column == 1) return "Lcb(%)-与首位差";
         if (column == 2) return "胜率(%)";
         if (column == 3) return "计算量";
         if (column == 4) return "策略网络(%)";
@@ -180,22 +181,22 @@ public class AnalysisFrame extends JPanel {
 
         // featurecat.lizzie.analysis.MoveDataSorter MoveDataSorter = new MoveDataSorter(data2);
         // ArrayList sortedMoveData = MoveDataSorter.getSortedMoveDataByPolicy();
+        double maxlcb = 0;
+        for (MoveData move : data2) {
+          if (move.lcb > maxlcb) maxlcb = move.lcb;
+        }
         MoveData data = data2.get(row);
         switch (col) {
           case 0:
             return data.coordinate;
           case 1:
-            if (row == 0) {
-              return String.valueOf(data.lcb)
-                  + "+"
-                  + String.valueOf((double) Math.round((data.lcb - data2.get(1).lcb) * 100) / 100);
-            } else return data.lcb;
+            return String.format("%.2f", data.lcb) + "-" + String.format("%.2f", maxlcb - data.lcb);
           case 2:
-            return data.oriwinrate;
+            return String.format("%.2f", data.oriwinrate);
           case 3:
             return data.playouts;
           case 4:
-            return data.policy;
+            return String.format("%.2f", data.policy);
           default:
             return "";
         }
