@@ -412,7 +412,8 @@ public class SubBoardRenderer {
 
     Optional<MoveData> suggestedMove = (isMainBoard ? mouseOveredMove() : getBestMove());
     if (!suggestedMove.isPresent()) {
-      return;
+      suggestedMove = getBestMove2();
+      if (!suggestedMove.isPresent()) return;
     }
     List<String> variation = suggestedMove.get().variation;
     Branch branch = new Branch(Lizzie.board, variation);
@@ -453,8 +454,26 @@ public class SubBoardRenderer {
         .findFirst();
   }
 
-  private Optional<MoveData> getBestMove() {
+  private Optional<MoveData> getBestMove2() {
     return bestMoves.isEmpty() ? Optional.empty() : Optional.of(bestMoves.get(0));
+  }
+
+  private Optional<MoveData> getBestMove() {
+    // return bestMoves.isEmpty() ? Optional.empty() : Optional.of(bestMoves.get(0));
+    if (Lizzie.frame.suggestionclick == Lizzie.frame.outOfBoundCoordinate) {
+      return bestMoves.isEmpty() ? Optional.empty() : Optional.of(bestMoves.get(0));
+    } else {
+      int x = Lizzie.frame.suggestionclick[0];
+      int y = Lizzie.frame.suggestionclick[1];
+      return bestMoves
+          .stream()
+          .filter(
+              move ->
+                  Board.asCoordinates(move.coordinate)
+                      .map(c -> Lizzie.frame.isMouseOversub(c[0], c[1]))
+                      .orElse(false))
+          .findFirst();
+    }
   }
 
   /** Render the shadows and stones in correct background-foreground order */
@@ -836,7 +855,7 @@ public class SubBoardRenderer {
     int availableLength;
 
     // decrease boardLength until the availableLength will result in square board intersections
-    double margin = (showCoordinates()  ? 0.045 : 0.03) / Board.boardSize * 19.0;
+    double margin = (showCoordinates() ? 0.045 : 0.03) / Board.boardSize * 19.0;
     boardLength++;
     do {
       boardLength--;

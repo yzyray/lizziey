@@ -32,6 +32,7 @@ public class Lizzie {
     frame = new LizzieFrame();
     analysisDialog = AnalysisFrame.createAnalysisDialog(frame);
     analysisFrame = (AnalysisFrame) analysisDialog.getContentPane();
+    analysisDialog.setVisible(true);
     gtpConsole = new GtpConsolePane(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
     try {
@@ -109,15 +110,12 @@ public class Lizzie {
       }
       commandLine = enginesOpt.get().getString(index - 1);
     }
-    if (commandLine.trim().isEmpty() )
-    	{
-    	 return;
-    	}
-    if( index == Lizzie.leelaz.currentEngineN()&&Lizzie.leelaz.process.isAlive())
-    { 
-    	return;
-    }     
-    
+    if (commandLine.trim().isEmpty()) {
+      return;
+    }
+    if (index == Lizzie.leelaz.currentEngineN() && Lizzie.leelaz.process.isAlive()) {
+      return;
+    }
 
     // Workaround for leelaz no exiting when restarting
     if (leelaz.isThinking) {
@@ -133,7 +131,7 @@ public class Lizzie {
       leelaz.restartEngine(commandLine, index);
       board.clearbestmovesafter(board.getHistory().getStart());
       board.restoreMoveNumber();
-      
+
     } catch (IOException e) {
       e.printStackTrace();
     }

@@ -98,7 +98,9 @@ public class LizzieFrame extends JFrame {
 
   private final BufferStrategy bs;
 
-  private static final int[] outOfBoundCoordinate = new int[] {-1, -1};
+  public static final int[] outOfBoundCoordinate = new int[] {-1, -1};
+
+  public int[] suggestionclick = outOfBoundCoordinate;
 
   public int[] mouseOverCoordinate = outOfBoundCoordinate;
   public boolean showControls = false;
@@ -332,6 +334,13 @@ public class LizzieFrame extends JFrame {
       Lizzie.gtpConsole = new GtpConsolePane(this);
       Lizzie.gtpConsole.setVisible(true);
     }
+  }
+
+  public void toggleBestMoves() {
+    if (Lizzie.analysisDialog.isVisible()) {
+      suggestionclick = outOfBoundCoordinate;
+      Lizzie.analysisDialog.setVisible(false);
+    } else Lizzie.analysisDialog.setVisible(true);
   }
 
   public static void startNewGame() {
@@ -1458,6 +1467,10 @@ public class LizzieFrame extends JFrame {
 
   public boolean isMouseOver(int x, int y) {
     return mouseOverCoordinate[0] == x && mouseOverCoordinate[1] == y;
+  }
+
+  public boolean isMouseOversub(int x, int y) {
+    return suggestionclick[0] == x && suggestionclick[1] == y;
   }
 
   public void onMouseDragged(int x, int y) {

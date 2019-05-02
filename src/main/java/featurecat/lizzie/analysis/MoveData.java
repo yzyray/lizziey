@@ -1,13 +1,12 @@
 package featurecat.lizzie.analysis;
 
+import featurecat.lizzie.Lizzie;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import featurecat.lizzie.Lizzie;
 
 /** Holds the data from Leelaz's pondering mode */
 public class MoveData {
@@ -47,13 +46,13 @@ public class MoveData {
         // Read variation to the end of line
         result.variation = new ArrayList<>(Arrays.asList(data));
         result.variation =
-                result.variation.subList(
-                    i + 1,
-                    (Lizzie.config.limitBranchLength > 0
-                            && data.length - i - 1 > Lizzie.config.limitBranchLength)
-                        ? i + 1 + Lizzie.config.limitBranchLength
-                        : data.length);
-       // result.variation = result.variation.subList(i + 1, data.length);
+            result.variation.subList(
+                i + 1,
+                (Lizzie.config.limitBranchLength > 0
+                        && data.length - i - 1 > Lizzie.config.limitBranchLength)
+                    ? i + 1 + Lizzie.config.limitBranchLength
+                    : data.length);
+        // result.variation = result.variation.subList(i + 1, data.length);
         break;
       } else {
         String value = data[++i];
@@ -64,21 +63,22 @@ public class MoveData {
           result.playouts = Integer.parseInt(value);
         }
         if (key.equals("lcb")) {
-        	// LCB support          
+          // LCB support
           result.lcb = Integer.parseInt(value) / 100.0;
-          if(islcb) {
-              result.winrate = Integer.parseInt(value) / 100.0;
-              }
+          if (islcb) {
+            result.winrate = Integer.parseInt(value) / 100.0;
+          }
         }
         if (key.equals("prior")) {
-            result.policy = Integer.parseInt(value)/ 100.0;;
-          }
+          result.policy = Integer.parseInt(value) / 100.0;
+          ;
+        }
 
-        if ( key.equals("winrate")) {
+        if (key.equals("winrate")) {
           // support 0.16 0.15
           result.oriwinrate = Integer.parseInt(value) / 100.0;
-          if(!islcb) {
-          result.winrate = Integer.parseInt(value) / 100.0;
+          if (!islcb) {
+            result.winrate = Integer.parseInt(value) / 100.0;
           }
         }
       }
@@ -140,8 +140,8 @@ public class MoveData {
         result.playouts = Integer.parseInt(matchold.group(2));
         result.winrate = Double.parseDouble(matchold.group(3));
         result.variation =
-                Arrays.asList(match.group(4).split(" ", Lizzie.config.limitBranchLength));
-      //  result.variation = Arrays.asList(matchold.group(4).split(" "));
+            Arrays.asList(match.group(4).split(" ", Lizzie.config.limitBranchLength));
+        //  result.variation = Arrays.asList(matchold.group(4).split(" "));
         return result;
       }
     } else {
@@ -150,7 +150,7 @@ public class MoveData {
       result.playouts = Integer.parseInt(match.group(2));
       result.winrate = Double.parseDouble(match.group(Lizzie.config.showlcbwinrate ? 4 : 3));
       result.variation = Arrays.asList(match.group(5).split(" ", Lizzie.config.limitBranchLength));
-      //result.variation = Arrays.asList(match.group(5).split(" "));
+      // result.variation = Arrays.asList(match.group(5).split(" "));
       return result;
     }
   }
@@ -170,21 +170,15 @@ public class MoveData {
     return playouts;
   }
 
-
-
-
-public static Comparator policyComparator = new Comparator() {
-		@Override
-	public int compare(Object o1, Object o2) {
-			MoveData e1=(MoveData)o1;
-			MoveData e2=(MoveData)o2;
-			if(e1.policy>e2.policy) 
-				return 1; 
-			if(e1.policy<e2.policy) 
-			return -1; 
-			else 
-			return 0; 
-	}
-	 };
-
+  public static Comparator policyComparator =
+      new Comparator() {
+        @Override
+        public int compare(Object o1, Object o2) {
+          MoveData e1 = (MoveData) o1;
+          MoveData e2 = (MoveData) o2;
+          if (e1.policy > e2.policy) return 1;
+          if (e1.policy < e2.policy) return -1;
+          else return 0;
+        }
+      };
 }

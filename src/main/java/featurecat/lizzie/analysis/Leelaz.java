@@ -169,7 +169,7 @@ public class Leelaz {
     // start a thread to continuously read Leelaz output
     // new Thread(this::read).start();
     // can stop engine for switching weights
-    executor = Executors.newSingleThreadScheduledExecutor();    
+    executor = Executors.newSingleThreadScheduledExecutor();
     executor.execute(this::read);
   }
 
@@ -214,7 +214,7 @@ public class Leelaz {
   public static List<MoveData> parseInfo(String line) {
     List<MoveData> bestMoves = new ArrayList<>();
     String[] variations = line.split(" info ");
-    int k = (Lizzie.config.limitMaxSuggestion>0?Lizzie.config.limitMaxSuggestion:361);
+    int k = (Lizzie.config.limitMaxSuggestion > 0 ? Lizzie.config.limitMaxSuggestion : 361);
     for (String var : variations) {
       if (!var.trim().isEmpty()) {
         bestMoves.add(MoveData.fromInfo(var));
@@ -858,6 +858,4 @@ public class Leelaz {
   public void toggleGtpConsole() {
     gtpConsole = !gtpConsole;
   }
-  
-  
 }

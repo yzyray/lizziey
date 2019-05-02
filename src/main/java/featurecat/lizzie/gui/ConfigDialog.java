@@ -366,17 +366,16 @@ public class ConfigDialog extends JDialog {
         new JLabel(resourceBundle.getString("LizzieConfig.title.maxAnalyzeTime"));
     lblMaxAnalyzeTime.setBounds(6, 380, 157, 16);
     engineTab.add(lblMaxAnalyzeTime);
-    
-    JLabel lblMaxAnalyzeTimeHint =
-            new JLabel("设置分析时的最大分析时间,超过自动停止时可按空格键继续分析");
+
+    JLabel lblMaxAnalyzeTimeHint = new JLabel("设置分析时的最大分析时间,超过自动停止时可按空格键继续分析");
     lblMaxAnalyzeTimeHint.setBounds(6, 405, 257, 16);
-               engineTab.add(lblMaxAnalyzeTimeHint);
-               lblMaxAnalyzeTimeHint.setVisible(false); 
+    engineTab.add(lblMaxAnalyzeTimeHint);
+    lblMaxAnalyzeTimeHint.setVisible(false);
 
     JLabel lblMaxAnalyzeTimeMinutes =
         new JLabel(resourceBundle.getString("LizzieConfig.title.minutes"));
     lblMaxAnalyzeTimeMinutes.setBounds(213, 380, 82, 16);
-    
+
     engineTab.add(lblMaxAnalyzeTimeMinutes);
 
     NumberFormat nf = NumberFormat.getIntegerInstance();
@@ -393,20 +392,21 @@ public class ConfigDialog extends JDialog {
             });
     txtMaxAnalyzeTime.setBounds(171, 375, 40, 26);
     engineTab.add(txtMaxAnalyzeTime);
-    txtMaxAnalyzeTime.addFocusListener(new FocusListener() {
+    txtMaxAnalyzeTime.addFocusListener(
+        new FocusListener() {
 
-        @Override
-        public void focusGained(FocusEvent arg0) {
+          @Override
+          public void focusGained(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblMaxAnalyzeTimeHint.setVisible(true);
-        }
+            lblMaxAnalyzeTimeHint.setVisible(true);
+          }
 
-        @Override
-        public void focusLost(FocusEvent arg0) {
+          @Override
+          public void focusLost(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblMaxAnalyzeTimeHint.setVisible(false);
-        }
-    });
+            lblMaxAnalyzeTimeHint.setVisible(false);
+          }
+        });
     txtMaxAnalyzeTime.setColumns(10);
 
     JLabel lblMaxGameThinkingTime =
@@ -419,13 +419,11 @@ public class ConfigDialog extends JDialog {
     lblMaxGameThinkingTimeSeconds.setBounds(213, 440, 82, 16);
     engineTab.add(lblMaxGameThinkingTimeSeconds);
 
-
-    JLabel lblMaxGameThinkingTimeSecondsHint =
-            new JLabel("设置与AI对弈时,AI一步棋的最大思考时间");
+    JLabel lblMaxGameThinkingTimeSecondsHint = new JLabel("设置与AI对弈时,AI一步棋的最大思考时间");
     lblMaxGameThinkingTimeSecondsHint.setBounds(6, 465, 257, 16);
-               engineTab.add(lblMaxGameThinkingTimeSecondsHint);
-               lblMaxGameThinkingTimeSecondsHint.setVisible(false); 
-               
+    engineTab.add(lblMaxGameThinkingTimeSecondsHint);
+    lblMaxGameThinkingTimeSecondsHint.setVisible(false);
+
     txtMaxGameThinkingTime =
         new JFormattedTextField(
             new InternationalFormatter(nf) {
@@ -437,20 +435,21 @@ public class ConfigDialog extends JDialog {
             });
     txtMaxGameThinkingTime.setColumns(10);
     txtMaxGameThinkingTime.setBounds(171, 435, 40, 26);
-    txtMaxGameThinkingTime.addFocusListener(new FocusListener() {
+    txtMaxGameThinkingTime.addFocusListener(
+        new FocusListener() {
 
-        @Override
-        public void focusGained(FocusEvent arg0) {
+          @Override
+          public void focusGained(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblMaxGameThinkingTimeSecondsHint.setVisible(true);
-        }
+            lblMaxGameThinkingTimeSecondsHint.setVisible(true);
+          }
 
-        @Override
-        public void focusLost(FocusEvent arg0) {
+          @Override
+          public void focusLost(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblMaxGameThinkingTimeSecondsHint.setVisible(false);
-        }
-    });
+            lblMaxGameThinkingTimeSecondsHint.setVisible(false);
+          }
+        });
     engineTab.add(txtMaxGameThinkingTime);
 
     JLabel lblMaxsuggestionmoves =
@@ -463,12 +462,10 @@ public class ConfigDialog extends JDialog {
     lblMaxsuggestionmovesnums.setBounds(538, 440, 82, 16);
     engineTab.add(lblMaxsuggestionmovesnums);
 
-    
-    JLabel lblMaxsuggestionmovesnumshint =
-            new JLabel("设置分析点显示数目,0为不限制");
+    JLabel lblMaxsuggestionmovesnumshint = new JLabel("设置分析点显示数目,0为不限制");
     lblMaxsuggestionmovesnumshint.setBounds(331, 465, 257, 16);
-        engineTab.add(lblMaxsuggestionmovesnumshint);
-        lblMaxsuggestionmovesnumshint.setVisible(false);  
+    engineTab.add(lblMaxsuggestionmovesnumshint);
+    lblMaxsuggestionmovesnumshint.setVisible(false);
     txtMaxsuggestionmoves =
         new JFormattedTextField(
             new InternationalFormatter(nf) {
@@ -480,189 +477,177 @@ public class ConfigDialog extends JDialog {
             });
     txtMaxsuggestionmoves.setColumns(10);
     txtMaxsuggestionmoves.setBounds(496, 435, 40, 26);
-    txtMaxsuggestionmoves.addFocusListener(new FocusListener() {
+    txtMaxsuggestionmoves.addFocusListener(
+        new FocusListener() {
 
-        @Override
-        public void focusGained(FocusEvent arg0) {
+          @Override
+          public void focusGained(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblMaxsuggestionmovesnumshint.setVisible(true);
-        }
+            lblMaxsuggestionmovesnumshint.setVisible(true);
+          }
 
-        @Override
-        public void focusLost(FocusEvent arg0) {
+          @Override
+          public void focusLost(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblMaxsuggestionmovesnumshint.setVisible(false);
-        }
-    });
-    engineTab.add(txtMaxsuggestionmoves);
-    
-    
-    
-    JLabel lbllimitBranchLength =
-            new JLabel("分析点变化图最大手数");
-        lbllimitBranchLength.setBounds(331, 500, 187, 16);
-        engineTab.add(lbllimitBranchLength);
-
-        JLabel lbllimitBranchNumber =
-            new JLabel("手");
-        lbllimitBranchNumber.setBounds(538, 500, 82, 16);
-        engineTab.add(lbllimitBranchNumber);
-
-        
-        JLabel lbllimitBranchLengthHint =
-                new JLabel("设置分析点变化图最大手数,0为不限制");
-        lbllimitBranchLengthHint.setBounds(331, 525, 257, 16);
-            engineTab.add(lbllimitBranchLengthHint);
-            lbllimitBranchLengthHint.setVisible(false);  
-            txtlimitBranchLength =
-            new JFormattedTextField(
-                new InternationalFormatter(nf) {
-                  protected DocumentFilter getDocumentFilter() {
-                    return filter;
-                  }
-
-                  private DocumentFilter filter = new DigitOnlyFilter();
-                });
-            txtlimitBranchLength.setColumns(10);
-            txtlimitBranchLength.setBounds(496, 495, 40, 26);
-            txtlimitBranchLength.addFocusListener(new FocusListener() {
-
-            @Override
-            public void focusGained(FocusEvent arg0) {
-                // TODO Auto-generated method stub
-            	lbllimitBranchLengthHint.setVisible(true);
-            }
-
-            @Override
-            public void focusLost(FocusEvent arg0) {
-                // TODO Auto-generated method stub
-            	lbllimitBranchLengthHint.setVisible(false);
-            }
+            lblMaxsuggestionmovesnumshint.setVisible(false);
+          }
         });
-        engineTab.add(txtlimitBranchLength);
+    engineTab.add(txtMaxsuggestionmoves);
 
+    JLabel lbllimitBranchLength = new JLabel("分析点变化图最大手数");
+    lbllimitBranchLength.setBounds(331, 500, 187, 16);
+    engineTab.add(lbllimitBranchLength);
+
+    JLabel lbllimitBranchNumber = new JLabel("手");
+    lbllimitBranchNumber.setBounds(538, 500, 82, 16);
+    engineTab.add(lbllimitBranchNumber);
+
+    JLabel lbllimitBranchLengthHint = new JLabel("设置分析点变化图最大手数,0为不限制");
+    lbllimitBranchLengthHint.setBounds(331, 525, 257, 16);
+    engineTab.add(lbllimitBranchLengthHint);
+    lbllimitBranchLengthHint.setVisible(false);
+    txtlimitBranchLength =
+        new JFormattedTextField(
+            new InternationalFormatter(nf) {
+              protected DocumentFilter getDocumentFilter() {
+                return filter;
+              }
+
+              private DocumentFilter filter = new DigitOnlyFilter();
+            });
+    txtlimitBranchLength.setColumns(10);
+    txtlimitBranchLength.setBounds(496, 495, 40, 26);
+    txtlimitBranchLength.addFocusListener(
+        new FocusListener() {
+
+          @Override
+          public void focusGained(FocusEvent arg0) {
+            // TODO Auto-generated method stub
+            lbllimitBranchLengthHint.setVisible(true);
+          }
+
+          @Override
+          public void focusLost(FocusEvent arg0) {
+            // TODO Auto-generated method stub
+            lbllimitBranchLengthHint.setVisible(false);
+          }
+        });
+    engineTab.add(txtlimitBranchLength);
 
     JLabel lblShowLcbWinrate =
         new JLabel(resourceBundle.getString("LizzieConfig.title.showlcbwinrate"));
     lblShowLcbWinrate.setBounds(331, 555, 157, 16);
     engineTab.add(lblShowLcbWinrate);
-    
-    JLabel lblShowLcbWinratehint =
-            new JLabel("设置胜率显示方式,Lcb更可靠但低计算量下会偏低");
+
+    JLabel lblShowLcbWinratehint = new JLabel("设置胜率显示方式,Lcb更可靠但低计算量下会偏低");
     lblShowLcbWinratehint.setBounds(331, 580, 287, 16);
-        engineTab.add(lblShowLcbWinratehint);
-        lblShowLcbWinratehint.setVisible(false);  
+    engineTab.add(lblShowLcbWinratehint);
+    lblShowLcbWinratehint.setVisible(false);
 
     rdoLcb = new JRadioButton("Lcb");
     rdoLcb.setBounds(496, 553, 50, 23);
-    rdoLcb.addFocusListener(new FocusListener() {
+    rdoLcb.addFocusListener(
+        new FocusListener() {
 
-        @Override
-        public void focusGained(FocusEvent arg0) {
+          @Override
+          public void focusGained(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblShowLcbWinratehint.setVisible(true);
-        }
+            lblShowLcbWinratehint.setVisible(true);
+          }
 
-        @Override
-        public void focusLost(FocusEvent arg0) {
+          @Override
+          public void focusLost(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblShowLcbWinratehint.setVisible(false);
-        }
-    });
+            lblShowLcbWinratehint.setVisible(false);
+          }
+        });
     engineTab.add(rdoLcb);
 
     rdoWinrate = new JRadioButton("Winrate");
     rdoWinrate.setBounds(545, 553, 80, 23);
-    rdoWinrate.addFocusListener(new FocusListener() {
+    rdoWinrate.addFocusListener(
+        new FocusListener() {
 
-        @Override
-        public void focusGained(FocusEvent arg0) {
+          @Override
+          public void focusGained(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblShowLcbWinratehint.setVisible(true);
-        }
+            lblShowLcbWinratehint.setVisible(true);
+          }
 
-        @Override
-        public void focusLost(FocusEvent arg0) {
+          @Override
+          public void focusLost(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblShowLcbWinratehint.setVisible(false);
-        }
-    });
+            lblShowLcbWinratehint.setVisible(false);
+          }
+        });
     engineTab.add(rdoWinrate);
 
     ButtonGroup wrgroup = new ButtonGroup();
     wrgroup.add(rdoLcb);
     wrgroup.add(rdoWinrate);
-    
-    
-    
 
-    JLabel lblShowLcbColor =
-        new JLabel("分析点颜色显示");
+    JLabel lblShowLcbColor = new JLabel("分析点颜色显示");
     lblShowLcbColor.setBounds(6, 555, 157, 16);
     engineTab.add(lblShowLcbColor);
-    
+
     JLabel lblShowLcbColorhint =
-            new JLabel("设置分析点颜色显示方式,Lcb方式需要0.17引擎且比计算量更可靠,无论显示胜率方式是否为Lcb此选项都可以选择Lcb");
+        new JLabel("设置分析点颜色显示方式,Lcb方式需要0.17引擎支持,比计算量更可靠,无论显示胜率方式是否为Lcb此选项都可选择Lcb");
     lblShowLcbColorhint.setBounds(6, 580, 637, 16);
-        engineTab.add(lblShowLcbColorhint);
-        lblShowLcbColorhint.setVisible(false);  
+    engineTab.add(lblShowLcbColorhint);
+    lblShowLcbColorhint.setVisible(false);
 
-        rdoLcbfix = new JRadioButton("Lcb");
-        rdoLcbfix.setBounds(171, 553, 50, 23);
-        rdoLcbfix.addFocusListener(new FocusListener() {
+    rdoLcbfix = new JRadioButton("Lcb");
+    rdoLcbfix.setBounds(171, 553, 50, 23);
+    rdoLcbfix.addFocusListener(
+        new FocusListener() {
 
-        @Override
-        public void focusGained(FocusEvent arg0) {
+          @Override
+          public void focusGained(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblShowLcbColorhint.setVisible(true);
-        }
+            lblShowLcbColorhint.setVisible(true);
+          }
 
-        @Override
-        public void focusLost(FocusEvent arg0) {
+          @Override
+          public void focusLost(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblShowLcbColorhint.setVisible(false);
-        }
-    });
+            lblShowLcbColorhint.setVisible(false);
+          }
+        });
     engineTab.add(rdoLcbfix);
 
     rdoonlyWinrate = new JRadioButton("计算量");
     rdoonlyWinrate.setBounds(220, 553, 80, 23);
-    rdoonlyWinrate.addFocusListener(new FocusListener() {
+    rdoonlyWinrate.addFocusListener(
+        new FocusListener() {
 
-        @Override
-        public void focusGained(FocusEvent arg0) {
+          @Override
+          public void focusGained(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblShowLcbColorhint.setVisible(true);
-        }
+            lblShowLcbColorhint.setVisible(true);
+          }
 
-        @Override
-        public void focusLost(FocusEvent arg0) {
+          @Override
+          public void focusLost(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblShowLcbColorhint.setVisible(false);
-        }
-    });
+            lblShowLcbColorhint.setVisible(false);
+          }
+        });
     engineTab.add(rdoonlyWinrate);
 
     ButtonGroup rggroup = new ButtonGroup();
     rggroup.add(rdoonlyWinrate);
     rggroup.add(rdoLcbfix);
-    
-    
-    
-    
 
     JLabel lblAnalyzeUpdateInterval =
-            new JLabel(resourceBundle.getString("LizzieConfig.title.analyzeUpdateInterval"));
-        lblAnalyzeUpdateInterval.setBounds(331, 380, 157, 16);
-        engineTab.add(lblAnalyzeUpdateInterval);
-        
+        new JLabel(resourceBundle.getString("LizzieConfig.title.analyzeUpdateInterval"));
+    lblAnalyzeUpdateInterval.setBounds(331, 380, 157, 16);
+    engineTab.add(lblAnalyzeUpdateInterval);
 
-        JLabel lblAnalyzeUpdateIntervalhint =
-                new JLabel("设置界面刷新间隔,如感觉卡顿可适当加大");
-        lblAnalyzeUpdateIntervalhint.setBounds(331, 405, 257, 16);
-            engineTab.add(lblAnalyzeUpdateIntervalhint);
-            lblAnalyzeUpdateIntervalhint.setVisible(false);  
-        
+    JLabel lblAnalyzeUpdateIntervalhint = new JLabel("设置界面刷新间隔,如感觉卡顿可适当加大");
+    lblAnalyzeUpdateIntervalhint.setBounds(331, 405, 257, 16);
+    engineTab.add(lblAnalyzeUpdateIntervalhint);
+    lblAnalyzeUpdateIntervalhint.setVisible(false);
+
     JLabel lblAnalyzeUpdateIntervalCentisec =
         new JLabel(resourceBundle.getString("LizzieConfig.title.centisecond"));
     lblAnalyzeUpdateIntervalCentisec.setBounds(538, 380, 82, 16);
@@ -679,20 +664,21 @@ public class ConfigDialog extends JDialog {
             });
     txtAnalyzeUpdateInterval.setColumns(10);
     txtAnalyzeUpdateInterval.setBounds(496, 375, 40, 26);
-    txtAnalyzeUpdateInterval.addFocusListener(new FocusListener() {
+    txtAnalyzeUpdateInterval.addFocusListener(
+        new FocusListener() {
 
-        @Override
-        public void focusGained(FocusEvent arg0) {
+          @Override
+          public void focusGained(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblAnalyzeUpdateIntervalhint.setVisible(true);
-        }
+            lblAnalyzeUpdateIntervalhint.setVisible(true);
+          }
 
-        @Override
-        public void focusLost(FocusEvent arg0) {
+          @Override
+          public void focusLost(FocusEvent arg0) {
             // TODO Auto-generated method stub
-        	lblAnalyzeUpdateIntervalhint.setVisible(false);
-        }
-    });
+            lblAnalyzeUpdateIntervalhint.setVisible(false);
+          }
+        });
     engineTab.add(txtAnalyzeUpdateInterval);
 
     JLabel lblPrintEngineLog =
@@ -911,8 +897,8 @@ public class ConfigDialog extends JDialog {
       leelazConfig.put("engine-command", txtEngine.getText().trim());
       leelazConfig.putOpt("limit-max-suggestion", txtFieldValue(txtMaxsuggestionmoves));
       leelazConfig.putOpt("limit-branch-length", txtFieldValue(txtlimitBranchLength));
-      Lizzie.config.limitMaxSuggestion=txtFieldValue(txtMaxsuggestionmoves);
-      Lizzie.config.limitBranchLength=txtFieldValue(txtlimitBranchLength);
+      Lizzie.config.limitMaxSuggestion = txtFieldValue(txtMaxsuggestionmoves);
+      Lizzie.config.limitBranchLength = txtFieldValue(txtlimitBranchLength);
       JSONArray engines = new JSONArray();
       Arrays.asList(txts).forEach(t -> engines.put(t.getText().trim()));
       leelazConfig.put("engine-command-list", engines);
@@ -971,9 +957,6 @@ public class ConfigDialog extends JDialog {
       }
     }
   }
-  
-  
-
 
   private boolean getShowLcbWinrate() {
     if (rdoLcb.isSelected()) {
@@ -986,33 +969,31 @@ public class ConfigDialog extends JDialog {
     }
     return true;
   }
-  
-  
+
   private boolean getShowLcbColor() {
-	    if (rdoLcbfix.isSelected()) {
-	      Lizzie.config.showlcbcolor = true;
-	      return true;
-	    }
-	    if (rdoonlyWinrate.isSelected()) {
-	      Lizzie.config.showlcbcolor = false;
-	      return false;
-	    }
-	    return true;
-	  }
-  
-  
+    if (rdoLcbfix.isSelected()) {
+      Lizzie.config.showlcbcolor = true;
+      return true;
+    }
+    if (rdoonlyWinrate.isSelected()) {
+      Lizzie.config.showlcbcolor = false;
+      return false;
+    }
+    return true;
+  }
+
   private void setShowLcbColor() {
-	    if (Lizzie.config.leelaversion < 17) {
-	    	rdoLcbfix.setEnabled(false);
-	    	rdoonlyWinrate.setEnabled(false);
-	    } else {
-	      if (Lizzie.config.showlcbcolor) {
-	    	  rdoLcbfix.setSelected(true);
-	      } else {
-	    	  rdoonlyWinrate.setSelected(true);
-	      }
-	    }
-	  }
+    if (Lizzie.config.leelaversion < 17) {
+      rdoLcbfix.setEnabled(false);
+      rdoonlyWinrate.setEnabled(false);
+    } else {
+      if (Lizzie.config.showlcbcolor) {
+        rdoLcbfix.setSelected(true);
+      } else {
+        rdoonlyWinrate.setSelected(true);
+      }
+    }
+  }
 
   private void setBoardSize() {
     int size = Lizzie.config.uiConfig.optInt("board-size", 19);

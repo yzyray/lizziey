@@ -147,6 +147,19 @@ public class Board implements LeelazListener {
     return asName(x) + (boardSize - y);
   }
 
+  public static int[] convertNameToCoordinates(String name) {
+    // coordinates take the form C16 A19 Q5 K10 etc. I is not used.
+    char i = name.charAt(0);
+    int x;
+    if (i > 73) x = i - 66;
+    else x = i - 65;
+    int y = boardSize - Integer.parseInt(name.substring(1));
+    int coords[] = new int[2];
+    coords[0] = x;
+    coords[1] = y;
+    return coords;
+  }
+
   /**
    * Checks if a coordinate is valid
    *
@@ -161,22 +174,22 @@ public class Board implements LeelazListener {
   public static boolean isValid(int[] c) {
     return c != null && c.length == 2 && isValid(c[0], c[1]);
   }
-  
+
   public void clearbestmovesafter(BoardHistoryNode node) {
-	  
-	  node.getData().setPlayoutsForce(1);
-      if (node.numberOfChildren() > 1) {
-          // Variation
-          for (BoardHistoryNode sub : node.getVariations()) {
-        	  clearbestmovesafter(sub);
-          }
-        } else if (node.numberOfChildren() == 1) {
-        	clearbestmovesafter(node.next().orElse(null));
-        }
+
+    node.getData().setPlayoutsForce(1);
+    if (node.numberOfChildren() > 1) {
+      // Variation
+      for (BoardHistoryNode sub : node.getVariations()) {
+        clearbestmovesafter(sub);
+      }
+    } else if (node.numberOfChildren() == 1) {
+      clearbestmovesafter(node.next().orElse(null));
+    }
   }
-  
- public void clearbestmoves() {	  
-	  history.getCurrentHistoryNode().getData().setPlayoutsForce(1);
+
+  public void clearbestmoves() {
+    history.getCurrentHistoryNode().getData().setPlayoutsForce(1);
   }
 
   public void savelist() {
@@ -1193,7 +1206,7 @@ public class Board implements LeelazListener {
       if (stone.isBlack() || stone.isWhite()) {
         int y = i % Board.boardSize;
         int x = (i - y) / Board.boardSize;
-        Lizzie.leelaz.playMove(stone, convertCoordinatesToName(x, y));        
+        Lizzie.leelaz.playMove(stone, convertCoordinatesToName(x, y));
       }
     }
     int moveNumber = node.getData().moveNumber;
