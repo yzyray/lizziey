@@ -33,7 +33,7 @@ public class AnalysisFrame extends JPanel {
     dataModel = getTableModel();
     table = new JTable(dataModel);
     table.getTableHeader().setFont(new Font("宋体", Font.BOLD, 14));
-    table.setFont(new Font("宋体", 0, 16));
+    table.setFont(new Font("宋体", 0, 18));
 
     scrollpane =
         new JScrollPane(table) {
