@@ -543,7 +543,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           Lizzie.switchEngine(e.getKeyCode() - VK_1);
         }
         break;
-      case 0:
+      case VK_0:
         if (controlIsPressed(e)) {
           Lizzie.switchEngine(9);
         }

@@ -29,7 +29,7 @@ public class Lizzie {
     mainArgs = args;
     config = new Config();
     board = new Board();
-   
+
     frame = new LizzieFrame();
     analysisDialog = AnalysisFrame.createAnalysisDialog(frame);
     analysisFrame = (AnalysisFrame) analysisDialog.getContentPane();

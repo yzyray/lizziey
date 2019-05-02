@@ -764,21 +764,23 @@ public class LizzieFrame extends JFrame {
             }
           }
         }
-        int tempx = cx;
-        int tempy = cy;
-        int tempw = cw;
-        int temph = ch;
-        if (subBoardWidth > subBoardHeight) {
-          cx = subBoardX - (subBoardWidth - subBoardHeight) / 2;
-        } else {
-          cx = subBoardX;
+        if (!Lizzie.config.showLargeSubBoard()) {
+          int tempx = cx;
+          int tempy = cy;
+          int tempw = cw;
+          int temph = ch;
+          if (subBoardWidth > subBoardHeight) {
+            cx = subBoardX - (subBoardWidth - subBoardHeight) / 2;
+          } else {
+            cx = subBoardX;
+          }
+          cy = subBoardY;
+          cw = subBoardWidth;
+          ch = subBoardHeight;
+          subBoardX = tempx;
+          subBoardY = tempy;
+          subBoardLength = Math.min(tempw, temph);
         }
-        cy = subBoardY;
-        cw = subBoardWidth;
-        ch = subBoardHeight;
-        subBoardX = tempx;
-        subBoardY = tempy;
-        subBoardLength = Math.min(tempw, temph);
       }
 
       // initialize
