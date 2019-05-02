@@ -367,7 +367,7 @@ public class Config {
     leelaz.put("max-analyze-time-minutes", 5);
     leelaz.put("limit-max-suggestion", 50);
     leelaz.put("limit-branch-length", 0);
-    
+
     leelaz.put("max-game-thinking-time-seconds", 2);
     leelaz.put("print-comms", false);
     leelaz.put("analyze-update-interval-centisec", 10);
@@ -381,7 +381,7 @@ public class Config {
 
     ui.put("board-color", new JSONArray("[217, 152, 77]"));
     ui.put("shadows-enabled", true);
-    
+
     ui.put("fancy-stones", true);
     ui.put("fancy-board", true);
     ui.put("shadow-size", 100);

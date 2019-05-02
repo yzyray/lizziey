@@ -368,7 +368,7 @@ public class ConfigDialog extends JDialog {
     engineTab.add(lblMaxAnalyzeTime);
 
     JLabel lblMaxAnalyzeTimeHint = new JLabel("设置分析时的最大分析时间,超过自动停止时可按空格键继续分析");
-    lblMaxAnalyzeTimeHint.setBounds(6, 405, 257, 16);
+    lblMaxAnalyzeTimeHint.setBounds(6, 405, 357, 16);
     engineTab.add(lblMaxAnalyzeTimeHint);
     lblMaxAnalyzeTimeHint.setVisible(false);
 
