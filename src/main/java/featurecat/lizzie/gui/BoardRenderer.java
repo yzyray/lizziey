@@ -519,14 +519,15 @@ public class BoardRenderer {
 
         // Set color to the opposite color of whatever is on the board
         boolean isWhite = board.getStones()[Board.getIndex(lastMove[0], lastMove[1])].isWhite();
-        g.setColor(Lizzie.board.getData().blackToPlay ? Color.BLACK : Color.WHITE);
+       // g.setColor(Lizzie.board.getData().blackToPlay ? Color.BLACK : Color.WHITE);
+        g.setColor( Color.red );
 
         if (Lizzie.config.solidStoneIndicator) {
           // Use a solid circle instead of
           fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
         } else {
          // fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.70));
-           drawCircle(g, stoneX, stoneY, lastMoveMarkerRadius);
+           drawCircle2(g, stoneX, stoneY, lastMoveMarkerRadius);
           // 需要恢复的
         }
       } else if (board.getData().moveNumber != 0 && !board.inScoreMode()) {
@@ -655,7 +656,7 @@ public class BoardRenderer {
 				else 
 				return 0; 
 			}});
-      if(Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbwinrate)
+      if(Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbcolor)
       {
       for(int i=0;i<tempbest1.size();i++)
       {
@@ -699,7 +700,7 @@ public class BoardRenderer {
             continue; // This actually can happen
           }
 
-          float percentPlayouts =(Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbwinrate)? (float) move.equalplayouts / maxPlayouts: (float) move.playouts / maxPlayouts;
+          float percentPlayouts =(Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbcolor)? (float) move.equalplayouts / maxPlayouts: (float) move.playouts / maxPlayouts;
           double percentWinrate =
               Math.min(
                   1,
@@ -1194,6 +1195,11 @@ public class BoardRenderer {
     g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
   }
   
+  private void drawCircle2(Graphics2D g, int centerX, int centerY, int radius) {
+	  int[] xPoints = {centerX, centerX-11, centerX+11};
+	    int[] yPoints = {centerY-10, centerY+8, centerY+8};
+	    g.fillPolygon(xPoints, yPoints, 3);
+  }
 
   /**
    * Draws a string centered at (x, y) of font $fontString$, whose contents are $string$. The

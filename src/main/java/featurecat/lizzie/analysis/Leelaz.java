@@ -214,7 +214,7 @@ public class Leelaz {
   public static List<MoveData> parseInfo(String line) {
     List<MoveData> bestMoves = new ArrayList<>();
     String[] variations = line.split(" info ");
-    int k = Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
+    int k = (Lizzie.config.limitMaxSuggestion>0?Lizzie.config.limitMaxSuggestion:361);
     for (String var : variations) {
       if (!var.trim().isEmpty()) {
         bestMoves.add(MoveData.fromInfo(var));

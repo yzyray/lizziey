@@ -34,6 +34,7 @@ public class Config {
   public boolean showCoordinates = false;
   public boolean colorByWinrateInsteadOfVisits = false;
   public boolean showlcbwinrate = true;
+  public boolean showlcbcolor = true;
 
   public boolean showStatus = true;
   public boolean showBranch = true;
@@ -74,6 +75,8 @@ public class Config {
   public int nodeColorMode = 0;
   public boolean appendWinrateToComment = true;
   public int boardPositionProportion = 3;
+  public int limitBranchLength = 0;
+  public int limitMaxSuggestion = 0;
   public String gtpConsoleStyle = "";
   private final String defaultGtpConsoleStyle =
       "body {background:#000000; color:#d0d0d0; font-family:Consolas, Menlo, Monaco, 'Ubuntu Mono', monospace; margin:4px;} .command {color:#ffffff;font-weight:bold;} .winrate {color:#ffffff;font-weight:bold;} .coord {color:#ffffff;font-weight:bold;}";
@@ -186,11 +189,14 @@ public class Config {
     replayBranchIntervalSeconds = uiConfig.optDouble("replay-branch-interval-seconds", 1.0);
     colorByWinrateInsteadOfVisits = uiConfig.optBoolean("color-by-winrate-instead-of-visits");
     boardPositionProportion = uiConfig.optInt("board-postion-proportion", 3);
+    limitBranchLength = leelazConfig.optInt("limit-branch-length", 0);
+    limitMaxSuggestion = leelazConfig.optInt("limit-max-suggestion", 0);
 
     winrateStrokeWidth = theme.winrateStrokeWidth();
     minimumBlunderBarWidth = theme.minimumBlunderBarWidth();
     shadowSize = theme.shadowSize();
     showlcbwinrate = config.getJSONObject("leelaz").getBoolean("show-lcb-winrate");
+    showlcbcolor = config.getJSONObject("leelaz").getBoolean("show-lcb-color");
 
     if (theme.fontName() != null) fontName = theme.fontName();
 
@@ -359,11 +365,14 @@ public class Config {
             "%s --gtp --lagbuffer 0 --weights %%network-file", getBestDefaultLeelazPath()));
     leelaz.put("engine-start-location", ".");
     leelaz.put("max-analyze-time-minutes", 5);
-    leelaz.put("max-suggestion-moves", 20);
+    leelaz.put("limit-max-suggestion", 50);
+    leelaz.put("limit-branch-length", 0);
+    
     leelaz.put("max-game-thinking-time-seconds", 2);
     leelaz.put("print-comms", false);
     leelaz.put("analyze-update-interval-centisec", 10);
     leelaz.put("show-lcb-winrate", false);
+    leelaz.put("show-lcb-color", true);
     leelaz.put("leela-version", 17);
     config.put("leelaz", leelaz);
 
@@ -372,6 +381,7 @@ public class Config {
 
     ui.put("board-color", new JSONArray("[217, 152, 77]"));
     ui.put("shadows-enabled", true);
+    
     ui.put("fancy-stones", true);
     ui.put("fancy-board", true);
     ui.put("shadow-size", 100);
