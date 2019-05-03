@@ -11,9 +11,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -39,15 +42,18 @@ public class AnalysisFrame extends JPanel {
     table.setFont(new Font("宋体", Font.BOLD, 18));
     TableCellRenderer tcr = new ColorTableCellRenderer();
     table.setDefaultRenderer(Object.class, tcr);
+ 
+    
+    
     scrollpane =
         new JScrollPane(table) {
+    	
           @Override
           public Dimension getPreferredSize() {
             return new Dimension(510, 330);
           }
         };
-    // table.setAutoCreateRowSorter(true);
-
+        
     timer =
         new Timer(
             100,
@@ -66,7 +72,7 @@ public class AnalysisFrame extends JPanel {
     table.getColumnModel().getColumn(2).setPreferredWidth(30);
     table.getColumnModel().getColumn(3).setPreferredWidth(60);
     table.getColumnModel().getColumn(4).setPreferredWidth(50);
-    // scrollpane.setBounds(0, 10, 470, 400);
+
     JTableHeader header = table.getTableHeader();
 
     table.addMouseListener(
@@ -83,12 +89,20 @@ public class AnalysisFrame extends JPanel {
                 }
               }
             } else {
+
               if (row >= 0 && col >= 0) {
-                try {
-                  handleTableClick(row, col);
-                } catch (Exception ex) {
-                  ex.printStackTrace();
-                }
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                  try {
+                    handleTableRightClick(row, col);
+                  } catch (Exception ex) {
+                    ex.printStackTrace();
+                  }
+                } else
+                  try {
+                    handleTableClick(row, col);
+                  } catch (Exception ex) {
+                    ex.printStackTrace();
+                  }
               }
             }
           }
@@ -132,9 +146,9 @@ public class AnalysisFrame extends JPanel {
                 Color.RGBtoHSB(238, 221, 130, null)[2]);
         setBackground(hsbColor);
 
-        return super.getTableCellRendererComponent(table, value, false, hasFocus, row, column);
+        return super.getTableCellRendererComponent(table, value, false, false, row, column);
       } else {
-        return renderer.getTableCellRendererComponent(table, value, false, hasFocus, row, column);
+        return renderer.getTableCellRendererComponent(table, value, false, false, row, column);
       }
     }
     // 该类继承与JLabel，Graphics用于绘制单元格,绘制红线
@@ -155,6 +169,12 @@ public class AnalysisFrame extends JPanel {
     Lizzie.frame.mouseOverCoordinate = Lizzie.frame.outOfBoundCoordinate;
     Lizzie.frame.repaint();
     selectedorder = row;
+  }
+
+  private void handleTableRightClick(int row, int col) {
+    String aa = table.getValueAt(row, 0).toString();
+    int[] coords = Lizzie.board.convertNameToCoordinates(aa);
+    Lizzie.board.place(coords[0], coords[1]);
   }
 
   private void handleTableDoubleClick(int row, int col) {
@@ -250,10 +270,13 @@ public class AnalysisFrame extends JPanel {
     };
   }
 
-  public static JDialog createAnalysisDialog(JFrame owner) {
+  public static   JFrame createAnalysisDialog(JFrame owner) {
     // Create and set up the window.
-    JDialog dialog = new JDialog(owner, "单击显示紫圈(小棋盘显示变化图),双击显示后续变化图,快捷键U显示/关闭");
-    dialog.addWindowListener(
+	  JFrame jf=new JFrame();
+	  jf.setTitle("单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
+	  
+  //  JDialog dialog = new JDialog(owner, "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
+    jf.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
             Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
@@ -262,13 +285,17 @@ public class AnalysisFrame extends JPanel {
     // Create and set up the content pane.
     final AnalysisFrame newContentPane = new AnalysisFrame();
     newContentPane.setOpaque(true); // content panes must be opaque
-    dialog.setContentPane(newContentPane);
-
+    jf.setContentPane(newContentPane); 
     // Display the window.
-    dialog.setSize(530, 380);
-
+    jf.setSize(520, 370);
+    try {
+        jf.setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+ jf.setResizable(false);
     // Handle close event
 
-    return dialog;
+    return jf;
   }
 }

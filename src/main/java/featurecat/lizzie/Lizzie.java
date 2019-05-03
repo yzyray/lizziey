@@ -16,7 +16,7 @@ public class Lizzie {
   public static Config config;
   public static GtpConsolePane gtpConsole;
   public static LizzieFrame frame;
-  public static JDialog analysisDialog;
+  public static JFrame analysisDialog;
   public static AnalysisFrame analysisFrame;
   public static Board board;
   public static Leelaz leelaz;
