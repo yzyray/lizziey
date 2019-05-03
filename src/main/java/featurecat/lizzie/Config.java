@@ -31,7 +31,7 @@ public class Config {
   public boolean handicapInsteadOfWinrate = false;
   public boolean showDynamicKomi = true;
   public double replayBranchIntervalSeconds = 1.0;
-  public boolean showCoordinates = false;
+  public boolean showCoordinates = true;
   public boolean colorByWinrateInsteadOfVisits = false;
   public boolean showlcbwinrate = true;
   public boolean showlcbcolor = true;
@@ -307,6 +307,13 @@ public class Config {
 
   public void toggleCoordinates() {
     showCoordinates = !showCoordinates;
+    try {
+      Lizzie.config.uiConfig.put("show-coordinates", showCoordinates);
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   public void toggleEvaluationColoring() {
@@ -400,6 +407,7 @@ public class Config {
     ui.put("show-variation-graph", true);
     ui.put("show-captured", true);
     ui.put("show-best-moves", true);
+    ui.put("show-coordinates", true);
     ui.put("show-next-moves", true);
     ui.put("show-subboard", true);
     ui.put("large-subboard", false);

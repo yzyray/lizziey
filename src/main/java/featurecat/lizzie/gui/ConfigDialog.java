@@ -887,6 +887,7 @@ public class ConfigDialog extends JDialog {
 
   private void saveConfig() {
     try {
+
       leelazConfig.putOpt("max-analyze-time-minutes", txtFieldValue(txtMaxAnalyzeTime));
       leelazConfig.putOpt(
           "analyze-update-interval-centisec", txtFieldValue(txtAnalyzeUpdateInterval));
