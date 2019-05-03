@@ -33,6 +33,7 @@ public class Lizzie {
     frame = new LizzieFrame();
     analysisDialog = AnalysisFrame.createAnalysisDialog(frame);
     analysisFrame = (AnalysisFrame) analysisDialog.getContentPane();
+
     analysisDialog.setVisible(true);
     frame.setVisible(true);
     gtpConsole = new GtpConsolePane(frame);

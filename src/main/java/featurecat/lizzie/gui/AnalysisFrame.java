@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -42,18 +41,16 @@ public class AnalysisFrame extends JPanel {
     table.setFont(new Font("宋体", Font.BOLD, 18));
     TableCellRenderer tcr = new ColorTableCellRenderer();
     table.setDefaultRenderer(Object.class, tcr);
- 
-    
-    
+
     scrollpane =
         new JScrollPane(table) {
-    	
+
           @Override
           public Dimension getPreferredSize() {
-            return new Dimension(510, 330);
+            return new Dimension(515, 327);
           }
         };
-        
+
     timer =
         new Timer(
             100,
@@ -270,12 +267,12 @@ public class AnalysisFrame extends JPanel {
     };
   }
 
-  public static   JFrame createAnalysisDialog(JFrame owner) {
+  public static JFrame createAnalysisDialog(JFrame owner) {
     // Create and set up the window.
-	  JFrame jf=new JFrame();
-	  jf.setTitle("单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
-	  
-  //  JDialog dialog = new JDialog(owner, "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
+    JFrame jf = new JFrame();
+    jf.setTitle("U显示/关闭,单击显示紫圈(小棋盘显示变化)右键落子,双击显示变化");
+
+    //  JDialog dialog = new JDialog(owner, "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
     jf.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
@@ -285,15 +282,16 @@ public class AnalysisFrame extends JPanel {
     // Create and set up the content pane.
     final AnalysisFrame newContentPane = new AnalysisFrame();
     newContentPane.setOpaque(true); // content panes must be opaque
-    jf.setContentPane(newContentPane); 
+    jf.setContentPane(newContentPane);
     // Display the window.
-    jf.setSize(520, 370);
+    jf.setSize(521, 360);
+
     try {
-        jf.setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
- jf.setResizable(false);
+      jf.setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    jf.setResizable(false);
     // Handle close event
 
     return jf;
