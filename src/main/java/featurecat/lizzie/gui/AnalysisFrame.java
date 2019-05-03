@@ -47,7 +47,7 @@ public class AnalysisFrame extends JPanel {
 
           @Override
           public Dimension getPreferredSize() {
-            return new Dimension(515, 327);
+            return new Dimension(510, 265);
           }
         };
 
@@ -109,7 +109,12 @@ public class AnalysisFrame extends JPanel {
           public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_U) {
               Lizzie.frame.toggleBestMoves();
-            }
+            } else if (e.getKeyCode() == KeyEvent.VK_SPACE)
+              if (Lizzie.frame.isPlayingAgainstLeelaz) {
+                Lizzie.frame.isPlayingAgainstLeelaz = false;
+                Lizzie.leelaz.isThinking = false;
+              }
+            Lizzie.leelaz.togglePonder();
           }
         });
 
@@ -159,9 +164,8 @@ public class AnalysisFrame extends JPanel {
     //      }
   }
 
-  private void handleTableClick(int row, int col) {
-    String aa = table.getValueAt(row, 0).toString();
-    int[] coords = Lizzie.board.convertNameToCoordinates(aa);
+  private void handleTableClick(int row, int col) {   
+    int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 0).toString());
     Lizzie.frame.suggestionclick = coords;
     Lizzie.frame.mouseOverCoordinate = Lizzie.frame.outOfBoundCoordinate;
     Lizzie.frame.repaint();
@@ -177,7 +181,7 @@ public class AnalysisFrame extends JPanel {
   private void handleTableDoubleClick(int row, int col) {
     int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 0).toString());
     Lizzie.frame.mouseOverCoordinate = coords;
-    Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
+    Lizzie.frame.suggestionclick = coords;
     Lizzie.frame.repaint();
   }
 
@@ -284,7 +288,7 @@ public class AnalysisFrame extends JPanel {
     newContentPane.setOpaque(true); // content panes must be opaque
     jf.setContentPane(newContentPane);
     // Display the window.
-    jf.setSize(521, 360);
+    jf.setSize(521, 310);
 
     try {
       jf.setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
