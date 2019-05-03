@@ -16,7 +16,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 @SuppressWarnings("serial")
@@ -27,19 +29,21 @@ public class AnalysisFrame extends JPanel {
   JTable table;
   Timer timer;
   int sortnum = 1;
+  int selectedorder = -1;
 
   public AnalysisFrame() {
 
     dataModel = getTableModel();
     table = new JTable(dataModel);
     table.getTableHeader().setFont(new Font("宋体", Font.BOLD, 14));
-    table.setFont(new Font("宋体", 0, 18));
-
+    table.setFont(new Font("宋体", Font.BOLD, 18));
+    TableCellRenderer tcr = new ColorTableCellRenderer();
+    table.setDefaultRenderer(Object.class, tcr);
     scrollpane =
         new JScrollPane(table) {
           @Override
           public Dimension getPreferredSize() {
-            return new Dimension(460, 330);
+            return new Dimension(510, 330);
           }
         };
     // table.setAutoCreateRowSorter(true);
@@ -107,12 +111,50 @@ public class AnalysisFrame extends JPanel {
         });
   }
 
+  class ColorTableCellRenderer extends DefaultTableCellRenderer {
+    DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+
+    public Component getTableCellRendererComponent(
+        JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+      // if(row%2 == 0){
+      if (Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 0).toString())[0]
+              == Lizzie.frame.suggestionclick[0]
+          && Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 0).toString())[1]
+              == Lizzie.frame.suggestionclick[1]) {
+        if (selectedorder != row) {
+          selectedorder = -1;
+          setForeground(Color.RED);
+        }
+        Color hsbColor =
+            Color.getHSBColor(
+                Color.RGBtoHSB(238, 221, 130, null)[0],
+                Color.RGBtoHSB(238, 221, 130, null)[1],
+                Color.RGBtoHSB(238, 221, 130, null)[2]);
+        setBackground(hsbColor);
+
+        return super.getTableCellRendererComponent(table, value, false, hasFocus, row, column);
+      } else {
+        return renderer.getTableCellRendererComponent(table, value, false, hasFocus, row, column);
+      }
+    }
+    // 该类继承与JLabel，Graphics用于绘制单元格,绘制红线
+    //      public void paintComponent(Graphics g){
+    //          super.paintComponent(g);
+    //          Graphics2D g2=(Graphics2D)g;
+    //          final BasicStroke stroke=new BasicStroke(2.0f);
+    //          g2.setColor(Color.RED);
+    //          g2.setStroke(stroke);
+    //          g2.drawLine(0,getHeight()/2,getWidth(),getHeight()/2);
+    //      }
+  }
+
   private void handleTableClick(int row, int col) {
     String aa = table.getValueAt(row, 0).toString();
     int[] coords = Lizzie.board.convertNameToCoordinates(aa);
     Lizzie.frame.suggestionclick = coords;
     Lizzie.frame.mouseOverCoordinate = Lizzie.frame.outOfBoundCoordinate;
     Lizzie.frame.repaint();
+    selectedorder = row;
   }
 
   private void handleTableDoubleClick(int row, int col) {
@@ -188,6 +230,10 @@ public class AnalysisFrame extends JPanel {
         MoveData data = data2.get(row);
         switch (col) {
           case 0:
+            //
+            // if(Lizzie.board.convertNameToCoordinates(data.coordinate)[0]==Lizzie.frame.suggestionclick[0]&&Lizzie.board.convertNameToCoordinates(data.coordinate)[1]==Lizzie.frame.suggestionclick[1])
+            //        	  {return "*"+data.coordinate;}
+            //        	  else
             return data.coordinate;
           case 1:
             return String.format("%.2f", data.lcb) + "-" + String.format("%.2f", maxlcb - data.lcb);
@@ -219,7 +265,7 @@ public class AnalysisFrame extends JPanel {
     dialog.setContentPane(newContentPane);
 
     // Display the window.
-    dialog.setSize(480, 380);
+    dialog.setSize(530, 380);
 
     // Handle close event
 
