@@ -261,6 +261,9 @@ public class MovelistFrame extends JPanel {
               }
               Lizzie.leelaz.togglePonder();
             }
+            if (e.getKeyCode() == KeyEvent.VK_T) {
+              togglealwaysontop();
+            }
           }
         });
 
@@ -310,6 +313,22 @@ public class MovelistFrame extends JPanel {
     //          g2.setStroke(stroke);
     //          g2.drawLine(0,getHeight()/2,getWidth(),getHeight()/2);
     //      }
+  }
+
+  private void togglealwaysontop() {
+    if (JOptionPane.getFrameForComponent(this).isAlwaysOnTop()) {
+      JOptionPane.getFrameForComponent(this).setAlwaysOnTop(false);
+      Lizzie.config.uiConfig.put("badmoves-always-ontop", false);
+    } else {
+      JOptionPane.getFrameForComponent(this).setAlwaysOnTop(true);
+      Lizzie.config.uiConfig.put("badmoves-always-ontop", true);
+    }
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   private void handleTableClick(int row, int col) {
@@ -483,7 +502,7 @@ public class MovelistFrame extends JPanel {
   public static JFrame createAnalysisDialog(JFrame owner) {
     // Create and set up the window.
     JFrame jf = new JFrame();
-    jf.setTitle("只对主分支有效,B显示/关闭,单击显示紫圈,双击跳转");
+    jf.setTitle("只对主分支有效,B显示/关闭,单击显示紫圈,双击跳转,T总在最前");
 
     //  JDialog dialog = new JDialog(owner, "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
     jf.addWindowListener(
@@ -503,6 +522,7 @@ public class MovelistFrame extends JPanel {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
     jf.setResizable(false);
     return jf;
   }

@@ -69,6 +69,8 @@ public class Config {
   public Color blunderBarColor = null;
   public boolean solidStoneIndicator = false;
   public boolean showCommentNodeColor = true;
+  public boolean badmovesalwaysontop = true;
+  public boolean suggestionsalwaysontop = true;
   public Color commentNodeColor = null;
   public Optional<List<Double>> blunderWinrateThresholds;
   public Optional<Map<Double, Color>> blunderNodeColors;
@@ -186,6 +188,8 @@ public class Config {
     largeSubBoard = uiConfig.getBoolean("large-subboard");
     handicapInsteadOfWinrate = uiConfig.getBoolean("handicap-instead-of-winrate");
     showDynamicKomi = uiConfig.getBoolean("show-dynamic-komi");
+    badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", true);
+    suggestionsalwaysontop = uiConfig.optBoolean("suggestions-always-ontop", true);
     appendWinrateToComment = uiConfig.optBoolean("append-winrate-to-comment");
     showCoordinates = uiConfig.optBoolean("show-coordinates");
     replayBranchIntervalSeconds = uiConfig.optDouble("replay-branch-interval-seconds", 1.0);

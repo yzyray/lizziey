@@ -37,11 +37,11 @@ public class Lizzie {
     analysisframe = AnalysisFrame.createAnalysisDialog(frame);
     analysisframe.setLocation(-7, 0);
     analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", true));
-
+    analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
     movelistframe = MovelistFrame.createAnalysisDialog(frame);
     movelistframe.setLocation(-7, 302);
     movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", true));
-
+    movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
     frame.setVisible(true);
     gtpConsole = new GtpConsolePane(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
