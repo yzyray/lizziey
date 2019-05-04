@@ -109,12 +109,17 @@ public class AnalysisFrame extends JPanel {
           public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_U) {
               Lizzie.frame.toggleBestMoves();
-            } else if (e.getKeyCode() == KeyEvent.VK_SPACE)
+            }
+            if (e.getKeyCode() == KeyEvent.VK_B) {
+              Lizzie.frame.toggleBadMoves();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
               if (Lizzie.frame.isPlayingAgainstLeelaz) {
                 Lizzie.frame.isPlayingAgainstLeelaz = false;
                 Lizzie.leelaz.isThinking = false;
               }
-            Lizzie.leelaz.togglePonder();
+              Lizzie.leelaz.togglePonder();
+            }
           }
         });
 
