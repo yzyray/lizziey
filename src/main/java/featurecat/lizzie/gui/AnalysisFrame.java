@@ -47,7 +47,7 @@ public class AnalysisFrame extends JPanel {
 
           @Override
           public Dimension getPreferredSize() {
-            return new Dimension(510, 265);
+            return new Dimension(510, 260);
           }
         };
 
@@ -69,6 +69,7 @@ public class AnalysisFrame extends JPanel {
     table.getColumnModel().getColumn(2).setPreferredWidth(30);
     table.getColumnModel().getColumn(3).setPreferredWidth(60);
     table.getColumnModel().getColumn(4).setPreferredWidth(50);
+    
 
     JTableHeader header = table.getTableHeader();
 
@@ -302,33 +303,35 @@ public class AnalysisFrame extends JPanel {
     };
   }
 
-  public static JFrame createAnalysisDialog(JFrame owner) {
+  public static JFrame createAnalysisDialog( ) {
     // Create and set up the window.
-    JFrame jf = new JFrame();
-    jf.setTitle("U显示/关闭,单击显示紫圈,右键落子,双击显示变化,T总在最前");
-
+    JFrame jfs = new JFrame();
+   
+    jfs.setTitle("U显示/关闭,单击显示紫圈(小棋盘显示变化),右键落子,双击显示变化,T切换总在最前");
+   
     //  JDialog dialog = new JDialog(owner, "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
-    jf.addWindowListener(
+    jfs.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
             Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
           }
         });
+
     // Create and set up the content pane.
     final AnalysisFrame newContentPane = new AnalysisFrame();
     newContentPane.setOpaque(true); // content panes must be opaque
-    jf.setContentPane(newContentPane);
+    jfs.setContentPane(newContentPane);
     // Display the window.
-    jf.setSize(521, 310);
+    jfs.setSize(521, 300);
 
     try {
-      jf.setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
+      jfs.setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {
       e.printStackTrace();
     }
-    jf.setResizable(false);
+    jfs.setResizable(false);
     // Handle close event
-
-    return jf;
+    
+    return jfs;
   }
 }

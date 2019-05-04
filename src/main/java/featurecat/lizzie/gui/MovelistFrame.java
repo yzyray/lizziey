@@ -176,10 +176,10 @@ public class MovelistFrame extends JPanel {
     checkBlack.setSelected(true);
     checkWhite.setSelected(true);
 
-    JLabel checkBlacktxt = new JLabel("显示黑:");
+    JLabel checkBlacktxt = new JLabel("黑:");
     JLabel checkWhitetxt = new JLabel("白:");
-    JLabel dropwinratechoosertxt = new JLabel("只显示胜率波动超过:");
-    JLabel playoutschoosertxt = new JLabel("只显示前后计算量都超过:");
+    JLabel dropwinratechoosertxt = new JLabel("胜率波动超过:");
+    JLabel playoutschoosertxt = new JLabel("前后计算量都超过:");
     this.add(checkBlacktxt);
     this.add(checkBlack);
     this.add(checkWhitetxt);
@@ -499,10 +499,10 @@ public class MovelistFrame extends JPanel {
     };
   }
 
-  public static JFrame createAnalysisDialog(JFrame owner) {
+  public static JFrame createAnalysisDialog() {
     // Create and set up the window.
     JFrame jf = new JFrame();
-    jf.setTitle("只对主分支有效,B显示/关闭,单击显示紫圈,双击跳转,T总在最前");
+    jf.setTitle("仅主分支有效,B显示/关闭,单击显示紫圈,双击跳转T切换总在最前");
 
     //  JDialog dialog = new JDialog(owner, "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
     jf.addWindowListener(
@@ -511,6 +511,14 @@ public class MovelistFrame extends JPanel {
             Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
           }
         });
+    
+//    JFrame.setDefaultLookAndFeelDecorated(true);
+//
+//    try {
+//        //javax.swing.plaf.metal.MetalLookAndFeel.setCurrentTheme( new NoIconTheme());
+//        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+//    }  
+//    catch ( Exception e ) {}
     // Create and set up the content pane.
     final MovelistFrame newContentPane = new MovelistFrame();
     newContentPane.setOpaque(true); // content panes must be opaque
