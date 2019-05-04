@@ -86,7 +86,7 @@ public class LizzieFrame extends JFrame {
     resourceBundle.getString("LizzieFrame.commands.keyE"),
   };
   private static final String DEFAULT_TITLE = resourceBundle.getString("LizzieFrame.title");
-  private static BoardRenderer boardRenderer;
+  public static BoardRenderer boardRenderer;
   private static SubBoardRenderer subBoardRenderer;
   private static VariationTree variationTree;
   private static WinrateGraph winrateGraph;
@@ -101,7 +101,6 @@ public class LizzieFrame extends JFrame {
   public static final int[] outOfBoundCoordinate = new int[] {-1, -1};
 
   public int[] suggestionclick = outOfBoundCoordinate;
-
   public int[] mouseOverCoordinate = outOfBoundCoordinate;
   public boolean showControls = false;
   public boolean isPlayingAgainstLeelaz = false;
@@ -340,7 +339,35 @@ public class LizzieFrame extends JFrame {
     if (Lizzie.analysisframe.isVisible()) {
       suggestionclick = outOfBoundCoordinate;
       Lizzie.analysisframe.setVisible(false);
-    } else Lizzie.analysisframe.setVisible(true);
+      Lizzie.config.uiConfig.put("show-suggestions-frame", false);
+
+    } else {
+      Lizzie.analysisframe.setVisible(true);
+      Lizzie.config.uiConfig.put("show-suggestions-frame", true);
+    }
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public void toggleBadMoves() {
+
+    if (Lizzie.movelistframe.isVisible()) {
+      Lizzie.movelistframe.setVisible(false);
+      Lizzie.config.uiConfig.put("show-badmoves-frame", false);
+    } else {
+      Lizzie.movelistframe.setVisible(true);
+      Lizzie.config.uiConfig.put("show-badmoves-frame", true);
+    }
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   public static void startNewGame() {

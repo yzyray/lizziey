@@ -32,7 +32,7 @@ public class Board implements LeelazListener {
   public int[] mvnumber = new int[361];
   public ArrayList<Movelist> tempmovelist;
   public ArrayList<Movelist> tempallmovelist;
-  public ArrayList<Movelistwr> movelistwr=new ArrayList<Movelistwr>();
+  public ArrayList<Movelistwr> movelistwr = new ArrayList<Movelistwr>();
 
   private static final String alphabet = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
 
@@ -1462,17 +1462,15 @@ public class Board implements LeelazListener {
         previousMove();
         int idx = pre.indexOfNode(currentNode);
         pre.deleteChild(idx);
-        if(currentNode.isMainTrunk())
-        {
-        	for(int i=0;i<this.movelistwr.size();i++)
-        	{
-        		if(movelistwr.get(i).movenum==currentNode.getData().moveNumber)
-        		{        			
-        			for(int j=i;j<this.movelistwr.size();j++)
-            			{movelistwr.get(j).isdelete=true;}
-        			break;
-        		}
-        	}
+        if (currentNode.isMainTrunk()) {
+          for (int i = 0; i < this.movelistwr.size(); i++) {
+            if (movelistwr.get(i).movenum == currentNode.getData().moveNumber) {
+              for (int j = i; j < this.movelistwr.size(); j++) {
+                movelistwr.get(j).isdelete = true;
+              }
+              break;
+            }
+          }
         }
       } else {
         clear(); // Clear the board if we're at the top
@@ -1779,9 +1777,7 @@ public class Board implements LeelazListener {
       analysisMode = false;
     } else {
       if (!getNextMove().isPresent()) return;
-      String answer =
-          JOptionPane.showInputDialog(
-              "设置自动分析每步计算量(例如 100 (快速) 或 50000 (慢速)): ");
+      String answer = JOptionPane.showInputDialog("设置自动分析每步计算量(例如 100 (快速) 或 50000 (慢速)): ");
       try {
         playoutsAnalysis = Integer.parseInt(answer);
       } catch (NumberFormatException err) {

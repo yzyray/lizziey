@@ -34,14 +34,14 @@ public class Lizzie {
     board = new Board();
 
     frame = new LizzieFrame();
-    analysisframe = AnalysisFrame.createAnalysisDialog(frame);    
-    analysisframe.setLocation(-7,0);
-    analysisframe.setVisible(true);
-    
-    movelistframe = MovelistFrame.createAnalysisDialog(frame);    
-    movelistframe.setLocation(-7,400);
-    movelistframe.setVisible(true);
-    
+    analysisframe = AnalysisFrame.createAnalysisDialog(frame);
+    analysisframe.setLocation(-7, 0);
+    analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", true));
+
+    movelistframe = MovelistFrame.createAnalysisDialog(frame);
+    movelistframe.setLocation(-7, 302);
+    movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", true));
+
     frame.setVisible(true);
     gtpConsole = new GtpConsolePane(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));

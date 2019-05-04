@@ -114,41 +114,42 @@ public class BoardHistoryNode {
     //            }
     //        }
 
-//    if ( this.previous.isPresent() &&this.previous.get().isMainTrunk()) {
-//    	double diffwr=0;
-//    	if(!this.getData().bestMoves.isEmpty())
-//    	{
-//       diffwr = (100-this.getData().bestMoves.get(0).winrate)-this.previous.get().getData().getWinrate();}
-//      double wr = (100-this.data.winrate);
-//      int x = data.lastMove.get()[0];
-//      int y = data.lastMove.get()[1];
-//      int mvnum = this.data.moveNumber;
-//      boolean isb = !this.data.blackToPlay;
-//      int plyout=this.data.getPlayouts();
-//      ArrayList<Movelistwr> data2=Lizzie.board.movelistwr;
-//      
-//      if (!Lizzie.board.movelistwr.isEmpty()&&Lizzie.board.movelistwr.size() >= mvnum) {
-//    	  if(plyout>Lizzie.board.movelistwr.get(mvnum - 1).playouts) {
-//        Lizzie.board.movelistwr.get(mvnum - 1).diffwinrate = 10.0;
-//        Lizzie.board.movelistwr.get(mvnum - 1).winrate = wr;
-//        Lizzie.board.movelistwr.get(mvnum - 1).x = x;
-//        Lizzie.board.movelistwr.get(mvnum - 1).y = y;
-//        Lizzie.board.movelistwr.get(mvnum - 1).isblack = isb;
-//        Lizzie.board.movelistwr.get(mvnum - 1).playouts= plyout;
-//        Lizzie.board.movelistwr.get(mvnum - 1).movenum=mvnum;
-//    	  }
-//      } else {
-//        Movelistwr mv = new Movelistwr();
-//        mv.diffwinrate = diffwr;
-//        mv.winrate = wr;
-//        mv.x = x;
-//        mv.y = y;
-//        mv.isblack = isb;
-//        mv.playouts = plyout;
-//        mv.movenum=mvnum;
-//        Lizzie.board.movelistwr.add(mv);
-//      }
-//    }
+    //    if ( this.previous.isPresent() &&this.previous.get().isMainTrunk()) {
+    //    	double diffwr=0;
+    //    	if(!this.getData().bestMoves.isEmpty())
+    //    	{
+    //       diffwr =
+    // (100-this.getData().bestMoves.get(0).winrate)-this.previous.get().getData().getWinrate();}
+    //      double wr = (100-this.data.winrate);
+    //      int x = data.lastMove.get()[0];
+    //      int y = data.lastMove.get()[1];
+    //      int mvnum = this.data.moveNumber;
+    //      boolean isb = !this.data.blackToPlay;
+    //      int plyout=this.data.getPlayouts();
+    //      ArrayList<Movelistwr> data2=Lizzie.board.movelistwr;
+    //
+    //      if (!Lizzie.board.movelistwr.isEmpty()&&Lizzie.board.movelistwr.size() >= mvnum) {
+    //    	  if(plyout>Lizzie.board.movelistwr.get(mvnum - 1).playouts) {
+    //        Lizzie.board.movelistwr.get(mvnum - 1).diffwinrate = 10.0;
+    //        Lizzie.board.movelistwr.get(mvnum - 1).winrate = wr;
+    //        Lizzie.board.movelistwr.get(mvnum - 1).x = x;
+    //        Lizzie.board.movelistwr.get(mvnum - 1).y = y;
+    //        Lizzie.board.movelistwr.get(mvnum - 1).isblack = isb;
+    //        Lizzie.board.movelistwr.get(mvnum - 1).playouts= plyout;
+    //        Lizzie.board.movelistwr.get(mvnum - 1).movenum=mvnum;
+    //    	  }
+    //      } else {
+    //        Movelistwr mv = new Movelistwr();
+    //        mv.diffwinrate = diffwr;
+    //        mv.winrate = wr;
+    //        mv.x = x;
+    //        mv.y = y;
+    //        mv.isblack = isb;
+    //        mv.playouts = plyout;
+    //        mv.movenum=mvnum;
+    //        Lizzie.board.movelistwr.add(mv);
+    //      }
+    //    }
 
     if (!newBranch) {
       for (int i = 0; i < variations.size(); i++) {

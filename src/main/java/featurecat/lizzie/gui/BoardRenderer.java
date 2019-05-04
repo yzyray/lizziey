@@ -333,8 +333,26 @@ public class BoardRenderer {
     drawStone(g, gShadow, stoneX, stoneY, stone, x, y);
   }
 
+  public void drawbadstone(int x, int y, Stone stone) {
+    cachedStonesImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+    cachedStonesShadowImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+    Graphics2D g = cachedStonesImagedraged.createGraphics();
+    Graphics2D gShadow = cachedStonesShadowImagedraged.createGraphics();
+    gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    // gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+    // g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+
+    // gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    // gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+    int stoneX = scaledMargin + squareLength * x;
+    int stoneY = scaledMargin + squareLength * y;
+    g.setColor(Color.magenta);
+    drawCircle3(g, stoneX, stoneY, stoneRadius + 1);
+  }
+
   /** Draw the stones. We cache the image for a performance boost. */
-  private void drawStones() {
+  public void drawStones() {
     // draw a new image if frame size changes or board state changes
     if (cachedStonesImage.getWidth() != boardLength
         || cachedStonesImage.getHeight() != boardLength
@@ -360,6 +378,7 @@ public class BoardRenderer {
         for (int j = 0; j < Board.boardSize; j++) {
           int stoneX = scaledMargin + squareLength * i;
           int stoneY = scaledMargin + squareLength * j;
+
           drawStone(
               g, gShadow, stoneX, stoneY, Lizzie.board.getStones()[Board.getIndex(i, j)], i, j);
         }

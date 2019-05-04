@@ -464,6 +464,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         }
         break;
 
+      case VK_B:
+        Lizzie.frame.toggleBadMoves();
+        break;
       case VK_DELETE:
       case VK_BACK_SPACE:
         if (isinsertmode) {

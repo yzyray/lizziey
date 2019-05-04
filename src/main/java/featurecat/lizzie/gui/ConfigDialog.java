@@ -586,12 +586,12 @@ public class ConfigDialog extends JDialog {
     wrgroup.add(rdoLcb);
     wrgroup.add(rdoWinrate);
 
-    JLabel lblShowLcbColor = new JLabel("分析点颜色显示");
+    JLabel lblShowLcbColor = new JLabel("分析点红绿程度依据");
     lblShowLcbColor.setBounds(6, 555, 157, 16);
     engineTab.add(lblShowLcbColor);
 
     JLabel lblShowLcbColorhint =
-        new JLabel("设置分析点颜色显示方式,Lcb方式需要0.17引擎支持,比计算量更可靠,无论显示胜率方式是否为Lcb此选项都可选择Lcb");
+        new JLabel("设置分析点红绿程度的依据,Lcb方式需0.17引擎支持,比计算量更可靠,无论显示胜率方式是否为Lcb此选项都可选择Lcb");
     lblShowLcbColorhint.setBounds(6, 580, 637, 16);
     engineTab.add(lblShowLcbColorhint);
     lblShowLcbColorhint.setVisible(false);

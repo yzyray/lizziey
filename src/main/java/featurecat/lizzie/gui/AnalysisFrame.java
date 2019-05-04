@@ -165,11 +165,17 @@ public class AnalysisFrame extends JPanel {
   }
 
   private void handleTableClick(int row, int col) {
-    int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 0).toString());
-    Lizzie.frame.suggestionclick = coords;
-    Lizzie.frame.mouseOverCoordinate = Lizzie.frame.outOfBoundCoordinate;
-    Lizzie.frame.repaint();
-    selectedorder = row;
+    if (selectedorder != row) {
+      int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 0).toString());
+      Lizzie.frame.suggestionclick = coords;
+      Lizzie.frame.mouseOverCoordinate = Lizzie.frame.outOfBoundCoordinate;
+      Lizzie.frame.repaint();
+      selectedorder = row;
+    } else {
+      Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
+      Lizzie.frame.repaint();
+      selectedorder = -1;
+    }
   }
 
   private void handleTableRightClick(int row, int col) {
@@ -289,7 +295,7 @@ public class AnalysisFrame extends JPanel {
     jf.setContentPane(newContentPane);
     // Display the window.
     jf.setSize(521, 310);
-  
+
     try {
       jf.setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {
