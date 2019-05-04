@@ -77,8 +77,8 @@ public class Config {
   public int boardPositionProportion = 3;
   public int limitBranchLength = 0;
   public int limitMaxSuggestion = 0;
-  public int limitbadmoves = 5;
-  public int limitbadplayouts = 100;
+  public int limitbadmoves = 0;
+  public int limitbadplayouts = 0;
   public String gtpConsoleStyle = "";
   private final String defaultGtpConsoleStyle =
       "body {background:#000000; color:#d0d0d0; font-family:Consolas, Menlo, Monaco, 'Ubuntu Mono', monospace; margin:4px;} .command {color:#ffffff;font-weight:bold;} .winrate {color:#ffffff;font-weight:bold;} .coord {color:#ffffff;font-weight:bold;}";
@@ -377,12 +377,11 @@ public class Config {
     leelaz.put("max-analyze-time-minutes", 5);
     leelaz.put("limit-max-suggestion", 50);
     leelaz.put("limit-branch-length", 0);
-    leelaz.put("badmoves-winrate-limits", 5);
-    leelaz.put("badmoves-playouts-limits", 100);
+    leelaz.put("badmoves-winrate-limits", 0);
+    leelaz.put("badmoves-playouts-limits", 0);
 
     leelaz.put("max-game-thinking-time-seconds", 2);
     leelaz.put("print-comms", false);
-    leelaz.put("badmoves-winrate-limits", 5);
     leelaz.put("analyze-update-interval-centisec", 10);
     leelaz.put("show-lcb-winrate", false);
     leelaz.put("show-lcb-color", true);

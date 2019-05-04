@@ -8,8 +8,6 @@ import static java.lang.Math.round;
 
 import com.jhlabs.image.GaussianFilter;
 import featurecat.lizzie.Lizzie;
-import featurecat.lizzie.gui.AnalysisFrame;
-import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.analysis.GameInfo;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.analysis.MoveData;
@@ -343,7 +341,7 @@ public class LizzieFrame extends JFrame {
       suggestionclick = outOfBoundCoordinate;
       Lizzie.analysisframe.setVisible(false);
       Lizzie.config.uiConfig.put("show-suggestions-frame", false);
-      featurecat.lizzie.gui.AnalysisFrame.selectedorder=-1;
+      featurecat.lizzie.gui.AnalysisFrame.selectedorder = -1;
 
     } else {
       Lizzie.analysisframe.setVisible(true);
@@ -362,7 +360,7 @@ public class LizzieFrame extends JFrame {
     if (Lizzie.movelistframe.isVisible()) {
       Lizzie.movelistframe.setVisible(false);
       Lizzie.config.uiConfig.put("show-badmoves-frame", false);
-      featurecat.lizzie.gui.MovelistFrame.selectedorder=-1;
+      featurecat.lizzie.gui.MovelistFrame.selectedorder = -1;
       clickbadmove = Lizzie.frame.outOfBoundCoordinate;
       Lizzie.frame.boardRenderer.removedrawmovestone();
       Lizzie.frame.repaint();
