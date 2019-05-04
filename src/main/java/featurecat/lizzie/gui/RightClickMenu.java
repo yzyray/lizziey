@@ -2,6 +2,7 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.rules.Movelist;
+import featurecat.lizzie.rules.Movelistwr;
 import featurecat.lizzie.rules.SGFParser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,6 +47,7 @@ public class RightClickMenu extends JPopupMenu {
   ArrayList<Movelist> currentmovestat2;
   ArrayList<Movelist> orimovestat;
   private String oriString = "";
+  ArrayList<Movelistwr> copy= new ArrayList<Movelistwr>();
 
   public RightClickMenu() {
 
@@ -282,6 +284,9 @@ public class RightClickMenu extends JPopupMenu {
     saveString2 = "";
     this.remove(restore);
     this.remove(reedit);
+    for (int i = 0; i < copy.size(); i++) {
+    	Lizzie.board.movelistwr.add(copy.get(i)); 
+      }
   }
 
   private void restore() {
@@ -300,9 +305,13 @@ public class RightClickMenu extends JPopupMenu {
     }
     this.remove(restore);
     this.add(reedit);
+    for (int i = 0; i < copy.size(); i++) {
+    	Lizzie.board.movelistwr.add(copy.get(i)); 
+      }
   }
 
   private void reedit() {
+	 
     if (!saveString2.isEmpty()) {
       SGFParser.loadFromString(saveString2);
 
@@ -310,9 +319,13 @@ public class RightClickMenu extends JPopupMenu {
     }
     this.remove(reedit);
     this.add(restore);
+    for (int i = 0; i < copy.size(); i++) {
+    	Lizzie.board.movelistwr.add(copy.get(i)); 
+      }
   }
 
   private void editmode() {
+	  copy.clear();
     featurecat.lizzie.gui.Input.Draggedmode = true;
     // Lizzie.frame.copySgf();
     try {
@@ -321,7 +334,10 @@ public class RightClickMenu extends JPopupMenu {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-
+    
+    for (int i = 0; i < Lizzie.board.movelistwr.size(); i++) {
+    	copy.add(Lizzie.board.movelistwr.get(i)); 
+      }
     this.remove(reedit);
     this.remove(editmode);
     this.add(addblack);
@@ -352,6 +368,13 @@ public class RightClickMenu extends JPopupMenu {
     Lizzie.board.setlistforeditmode2();
     Lizzie.board.quitinsertmode();
     this.remove(quiteditmode);
+    
+    Lizzie.board.movelistwr.clear();
+    for (int i = 0; i < copy.size(); i++) {
+    	Lizzie.board.movelistwr.add(copy.get(i)); 
+      }
+    
+    
   }
 
   //  private void insertmode() {

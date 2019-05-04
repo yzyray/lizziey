@@ -1462,6 +1462,18 @@ public class Board implements LeelazListener {
         previousMove();
         int idx = pre.indexOfNode(currentNode);
         pre.deleteChild(idx);
+        if(currentNode.isMainTrunk())
+        {
+        	for(int i=0;i<this.movelistwr.size();i++)
+        	{
+        		if(movelistwr.get(i).movenum==currentNode.getData().moveNumber)
+        		{        			
+        			for(int j=i;j<this.movelistwr.size();j++)
+            			{movelistwr.get(j).isdelete=true;}
+        			break;
+        		}
+        	}
+        }
       } else {
         clear(); // Clear the board if we're at the top
       }
@@ -1492,6 +1504,7 @@ public class Board implements LeelazListener {
     Lizzie.leelaz.clear();
     Lizzie.frame.resetTitle();
     Lizzie.frame.clear();
+    movelistwr.clear();
     initialize();
   }
 
