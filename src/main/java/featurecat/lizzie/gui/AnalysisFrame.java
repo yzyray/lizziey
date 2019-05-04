@@ -31,7 +31,7 @@ public class AnalysisFrame extends JPanel {
   JTable table;
   Timer timer;
   int sortnum = 1;
-  int selectedorder = -1;
+  static int selectedorder = -1;
 
   public AnalysisFrame() {
 
