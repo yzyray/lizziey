@@ -337,10 +337,10 @@ public class LizzieFrame extends JFrame {
   }
 
   public void toggleBestMoves() {
-    if (Lizzie.analysisDialog.isVisible()) {
+    if (Lizzie.analysisframe.isVisible()) {
       suggestionclick = outOfBoundCoordinate;
-      Lizzie.analysisDialog.setVisible(false);
-    } else Lizzie.analysisDialog.setVisible(true);
+      Lizzie.analysisframe.setVisible(false);
+    } else Lizzie.analysisframe.setVisible(true);
   }
 
   public static void startNewGame() {

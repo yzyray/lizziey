@@ -464,14 +464,14 @@ public class BoardRenderer {
         int stoneY = scaledMargin + squareLength * j;
 
         drawStone(g, gShadow, stoneX, stoneY, stone.unGhosted(), i, j);
-        if (i == Lizzie.frame.suggestionclick[0]
-                && j == Lizzie.frame.suggestionclick[1]) {
-        Optional<int[]> coords1=	Board.asCoordinates(suggestedMove.get().coordinate);
-        if (coords1.isPresent()&&coords1.get()[0]==Lizzie.frame.suggestionclick[0]&&coords1.get()[1]==Lizzie.frame.suggestionclick[1])
-        {
-              g.setColor(Color.magenta);
-              drawCircle3(g, stoneX, stoneY, stoneRadius - 1);
-            }
+        if (i == Lizzie.frame.suggestionclick[0] && j == Lizzie.frame.suggestionclick[1]) {
+          Optional<int[]> coords1 = Board.asCoordinates(suggestedMove.get().coordinate);
+          if (coords1.isPresent()
+              && coords1.get()[0] == Lizzie.frame.suggestionclick[0]
+              && coords1.get()[1] == Lizzie.frame.suggestionclick[1]) {
+            g.setColor(Color.magenta);
+            drawCircle3(g, stoneX, stoneY, stoneRadius - 1);
+          }
         }
       }
     }

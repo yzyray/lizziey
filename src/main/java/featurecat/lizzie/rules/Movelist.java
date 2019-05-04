@@ -6,4 +6,6 @@ public class Movelist {
   public int y;
   public int movenum;
   public boolean isblack;
+  double winrate;
+  double diffwinrate;
 }

@@ -4,6 +4,7 @@ import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.gui.GtpConsolePane;
 import featurecat.lizzie.gui.LizzieFrame;
+import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Board;
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +17,10 @@ public class Lizzie {
   public static Config config;
   public static GtpConsolePane gtpConsole;
   public static LizzieFrame frame;
-  public static JFrame analysisDialog;
+  public static JFrame analysisframe;
   public static AnalysisFrame analysisFrame;
+  public static JFrame movelistframe;
+  public static MovelistFrame movelistFrame;
   public static Board board;
   public static Leelaz leelaz;
   public static String lizzieVersion = "0.7";
@@ -31,10 +34,14 @@ public class Lizzie {
     board = new Board();
 
     frame = new LizzieFrame();
-    analysisDialog = AnalysisFrame.createAnalysisDialog(frame);
-    analysisFrame = (AnalysisFrame) analysisDialog.getContentPane();
-
-    analysisDialog.setVisible(true);
+    analysisframe = AnalysisFrame.createAnalysisDialog(frame);    
+    analysisframe.setLocation(-7,0);
+    analysisframe.setVisible(true);
+    
+    movelistframe = MovelistFrame.createAnalysisDialog(frame);    
+    movelistframe.setLocation(-7,400);
+    movelistframe.setVisible(true);
+    
     frame.setVisible(true);
     gtpConsole = new GtpConsolePane(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));

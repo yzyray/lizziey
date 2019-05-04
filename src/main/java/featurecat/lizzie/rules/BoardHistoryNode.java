@@ -1,6 +1,7 @@
 package featurecat.lizzie.rules;
 
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.analysis.Leelaz;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,8 +63,40 @@ public class BoardHistoryNode {
    *
    * @param data the node following this one
    * @param newBranch add a new branch
-   * @return the node that was just set
+   * @return the node that was just set *
    */
+  public static double lastWinrateDiff(BoardHistoryNode node) {
+
+    // Last winrate
+    Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
+    boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
+    double lastWR = validLastWinrate ? lastNode.get().winrate : 50;
+
+    // Current winrate
+    BoardData data = node.getData();
+    boolean validWinrate = false;
+    double curWR = 50;
+    if (data == Lizzie.board.getHistory().getData()) {
+      Leelaz.WinrateStats stats = Lizzie.leelaz.getWinrateStats();
+      curWR = stats.maxWinrate;
+      validWinrate = (stats.totalPlayouts > 0);
+      if (Lizzie.frame.isPlayingAgainstLeelaz
+          && Lizzie.frame.playerIsBlack == !Lizzie.board.getHistory().getData().blackToPlay) {
+        validWinrate = false;
+      }
+    } else {
+      validWinrate = (data.getPlayouts() > 0);
+      curWR = validWinrate ? data.winrate : 100 - lastWR;
+    }
+
+    // Last move difference winrate
+    if (validLastWinrate && validWinrate) {
+      return 100 - lastWR - curWR;
+    } else {
+      return 0;
+    }
+  }
+
   public BoardHistoryNode addOrGoto(BoardData data, boolean newBranch, boolean changeMove) {
     // If you play a hand and immediately return it, it is most likely that you have made a mistake.
     // Ask whether to delete the previous node.
@@ -80,6 +113,43 @@ public class BoardHistoryNode {
     //                }
     //            }
     //        }
+
+//    if ( this.previous.isPresent() &&this.previous.get().isMainTrunk()) {
+//    	double diffwr=0;
+//    	if(!this.getData().bestMoves.isEmpty())
+//    	{
+//       diffwr = (100-this.getData().bestMoves.get(0).winrate)-this.previous.get().getData().getWinrate();}
+//      double wr = (100-this.data.winrate);
+//      int x = data.lastMove.get()[0];
+//      int y = data.lastMove.get()[1];
+//      int mvnum = this.data.moveNumber;
+//      boolean isb = !this.data.blackToPlay;
+//      int plyout=this.data.getPlayouts();
+//      ArrayList<Movelistwr> data2=Lizzie.board.movelistwr;
+//      
+//      if (!Lizzie.board.movelistwr.isEmpty()&&Lizzie.board.movelistwr.size() >= mvnum) {
+//    	  if(plyout>Lizzie.board.movelistwr.get(mvnum - 1).playouts) {
+//        Lizzie.board.movelistwr.get(mvnum - 1).diffwinrate = 10.0;
+//        Lizzie.board.movelistwr.get(mvnum - 1).winrate = wr;
+//        Lizzie.board.movelistwr.get(mvnum - 1).x = x;
+//        Lizzie.board.movelistwr.get(mvnum - 1).y = y;
+//        Lizzie.board.movelistwr.get(mvnum - 1).isblack = isb;
+//        Lizzie.board.movelistwr.get(mvnum - 1).playouts= plyout;
+//        Lizzie.board.movelistwr.get(mvnum - 1).movenum=mvnum;
+//    	  }
+//      } else {
+//        Movelistwr mv = new Movelistwr();
+//        mv.diffwinrate = diffwr;
+//        mv.winrate = wr;
+//        mv.x = x;
+//        mv.y = y;
+//        mv.isblack = isb;
+//        mv.playouts = plyout;
+//        mv.movenum=mvnum;
+//        Lizzie.board.movelistwr.add(mv);
+//      }
+//    }
+
     if (!newBranch) {
       for (int i = 0; i < variations.size(); i++) {
         if (variations.get(i).data.zobrist.equals(data.zobrist)) {
@@ -93,6 +163,7 @@ public class BoardHistoryNode {
         }
       }
     }
+
     if (!this.previous.isPresent()) {
       data.moveMNNumber = 1;
     }

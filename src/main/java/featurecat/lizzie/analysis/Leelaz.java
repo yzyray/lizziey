@@ -678,6 +678,7 @@ public class Leelaz {
    * Return the best win rate and total number of playouts.
    * If no analysis available, win rate is negative and playouts is 0.
    */
+ 
   public WinrateStats getWinrateStats() {
     WinrateStats stats = new WinrateStats(-100, 0);
 
