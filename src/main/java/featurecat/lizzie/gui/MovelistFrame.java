@@ -390,7 +390,8 @@ public class MovelistFrame extends JPanel {
           if (!mwr.isdelete)
             if (mwr.isblack && checkBlack.isSelected() || !mwr.isblack && checkWhite.isSelected())
               if (Math.abs(mwr.diffwinrate) > (int) dropwinratechooser.getValue())
-                if (mwr.playouts > (int) playoutschooser.getValue()) row = row + 1;
+                if (mwr.playouts >= (int) playoutschooser.getValue()
+                    && mwr.previousplayouts >= (int) playoutschooser.getValue()) row = row + 1;
         }
 
         return row;
@@ -417,7 +418,8 @@ public class MovelistFrame extends JPanel {
           if (mwr.isblack && checkBlack.isSelected() || !mwr.isblack && checkWhite.isSelected())
             if (!mwr.isdelete)
               if (Math.abs(mwr.diffwinrate) > (int) dropwinratechooser.getValue())
-                if (mwr.playouts > (int) playoutschooser.getValue()) data2.add(mwr);
+                if (mwr.playouts >= (int) playoutschooser.getValue()
+                    && mwr.previousplayouts >= (int) playoutschooser.getValue()) data2.add(mwr);
         }
         //		Collections.sort(data2) ;
         Collections.sort(
@@ -524,7 +526,7 @@ public class MovelistFrame extends JPanel {
     jf.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
-        	  Lizzie.frame.toggleBadMoves();
+            Lizzie.frame.toggleBadMoves();
           }
         });
 
