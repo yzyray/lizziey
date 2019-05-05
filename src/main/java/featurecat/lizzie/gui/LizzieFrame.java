@@ -323,7 +323,6 @@ public class LizzieFrame extends JFrame {
             50);
         return;
       }
-     
     }
     RightClickMenu.Store(x, y);
     Timer timer = new Timer();
@@ -342,10 +341,10 @@ public class LizzieFrame extends JFrame {
   public void showmenu(int x, int y) {
     RightClickMenu.show(this, x, y);
   }
-  
+
   public void showmenu2(int x, int y) {
-	    RightClickMenu2.show(this, x, y);
-	  }
+    RightClickMenu2.show(this, x, y);
+  }
 
   public static void openAvoidMoveDialog() {
     AvoidMoveDialog avoidMoveDialog = new AvoidMoveDialog();
@@ -1523,7 +1522,7 @@ public class LizzieFrame extends JFrame {
 
   public void onMouseMoved(int x, int y) {
 
-    if (RightClickMenu.isVisible()||RightClickMenu2.isVisible()) {
+    if (RightClickMenu.isVisible() || RightClickMenu2.isVisible()) {
       return;
     }
 
@@ -1827,7 +1826,7 @@ public class LizzieFrame extends JFrame {
   }
 
   public void DraggedMoved(int x, int y) {
-    if (RightClickMenu.isVisible()||RightClickMenu2.isVisible()) {
+    if (RightClickMenu.isVisible() || RightClickMenu2.isVisible()) {
       return;
     }
 
