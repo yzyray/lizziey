@@ -747,9 +747,8 @@ public class BoardRenderer {
             hue = cyanHue;
           } else {
             double fraction;
-            
-              fraction = percentPlayouts;
-           
+
+            fraction = percentPlayouts;
 
             // Correction to make differences between colors more perceptually linear
             fraction *= 2;

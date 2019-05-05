@@ -33,6 +33,7 @@ public class AnalysisFrame extends JPanel {
   Timer timer;
   int sortnum = 1;
   static int selectedorder = -1;
+  static JDialog jfs;
 
   public AnalysisFrame() {
     super(new BorderLayout());
@@ -187,11 +188,11 @@ public class AnalysisFrame extends JPanel {
   }
 
   private void togglealwaysontop() {
-    if (JOptionPane.getFrameForComponent(this).isAlwaysOnTop()) {
-      JOptionPane.getFrameForComponent(this).setAlwaysOnTop(false);
+    if (jfs.isAlwaysOnTop()) {
+      jfs.setAlwaysOnTop(false);
       Lizzie.config.uiConfig.put("suggestions-always-ontop", false);
     } else {
-      JOptionPane.getFrameForComponent(this).setAlwaysOnTop(true);
+      jfs.setAlwaysOnTop(true);
       Lizzie.config.uiConfig.put("suggestions-always-ontop", true);
     }
     try {
@@ -317,7 +318,7 @@ public class AnalysisFrame extends JPanel {
 
   public static JDialog createAnalysisDialog() {
     // Create and set up the window.
-    JDialog jfs = new JDialog();
+    jfs = new JDialog();
 
     jfs.setTitle("U显示/关闭,单击显示紫圈(小棋盘显示变化),右键落子,双击显示变化,T切换总在最前");
 

@@ -135,7 +135,7 @@ public class LizzieFrame extends JFrame {
 
   static {
     // load fonts
-	 
+
     try {
       uiFont = new Font("SansSerif", Font.TRUETYPE_FONT, 12);
       //          Font.createFont(
@@ -157,7 +157,7 @@ public class LizzieFrame extends JFrame {
   /** Creates a window */
   public LizzieFrame() {
     super(DEFAULT_TITLE);
-    
+
     boardRenderer = new BoardRenderer(true);
     subBoardRenderer = new SubBoardRenderer(false);
     variationTree = new VariationTree();

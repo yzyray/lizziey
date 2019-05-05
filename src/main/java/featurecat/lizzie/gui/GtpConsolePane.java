@@ -7,20 +7,16 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.UIManager;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
@@ -47,7 +43,7 @@ public class GtpConsolePane extends JDialog {
   public GtpConsolePane(Window owner) {
     super(owner);
     setTitle("Gtp Console");
-  
+
     boolean persisted =
         Lizzie.config.persistedUi != null
             && Lizzie.config.persistedUi.optJSONArray("gtp-console-position") != null
@@ -93,10 +89,8 @@ public class GtpConsolePane extends JDialog {
     getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
     setVisible(true);
 
-    txtCommand.addActionListener(e -> postCommand(e));    
-  
+    txtCommand.addActionListener(e -> postCommand(e));
   }
-  
 
   public void addCommand(String command, int commandNumber) {
     if (command == null || command.trim().length() == 0) {

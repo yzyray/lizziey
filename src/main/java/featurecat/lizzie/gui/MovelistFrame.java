@@ -38,6 +38,7 @@ public class MovelistFrame extends JPanel {
   JPanel selectpanel = new JPanel();
   JScrollPane scrollpane;
   public static JTable table;
+  static JDialog jf;
   Timer timer;
   int sortnum = 4;
   public static int selectedorder = -1;
@@ -331,11 +332,11 @@ public class MovelistFrame extends JPanel {
   }
 
   private void togglealwaysontop() {
-    if (JOptionPane.getFrameForComponent(this).isAlwaysOnTop()) {
-      JOptionPane.getFrameForComponent(this).setAlwaysOnTop(false);
+    if (jf.isAlwaysOnTop()) {
+      jf.setAlwaysOnTop(false);
       Lizzie.config.uiConfig.put("badmoves-always-ontop", false);
     } else {
-      JOptionPane.getFrameForComponent(this).setAlwaysOnTop(true);
+      jf.setAlwaysOnTop(true);
       Lizzie.config.uiConfig.put("badmoves-always-ontop", true);
     }
     try {
@@ -516,7 +517,7 @@ public class MovelistFrame extends JPanel {
 
   public static JDialog createBadmovesDialog() {
     // Create and set up the window.
-    JDialog jf = new JDialog();
+    jf = new JDialog();
     jf.setTitle("仅记录主分支,B显示/关闭,单击显示紫圈,双击跳转,T切换总在最前");
 
     jf.addWindowListener(
