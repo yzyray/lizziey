@@ -138,7 +138,7 @@ public class LizzieFrame extends JFrame {
     // load fonts
 
     try {
-      uiFont = new Font("SansSerif", Font.TRUETYPE_FONT, 12);
+      uiFont = new Font("圆体", Font.TRUETYPE_FONT, 15);
       //          Font.createFont(
       //              Font.TRUETYPE_FONT,
       //              Thread.currentThread()
@@ -163,7 +163,8 @@ public class LizzieFrame extends JFrame {
     subBoardRenderer = new SubBoardRenderer(false);
     variationTree = new VariationTree();
     winrateGraph = new WinrateGraph();
-
+    // this.setVisible(true);
+    this.setAlwaysOnTop(Lizzie.config.mainsalwaysontop);
     setMinimumSize(new Dimension(640, 400));
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted

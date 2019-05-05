@@ -228,11 +228,12 @@ public class BoardRenderer {
       if (showCoordinates()) {
         g.setColor(Color.BLACK);
         for (int i = 0; i < Board.boardSize; i++) {
+
           drawString(
               g,
               x + scaledMargin + squareLength * i,
               y + scaledMargin / 3,
-              LizzieFrame.uiFont,
+              LizzieFrame.winrateFont,
               Board.asName(i),
               stoneRadius * 4 / 5,
               stoneRadius);
@@ -240,7 +241,7 @@ public class BoardRenderer {
               g,
               x + scaledMargin + squareLength * i,
               y - scaledMargin / 3 + boardLength,
-              LizzieFrame.uiFont,
+              LizzieFrame.winrateFont,
               Board.asName(i),
               stoneRadius * 4 / 5,
               stoneRadius);
@@ -250,7 +251,7 @@ public class BoardRenderer {
               g,
               x + scaledMargin / 3,
               y + scaledMargin + squareLength * i,
-              LizzieFrame.uiFont,
+              LizzieFrame.winrateFont,
               "" + (Board.boardSize - i),
               stoneRadius * 4 / 5,
               stoneRadius);
@@ -258,7 +259,7 @@ public class BoardRenderer {
               g,
               x - scaledMargin / 3 + +boardLength,
               y + scaledMargin + squareLength * i,
-              LizzieFrame.uiFont,
+              LizzieFrame.winrateFont,
               "" + (Board.boardSize - i),
               stoneRadius * 4 / 5,
               stoneRadius);
@@ -860,7 +861,7 @@ public class BoardRenderer {
                 g,
                 suggestionX,
                 suggestionY + stoneRadius * 2 / 5,
-                LizzieFrame.uiFont,
+                LizzieFrame.winrateFont,
                 Lizzie.frame.getPlayoutsString(move.playouts),
                 (float) (stoneRadius * 0.8),
                 stoneRadius * 1.4);
