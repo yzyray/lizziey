@@ -81,6 +81,7 @@ public class RightClickMenu2 extends JPopupMenu {
 	    if (boardCoordinates.isPresent()) {
 	      int[] coords = boardCoordinates.get();
 	 int draggedmovenumer = Lizzie.board.getmovenumber(coords);
+	 Lizzie.board.savelist();
 	  Lizzie.board.editmovelistswitch(Lizzie.board.tempmovelist, draggedmovenumer);
 	  Lizzie.board.clear();
       Lizzie.board.setlist();
@@ -92,6 +93,7 @@ public class RightClickMenu2 extends JPopupMenu {
 	    if (boardCoordinates.isPresent()) {
 	      int[] coords = boardCoordinates.get();  
 	    int draggedmovenumer =  Lizzie.board.getmovenumber(coords);
+	    Lizzie.board.savelist();
 	  Lizzie.board.editmovelistdelete(Lizzie.board.tempmovelist, draggedmovenumer);
 	  Lizzie.board.clear();
       Lizzie.board.setlist();
