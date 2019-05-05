@@ -1617,7 +1617,7 @@ public class LizzieFrame extends JFrame {
   }
 
   public void setPlayers(String whitePlayer, String blackPlayer) {
-    playerTitle = String.format("(%s [W] vs %s [B])", whitePlayer, blackPlayer);
+    playerTitle = String.format("(%s [白] vs %s [黑])", whitePlayer, blackPlayer);
     updateTitle();
   }
 

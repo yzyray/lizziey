@@ -617,27 +617,25 @@ public class BoardRenderer {
             if (reverse) continue;
             g.setColor(stoneHere.isBlack() ^ reverse ? Color.WHITE : Color.BLACK);
           }
-          String moveNumberString = moveNumberList[Board.getIndex(i, j)] + "";       
-          if( moveNumberList[Board.getIndex(i, j)] >=100)
-          {
-        	  drawString(
-                      g,
-                      stoneX,
-                      stoneY,
-                      LizzieFrame.uiFont,
-                      moveNumberString,
-                      (float) (stoneRadius * 1.7),
-                      (int) (stoneRadius * 1.7));
-          }
-          else {            
-          drawString(
-              g,
-              stoneX,
-              stoneY,
-              LizzieFrame.uiFont,
-              moveNumberString,
-              (float) (stoneRadius * 1.4),
-              (int) (stoneRadius * 1.4));
+          String moveNumberString = moveNumberList[Board.getIndex(i, j)] + "";
+          if (moveNumberList[Board.getIndex(i, j)] >= 100) {
+            drawString(
+                g,
+                stoneX,
+                stoneY,
+                LizzieFrame.uiFont,
+                moveNumberString,
+                (float) (stoneRadius * 1.7),
+                (int) (stoneRadius * 1.7));
+          } else {
+            drawString(
+                g,
+                stoneX,
+                stoneY,
+                LizzieFrame.uiFont,
+                moveNumberString,
+                (float) (stoneRadius * 1.4),
+                (int) (stoneRadius * 1.4));
           }
         }
       }

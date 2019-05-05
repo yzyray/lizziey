@@ -578,7 +578,7 @@ public class SubBoardRenderer {
             g.setColor(stoneHere.isBlack() ^ reverse ? Color.WHITE : Color.BLACK);
           }
 
-          String moveNumberString = moveNumberList[Board.getIndex(i, j)] + "";          
+          String moveNumberString = moveNumberList[Board.getIndex(i, j)] + "";
           drawString(
               g,
               stoneX,
