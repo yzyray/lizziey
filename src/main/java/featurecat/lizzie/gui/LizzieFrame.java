@@ -112,6 +112,7 @@ public class LizzieFrame extends JFrame {
   private long lastAutosaveTime = System.currentTimeMillis();
   private boolean isReplayVariation = false;
   private RightClickMenu RightClickMenu = new RightClickMenu();
+  private RightClickMenu2 RightClickMenu2 = new RightClickMenu2();
   private ChangeMoveDialog2 ChangeMoveDialog2 = new ChangeMoveDialog2();
 
   // Save the player title
@@ -302,7 +303,28 @@ public class LizzieFrame extends JFrame {
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.sendCommand("name");
     }
+
     isshowrightmenu = true;
+
+    if (featurecat.lizzie.gui.Input.Draggedmode) {
+      int[] coords = boardCoordinates.get();
+
+      if (Lizzie.board.getstonestat(coords) == Stone.BLACK
+          || Lizzie.board.getstonestat(coords) == Stone.WHITE) {
+        RightClickMenu2.Store(x, y);
+        Timer timer = new Timer();
+        timer.schedule(
+            new TimerTask() {
+              public void run() {
+                Lizzie.frame.showmenu2(x, y);
+                this.cancel();
+              }
+            },
+            50);
+        return;
+      }
+     
+    }
     RightClickMenu.Store(x, y);
     Timer timer = new Timer();
     timer.schedule(
@@ -320,6 +342,10 @@ public class LizzieFrame extends JFrame {
   public void showmenu(int x, int y) {
     RightClickMenu.show(this, x, y);
   }
+  
+  public void showmenu2(int x, int y) {
+	    RightClickMenu2.show(this, x, y);
+	  }
 
   public static void openAvoidMoveDialog() {
     AvoidMoveDialog avoidMoveDialog = new AvoidMoveDialog();
@@ -1497,7 +1523,7 @@ public class LizzieFrame extends JFrame {
 
   public void onMouseMoved(int x, int y) {
 
-    if (RightClickMenu.isVisible()) {
+    if (RightClickMenu.isVisible()||RightClickMenu2.isVisible()) {
       return;
     }
 
@@ -1801,7 +1827,7 @@ public class LizzieFrame extends JFrame {
   }
 
   public void DraggedMoved(int x, int y) {
-    if (RightClickMenu.isVisible()) {
+    if (RightClickMenu.isVisible()||RightClickMenu2.isVisible()) {
       return;
     }
 

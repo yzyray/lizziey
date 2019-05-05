@@ -410,6 +410,11 @@ public class Board implements LeelazListener {
     movelist.get(lenth - movenum).y = y;
   }
 
+  public void editmovelistswitch(ArrayList<Movelist> movelist, int movenum) {
+    int lenth = movelist.size();
+    movelist.get(lenth - movenum).isblack = !movelist.get(lenth - movenum).isblack;
+  }
+
   public void editmovelistdelete(ArrayList<Movelist> movelist, int movenum) {
     int lenth = movelist.size();
     movelist.remove(lenth - movenum);
