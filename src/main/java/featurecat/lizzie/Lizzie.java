@@ -44,6 +44,7 @@ public class Lizzie {
     movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
     frame = new LizzieFrame();
     frame.setVisible(true);
+    frame.setAlwaysOnTop(Lizzie.config.mainsalwaysontop);
     gtpConsole = new GtpConsolePane(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
 
