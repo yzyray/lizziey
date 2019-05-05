@@ -743,19 +743,13 @@ public class BoardRenderer {
           int suggestionY = y + scaledMargin + squareLength * coords[1];
 
           float hue;
-          if (isBestMove && !Lizzie.config.colorByWinrateInsteadOfVisits) {
+          if (isBestMove) {
             hue = cyanHue;
           } else {
             double fraction;
-            if (Lizzie.config.colorByWinrateInsteadOfVisits) {
-              fraction = percentWinrate;
-              if (flipWinrate) {
-                fraction = 1 - fraction;
-              }
-              fraction = 1 / (Math.pow(1 / fraction - 1, winrateHueFactor) + 1);
-            } else {
+            
               fraction = percentPlayouts;
-            }
+           
 
             // Correction to make differences between colors more perceptually linear
             fraction *= 2;

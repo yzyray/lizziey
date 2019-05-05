@@ -324,7 +324,9 @@ public class Config {
   }
 
   public void toggleEvaluationColoring() {
-    colorByWinrateInsteadOfVisits = !colorByWinrateInsteadOfVisits;
+	  if(leelaversion<17)
+	  {return;}
+	  showlcbcolor=!showlcbcolor;
   }
 
   public boolean showLargeSubBoard() {
@@ -502,6 +504,36 @@ public class Config {
     persistedUi.put("gtp-console-position", gtpPos);
     persistedUi.put("board-postion-propotion", Lizzie.frame.BoardPositionProportion);
     persistedUi.put("window-maximized", windowIsMaximized);
+    
+    JSONArray suggestionlistPos = new JSONArray();
+    
+    suggestionlistPos.put(Lizzie.analysisframe.getX());
+    suggestionlistPos.put(Lizzie.analysisframe.getY());
+    suggestionlistPos.put(Lizzie.analysisframe.getWidth());
+    suggestionlistPos.put(Lizzie.analysisframe.getHeight());
+    suggestionlistPos.put(featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(0).getWidth());
+    suggestionlistPos.put(featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(1).getWidth());
+    suggestionlistPos.put(featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(2).getWidth());
+    suggestionlistPos.put(featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(3).getWidth());
+    suggestionlistPos.put(featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(4).getWidth());
+    persistedUi.put("suggestions-list-position", suggestionlistPos);
+    
+    JSONArray badmoveslistPos = new JSONArray();
+    
+    badmoveslistPos.put(Lizzie.movelistframe.getX());
+    badmoveslistPos.put(Lizzie.movelistframe.getY());
+    badmoveslistPos.put(Lizzie.movelistframe.getWidth());
+    badmoveslistPos.put(Lizzie.movelistframe.getHeight());
+    badmoveslistPos.put(featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(0).getWidth());
+    badmoveslistPos.put(featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(1).getWidth());
+    badmoveslistPos.put(featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(2).getWidth());
+    badmoveslistPos.put(featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(3).getWidth());
+    badmoveslistPos.put(featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(4).getWidth());
+    badmoveslistPos.put(featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(5).getWidth());
+    badmoveslistPos.put(featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(6).getWidth());
+    persistedUi.put("badmoves-list-position", badmoveslistPos);
+    
+    
     writeConfig(this.persisted, new File(persistFilename));
   }
 

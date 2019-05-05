@@ -157,12 +157,7 @@ public class LizzieFrame extends JFrame {
   /** Creates a window */
   public LizzieFrame() {
     super(DEFAULT_TITLE);
-    JFrame.setDefaultLookAndFeelDecorated(true);
-
-    try {
-        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-    }  
-    catch ( Exception e ) {}
+    
     boardRenderer = new BoardRenderer(true);
     subBoardRenderer = new SubBoardRenderer(false);
     variationTree = new VariationTree();

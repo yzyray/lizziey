@@ -29,12 +29,16 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
+import org.json.JSONArray;
+
 @SuppressWarnings("serial")
 public class MovelistFrame extends JPanel {
   public static Config config;
   TableModel dataModel;
+  JPanel tablepanel;
+  JPanel selectpanel=new JPanel();
   JScrollPane scrollpane;
-  JTable table;
+  public static JTable table;
   Timer timer;
   int sortnum = 4;
   public static int selectedorder = -1;
@@ -45,7 +49,7 @@ public class MovelistFrame extends JPanel {
   JCheckBox checkWhite = new JCheckBox();
 
   public MovelistFrame() {
-
+	  super(new BorderLayout());
     dataModel = getTableModel();
     table = new JTable(dataModel);
     table.getTableHeader().setFont(new Font("宋体", Font.BOLD, 14));
@@ -53,14 +57,11 @@ public class MovelistFrame extends JPanel {
     TableCellRenderer tcr = new ColorTableCellRenderer();
     table.setDefaultRenderer(Object.class, tcr);
     table.setRowHeight(20);
+    tablepanel =new JPanel(new BorderLayout());
+    this.add(tablepanel, BorderLayout.CENTER);
+    this.add(selectpanel, BorderLayout.SOUTH);
     scrollpane =
-        new JScrollPane(table) {
-
-          @Override
-          public Dimension getPreferredSize() {
-            return new Dimension(510, 325);
-          }
-        };
+        new JScrollPane(table);
 
     timer =
         new Timer(
@@ -160,15 +161,31 @@ public class MovelistFrame extends JPanel {
               }
             });
     timer.start();
-    this.add(scrollpane);
-
+       tablepanel.add(scrollpane);
+      
+       table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+       table.setFillsViewportHeight(true);
     table.getColumnModel().getColumn(0).setPreferredWidth(20);
     table.getColumnModel().getColumn(1).setPreferredWidth(20);
-    table.getColumnModel().getColumn(2).setPreferredWidth(30);
-    table.getColumnModel().getColumn(3).setPreferredWidth(45);
-    table.getColumnModel().getColumn(4).setPreferredWidth(65);
-    table.getColumnModel().getColumn(5).setPreferredWidth(70);
-    table.getColumnModel().getColumn(6).setPreferredWidth(70);
+    table.getColumnModel().getColumn(2).setPreferredWidth(25);
+    table.getColumnModel().getColumn(3).setPreferredWidth(40);
+    table.getColumnModel().getColumn(4).setPreferredWidth(68);
+    table.getColumnModel().getColumn(5).setPreferredWidth(75);
+    table.getColumnModel().getColumn(6).setPreferredWidth(50);
+    boolean persisted = Lizzie.config.persistedUi != null;
+    if (persisted
+            && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
+            && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 11) {
+          JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
+          table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
+          table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
+          table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
+          table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
+          table.getColumnModel().getColumn(4).setPreferredWidth(pos.getInt(8));
+          table.getColumnModel().getColumn(5).setPreferredWidth(pos.getInt(9));
+          table.getColumnModel().getColumn(6).setPreferredWidth(pos.getInt(10));
+    }
+    
     JTableHeader header = table.getTableHeader();
 
     dropwinratechooser.setValue(Lizzie.config.limitbadmoves);
@@ -176,18 +193,18 @@ public class MovelistFrame extends JPanel {
     checkBlack.setSelected(true);
     checkWhite.setSelected(true);
 
-    JLabel checkBlacktxt = new JLabel("黑:");
+    JLabel checkBlacktxt = new JLabel("显示黑:");
     JLabel checkWhitetxt = new JLabel("白:");
-    JLabel dropwinratechoosertxt = new JLabel("胜率波动超过:");
-    JLabel playoutschoosertxt = new JLabel("前后计算量都超过:");
-    this.add(checkBlacktxt);
-    this.add(checkBlack);
-    this.add(checkWhitetxt);
-    this.add(checkWhite);
-    this.add(dropwinratechoosertxt);
-    this.add(dropwinratechooser);
-    this.add(playoutschoosertxt);
-    this.add(playoutschooser);
+    JLabel dropwinratechoosertxt = new JLabel("只显示胜率波动超过:");
+    JLabel playoutschoosertxt = new JLabel("只显示前后计算量都超过:");
+    selectpanel.add(checkBlacktxt);
+    selectpanel.add(checkBlack);
+    selectpanel.add(checkWhitetxt);
+    selectpanel.add(checkWhite);
+    selectpanel.add(dropwinratechoosertxt);
+    selectpanel.add(dropwinratechooser);
+    selectpanel.add(playoutschoosertxt);
+    selectpanel.add(playoutschooser);
 
     playoutschooser.addChangeListener(
         new ChangeListener() {
@@ -499,39 +516,41 @@ public class MovelistFrame extends JPanel {
     };
   }
 
-  public static JFrame createAnalysisDialog() {
+  public static JDialog createBadmovesDialog() {
     // Create and set up the window.
-    JFrame jf = new JFrame();
+	  JDialog jf = new JDialog();
     jf.setTitle("仅主分支有效,B显示/关闭,单击显示紫圈,双击跳转T切换总在最前");
 
-    //  JDialog dialog = new JDialog(owner, "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
     jf.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
             Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
           }
         });
-    
-//    JFrame.setDefaultLookAndFeelDecorated(true);
-//
-//    try {
-//        //javax.swing.plaf.metal.MetalLookAndFeel.setCurrentTheme( new NoIconTheme());
-//        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-//    }  
-//    catch ( Exception e ) {}
-    // Create and set up the content pane.
+
     final MovelistFrame newContentPane = new MovelistFrame();
     newContentPane.setOpaque(true); // content panes must be opaque
     jf.setContentPane(newContentPane);
     // Display the window.
-    jf.setSize(521, 400);
+  //  jf.setSize(521, 320);
+    
+    boolean persisted = Lizzie.config.persistedUi != null;
+    if (persisted
+            && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
+            && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() >= 4) {
+          JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
+          jf.setBounds(pos.getInt(0), pos.getInt(1),pos.getInt(2),pos.getInt(3));
+    }
+    else {
+    	 jf.setBounds(-9,0,521,320);
+    }
     try {
       jf.setIconImage(ImageIO.read(MovelistFrame.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    jf.setResizable(false);
+   // jf.setResizable(false);
     return jf;
   }
 }

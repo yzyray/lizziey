@@ -17,9 +17,9 @@ public class Lizzie {
   public static Config config;
   public static GtpConsolePane gtpConsole;
   public static LizzieFrame frame;
-  public static JFrame analysisframe;
+  public static JDialog analysisframe;
   public static AnalysisFrame analysisFrame;
-  public static JFrame movelistframe;
+  public static JDialog movelistframe;
   public static MovelistFrame movelistFrame;
   public static Board board;
   public static Leelaz leelaz;
@@ -32,23 +32,23 @@ public class Lizzie {
     mainArgs = args;
     config = new Config();
     board = new Board();
-    frame = new LizzieFrame();
    
+    frame = new LizzieFrame();
+  
     analysisframe = AnalysisFrame.createAnalysisDialog();
-    analysisframe.setLocation(-7, 0);
+  //  analysisframe.setLocation(-7, 0);
     analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", true));
     analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
     
-    movelistframe = MovelistFrame.createAnalysisDialog();
-    movelistframe.setLocation(-7, 302);
+    movelistframe = MovelistFrame.createBadmovesDialog();
+ //   movelistframe.setLocation(-7, 302);
     movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", true));
     movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
-    
-   
-   
-    frame.setVisible(true);
     gtpConsole = new GtpConsolePane(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
+   
+    frame.setVisible(true);
+   
     try {
       leelaz = new Leelaz();
 
