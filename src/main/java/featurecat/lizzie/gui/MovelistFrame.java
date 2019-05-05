@@ -338,8 +338,7 @@ public class MovelistFrame extends JPanel {
     } else {
       jf.setAlwaysOnTop(true);
       Lizzie.config.uiConfig.put("badmoves-always-ontop", true);
-      if(Lizzie.frame.isAlwaysOnTop())
-          Lizzie.frame.toggleAlwaysOntop();
+      if (Lizzie.frame.isAlwaysOnTop()) Lizzie.frame.toggleAlwaysOntop();
     }
     try {
       Lizzie.config.save();

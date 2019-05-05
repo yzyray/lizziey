@@ -194,8 +194,7 @@ public class AnalysisFrame extends JPanel {
     } else {
       jfs.setAlwaysOnTop(true);
       Lizzie.config.uiConfig.put("suggestions-always-ontop", true);
-      if(Lizzie.frame.isAlwaysOnTop())
-      Lizzie.frame.toggleAlwaysOntop();
+      if (Lizzie.frame.isAlwaysOnTop()) Lizzie.frame.toggleAlwaysOntop();
     }
     try {
       Lizzie.config.save();
