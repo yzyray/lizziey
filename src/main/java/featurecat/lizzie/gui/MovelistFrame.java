@@ -28,7 +28,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
-
 import org.json.JSONArray;
 
 @SuppressWarnings("serial")
@@ -36,7 +35,7 @@ public class MovelistFrame extends JPanel {
   public static Config config;
   TableModel dataModel;
   JPanel tablepanel;
-  JPanel selectpanel=new JPanel();
+  JPanel selectpanel = new JPanel();
   JScrollPane scrollpane;
   public static JTable table;
   Timer timer;
@@ -49,7 +48,7 @@ public class MovelistFrame extends JPanel {
   JCheckBox checkWhite = new JCheckBox();
 
   public MovelistFrame() {
-	  super(new BorderLayout());
+    super(new BorderLayout());
     dataModel = getTableModel();
     table = new JTable(dataModel);
     table.getTableHeader().setFont(new Font("宋体", Font.BOLD, 14));
@@ -57,11 +56,10 @@ public class MovelistFrame extends JPanel {
     TableCellRenderer tcr = new ColorTableCellRenderer();
     table.setDefaultRenderer(Object.class, tcr);
     table.setRowHeight(20);
-    tablepanel =new JPanel(new BorderLayout());
+    tablepanel = new JPanel(new BorderLayout());
     this.add(tablepanel, BorderLayout.CENTER);
     this.add(selectpanel, BorderLayout.SOUTH);
-    scrollpane =
-        new JScrollPane(table);
+    scrollpane = new JScrollPane(table);
 
     timer =
         new Timer(
@@ -161,10 +159,10 @@ public class MovelistFrame extends JPanel {
               }
             });
     timer.start();
-       tablepanel.add(scrollpane);
-      
-       table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-       table.setFillsViewportHeight(true);
+    tablepanel.add(scrollpane);
+
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    table.setFillsViewportHeight(true);
     table.getColumnModel().getColumn(0).setPreferredWidth(20);
     table.getColumnModel().getColumn(1).setPreferredWidth(20);
     table.getColumnModel().getColumn(2).setPreferredWidth(25);
@@ -174,18 +172,18 @@ public class MovelistFrame extends JPanel {
     table.getColumnModel().getColumn(6).setPreferredWidth(50);
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
-            && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
-            && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 11) {
-          JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
-          table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
-          table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
-          table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
-          table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
-          table.getColumnModel().getColumn(4).setPreferredWidth(pos.getInt(8));
-          table.getColumnModel().getColumn(5).setPreferredWidth(pos.getInt(9));
-          table.getColumnModel().getColumn(6).setPreferredWidth(pos.getInt(10));
+        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
+        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 11) {
+      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
+      table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
+      table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
+      table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
+      table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
+      table.getColumnModel().getColumn(4).setPreferredWidth(pos.getInt(8));
+      table.getColumnModel().getColumn(5).setPreferredWidth(pos.getInt(9));
+      table.getColumnModel().getColumn(6).setPreferredWidth(pos.getInt(10));
     }
-    
+
     JTableHeader header = table.getTableHeader();
 
     dropwinratechooser.setValue(Lizzie.config.limitbadmoves);
@@ -518,8 +516,8 @@ public class MovelistFrame extends JPanel {
 
   public static JDialog createBadmovesDialog() {
     // Create and set up the window.
-	  JDialog jf = new JDialog();
-    jf.setTitle("仅主分支有效,B显示/关闭,单击显示紫圈,双击跳转T切换总在最前");
+    JDialog jf = new JDialog();
+    jf.setTitle("仅记录主分支,B显示/关闭,单击显示紫圈,双击跳转,T切换总在最前");
 
     jf.addWindowListener(
         new WindowAdapter() {
@@ -532,17 +530,16 @@ public class MovelistFrame extends JPanel {
     newContentPane.setOpaque(true); // content panes must be opaque
     jf.setContentPane(newContentPane);
     // Display the window.
-  //  jf.setSize(521, 320);
-    
+    //  jf.setSize(521, 320);
+
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
-            && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
-            && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() >= 4) {
-          JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
-          jf.setBounds(pos.getInt(0), pos.getInt(1),pos.getInt(2),pos.getInt(3));
-    }
-    else {
-    	 jf.setBounds(-9,0,521,320);
+        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
+        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() >= 4) {
+      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
+      jf.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
+    } else {
+      jf.setBounds(-9, 0, 521, 320);
     }
     try {
       jf.setIconImage(ImageIO.read(MovelistFrame.class.getResourceAsStream("/assets/logo.png")));
@@ -550,7 +547,7 @@ public class MovelistFrame extends JPanel {
       e.printStackTrace();
     }
 
-   // jf.setResizable(false);
+    // jf.setResizable(false);
     return jf;
   }
 }

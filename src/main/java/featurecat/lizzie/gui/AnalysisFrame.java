@@ -22,7 +22,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
-
 import org.json.JSONArray;
 
 @SuppressWarnings("serial")
@@ -30,30 +29,30 @@ public class AnalysisFrame extends JPanel {
 
   TableModel dataModel;
   JScrollPane scrollpane;
-  public static  JTable table;
+  public static JTable table;
   Timer timer;
   int sortnum = 1;
   static int selectedorder = -1;
- 
+
   public AnalysisFrame() {
-	  super(new BorderLayout());
+    super(new BorderLayout());
     dataModel = getTableModel();
     table = new JTable(dataModel);
     table.getTableHeader().setFont(new Font("宋体", Font.BOLD, 14));
     table.setFont(new Font("宋体", Font.BOLD, 18));
     TableCellRenderer tcr = new ColorTableCellRenderer();
     table.setDefaultRenderer(Object.class, tcr);
-    
-    scrollpane =   new JScrollPane(table);
+
+    scrollpane = new JScrollPane(table);
     add(scrollpane);
-//    {
-//
-//          @Override
-//          public Dimension getPreferredSize() {
-//            return new Dimension(510, 245);
-//          }
-//        };
-    
+    //    {
+    //
+    //          @Override
+    //          public Dimension getPreferredSize() {
+    //            return new Dimension(510, 245);
+    //          }
+    //        };
+
     timer =
         new Timer(
             100,
@@ -65,7 +64,7 @@ public class AnalysisFrame extends JPanel {
               }
             });
     timer.start();
-    
+
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setFillsViewportHeight(true);
     table.getColumnModel().getColumn(0).setPreferredWidth(15);
@@ -75,13 +74,13 @@ public class AnalysisFrame extends JPanel {
     table.getColumnModel().getColumn(4).setPreferredWidth(50);
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
-            && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null
-            && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length() == 8) {
-          JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
-          table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
-          table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
-          table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
-          table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
+        && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null
+        && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length() == 8) {
+      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
+      table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
+      table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
+      table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
+      table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
     }
 
     JTableHeader header = table.getTableHeader();
@@ -148,8 +147,6 @@ public class AnalysisFrame extends JPanel {
             sortnum = pick;
           }
         });
-    
-    
   }
 
   class ColorTableCellRenderer extends DefaultTableCellRenderer {
@@ -318,12 +315,12 @@ public class AnalysisFrame extends JPanel {
     };
   }
 
-  public static JDialog createAnalysisDialog( ) {
+  public static JDialog createAnalysisDialog() {
     // Create and set up the window.
-	  JDialog jfs = new JDialog();
-   
+    JDialog jfs = new JDialog();
+
     jfs.setTitle("U显示/关闭,单击显示紫圈(小棋盘显示变化),右键落子,双击显示变化,T切换总在最前");
-   
+
     //  JDialog dialog = new JDialog(owner, "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
     jfs.addWindowListener(
         new WindowAdapter() {
@@ -337,25 +334,24 @@ public class AnalysisFrame extends JPanel {
     newContentPane.setOpaque(true); // content panes must be opaque
     jfs.setContentPane(newContentPane);
     // Display the window.
-    //jfs.setSize(521, 285);
+    // jfs.setSize(521, 285);
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
-            && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null
-            && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length() >= 4) {
-          JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
-          jfs.setBounds(pos.getInt(0), pos.getInt(1),pos.getInt(2),pos.getInt(3));
-          }
-    else {
-   	 jfs.setBounds(-9,312,521,259);
-   }
+        && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null
+        && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length() >= 4) {
+      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
+      jfs.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
+    } else {
+      jfs.setBounds(-9, 312, 521, 259);
+    }
     try {
       jfs.setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {
       e.printStackTrace();
     }
-//jfs.setResizable(false);
+    // jfs.setResizable(false);
     // Handle close event
-    
+
     return jfs;
   }
 }
