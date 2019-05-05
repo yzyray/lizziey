@@ -327,7 +327,7 @@ public class AnalysisFrame extends JPanel {
     jfs.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
-            Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
+            Lizzie.frame.toggleBestMoves();
           }
         });
 

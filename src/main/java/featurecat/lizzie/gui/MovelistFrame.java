@@ -524,7 +524,7 @@ public class MovelistFrame extends JPanel {
     jf.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
-            Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
+        	  Lizzie.frame.toggleBadMoves();
           }
         });
 
