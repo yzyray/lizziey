@@ -356,6 +356,22 @@ public class LizzieFrame extends JFrame {
     }
   }
 
+  public void toggleAlwaysOntop() {
+    if (this.isAlwaysOnTop()) {
+      this.setAlwaysOnTop(false);
+      Lizzie.config.uiConfig.put("mains-always-ontop", false);
+    } else {
+      this.setAlwaysOnTop(true);
+      Lizzie.config.uiConfig.put("mains-always-ontop", true);
+    }
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
   public void toggleBadMoves() {
 
     if (Lizzie.movelistframe.isVisible()) {

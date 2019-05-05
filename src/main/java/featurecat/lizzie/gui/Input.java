@@ -490,6 +490,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           startTemporaryBoard();
         }
         break;
+      case VK_Q:
+        Lizzie.frame.toggleAlwaysOntop();
+        break;
 
       case VK_A:
         if (e.isAltDown() || e.isControlDown()) {

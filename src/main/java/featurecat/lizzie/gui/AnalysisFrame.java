@@ -135,7 +135,7 @@ public class AnalysisFrame extends JPanel {
               Lizzie.leelaz.togglePonder();
             }
 
-            if (e.getKeyCode() == KeyEvent.VK_T) {
+            if (e.getKeyCode() == KeyEvent.VK_Q) {
               togglealwaysontop();
             }
           }
@@ -194,6 +194,8 @@ public class AnalysisFrame extends JPanel {
     } else {
       jfs.setAlwaysOnTop(true);
       Lizzie.config.uiConfig.put("suggestions-always-ontop", true);
+      if(Lizzie.frame.isAlwaysOnTop())
+      Lizzie.frame.toggleAlwaysOntop();
     }
     try {
       Lizzie.config.save();
@@ -320,7 +322,7 @@ public class AnalysisFrame extends JPanel {
     // Create and set up the window.
     jfs = new JDialog();
 
-    jfs.setTitle("U显示/关闭,单击显示紫圈(小棋盘显示变化),右键落子,双击显示变化,T切换总在最前");
+    jfs.setTitle("U显示/关闭,单击显示紫圈(小棋盘显示变化),右键落子,双击显示变化,Q切换总在最前");
 
     //  JDialog dialog = new JDialog(owner, "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
     jfs.addWindowListener(

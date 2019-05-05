@@ -33,8 +33,6 @@ public class Lizzie {
     config = new Config();
     board = new Board();
 
-    
-
     analysisframe = AnalysisFrame.createAnalysisDialog();
     //  analysisframe.setLocation(-7, 0);
     analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", true));
@@ -48,7 +46,6 @@ public class Lizzie {
     frame.setVisible(true);
     gtpConsole = new GtpConsolePane(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
-   
 
     try {
       leelaz = new Leelaz();

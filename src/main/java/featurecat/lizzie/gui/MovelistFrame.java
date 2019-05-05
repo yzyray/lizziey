@@ -277,7 +277,7 @@ public class MovelistFrame extends JPanel {
               }
               Lizzie.leelaz.togglePonder();
             }
-            if (e.getKeyCode() == KeyEvent.VK_T) {
+            if (e.getKeyCode() == KeyEvent.VK_Q) {
               togglealwaysontop();
             }
           }
@@ -338,6 +338,8 @@ public class MovelistFrame extends JPanel {
     } else {
       jf.setAlwaysOnTop(true);
       Lizzie.config.uiConfig.put("badmoves-always-ontop", true);
+      if(Lizzie.frame.isAlwaysOnTop())
+          Lizzie.frame.toggleAlwaysOntop();
     }
     try {
       Lizzie.config.save();
@@ -518,7 +520,7 @@ public class MovelistFrame extends JPanel {
   public static JDialog createBadmovesDialog() {
     // Create and set up the window.
     jf = new JDialog();
-    jf.setTitle("仅记录主分支,B显示/关闭,单击显示紫圈,双击跳转,T切换总在最前");
+    jf.setTitle("仅记录主分支,B显示/关闭,单击显示紫圈,双击跳转,Q切换总在最前");
 
     jf.addWindowListener(
         new WindowAdapter() {

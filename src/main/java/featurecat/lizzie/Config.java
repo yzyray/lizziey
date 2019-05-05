@@ -70,6 +70,7 @@ public class Config {
   public boolean solidStoneIndicator = false;
   public boolean showCommentNodeColor = true;
   public boolean badmovesalwaysontop = true;
+  public boolean mainsalwaysontop = false;
   public boolean suggestionsalwaysontop = true;
   public Color commentNodeColor = null;
   public Optional<List<Double>> blunderWinrateThresholds;
@@ -189,6 +190,7 @@ public class Config {
     handicapInsteadOfWinrate = uiConfig.getBoolean("handicap-instead-of-winrate");
     showDynamicKomi = uiConfig.getBoolean("show-dynamic-komi");
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", true);
+    mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);
     suggestionsalwaysontop = uiConfig.optBoolean("suggestions-always-ontop", true);
     appendWinrateToComment = uiConfig.optBoolean("append-winrate-to-comment");
     showCoordinates = uiConfig.optBoolean("show-coordinates");
