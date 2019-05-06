@@ -40,7 +40,7 @@ public class MovelistFrame extends JPanel {
   public static JTable table;
   static JDialog jf;
   Timer timer;
-  int sortnum = 4;
+  int sortnum = 3;
   public static int selectedorder = -1;
   boolean issorted = false;
   JSpinner dropwinratechooser = new JSpinner(new SpinnerNumberModel(10, 0, 100, 1));
@@ -366,7 +366,9 @@ public class MovelistFrame extends JPanel {
   private void handleTableDoubleClick(int row, int col) {
     int movenumber = Integer.parseInt(table.getValueAt(row, 1).toString());
     Lizzie.board.goToMoveNumber(1);
-    Lizzie.board.goToMoveNumber(movenumber);
+    if (movenumber > 1) {
+      Lizzie.board.goToMoveNumber(movenumber - 1);
+    }
     int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString());
     Lizzie.frame.clickbadmove = coords;
     Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
