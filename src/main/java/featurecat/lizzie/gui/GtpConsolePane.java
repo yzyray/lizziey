@@ -3,8 +3,10 @@ package featurecat.lizzie.gui;
 import featurecat.lizzie.Lizzie;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -53,11 +55,8 @@ public class GtpConsolePane extends JDialog {
       this.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
     } else {
       Insets oi = owner.getInsets();
-      setBounds(
-          0,
-          owner.getY() - oi.top,
-          Math.max(owner.getX() - oi.left, 400),
-          Math.max(owner.getHeight() + oi.top + oi.bottom, 300));
+      Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+      setBounds((int) screensize.getWidth() - 400, (int) screensize.getHeight() - 700, 400, 650);
     }
 
     htmlKit = new HTMLEditorKit();

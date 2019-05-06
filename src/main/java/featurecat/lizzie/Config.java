@@ -71,12 +71,12 @@ public class Config {
   public boolean showCommentNodeColor = false;
   public boolean badmovesalwaysontop = false;
   public boolean mainsalwaysontop = false;
-  public boolean suggestionsalwaysontop = true;
+  public boolean suggestionsalwaysontop = false;
   public Color commentNodeColor = null;
   public Optional<List<Double>> blunderWinrateThresholds;
   public Optional<Map<Double, Color>> blunderNodeColors;
   public int nodeColorMode = 0;
-  public boolean appendWinrateToComment = true;
+  public boolean appendWinrateToComment = false;
   public int boardPositionProportion = 3;
   public int limitBranchLength = 0;
   public int limitMaxSuggestion = 0;
@@ -189,9 +189,9 @@ public class Config {
     largeSubBoard = uiConfig.getBoolean("large-subboard");
     handicapInsteadOfWinrate = uiConfig.getBoolean("handicap-instead-of-winrate");
     showDynamicKomi = uiConfig.getBoolean("show-dynamic-komi");
-    badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", true);
+    badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);
-    suggestionsalwaysontop = uiConfig.optBoolean("suggestions-always-ontop", true);
+    suggestionsalwaysontop = uiConfig.optBoolean("suggestions-always-ontop", false);
     appendWinrateToComment = uiConfig.optBoolean("append-winrate-to-comment");
     showCoordinates = uiConfig.optBoolean("show-coordinates");
     replayBranchIntervalSeconds = uiConfig.optDouble("replay-branch-interval-seconds", 1.0);
@@ -313,12 +313,12 @@ public class Config {
   public void toggleLargeSubBoard() {
     this.largeSubBoard = !this.largeSubBoard;
     try {
-        Lizzie.config.uiConfig.put("large-subboard", largeSubBoard);
-        Lizzie.config.save();
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+      Lizzie.config.uiConfig.put("large-subboard", largeSubBoard);
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   public void toggleCoordinates() {
