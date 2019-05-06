@@ -167,8 +167,8 @@ public class MovelistFrame extends JPanel {
     table.getColumnModel().getColumn(0).setPreferredWidth(20);
     table.getColumnModel().getColumn(1).setPreferredWidth(20);
     table.getColumnModel().getColumn(2).setPreferredWidth(25);
-    table.getColumnModel().getColumn(3).setPreferredWidth(40);
-    table.getColumnModel().getColumn(4).setPreferredWidth(68);
+    table.getColumnModel().getColumn(3).setPreferredWidth(68);
+    table.getColumnModel().getColumn(4).setPreferredWidth(40);
     table.getColumnModel().getColumn(5).setPreferredWidth(75);
     table.getColumnModel().getColumn(6).setPreferredWidth(50);
     boolean persisted = Lizzie.config.persistedUi != null;
@@ -401,8 +401,8 @@ public class MovelistFrame extends JPanel {
         if (column == 0) return "黑白";
         if (column == 1) return "手数";
         if (column == 2) return "坐标";
-        if (column == 3) return "胜率(%)";
-        if (column == 4) return "胜率波动(%)";
+        if (column == 3) return "胜率波动(%)";
+        if (column == 4) return "胜率(%)";
         if (column == 5) return "前一步计算量";
         if (column == 6) return "计算量";
         return "无";
@@ -442,12 +442,12 @@ public class MovelistFrame extends JPanel {
                     return 1;
                   }
                   if (sortnum == 3) {
-                    if (s1.winrate < s2.winrate) return 1;
-                    if (s1.winrate > s2.winrate) return -1;
+                    if (s1.diffwinrate < s2.diffwinrate) return 1;
+                    if (s1.diffwinrate > s2.diffwinrate) return -1;
                   }
                   if (sortnum == 4) {
-                    if (Math.abs(s1.diffwinrate) < Math.abs(s2.diffwinrate)) return 1;
-                    if (Math.abs(s1.diffwinrate) > Math.abs(s2.diffwinrate)) return -1;
+                    if (Math.abs(s1.winrate) < Math.abs(s2.winrate)) return 1;
+                    if (Math.abs(s1.winrate) > Math.abs(s2.winrate)) return -1;
                   }
                   if (sortnum == 5) {
                     if (s1.previousplayouts < s2.previousplayouts) return 1;
@@ -471,12 +471,12 @@ public class MovelistFrame extends JPanel {
                     return 1;
                   }
                   if (sortnum == 3) {
-                    if (s1.winrate > s2.winrate) return 1;
-                    if (s1.winrate < s2.winrate) return -1;
+                    if (s1.diffwinrate > s2.diffwinrate) return 1;
+                    if (s1.diffwinrate < s2.diffwinrate) return -1;
                   }
                   if (sortnum == 4) {
-                    if (Math.abs(s1.diffwinrate) > Math.abs(s2.diffwinrate)) return 1;
-                    if (Math.abs(s1.diffwinrate) < Math.abs(s2.diffwinrate)) return -1;
+                    if (Math.abs(s1.winrate) > Math.abs(s2.winrate)) return 1;
+                    if (Math.abs(s1.winrate) < Math.abs(s2.winrate)) return -1;
                   }
                   if (sortnum == 5) {
                     if (s1.previousplayouts > s2.previousplayouts) return 1;
@@ -504,9 +504,9 @@ public class MovelistFrame extends JPanel {
           case 2:
             return Board.convertCoordinatesToName(data.coords[0], data.coords[1]);
           case 3:
-            return String.format("%.2f", data.winrate);
-          case 4:
             return String.format("%.2f", data.diffwinrate);
+          case 4:
+            return String.format("%.2f", data.winrate);
           case 5:
             return data.previousplayouts;
           case 6:
