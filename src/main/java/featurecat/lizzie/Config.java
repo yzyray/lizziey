@@ -312,6 +312,13 @@ public class Config {
 
   public void toggleLargeSubBoard() {
     this.largeSubBoard = !this.largeSubBoard;
+    try {
+        Lizzie.config.uiConfig.put("large-subboard", largeSubBoard);
+        Lizzie.config.save();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
   }
 
   public void toggleCoordinates() {
