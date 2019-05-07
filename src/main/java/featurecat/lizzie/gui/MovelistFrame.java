@@ -335,8 +335,8 @@ public class MovelistFrame extends JPanel {
         setBackground(hsbColor);
         setForeground(Color.MAGENTA);
         return super.getTableCellRendererComponent(table, value, false, false, row, column);
-
-      } if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
+      }
+      if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
           && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
         Color hsbColor =
             Color.getHSBColor(
@@ -346,8 +346,9 @@ public class MovelistFrame extends JPanel {
         setBackground(Color.WHITE);
         setForeground(hsbColor);
         return super.getTableCellRendererComponent(table, value, false, false, row, column);
-      }  if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
-    	  setBackground(Color.WHITE);
+      }
+      if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
+        setBackground(Color.WHITE);
         setForeground(Color.RED);
         return super.getTableCellRendererComponent(table, value, false, false, row, column);
       } else {
@@ -391,8 +392,8 @@ public class MovelistFrame extends JPanel {
   private void handleTableDoubleClick(int row, int col) {
     int movenumber = Integer.parseInt(table.getValueAt(row, 1).toString());
     Lizzie.board.goToMoveNumber(1);
-     Lizzie.board.goToMoveNumber(movenumber - 1);
-    
+    Lizzie.board.goToMoveNumber(movenumber - 1);
+
     int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString());
     Lizzie.frame.clickbadmove = coords;
     Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);

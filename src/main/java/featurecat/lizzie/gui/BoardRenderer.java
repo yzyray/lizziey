@@ -154,7 +154,7 @@ public class BoardRenderer {
     availableLength = calculatedPixelMargins[2];
 
     squareLength = calculateSquareLength(availableLength);
-    stoneRadius = squareLength < 4 ? 1 : squareLength / 2 - 1;
+    stoneRadius = squareLength < 4 ? 1 : (squareLength - 1) / 2;
 
     // re-center board
     setLocation(x + (boardLength0 - boardLength) / 2, y + (boardLength0 - boardLength) / 2);
@@ -966,7 +966,7 @@ public class BoardRenderer {
       Graphics2D g, int centerX, int centerY, boolean isGhost, float shadowStrength) {
     if (!uiConfig.getBoolean("shadows-enabled")) return;
 
-    double r = stoneRadius * 0.55;
+    double r = stoneRadius * 0.90;
     final int shadowSize = (int) (r * 0.2) == 0 ? 1 : (int) (r * 0.2);
     final int fartherShadowSize = (int) (r * 0.17) == 0 ? 1 : (int) (r * 0.17);
 
