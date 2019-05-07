@@ -182,6 +182,7 @@ public class AnalysisFrame extends JPanel {
         if (selectedorder != row) {
           selectedorder = -1;
           setForeground(Color.RED);
+          setBackground(Color.MAGENTA);
         }
         Color hsbColor =
             Color.getHSBColor(
