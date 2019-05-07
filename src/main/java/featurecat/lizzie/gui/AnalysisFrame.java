@@ -75,7 +75,7 @@ public class AnalysisFrame extends JPanel {
     timer =
         new Timer(
             Lizzie.config.config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec")
-                * 10,
+                * 30,
             new ActionListener() {
               public void actionPerformed(ActionEvent evt) {
                 dataModel.getColumnCount();
@@ -181,7 +181,7 @@ public class AnalysisFrame extends JPanel {
               == Lizzie.frame.suggestionclick[1]) {
         if (selectedorder != row) {
           selectedorder = -1;
-          setForeground(Color.RED);         
+          setForeground(Color.RED);
         }
         Color hsbColor =
             Color.getHSBColor(
@@ -189,7 +189,6 @@ public class AnalysisFrame extends JPanel {
                 Color.RGBtoHSB(238, 221, 130, null)[1],
                 Color.RGBtoHSB(238, 221, 130, null)[2]);
         setBackground(hsbColor);
-        setForeground(Color.MAGENTA);
         return super.getTableCellRendererComponent(table, value, false, false, row, column);
       } else {
         return renderer.getTableCellRendererComponent(table, value, false, false, row, column);

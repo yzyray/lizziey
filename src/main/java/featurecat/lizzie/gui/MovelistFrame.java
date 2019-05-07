@@ -83,7 +83,7 @@ public class MovelistFrame extends JPanel {
     timer =
         new Timer(
             Lizzie.config.config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec")
-                * 10,
+                * 30,
             new ActionListener() {
               public void actionPerformed(ActionEvent evt) {
                 dataModel.getColumnCount();
@@ -334,7 +334,6 @@ public class MovelistFrame extends JPanel {
                 Color.RGBtoHSB(238, 221, 130, null)[1],
                 Color.RGBtoHSB(238, 221, 130, null)[2]);
         setBackground(hsbColor);
-        setForeground(Color.MAGENTA);
         return super.getTableCellRendererComponent(table, value, false, false, row, column);
       }
       if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
