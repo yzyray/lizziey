@@ -82,7 +82,10 @@ public class MovelistFrame extends JPanel {
 
     timer =
         new Timer(
-            100,
+        		Lizzie.config
+                .config
+                .getJSONObject("leelaz")
+                .getInt("analyze-update-interval-centisec")*10,
             new ActionListener() {
               public void actionPerformed(ActionEvent evt) {
                 dataModel.getColumnCount();
