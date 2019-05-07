@@ -181,7 +181,7 @@ public class AnalysisFrame extends JPanel {
               == Lizzie.frame.suggestionclick[1]) {
         if (selectedorder != row) {
           selectedorder = -1;
-          setForeground(Color.RED);
+          setForeground(Color.RED);          
         }
         Color hsbColor =
             Color.getHSBColor(
