@@ -36,22 +36,23 @@ public class AnalysisFrame extends JPanel {
   static JDialog jfs;
   Font winrateFont;
   Font headFont;
+
   public AnalysisFrame() {
     super(new BorderLayout());
     dataModel = getTableModel();
     table = new JTable(dataModel);
-    
-    try {
-	       winrateFont =
-	          Font.createFont(
-	              Font.TRUETYPE_FONT,
-	              Thread.currentThread()
-	                  .getContextClassLoader()
-	                  .getResourceAsStream("fonts/OpenSans-Semibold.ttf"));
 
-} catch (IOException | FontFormatException e) {
- e.printStackTrace();
-}
+    try {
+      winrateFont =
+          Font.createFont(
+              Font.TRUETYPE_FONT,
+              Thread.currentThread()
+                  .getContextClassLoader()
+                  .getResourceAsStream("fonts/OpenSans-Semibold.ttf"));
+
+    } catch (IOException | FontFormatException e) {
+      e.printStackTrace();
+    }
 
     winrateFont = new Font("winrateFont", Font.PLAIN, 14);
     headFont = new Font("winrateFont", Font.PLAIN, 13);

@@ -32,7 +32,7 @@ public class Lizzie {
     mainArgs = args;
     config = new Config();
     board = new Board();
-  
+
     analysisframe = AnalysisFrame.createAnalysisDialog();
     //  analysisframe.setLocation(-7, 0);
     analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", true));

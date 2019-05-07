@@ -349,7 +349,7 @@ public class BoardRenderer {
     int stoneX = scaledMargin + squareLength * x;
     int stoneY = scaledMargin + squareLength * y;
     g.setColor(Color.magenta);
-    drawCircle3(g, stoneX, stoneY, stoneRadius + 1);
+    drawCircle3(g, stoneX, stoneY, stoneRadius * 7 / 6);
   }
 
   /** Draw the stones. We cache the image for a performance boost. */

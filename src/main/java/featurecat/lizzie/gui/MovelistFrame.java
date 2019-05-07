@@ -38,8 +38,8 @@ public class MovelistFrame extends JPanel {
   JPanel selectpanel = new JPanel();
   JScrollPane scrollpane;
   public static JTable table;
-  Font  headFont;
-   Font  winrateFont;
+  Font headFont;
+  Font winrateFont;
   static JDialog jf;
   Timer timer;
   int sortnum = 3;
@@ -54,24 +54,22 @@ public class MovelistFrame extends JPanel {
     super(new BorderLayout());
     dataModel = getTableModel();
     table = new JTable(dataModel);
-   
-    
+
     try {
-    	       winrateFont =
-    	          Font.createFont(
-    	              Font.TRUETYPE_FONT,
-    	              Thread.currentThread()
-    	                  .getContextClassLoader()
-    	                  .getResourceAsStream("fonts/OpenSans-Semibold.ttf"));
-      
-      } catch (IOException | FontFormatException e) {
-        e.printStackTrace();
-      }
-    
+      winrateFont =
+          Font.createFont(
+              Font.TRUETYPE_FONT,
+              Thread.currentThread()
+                  .getContextClassLoader()
+                  .getResourceAsStream("fonts/OpenSans-Semibold.ttf"));
+
+    } catch (IOException | FontFormatException e) {
+      e.printStackTrace();
+    }
+
     winrateFont = new Font("winrateFont", Font.PLAIN, 14);
     headFont = new Font("winrateFont", Font.PLAIN, 13);
-    
-    
+
     table.getTableHeader().setFont(headFont);
     table.setFont(winrateFont);
     TableCellRenderer tcr = new ColorTableCellRenderer();
@@ -81,8 +79,6 @@ public class MovelistFrame extends JPanel {
     this.add(tablepanel, BorderLayout.CENTER);
     this.add(selectpanel, BorderLayout.SOUTH);
     scrollpane = new JScrollPane(table);
-    
-    
 
     timer =
         new Timer(
@@ -320,8 +316,8 @@ public class MovelistFrame extends JPanel {
     public Component getTableCellRendererComponent(
         JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
       // if(row%2 == 0){
-    	 // if(row%2 == 0){
-        
+      // if(row%2 == 0){
+
       if (Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[0]
               == Lizzie.frame.clickbadmove[0]
           && Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[1]
@@ -337,31 +333,27 @@ public class MovelistFrame extends JPanel {
                 Color.RGBtoHSB(238, 221, 130, null)[1],
                 Color.RGBtoHSB(238, 221, 130, null)[2]);
         setBackground(hsbColor);
-
+        setForeground(Color.MAGENTA);
         return super.getTableCellRendererComponent(table, value, false, false, row, column);
-        
-      } else if ( Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString()))>=5&&Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString()))<=10)
-      {
-    	   Color hsbColor =
-    	            Color.getHSBColor(
-    	                Color.RGBtoHSB(255, 153, 18, null)[0],
-    	                Color.RGBtoHSB(255, 153, 18, null)[1],
-    	                Color.RGBtoHSB(255, 153, 18, null)[2]);
-    	       
 
-      	setForeground(hsbColor);
-      	return super.getTableCellRendererComponent(table, value, false, false, row, column);
-      }
-      else if ( Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString()))>10)
-      {
-      	setForeground(Color.RED);
-      	return super.getTableCellRendererComponent(table, value, false, false, row, column);
-      }
-      else {
+      } if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
+          && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
+        Color hsbColor =
+            Color.getHSBColor(
+                Color.RGBtoHSB(255, 153, 18, null)[0],
+                Color.RGBtoHSB(255, 153, 18, null)[1],
+                Color.RGBtoHSB(255, 153, 18, null)[2]);
+        setBackground(Color.WHITE);
+        setForeground(hsbColor);
+        return super.getTableCellRendererComponent(table, value, false, false, row, column);
+      }  if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
+    	  setBackground(Color.WHITE);
+        setForeground(Color.RED);
+        return super.getTableCellRendererComponent(table, value, false, false, row, column);
+      } else {
         return renderer.getTableCellRendererComponent(table, value, false, false, row, column);
       }
     }
-    
   }
 
   private void togglealwaysontop() {
@@ -399,9 +391,8 @@ public class MovelistFrame extends JPanel {
   private void handleTableDoubleClick(int row, int col) {
     int movenumber = Integer.parseInt(table.getValueAt(row, 1).toString());
     Lizzie.board.goToMoveNumber(1);
-    if (movenumber > 1) {
-      Lizzie.board.goToMoveNumber(movenumber - 1);
-    }
+     Lizzie.board.goToMoveNumber(movenumber - 1);
+    
     int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString());
     Lizzie.frame.clickbadmove = coords;
     Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);

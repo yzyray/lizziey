@@ -860,6 +860,7 @@ public class Board implements LeelazListener {
   }
 
   public void place(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
+    Lizzie.frame.boardRenderer.removedrawmovestone();
     synchronized (this) {
       if (scoreMode) {
         // Mark clicked stone as dead
@@ -1229,7 +1230,7 @@ public class Board implements LeelazListener {
   public boolean nextMove() {
     synchronized (this) {
       updateWinrate();
-
+      Lizzie.frame.boardRenderer.removedrawmovestone();
       Optional<int[]> passstep = Optional.empty();
       if (Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()
           && Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()
