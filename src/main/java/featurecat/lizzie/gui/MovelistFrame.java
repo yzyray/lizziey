@@ -38,13 +38,15 @@ public class MovelistFrame extends JPanel {
   JPanel selectpanel = new JPanel();
   JScrollPane scrollpane;
   public static JTable table;
+  Font  headFont;
+   Font  winrateFont;
   static JDialog jf;
   Timer timer;
   int sortnum = 3;
   public static int selectedorder = -1;
   boolean issorted = false;
-  JSpinner dropwinratechooser = new JSpinner(new SpinnerNumberModel(10, 0, 100, 1));
-  JSpinner playoutschooser = new JSpinner(new SpinnerNumberModel(50, 0, 999999, 100));
+  JSpinner dropwinratechooser = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
+  JSpinner playoutschooser = new JSpinner(new SpinnerNumberModel(100, 0, 99999, 100));
   JCheckBox checkBlack = new JCheckBox();
   JCheckBox checkWhite = new JCheckBox();
 
@@ -52,8 +54,26 @@ public class MovelistFrame extends JPanel {
     super(new BorderLayout());
     dataModel = getTableModel();
     table = new JTable(dataModel);
-    table.getTableHeader().setFont(new Font("宋体", Font.BOLD, 14));
-    table.setFont(new Font("宋体", Font.BOLD, 18));
+   
+    
+    try {
+    	       winrateFont =
+    	          Font.createFont(
+    	              Font.TRUETYPE_FONT,
+    	              Thread.currentThread()
+    	                  .getContextClassLoader()
+    	                  .getResourceAsStream("fonts/OpenSans-Semibold.ttf"));
+      
+      } catch (IOException | FontFormatException e) {
+        e.printStackTrace();
+      }
+    
+    winrateFont = new Font("winrateFont", Font.PLAIN, 14);
+    headFont = new Font("winrateFont", Font.PLAIN, 13);
+    
+    
+    table.getTableHeader().setFont(headFont);
+    table.setFont(winrateFont);
     TableCellRenderer tcr = new ColorTableCellRenderer();
     table.setDefaultRenderer(Object.class, tcr);
     table.setRowHeight(20);
@@ -61,6 +81,8 @@ public class MovelistFrame extends JPanel {
     this.add(tablepanel, BorderLayout.CENTER);
     this.add(selectpanel, BorderLayout.SOUTH);
     scrollpane = new JScrollPane(table);
+    
+    
 
     timer =
         new Timer(
@@ -161,16 +183,15 @@ public class MovelistFrame extends JPanel {
             });
     timer.start();
     tablepanel.add(scrollpane);
-
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setFillsViewportHeight(true);
-    table.getColumnModel().getColumn(0).setPreferredWidth(20);
-    table.getColumnModel().getColumn(1).setPreferredWidth(20);
-    table.getColumnModel().getColumn(2).setPreferredWidth(25);
-    table.getColumnModel().getColumn(3).setPreferredWidth(68);
-    table.getColumnModel().getColumn(4).setPreferredWidth(40);
-    table.getColumnModel().getColumn(5).setPreferredWidth(75);
-    table.getColumnModel().getColumn(6).setPreferredWidth(50);
+    table.getColumnModel().getColumn(0).setPreferredWidth(37);
+    table.getColumnModel().getColumn(1).setPreferredWidth(36);
+    table.getColumnModel().getColumn(2).setPreferredWidth(41);
+    table.getColumnModel().getColumn(3).setPreferredWidth(82);
+    table.getColumnModel().getColumn(4).setPreferredWidth(58);
+    table.getColumnModel().getColumn(5).setPreferredWidth(65);
+    table.getColumnModel().getColumn(6).setPreferredWidth(70);
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
@@ -192,10 +213,10 @@ public class MovelistFrame extends JPanel {
     checkBlack.setSelected(true);
     checkWhite.setSelected(true);
 
-    JLabel checkBlacktxt = new JLabel("显示黑:");
+    JLabel checkBlacktxt = new JLabel("黑:");
     JLabel checkWhitetxt = new JLabel("白:");
-    JLabel dropwinratechoosertxt = new JLabel("只显示胜率波动超过:");
-    JLabel playoutschoosertxt = new JLabel("只显示前后计算量都超过:");
+    JLabel dropwinratechoosertxt = new JLabel("胜率波动筛选:");
+    JLabel playoutschoosertxt = new JLabel("前后计算量筛选:");
     selectpanel.add(checkBlacktxt);
     selectpanel.add(checkBlack);
     selectpanel.add(checkWhitetxt);
@@ -299,6 +320,8 @@ public class MovelistFrame extends JPanel {
     public Component getTableCellRendererComponent(
         JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
       // if(row%2 == 0){
+    	 // if(row%2 == 0){
+        
       if (Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[0]
               == Lizzie.frame.clickbadmove[0]
           && Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[1]
@@ -316,19 +339,29 @@ public class MovelistFrame extends JPanel {
         setBackground(hsbColor);
 
         return super.getTableCellRendererComponent(table, value, false, false, row, column);
-      } else {
+        
+      } else if ( Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString()))>=5&&Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString()))<=10)
+      {
+    	   Color hsbColor =
+    	            Color.getHSBColor(
+    	                Color.RGBtoHSB(255, 153, 18, null)[0],
+    	                Color.RGBtoHSB(255, 153, 18, null)[1],
+    	                Color.RGBtoHSB(255, 153, 18, null)[2]);
+    	       
+
+      	setForeground(hsbColor);
+      	return super.getTableCellRendererComponent(table, value, false, false, row, column);
+      }
+      else if ( Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString()))>10)
+      {
+      	setForeground(Color.RED);
+      	return super.getTableCellRendererComponent(table, value, false, false, row, column);
+      }
+      else {
         return renderer.getTableCellRendererComponent(table, value, false, false, row, column);
       }
     }
-    // 该类继承与JLabel，Graphics用于绘制单元格,绘制红线
-    //      public void paintComponent(Graphics g){
-    //          super.paintComponent(g);
-    //          Graphics2D g2=(Graphics2D)g;
-    //          final BasicStroke stroke=new BasicStroke(2.0f);
-    //          g2.setColor(Color.RED);
-    //          g2.setStroke(stroke);
-    //          g2.drawLine(0,getHeight()/2,getWidth(),getHeight()/2);
-    //      }
+    
   }
 
   private void togglealwaysontop() {
@@ -444,12 +477,12 @@ public class MovelistFrame extends JPanel {
                     return 1;
                   }
                   if (sortnum == 3) {
-                    if (s1.diffwinrate < s2.diffwinrate) return 1;
-                    if (s1.diffwinrate > s2.diffwinrate) return -1;
+                    if (Math.abs(s1.diffwinrate) < Math.abs(s2.diffwinrate)) return 1;
+                    if (Math.abs(s1.diffwinrate) > Math.abs(s2.diffwinrate)) return -1;
                   }
                   if (sortnum == 4) {
-                    if (Math.abs(s1.winrate) < Math.abs(s2.winrate)) return 1;
-                    if (Math.abs(s1.winrate) > Math.abs(s2.winrate)) return -1;
+                    if (s1.winrate < s2.winrate) return 1;
+                    if (s1.winrate > s2.winrate) return -1;
                   }
                   if (sortnum == 5) {
                     if (s1.previousplayouts < s2.previousplayouts) return 1;
@@ -473,12 +506,12 @@ public class MovelistFrame extends JPanel {
                     return 1;
                   }
                   if (sortnum == 3) {
-                    if (s1.diffwinrate > s2.diffwinrate) return 1;
-                    if (s1.diffwinrate < s2.diffwinrate) return -1;
+                    if (Math.abs(s1.diffwinrate) > Math.abs(s2.diffwinrate)) return 1;
+                    if (Math.abs(s1.diffwinrate) < Math.abs(s2.diffwinrate)) return -1;
                   }
                   if (sortnum == 4) {
-                    if (Math.abs(s1.winrate) > Math.abs(s2.winrate)) return 1;
-                    if (Math.abs(s1.winrate) < Math.abs(s2.winrate)) return -1;
+                    if (s1.winrate > s2.winrate) return 1;
+                    if (s1.winrate < s2.winrate) return -1;
                   }
                   if (sortnum == 5) {
                     if (s1.previousplayouts > s2.previousplayouts) return 1;
@@ -545,7 +578,7 @@ public class MovelistFrame extends JPanel {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
       jf.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
     } else {
-      jf.setBounds(-9, 0, 521, 320);
+      jf.setBounds(-9, 0, 407, 287);
     }
     try {
       jf.setIconImage(ImageIO.read(MovelistFrame.class.getResourceAsStream("/assets/logo.png")));

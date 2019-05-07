@@ -34,13 +34,30 @@ public class AnalysisFrame extends JPanel {
   int sortnum = 1;
   static int selectedorder = -1;
   static JDialog jfs;
-
+  Font winrateFont;
+  Font headFont;
   public AnalysisFrame() {
     super(new BorderLayout());
     dataModel = getTableModel();
     table = new JTable(dataModel);
-    table.getTableHeader().setFont(new Font("宋体", Font.BOLD, 14));
-    table.setFont(new Font("宋体", Font.BOLD, 18));
+    
+    try {
+	       winrateFont =
+	          Font.createFont(
+	              Font.TRUETYPE_FONT,
+	              Thread.currentThread()
+	                  .getContextClassLoader()
+	                  .getResourceAsStream("fonts/OpenSans-Semibold.ttf"));
+
+} catch (IOException | FontFormatException e) {
+ e.printStackTrace();
+}
+
+    winrateFont = new Font("winrateFont", Font.PLAIN, 14);
+    headFont = new Font("winrateFont", Font.PLAIN, 13);
+
+    table.getTableHeader().setFont(headFont);
+    table.setFont(winrateFont);
     TableCellRenderer tcr = new ColorTableCellRenderer();
     table.setDefaultRenderer(Object.class, tcr);
 
@@ -68,11 +85,11 @@ public class AnalysisFrame extends JPanel {
 
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setFillsViewportHeight(true);
-    table.getColumnModel().getColumn(0).setPreferredWidth(15);
-    table.getColumnModel().getColumn(1).setPreferredWidth(75);
-    table.getColumnModel().getColumn(2).setPreferredWidth(30);
-    table.getColumnModel().getColumn(3).setPreferredWidth(60);
-    table.getColumnModel().getColumn(4).setPreferredWidth(50);
+    table.getColumnModel().getColumn(0).setPreferredWidth(36);
+    table.getColumnModel().getColumn(1).setPreferredWidth(114);
+    table.getColumnModel().getColumn(2).setPreferredWidth(60);
+    table.getColumnModel().getColumn(3).setPreferredWidth(89);
+    table.getColumnModel().getColumn(4).setPreferredWidth(72);
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null
@@ -344,7 +361,7 @@ public class AnalysisFrame extends JPanel {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
       jfs.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
     } else {
-      jfs.setBounds(-9, 312, 521, 259);
+      jfs.setBounds(-9, 278, 407, 259);
     }
     try {
       jfs.setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
