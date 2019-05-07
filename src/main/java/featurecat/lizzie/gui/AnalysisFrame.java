@@ -74,10 +74,8 @@ public class AnalysisFrame extends JPanel {
 
     timer =
         new Timer(
-        		Lizzie.config
-                .config
-                .getJSONObject("leelaz")
-                .getInt("analyze-update-interval-centisec")*10,
+            Lizzie.config.config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec")
+                * 10,
             new ActionListener() {
               public void actionPerformed(ActionEvent evt) {
                 dataModel.getColumnCount();
