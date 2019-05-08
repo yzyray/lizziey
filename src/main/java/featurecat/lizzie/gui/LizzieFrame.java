@@ -90,11 +90,12 @@ public class LizzieFrame extends JFrame {
   private static SubBoardRenderer subBoardRenderer;
   private static VariationTree variationTree;
   private static WinrateGraph winrateGraph;
-
+ 
   public static Font uiFont;
   public static Font winrateFont;
   public boolean isshowrightmenu;
   public ArrayList<Movelist> movelist;
+  
 
   private final BufferStrategy bs;
 
@@ -611,11 +612,12 @@ public class LizzieFrame extends JFrame {
       int vh = height - vy - bottomInset;
 
       // pondering message
-      double ponderingSize = .02;
+      double ponderingSize = .040;
       int ponderingX = leftInset;
       int ponderingY =
-          height - bottomInset - (int) (maxSize * 0.033) - (int) (maxBound * ponderingSize);
-
+          height - bottomInset - (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize);
+      int ponderingY2 =
+              height - bottomInset - (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize*0.4);
       // dynamic komi
       double dynamicKomiSize = .02;
       int dynamicKomiX = leftInset;
@@ -626,7 +628,7 @@ public class LizzieFrame extends JFrame {
       // loading message;
       double loadingSize = 0.03;
       int loadingX = ponderingX;
-      int loadingY = ponderingY - (int) (maxBound * (loadingSize - ponderingSize));
+      int loadingY = ponderingY - (int) (maxBound * (loadingSize - ponderingSize*3/4));
 
       // subboard
       int subBoardY = gry + grh;
@@ -885,9 +887,10 @@ public class LizzieFrame extends JFrame {
           String ponderingText = resourceBundle.getString("LizzieFrame.display.pondering");
           String switching = resourceBundle.getString("LizzieFrame.prompt.switching");
           String switchingText = Lizzie.leelaz.switching() ? switching : "";
-          String weightText = Lizzie.leelaz.currentWeight();
-          String text = ponderingText + " " + statusText + " " + weightText + " " + switchingText;
-          drawPonderingState(g, text, ponderingX, ponderingY, ponderingSize);
+          String weightText = Lizzie.leelaz.currentEnginename;
+          String text1 = weightText;
+          String text2 =ponderingText + " " + statusText + " " + switchingText;
+          drawPonderingState(g, text1, text2,ponderingX, ponderingY,ponderingY2, ponderingSize);
         }
 
         Optional<String> dynamicKomi = Lizzie.leelaz.getDynamicKomi();
@@ -999,8 +1002,12 @@ public class LizzieFrame extends JFrame {
     filter20.filter(cachedBackground.getSubimage(vx, vy, vw, vh), result);
     g.drawImage(result, vx, vy, null);
   }
-
-  private void drawPonderingState(Graphics2D g, String text, int x, int y, double size) {
+  private void drawPonderingState(Graphics2D g, String text1, String text2,int x, int y,int y2, double size) {
+	  drawPonderingState(g,text1,x,y,size*0.6);	
+	  drawPonderingState(g,text2,x,y2,size*0.4);
+  }
+  
+  private void drawPonderingState(Graphics2D g, String text,int x, int y, double size) {
     int fontSize = (int) (max(getWidth(), getHeight()) * size);
     Font font = new Font(Lizzie.config.fontName, Font.PLAIN, fontSize);
     FontMetrics fm = g.getFontMetrics(font);
@@ -1176,7 +1183,7 @@ public class LizzieFrame extends JFrame {
 
     int maxSize = (int) (min(getWidth(), getHeight()) * 0.98);
 
-    Font font = new Font(Lizzie.config.fontName, Font.PLAIN, (int) (maxSize * 0.03));
+    Font font = new Font(Lizzie.config.fontName, Font.PLAIN, (int) (maxSize * 0.023));
     String commandString = resourceBundle.getString("LizzieFrame.prompt.showControlsHint");
     int strokeRadius = Lizzie.config.showBorder ? 2 : 0;
 

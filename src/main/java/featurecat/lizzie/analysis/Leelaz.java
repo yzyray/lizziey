@@ -71,6 +71,7 @@ public class Leelaz {
   private JSONObject config;
   private String currentWeightFile = "";
   private String currentWeight = "";
+  public String currentEnginename = "";
   private boolean switching = false;
   private int currentEngineN = -1;
   private ScheduledExecutorService executor;
@@ -109,11 +110,11 @@ public class Leelaz {
 
     // Initialize current engine number and start engine
     currentEngineN = 0;
-    startEngine(engineCommand);
+    startEngine(engineCommand,0);
     Lizzie.frame.refreshBackground();
   }
 
-  public void startEngine(String engineCommand) throws IOException {
+  public void startEngine(String engineCommand,int index) throws IOException {
     if (engineCommand.trim().isEmpty()) {
       return;
     }
@@ -127,6 +128,7 @@ public class Leelaz {
       currentWeightFile = wMatcher.group(2);
       String[] names = currentWeightFile.split("[\\\\|/]");
       currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
+      currentEnginename = Lizzie.config.leelazConfig.optString("enginename"+String.valueOf(index+1),currentWeight);    
     }
 
     // Check if engine is present
@@ -157,7 +159,7 @@ public class Leelaz {
     //    processBuilder.directory(startfolder);
     processBuilder.redirectErrorStream(true);
     process = processBuilder.start();
-
+    
     initializeStreams();
 
     // Send a version request to check that we have a supported version
@@ -184,7 +186,7 @@ public class Leelaz {
       Lizzie.leelaz.togglePonder();
     }
     normalQuit();
-    startEngine(engineCommand);
+    startEngine(engineCommand,index);
     currentEngineN = index;
     togglePonder();
   }
@@ -248,9 +250,12 @@ public class Leelaz {
   private void parseLine(String line) {
     synchronized (this) {    	
       if (printCommunication || gtpConsole) {
-        Lizzie.gtpConsole.addLine(line);
+    	  if (line.startsWith("info"))
+    	  {}
+    	  else {
+        Lizzie.gtpConsole.addLine(line);      
+    	  }
       }
-      
       
       
       if (line.startsWith("komi=")) {

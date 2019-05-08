@@ -120,6 +120,7 @@ public class MoveData {
    * <p>0.15 0.16
    *
    * <p>P16 -> 4 (V: 50.94%) (N: 5.79%) PV: P16 N18 R5 Q5
+   * D4 ->    1393 (V: 51.16%) (N: 58.90%) PV: D4 D17 Q4 C6 F3 C12 K17 O17 G17 F16 E18 G16 E17 E16 H17 D18 D16 E19 F17 D15 C16 B17 B16 C17 
    *
    * <p>0.17
    *
@@ -131,6 +132,22 @@ public class MoveData {
     Matcher match = summaryPattern.matcher(summary.trim());
     if (!match.matches()) {
       // support 0.16 0.15
+//        if(summary.contains("->   "))
+//        { Matcher matchold = summaryPatternhandicap.matcher(summary.trim());
+//        if (!matchold.matches()) {
+//            throw new IllegalArgumentException("Unexpected summary format: " + summary);
+//          } else {
+//            MoveData result = new MoveData();
+//            result.coordinate = matchold.group(1);
+//            result.playouts = Integer.parseInt(matchold.group(2));
+//            result.winrate = Double.parseDouble(matchold.group(3));
+//            String aa=match.group(4);
+//            result.variation =
+//                Arrays.asList(match.group(4).split(" ", Lizzie.config.limitBranchLength));
+//            //  result.variation = Arrays.asList(matchold.group(4).split(" "));
+//            return result;
+//          }
+//        }
       Matcher matchold = summaryPatternold.matcher(summary.trim());
       if (!matchold.matches()) {
         throw new IllegalArgumentException("Unexpected summary format: " + summary);
@@ -139,9 +156,8 @@ public class MoveData {
         result.coordinate = matchold.group(1);
         result.playouts = Integer.parseInt(matchold.group(2));
         result.winrate = Double.parseDouble(matchold.group(3));
-        result.variation =
-            Arrays.asList(match.group(4).split(" ", Lizzie.config.limitBranchLength));
-        //  result.variation = Arrays.asList(matchold.group(4).split(" "));
+        result.variation = Arrays.asList(matchold.group(4).split(" ", Lizzie.config.limitBranchLength));
+        // result.variation = Arrays.asList(matchold.group(4).split(" "));
         return result;
       }
     } else {
@@ -160,7 +176,10 @@ public class MoveData {
           "^ *(\\w\\d*) -> *(\\d+) \\(V: ([^%)]+)%\\) \\(LCB: ([^%)]+)%\\) \\([^\\)]+\\) PV: (.+).*$");
   private static Pattern summaryPatternold =
       Pattern.compile("^ *(\\w\\d*) -> *(\\d+) \\(V: ([^%)]+)%\\) \\([^\\)]+\\) PV: (.+).*$");
+ 
   // support 0.16 0.15
+  private static Pattern summaryPatternhandicap =
+	      Pattern.compile("^ *(\\w\\d*) ->    *(\\d+) \\(V: ([^%)]+)%\\) \\([^\\)]+\\) PV: (.+).* $");
 
   public static int getPlayouts(List<MoveData> moves) {
     int playouts = 0;
