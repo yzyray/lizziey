@@ -78,6 +78,8 @@ public class ConfigDialog extends JDialog {
   private JRadioButton rdoLcb;
   private JRadioButton rdoonlyWinrate;
   private JRadioButton rdoLcbfix;
+  private JRadioButton rdoponder;
+  private JRadioButton rdonoponder;
 
   public String enginePath = "";
   public String weightPath = "";
@@ -688,6 +690,22 @@ public class ConfigDialog extends JDialog {
     rggroup.add(rdoonlyWinrate);
     rggroup.add(rdoLcbfix);
 
+    JLabel noponder = new JLabel("对弈时AI是否后台计算");
+    noponder.setBounds(6, 597, 157, 16);
+    engineTab.add(noponder);
+
+    rdoponder = new JRadioButton("是");
+    rdoponder.setBounds(171, 597, 50, 23);
+    engineTab.add(rdoponder);
+
+    rdonoponder = new JRadioButton("否");
+    rdonoponder.setBounds(220, 597, 80, 23);
+    engineTab.add(rdonoponder);
+
+    ButtonGroup rdopondergp = new ButtonGroup();
+    rdopondergp.add(rdonoponder);
+    rdopondergp.add(rdoponder);
+
     JLabel lblAnalyzeUpdateInterval =
         new JLabel(resourceBundle.getString("LizzieConfig.title.analyzeUpdateInterval"));
     lblAnalyzeUpdateInterval.setBounds(331, 380, 157, 16);
@@ -857,6 +875,7 @@ public class ConfigDialog extends JDialog {
     nameEngine9.setText(leelazConfig.optString("enginename10", "引擎10"));
     setBoardSize();
     setShowLcbWinrate();
+    setPonder();
     setShowLcbColor();
     setLocationRelativeTo(getOwner());
   }
@@ -954,6 +973,7 @@ public class ConfigDialog extends JDialog {
       leelazConfig.putOpt("max-game-thinking-time-seconds", txtFieldValue(txtMaxGameThinkingTime));
       leelazConfig.putOpt("print-comms", chkPrintEngineLog.isSelected());
       leelazConfig.putOpt("show-lcb-winrate", getShowLcbWinrate());
+      leelazConfig.putOpt("play-ponder", getPonder());
       leelazConfig.putOpt("show-lcb-color", getShowLcbColor());
       leelazConfig.put("engine-command", txtEngine.getText().trim());
       leelazConfig.putOpt("limit-max-suggestion", txtFieldValue(txtMaxsuggestionmoves));
@@ -1022,6 +1042,27 @@ public class ConfigDialog extends JDialog {
 
   public boolean isWindows() {
     return osName != null && !osName.contains("darwin") && osName.contains("win");
+  }
+
+  private void setPonder() {
+
+    if (Lizzie.config.playponder) {
+      rdoponder.setSelected(true);
+    } else {
+      rdonoponder.setSelected(true);
+    }
+  }
+
+  private boolean getPonder() {
+    if (rdoponder.isSelected()) {
+      Lizzie.config.playponder = true;
+      return true;
+    }
+    if (rdonoponder.isSelected()) {
+      Lizzie.config.playponder = false;
+      return false;
+    }
+    return true;
   }
 
   private void setShowLcbWinrate() {

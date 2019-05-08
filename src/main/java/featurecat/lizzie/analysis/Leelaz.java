@@ -334,17 +334,22 @@ public class Leelaz {
           }
           isSettingHandicap = false;
         } else if (isThinking && !isPondering) {
-          if (Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand) {
+          if (isInputCommand) {
             Lizzie.board.place(params[1]);
             togglePonder();
-            if (!isInputCommand) {
-              isPondering = false;
-            }
-            isThinking = false;
-            if (isInputCommand) {
-              isInputCommand = false;
-            }
           }
+          if (Lizzie.frame.isPlayingAgainstLeelaz) {
+            Lizzie.board.place(params[1]);
+            if (!Lizzie.config.playponder) Lizzie.leelaz.sendCommand("name");
+          }
+          if (!isInputCommand) {
+            isPondering = false;
+          }
+          isThinking = false;
+          if (isInputCommand) {
+            isInputCommand = false;
+          }
+
         } else if (isCheckingVersion) {
           String[] ver = params[1].split("\\.");
           int minor = Integer.parseInt(ver[1]);
@@ -531,6 +536,9 @@ public class Leelaz {
   }
 
   public void genmove_analyze(String color) {
+    if (!Lizzie.config.playponder && Lizzie.frame.isPlayingAgainstLeelaz) {
+      return;
+    }
     String command =
         "lz-genmove_analyze "
             + color
@@ -597,6 +605,9 @@ public class Leelaz {
   /** This initializes leelaz's pondering mode at its current position */
   public void ponder() {
     isPondering = true;
+    if (!Lizzie.config.playponder && Lizzie.frame.isPlayingAgainstLeelaz) {
+      return;
+    }
     startPonderTime = System.currentTimeMillis();
     int currentmove = Lizzie.board.getcurrentmovenumber();
     if (featurecat.lizzie.gui.RightClickMenu.move > 0
@@ -621,6 +632,9 @@ public class Leelaz {
 
   public void ponderwithavoid() {
     isPondering = true;
+    if (!Lizzie.config.playponder && Lizzie.frame.isPlayingAgainstLeelaz) {
+      return;
+    }
     startPonderTime = System.currentTimeMillis();
     int currentmove = Lizzie.board.getcurrentmovenumber();
     if (featurecat.lizzie.gui.RightClickMenu.move > 0

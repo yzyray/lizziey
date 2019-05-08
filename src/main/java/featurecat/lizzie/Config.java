@@ -34,6 +34,7 @@ public class Config {
   public boolean showCoordinates = true;
   public boolean colorByWinrateInsteadOfVisits = false;
   public boolean showlcbwinrate = true;
+  public boolean playponder = true;
   public boolean showlcbcolor = true;
 
   public boolean showStatus = true;
@@ -204,8 +205,9 @@ public class Config {
     winrateStrokeWidth = theme.winrateStrokeWidth();
     minimumBlunderBarWidth = theme.minimumBlunderBarWidth();
     shadowSize = theme.shadowSize();
-    showlcbwinrate = config.getJSONObject("leelaz").getBoolean("show-lcb-winrate");
-    showlcbcolor = config.getJSONObject("leelaz").getBoolean("show-lcb-color");
+    showlcbwinrate = config.getJSONObject("leelaz").optBoolean("show-lcb-winrate", true);
+    playponder = config.getJSONObject("leelaz").optBoolean("play-ponder", true);
+    showlcbcolor = config.getJSONObject("leelaz").optBoolean("show-lcb-color", true);
 
     if (theme.fontName() != null) fontName = theme.fontName();
 
