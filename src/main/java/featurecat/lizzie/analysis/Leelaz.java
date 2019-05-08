@@ -246,10 +246,13 @@ public class Leelaz {
    * @param line output line
    */
   private void parseLine(String line) {
-    synchronized (this) {
+    synchronized (this) {    	
       if (printCommunication || gtpConsole) {
         Lizzie.gtpConsole.addLine(line);
       }
+      
+      
+      
       if (line.startsWith("komi=")) {
         try {
           dynamicKomi = Float.parseFloat(line.substring("komi=".length()).trim());
@@ -281,7 +284,14 @@ public class Leelaz {
             togglePonder();
           }
         }
-      } else if (line.contains(" -> ")) {
+      } 
+      else if (line.contains("STAGE")) {
+    	  Lizzie.gtpConsole.addLineforce(line);
+      }
+      else if (line.contains("> KoMI")) {
+    	  Lizzie.gtpConsole.addLineforce(line);
+      }
+      else if (line.contains(" ->   ")) {
         isLoaded = true;
         if (isResponseUpToDate()
             || isThinking
@@ -370,10 +380,13 @@ public class Leelaz {
   private void read() {
     try {
       int c;
-      StringBuilder line = new StringBuilder();
-      while ((c = inputStream.read()) != -1) {
+      StringBuilder line = new StringBuilder(); 	
+     // while ((c = inputStream.read()) != -1) {
+    	  while ((c = inputStream.read()) != -1) {
         line.append((char) c);
+     
         if ((c == '\n')) {
+        
           parseLine(line.toString());
           line = new StringBuilder();
         }

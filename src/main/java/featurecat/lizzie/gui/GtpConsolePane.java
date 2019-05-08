@@ -108,6 +108,13 @@ public class GtpConsolePane extends JDialog {
     }
     addText(format(line));
   }
+  
+  public void addLineforce(String line) {
+	    if (line == null || line.trim().length() == 0) {
+	      return;
+	    }
+	    addText(format(line));
+	  }
 
   private void addText(String text) {
     try {
