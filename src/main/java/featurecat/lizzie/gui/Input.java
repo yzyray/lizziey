@@ -374,8 +374,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           }
           Lizzie.frame.pasteSgf();
         } else {
-          Lizzie.config.toggleLargeSubBoard();
-          //   Lizzie.config.toggleShowBranch();
+          if (e.isAltDown()) Lizzie.config.toggleLargeSubBoard();
+          else Lizzie.config.toggleShowBranch();
         }
         break;
 
