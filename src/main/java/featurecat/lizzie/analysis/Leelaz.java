@@ -110,11 +110,11 @@ public class Leelaz {
 
     // Initialize current engine number and start engine
     currentEngineN = 0;
-    startEngine(engineCommand,0);
+    startEngine(engineCommand, 0);
     Lizzie.frame.refreshBackground();
   }
 
-  public void startEngine(String engineCommand,int index) throws IOException {
+  public void startEngine(String engineCommand, int index) throws IOException {
     if (engineCommand.trim().isEmpty()) {
       return;
     }
@@ -128,7 +128,9 @@ public class Leelaz {
       currentWeightFile = wMatcher.group(2);
       String[] names = currentWeightFile.split("[\\\\|/]");
       currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
-      currentEnginename = Lizzie.config.leelazConfig.optString("enginename"+String.valueOf(index+1),currentWeight);    
+      currentEnginename =
+          Lizzie.config.leelazConfig.optString(
+              "enginename" + String.valueOf(index + 1), currentWeight);
     }
 
     // Check if engine is present
@@ -159,7 +161,7 @@ public class Leelaz {
     //    processBuilder.directory(startfolder);
     processBuilder.redirectErrorStream(true);
     process = processBuilder.start();
-    
+
     initializeStreams();
 
     // Send a version request to check that we have a supported version
@@ -186,7 +188,7 @@ public class Leelaz {
       Lizzie.leelaz.togglePonder();
     }
     normalQuit();
-    startEngine(engineCommand,index);
+    startEngine(engineCommand, index);
     currentEngineN = index;
     togglePonder();
   }
@@ -248,16 +250,14 @@ public class Leelaz {
    * @param line output line
    */
   private void parseLine(String line) {
-    synchronized (this) {    	
+    synchronized (this) {
       if (printCommunication || gtpConsole) {
-    	  if (line.startsWith("info"))
-    	  {}
-    	  else {
-        Lizzie.gtpConsole.addLine(line);      
-    	  }
+        if (line.startsWith("info")) {
+        } else {
+          Lizzie.gtpConsole.addLine(line);
+        }
       }
-      
-      
+
       if (line.startsWith("komi=")) {
         try {
           dynamicKomi = Float.parseFloat(line.substring("komi=".length()).trim());
@@ -289,21 +289,22 @@ public class Leelaz {
             togglePonder();
           }
         }
-      } 
-      else if (line.contains("STAGE")) {
-    	  Lizzie.gtpConsole.addLineforce(line);
-      }
-      else if (line.contains("> KoMI")) {
-    	  Lizzie.gtpConsole.addLineforce(line);
-      }
-      else if (line.contains(" ->   ")) {
+      } else if (line.contains("STAGE")) {
+        Lizzie.gtpConsole.addLineforce(line);
+      } else if (line.contains("> KoMI")) {
+        Lizzie.gtpConsole.addLineforce(line);
+      } else if (line.contains(" ->   ")) {
         isLoaded = true;
         if (isResponseUpToDate()
             || isThinking
                 && (!isPondering && Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand)) {
-          bestMoves.add(MoveData.fromSummary(line));
-          notifyBestMoveListeners();
-          Lizzie.frame.repaint();
+          if (line.contains("pass")) {
+
+          } else {
+            bestMoves.add(MoveData.fromSummary(line));
+            notifyBestMoveListeners();
+            Lizzie.frame.repaint();
+          }
         }
       } else if (line.startsWith("play")) {
         // In lz-genmove_analyze
@@ -385,13 +386,13 @@ public class Leelaz {
   private void read() {
     try {
       int c;
-      StringBuilder line = new StringBuilder(); 	
-     // while ((c = inputStream.read()) != -1) {
-    	  while ((c = inputStream.read()) != -1) {
+      StringBuilder line = new StringBuilder();
+      // while ((c = inputStream.read()) != -1) {
+      while ((c = inputStream.read()) != -1) {
         line.append((char) c);
-     
+
         if ((c == '\n')) {
-        
+
           parseLine(line.toString());
           line = new StringBuilder();
         }

@@ -335,19 +335,17 @@ public class MovelistFrame extends JPanel {
                 Color.RGBtoHSB(238, 221, 130, null)[2]);
         setBackground(hsbColor);
         if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
-                && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
-              Color hsbColor2 =
-                  Color.getHSBColor(
-                      Color.RGBtoHSB(255, 153, 18, null)[0],
-                      Color.RGBtoHSB(255, 153, 18, null)[1],
-                      Color.RGBtoHSB(255, 153, 18, null)[2]);              
-              setForeground(hsbColor2);
-              }
-        else if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {            
-            setForeground(Color.RED);
-        }
-        else {
-        	setForeground(Color.BLACK);
+            && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
+          Color hsbColor2 =
+              Color.getHSBColor(
+                  Color.RGBtoHSB(255, 153, 18, null)[0],
+                  Color.RGBtoHSB(255, 153, 18, null)[1],
+                  Color.RGBtoHSB(255, 153, 18, null)[2]);
+          setForeground(hsbColor2);
+        } else if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
+          setForeground(Color.RED);
+        } else {
+          setForeground(Color.BLACK);
         }
         return super.getTableCellRendererComponent(table, value, false, false, row, column);
       }

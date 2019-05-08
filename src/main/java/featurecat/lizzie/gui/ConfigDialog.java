@@ -141,12 +141,10 @@ public class ConfigDialog extends JDialog {
     txtEngine.setBounds(87, 40, 432, 26);
     engineTab.add(txtEngine);
     txtEngine.setColumns(10);
-    
+
     nameEngine = new JTextField();
     nameEngine.setBounds(525, 40, 60, 26);
     engineTab.add(nameEngine);
-    
-    
 
     JLabel lblEngine1 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + "2|别名");
     lblEngine1.setHorizontalAlignment(SwingConstants.LEFT);
@@ -156,12 +154,11 @@ public class ConfigDialog extends JDialog {
     txtEngine1 = new JTextField();
     txtEngine1.setColumns(10);
     txtEngine1.setBounds(87, 75, 432, 26);
-    engineTab.add(txtEngine1);    
-    
+    engineTab.add(txtEngine1);
+
     nameEngine1 = new JTextField();
     nameEngine1.setBounds(525, 75, 60, 26);
     engineTab.add(nameEngine1);
-    
 
     JLabel lblEngine2 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + "3|别名");
     lblEngine2.setHorizontalAlignment(SwingConstants.LEFT);
@@ -172,7 +169,7 @@ public class ConfigDialog extends JDialog {
     txtEngine2.setColumns(10);
     txtEngine2.setBounds(87, 105, 432, 26);
     engineTab.add(txtEngine2);
-   
+
     nameEngine2 = new JTextField();
     nameEngine2.setBounds(525, 105, 60, 26);
     engineTab.add(nameEngine2);
@@ -186,7 +183,7 @@ public class ConfigDialog extends JDialog {
     txtEngine3.setColumns(10);
     txtEngine3.setBounds(87, 135, 432, 26);
     engineTab.add(txtEngine3);
-    
+
     nameEngine3 = new JTextField();
     nameEngine3.setBounds(525, 135, 60, 26);
     engineTab.add(nameEngine3);
@@ -200,7 +197,7 @@ public class ConfigDialog extends JDialog {
     txtEngine4.setColumns(10);
     txtEngine4.setBounds(87, 165, 432, 26);
     engineTab.add(txtEngine4);
-    
+
     nameEngine4 = new JTextField();
     nameEngine4.setBounds(525, 165, 60, 26);
     engineTab.add(nameEngine4);
@@ -214,7 +211,7 @@ public class ConfigDialog extends JDialog {
     txtEngine5.setColumns(10);
     txtEngine5.setBounds(87, 195, 432, 26);
     engineTab.add(txtEngine5);
-    
+
     nameEngine5 = new JTextField();
     nameEngine5.setBounds(525, 195, 60, 26);
     engineTab.add(nameEngine5);
@@ -227,8 +224,8 @@ public class ConfigDialog extends JDialog {
     txtEngine6 = new JTextField();
     txtEngine6.setColumns(10);
     txtEngine6.setBounds(87, 225, 432, 26);
-    engineTab.add(txtEngine6);  
-    
+    engineTab.add(txtEngine6);
+
     nameEngine6 = new JTextField();
     nameEngine6.setBounds(525, 225, 60, 26);
     engineTab.add(nameEngine6);
@@ -242,7 +239,7 @@ public class ConfigDialog extends JDialog {
     txtEngine7.setColumns(10);
     txtEngine7.setBounds(87, 255, 432, 26);
     engineTab.add(txtEngine7);
-    
+
     nameEngine7 = new JTextField();
     nameEngine7.setBounds(525, 255, 60, 26);
     engineTab.add(nameEngine7);
@@ -256,7 +253,7 @@ public class ConfigDialog extends JDialog {
     txtEngine8.setColumns(10);
     txtEngine8.setBounds(87, 285, 432, 26);
     engineTab.add(txtEngine8);
-    
+
     nameEngine8 = new JTextField();
     nameEngine8.setBounds(525, 285, 60, 26);
     engineTab.add(nameEngine8);
@@ -265,17 +262,15 @@ public class ConfigDialog extends JDialog {
     lblEngine9.setHorizontalAlignment(SwingConstants.LEFT);
     lblEngine9.setBounds(6, 320, 92, 16);
     engineTab.add(lblEngine9);
-    
+
     txtEngine9 = new JTextField();
     txtEngine9.setColumns(10);
     txtEngine9.setBounds(87, 315, 432, 26);
     engineTab.add(txtEngine9);
-    
+
     nameEngine9 = new JTextField();
     nameEngine9.setBounds(525, 315, 60, 26);
     engineTab.add(nameEngine9);
-
-
 
     JButton button = new JButton("...");
     button.addActionListener(
@@ -850,16 +845,16 @@ public class ConfigDialog extends JDialog {
     chkPrintEngineLog.setSelected(leelazConfig.getBoolean("print-comms"));
     curPath = (new File("")).getAbsoluteFile().toPath();
     osName = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
-    nameEngine.setText(leelazConfig.optString("enginename1","引擎1"));
-    nameEngine1.setText(leelazConfig.optString("enginename2","引擎2"));
-    nameEngine2.setText(leelazConfig.optString("enginename3","引擎3"));
-    nameEngine3.setText(leelazConfig.optString("enginename4","引擎4"));
-    nameEngine4.setText(leelazConfig.optString("enginename5","引擎5"));
-    nameEngine5.setText(leelazConfig.optString("enginename6","引擎6"));
-    nameEngine6.setText(leelazConfig.optString("enginename7","引擎7"));
-    nameEngine7.setText(leelazConfig.optString("enginename8","引擎8"));
-    nameEngine8.setText(leelazConfig.optString("enginename9","引擎9"));
-    nameEngine9.setText(leelazConfig.optString("enginename10","引擎10"));
+    nameEngine.setText(leelazConfig.optString("enginename1", "引擎1"));
+    nameEngine1.setText(leelazConfig.optString("enginename2", "引擎2"));
+    nameEngine2.setText(leelazConfig.optString("enginename3", "引擎3"));
+    nameEngine3.setText(leelazConfig.optString("enginename4", "引擎4"));
+    nameEngine4.setText(leelazConfig.optString("enginename5", "引擎5"));
+    nameEngine5.setText(leelazConfig.optString("enginename6", "引擎6"));
+    nameEngine6.setText(leelazConfig.optString("enginename7", "引擎7"));
+    nameEngine7.setText(leelazConfig.optString("enginename8", "引擎8"));
+    nameEngine8.setText(leelazConfig.optString("enginename9", "引擎9"));
+    nameEngine9.setText(leelazConfig.optString("enginename10", "引擎10"));
     setBoardSize();
     setShowLcbWinrate();
     setShowLcbColor();
@@ -996,14 +991,14 @@ public class ConfigDialog extends JDialog {
       return Integer.parseInt(txt.getText().trim());
     }
   }
-  
+
   private String txtFieldString(JTextField txt) {
-	    if (txt.getText().trim().isEmpty()) {
-	      return "";
-	    } else {
-	      return txt.getText().trim().toString();
-	    }
-	  }
+    if (txt.getText().trim().isEmpty()) {
+      return "";
+    } else {
+      return txt.getText().trim().toString();
+    }
+  }
 
   private class DigitOnlyFilter extends DocumentFilter {
     @Override
