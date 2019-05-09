@@ -80,6 +80,8 @@ public class ConfigDialog extends JDialog {
   private JRadioButton rdoLcbfix;
   private JRadioButton rdoponder;
   private JRadioButton rdonoponder;
+  private JRadioButton rdorect;
+  private JRadioButton rdonorect;
 
   public String enginePath = "";
   public String weightPath = "";
@@ -706,6 +708,22 @@ public class ConfigDialog extends JDialog {
     rdopondergp.add(rdonoponder);
     rdopondergp.add(rdoponder);
 
+    JLabel norect = new JLabel("鼠标移动时是否显示小方块");
+    norect.setBounds(331, 597, 157, 16);
+    engineTab.add(norect);
+
+    rdorect = new JRadioButton("是");
+    rdorect.setBounds(496, 597, 50, 23);
+    engineTab.add(rdorect);
+
+    rdonorect = new JRadioButton("否");
+    rdonorect.setBounds(545, 597, 80, 23);
+    engineTab.add(rdonorect);
+
+    ButtonGroup rdorectgp = new ButtonGroup();
+    rdorectgp.add(rdonorect);
+    rdorectgp.add(rdorect);
+
     JLabel lblAnalyzeUpdateInterval =
         new JLabel(resourceBundle.getString("LizzieConfig.title.analyzeUpdateInterval"));
     lblAnalyzeUpdateInterval.setBounds(331, 380, 157, 16);
@@ -876,6 +894,7 @@ public class ConfigDialog extends JDialog {
     setBoardSize();
     setShowLcbWinrate();
     setPonder();
+    setRect();
     setShowLcbColor();
     setLocationRelativeTo(getOwner());
   }
@@ -973,6 +992,7 @@ public class ConfigDialog extends JDialog {
       leelazConfig.putOpt("max-game-thinking-time-seconds", txtFieldValue(txtMaxGameThinkingTime));
       leelazConfig.putOpt("print-comms", chkPrintEngineLog.isSelected());
       leelazConfig.putOpt("show-lcb-winrate", getShowLcbWinrate());
+      leelazConfig.putOpt("show-rect", getRect());
       leelazConfig.putOpt("play-ponder", getPonder());
       leelazConfig.putOpt("show-lcb-color", getShowLcbColor());
       leelazConfig.put("engine-command", txtEngine.getText().trim());
@@ -1042,6 +1062,28 @@ public class ConfigDialog extends JDialog {
 
   public boolean isWindows() {
     return osName != null && !osName.contains("darwin") && osName.contains("win");
+  }
+
+  private void setRect() {
+
+    if (Lizzie.config.showrect) {
+      rdorect.setSelected(true);
+    } else {
+      rdonorect.setSelected(true);
+    }
+  }
+
+  private boolean getRect() {
+    if (rdorect.isSelected()) {
+      Lizzie.config.showrect = true;
+      return true;
+    }
+    if (rdonorect.isSelected()) {
+      Lizzie.config.showrect = false;
+      Lizzie.frame.boardRenderer.removeblock();
+      return false;
+    }
+    return true;
   }
 
   private void setPonder() {

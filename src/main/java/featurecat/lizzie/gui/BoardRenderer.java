@@ -335,6 +335,10 @@ public class BoardRenderer {
     drawStone(g, gShadow, stoneX, stoneY, stone, x, y);
   }
 
+  public void removeblock() {
+    blockimage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+  }
+
   public void drawmoveblock(int x, int y, boolean isblack) {
     blockimage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
     Stone[] stones = Lizzie.board.getStones();
