@@ -1553,9 +1553,10 @@ public class LizzieFrame extends JFrame {
           mouseOverCoordinate = c;
           isReplayVariation = false;
         });
-    if (coords.isPresent()) {  
-      boardRenderer.drawmoveblock(coords.get()[0], coords.get()[1], Lizzie.board.getHistory().isBlacksTurn());
-      repaint();       
+    if (coords.isPresent()) {
+      boardRenderer.drawmoveblock(
+          coords.get()[0], coords.get()[1], Lizzie.board.getHistory().isBlacksTurn());
+      repaint();
     }
   }
 
