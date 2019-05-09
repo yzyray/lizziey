@@ -536,6 +536,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           }
 
           zen.syncboradstat();
+          zen.countStones();
         }
         break;
 

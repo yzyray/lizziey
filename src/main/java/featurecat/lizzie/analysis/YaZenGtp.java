@@ -9,6 +9,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import featurecat.lizzie.gui.CountResults;
 
 public class YaZenGtp {
   public Process process;
@@ -27,7 +28,13 @@ public class YaZenGtp {
   private ArrayDeque<String> cmdQueue;
   private ScheduledExecutorService executor;
   public String currentEnginename = "";
-
+  ArrayList<Integer> tempcount= new  ArrayList<Integer>();
+ public int blackEatCount = 0;
+ public int whiteEatCount = 0;
+ public int blackPrisonerCount = 0;
+ public int whitePrisonerCount = 0;
+ CountResults results;
+ boolean firstcount=true;
   public YaZenGtp() throws IOException {
 
     cmdNumber = 1;
@@ -85,6 +92,45 @@ public class YaZenGtp {
   private void parseLine(String line) {
     synchronized (this) {
       Lizzie.gtpConsole.addLineforce(line);
+      if (line.startsWith("=  ")) {
+    	  String[] params = line.trim().split(" ");
+    	  Lizzie.gtpConsole.addLineforce("这是详细点目第一行,21分参数");
+    	  for(int i=2;i<params.length;i++)
+    	  tempcount.add(Integer.parseInt(params[i]));
+      }
+
+      if (line.startsWith(" ")) {
+    	  
+    	  String[] params = line.trim().split(" ");
+    	  if(params.length==19)    	 
+        	  Lizzie.gtpConsole.addLineforce("这是详细点目");
+    	  for(int i=0;i<params.length;i++)
+    	  tempcount.add(Integer.parseInt(params[i]));
+    	
+      }
+      if (line.startsWith("= ")) {
+    	  String[] params = line.trim().split(" ");
+    	  if(params.length==14)
+    	  {
+        	  Lizzie.gtpConsole.addLineforce("这里取死子");
+        	  blackEatCount = Integer.parseInt(params[3]);
+              whiteEatCount = Integer.parseInt(params[4]);
+              blackPrisonerCount = Integer.parseInt(params[5]);
+              whitePrisonerCount = Integer.parseInt(params[6]);
+              if(firstcount)
+              { results=new CountResults();              
+              results.Counts(blackEatCount, whiteEatCount, blackPrisonerCount, whitePrisonerCount, tempcount);
+              results.setVisible(true);
+              firstcount=false;
+              }
+              else {
+            	  results.Counts(blackEatCount, whiteEatCount, blackPrisonerCount, whitePrisonerCount, tempcount);
+            	  results.setVisible(true);
+              }
+    	  }
+    	  
+    	  
+      }
     }
   }
 
@@ -143,4 +189,16 @@ public class YaZenGtp {
       }
     }
   }
+  
+  public void countStones() {
+	  tempcount.clear();
+	  blackEatCount = 0;
+	  whiteEatCount = 0;
+	  blackPrisonerCount = 0;
+	  whitePrisonerCount = 0;
+	    sendCommandToZen("territory_statistics territory");
+	   //
+	    sendCommandToZen("score_statistics");
+	    
+	  }
 }

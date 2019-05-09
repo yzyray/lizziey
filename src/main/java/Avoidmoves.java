@@ -1,4 +1,4 @@
-package featurecat.lizzie.gui;
+
 
 import featurecat.lizzie.Lizzie;
 import java.awt.BorderLayout;
