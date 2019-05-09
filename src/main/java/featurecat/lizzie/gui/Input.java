@@ -4,12 +4,19 @@ import static java.awt.event.KeyEvent.*;
 
 import featurecat.lizzie.Lizzie;
 import java.awt.event.*;
+import java.io.IOException;
+
 import javax.swing.JOptionPane;
+
+import org.json.JSONException;
+
+import featurecat.lizzie.analysis.YaZenGtp;
 
 public class Input implements MouseListener, KeyListener, MouseWheelListener, MouseMotionListener {
   public static boolean isinsertmode = false;
   public static boolean Draggedmode = false;
-
+  YaZenGtp zen;
+  boolean isfirstcount=true;
   @Override
   public void mouseClicked(MouseEvent e) {}
 
@@ -515,6 +522,29 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_D:
         toggleShowDynamicKomi();
+        if(e.isAltDown())
+        {
+        	if(isfirstcount)
+        	{
+        		try {
+   				 zen=new YaZenGtp();
+   			} catch (IOException e1) {
+   				e1.printStackTrace();
+   			}
+        		isfirstcount=false;
+        	}
+        		else if(!zen.process.isAlive())
+        		{
+        			try {
+          				 zen=new YaZenGtp();
+          			} catch (IOException e1) {
+          				e1.printStackTrace();
+          			}
+        		}
+        	
+        		
+        	zen.syncboradstat();
+        }
         break;
 
       case VK_R:
