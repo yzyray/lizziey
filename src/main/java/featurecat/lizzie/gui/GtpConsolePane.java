@@ -101,13 +101,13 @@ public class GtpConsolePane extends JDialog {
         command.startsWith("lz-analyze") || command.startsWith("lz-genmove_analyze");
     addText(formatCommand(command, commandNumber));
   }
-  
+
   public void addZenCommand(String command, int commandNumber) {
-	    if (command == null || command.trim().length() == 0) {
-	      return;
-	    }
-	    addText(formatZenCommand(command, commandNumber));
-	  }
+    if (command == null || command.trim().length() == 0) {
+      return;
+    }
+    addText(formatZenCommand(command, commandNumber));
+  }
 
   public void addLine(String line) {
     if (line == null || line.trim().length() == 0 || isAnalyzeCommand) {
@@ -140,15 +140,13 @@ public class GtpConsolePane extends JDialog {
         commandNumber,
         command);
   }
-  
+
   public String formatZenCommand(String command, int commandNumber) {
-	    return String.format(
-	        "<span class=\"command\">"
-	            + ("YAZenGtp")
-	            + "> %d %s </span><br />",
-	        commandNumber,
-	        command);
-	  }
+    return String.format(
+        "<span class=\"command\">" + ("YAZenGtp") + "> %d %s </span><br />",
+        commandNumber,
+        command);
+  }
 
   public String format(String text) {
     StringBuilder sb = new StringBuilder();

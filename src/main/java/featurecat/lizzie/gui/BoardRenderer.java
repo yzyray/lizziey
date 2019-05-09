@@ -54,6 +54,7 @@ public class BoardRenderer {
 
   private BufferedImage cachedStonesImage = emptyImage;
   private BufferedImage cachedStonesImagedraged = emptyImage;
+  private BufferedImage blockimage = emptyImage;
 
   private BufferedImage cachedBoardImage = emptyImage;
   private BufferedImage cachedWallpaperImage = emptyImage;
@@ -334,6 +335,15 @@ public class BoardRenderer {
     drawStone(g, gShadow, stoneX, stoneY, stone, x, y);
   }
 
+  public void drawmoveblock(int x, int y,boolean isblack) {
+	  blockimage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+	  Graphics2D g = blockimage.createGraphics();
+    int stoneX = scaledMargin + squareLength * x;
+    int stoneY = scaledMargin + squareLength * y;
+    g.setColor(isblack?Color.BLACK:Color.WHITE);
+    g.fillRect(stoneX-stoneRadius/2, stoneY-stoneRadius/2, stoneRadius, stoneRadius);    
+  }
+
   public void drawbadstone(int x, int y, Stone stone) {
     cachedStonesImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
     cachedStonesShadowImagedraged = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
@@ -525,6 +535,7 @@ public class BoardRenderer {
     }
     g.drawImage(cachedStonesImage, x, y, null);
     g.drawImage(cachedStonesImagedraged, x, y, null);
+    g.drawImage(blockimage, x, y, null);
     if (Lizzie.config.showBranchNow()) {
       g.drawImage(branchStonesImage, x, y, null);
     }

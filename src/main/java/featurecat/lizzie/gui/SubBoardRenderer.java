@@ -492,8 +492,9 @@ public class SubBoardRenderer {
 
   /** Draw move numbers and/or mark the last played move */
   private void drawMoveNumbers(Graphics2D g) {
-	  if(!Lizzie.config.showBranch)
-	  {return;}
+    if (!Lizzie.config.showBranch) {
+      return;
+    }
     g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
     Board board = Lizzie.board;
     Optional<int[]> lastMoveOpt = branchOpt.map(b -> b.data.lastMove).orElse(board.getLastMove());
