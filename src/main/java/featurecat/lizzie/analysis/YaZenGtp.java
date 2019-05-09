@@ -90,7 +90,7 @@ public class YaZenGtp {
 		          line = new StringBuilder();
 		        }
 		      }
-		      // this line will be reached when Leelaz shuts down
+		      // this line will be reached when YaZenGtp shuts down
 		      System.out.println("YaZenGtp process ended.");
 
 		      shutdown();
@@ -115,7 +115,6 @@ public class YaZenGtp {
 	  
 	  public void sendCommand(String command) {
 		    synchronized (cmdQueue) {
-		      // For efficiency, delete unnecessary "lz-analyze" that will be stopped immediately
 		      if (!cmdQueue.isEmpty() ) {
 		        cmdQueue.removeLast();
 		      }
@@ -125,12 +124,6 @@ public class YaZenGtp {
 		  }
 	  
 	  private void trySendCommandFromQueue() {
-		    // Defer sending "lz-analyze" if leelaz is not ready yet.
-		    // Though all commands should be deferred theoretically,
-		    // only "lz-analyze" is differed here for fear of
-		    // possible hang-up by missing response for some reason.
-		    // cmdQueue can be replaced with a mere String variable in this case,
-		    // but it is kept for future change of our mind.
 		    synchronized (cmdQueue) {
 		      if (cmdQueue.isEmpty()) {
 		        return;
