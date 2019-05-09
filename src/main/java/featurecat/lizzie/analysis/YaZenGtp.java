@@ -36,7 +36,7 @@ public class YaZenGtp {
  CountResults results;
  boolean firstcount=true;
   public YaZenGtp() throws IOException {
-
+	 
     cmdNumber = 1;
     currentCmdNum = 0;
     cmdQueue = new ArrayDeque<>();
@@ -125,7 +125,8 @@ public class YaZenGtp {
               }
               else {
             	  results.Counts(blackEatCount, whiteEatCount, blackPrisonerCount, whitePrisonerCount, tempcount);
-            	  results.setVisible(true);
+            	  results.setVisible(true);   
+            	  Lizzie.frame.setVisible(true);
               }
     	  }
     	  

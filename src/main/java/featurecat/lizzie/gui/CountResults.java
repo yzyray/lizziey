@@ -23,13 +23,17 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import featurecat.lizzie.Lizzie;
+
 public class CountResults extends JFrame {
 	int allblackcounts=0;
 	int allwhitecounts=0;
 	int blackEat=0;
 	int whiteEat=0;
+	
 	public CountResults() 
 	{
+		this.setAlwaysOnTop(true);
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds((int)screensize.getWidth()/2-180, (int)screensize.getHeight()/2-125, 340, 240);
 	}
@@ -66,9 +70,12 @@ public void paint(Graphics g)//画图对象
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	}
-	 g2.drawImage(image, 0, 0, null);
-	 g2.drawImage(image, image.getWidth(getOwner()), 0, null);
-	 g2.drawImage(image, 2*image.getWidth(getOwner()), 0, null);
+	int nums=(340/image.getWidth(getOwner()))+1;
+	for (int i=0;i<nums;i++)
+	{
+		 g2.drawImage(image, image.getWidth(getOwner())*i, 0, null);
+	}
+	 
 	 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	
 	 g2.setColor(Color.BLACK);
     g2.setStroke(new BasicStroke(2f));
