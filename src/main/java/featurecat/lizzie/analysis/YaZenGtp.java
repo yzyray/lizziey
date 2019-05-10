@@ -121,6 +121,7 @@ public class YaZenGtp {
     if (line.startsWith("= ")) {
       String[] params = line.trim().split(" ");
       if (params.length == 14) {
+        // Lizzie.gtpConsole.addLineforce("这是点目结果");
         if (noread) {
           numberofcount = 0;
         } else {
@@ -129,20 +130,34 @@ public class YaZenGtp {
           whiteEatCount = Integer.parseInt(params[4]);
           blackPrisonerCount = Integer.parseInt(params[5]);
           whitePrisonerCount = Integer.parseInt(params[6]);
+          int blackpoint = Integer.parseInt(params[7]);
+          int whitepoint = Integer.parseInt(params[8]);
           if (!Lizzie.frame.isAutocounting) Lizzie.frame.boardRenderer.drawcountblock(tempcount);
           else Lizzie.frame.subBoardRenderer.drawcountblock(tempcount);
           Lizzie.frame.repaint();
           if (firstcount) {
             results = LizzieFrame.countResults;
             results.Counts(
-                blackEatCount, whiteEatCount, blackPrisonerCount, whitePrisonerCount, tempcount);
+                blackEatCount,
+                whiteEatCount,
+                blackPrisonerCount,
+                whitePrisonerCount,
+                blackpoint,
+                whitepoint);
             results.setVisible(true);
             firstcount = false;
+            numberofcount = 0;
           } else {
             results.Counts(
-                blackEatCount, whiteEatCount, blackPrisonerCount, whitePrisonerCount, tempcount);
+                blackEatCount,
+                whiteEatCount,
+                blackPrisonerCount,
+                whitePrisonerCount,
+                blackpoint,
+                whitepoint);
             results.setVisible(true);
             Lizzie.frame.setVisible(true);
+            numberofcount = 0;
           }
         }
       }
@@ -224,5 +239,12 @@ public class YaZenGtp {
     sendCommand("territory_statistics territory");
     //
     sendCommand("score_statistics");
+  }
+
+  private void reautocounting() {
+    Lizzie.frame.isAutocounting = true;
+    syncboradstat();
+    countStones();
+    Lizzie.frame.countResults.isAutocounting = true;
   }
 }

@@ -17,7 +17,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -38,6 +37,8 @@ public class CountResults extends JFrame {
   public CountResults() {
     this.setAlwaysOnTop(true);
     this.add(buttonpanel, BorderLayout.SOUTH);
+    this.setResizable(false);
+
     this.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
@@ -119,32 +120,30 @@ public class CountResults extends JFrame {
       int whiteEatCount,
       int blackPrisonerCount,
       int whitePrisonerCount,
-      ArrayList<Integer> tempcount) {
-    allblackcounts = 0;
-    allwhitecounts = 0;
-    blackEat = 0;
-    whiteEat = 0;
-    int blackcounts = 0;
-    int whitecounts = 0;
+      int blackpont,
+      int whitepoint) {
+    synchronized (this) {
+      allblackcounts = 0;
+      allwhitecounts = 0;
+      blackEat = 0;
+      whiteEat = 0;
 
-    for (int i = 0; i < tempcount.size(); i++) {
-      if (tempcount.get(i) > 0) blackcounts++;
-      if (tempcount.get(i) < 0) whitecounts++;
+      allblackcounts = blackpont + blackEatCount + whitePrisonerCount;
+      allwhitecounts = whitepoint + whiteEatCount + blackPrisonerCount;
+      blackEat = blackEatCount;
+      whiteEat = whiteEatCount;
+      if (!Lizzie.frame.isAutocounting) {
+        button.setText("关闭判断");
+        iscounted = true;
+      }
+
+      repaint();
     }
-    allblackcounts = blackcounts + blackEatCount + whitePrisonerCount;
-    allwhitecounts = whitecounts + whiteEatCount + blackPrisonerCount;
-    blackEat = blackEatCount;
-    whiteEat = whiteEatCount;
-    if (!Lizzie.frame.isAutocounting) {
-      button.setText("关闭判断");
-      iscounted = true;
-    }
-    this.setResizable(false);
-    repaint();
   }
 
   public void paint(Graphics g) // 画图对象
       {
+
     Graphics2D g2 = (Graphics2D) g;
 
     Image image = null;
