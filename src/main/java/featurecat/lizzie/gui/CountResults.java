@@ -72,6 +72,7 @@ public class CountResults extends JFrame {
     button2.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.zen.noread = false;
             if (!isAutocounting) {
               Lizzie.frame.isAutocounting = true;
               Lizzie.frame.zen.syncboradstat();
@@ -91,6 +92,7 @@ public class CountResults extends JFrame {
     button.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.zen.noread = false;
             if (!iscounted) {
               Lizzie.frame.countstones();
               Lizzie.frame.iscounting = true;
