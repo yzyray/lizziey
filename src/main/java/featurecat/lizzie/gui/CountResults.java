@@ -1,6 +1,6 @@
 package featurecat.lizzie.gui;
 
-
+import featurecat.lizzie.Lizzie;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,84 +14,101 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import org.json.JSONArray;
 
-import featurecat.lizzie.Lizzie;
-
-public class CountResults extends JFrame  {
-	public int allblackcounts = 0;
-	public int allwhitecounts = 0;
+public class CountResults extends JFrame {
+  public int allblackcounts = 0;
+  public int allwhitecounts = 0;
   int blackEat = 0;
   int whiteEat = 0;
   JPanel buttonpanel = new JPanel();
-  public boolean iscounted=false;
-  public boolean isAutocounting=false;
-  public JButton  button = new JButton("形式判断");
-  public JButton  button2 = new JButton("自动判断");
-  
+  public boolean iscounted = false;
+  public boolean isAutocounting = false;
+  public JButton button = new JButton("形式判断");
+  public JButton button2 = new JButton("自动判断");
 
   public CountResults() {
     this.setAlwaysOnTop(true);
     this.add(buttonpanel, BorderLayout.SOUTH);
-    
-    Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-    setBounds(0, (int) screensize.getHeight() / 2 - 125, 340, 260);//240
+    this.addWindowListener(
+        new WindowAdapter() {
+          public void windowClosing(WindowEvent e) {
+            Lizzie.frame.boardRenderer.removecountblock();
+            Lizzie.frame.repaint();
+            Lizzie.frame.iscounting = false;
+            iscounted = false;
+            Lizzie.frame.subBoardRenderer.removecountblock();
+            Lizzie.frame.repaint();
+            button2.setText("自动判断");
+            Lizzie.frame.isAutocounting = false;
+          }
+        });
+
+    boolean persisted = Lizzie.config.persistedUi != null;
+    if (persisted
+        && Lizzie.config.persistedUi.optJSONArray("movecount-position") != null
+        && Lizzie.config.persistedUi.optJSONArray("movecount-position").length() == 4) {
+      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("movecount-position");
+      setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
+    } else {
+      Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+      setBounds(0, (int) screensize.getHeight() / 2 - 125, 340, 260); // 240
+    }
+
     try {
-        this.setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      this.setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     button2.addActionListener(
-            new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                 if(!isAutocounting)
-                 {  
-                	 Lizzie.frame.isAutocounting=true;
-                	 Lizzie.frame.zen.syncboradstat();
-                	 Lizzie.frame.zen.countStones();
-              	  button2.setText("停止判断");}
-                 else {
-              	   Lizzie.frame.subBoardRenderer.removecountblock();
-              	   Lizzie.frame.repaint();
-              	  // Lizzie.frame.iscounting=false;
-              	   button2.setText("自动判断");
-              	 Lizzie.frame.isAutocounting=false;
-              	   //Lizzie.frame.setVisible(true);
-                 }
-                 isAutocounting=!isAutocounting;
-                
-                  }
-                  
-              });
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            if (!isAutocounting) {
+              Lizzie.frame.isAutocounting = true;
+              Lizzie.frame.zen.syncboradstat();
+              Lizzie.frame.zen.countStones();
+              button2.setText("停止判断");
+            } else {
+              Lizzie.frame.subBoardRenderer.removecountblock();
+              Lizzie.frame.repaint();
+              // Lizzie.frame.iscounting=false;
+              button2.setText("自动判断");
+              Lizzie.frame.isAutocounting = false;
+              // Lizzie.frame.setVisible(true);
+            }
+            isAutocounting = !isAutocounting;
+          }
+        });
     button.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-           if(!iscounted)
-           {  Lizzie.frame.countstones();
-           	Lizzie.frame.iscounting=true;
-        	  button.setText("关闭判断");}
-           
-           else {
-        	   Lizzie.frame.boardRenderer.removecountblock();
-        	   Lizzie.frame.repaint();
-        	   Lizzie.frame.iscounting=false;
-        	   button.setText("判断形势");
-        	   //Lizzie.frame.setVisible(true);
-           }
-           iscounted=!iscounted;
+            if (!iscounted) {
+              Lizzie.frame.countstones();
+              Lizzie.frame.iscounting = true;
+              button.setText("关闭判断");
+            } else {
+              Lizzie.frame.boardRenderer.removecountblock();
+              Lizzie.frame.repaint();
+              Lizzie.frame.iscounting = false;
+              button.setText("判断形势");
+              // Lizzie.frame.setVisible(true);
             }
-            
+            iscounted = !iscounted;
+          }
         });
     button.setBounds(0, 240, 100, 20);
     button2.setBounds(100, 240, 100, 20);
     buttonpanel.setBounds(0, 240, 100, 20);
     buttonpanel.add(button);
-    buttonpanel.add(button2);    
+    buttonpanel.add(button2);
   }
 
   public void Counts(
@@ -111,12 +128,12 @@ public class CountResults extends JFrame  {
     allwhitecounts = whitecounts + whiteEatCount + blackPrisonerCount;
     blackEat = blackEatCount;
     whiteEat = whiteEatCount;
-    button.setText("关闭判断");
-    iscounted=true;
-    this.setBackground(Color.LIGHT_GRAY);
+    if (!Lizzie.frame.isAutocounting) {
+      button.setText("关闭判断");
+      iscounted = true;
+    }
     this.setResizable(false);
     repaint();
-    
   }
 
   public void paint(Graphics g) // 画图对象

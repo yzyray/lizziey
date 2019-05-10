@@ -96,49 +96,45 @@ public class YaZenGtp {
       Lizzie.gtpConsole.addLineforce(line);
       if (line.startsWith("=  ")) {
         String[] params = line.trim().split(" ");
-        //Lizzie.gtpConsole.addLineforce("这是详细点目第一行,21分参数");
+        // Lizzie.gtpConsole.addLineforce("这是详细点目第一行,21分参数");
         for (int i = 2; i < params.length; i++) tempcount.add(Integer.parseInt(params[i]));
       }
 
       if (line.startsWith(" ")) {
 
         String[] params = line.trim().split(" ");
-        if (params.length == 19) 
-        { 
-        	for (int i = 0; i < params.length; i++) tempcount.add(Integer.parseInt(params[i]));
-      //Lizzie.gtpConsole.addLineforce("这是详细点目");
-        }
-        }
-      }
-      if (line.startsWith("= ")) {
-        String[] params = line.trim().split(" ");
-        if (params.length == 14) {
-         // Lizzie.gtpConsole.addLineforce("这里取死子");
-          blackEatCount = Integer.parseInt(params[3]);
-          whiteEatCount = Integer.parseInt(params[4]);
-          blackPrisonerCount = Integer.parseInt(params[5]);
-          whitePrisonerCount = Integer.parseInt(params[6]);
-          if(!Lizzie.frame.isAutocounting)
-          Lizzie.frame.boardRenderer.drawcountblock(tempcount);
-          else
-        	 Lizzie.frame.subBoardRenderer.drawcountblock(tempcount); 
-          Lizzie.frame.repaint();
-          if (firstcount) {
-            results = LizzieFrame.countResults;
-            results.Counts(
-                blackEatCount, whiteEatCount, blackPrisonerCount, whitePrisonerCount, tempcount);
-            results.setVisible(true);
-            firstcount = false;
-          } else {
-            results.Counts(
-                blackEatCount, whiteEatCount, blackPrisonerCount, whitePrisonerCount, tempcount);
-            results.setVisible(true);
-            Lizzie.frame.setVisible(true);
-          }
+        if (params.length == 19) {
+          for (int i = 0; i < params.length; i++) tempcount.add(Integer.parseInt(params[i]));
+          // Lizzie.gtpConsole.addLineforce("这是详细点目");
         }
       }
     }
-  
+    if (line.startsWith("= ")) {
+      String[] params = line.trim().split(" ");
+      if (params.length == 14) {
+        // Lizzie.gtpConsole.addLineforce("这里取死子");
+        blackEatCount = Integer.parseInt(params[3]);
+        whiteEatCount = Integer.parseInt(params[4]);
+        blackPrisonerCount = Integer.parseInt(params[5]);
+        whitePrisonerCount = Integer.parseInt(params[6]);
+        if (!Lizzie.frame.isAutocounting) Lizzie.frame.boardRenderer.drawcountblock(tempcount);
+        else Lizzie.frame.subBoardRenderer.drawcountblock(tempcount);
+        Lizzie.frame.repaint();
+        if (firstcount) {
+          results = LizzieFrame.countResults;
+          results.Counts(
+              blackEatCount, whiteEatCount, blackPrisonerCount, whitePrisonerCount, tempcount);
+          results.setVisible(true);
+          firstcount = false;
+        } else {
+          results.Counts(
+              blackEatCount, whiteEatCount, blackPrisonerCount, whitePrisonerCount, tempcount);
+          results.setVisible(true);
+          Lizzie.frame.setVisible(true);
+        }
+      }
+    }
+  }
 
   public void shutdown() {
     process.destroy();

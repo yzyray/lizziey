@@ -559,6 +559,13 @@ public class Config {
         featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(6).getWidth());
     persistedUi.put("badmoves-list-position", badmoveslistPos);
 
+    JSONArray movecountPos = new JSONArray();
+    movecountPos.put(Lizzie.frame.countResults.getX());
+    movecountPos.put(Lizzie.frame.countResults.getY());
+    movecountPos.put(Lizzie.frame.countResults.getWidth());
+    movecountPos.put(Lizzie.frame.countResults.getHeight());
+    persistedUi.put("movecount-position", movecountPos);
+
     writeConfig(this.persisted, new File(persistFilename));
   }
 
