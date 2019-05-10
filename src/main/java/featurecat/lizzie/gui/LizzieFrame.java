@@ -1471,6 +1471,7 @@ public class LizzieFrame extends JFrame {
     }
     if (Lizzie.config.showWinrate && moveNumber >= 0) {
       isPlayingAgainstLeelaz = false;
+      noautocounting();
       Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
     }
     if (Lizzie.config.showSubBoard && subBoardRenderer.isInside(x, y)) {
@@ -1480,6 +1481,15 @@ public class LizzieFrame extends JFrame {
       variationTree.onClicked(x, y);
     }
     repaint();
+  }
+
+  public void noautocounting() {
+    this.isAutocounting = false;
+    Lizzie.frame.subBoardRenderer.removecountblock();
+    Lizzie.frame.repaint();
+    // Lizzie.frame.iscounting=false;
+    this.countResults.isAutocounting = false;
+    this.countResults.button2.setText("自动判断");
   }
 
   public void insertMove(int x, int y, boolean isblack) {
@@ -1536,6 +1546,7 @@ public class LizzieFrame extends JFrame {
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
     if (boardCoordinates.isPresent()) {
       int[] coords = boardCoordinates.get();
+      this.noautocounting();
       int movenumber = Lizzie.board.getmovenumber(coords);
       Lizzie.board.savelist(Lizzie.board.getmovenumber(coords));
       Lizzie.board.setlist();

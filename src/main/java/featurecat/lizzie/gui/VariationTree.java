@@ -291,9 +291,11 @@ public class VariationTree {
   }
 
   public void onClicked(int x, int y) {
+
     if (area.contains(x, y)) {
       clickPoint.setLocation(x, y);
       Optional<BoardHistoryNode> node = draw(null, area.x, area.y, area.width, area.height, true);
+      if (node.isPresent()) Lizzie.frame.noautocounting();
       node.ifPresent(n -> Lizzie.board.moveToAnyPosition(n));
     }
   }

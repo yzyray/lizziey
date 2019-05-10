@@ -118,6 +118,10 @@ public class CountResults extends JFrame {
       int blackPrisonerCount,
       int whitePrisonerCount,
       ArrayList<Integer> tempcount) {
+    allblackcounts = 0;
+    allwhitecounts = 0;
+    blackEat = 0;
+    whiteEat = 0;
     int blackcounts = 0;
     int whitecounts = 0;
 

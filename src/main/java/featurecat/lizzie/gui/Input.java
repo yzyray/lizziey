@@ -253,7 +253,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         } else if (e.isShiftDown()) {
           undoToChildOfPreviousWithVariation();
         } else if (controlIsPressed(e)) {
-
+          Lizzie.frame.noautocounting();
           undo(10);
         } else {
 
@@ -269,6 +269,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
             JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
             return;
           }
+          Lizzie.frame.noautocounting();
           redo(10);
         }
         break;
@@ -281,6 +282,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         if (controlIsPressed(e) && e.isShiftDown()) {
           goCommentNode(true);
         } else if (controlIsPressed(e)) {
+          Lizzie.frame.noautocounting();
           redo(10);
         } else {
           redo();
@@ -346,6 +348,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
             JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
             return;
           }
+          Lizzie.frame.noautocounting();
           undo(10);
         }
         break;
@@ -362,6 +365,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_O:
+        Lizzie.frame.noautocounting();
         if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
         LizzieFrame.openFile();
         break;
@@ -380,6 +384,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_HOME:
+        Lizzie.frame.noautocounting();
         if (isinsertmode) {
           JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
           return;
@@ -392,6 +397,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_END:
+        Lizzie.frame.noautocounting();
         if (isinsertmode) {
           JOptionPane.showMessageDialog(null, "请先退出插入棋子模式,或使用右键菜单落子");
           return;

@@ -37,6 +37,7 @@ public class YaZenGtp {
   public int whitePrisonerCount = 0;
   CountResults results;
   boolean firstcount = true;
+  public int numberofcount = 0;
 
   public YaZenGtp() throws IOException {
 
@@ -139,6 +140,7 @@ public class YaZenGtp {
           results.setVisible(true);
           Lizzie.frame.setVisible(true);
         }
+        numberofcount = 0;
       }
     }
   }
@@ -169,7 +171,10 @@ public class YaZenGtp {
 
   private void sendCommandToZen(String command) {
     // System.out.printf("> %d %s\n", cmdNumber, command);
-    Lizzie.gtpConsole.addZenCommand(command, cmdNumber);
+    try {
+      Lizzie.gtpConsole.addZenCommand(command, cmdNumber);
+    } catch (Exception ex) {
+    }
     cmdNumber++;
     try {
       outputStream.write((command + "\n").getBytes());
@@ -183,11 +188,11 @@ public class YaZenGtp {
     String coordsname = Lizzie.board.convertCoordinatesToName(x, y);
     String color = isblack ? "b" : "w";
 
-    sendCommandToZen("play" + " " + color + " " + coordsname);
+    sendCommand("play" + " " + color + " " + coordsname);
   }
 
   public void syncboradstat() {
-    sendCommandToZen("clear_board");
+    sendCommand("clear_board");
     cmdNumber = 1;
     ArrayList<Movelist> movelist = Lizzie.board.getmovelist();
     int lenth = movelist.size();
@@ -200,13 +205,19 @@ public class YaZenGtp {
   }
 
   public void countStones() {
+    if (numberofcount > 5) {
+      cmdQueue.clear();
+      Lizzie.frame.noautocounting();
+      return;
+    }
+    numberofcount++;
     tempcount.clear();
     blackEatCount = 0;
     whiteEatCount = 0;
     blackPrisonerCount = 0;
     whitePrisonerCount = 0;
-    sendCommandToZen("territory_statistics territory");
+    sendCommand("territory_statistics territory");
     //
-    sendCommandToZen("score_statistics");
+    sendCommand("score_statistics");
   }
 }
