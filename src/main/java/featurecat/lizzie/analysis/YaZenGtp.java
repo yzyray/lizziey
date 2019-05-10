@@ -11,6 +11,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.swing.JOptionPane;
 
 public class YaZenGtp {
   public Process process;
@@ -47,13 +48,19 @@ public class YaZenGtp {
     startEngine(engineCommand, 0);
   }
 
-  public void startEngine(String engineCommand, int index) throws IOException {
+  public void startEngine(String engineCommand, int index) {
 
     currentEnginename = engineCommand;
 
     ProcessBuilder processBuilder = new ProcessBuilder(currentEnginename);
     processBuilder.redirectErrorStream(true);
-    process = processBuilder.start();
+    try {
+      process = processBuilder.start();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      JOptionPane.showMessageDialog(null, "点目失败,请确认Lizzie目录下是否有YAZenGtop.exe和Zen.dll");
+      return;
+    }
     initializeStreams();
 
     executor = Executors.newSingleThreadScheduledExecutor();
