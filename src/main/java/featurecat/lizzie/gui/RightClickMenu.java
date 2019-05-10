@@ -70,7 +70,10 @@ public class RightClickMenu extends JPopupMenu {
           }
 
           public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-
+        	  Lizzie.frame.isAutocounting=false;
+        	  Lizzie.frame.countResults.isAutocounting=false;
+        	  Lizzie.frame.countResults.button2.setText("自动判断");
+        	  Lizzie.frame.subBoardRenderer.removecountblock();
             if (allowcoords != "") {
               allow2.setVisible(true);
             } else {

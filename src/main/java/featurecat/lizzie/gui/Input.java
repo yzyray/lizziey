@@ -3,6 +3,7 @@ package featurecat.lizzie.gui;
 import static java.awt.event.KeyEvent.*;
 
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.gui.CountResults;
 import featurecat.lizzie.analysis.YaZenGtp;
 import java.awt.event.*;
 import java.io.IOException;
@@ -11,8 +12,7 @@ import javax.swing.JOptionPane;
 public class Input implements MouseListener, KeyListener, MouseWheelListener, MouseMotionListener {
   public static boolean isinsertmode = false;
   public static boolean Draggedmode = false;
-  YaZenGtp zen;
-  boolean isfirstcount = true;
+
 
   @Override
   public void mouseClicked(MouseEvent e) {}
@@ -512,32 +512,15 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         // this is copyed from https://github.com/zsalch/lizzie/tree/n_avoiddialog
 
       case VK_PERIOD:
-        if (!Lizzie.board.getHistory().getNext().isPresent()) {
-          Lizzie.board.setScoreMode(!Lizzie.board.inScoreMode());
-        }
+    	  Lizzie.frame.countstones();      
+//        if (!Lizzie.board.getHistory().getNext().isPresent()) {
+//          Lizzie.board.setScoreMode(!Lizzie.board.inScoreMode());
+//        }
         break;
 
       case VK_D:
         toggleShowDynamicKomi();
-        if (e.isAltDown()) {
-          if (isfirstcount) {
-            try {
-              zen = new YaZenGtp();
-            } catch (IOException e1) {
-              e1.printStackTrace();
-            }
-            isfirstcount = false;
-          } else if (!zen.process.isAlive()) {
-            try {
-              zen = new YaZenGtp();
-            } catch (IOException e1) {
-              e1.printStackTrace();
-            }
-          }
-
-          zen.syncboradstat();
-          zen.countStones();
-        }
+        
         break;
 
       case VK_R:

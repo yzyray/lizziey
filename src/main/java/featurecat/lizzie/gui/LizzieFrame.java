@@ -9,8 +9,10 @@ import static java.lang.Math.round;
 import com.jhlabs.image.GaussianFilter;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
+import  featurecat.lizzie.gui.CountResults;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.analysis.MoveData;
+import featurecat.lizzie.analysis.YaZenGtp;
 import featurecat.lizzie.rules.Board;
 import featurecat.lizzie.rules.BoardData;
 import featurecat.lizzie.rules.BoardHistoryNode;
@@ -87,16 +89,18 @@ public class LizzieFrame extends JFrame {
   };
   private static final String DEFAULT_TITLE = resourceBundle.getString("LizzieFrame.title");
   public static BoardRenderer boardRenderer;
-  private static SubBoardRenderer subBoardRenderer;
+  public static SubBoardRenderer subBoardRenderer;
   private static VariationTree variationTree;
   private static WinrateGraph winrateGraph;
-
+  public static  CountResults countResults;
   public static Font uiFont;
   public static Font winrateFont;
   public boolean isshowrightmenu;
   public ArrayList<Movelist> movelist;
 
   private final BufferStrategy bs;
+  public boolean iscounting=false;
+  public boolean isAutocounting=false;
 
   public static final int[] outOfBoundCoordinate = new int[] {-1, -1};
 
@@ -124,6 +128,8 @@ public class LizzieFrame extends JFrame {
   private BufferedImage cachedCommentImage = new BufferedImage(1, 1, TYPE_INT_ARGB);
   private String cachedComment;
   private Rectangle commentRect;
+  public YaZenGtp zen;
+  boolean isfirstcount = true;
 
   // Show the playouts in the title
   private ScheduledExecutorService showPlayouts = Executors.newScheduledThreadPool(1);
@@ -156,7 +162,7 @@ public class LizzieFrame extends JFrame {
   /** Creates a window */
   public LizzieFrame() {
     super(DEFAULT_TITLE);
-
+     countResults = new CountResults();
     boardRenderer = new BoardRenderer(true);
     subBoardRenderer = new SubBoardRenderer(false);
     variationTree = new VariationTree();
@@ -380,6 +386,29 @@ public class LizzieFrame extends JFrame {
     }
   }
 
+  public void countstones() {
+	  if (isfirstcount) {
+          try {
+            zen = new YaZenGtp();
+          } catch (IOException e1) {
+            e1.printStackTrace();
+          }
+          isfirstcount = false;
+        } else if (!zen.process.isAlive()) {
+          try {
+            zen = new YaZenGtp();
+          } catch (IOException e1) {
+            e1.printStackTrace();
+          }
+        }
+
+        zen.syncboradstat();
+        zen.countStones();
+        iscounting=true;
+  }
+  
+
+  
   public void toggleAlwaysOntop() {
     if (this.isAlwaysOnTop()) {
       this.setAlwaysOnTop(false);
@@ -1378,7 +1407,7 @@ public class LizzieFrame extends JFrame {
     int diam = height / 3;
     int smallDiam = diam / 2;
     int bdiam = diam, wdiam = diam;
-    if (Lizzie.board.inScoreMode()) {
+    if (Lizzie.board.inScoreMode()||iscounting) {
       // do nothing
     } else if (Lizzie.board.getHistory().isBlacksTurn()) {
       wdiam = smallDiam;
@@ -1394,13 +1423,20 @@ public class LizzieFrame extends JFrame {
         posX + width * 3 / 4 - wdiam / 2, posY + height * 3 / 8 + (diam - wdiam) / 2, wdiam, wdiam);
 
     // Draw captures
-    String bval, wval;
+    String bval="", wval="";
     setPanelFont(g, (float) (height * 0.18));
     if (Lizzie.board.inScoreMode()) {
       double score[] = Lizzie.board.getScore(Lizzie.board.scoreStones());
       bval = String.format("%.0f", score[0]);
       wval = String.format("%.1f", score[1]);
-    } else {
+    } else
+    	if(iscounting)
+    	{
+    		bval = String.format("%d", this.countResults.allblackcounts);
+    	      wval = String.format("%d",this.countResults.allwhitecounts);
+    	}
+    	else
+    {
       bval = String.format("%d", Lizzie.board.getData().blackCaptures);
       wval = String.format("%d", Lizzie.board.getData().whiteCaptures);
     }

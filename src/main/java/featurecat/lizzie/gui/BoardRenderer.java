@@ -55,6 +55,7 @@ public class BoardRenderer {
   private BufferedImage cachedStonesImage = emptyImage;
   private BufferedImage cachedStonesImagedraged = emptyImage;
   private BufferedImage blockimage = emptyImage;
+  private BufferedImage countblockimage = emptyImage;
 
   private BufferedImage cachedBoardImage = emptyImage;
   private BufferedImage cachedWallpaperImage = emptyImage;
@@ -334,6 +335,38 @@ public class BoardRenderer {
     int stoneY = scaledMargin + squareLength * y;
     drawStone(g, gShadow, stoneX, stoneY, stone, x, y);
   }
+  
+  public void removecountblock() {
+	  countblockimage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+	  }
+  
+  public void drawcountblock(ArrayList<Integer> tempcount) {
+	  countblockimage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);	  
+	    Graphics2D g = countblockimage.createGraphics();
+	    for(int i=0;i<tempcount.size();i++)
+	    {
+	    if(tempcount.get(i)>0)
+	    {
+	    	int y=i/19;
+	    	int x=i%19;
+	    	int stoneX = scaledMargin + squareLength * x;
+	  	    int stoneY = scaledMargin + squareLength * y;
+	  	    g.setColor(Color.BLACK);
+	  	  g.fillRect(stoneX - stoneRadius / 2, stoneY - stoneRadius / 2, stoneRadius, stoneRadius);
+	    }
+	    if(tempcount.get(i)<0)
+	    {
+	    	int y=i/19;
+	    	int x=i%19;
+	    	int stoneX = scaledMargin + squareLength * x;
+	  	    int stoneY = scaledMargin + squareLength * y;
+	  	    g.setColor(Color.WHITE);
+	  	  g.fillRect(stoneX - stoneRadius / 2, stoneY - stoneRadius / 2, stoneRadius, stoneRadius);
+	    }
+	   
+	    }
+	  }
+  
 
   public void removeblock() {
     blockimage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
@@ -545,6 +578,8 @@ public class BoardRenderer {
     g.drawImage(cachedStonesImage, x, y, null);
     g.drawImage(cachedStonesImagedraged, x, y, null);
     g.drawImage(blockimage, x, y, null);
+    g.drawImage(countblockimage, x, y, null);
+    
     if (Lizzie.config.showBranchNow()) {
       g.drawImage(branchStonesImage, x, y, null);
     }

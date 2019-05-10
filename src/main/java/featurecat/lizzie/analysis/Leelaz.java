@@ -428,6 +428,14 @@ public class Leelaz {
       cmdQueue.addLast(command);
       trySendCommandFromQueue();
     }
+     if(Lizzie.frame.isAutocounting)
+	  {
+		  if(command.startsWith("play")||command.startsWith("undo"))
+		  {
+			  Lizzie.frame.zen.sendCommand(command);
+			  Lizzie.frame.zen.countStones();
+		  }
+	  }
   }
 
   /** Sends a command from command queue for leelaz to execute if it is ready */

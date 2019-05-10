@@ -38,8 +38,9 @@ public class Avoidmoves extends JDialog {
     getContentPane().add(buttonPane, BorderLayout.CENTER);
     JButton okButton = new JButton("确定");
     okButton.setBounds(80, 68, 74, 29);
-    if(!Lizzie.leelaz.isPondering())
-    {Lizzie.leelaz.sendCommand("name");}
+    if (!Lizzie.leelaz.isPondering()) {
+      Lizzie.leelaz.sendCommand("name");
+    }
     okButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {

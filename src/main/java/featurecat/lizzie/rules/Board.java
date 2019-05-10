@@ -7,6 +7,8 @@ import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.analysis.LeelazListener;
 import featurecat.lizzie.analysis.MoveData;
+import featurecat.lizzie.gui.LizzieFrame;
+
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -861,6 +863,12 @@ public class Board implements LeelazListener {
 
   public void place(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
     Lizzie.frame.boardRenderer.removedrawmovestone();
+    if(Lizzie.frame.iscounting)
+    {
+    Lizzie.frame.boardRenderer.removecountblock();
+    LizzieFrame.countResults.button.setText("形式判断");
+    LizzieFrame.countResults.iscounted=false;
+    }
     synchronized (this) {
       if (scoreMode) {
         // Mark clicked stone as dead
@@ -1228,9 +1236,16 @@ public class Board implements LeelazListener {
 
   /** Goes to the next coordinate, thread safe */
   public boolean nextMove() {
+	  Lizzie.frame.boardRenderer.removedrawmovestone();
+	
+	  if(Lizzie.frame.iscounting)
+	    {
+	    Lizzie.frame.boardRenderer.removecountblock();
+	    LizzieFrame.countResults.button.setText("形式判断");
+	    LizzieFrame.countResults.iscounted=false;
+	    }
     synchronized (this) {
-      updateWinrate();
-      Lizzie.frame.boardRenderer.removedrawmovestone();
+      updateWinrate();      
       Optional<int[]> passstep = Optional.empty();
       if (Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()
           && Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()
@@ -1669,6 +1684,13 @@ public class Board implements LeelazListener {
 
   /** Goes to the previous coordinate, thread safe */
   public boolean previousMove() {
+	    Lizzie.frame.boardRenderer.removedrawmovestone();
+	    if(Lizzie.frame.iscounting)
+	    {
+	    Lizzie.frame.boardRenderer.removecountblock();
+	    LizzieFrame.countResults.button.setText("形式判断");
+	    LizzieFrame.countResults.iscounted=false;
+	    }
     synchronized (this) {
       if (inScoreMode()) setScoreMode(false);
       updateWinrate();

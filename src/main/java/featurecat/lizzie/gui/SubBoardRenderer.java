@@ -20,6 +20,7 @@ import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,8 @@ public class SubBoardRenderer {
   private BufferedImage cachedBoardImage = emptyImage;
   private BufferedImage cachedWallpaperImage = emptyImage;
   private BufferedImage cachedStonesShadowImage = emptyImage;
+  private BufferedImage countblockimage = emptyImage;
+
   private Zobrist cachedZhash = new Zobrist(); // defaults to an empty board
 
   private BufferedImage cachedBlackStoneImage = emptyImage;
@@ -409,7 +412,9 @@ public class SubBoardRenderer {
     g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     Graphics2D gShadow = (Graphics2D) branchStonesShadowImage.getGraphics();
     gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
+if(Lizzie.frame.isAutocounting)
+{}
+else {
     Optional<MoveData> suggestedMove = (isMainBoard ? mouseOveredMove() : getBestMove());
     if (!suggestedMove.isPresent()) {
       suggestedMove = getBestMove2();
@@ -438,7 +443,7 @@ public class SubBoardRenderer {
         drawStone(g, gShadow, stoneX, stoneY, stone.unGhosted(), i, j);
       }
     }
-
+}
     g.dispose();
     gShadow.dispose();
   }
@@ -485,6 +490,7 @@ public class SubBoardRenderer {
     }
     g.drawImage(cachedStonesImage, x, y, null);
     g.drawImage(cachedStonesImagedraged, x, y, null);
+    g.drawImage(countblockimage, x, y, null);
     if (Lizzie.config.showBranchNow()) {
       g.drawImage(branchStonesImage, x, y, null);
     }
@@ -782,6 +788,37 @@ public class SubBoardRenderer {
       }
     }
   }
+  
+  public void removecountblock() {
+	  countblockimage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+	  }
+  
+  public void drawcountblock(ArrayList<Integer> tempcount) {
+	  countblockimage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);	  
+	    Graphics2D g = countblockimage.createGraphics();
+	    for(int i=0;i<tempcount.size();i++)
+	    {
+	    if(tempcount.get(i)>0)
+	    {
+	    	int y=i/19;
+	    	int x=i%19;
+	    	int stoneX = scaledMargin + squareLength * x;
+	  	    int stoneY = scaledMargin + squareLength * y;
+	  	    g.setColor(Color.BLACK);
+	  	  g.fillRect(stoneX - stoneRadius / 2, stoneY - stoneRadius / 2, stoneRadius, stoneRadius);
+	    }
+	    if(tempcount.get(i)<0)
+	    {
+	    	int y=i/19;
+	    	int x=i%19;
+	    	int stoneX = scaledMargin + squareLength * x;
+	  	    int stoneY = scaledMargin + squareLength * y;
+	  	    g.setColor(Color.WHITE);
+	  	  g.fillRect(stoneX - stoneRadius / 2, stoneY - stoneRadius / 2, stoneRadius, stoneRadius);
+	    }
+	   
+	    }
+	  }
 
   private void drawNextMoves(Graphics2D g) {
     g.setColor(Lizzie.board.getData().blackToPlay ? Color.BLACK : Color.WHITE);
