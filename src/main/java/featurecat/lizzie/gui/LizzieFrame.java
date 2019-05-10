@@ -1426,7 +1426,7 @@ public class LizzieFrame extends JFrame {
       double score[] = Lizzie.board.getScore(Lizzie.board.scoreStones());
       bval = String.format("%.0f", score[0]);
       wval = String.format("%.1f", score[1]);
-    } else if (iscounting) {
+    } else if (iscounting||isAutocounting) {
       bval = String.format("%d", this.countResults.allblackcounts);
       wval = String.format("%d", this.countResults.allwhitecounts);
     } else {
