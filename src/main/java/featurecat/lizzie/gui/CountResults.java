@@ -41,6 +41,7 @@ public class CountResults extends JFrame {
     this.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
+            invisiable();
             Lizzie.frame.boardRenderer.removecountblock();
             Lizzie.frame.repaint();
             Lizzie.frame.iscounting = false;
@@ -197,5 +198,9 @@ public class CountResults extends JFrame {
     g2.drawString(whiteEat + "", 265, 212); // 白提子
     button.repaint();
     button2.repaint();
+  }
+
+  private void invisiable() {
+    this.setVisible(false);
   }
 }

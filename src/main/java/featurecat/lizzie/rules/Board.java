@@ -866,6 +866,7 @@ public class Board implements LeelazListener {
       Lizzie.frame.boardRenderer.removecountblock();
       LizzieFrame.countResults.button.setText("形式判断");
       LizzieFrame.countResults.iscounted = false;
+      Lizzie.frame.iscounting=false;
     }
     synchronized (this) {
       if (scoreMode) {
@@ -1240,6 +1241,7 @@ public class Board implements LeelazListener {
       Lizzie.frame.boardRenderer.removecountblock();
       LizzieFrame.countResults.button.setText("形式判断");
       LizzieFrame.countResults.iscounted = false;
+      Lizzie.frame.iscounting=false;
     }
     synchronized (this) {
       updateWinrate();
@@ -1686,6 +1688,7 @@ public class Board implements LeelazListener {
       Lizzie.frame.boardRenderer.removecountblock();
       LizzieFrame.countResults.button.setText("形式判断");
       LizzieFrame.countResults.iscounted = false;
+      Lizzie.frame.iscounting=false;
     }
     synchronized (this) {
       if (inScoreMode()) setScoreMode(false);
