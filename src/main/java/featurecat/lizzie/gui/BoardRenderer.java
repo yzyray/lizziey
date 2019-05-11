@@ -156,7 +156,7 @@ public class BoardRenderer {
     availableLength = calculatedPixelMargins[2];
 
     squareLength = calculateSquareLength(availableLength);
-    stoneRadius = squareLength < 4 ? 1 : (squareLength - 1) / 2;
+    stoneRadius = squareLength < 4 ? 1 : (squareLength * 5 - 7) / 10;
 
     // re-center board
     setLocation(x + (boardLength0 - boardLength) / 2, y + (boardLength0 - boardLength) / 2);
@@ -843,7 +843,7 @@ public class BoardRenderer {
 
           boolean isMouseOver = Lizzie.frame.isMouseOver(coords[0], coords[1]);
           if (!branchOpt.isPresent()) {
-            // drawShadow(g, suggestionX, suggestionY, true, alpha / 255.0f);
+            drawShadow2(g, suggestionX, suggestionY, true, alpha / 255.0f);
             g.setColor(color);
             fillCircle(g, suggestionX, suggestionY, stoneRadius);
           }
@@ -873,7 +873,7 @@ public class BoardRenderer {
               g.setColor(color.magenta);
               drawCircle3(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
             } else {
-              drawCircle(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
+              drawCircle4(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
             }
             g.setStroke(new BasicStroke(1));
           }
@@ -1012,11 +1012,70 @@ public class BoardRenderer {
     drawShadow(g, centerX, centerY, isGhost, 1);
   }
 
+  private void drawShadow2(
+      Graphics2D g, int centerX, int centerY, boolean isGhost, float shadowStrength) {
+    if (!uiConfig.getBoolean("shadows-enabled")) return;
+
+    double r = stoneRadius * 70 / 100;
+    final int shadowSize = (int) (r * 0.2) == 0 ? 1 : (int) (r * 0.2);
+    final int fartherShadowSize = (int) (r * 0.17) == 0 ? 1 : (int) (r * 0.17);
+
+    final Paint TOP_GRADIENT_PAINT;
+    final Paint LOWER_RIGHT_GRADIENT_PAINT;
+
+    if (isGhost) {
+      TOP_GRADIENT_PAINT =
+          new RadialGradientPaint(
+              new Point2D.Float(centerX, centerY),
+              stoneRadius + shadowSize,
+              new float[] {
+                ((float) stoneRadius / (stoneRadius + shadowSize)) - 0.0001f,
+                ((float) stoneRadius / (stoneRadius + shadowSize)),
+                1.0f
+              },
+              new Color[] {
+                new Color(0, 0, 0, 0),
+                new Color(50, 50, 50, (int) (120 * shadowStrength)),
+                new Color(0, 0, 0, 0)
+              });
+
+      LOWER_RIGHT_GRADIENT_PAINT =
+          new RadialGradientPaint(
+              new Point2D.Float(centerX + shadowSize * 2 / 3, centerY + shadowSize * 2 / 3),
+              stoneRadius + fartherShadowSize,
+              new float[] {0.6f, 1.0f},
+              new Color[] {new Color(0, 0, 0, 180), new Color(0, 0, 0, 0)});
+    } else {
+      TOP_GRADIENT_PAINT =
+          new RadialGradientPaint(
+              new Point2D.Float(centerX, centerY),
+              stoneRadius + shadowSize,
+              new float[] {0.3f, 1.0f},
+              new Color[] {new Color(50, 50, 50, 150), new Color(0, 0, 0, 0)});
+      LOWER_RIGHT_GRADIENT_PAINT =
+          new RadialGradientPaint(
+              new Point2D.Float(centerX + shadowSize, centerY + shadowSize),
+              stoneRadius + fartherShadowSize,
+              new float[] {0.6f, 1.0f},
+              new Color[] {new Color(0, 0, 0, 140), new Color(0, 0, 0, 0)});
+    }
+
+    final Paint originalPaint = g.getPaint();
+
+    g.setPaint(TOP_GRADIENT_PAINT);
+    fillCircle(g, centerX, centerY, stoneRadius + shadowSize);
+    if (!isGhost) {
+      g.setPaint(LOWER_RIGHT_GRADIENT_PAINT);
+      fillCircle(g, centerX + shadowSize, centerY + shadowSize, stoneRadius + fartherShadowSize);
+    }
+    g.setPaint(originalPaint);
+  }
+
   private void drawShadow(
       Graphics2D g, int centerX, int centerY, boolean isGhost, float shadowStrength) {
     if (!uiConfig.getBoolean("shadows-enabled")) return;
 
-    double r = stoneRadius * 0.90;
+    double r = stoneRadius * Lizzie.config.shadowSize / 100;
     final int shadowSize = (int) (r * 0.2) == 0 ? 1 : (int) (r * 0.2);
     final int fartherShadowSize = (int) (r * 0.17) == 0 ? 1 : (int) (r * 0.17);
 
@@ -1277,6 +1336,11 @@ public class BoardRenderer {
   /** Draws the outline of a circle centered at (centerX, centerY) with radius $radius$ */
   private void drawCircle(Graphics2D g, int centerX, int centerY, int radius) {
     g.setStroke(new BasicStroke(radius / 11.5f));
+    g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+  }
+
+  private void drawCircle4(Graphics2D g, int centerX, int centerY, int radius) {
+    //  g.setStroke(new BasicStroke(radius / 11.5f));
     g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
   }
 

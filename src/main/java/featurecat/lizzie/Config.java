@@ -59,7 +59,7 @@ public class Config {
   public float winrateStrokeWidth = 3;
   public int leelaversion = 17;
   public int minimumBlunderBarWidth = 3;
-  public int shadowSize = 100;
+  public int shadowSize = 90;
   public String fontName = null;
   public String uiFontName = null;
   public String winrateFontName = null;

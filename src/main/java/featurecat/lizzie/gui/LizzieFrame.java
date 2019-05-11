@@ -535,6 +535,7 @@ public class LizzieFrame extends JFrame {
     table.getRowSorter().toggleSortOrder(3);
     table.getRowSorter().toggleSortOrder(3);
     int result = chooser.showOpenDialog(frame);
+
     // chooser.showOpenDialog(null);
     if (result == JFileChooser.APPROVE_OPTION) loadFile(chooser.getSelectedFile());
   }
@@ -1426,7 +1427,7 @@ public class LizzieFrame extends JFrame {
       double score[] = Lizzie.board.getScore(Lizzie.board.scoreStones());
       bval = String.format("%.0f", score[0]);
       wval = String.format("%.1f", score[1]);
-    } else if (iscounting||isAutocounting) {
+    } else if (iscounting || isAutocounting) {
       bval = String.format("%d", this.countResults.allblackcounts);
       wval = String.format("%d", this.countResults.allwhitecounts);
     } else {
