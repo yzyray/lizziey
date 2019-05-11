@@ -156,7 +156,7 @@ public class BoardRenderer {
     availableLength = calculatedPixelMargins[2];
 
     squareLength = calculateSquareLength(availableLength);
-    stoneRadius = squareLength < 4 ? 1 : (squareLength * 5 - 7) / 10;
+    stoneRadius = squareLength < 4 ? 1 : (squareLength * 5 - 6) / 10;
 
     // re-center board
     setLocation(x + (boardLength0 - boardLength) / 2, y + (boardLength0 - boardLength) / 2);
