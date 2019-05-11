@@ -848,25 +848,26 @@ public class BoardRenderer {
             fillCircle(g, suggestionX, suggestionY, stoneRadius);
           }
 
-          boolean ringedMove =
-              !Lizzie.config.colorByWinrateInsteadOfVisits && (isBestMove || hasMaxWinrate);
-          if (!branchOpt.isPresent() || (ringedMove && isMouseOver)) {
+          //  boolean ringedMove =
+          //       !Lizzie.config.colorByWinrateInsteadOfVisits && (isBestMove || hasMaxWinrate);
+          //    if (!branchOpt.isPresent() || (ringedMove && isMouseOver)) {
+          if (!branchOpt.isPresent() || (isMouseOver)) {
             int strokeWidth = 1;
-            if (ringedMove) {
-              strokeWidth = 2;
-              if (isBestMove) {
-                if (hasMaxWinrate) {
-                  g.setColor(color.darker());
-                  strokeWidth = 1;
-                } else {
-                  g.setColor(Color.RED);
-                }
-              } else {
-                g.setColor(Color.BLUE);
-              }
-            } else {
-              g.setColor(color.darker());
-            }
+            //            if (ringedMove) {
+            //              strokeWidth = 2;
+            //              if (isBestMove) {
+            //                if (hasMaxWinrate) {
+            //                  g.setColor(color.darker());
+            //                  strokeWidth = 1;
+            //                } else {
+            //                  g.setColor(Color.RED);
+            //                }
+            //              } else {
+            //                g.setColor(Color.BLUE);
+            //              }
+            //            } else {
+            g.setColor(color.darker());
+            //    }
             g.setStroke(new BasicStroke(strokeWidth));
             if (coords[0] == Lizzie.frame.suggestionclick[0]
                 && coords[1] == Lizzie.frame.suggestionclick[1]) {
