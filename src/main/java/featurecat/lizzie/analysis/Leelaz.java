@@ -254,12 +254,12 @@ public class Leelaz {
    */
   private void parseLine(String line) {
     synchronized (this) {
-      Lizzie.gtpConsole.addLineforce(line);
+     // Lizzie.gtpConsole.addLineforce(line);
       if (printCommunication || gtpConsole) {
         if (line.startsWith("info")) {
           // 	Lizzie.gtpConsole.addLineforce(line);
         } else {
-          // Lizzie.gtpConsole.addLine(line);
+           Lizzie.gtpConsole.addLine(line);
         }
       }
 
