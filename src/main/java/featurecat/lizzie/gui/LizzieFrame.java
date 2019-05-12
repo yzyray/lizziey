@@ -138,7 +138,7 @@ public class LizzieFrame extends JFrame {
   private Stone draggedstone;
   private int[] startcoords = new int[2];
   private int draggedmovenumer;
-  //boolean lastponder = true;
+  // boolean lastponder = true;
 
   static {
     // load fonts
@@ -1954,18 +1954,17 @@ public class LizzieFrame extends JFrame {
     if (!isheatmap) {
       Lizzie.leelaz.isheatmap = true;
       isheatmap = true;
-//      if (!Lizzie.leelaz.isPondering()) lastponder = false;
-//      else {
-//        lastponder = true;
-//      }
-//     
+      //      if (!Lizzie.leelaz.isPondering()) lastponder = false;
+      //      else {
+      //        lastponder = true;
+      //      }
+      //
       Lizzie.leelaz.sendCommand("heatmap");
-      if(Lizzie.leelaz.isPondering())
-    	  Lizzie.leelaz.ponder();
+      if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.ponder();
     } else {
       isheatmap = false;
       Lizzie.leelaz.heatcount.clear();
-     // if (lastponder) Lizzie.leelaz.ponder();
+      // if (lastponder) Lizzie.leelaz.ponder();
     }
   }
 }

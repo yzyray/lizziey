@@ -635,7 +635,7 @@ public class Leelaz {
     isPondering = true;
     if (Lizzie.frame.isheatmap) {
       Lizzie.leelaz.heatcount.clear();
-     // Lizzie.frame.isheatmap = false;
+      // Lizzie.frame.isheatmap = false;
     }
     if (!Lizzie.config.playponder && Lizzie.frame.isPlayingAgainstLeelaz) {
       return;
@@ -666,7 +666,7 @@ public class Leelaz {
     isPondering = true;
     if (Lizzie.frame.isheatmap) {
       Lizzie.leelaz.heatcount.clear();
-   //   Lizzie.frame.isheatmap = false;
+      //   Lizzie.frame.isheatmap = false;
     }
     if (!Lizzie.config.playponder && Lizzie.frame.isPlayingAgainstLeelaz) {
       return;
