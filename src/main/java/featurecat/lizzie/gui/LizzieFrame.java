@@ -1955,6 +1955,7 @@ public class LizzieFrame extends JFrame {
       Lizzie.leelaz.isheatmap = true;
       isheatmap = true;
       if (!Lizzie.leelaz.isPondering()) lastponder = false;
+      else {lastponder =true;}
       Lizzie.leelaz.notPondering();
       Lizzie.leelaz.sendCommand("heatmap");
     } else {
