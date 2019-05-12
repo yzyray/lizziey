@@ -1939,29 +1939,10 @@ public class LizzieFrame extends JFrame {
         Lizzie.board.savelistforeditmode();
         Lizzie.board.editmovelist(
             Lizzie.board.tempallmovelist, draggedmovenumer, coords[0], coords[1]);
-        Lizzie.board.clear();
+        Lizzie.board.clearforedit();
         Lizzie.board.setlist(Lizzie.board.tempallmovelist);
         Lizzie.board.goToMoveNumber(currentmovenumber);
         repaint();
-      }
-    } else {
-      if (draggedstone != Stone.EMPTY) {
-        int option =
-            JOptionPane.showConfirmDialog(this, "是否删除该棋子? ", "提示 ", JOptionPane.YES_NO_OPTION);
-        if (option == JOptionPane.YES_OPTION) {
-        	  int currentmovenumber=Lizzie.board.getcurrentmovenumber();
-              Lizzie.board.savelistforeditmode();
-              Lizzie.board.editmovelistdelete(Lizzie.board.tempallmovelist, draggedmovenumer);
-              Lizzie.board.clear();
-              Lizzie.board.setlist(Lizzie.board.tempallmovelist);
-              Lizzie.board.goToMoveNumber(currentmovenumber);
-              repaint();
-        
-         
-          repaint();
-        } else {
-
-        }
       }
     }
 

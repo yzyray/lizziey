@@ -219,7 +219,7 @@ public class RightClickMenu extends JPopupMenu {
 		     Lizzie.board.savelistforeditmode();
 		     
 		     Lizzie.board.editmovelistadd(Lizzie.board.tempallmovelist,currentmovenumber,coords[0],coords[1],true);
-		     Lizzie.board.clear();
+		     Lizzie.board.clearforedit();
 		     Lizzie.board.setlist(Lizzie.board.tempallmovelist);
 		     Lizzie.board.goToMoveNumber(currentmovenumber+1);
 	    }
@@ -241,7 +241,7 @@ public class RightClickMenu extends JPopupMenu {
 			     Lizzie.board.savelistforeditmode();
 			     
 			     Lizzie.board.editmovelistadd(Lizzie.board.tempallmovelist,currentmovenumber,coords[0],coords[1],false);
-			     Lizzie.board.clear();
+			     Lizzie.board.clearforedit();
 			     Lizzie.board.setlist(Lizzie.board.tempallmovelist);
 			     Lizzie.board.goToMoveNumber(currentmovenumber+1);
 		    }

@@ -3,6 +3,7 @@ package featurecat.lizzie.gui;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.gui.RightClickMenu;
 import featurecat.lizzie.rules.Movelist;
+import featurecat.lizzie.rules.Movelistwr;
 //import featurecat.lizzie.rules.Movelistwr;
 import featurecat.lizzie.rules.SGFParser;
 import java.awt.event.ActionEvent;
@@ -85,9 +86,9 @@ public class RightClickMenu2 extends JPopupMenu {
 	 int currentmovenumber=Lizzie.board.getcurrentmovenumber();
      Lizzie.board.savelistforeditmode();
      Lizzie.board.editmovelistswitch(Lizzie.board.tempallmovelist, draggedmovenumer);
-     Lizzie.board.clear();
+     Lizzie.board.clearforedit();
      Lizzie.board.setlist(Lizzie.board.tempallmovelist);
-     Lizzie.board.goToMoveNumber(currentmovenumber);
+     Lizzie.board.goToMoveNumber(currentmovenumber);   
   }
   }
 
@@ -99,9 +100,14 @@ public class RightClickMenu2 extends JPopupMenu {
 	    int currentmovenumber=Lizzie.board.getcurrentmovenumber();
         Lizzie.board.savelistforeditmode();
         Lizzie.board.editmovelistdelete(Lizzie.board.tempallmovelist, draggedmovenumer);
-        Lizzie.board.clear();
+        Lizzie.board.clearforedit();
         Lizzie.board.setlist(Lizzie.board.tempallmovelist);
         Lizzie.board.goToMoveNumber(currentmovenumber);
+        for(int i=0;i<Lizzie.board.movelistwrbefore.size();i++)
+        {
+        	Lizzie.board.movelistwr = new ArrayList<Movelistwr>();
+        	Lizzie.board.movelistwr.add(Lizzie.board.movelistwrbefore.get(i));
+        }
 	    }  
   }
 

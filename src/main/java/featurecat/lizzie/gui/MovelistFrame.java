@@ -95,23 +95,21 @@ public class MovelistFrame extends JPanel {
                     && !(Lizzie.board.getHistory().getCurrentHistoryNode().getData().lastMove
                         == passstep)) {
 
-                  double lastwr = 50.0;
+                  double lastwr = -99.0;                  
                   try {   lastwr = Lizzie.board
                           .getHistory()
                           .getCurrentHistoryNode()
                           .previous()
                           .get()
                           .getData()
-                          .bestMoves.get(0).winrate;}
+                          .bestMoves.get(0).winrate;
+                  }
                   catch (Exception ex)
                   {
-                	  lastwr = Lizzie.board
-                              .getHistory()
-                              .getCurrentHistoryNode()
-                              .previous()
-                              .get()
-                              .getData()
-                              .getWinrate();
+                  }
+                  if(lastwr==-99.0)
+                  {
+                	  return;
                   }
                   double wr = 100 - lastwr;
                   int playouts = 0;
@@ -156,23 +154,26 @@ public class MovelistFrame extends JPanel {
                   boolean isblack =
                       !Lizzie.board.getHistory().getCurrentHistoryNode().getData().blackToPlay;
 
-                  if (!Lizzie.board.movelistwr.isEmpty()
-                      && Lizzie.board.movelistwr.size() >= movenumer) {
-                    if (playouts >= Lizzie.board.movelistwr.get(movenumer - 1).playouts
-                            && previousplayouts
-                                >= Lizzie.board.movelistwr.get(movenumer - 1).previousplayouts
-                        || Lizzie.board.movelistwr.get(movenumer - 1).isdelete) {
-                      Lizzie.board.movelistwr.get(movenumer - 1).diffwinrate = diffwinrate;
-                      Lizzie.board.movelistwr.get(movenumer - 1).winrate = wr;
-                      Lizzie.board.movelistwr.get(movenumer - 1).coords = coords;
-                      Lizzie.board.movelistwr.get(movenumer - 1).isblack = isblack;
-                      Lizzie.board.movelistwr.get(movenumer - 1).playouts = playouts;
-                      Lizzie.board.movelistwr.get(movenumer - 1).movenum = movenumer;
-                      Lizzie.board.movelistwr.get(movenumer - 1).previousplayouts =
-                          previousplayouts;
-                      Lizzie.board.movelistwr.get(movenumer - 1).isdelete = false;
-                    }
-                  } else {
+                  boolean isupdate =false;
+                  if (!Lizzie.board.movelistwr.isEmpty()) {
+                      for (int i=0;i<Lizzie.board.movelistwr.size();i++)
+                      {
+                    	  if(Lizzie.board.movelistwr.get(i).movenum==movenumer)
+                    	  {
+                    		  Lizzie.board.movelistwr.get(i).diffwinrate = diffwinrate;
+                              Lizzie.board.movelistwr.get(i).winrate = wr;
+                              Lizzie.board.movelistwr.get(i).coords = coords;
+                              Lizzie.board.movelistwr.get(i).isblack = isblack;
+                              Lizzie.board.movelistwr.get(i).playouts = playouts;
+                              Lizzie.board.movelistwr.get(i).movenum = movenumer;
+                              Lizzie.board.movelistwr.get(i).previousplayouts =
+                                  previousplayouts;
+                              Lizzie.board.movelistwr.get(i).isdelete = false;
+                              isupdate=true;
+                    	  }
+                      }                   
+                  }
+            if(!isupdate) {
                     Movelistwr mv = new Movelistwr();
                     mv.diffwinrate = diffwinrate;
                     mv.winrate = wr;
@@ -610,7 +611,7 @@ public class MovelistFrame extends JPanel {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
       jf.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
     } else {
-      jf.setBounds(-9, 0, 407, 287);
+      jf.setBounds(-9, 0, 576, 287);
     }
     try {
       jf.setIconImage(ImageIO.read(MovelistFrame.class.getResourceAsStream("/assets/logo.png")));
