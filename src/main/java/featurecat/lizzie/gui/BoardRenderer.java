@@ -507,7 +507,8 @@ public class BoardRenderer {
     gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
     Optional<MoveData> suggestedMove = (isMainBoard ? mouseOveredMove() : getBestMove());
-    if (!suggestedMove.isPresent()) {
+
+    if (!suggestedMove.isPresent() || Lizzie.frame.isheatmap) {
       return;
     }
     List<String> variation = suggestedMove.get().variation;
@@ -703,113 +704,31 @@ public class BoardRenderer {
     float redHue = Color.RGBtoHSB(255, 0, 0, null)[0];
     float greenHue = Color.RGBtoHSB(0, 255, 0, null)[0];
     float cyanHue = Color.RGBtoHSB(0, 255, 255, null)[0];
-
-    if (bestMoves != null && !bestMoves.isEmpty()) {
-
-      // Collections.sort(bestMoves);
-
-      int maxPlayouts = 0;
-      double maxWinrate = 0;
-      double minWinrate = 100.0;
-      List<MoveData> tempbest1 = new ArrayList();
-      List<MoveData> tempbest2 = new ArrayList();
-      for (int i = 0; i < bestMoves.size(); i++) {
-        tempbest1.add(bestMoves.get(i)); // 开始复制一个list的内容到另外一个list
-        tempbest2.add(bestMoves.get(i));
+    if (Lizzie.frame.isheatmap && !Lizzie.leelaz.isheatmap) {
+      int maxPolicy = 0;
+      int minPolicy = 0;
+      for (Integer heat : Lizzie.leelaz.heatcount) {
+        if (heat > maxPolicy) maxPolicy = heat;
       }
-      Collections.sort(
-          tempbest1,
-          new Comparator<MoveData>() {
+      for (int i = 0; i < Lizzie.leelaz.heatcount.size(); i++) {
+        if (Lizzie.leelaz.heatcount.get(i) > 0) {
+          int y1 = i / 19;
+          int x1 = i % 19;
+          int suggestionX = x + scaledMargin + squareLength * x1;
+          int suggestionY = y + scaledMargin + squareLength * y1;
+          double percent = ((double) Lizzie.leelaz.heatcount.get(i)) / maxPolicy;
 
-            @Override
-            public int compare(MoveData s1, MoveData s2) {
-              // 降序
-              if (s1.lcb < s2.lcb) return 1;
-              if (s1.lcb > s2.lcb) return -1;
-              else return 0;
-            }
-          });
-
-      Collections.sort(
-          tempbest2,
-          new Comparator<MoveData>() {
-
-            @Override
-            public int compare(MoveData s1, MoveData s2) {
-              // 降序
-              if (s1.playouts < s2.playouts) return 1;
-              if (s1.playouts > s2.playouts) return -1;
-              else return 0;
-            }
-          });
-      if (Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbcolor) {
-        for (int i = 0; i < tempbest1.size(); i++) {
-          tempbest1.get(i).equalplayouts = tempbest2.get(i).playouts;
-        }
-      }
-      for (MoveData move : bestMoves) {
-        if (move.playouts > maxPlayouts) maxPlayouts = move.playouts;
-        if (move.winrate > maxWinrate) maxWinrate = move.winrate;
-        if (move.winrate < minWinrate) minWinrate = move.winrate;
-      }
-
-      for (int i = 0; i < Board.boardSize; i++) {
-        for (int j = 0; j < Board.boardSize; j++) {
-          Optional<MoveData> moveOpt = Optional.empty();
-
-          // This is inefficient but it looks better with shadows
-
-          for (MoveData m : bestMoves) {
-            Optional<int[]> coord = Board.asCoordinates(m.coordinate);
-            if (coord.isPresent()) {
-              int[] c = coord.get();
-              if (c[0] == i && c[1] == j) {
-                moveOpt = Optional.of(m);
-                break;
-              }
-            }
-          }
-
-          if (!moveOpt.isPresent()) {
-            continue;
-          }
-          MoveData move = moveOpt.get();
-
-          boolean isBestMove = tempbest1.get(0) == move;
-          boolean hasMaxWinrate = move.winrate == maxWinrate;
-          boolean flipWinrate =
-              uiConfig.getBoolean("win-rate-always-black") && !Lizzie.board.getData().blackToPlay;
-
-          if (move.playouts == 0) {
-            continue; // This actually can happen
-          }
-
-          float percentPlayouts =
-              (Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbcolor)
-                  ? (float) move.equalplayouts / maxPlayouts
-                  : (float) move.playouts / maxPlayouts;
-          double percentWinrate =
-              Math.min(
-                  1,
-                  Math.max(0.01, move.winrate - minWinrate)
-                      / Math.max(0.01, maxWinrate - minWinrate));
-
-          Optional<int[]> coordsOpt = Board.asCoordinates(move.coordinate);
-          if (!coordsOpt.isPresent()) {
-            continue;
-          }
-          int[] coords = coordsOpt.get();
-
-          int suggestionX = x + scaledMargin + squareLength * coords[0];
-          int suggestionY = y + scaledMargin + squareLength * coords[1];
+          // g.setColor(Color.BLACK);
+          //  g.fillRect(stoneX - stoneRadius / 2, stoneY - stoneRadius / 2, stoneRadius,
+          // stoneRadius);
 
           float hue;
-          if (isBestMove) {
+          if (Lizzie.leelaz.heatcount.get(i) == maxPolicy) {
             hue = cyanHue;
           } else {
             double fraction;
 
-            fraction = percentPlayouts;
+            fraction = percent;
 
             // Correction to make differences between colors more perceptually linear
             fraction *= 2;
@@ -825,78 +744,18 @@ public class BoardRenderer {
           float saturation = 1.0f;
           float brightness = 0.85f;
           float alpha =
-              minAlpha
-                  + (maxAlpha - minAlpha)
-                      * max(
-                          0,
-                          (float)
-                                      log(
-                                          Lizzie.config.colorByWinrateInsteadOfVisits
-                                              ? percentWinrate
-                                              : percentPlayouts)
-                                  / alphaFactor
-                              + 1);
+              minAlpha + (maxAlpha - minAlpha) * max(0, (float) log(percent) / alphaFactor + 1);
 
           Color hsbColor = Color.getHSBColor(hue, saturation, brightness);
           Color color =
               new Color(hsbColor.getRed(), hsbColor.getGreen(), hsbColor.getBlue(), (int) alpha);
-
-          boolean isMouseOver = Lizzie.frame.isMouseOver(coords[0], coords[1]);
           if (!branchOpt.isPresent()) {
             drawShadow2(g, suggestionX, suggestionY, true, alpha / 255.0f);
             g.setColor(color);
             fillCircle(g, suggestionX, suggestionY, stoneRadius);
-          }
 
-          //  boolean ringedMove =
-          //       !Lizzie.config.colorByWinrateInsteadOfVisits && (isBestMove || hasMaxWinrate);
-          //    if (!branchOpt.isPresent() || (ringedMove && isMouseOver)) {
-          if (!branchOpt.isPresent() || (isMouseOver)) {
-            int strokeWidth = 1;
-            //            if (ringedMove) {
-            //              strokeWidth = 2;
-            //              if (isBestMove) {
-            //                if (hasMaxWinrate) {
-            //                  g.setColor(color.darker());
-            //                  strokeWidth = 1;
-            //                } else {
-            //                  g.setColor(Color.RED);
-            //                }
-            //              } else {
-            //                g.setColor(Color.BLUE);
-            //              }
-            //            } else {
-            g.setColor(color.darker());
-            //    }
-            g.setStroke(new BasicStroke(strokeWidth));
-            if (coords[0] == Lizzie.frame.suggestionclick[0]
-                && coords[1] == Lizzie.frame.suggestionclick[1]) {
-              g.setColor(color.magenta);
-              drawCircle3(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
-            } else {
-              drawCircle4(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
-            }
-            g.setStroke(new BasicStroke(1));
-          }
-
-          if (!branchOpt.isPresent()
-                  && (hasMaxWinrate
-                      || percentPlayouts >= uiConfig.getDouble("min-playout-ratio-for-stats"))
-              || isMouseOver) {
-            double roundedWinrate = round(move.winrate * 10) / 10.0;
-            if (flipWinrate) {
-              roundedWinrate = 100.0 - roundedWinrate;
-            }
-            g.setColor(Color.BLACK);
-            if (branchOpt.isPresent() && Lizzie.board.getData().blackToPlay)
-              g.setColor(Color.WHITE);
-
-            String text;
-            if (Lizzie.config.handicapInsteadOfWinrate) {
-              text = String.format("%.2f", Lizzie.leelaz.winrateToHandicap(move.winrate));
-            } else {
-              text = String.format("%.1f", roundedWinrate);
-            }
+            String text = String.format("%.1f", ((double) Lizzie.leelaz.heatcount.get(i)) / 10);
+            g.setColor(Color.WHITE);
             drawString(
                 g,
                 suggestionX,
@@ -905,17 +764,226 @@ public class BoardRenderer {
                 Font.PLAIN,
                 text,
                 stoneRadius,
-                stoneRadius * 1.5,
-                1);
+                stoneRadius * 1.9,
+                0);
+          }
+        }
+      }
 
-            drawString(
-                g,
-                suggestionX,
-                suggestionY + stoneRadius * 2 / 5,
-                LizzieFrame.uiFont,
-                Lizzie.frame.getPlayoutsString(move.playouts),
-                (float) (stoneRadius * 0.8),
-                stoneRadius * 1.4);
+    } else {
+      if (bestMoves != null && !bestMoves.isEmpty()) {
+
+        // Collections.sort(bestMoves);
+
+        int maxPlayouts = 0;
+        double maxWinrate = 0;
+        double minWinrate = 100.0;
+        List<MoveData> tempbest1 = new ArrayList();
+        List<MoveData> tempbest2 = new ArrayList();
+        for (int i = 0; i < bestMoves.size(); i++) {
+          tempbest1.add(bestMoves.get(i)); // 开始复制一个list的内容到另外一个list
+          tempbest2.add(bestMoves.get(i));
+        }
+        Collections.sort(
+            tempbest1,
+            new Comparator<MoveData>() {
+
+              @Override
+              public int compare(MoveData s1, MoveData s2) {
+                // 降序
+                if (s1.lcb < s2.lcb) return 1;
+                if (s1.lcb > s2.lcb) return -1;
+                else return 0;
+              }
+            });
+
+        Collections.sort(
+            tempbest2,
+            new Comparator<MoveData>() {
+
+              @Override
+              public int compare(MoveData s1, MoveData s2) {
+                // 降序
+                if (s1.playouts < s2.playouts) return 1;
+                if (s1.playouts > s2.playouts) return -1;
+                else return 0;
+              }
+            });
+        if (Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbcolor) {
+          for (int i = 0; i < tempbest1.size(); i++) {
+            tempbest1.get(i).equalplayouts = tempbest2.get(i).playouts;
+          }
+        }
+        for (MoveData move : bestMoves) {
+          if (move.playouts > maxPlayouts) maxPlayouts = move.playouts;
+          if (move.winrate > maxWinrate) maxWinrate = move.winrate;
+          if (move.winrate < minWinrate) minWinrate = move.winrate;
+        }
+
+        for (int i = 0; i < Board.boardSize; i++) {
+          for (int j = 0; j < Board.boardSize; j++) {
+            Optional<MoveData> moveOpt = Optional.empty();
+
+            // This is inefficient but it looks better with shadows
+
+            for (MoveData m : bestMoves) {
+              Optional<int[]> coord = Board.asCoordinates(m.coordinate);
+              if (coord.isPresent()) {
+                int[] c = coord.get();
+                if (c[0] == i && c[1] == j) {
+                  moveOpt = Optional.of(m);
+                  break;
+                }
+              }
+            }
+
+            if (!moveOpt.isPresent()) {
+              continue;
+            }
+            MoveData move = moveOpt.get();
+
+            boolean isBestMove = tempbest1.get(0) == move;
+            boolean hasMaxWinrate = move.winrate == maxWinrate;
+            boolean flipWinrate =
+                uiConfig.getBoolean("win-rate-always-black") && !Lizzie.board.getData().blackToPlay;
+
+            if (move.playouts == 0) {
+              continue; // This actually can happen
+            }
+
+            float percentPlayouts =
+                (Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbcolor)
+                    ? (float) move.equalplayouts / maxPlayouts
+                    : (float) move.playouts / maxPlayouts;
+            double percentWinrate =
+                Math.min(
+                    1,
+                    Math.max(0.01, move.winrate - minWinrate)
+                        / Math.max(0.01, maxWinrate - minWinrate));
+
+            Optional<int[]> coordsOpt = Board.asCoordinates(move.coordinate);
+            if (!coordsOpt.isPresent()) {
+              continue;
+            }
+            int[] coords = coordsOpt.get();
+
+            int suggestionX = x + scaledMargin + squareLength * coords[0];
+            int suggestionY = y + scaledMargin + squareLength * coords[1];
+
+            float hue;
+            if (isBestMove) {
+              hue = cyanHue;
+            } else {
+              double fraction;
+
+              fraction = percentPlayouts;
+
+              // Correction to make differences between colors more perceptually linear
+              fraction *= 2;
+              if (fraction < 1) { // red to yellow
+                fraction = Math.cbrt(fraction * fraction) / 2;
+              } else { // yellow to green
+                fraction = 1 - Math.sqrt(2 - fraction) / 2;
+              }
+
+              hue = redHue + (greenHue - redHue) * (float) fraction;
+            }
+
+            float saturation = 1.0f;
+            float brightness = 0.85f;
+            float alpha =
+                minAlpha
+                    + (maxAlpha - minAlpha)
+                        * max(
+                            0,
+                            (float)
+                                        log(
+                                            Lizzie.config.colorByWinrateInsteadOfVisits
+                                                ? percentWinrate
+                                                : percentPlayouts)
+                                    / alphaFactor
+                                + 1);
+
+            Color hsbColor = Color.getHSBColor(hue, saturation, brightness);
+            Color color =
+                new Color(hsbColor.getRed(), hsbColor.getGreen(), hsbColor.getBlue(), (int) alpha);
+
+            boolean isMouseOver = Lizzie.frame.isMouseOver(coords[0], coords[1]);
+            if (!branchOpt.isPresent()) {
+              drawShadow2(g, suggestionX, suggestionY, true, alpha / 255.0f);
+              g.setColor(color);
+              fillCircle(g, suggestionX, suggestionY, stoneRadius);
+            }
+
+            //  boolean ringedMove =
+            //       !Lizzie.config.colorByWinrateInsteadOfVisits && (isBestMove || hasMaxWinrate);
+            //    if (!branchOpt.isPresent() || (ringedMove && isMouseOver)) {
+            if (!branchOpt.isPresent() || (isMouseOver)) {
+              int strokeWidth = 1;
+              //            if (ringedMove) {
+              //              strokeWidth = 2;
+              //              if (isBestMove) {
+              //                if (hasMaxWinrate) {
+              //                  g.setColor(color.darker());
+              //                  strokeWidth = 1;
+              //                } else {
+              //                  g.setColor(Color.RED);
+              //                }
+              //              } else {
+              //                g.setColor(Color.BLUE);
+              //              }
+              //            } else {
+              g.setColor(color.darker());
+              //    }
+              g.setStroke(new BasicStroke(strokeWidth));
+              if (coords[0] == Lizzie.frame.suggestionclick[0]
+                  && coords[1] == Lizzie.frame.suggestionclick[1]) {
+                g.setColor(color.magenta);
+                drawCircle3(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
+              } else {
+                drawCircle4(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
+              }
+              g.setStroke(new BasicStroke(1));
+            }
+
+            if (!branchOpt.isPresent()
+                    && (hasMaxWinrate
+                        || percentPlayouts >= uiConfig.getDouble("min-playout-ratio-for-stats"))
+                || isMouseOver) {
+              double roundedWinrate = round(move.winrate * 10) / 10.0;
+              if (flipWinrate) {
+                roundedWinrate = 100.0 - roundedWinrate;
+              }
+              g.setColor(Color.BLACK);
+              if (branchOpt.isPresent() && Lizzie.board.getData().blackToPlay)
+                g.setColor(Color.WHITE);
+
+              String text;
+              if (Lizzie.config.handicapInsteadOfWinrate) {
+                text = String.format("%.2f", Lizzie.leelaz.winrateToHandicap(move.winrate));
+              } else {
+                text = String.format("%.1f", roundedWinrate);
+              }
+              drawString(
+                  g,
+                  suggestionX,
+                  suggestionY,
+                  LizzieFrame.winrateFont,
+                  Font.PLAIN,
+                  text,
+                  stoneRadius,
+                  stoneRadius * 1.5,
+                  1);
+
+              drawString(
+                  g,
+                  suggestionX,
+                  suggestionY + stoneRadius * 2 / 5,
+                  LizzieFrame.uiFont,
+                  Lizzie.frame.getPlayoutsString(move.playouts),
+                  (float) (stoneRadius * 0.8),
+                  stoneRadius * 1.4);
+            }
           }
         }
       }
@@ -1524,6 +1592,7 @@ public class BoardRenderer {
   }
 
   public int getReplayBranch() {
+
     return mouseOveredMove().isPresent() ? mouseOveredMove().get().variation.size() : 0;
   }
 

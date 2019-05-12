@@ -38,7 +38,8 @@ public class Leelaz {
   private int currentCmdNum;
   private ArrayDeque<String> cmdQueue;
   private JSONObject leelazConfig;
-
+  public ArrayList<Integer> heatcount = new ArrayList<Integer>();
+  public double heatwinrate;
   public Process process;
 
   private BufferedInputStream inputStream;
@@ -59,6 +60,7 @@ public class Leelaz {
   public boolean isSettingHandicap = false;
 
   // genmove
+  public boolean isheatmap = false;
   public boolean isThinking = false;
   public boolean isInputCommand = false;
   // public boolean isChanged = false;
@@ -252,11 +254,12 @@ public class Leelaz {
    */
   private void parseLine(String line) {
     synchronized (this) {
+      Lizzie.gtpConsole.addLineforce(line);
       if (printCommunication || gtpConsole) {
         if (line.startsWith("info")) {
-       // 	Lizzie.gtpConsole.addLineforce(line);
+          // 	Lizzie.gtpConsole.addLineforce(line);
         } else {
-          Lizzie.gtpConsole.addLine(line);
+          // Lizzie.gtpConsole.addLine(line);
         }
       }
 
@@ -365,6 +368,20 @@ public class Leelaz {
                     + ")");
           }
           isCheckingVersion = false;
+        }
+      }
+      if (isheatmap) {
+        if (line.startsWith("  ")) {
+          String[] params = line.trim().split("\\s+");
+          if (params.length == 19) {
+            for (int i = 0; i < params.length; i++) heatcount.add(Integer.parseInt(params[i]));
+          }
+        }
+        if (line.startsWith("winrate")) {
+          isheatmap = false;
+          String[] params = line.trim().split(" ");
+          heatwinrate = Double.valueOf(params[1]);
+          Lizzie.frame.repaint();
         }
       }
     }
@@ -613,6 +630,10 @@ public class Leelaz {
   /** This initializes leelaz's pondering mode at its current position */
   public void ponder() {
     isPondering = true;
+    if (Lizzie.frame.isheatmap) {
+      Lizzie.leelaz.heatcount.clear();
+      Lizzie.frame.isheatmap = false;
+    }
     if (!Lizzie.config.playponder && Lizzie.frame.isPlayingAgainstLeelaz) {
       return;
     }
@@ -640,6 +661,10 @@ public class Leelaz {
 
   public void ponderwithavoid() {
     isPondering = true;
+    if (Lizzie.frame.isheatmap) {
+      Lizzie.leelaz.heatcount.clear();
+      Lizzie.frame.isheatmap = false;
+    }
     if (!Lizzie.config.playponder && Lizzie.frame.isPlayingAgainstLeelaz) {
       return;
     }

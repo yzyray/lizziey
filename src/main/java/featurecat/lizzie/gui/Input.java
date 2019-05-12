@@ -18,12 +18,11 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
     if (e.getButton() == MouseEvent.BUTTON1) // left click
     {
-        if (e.getClickCount() == 2) { // TODO: Maybe need to delay check
-          Lizzie.frame.onDoubleClicked(e.getX(), e.getY());
-        } else {
-          Lizzie.frame.onClicked(e.getX(), e.getY());
-        }
-      
+      if (e.getClickCount() == 2) { // TODO: Maybe need to delay check
+        Lizzie.frame.onDoubleClicked(e.getX(), e.getY());
+      } else {
+        Lizzie.frame.onClicked(e.getX(), e.getY());
+      }
 
     } else if (e.getButton() == MouseEvent.BUTTON3) // right click
       // undo();
@@ -329,7 +328,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_H:
-        Lizzie.config.toggleHandicapInsteadOfWinrate();
+        // Lizzie.config.toggleHandicapInsteadOfWinrate();
+        Lizzie.frame.toggleheatmap();
         break;
 
       case VK_PAGE_UP:

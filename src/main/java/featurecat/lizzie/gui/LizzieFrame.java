@@ -129,7 +129,7 @@ public class LizzieFrame extends JFrame {
   private Rectangle commentRect;
   public YaZenGtp zen;
   boolean isfirstcount = true;
-
+  public boolean isheatmap = false;
   // Show the playouts in the title
   private ScheduledExecutorService showPlayouts = Executors.newScheduledThreadPool(1);
   private long lastPlayouts = 0;
@@ -138,6 +138,7 @@ public class LizzieFrame extends JFrame {
   private Stone draggedstone;
   private int[] startcoords = new int[2];
   private int draggedmovenumer;
+  boolean lastponder = true;
 
   static {
     // load fonts
@@ -310,36 +311,35 @@ public class LizzieFrame extends JFrame {
 
     isshowrightmenu = true;
 
-      int[] coords = boardCoordinates.get();
+    int[] coords = boardCoordinates.get();
 
-      if (Lizzie.board.getstonestat(coords) == Stone.BLACK
-          || Lizzie.board.getstonestat(coords) == Stone.WHITE) {
-        RightClickMenu2.Store(x, y);
-        Timer timer = new Timer();
-        timer.schedule(
-            new TimerTask() {
-              public void run() {
-                Lizzie.frame.showmenu2(x, y);
-                this.cancel();
-              }
-            },
-            50);
-        return;
-      }
-      else {
-    RightClickMenu.Store(x, y);
-    Timer timer = new Timer();
-    timer.schedule(
-        new TimerTask() {
-          public void run() {
-            Lizzie.frame.showmenu(x, y);
-            this.cancel();
-          }
-        },
-        50);
-    // System.out.println("弹出右键菜单");
-    //  RightClickMenu.show(this, x, y);
-  }
+    if (Lizzie.board.getstonestat(coords) == Stone.BLACK
+        || Lizzie.board.getstonestat(coords) == Stone.WHITE) {
+      RightClickMenu2.Store(x, y);
+      Timer timer = new Timer();
+      timer.schedule(
+          new TimerTask() {
+            public void run() {
+              Lizzie.frame.showmenu2(x, y);
+              this.cancel();
+            }
+          },
+          50);
+      return;
+    } else {
+      RightClickMenu.Store(x, y);
+      Timer timer = new Timer();
+      timer.schedule(
+          new TimerTask() {
+            public void run() {
+              Lizzie.frame.showmenu(x, y);
+              this.cancel();
+            }
+          },
+          50);
+      // System.out.println("弹出右键菜单");
+      //  RightClickMenu.show(this, x, y);
+    }
   }
 
   public void showmenu(int x, int y) {
@@ -1466,13 +1466,13 @@ public class LizzieFrame extends JFrame {
       // 增加判断是否为插入模式
 
       int[] coords = boardCoordinates.get();
-        startcoords[0] = coords[0];
-        startcoords[1] = coords[1];     
-        draggedstone = Lizzie.board.getstonestat(coords);
-      if (draggedstone == Stone.BLACK || draggedstone == Stone.WHITE) {      	
-      	 draggedmovenumer = Lizzie.board.getmovenumber(coords);
-      	 featurecat.lizzie.gui.Input.Draggedmode=true;
-      } 
+      startcoords[0] = coords[0];
+      startcoords[1] = coords[1];
+      draggedstone = Lizzie.board.getstonestat(coords);
+      if (draggedstone == Stone.BLACK || draggedstone == Stone.WHITE) {
+        draggedmovenumer = Lizzie.board.getmovenumber(coords);
+        featurecat.lizzie.gui.Input.Draggedmode = true;
+      }
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
       if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay))
         Lizzie.board.place(coords[0], coords[1]);
@@ -1549,15 +1549,15 @@ public class LizzieFrame extends JFrame {
     }
     return "N";
   }
-  
+
   public int[] convertmousexytocoords(int x, int y) {
-	    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
-	    if (boardCoordinates.isPresent()) {
-	      int[] coords = boardCoordinates.get();
-	      return coords;
-	    }
-	    return this.outOfBoundCoordinate;
-	  }
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+    if (boardCoordinates.isPresent()) {
+      int[] coords = boardCoordinates.get();
+      return coords;
+    }
+    return this.outOfBoundCoordinate;
+  }
 
   public void onDoubleClicked(int x, int y) {
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
@@ -1884,7 +1884,6 @@ public class LizzieFrame extends JFrame {
     thread.start();
   }
 
-
   public void DraggedMoved(int x, int y) {
     if (RightClickMenu.isVisible() || RightClickMenu2.isVisible()) {
       return;
@@ -1935,7 +1934,7 @@ public class LizzieFrame extends JFrame {
           draggedstone = Stone.EMPTY;
           return;
         }
-        int currentmovenumber=Lizzie.board.getcurrentmovenumber();
+        int currentmovenumber = Lizzie.board.getcurrentmovenumber();
         Lizzie.board.savelistforeditmode();
         Lizzie.board.editmovelist(
             Lizzie.board.tempallmovelist, draggedmovenumer, coords[0], coords[1]);
@@ -1948,6 +1947,20 @@ public class LizzieFrame extends JFrame {
 
     boardRenderer.removedrawmovestone();
     draggedstone = Stone.EMPTY;
-    featurecat.lizzie.gui.Input.Draggedmode=false;
+    featurecat.lizzie.gui.Input.Draggedmode = false;
+  }
+
+  public void toggleheatmap() {
+    if (!isheatmap) {
+      Lizzie.leelaz.isheatmap = true;
+      isheatmap = true;
+      if (!Lizzie.leelaz.isPondering()) lastponder = false;
+      Lizzie.leelaz.notPondering();
+      Lizzie.leelaz.sendCommand("heatmap");
+    } else {
+      isheatmap = false;
+      Lizzie.leelaz.heatcount.clear();
+      if (lastponder) Lizzie.leelaz.ponder();
+    }
   }
 }
