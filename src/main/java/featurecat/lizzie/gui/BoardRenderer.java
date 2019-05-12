@@ -704,7 +704,7 @@ public class BoardRenderer {
     float redHue = Color.RGBtoHSB(255, 0, 0, null)[0];
     float greenHue = Color.RGBtoHSB(0, 255, 0, null)[0];
     float cyanHue = Color.RGBtoHSB(0, 255, 255, null)[0];
-    if (Lizzie.frame.isheatmap && !Lizzie.leelaz.isheatmap) {
+    if (Lizzie.frame.isheatmap) {
       int maxPolicy = 0;
       int minPolicy = 0;
       for (Integer heat : Lizzie.leelaz.heatcount) {
