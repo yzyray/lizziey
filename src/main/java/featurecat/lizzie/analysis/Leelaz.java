@@ -370,24 +370,24 @@ public class Leelaz {
           isCheckingVersion = false;
         }
       }
-       if (isheatmap) {
-      if (line.startsWith(" ")) {
-    	  try {
-        String[] params = line.trim().split("\\s+");
-        if (params.length == 19) {
-          for (int i = 0; i < params.length; i++) heatcount.add(Integer.parseInt(params[i]));
-        }}
-    	  catch (Exception ex)
-    	  {}
-      }
-      if (line.startsWith("winrate:")) {
-        isheatmap = false;
-        String[] params = line.trim().split(" ");
-        heatwinrate = Double.valueOf(params[1]);
-        Lizzie.frame.repaint();
+      if (isheatmap) {
+        if (line.startsWith(" ")) {
+          try {
+            String[] params = line.trim().split("\\s+");
+            if (params.length == 19) {
+              for (int i = 0; i < params.length; i++) heatcount.add(Integer.parseInt(params[i]));
+            }
+          } catch (Exception ex) {
+          }
+        }
+        if (line.startsWith("winrate:")) {
+          isheatmap = false;
+          String[] params = line.trim().split(" ");
+          heatwinrate = Double.valueOf(params[1]);
+          Lizzie.frame.repaint();
+        }
       }
     }
-     }
   }
   /**
    * Parse a move-data line of Leelaz output
