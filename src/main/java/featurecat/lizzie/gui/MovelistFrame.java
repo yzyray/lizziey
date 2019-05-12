@@ -96,14 +96,23 @@ public class MovelistFrame extends JPanel {
                         == passstep)) {
 
                   double lastwr = 50.0;
-                  lastwr =
-                      Lizzie.board
+                  try {   lastwr = Lizzie.board
                           .getHistory()
                           .getCurrentHistoryNode()
                           .previous()
                           .get()
                           .getData()
-                          .getWinrate();
+                          .bestMoves.get(0).winrate;}
+                  catch (Exception ex)
+                  {
+                	  lastwr = Lizzie.board
+                              .getHistory()
+                              .getCurrentHistoryNode()
+                              .previous()
+                              .get()
+                              .getData()
+                              .getWinrate();
+                  }
                   double wr = 100 - lastwr;
                   int playouts = 0;
                   int previousplayouts = 0;
@@ -182,17 +191,18 @@ public class MovelistFrame extends JPanel {
     tablepanel.add(scrollpane);
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setFillsViewportHeight(true);
-    table.getColumnModel().getColumn(0).setPreferredWidth(37);
-    table.getColumnModel().getColumn(1).setPreferredWidth(36);
-    table.getColumnModel().getColumn(2).setPreferredWidth(41);
-    table.getColumnModel().getColumn(3).setPreferredWidth(82);
-    table.getColumnModel().getColumn(4).setPreferredWidth(58);
-    table.getColumnModel().getColumn(5).setPreferredWidth(65);
-    table.getColumnModel().getColumn(6).setPreferredWidth(70);
+    table.getColumnModel().getColumn(0).setPreferredWidth(52);
+    table.getColumnModel().getColumn(1).setPreferredWidth(50);
+    table.getColumnModel().getColumn(2).setPreferredWidth(57);
+    table.getColumnModel().getColumn(3).setPreferredWidth(72);
+    table.getColumnModel().getColumn(4).setPreferredWidth(77);
+    table.getColumnModel().getColumn(5).setPreferredWidth(74);
+    table.getColumnModel().getColumn(6).setPreferredWidth(76);
+    table.getColumnModel().getColumn(7).setPreferredWidth(71);
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
-        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 11) {
+        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 12) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
       table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
       table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
@@ -201,6 +211,7 @@ public class MovelistFrame extends JPanel {
       table.getColumnModel().getColumn(4).setPreferredWidth(pos.getInt(8));
       table.getColumnModel().getColumn(5).setPreferredWidth(pos.getInt(9));
       table.getColumnModel().getColumn(6).setPreferredWidth(pos.getInt(10));
+      table.getColumnModel().getColumn(7).setPreferredWidth(pos.getInt(11));
     }
 
     JTableHeader header = table.getTableHeader();
@@ -268,9 +279,14 @@ public class MovelistFrame extends JPanel {
                 }
               }
             } else {
-
               if (row >= 0 && col >= 0) {
-                try {
+            	  if(e.getButton() == MouseEvent.BUTTON3)
+            		  try {
+            			  handleTableDoubleClick(row, col);
+                        } catch (Exception ex) {
+                          ex.printStackTrace();
+                        }
+            	  else   try {
                   handleTableClick(row, col);
                 } catch (Exception ex) {
                   ex.printStackTrace();
@@ -419,7 +435,7 @@ public class MovelistFrame extends JPanel {
     return new AbstractTableModel() {
       public int getColumnCount() {
 
-        return 7;
+        return 8;
       }
 
       public int getRowCount() {
@@ -441,10 +457,11 @@ public class MovelistFrame extends JPanel {
         if (column == 0) return "黑白";
         if (column == 1) return "手数";
         if (column == 2) return "坐标";
-        if (column == 3) return "胜率波动(%)";
-        if (column == 4) return "胜率(%)";
-        if (column == 5) return "前一步计算量";
-        if (column == 6) return "计算量";
+        if (column == 3) return "胜率波动";
+        if (column == 4) return "此手胜率";
+        if (column == 5) return "AI胜率";
+        if (column == 6) return "前一步计算量";
+        if (column == 7) return "计算量";
         return "无";
       }
 
@@ -490,10 +507,14 @@ public class MovelistFrame extends JPanel {
                     if (s1.winrate > s2.winrate) return -1;
                   }
                   if (sortnum == 5) {
+                      if (s1.winrate-s1.diffwinrate< s2.winrate-s2.diffwinrate) return 1;
+                      if (s1.winrate-s1.diffwinrate > s2.winrate-s2.diffwinrate) return -1;
+                    }
+                  if (sortnum == 6) {
                     if (s1.previousplayouts < s2.previousplayouts) return 1;
                     if (s1.previousplayouts > s2.previousplayouts) return -1;
                   }
-                  if (sortnum == 6) {
+                  if (sortnum == 7) {
                     if (s1.playouts < s2.playouts) return 1;
                     if (s1.playouts > s2.playouts) return -1;
                   }
@@ -519,10 +540,14 @@ public class MovelistFrame extends JPanel {
                     if (s1.winrate < s2.winrate) return -1;
                   }
                   if (sortnum == 5) {
+                      if (s1.winrate-s1.diffwinrate> s2.winrate-s2.diffwinrate) return 1;
+                      if (s1.winrate-s1.diffwinrate < s2.winrate-s2.diffwinrate) return -1;
+                    }
+                  if (sortnum == 6) {
                     if (s1.previousplayouts > s2.previousplayouts) return 1;
                     if (s1.previousplayouts < s2.previousplayouts) return -1;
                   }
-                  if (sortnum == 6) {
+                  if (sortnum == 7) {
                     if (s1.playouts > s2.playouts) return 1;
                     if (s1.playouts < s2.playouts) return -1;
                   }
@@ -548,8 +573,10 @@ public class MovelistFrame extends JPanel {
           case 4:
             return String.format("%.2f", data.winrate);
           case 5:
-            return data.previousplayouts;
+              return String.format("%.2f", data.winrate-data.diffwinrate);
           case 6:
+            return data.previousplayouts;
+          case 7:
             return data.playouts;
           default:
             return "";
@@ -561,7 +588,7 @@ public class MovelistFrame extends JPanel {
   public static JDialog createBadmovesDialog() {
     // Create and set up the window.
     jf = new JDialog();
-    jf.setTitle("仅记录主分支,B显示/关闭,单击显示紫圈,双击跳转,Q切换总在最前");
+    jf.setTitle("仅记录主分支,B显示/关闭,右键/双击跳转,单击显示紫圈,Q切换总在最前");
 
     jf.addWindowListener(
         new WindowAdapter() {

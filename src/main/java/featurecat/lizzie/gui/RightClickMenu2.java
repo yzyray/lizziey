@@ -81,10 +81,13 @@ public class RightClickMenu2 extends JPopupMenu {
 	    if (boardCoordinates.isPresent()) {
 	      int[] coords = boardCoordinates.get();
 	 int draggedmovenumer = Lizzie.board.getmovenumber(coords);
-	 Lizzie.board.savelist();
-	  Lizzie.board.editmovelistswitch(Lizzie.board.tempmovelist, draggedmovenumer);
-	  Lizzie.board.clear();
-      Lizzie.board.setlist();
+	 
+	 int currentmovenumber=Lizzie.board.getcurrentmovenumber();
+     Lizzie.board.savelistforeditmode();
+     Lizzie.board.editmovelistswitch(Lizzie.board.tempallmovelist, draggedmovenumer);
+     Lizzie.board.clear();
+     Lizzie.board.setlist(Lizzie.board.tempallmovelist);
+     Lizzie.board.goToMoveNumber(currentmovenumber);
   }
   }
 
@@ -93,10 +96,12 @@ public class RightClickMenu2 extends JPopupMenu {
 	    if (boardCoordinates.isPresent()) {
 	      int[] coords = boardCoordinates.get();  
 	    int draggedmovenumer =  Lizzie.board.getmovenumber(coords);
-	    Lizzie.board.savelist();
-	  Lizzie.board.editmovelistdelete(Lizzie.board.tempmovelist, draggedmovenumer);
-	  Lizzie.board.clear();
-      Lizzie.board.setlist();
+	    int currentmovenumber=Lizzie.board.getcurrentmovenumber();
+        Lizzie.board.savelistforeditmode();
+        Lizzie.board.editmovelistdelete(Lizzie.board.tempallmovelist, draggedmovenumer);
+        Lizzie.board.clear();
+        Lizzie.board.setlist(Lizzie.board.tempallmovelist);
+        Lizzie.board.goToMoveNumber(currentmovenumber);
 	    }  
   }
 

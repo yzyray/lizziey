@@ -174,7 +174,7 @@ public class AnalysisFrame extends JPanel {
 
     public Component getTableCellRendererComponent(
         JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-      // if(row%2 == 0){
+      // if(row%2 == 0){    	
       if (Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 0).toString())[0]
               == Lizzie.frame.suggestionclick[0]
           && Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 0).toString())[1]
@@ -258,7 +258,13 @@ public class AnalysisFrame extends JPanel {
       }
 
       public int getRowCount() {
-        return Lizzie.board.getData().bestMoves.size();
+    	  int rownum=0;
+          for (int i = 0; i < Lizzie.board.getData().bestMoves.size(); i++) {
+          	if(!Lizzie.board.getData().bestMoves.get(i).coordinate.contains("ass"))        		
+          		rownum++;
+          
+          }
+        return rownum;
       }
 
       public String getColumnName(int column) {
@@ -274,8 +280,9 @@ public class AnalysisFrame extends JPanel {
       public Object getValueAt(int row, int col) {
         ArrayList<MoveData> data2 = new ArrayList<MoveData>();
         for (int i = 0; i < Lizzie.board.getData().bestMoves.size(); i++) {
-
+        	if(!Lizzie.board.getData().bestMoves.get(i).coordinate.contains("ass"))        		
           data2.add(Lizzie.board.getData().bestMoves.get(i));
+        
         }
 
         //		Collections.sort(data2) ;

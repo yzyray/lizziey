@@ -254,6 +254,7 @@ public class Leelaz {
     synchronized (this) {
       if (printCommunication || gtpConsole) {
         if (line.startsWith("info")) {
+       // 	Lizzie.gtpConsole.addLineforce(line);
         } else {
           Lizzie.gtpConsole.addLine(line);
         }

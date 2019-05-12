@@ -32,6 +32,7 @@ public class Board implements LeelazListener {
   public ArrayList<Boolean> insertoriisblack = new ArrayList<Boolean>();
   public int[] mvnumber = new int[361];
   public ArrayList<Movelist> tempmovelist;
+  public ArrayList<Movelist> tempmovelist2;
   public ArrayList<Movelist> tempallmovelist;
   public ArrayList<Movelistwr> movelistwr = new ArrayList<Movelistwr>();
 
@@ -43,6 +44,8 @@ public class Board implements LeelazListener {
   private boolean scoreMode;
   private boolean analysisMode;
   private int playoutsAnalysis;
+  public String boardstatbeforeedit="";
+  public String boardstatafteredit="";
 
   // Save the node for restore move when in the branch
   private Optional<BoardHistoryNode> saveNode;
@@ -216,12 +219,60 @@ public class Board implements LeelazListener {
 
   public ArrayList<Movelist> savelistforeditmode() {
     // System.out.println("保存board");
-    tempmovelist = getmovelist();
+   // tempmovelist = getmovelist();
+	  if(boardstatbeforeedit=="")
+	  {try {
+		  boardstatbeforeedit = SGFParser.saveToString();
+	    } catch (IOException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+	    }
+	  tempmovelist=getmovelist();
+	  }
     tempallmovelist = getallmovelist();
-    clear();
-    setlist();
+    boardstatafteredit="";
+    tempmovelist2=new ArrayList<Movelist>();
+    		
+   // clear();
+  //  setlist();
     return tempmovelist;
   }
+  
+  public void cleanedit() {
+		  if(boardstatbeforeedit!="")
+		  {try {
+			  boardstatafteredit = SGFParser.saveToString();
+		    } catch (IOException e) {
+		      // TODO Auto-generated catch block
+		      e.printStackTrace();
+		    }
+		  tempmovelist2=getmovelist();
+		  }
+		  clear();
+		 SGFParser.loadFromString(boardstatbeforeedit);
+	    setlist(tempmovelist);
+	    boardstatbeforeedit="";
+	    tempmovelist=new ArrayList<Movelist>();
+	    return ;
+	  }
+  
+  public void reedit() {
+		  if(boardstatafteredit!="")
+		  {try {
+			  boardstatbeforeedit = SGFParser.saveToString();
+		    } catch (IOException e) {
+		      // TODO Auto-generated catch block
+		      e.printStackTrace();
+		    }
+		  tempmovelist=getmovelist();
+		  }
+		  clear();
+		 SGFParser.loadFromString(boardstatafteredit);
+	    setlist(tempmovelist2);
+	    boardstatafteredit="";
+	    tempmovelist2.clear();
+	    return ;
+	  }
 
   public void resetlistforeditmode() {
 
@@ -244,11 +295,15 @@ public class Board implements LeelazListener {
     setmovelist(tempmovelist);
   }
 
-  public void setlist() {
+  public void setlist(ArrayList<Movelist> list) {
     // System.out.println("恢复board不恢复branch");
-    setmovelist(tempmovelist);
+    setmovelist(list);
   }
 
+  public void setlist() {
+	    // System.out.println("恢复board不恢复branch");
+	    setmovelist(tempmovelist);
+	  }
   /**
    * Open board again when the SZ property is setup by sgf
    *
@@ -415,6 +470,16 @@ public class Board implements LeelazListener {
     int lenth = movelist.size();
     movelist.get(lenth - movenum).isblack = !movelist.get(lenth - movenum).isblack;
   }
+  
+  public void editmovelistadd(ArrayList<Movelist> movelist, int movenum,int x, int y,boolean isblack) {
+	    int lenth = movelist.size();
+	    Movelist mv =new Movelist();
+	    mv.isblack=isblack;
+	    mv.x=x;
+	    mv.y=y;
+	    mv.movenum=movenum+1;
+	    movelist.add(lenth - movenum, mv);  
+	  }
 
   public void editmovelistdelete(ArrayList<Movelist> movelist, int movenum) {
     int lenth = movelist.size();
@@ -882,14 +947,23 @@ public class Board implements LeelazListener {
           && !(Lizzie.board.getHistory().getCurrentHistoryNode().getData().lastMove == passstep)) {
 
         double lastwr = 50.0;
-        lastwr =
-            Lizzie.board
+        try {   lastwr = Lizzie.board
                 .getHistory()
                 .getCurrentHistoryNode()
                 .previous()
                 .get()
                 .getData()
-                .getWinrate();
+                .bestMoves.get(0).winrate;}
+        catch (Exception ex)
+        {
+      	  lastwr = Lizzie.board
+                    .getHistory()
+                    .getCurrentHistoryNode()
+                    .previous()
+                    .get()
+                    .getData()
+                    .getWinrate();
+        }
         double wr = 100 - lastwr;
         int playouts = 0;
         int previousplayouts = 0;
@@ -1251,14 +1325,23 @@ public class Board implements LeelazListener {
           && !(Lizzie.board.getHistory().getCurrentHistoryNode().getData().lastMove == passstep)) {
 
         double lastwr = 50.0;
-        lastwr =
-            Lizzie.board
+        try {   lastwr = Lizzie.board
                 .getHistory()
                 .getCurrentHistoryNode()
                 .previous()
                 .get()
                 .getData()
-                .getWinrate();
+                .bestMoves.get(0).winrate;}
+        catch (Exception ex)
+        {
+      	  lastwr = Lizzie.board
+                    .getHistory()
+                    .getCurrentHistoryNode()
+                    .previous()
+                    .get()
+                    .getData()
+                    .getWinrate();
+        }
         double wr = 100 - lastwr;
         int playouts = 0;
         int previousplayouts = 0;

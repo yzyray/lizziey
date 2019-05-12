@@ -310,7 +310,6 @@ public class LizzieFrame extends JFrame {
 
     isshowrightmenu = true;
 
-    if (featurecat.lizzie.gui.Input.Draggedmode) {
       int[] coords = boardCoordinates.get();
 
       if (Lizzie.board.getstonestat(coords) == Stone.BLACK
@@ -327,7 +326,7 @@ public class LizzieFrame extends JFrame {
             50);
         return;
       }
-    }
+      else {
     RightClickMenu.Store(x, y);
     Timer timer = new Timer();
     timer.schedule(
@@ -340,6 +339,7 @@ public class LizzieFrame extends JFrame {
         50);
     // System.out.println("弹出右键菜单");
     //  RightClickMenu.show(this, x, y);
+  }
   }
 
   public void showmenu(int x, int y) {
@@ -1466,6 +1466,13 @@ public class LizzieFrame extends JFrame {
       // 增加判断是否为插入模式
 
       int[] coords = boardCoordinates.get();
+        startcoords[0] = coords[0];
+        startcoords[1] = coords[1];     
+        draggedstone = Lizzie.board.getstonestat(coords);
+      if (draggedstone == Stone.BLACK || draggedstone == Stone.WHITE) {      	
+      	 draggedmovenumer = Lizzie.board.getmovenumber(coords);
+      	 featurecat.lizzie.gui.Input.Draggedmode=true;
+      } 
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
       if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay))
         Lizzie.board.place(coords[0], coords[1]);
@@ -1542,6 +1549,15 @@ public class LizzieFrame extends JFrame {
     }
     return "N";
   }
+  
+  public int[] convertmousexytocoords(int x, int y) {
+	    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+	    if (boardCoordinates.isPresent()) {
+	      int[] coords = boardCoordinates.get();
+	      return coords;
+	    }
+	    return this.outOfBoundCoordinate;
+	  }
 
   public void onDoubleClicked(int x, int y) {
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
@@ -1868,22 +1884,6 @@ public class LizzieFrame extends JFrame {
     thread.start();
   }
 
-  public void DraggedPress(int x, int y) {
-    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
-    if (boardCoordinates.isPresent()) {
-      int[] coords = boardCoordinates.get();
-      startcoords[0] = coords[0];
-      startcoords[1] = coords[1];
-      draggedstone = Lizzie.board.getstonestat(coords);
-      draggedmovenumer = Lizzie.board.getmovenumber(coords);
-    }
-    if (draggedstone == Stone.BLACK || draggedstone == Stone.WHITE) {
-      Lizzie.board.savelist();
-    } else {
-      draggedstone = Stone.EMPTY;
-      Lizzie.frame.insertMove(x, y);
-    }
-  }
 
   public void DraggedMoved(int x, int y) {
     if (RightClickMenu.isVisible() || RightClickMenu2.isVisible()) {
@@ -1935,11 +1935,13 @@ public class LizzieFrame extends JFrame {
           draggedstone = Stone.EMPTY;
           return;
         }
+        int currentmovenumber=Lizzie.board.getcurrentmovenumber();
+        Lizzie.board.savelistforeditmode();
         Lizzie.board.editmovelist(
-            Lizzie.board.tempmovelist, draggedmovenumer, coords[0], coords[1]);
-
+            Lizzie.board.tempallmovelist, draggedmovenumer, coords[0], coords[1]);
         Lizzie.board.clear();
-        Lizzie.board.setlist();
+        Lizzie.board.setlist(Lizzie.board.tempallmovelist);
+        Lizzie.board.goToMoveNumber(currentmovenumber);
         repaint();
       }
     } else {
@@ -1947,9 +1949,15 @@ public class LizzieFrame extends JFrame {
         int option =
             JOptionPane.showConfirmDialog(this, "是否删除该棋子? ", "提示 ", JOptionPane.YES_NO_OPTION);
         if (option == JOptionPane.YES_OPTION) {
-          Lizzie.board.editmovelistdelete(Lizzie.board.tempmovelist, draggedmovenumer);
-          Lizzie.board.clear();
-          Lizzie.board.setlist();
+        	  int currentmovenumber=Lizzie.board.getcurrentmovenumber();
+              Lizzie.board.savelistforeditmode();
+              Lizzie.board.editmovelistdelete(Lizzie.board.tempallmovelist, draggedmovenumer);
+              Lizzie.board.clear();
+              Lizzie.board.setlist(Lizzie.board.tempallmovelist);
+              Lizzie.board.goToMoveNumber(currentmovenumber);
+              repaint();
+        
+         
           repaint();
         } else {
 
@@ -1959,5 +1967,6 @@ public class LizzieFrame extends JFrame {
 
     boardRenderer.removedrawmovestone();
     draggedstone = Stone.EMPTY;
+    featurecat.lizzie.gui.Input.Draggedmode=false;
   }
 }
