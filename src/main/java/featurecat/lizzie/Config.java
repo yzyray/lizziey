@@ -557,8 +557,8 @@ public class Config {
         featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(5).getWidth());
     badmoveslistPos.put(
         featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(6).getWidth());
-        badmoveslistPos.put(
-                featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(7).getWidth());
+    badmoveslistPos.put(
+        featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(7).getWidth());
     persistedUi.put("badmoves-list-position", badmoveslistPos);
 
     JSONArray movecountPos = new JSONArray();

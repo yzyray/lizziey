@@ -95,21 +95,22 @@ public class MovelistFrame extends JPanel {
                     && !(Lizzie.board.getHistory().getCurrentHistoryNode().getData().lastMove
                         == passstep)) {
 
-                  double lastwr = -99.0;                  
-                  try {   lastwr = Lizzie.board
-                          .getHistory()
-                          .getCurrentHistoryNode()
-                          .previous()
-                          .get()
-                          .getData()
-                          .bestMoves.get(0).winrate;
+                  double lastwr = -99.0;
+                  try {
+                    lastwr =
+                        Lizzie.board
+                            .getHistory()
+                            .getCurrentHistoryNode()
+                            .previous()
+                            .get()
+                            .getData()
+                            .bestMoves
+                            .get(0)
+                            .winrate;
+                  } catch (Exception ex) {
                   }
-                  catch (Exception ex)
-                  {
-                  }
-                  if(lastwr==-99.0)
-                  {
-                	  return;
+                  if (lastwr == -99.0) {
+                    return;
                   }
                   double wr = 100 - lastwr;
                   int playouts = 0;
@@ -154,26 +155,23 @@ public class MovelistFrame extends JPanel {
                   boolean isblack =
                       !Lizzie.board.getHistory().getCurrentHistoryNode().getData().blackToPlay;
 
-                  boolean isupdate =false;
+                  boolean isupdate = false;
                   if (!Lizzie.board.movelistwr.isEmpty()) {
-                      for (int i=0;i<Lizzie.board.movelistwr.size();i++)
-                      {
-                    	  if(Lizzie.board.movelistwr.get(i).movenum==movenumer)
-                    	  {
-                    		  Lizzie.board.movelistwr.get(i).diffwinrate = diffwinrate;
-                              Lizzie.board.movelistwr.get(i).winrate = wr;
-                              Lizzie.board.movelistwr.get(i).coords = coords;
-                              Lizzie.board.movelistwr.get(i).isblack = isblack;
-                              Lizzie.board.movelistwr.get(i).playouts = playouts;
-                              Lizzie.board.movelistwr.get(i).movenum = movenumer;
-                              Lizzie.board.movelistwr.get(i).previousplayouts =
-                                  previousplayouts;
-                              Lizzie.board.movelistwr.get(i).isdelete = false;
-                              isupdate=true;
-                    	  }
-                      }                   
+                    for (int i = 0; i < Lizzie.board.movelistwr.size(); i++) {
+                      if (Lizzie.board.movelistwr.get(i).movenum == movenumer) {
+                        Lizzie.board.movelistwr.get(i).diffwinrate = diffwinrate;
+                        Lizzie.board.movelistwr.get(i).winrate = wr;
+                        Lizzie.board.movelistwr.get(i).coords = coords;
+                        Lizzie.board.movelistwr.get(i).isblack = isblack;
+                        Lizzie.board.movelistwr.get(i).playouts = playouts;
+                        Lizzie.board.movelistwr.get(i).movenum = movenumer;
+                        Lizzie.board.movelistwr.get(i).previousplayouts = previousplayouts;
+                        Lizzie.board.movelistwr.get(i).isdelete = false;
+                        isupdate = true;
+                      }
+                    }
                   }
-            if(!isupdate) {
+                  if (!isupdate) {
                     Movelistwr mv = new Movelistwr();
                     mv.diffwinrate = diffwinrate;
                     mv.winrate = wr;
@@ -281,17 +279,18 @@ public class MovelistFrame extends JPanel {
               }
             } else {
               if (row >= 0 && col >= 0) {
-            	  if(e.getButton() == MouseEvent.BUTTON3)
-            		  try {
-            			  handleTableDoubleClick(row, col);
-                        } catch (Exception ex) {
-                          ex.printStackTrace();
-                        }
-            	  else   try {
-                  handleTableClick(row, col);
-                } catch (Exception ex) {
-                  ex.printStackTrace();
-                }
+                if (e.getButton() == MouseEvent.BUTTON3)
+                  try {
+                    handleTableDoubleClick(row, col);
+                  } catch (Exception ex) {
+                    ex.printStackTrace();
+                  }
+                else
+                  try {
+                    handleTableClick(row, col);
+                  } catch (Exception ex) {
+                    ex.printStackTrace();
+                  }
               }
             }
           }
@@ -508,9 +507,9 @@ public class MovelistFrame extends JPanel {
                     if (s1.winrate > s2.winrate) return -1;
                   }
                   if (sortnum == 5) {
-                      if (s1.winrate-s1.diffwinrate< s2.winrate-s2.diffwinrate) return 1;
-                      if (s1.winrate-s1.diffwinrate > s2.winrate-s2.diffwinrate) return -1;
-                    }
+                    if (s1.winrate - s1.diffwinrate < s2.winrate - s2.diffwinrate) return 1;
+                    if (s1.winrate - s1.diffwinrate > s2.winrate - s2.diffwinrate) return -1;
+                  }
                   if (sortnum == 6) {
                     if (s1.previousplayouts < s2.previousplayouts) return 1;
                     if (s1.previousplayouts > s2.previousplayouts) return -1;
@@ -541,9 +540,9 @@ public class MovelistFrame extends JPanel {
                     if (s1.winrate < s2.winrate) return -1;
                   }
                   if (sortnum == 5) {
-                      if (s1.winrate-s1.diffwinrate> s2.winrate-s2.diffwinrate) return 1;
-                      if (s1.winrate-s1.diffwinrate < s2.winrate-s2.diffwinrate) return -1;
-                    }
+                    if (s1.winrate - s1.diffwinrate > s2.winrate - s2.diffwinrate) return 1;
+                    if (s1.winrate - s1.diffwinrate < s2.winrate - s2.diffwinrate) return -1;
+                  }
                   if (sortnum == 6) {
                     if (s1.previousplayouts > s2.previousplayouts) return 1;
                     if (s1.previousplayouts < s2.previousplayouts) return -1;
@@ -574,7 +573,7 @@ public class MovelistFrame extends JPanel {
           case 4:
             return String.format("%.2f", data.winrate);
           case 5:
-              return String.format("%.2f", data.winrate-data.diffwinrate);
+            return String.format("%.2f", data.winrate - data.diffwinrate);
           case 6:
             return data.previousplayouts;
           case 7:
