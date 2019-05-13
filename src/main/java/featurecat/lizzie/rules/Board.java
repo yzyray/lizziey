@@ -40,16 +40,12 @@ public class Board implements LeelazListener {
   private static final String alphabet = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
 
   private BoardHistoryList history;
-  private BoardHistoryList temphistory;
   private Stone[] capturedStones;
   private boolean scoreMode;
   private boolean analysisMode;
   private int playoutsAnalysis;
   public String boardstatbeforeedit = "";
   public String boardstatafteredit = "";
-  private boolean firstedit=true;
-  public String boardstatbeforeeditfirst = "";
-  public ArrayList<Movelist> tempmovelistfirst;
 
   // Save the node for restore move when in the branch
   private Optional<BoardHistoryNode> saveNode;
@@ -234,12 +230,6 @@ public class Board implements LeelazListener {
       }
       tempmovelist = getmovelist();
     }
-    if(firstedit)
-    {
-    	firstedit=false;
-    	 tempmovelistfirst = getmovelist();
-    	 boardstatbeforeeditfirst=boardstatbeforeedit;
-    }
     tempallmovelist = getallmovelist();
     boardstatafteredit = "";
     tempmovelist2 = new ArrayList<Movelist>();
@@ -248,24 +238,13 @@ public class Board implements LeelazListener {
     //  setlist();
     return tempmovelist;
   }
-  
-  public void cleaneditall() {
-	    if (boardstatbeforeeditfirst != "") {
-	      try {
-	        boardstatafteredit = SGFParser.saveToString();
-	      } catch (IOException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	      }
-	      tempmovelist2 = getmovelist();
-	    }
-	    clear();
-	    SGFParser.loadFromString(boardstatbeforeeditfirst);
-	    setlist(tempmovelistfirst);
-	    boardstatbeforeedit = "";
-	    tempmovelist = new ArrayList<Movelist>();
-	    return;
-	  }
+
+  public void cleanedittemp() {
+    boardstatbeforeedit = "";
+    boardstatafteredit = "";
+    tempmovelist2 = new ArrayList<Movelist>();
+    tempmovelist = new ArrayList<Movelist>();
+  }
 
   public void cleanedit() {
     if (boardstatbeforeedit != "") {
@@ -302,8 +281,6 @@ public class Board implements LeelazListener {
     tempmovelist2.clear();
     return;
   }
-  
-  
 
   public void resetlistforeditmode() {
 
@@ -1800,6 +1777,7 @@ public class Board implements LeelazListener {
     Lizzie.frame.resetTitle();
     Lizzie.frame.clear();
     movelistwr.clear();
+    cleanedittemp();
     initialize();
   }
 

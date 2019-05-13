@@ -27,7 +27,7 @@ public class RightClickMenu extends JPopupMenu {
   private static JMenuItem cancelavoid;
   private static JMenuItem reedit;
   private static JMenuItem cleanupedit;
-  private static JMenuItem cleanalledit;
+  private static JMenuItem cleanedittemp;
   public static String allowcoords = "";
   public static String avoidcoords = "";
   public static int move = 0;
@@ -72,10 +72,13 @@ public class RightClickMenu extends JPopupMenu {
             }
            if(Lizzie.board.boardstatbeforeedit=="")
            {
-        	   cleanupedit.setVisible(false);
+        	   cleanupedit.setVisible(false);     
+        	   if(Lizzie.board.boardstatafteredit=="")
+        	   { cleanedittemp.setVisible(false);}
            }
            else {
         	   cleanupedit.setVisible(true);
+        	   cleanedittemp.setVisible(true);
            }
            if(Lizzie.board.boardstatafteredit=="")
            {
@@ -83,9 +86,8 @@ public class RightClickMenu extends JPopupMenu {
            }
            else {
         	   reedit.setVisible(true);
-           }
-            
-            
+        	   cleanedittemp.setVisible(true);
+           }        
           }
         };
 
@@ -101,7 +103,7 @@ public class RightClickMenu extends JPopupMenu {
     avoid = new JMenuItem("不分析此点(强制)");
     avoid2 = new JMenuItem("设置不分析持续手数");
     cancelavoid = new JMenuItem("清除分析设置");
-    cleanalledit  = new JMenuItem("清除所有编辑");
+    cleanedittemp  = new JMenuItem("清除编辑缓存");
     //  test=new JMenuItem("测试删除棋子");
     //  test2=new JMenuItem("测试恢复棋盘状态");
     reedit = new JMenuItem("恢复到编辑后");
@@ -113,18 +115,19 @@ public class RightClickMenu extends JPopupMenu {
     this.add(avoid);
     this.add(avoid2);
     this.add(cancelavoid);
+    this.add(cleanedittemp);
     this.add(addblack);
-    this.add(addwhite);
+    this.add(addwhite);    
     this.add(reedit);
     this.add(cleanupedit);
-    this.add(cleanalledit);
 
-    cleanalledit.addActionListener(
+
+    cleanedittemp.addActionListener(
             new ActionListener() {
               @Override
               public void actionPerformed(ActionEvent e) {
                 //  System.out.println("撤销上次编辑");
-            	  cleanalledit();
+            	  cleanedittemp();
               }
             });
     
@@ -221,9 +224,9 @@ public class RightClickMenu extends JPopupMenu {
 
   
   
-  private void cleanalledit() {
-	  Lizzie.board.cleanalledit();
-	  }
+  private void cleanedittemp() {
+	Lizzie.board.cleanedittemp();
+  }
   
   private void reedit() {
   Lizzie.board.reedit();
