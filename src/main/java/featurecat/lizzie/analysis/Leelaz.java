@@ -41,6 +41,26 @@ public class Leelaz {
   public ArrayList<Integer> heatcount = new ArrayList<Integer>();
   public double heatwinrate;
   public Process process;
+  public Process process1;
+  public Process process2;
+  public Process process3;
+  public Process process4;
+  public Process process5;
+  public Process process6;
+  public Process process7;
+  public Process process8;
+  public Process process9;
+  
+  private boolean isprostart=false;
+  private boolean ispro1start=false;
+  private boolean ispro2start=false;
+  private boolean ispro3start=false;
+  private boolean ispro4start=false;
+  private boolean ispro5start=false;
+  private boolean ispro6start=false;
+  private boolean ispro7start=false;
+  private boolean ispro8start=false;
+  private boolean ispro9start=false;
 
   private BufferedInputStream inputStream;
   private BufferedOutputStream outputStream;
@@ -123,7 +143,6 @@ public class Leelaz {
 
     commands = splitCommand(engineCommand);
 
-    // Get weight name
     Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
     Matcher wMatcher = wPattern.matcher(engineCommand);
     if (wMatcher.matches() && wMatcher.groupCount() == 2) {
@@ -134,50 +153,81 @@ public class Leelaz {
           Lizzie.config.leelazConfig.optString(
               "enginename" + String.valueOf(index + 1), currentWeight);
     }
-
-    // Check if engine is present
-    // Commented for remote ssh. TODO keep or remove this code?
-    //    File startfolder = new File(config.optString("engine-start-location", "."));
-    //    File lef = startfolder.toPath().resolve(new File(commands.get(0)).toPath()).toFile();
-    //    System.out.println(lef.getPath());
-    //    if (!lef.exists()) {
-    //      JOptionPane.showMessageDialog(
-    //          null,
-    //          resourceBundle.getString("LizzieFrame.display.leelaz-missing"),
-    //          "Lizzie - Error!",
-    //          JOptionPane.ERROR_MESSAGE);
-    //      throw new IOException("engine not present");
-    //    }
-
-    // Check if network file is present
-    //    File wf = startfolder.toPath().resolve(new File(currentWeightFile).toPath()).toFile();
-    //    if (!wf.exists()) {
-    //      JOptionPane.showMessageDialog(
-    //          null, resourceBundle.getString("LizzieFrame.display.network-missing"));
-    //      throw new IOException("network-file not present");
-    //    }
-
-    // run leelaz
+    
+  
 
     ProcessBuilder processBuilder = new ProcessBuilder(commands);
-    // Commented for remote ssh
-    //    processBuilder.directory(startfolder);
     processBuilder.redirectErrorStream(true);
-    process = processBuilder.start();
+    switch (index)
+	  {
+	  case 0:  
+		  process = processBuilder.start();
+		  isprostart=true;
+		  break;
+	  case 1:	
+		  process1 = processBuilder.start();
+		  ispro1start=true;		
+		  break;
+	  case 2:
+		  process2 = processBuilder.start();
+		  ispro2start=true;
+		  break;
+	  case 3:
+		  process3 = processBuilder.start();
+		  ispro3start=true;
+		  break;
+	  case 4:
+		  process4 = processBuilder.start();
+		  ispro4start=true;
+		  break;
+	  case 5:
+		  process5 = processBuilder.start();
+		  ispro5start=true;
+		  break;
+	  case 6:
+		  process6 = processBuilder.start();
+		  ispro6start=true;
+		  break;
+	  case 7:
+		  process7 = processBuilder.start();
+		  ispro7start=true;
+		  break;
+	  case 8:
+		  process8 = processBuilder.start();
+		  ispro8start=true;
+		  break;
+	  case 9:
+		  process9 = processBuilder.start();
+		  ispro9start=true;
+		  break;
+	  }
+    initializeStreams(index);
 
-    initializeStreams();
-
-    // Send a version request to check that we have a supported version
-    // Response handled in parseLine
     isCheckingVersion = true;
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
 
-    // start a thread to continuously read Leelaz output
-    // new Thread(this::read).start();
-    // can stop engine for switching weights
     executor = Executors.newSingleThreadScheduledExecutor();
     executor.execute(this::read);
+  }
+  
+  
+  private boolean isEngineAlive(int index)
+  {
+	  switch (index)
+	  {
+	  case 0:return(isprostart&&process.isAlive());	  
+	  case 1:return(ispro1start&&process1.isAlive());
+	  case 2:return(ispro2start&&process2.isAlive());
+	  case 3:return(ispro3start&&process3.isAlive());
+	  case 4:return(ispro4start&&process4.isAlive());
+	  case 5:return(ispro5start&&process5.isAlive());
+	  case 6:return(ispro6start&&process6.isAlive());
+	  case 7:return(ispro7start&&process7.isAlive());
+	  case 8:return(ispro8start&&process8.isAlive());
+	  case 9:return(ispro9start&&process9.isAlive());
+	  }
+	  return false;
   }
 
   public void restartEngine(String engineCommand, int index) throws IOException {
@@ -186,15 +236,25 @@ public class Leelaz {
     }
     switching = true;
     this.engineCommand = engineCommand;
+    sendCommand("name");
     // stop the ponder
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.togglePonder();
     }
-    normalQuit();
+    if(isEngineAlive(index))//需要添加判断,对应index的进程知否初始化并且alive
+    {
+    	sendCommand("name");
+    	reinitializeStreams(index);
+    }
+    else {
+    //normalQuit();
+    	sendCommand("name");
     startEngine(engineCommand, index);
+    }
     currentEngineN = index;
     togglePonder();
   }
+  
 
   public void normalQuit() {
     sendCommand("quit");
@@ -213,10 +273,68 @@ public class Leelaz {
   }
 
   /** Initializes the input and output streams */
-  private void initializeStreams() {
+  private void initializeStreams(int index) {
+	  
+	  switch (index)
+	  {
+	  case 0:
+		  inputStream = new BufferedInputStream(process.getInputStream());
+		  outputStream = new BufferedOutputStream(process.getOutputStream());
+		  break;
+	  case 1:
+		  inputStream = new BufferedInputStream(process1.getInputStream());
+		  outputStream = new BufferedOutputStream(process1.getOutputStream());
+		  break;
+	  case 2:
+		  inputStream = new BufferedInputStream(process2.getInputStream());
+		  outputStream = new BufferedOutputStream(process2.getOutputStream());
+		  break;
+	  case 3:
+		  inputStream = new BufferedInputStream(process3.getInputStream());
+		  outputStream = new BufferedOutputStream(process3.getOutputStream());
+		  break;
+	  case 4:
+		  inputStream = new BufferedInputStream(process4.getInputStream());
+		  outputStream = new BufferedOutputStream(process4.getOutputStream());
+		  break;
+	  case 5:
+		  inputStream = new BufferedInputStream(process5.getInputStream());
+		  outputStream = new BufferedOutputStream(process5.getOutputStream());
+		  break;
+	  case 6:
+		  inputStream = new BufferedInputStream(process6.getInputStream());
+		  outputStream = new BufferedOutputStream(process6.getOutputStream());
+		  break;
+	  case 7:
+		  inputStream = new BufferedInputStream(process7.getInputStream());
+		  outputStream = new BufferedOutputStream(process7.getOutputStream());
+		  break;
+	  case 8:
+		  inputStream = new BufferedInputStream(process8.getInputStream());
+		  outputStream = new BufferedOutputStream(process8.getOutputStream());
+		  break;
+	  case 9:
+		  inputStream = new BufferedInputStream(process9.getInputStream());
+		  outputStream = new BufferedOutputStream(process9.getOutputStream());
+		  break;
+	  }	  
+	  }
+  
+  private void reinitializeStreams(int index) {
+	  
+	  
+	  if (index==1)
+	  {
+		  inputStream = new BufferedInputStream(process1.getInputStream());
+		    outputStream = new BufferedOutputStream(process1.getOutputStream());
+		  
+	  }
+	  else{
     inputStream = new BufferedInputStream(process.getInputStream());
     outputStream = new BufferedOutputStream(process.getOutputStream());
-  }
+  
+	  }
+	  }
 
   public static List<MoveData> parseInfo(String line) {
     List<MoveData> bestMoves = new ArrayList<>();
