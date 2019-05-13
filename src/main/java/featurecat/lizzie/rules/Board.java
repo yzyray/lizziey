@@ -180,21 +180,25 @@ public class Board implements LeelazListener {
     return c != null && c.length == 2 && isValid(c[0], c[1]);
   }
 
-  public void clearbestmovesafter(BoardHistoryNode node) {
 
+  public void clearbestmovesafter(BoardHistoryNode node,int movenumber) {
+if(node.isMainTrunk()&&node.getData().moveNumber<movenumber)
     node.getData().setPlayoutsForce(1);
+else
+	node.getData().setPlayoutsForce(0);
     if (node.numberOfChildren() > 1) {
       // Variation
       for (BoardHistoryNode sub : node.getVariations()) {
-        clearbestmovesafter(sub);
+        clearbestmovesafter(sub,movenumber);
       }
     } else if (node.numberOfChildren() == 1) {
-      clearbestmovesafter(node.next().orElse(null));
+      clearbestmovesafter(node.next().orElse(null),movenumber);
     }
   }
+  
 
   public void clearbestmoves() {
-    history.getCurrentHistoryNode().getData().setPlayoutsForce(1);
+    history.getCurrentHistoryNode().getData().setPlayoutsForce(0);
   }
 
   public void savelist() {
