@@ -212,97 +212,10 @@ public class Leelaz {
     isCheckingVersion = true;
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
-//
-//    switch (index) {
-//    case 0:
         executor = Executors.newSingleThreadScheduledExecutor();
-        executor.execute(this::read);        
-//      break;
-//    case 1:
-//        executor1 = Executors.newSingleThreadScheduledExecutor();
-//        executor1.execute(this::read);
-//      break;
-//    case 2:
-//        executor2 = Executors.newSingleThreadScheduledExecutor();
-//        executor2.execute(this::read);
-//      break;
-//    case 3:
-//        executor3 = Executors.newSingleThreadScheduledExecutor();
-//        executor3.execute(this::read);
-//      break;
-//    case 4:
-//        executor4= Executors.newSingleThreadScheduledExecutor();
-//        executor4.execute(this::read);
-//      break;
-//    case 5:
-//        executor5 = Executors.newSingleThreadScheduledExecutor();
-//        executor5.execute(this::read);
-//      break;
-//    case 6:
-//        executor6 = Executors.newSingleThreadScheduledExecutor();
-//        executor6.execute(this::read);
-//      break;
-//    case 7:
-//        executor7 = Executors.newSingleThreadScheduledExecutor();
-//        executor7.execute(this::read);
-//      break;
-//    case 8:
-//        executor8 = Executors.newSingleThreadScheduledExecutor();
-//        executor8.execute(this::read);
-//      break;
-//    case 9:
-//        executor9 = Executors.newSingleThreadScheduledExecutor();
-//        executor9.execute(this::read);
-//      break;
-//    }
+        executor.execute(this::read);       
   }
 
-//  public boolean isEngineBusy(int index) {
-//	  switch (index) {
-//      case 0:
-//    	  if(isprostart)
-//        return (!executor.isShutdown());
-//    	  return false;
-//      case 1:
-//    	  if(ispro1start)
-//    		  return (!executor1.isShutdown());
-//    	    	  return false;
-//    	 
-//      case 2:
-//    	  if(ispro2start)
-//    	  return (!executor2.isShutdown());
-//    	  return false;
-//      case 3:
-//    	  if(ispro3start)
-//    	  return (!executor3.isShutdown());
-//    	  return false;
-//      case 4:
-//    	  if(ispro4start)
-//    	  return (!executor4.isShutdown());
-//    	  return false;
-//      case 5:
-//    	  if(ispro5start)
-//    	  return (!executor5.isShutdown());
-//    	  return false;
-//      case 6:
-//    	  if(ispro6start)
-//    	  return (!executor6.isShutdown());
-//    	  return false;
-//      case 7:
-//    	  if(ispro7start)
-//    	  return (!executor7.isShutdown());
-//    	  return false;
-//      case 8:
-//    	  if(ispro8start)
-//    	  return (!executor8.isShutdown());
-//    	  return false;
-//      case 9:
-//    	  if(ispro9start)
-//    	  return (!executor9.isShutdown());
-//    	  return false;
-//  }
-//  return true;
-//  }
   private boolean isEngineAlive(int index) {
     switch (index) {
       case 0:
@@ -473,49 +386,8 @@ public class Leelaz {
     isCheckingVersion = true;
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
-//    switch (index) {
-//    case 0:    	
         executor = Executors.newSingleThreadScheduledExecutor();
         executor.execute(this::read);
-//      break;
-//    case 1:
-//        executor1 = Executors.newSingleThreadScheduledExecutor();
-//        executor1.execute(this::read);
-//      break;
-//    case 2:
-//        executor2 = Executors.newSingleThreadScheduledExecutor();
-//        executor2.execute(this::read);
-//      break;
-//    case 3:
-//        executor3 = Executors.newSingleThreadScheduledExecutor();
-//        executor3.execute(this::read);
-//      break;
-//    case 4:
-//        executor4= Executors.newSingleThreadScheduledExecutor();
-//        executor4.execute(this::read);
-//      break;
-//    case 5:
-//        executor5 = Executors.newSingleThreadScheduledExecutor();
-//        executor5.execute(this::read);
-//      break;
-//    case 6:
-//        executor6 = Executors.newSingleThreadScheduledExecutor();
-//        executor6.execute(this::read);
-//      break;
-//    case 7:
-//        executor7 = Executors.newSingleThreadScheduledExecutor();
-//        executor7.execute(this::read);
-//      break;
-//    case 8:
-//        executor8 = Executors.newSingleThreadScheduledExecutor();
-//        executor8.execute(this::read);
-//      break;
-//    case 9:
-//        executor9 = Executors.newSingleThreadScheduledExecutor();
-//        executor9.execute(this::read);
-//      break;
-//  }
-
   }
 
   public static List<MoveData> parseInfo(String line) {
