@@ -257,8 +257,8 @@ public class Board implements LeelazListener {
       }
       tempmovelist2 = getmovelist();
     }
-    clear();
-    SGFParser.loadFromString(boardstatbeforeedit);
+    clearforedit();
+    SGFParser.loadFromStringforedit(boardstatbeforeedit);
     setlist(tempmovelist);
     boardstatbeforeedit = "";
     tempmovelist = new ArrayList<Movelist>();
@@ -275,8 +275,8 @@ public class Board implements LeelazListener {
       }
       tempmovelist = getmovelist();
     }
-    clear();
-    SGFParser.loadFromString(boardstatafteredit);
+    clearforedit();
+    SGFParser.loadFromStringforedit(boardstatafteredit);
     setlist(tempmovelist2);
     boardstatafteredit = "";
     tempmovelist2.clear();
@@ -1781,6 +1781,8 @@ public class Board implements LeelazListener {
     cleanedittemp();
     initialize();
   }
+  
+  
 
   public void clearforedit() {
     Lizzie.leelaz.clear();
