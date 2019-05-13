@@ -50,20 +50,21 @@ public class Leelaz {
   public Process process7;
   public Process process8;
   public Process process9;
-  
-  private boolean isprostart=false;
-  private boolean ispro1start=false;
-  private boolean ispro2start=false;
-  private boolean ispro3start=false;
-  private boolean ispro4start=false;
-  private boolean ispro5start=false;
-  private boolean ispro6start=false;
-  private boolean ispro7start=false;
-  private boolean ispro8start=false;
-  private boolean ispro9start=false;
+
+  private boolean isprostart = false;
+  private boolean ispro1start = false;
+  private boolean ispro2start = false;
+  private boolean ispro3start = false;
+  private boolean ispro4start = false;
+  private boolean ispro5start = false;
+  private boolean ispro6start = false;
+  private boolean ispro7start = false;
+  private boolean ispro8start = false;
+  private boolean ispro9start = false;
 
   private BufferedInputStream inputStream;
   private BufferedOutputStream outputStream;
+  
 
   private boolean printCommunication;
   public boolean gtpConsole;
@@ -97,6 +98,15 @@ public class Leelaz {
   private boolean switching = false;
   private int currentEngineN = -1;
   private ScheduledExecutorService executor;
+//  private ScheduledExecutorService executor1;
+//  private ScheduledExecutorService executor2;
+//  private ScheduledExecutorService executor3;
+//  private ScheduledExecutorService executor4;
+//  private ScheduledExecutorService executor5;
+//  private ScheduledExecutorService executor6;
+//  private ScheduledExecutorService executor7;
+//  private ScheduledExecutorService executor8;
+//  private ScheduledExecutorService executor9;
 
   // dynamic komi and opponent komi as reported by dynamic-komi version of leelaz
   private float dynamicKomi = Float.NaN;
@@ -153,81 +163,170 @@ public class Leelaz {
           Lizzie.config.leelazConfig.optString(
               "enginename" + String.valueOf(index + 1), currentWeight);
     }
-    
-  
 
     ProcessBuilder processBuilder = new ProcessBuilder(commands);
     processBuilder.redirectErrorStream(true);
-    switch (index)
-	  {
-	  case 0:  
-		  process = processBuilder.start();
-		  isprostart=true;
-		  break;
-	  case 1:	
-		  process1 = processBuilder.start();
-		  ispro1start=true;		
-		  break;
-	  case 2:
-		  process2 = processBuilder.start();
-		  ispro2start=true;
-		  break;
-	  case 3:
-		  process3 = processBuilder.start();
-		  ispro3start=true;
-		  break;
-	  case 4:
-		  process4 = processBuilder.start();
-		  ispro4start=true;
-		  break;
-	  case 5:
-		  process5 = processBuilder.start();
-		  ispro5start=true;
-		  break;
-	  case 6:
-		  process6 = processBuilder.start();
-		  ispro6start=true;
-		  break;
-	  case 7:
-		  process7 = processBuilder.start();
-		  ispro7start=true;
-		  break;
-	  case 8:
-		  process8 = processBuilder.start();
-		  ispro8start=true;
-		  break;
-	  case 9:
-		  process9 = processBuilder.start();
-		  ispro9start=true;
-		  break;
-	  }
+    switch (index) {
+      case 0:
+        process = processBuilder.start();
+        isprostart = true;
+        break;
+      case 1:
+        process1 = processBuilder.start();
+        ispro1start = true;
+        break;
+      case 2:
+        process2 = processBuilder.start();
+        ispro2start = true;
+        break;
+      case 3:
+        process3 = processBuilder.start();
+        ispro3start = true;
+        break;
+      case 4:
+        process4 = processBuilder.start();
+        ispro4start = true;
+        break;
+      case 5:
+        process5 = processBuilder.start();
+        ispro5start = true;
+        break;
+      case 6:
+        process6 = processBuilder.start();
+        ispro6start = true;
+        break;
+      case 7:
+        process7 = processBuilder.start();
+        ispro7start = true;
+        break;
+      case 8:
+        process8 = processBuilder.start();
+        ispro8start = true;
+        break;
+      case 9:
+        process9 = processBuilder.start();
+        ispro9start = true;
+        break;
+    }
     initializeStreams(index);
-
     isCheckingVersion = true;
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
-
-    executor = Executors.newSingleThreadScheduledExecutor();
-    executor.execute(this::read);
+//
+//    switch (index) {
+//    case 0:
+        executor = Executors.newSingleThreadScheduledExecutor();
+        executor.execute(this::read);        
+//      break;
+//    case 1:
+//        executor1 = Executors.newSingleThreadScheduledExecutor();
+//        executor1.execute(this::read);
+//      break;
+//    case 2:
+//        executor2 = Executors.newSingleThreadScheduledExecutor();
+//        executor2.execute(this::read);
+//      break;
+//    case 3:
+//        executor3 = Executors.newSingleThreadScheduledExecutor();
+//        executor3.execute(this::read);
+//      break;
+//    case 4:
+//        executor4= Executors.newSingleThreadScheduledExecutor();
+//        executor4.execute(this::read);
+//      break;
+//    case 5:
+//        executor5 = Executors.newSingleThreadScheduledExecutor();
+//        executor5.execute(this::read);
+//      break;
+//    case 6:
+//        executor6 = Executors.newSingleThreadScheduledExecutor();
+//        executor6.execute(this::read);
+//      break;
+//    case 7:
+//        executor7 = Executors.newSingleThreadScheduledExecutor();
+//        executor7.execute(this::read);
+//      break;
+//    case 8:
+//        executor8 = Executors.newSingleThreadScheduledExecutor();
+//        executor8.execute(this::read);
+//      break;
+//    case 9:
+//        executor9 = Executors.newSingleThreadScheduledExecutor();
+//        executor9.execute(this::read);
+//      break;
+//    }
   }
-  
-  
-  private boolean isEngineAlive(int index)
-  {
-	  switch (index)
-	  {
-	  case 0:return(isprostart&&process.isAlive());	  
-	  case 1:return(ispro1start&&process1.isAlive());
-	  case 2:return(ispro2start&&process2.isAlive());
-	  case 3:return(ispro3start&&process3.isAlive());
-	  case 4:return(ispro4start&&process4.isAlive());
-	  case 5:return(ispro5start&&process5.isAlive());
-	  case 6:return(ispro6start&&process6.isAlive());
-	  case 7:return(ispro7start&&process7.isAlive());
-	  case 8:return(ispro8start&&process8.isAlive());
-	  case 9:return(ispro9start&&process9.isAlive());
-	  }
-	  return false;
+
+//  public boolean isEngineBusy(int index) {
+//	  switch (index) {
+//      case 0:
+//    	  if(isprostart)
+//        return (!executor.isShutdown());
+//    	  return false;
+//      case 1:
+//    	  if(ispro1start)
+//    		  return (!executor1.isShutdown());
+//    	    	  return false;
+//    	 
+//      case 2:
+//    	  if(ispro2start)
+//    	  return (!executor2.isShutdown());
+//    	  return false;
+//      case 3:
+//    	  if(ispro3start)
+//    	  return (!executor3.isShutdown());
+//    	  return false;
+//      case 4:
+//    	  if(ispro4start)
+//    	  return (!executor4.isShutdown());
+//    	  return false;
+//      case 5:
+//    	  if(ispro5start)
+//    	  return (!executor5.isShutdown());
+//    	  return false;
+//      case 6:
+//    	  if(ispro6start)
+//    	  return (!executor6.isShutdown());
+//    	  return false;
+//      case 7:
+//    	  if(ispro7start)
+//    	  return (!executor7.isShutdown());
+//    	  return false;
+//      case 8:
+//    	  if(ispro8start)
+//    	  return (!executor8.isShutdown());
+//    	  return false;
+//      case 9:
+//    	  if(ispro9start)
+//    	  return (!executor9.isShutdown());
+//    	  return false;
+//  }
+//  return true;
+//  }
+  private boolean isEngineAlive(int index) {
+    switch (index) {
+      case 0:
+        return (isprostart && process.isAlive());
+      case 1:
+        return (ispro1start && process1.isAlive());
+      case 2:
+        return (ispro2start && process2.isAlive());
+      case 3:
+        return (ispro3start && process3.isAlive());
+      case 4:
+        return (ispro4start && process4.isAlive());
+      case 5:
+        return (ispro5start && process5.isAlive());
+      case 6:
+        return (ispro6start && process6.isAlive());
+      case 7:
+        return (ispro7start && process7.isAlive());
+      case 8:
+        return (ispro8start && process8.isAlive());
+      case 9:
+        return (ispro9start && process9.isAlive());
+    }
+    return false;
   }
 
   public void restartEngine(String engineCommand, int index) throws IOException {
@@ -235,106 +334,189 @@ public class Leelaz {
       return;
     }
     switching = true;
-    this.engineCommand = engineCommand;
-    sendCommand("name");
+    this.engineCommand = engineCommand;   
     // stop the ponder
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.togglePonder();
     }
-    if(isEngineAlive(index))//需要添加判断,对应index的进程知否初始化并且alive
-    {
-    	sendCommand("name");
-    	reinitializeStreams(index);
-    }
-    else {
-    //normalQuit();
-    	sendCommand("name");
-    startEngine(engineCommand, index);
+    if (isEngineAlive(index)) // 需要添加判断,对应index的进程知否初始化并且alive
+    {      
+    	//normalQuit(currentEngineN);   
+      reinitializeStreams(engineCommand,index);    	
+    } else {
+      // normalQuit(currentEngineN);    
+      startEngine(engineCommand, index);
     }
     currentEngineN = index;
     togglePonder();
   }
-  
 
-  public void normalQuit() {
-    sendCommand("quit");
-    executor.shutdown();
-    try {
-      while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
-        executor.shutdownNow();
-      }
-      if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
-        shutdown();
-      }
-    } catch (InterruptedException e) {
-      executor.shutdownNow();
-      Thread.currentThread().interrupt();
-    }
+  public void normalQuit(int index) {		  	  
+	  sendCommand("quit");
+	    executor.shutdown();
+	    try {
+	      while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+	        executor.shutdownNow();
+	      }
+	      if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
+	        shutdown();
+	      }
+	    } catch (InterruptedException e) {
+	      executor.shutdownNow();
+	      Thread.currentThread().interrupt();
+	    }	 
   }
 
   /** Initializes the input and output streams */
   private void initializeStreams(int index) {
-	  
-	  switch (index)
-	  {
-	  case 0:
-		  inputStream = new BufferedInputStream(process.getInputStream());
-		  outputStream = new BufferedOutputStream(process.getOutputStream());
-		  break;
-	  case 1:
-		  inputStream = new BufferedInputStream(process1.getInputStream());
-		  outputStream = new BufferedOutputStream(process1.getOutputStream());
-		  break;
-	  case 2:
-		  inputStream = new BufferedInputStream(process2.getInputStream());
-		  outputStream = new BufferedOutputStream(process2.getOutputStream());
-		  break;
-	  case 3:
-		  inputStream = new BufferedInputStream(process3.getInputStream());
-		  outputStream = new BufferedOutputStream(process3.getOutputStream());
-		  break;
-	  case 4:
-		  inputStream = new BufferedInputStream(process4.getInputStream());
-		  outputStream = new BufferedOutputStream(process4.getOutputStream());
-		  break;
-	  case 5:
-		  inputStream = new BufferedInputStream(process5.getInputStream());
-		  outputStream = new BufferedOutputStream(process5.getOutputStream());
-		  break;
-	  case 6:
-		  inputStream = new BufferedInputStream(process6.getInputStream());
-		  outputStream = new BufferedOutputStream(process6.getOutputStream());
-		  break;
-	  case 7:
-		  inputStream = new BufferedInputStream(process7.getInputStream());
-		  outputStream = new BufferedOutputStream(process7.getOutputStream());
-		  break;
-	  case 8:
-		  inputStream = new BufferedInputStream(process8.getInputStream());
-		  outputStream = new BufferedOutputStream(process8.getOutputStream());
-		  break;
-	  case 9:
-		  inputStream = new BufferedInputStream(process9.getInputStream());
-		  outputStream = new BufferedOutputStream(process9.getOutputStream());
-		  break;
-	  }	  
-	  }
+	  currentEngineN = index;
+	  switch (index) {
+      case 0:
+        inputStream = new BufferedInputStream(process.getInputStream());
+        outputStream = new BufferedOutputStream(process.getOutputStream());
+        break;
+      case 1:
+        inputStream = new BufferedInputStream(process1.getInputStream());
+        outputStream = new BufferedOutputStream(process1.getOutputStream());
+        break;
+      case 2:
+        inputStream = new BufferedInputStream(process2.getInputStream());
+        outputStream = new BufferedOutputStream(process2.getOutputStream());
+        break;
+      case 3:
+        inputStream = new BufferedInputStream(process3.getInputStream());
+        outputStream = new BufferedOutputStream(process3.getOutputStream());
+        break;
+      case 4:
+        inputStream = new BufferedInputStream(process4.getInputStream());
+        outputStream = new BufferedOutputStream(process4.getOutputStream());
+        break;
+      case 5:
+        inputStream = new BufferedInputStream(process5.getInputStream());
+        outputStream = new BufferedOutputStream(process5.getOutputStream());
+        break;
+      case 6:
+        inputStream = new BufferedInputStream(process6.getInputStream());
+        outputStream = new BufferedOutputStream(process6.getOutputStream());
+        break;
+      case 7:
+        inputStream = new BufferedInputStream(process7.getInputStream());
+        outputStream = new BufferedOutputStream(process7.getOutputStream());
+        break;
+      case 8:
+        inputStream = new BufferedInputStream(process8.getInputStream());
+        outputStream = new BufferedOutputStream(process8.getOutputStream());
+        break;
+      case 9:
+        inputStream = new BufferedInputStream(process9.getInputStream());
+        outputStream = new BufferedOutputStream(process9.getOutputStream());
+        break;
+    }
+  }
+
+  private void reinitializeStreams(String engineCommand,int index) {
+	  commands = splitCommand(engineCommand);
+	  currentEngineN = index;
+	    Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
+	    Matcher wMatcher = wPattern.matcher(engineCommand);
+	    if (wMatcher.matches() && wMatcher.groupCount() == 2) {
+	      currentWeightFile = wMatcher.group(2);
+	      String[] names = currentWeightFile.split("[\\\\|/]");
+	      currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
+	      currentEnginename =
+	          Lizzie.config.leelazConfig.optString(
+	              "enginename" + String.valueOf(index + 1), currentWeight);
+	    }   
   
-  private void reinitializeStreams(int index) {
-	  
-	  
-	  if (index==1)
-	  {
-		  inputStream = new BufferedInputStream(process1.getInputStream());
-		    outputStream = new BufferedOutputStream(process1.getOutputStream());
-		  
-	  }
-	  else{
-    inputStream = new BufferedInputStream(process.getInputStream());
-    outputStream = new BufferedOutputStream(process.getOutputStream());
-  
-	  }
-	  }
+	    switch (index) {
+	      case 0:
+	        inputStream = new BufferedInputStream(process.getInputStream());
+	        outputStream = new BufferedOutputStream(process.getOutputStream());
+	        break;
+	      case 1:
+	        inputStream = new BufferedInputStream(process1.getInputStream());
+	        outputStream = new BufferedOutputStream(process1.getOutputStream());
+	        break;
+	      case 2:
+	        inputStream = new BufferedInputStream(process2.getInputStream());
+	        outputStream = new BufferedOutputStream(process2.getOutputStream());
+	        break;
+	      case 3:
+	        inputStream = new BufferedInputStream(process3.getInputStream());
+	        outputStream = new BufferedOutputStream(process3.getOutputStream());
+	        break;
+	      case 4:
+	        inputStream = new BufferedInputStream(process4.getInputStream());
+	        outputStream = new BufferedOutputStream(process4.getOutputStream());
+	        break;
+	      case 5:
+	        inputStream = new BufferedInputStream(process5.getInputStream());
+	        outputStream = new BufferedOutputStream(process5.getOutputStream());
+	        break;
+	      case 6:
+	        inputStream = new BufferedInputStream(process6.getInputStream());
+	        outputStream = new BufferedOutputStream(process6.getOutputStream());
+	        break;
+	      case 7:
+	        inputStream = new BufferedInputStream(process7.getInputStream());
+	        outputStream = new BufferedOutputStream(process7.getOutputStream());
+	        break;
+	      case 8:
+	        inputStream = new BufferedInputStream(process8.getInputStream());
+	        outputStream = new BufferedOutputStream(process8.getOutputStream());
+	        break;
+	      case 9:
+	        inputStream = new BufferedInputStream(process9.getInputStream());
+	        outputStream = new BufferedOutputStream(process9.getOutputStream());
+	        break;
+	    }
+    isCheckingVersion = true;
+    sendCommand("version");
+    sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
+//    switch (index) {
+//    case 0:    	
+        executor = Executors.newSingleThreadScheduledExecutor();
+        executor.execute(this::read);
+//      break;
+//    case 1:
+//        executor1 = Executors.newSingleThreadScheduledExecutor();
+//        executor1.execute(this::read);
+//      break;
+//    case 2:
+//        executor2 = Executors.newSingleThreadScheduledExecutor();
+//        executor2.execute(this::read);
+//      break;
+//    case 3:
+//        executor3 = Executors.newSingleThreadScheduledExecutor();
+//        executor3.execute(this::read);
+//      break;
+//    case 4:
+//        executor4= Executors.newSingleThreadScheduledExecutor();
+//        executor4.execute(this::read);
+//      break;
+//    case 5:
+//        executor5 = Executors.newSingleThreadScheduledExecutor();
+//        executor5.execute(this::read);
+//      break;
+//    case 6:
+//        executor6 = Executors.newSingleThreadScheduledExecutor();
+//        executor6.execute(this::read);
+//      break;
+//    case 7:
+//        executor7 = Executors.newSingleThreadScheduledExecutor();
+//        executor7.execute(this::read);
+//      break;
+//    case 8:
+//        executor8 = Executors.newSingleThreadScheduledExecutor();
+//        executor8.execute(this::read);
+//      break;
+//    case 9:
+//        executor9 = Executors.newSingleThreadScheduledExecutor();
+//        executor9.execute(this::read);
+//      break;
+//  }
+
+  }
 
   public static List<MoveData> parseInfo(String line) {
     List<MoveData> bestMoves = new ArrayList<>();
@@ -540,6 +722,7 @@ public class Leelaz {
 
           parseLine(line.toString());
           line = new StringBuilder();
+       
         }
       }
       // this line will be reached when Leelaz shuts down

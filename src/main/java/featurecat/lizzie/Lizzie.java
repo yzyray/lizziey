@@ -127,7 +127,12 @@ public class Lizzie {
     if (index == Lizzie.leelaz.currentEngineN() && Lizzie.leelaz.process.isAlive()) {
       return;
     }
-
+//    if(leelaz.isEngineBusy(index))
+//	 {
+//		 JOptionPane.showMessageDialog(null, "请不要频繁切换");
+//		 System.out.println("频繁切换");
+//		 return;
+//	 }
     // Workaround for leelaz no exiting when restarting
     if (leelaz.isThinking) {
       if (Lizzie.frame.isPlayingAgainstLeelaz) {
