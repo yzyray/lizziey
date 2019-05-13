@@ -100,6 +100,7 @@ public class ConfigDialog extends JDialog {
   private JRadioButton rdoBoardSizeOther;
 
   public ConfigDialog() {
+    setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     setTitle(resourceBundle.getString("LizzieConfig.title.config"));
     setModalityType(ModalityType.APPLICATION_MODAL);
     setType(Type.POPUP);

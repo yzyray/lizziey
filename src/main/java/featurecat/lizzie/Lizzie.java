@@ -141,12 +141,12 @@ public class Lizzie {
       }
       Lizzie.leelaz.togglePonder();
     }
-    int movenumber=board.getcurrentmovenumber();
+    int movenumber = board.getcurrentmovenumber();
     board.saveMoveNumber();
     try {
-    	
-      leelaz.restartEngine(commandLine, index);           
-      board.clearbestmovesafter(board.getHistory().getStart(),movenumber);
+
+      leelaz.restartEngine(commandLine, index);
+      board.clearbestmovesafter(board.getHistory().getStart(), movenumber);
       board.restoreMoveNumber();
 
     } catch (IOException e) {

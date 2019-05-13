@@ -475,7 +475,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           return;
         }
         if (e.isAltDown()) {
-          Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart(),Lizzie.board.getHistory().getMoveNumber());
+          Lizzie.board.clearbestmovesafter(
+              Lizzie.board.getHistory().getStart(), Lizzie.board.getHistory().getMoveNumber());
           JOptionPane.showMessageDialog(null, "已清空所有Lizzie缓存的引擎推荐点");
         } else if (e.isShiftDown()) {
           deleteBranch();
