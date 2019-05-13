@@ -27,6 +27,7 @@ public class RightClickMenu extends JPopupMenu {
   private static JMenuItem cancelavoid;
   private static JMenuItem reedit;
   private static JMenuItem cleanupedit;
+  private static JMenuItem cleanalledit;
   public static String allowcoords = "";
   public static String avoidcoords = "";
   public static int move = 0;
@@ -100,6 +101,7 @@ public class RightClickMenu extends JPopupMenu {
     avoid = new JMenuItem("不分析此点(强制)");
     avoid2 = new JMenuItem("设置不分析持续手数");
     cancelavoid = new JMenuItem("清除分析设置");
+    cleanalledit  = new JMenuItem("清除所有编辑");
     //  test=new JMenuItem("测试删除棋子");
     //  test2=new JMenuItem("测试恢复棋盘状态");
     reedit = new JMenuItem("恢复到编辑后");
@@ -115,7 +117,17 @@ public class RightClickMenu extends JPopupMenu {
     this.add(addwhite);
     this.add(reedit);
     this.add(cleanupedit);
+    this.add(cleanalledit);
 
+    cleanalledit.addActionListener(
+            new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                //  System.out.println("撤销上次编辑");
+            	  cleanalledit();
+              }
+            });
+    
     reedit.addActionListener(
             new ActionListener() {
               @Override
@@ -207,6 +219,11 @@ public class RightClickMenu extends JPopupMenu {
   Lizzie.board.cleanedit();
   }
 
+  
+  
+  private void cleanalledit() {
+	  Lizzie.board.cleanalledit();
+	  }
   
   private void reedit() {
   Lizzie.board.reedit();

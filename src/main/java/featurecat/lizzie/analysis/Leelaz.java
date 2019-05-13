@@ -64,7 +64,6 @@ public class Leelaz {
 
   private BufferedInputStream inputStream;
   private BufferedOutputStream outputStream;
-  
 
   private boolean printCommunication;
   public boolean gtpConsole;
@@ -98,15 +97,15 @@ public class Leelaz {
   private boolean switching = false;
   private int currentEngineN = -1;
   private ScheduledExecutorService executor;
-//  private ScheduledExecutorService executor1;
-//  private ScheduledExecutorService executor2;
-//  private ScheduledExecutorService executor3;
-//  private ScheduledExecutorService executor4;
-//  private ScheduledExecutorService executor5;
-//  private ScheduledExecutorService executor6;
-//  private ScheduledExecutorService executor7;
-//  private ScheduledExecutorService executor8;
-//  private ScheduledExecutorService executor9;
+  //  private ScheduledExecutorService executor1;
+  //  private ScheduledExecutorService executor2;
+  //  private ScheduledExecutorService executor3;
+  //  private ScheduledExecutorService executor4;
+  //  private ScheduledExecutorService executor5;
+  //  private ScheduledExecutorService executor6;
+  //  private ScheduledExecutorService executor7;
+  //  private ScheduledExecutorService executor8;
+  //  private ScheduledExecutorService executor9;
 
   // dynamic komi and opponent komi as reported by dynamic-komi version of leelaz
   private float dynamicKomi = Float.NaN;
@@ -212,8 +211,8 @@ public class Leelaz {
     isCheckingVersion = true;
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
-        executor = Executors.newSingleThreadScheduledExecutor();
-        executor.execute(this::read);       
+    executor = Executors.newSingleThreadScheduledExecutor();
+    executor.execute(this::read);
   }
 
   private boolean isEngineAlive(int index) {
@@ -247,43 +246,43 @@ public class Leelaz {
       return;
     }
     switching = true;
-    this.engineCommand = engineCommand;   
+    this.engineCommand = engineCommand;
     // stop the ponder
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.togglePonder();
     }
     if (isEngineAlive(index)) // 需要添加判断,对应index的进程知否初始化并且alive
-    {      
-    	//normalQuit(currentEngineN);   
-      reinitializeStreams(engineCommand,index);    	
+    {
+      // normalQuit(currentEngineN);
+      reinitializeStreams(engineCommand, index);
     } else {
-      // normalQuit(currentEngineN);    
+      // normalQuit(currentEngineN);
       startEngine(engineCommand, index);
     }
     currentEngineN = index;
     togglePonder();
   }
 
-  public void normalQuit(int index) {		  	  
-	  sendCommand("quit");
-	    executor.shutdown();
-	    try {
-	      while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
-	        executor.shutdownNow();
-	      }
-	      if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
-	        shutdown();
-	      }
-	    } catch (InterruptedException e) {
-	      executor.shutdownNow();
-	      Thread.currentThread().interrupt();
-	    }	 
+  public void normalQuit(int index) {
+    sendCommand("quit");
+    executor.shutdown();
+    try {
+      while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+        executor.shutdownNow();
+      }
+      if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
+        shutdown();
+      }
+    } catch (InterruptedException e) {
+      executor.shutdownNow();
+      Thread.currentThread().interrupt();
+    }
   }
 
   /** Initializes the input and output streams */
   private void initializeStreams(int index) {
-	  currentEngineN = index;
-	  switch (index) {
+    currentEngineN = index;
+    switch (index) {
       case 0:
         inputStream = new BufferedInputStream(process.getInputStream());
         outputStream = new BufferedOutputStream(process.getOutputStream());
@@ -327,67 +326,67 @@ public class Leelaz {
     }
   }
 
-  private void reinitializeStreams(String engineCommand,int index) {
-	  commands = splitCommand(engineCommand);
-	  currentEngineN = index;
-	    Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
-	    Matcher wMatcher = wPattern.matcher(engineCommand);
-	    if (wMatcher.matches() && wMatcher.groupCount() == 2) {
-	      currentWeightFile = wMatcher.group(2);
-	      String[] names = currentWeightFile.split("[\\\\|/]");
-	      currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
-	      currentEnginename =
-	          Lizzie.config.leelazConfig.optString(
-	              "enginename" + String.valueOf(index + 1), currentWeight);
-	    }   
-  
-	    switch (index) {
-	      case 0:
-	        inputStream = new BufferedInputStream(process.getInputStream());
-	        outputStream = new BufferedOutputStream(process.getOutputStream());
-	        break;
-	      case 1:
-	        inputStream = new BufferedInputStream(process1.getInputStream());
-	        outputStream = new BufferedOutputStream(process1.getOutputStream());
-	        break;
-	      case 2:
-	        inputStream = new BufferedInputStream(process2.getInputStream());
-	        outputStream = new BufferedOutputStream(process2.getOutputStream());
-	        break;
-	      case 3:
-	        inputStream = new BufferedInputStream(process3.getInputStream());
-	        outputStream = new BufferedOutputStream(process3.getOutputStream());
-	        break;
-	      case 4:
-	        inputStream = new BufferedInputStream(process4.getInputStream());
-	        outputStream = new BufferedOutputStream(process4.getOutputStream());
-	        break;
-	      case 5:
-	        inputStream = new BufferedInputStream(process5.getInputStream());
-	        outputStream = new BufferedOutputStream(process5.getOutputStream());
-	        break;
-	      case 6:
-	        inputStream = new BufferedInputStream(process6.getInputStream());
-	        outputStream = new BufferedOutputStream(process6.getOutputStream());
-	        break;
-	      case 7:
-	        inputStream = new BufferedInputStream(process7.getInputStream());
-	        outputStream = new BufferedOutputStream(process7.getOutputStream());
-	        break;
-	      case 8:
-	        inputStream = new BufferedInputStream(process8.getInputStream());
-	        outputStream = new BufferedOutputStream(process8.getOutputStream());
-	        break;
-	      case 9:
-	        inputStream = new BufferedInputStream(process9.getInputStream());
-	        outputStream = new BufferedOutputStream(process9.getOutputStream());
-	        break;
-	    }
+  private void reinitializeStreams(String engineCommand, int index) {
+    commands = splitCommand(engineCommand);
+    currentEngineN = index;
+    Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
+    Matcher wMatcher = wPattern.matcher(engineCommand);
+    if (wMatcher.matches() && wMatcher.groupCount() == 2) {
+      currentWeightFile = wMatcher.group(2);
+      String[] names = currentWeightFile.split("[\\\\|/]");
+      currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
+      currentEnginename =
+          Lizzie.config.leelazConfig.optString(
+              "enginename" + String.valueOf(index + 1), currentWeight);
+    }
+
+    switch (index) {
+      case 0:
+        inputStream = new BufferedInputStream(process.getInputStream());
+        outputStream = new BufferedOutputStream(process.getOutputStream());
+        break;
+      case 1:
+        inputStream = new BufferedInputStream(process1.getInputStream());
+        outputStream = new BufferedOutputStream(process1.getOutputStream());
+        break;
+      case 2:
+        inputStream = new BufferedInputStream(process2.getInputStream());
+        outputStream = new BufferedOutputStream(process2.getOutputStream());
+        break;
+      case 3:
+        inputStream = new BufferedInputStream(process3.getInputStream());
+        outputStream = new BufferedOutputStream(process3.getOutputStream());
+        break;
+      case 4:
+        inputStream = new BufferedInputStream(process4.getInputStream());
+        outputStream = new BufferedOutputStream(process4.getOutputStream());
+        break;
+      case 5:
+        inputStream = new BufferedInputStream(process5.getInputStream());
+        outputStream = new BufferedOutputStream(process5.getOutputStream());
+        break;
+      case 6:
+        inputStream = new BufferedInputStream(process6.getInputStream());
+        outputStream = new BufferedOutputStream(process6.getOutputStream());
+        break;
+      case 7:
+        inputStream = new BufferedInputStream(process7.getInputStream());
+        outputStream = new BufferedOutputStream(process7.getOutputStream());
+        break;
+      case 8:
+        inputStream = new BufferedInputStream(process8.getInputStream());
+        outputStream = new BufferedOutputStream(process8.getOutputStream());
+        break;
+      case 9:
+        inputStream = new BufferedInputStream(process9.getInputStream());
+        outputStream = new BufferedOutputStream(process9.getOutputStream());
+        break;
+    }
     isCheckingVersion = true;
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
-        executor = Executors.newSingleThreadScheduledExecutor();
-        executor.execute(this::read);
+    executor = Executors.newSingleThreadScheduledExecutor();
+    executor.execute(this::read);
   }
 
   public static List<MoveData> parseInfo(String line) {
@@ -594,7 +593,6 @@ public class Leelaz {
 
           parseLine(line.toString());
           line = new StringBuilder();
-       
         }
       }
       // this line will be reached when Leelaz shuts down
