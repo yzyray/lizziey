@@ -55,14 +55,13 @@ public class SGFParser {
     return parse(sgfString);
   }
 
-
   public static boolean loadFromStringforedit(String sgfString) {
     // Clear the board
     Lizzie.board.clearforedit();
 
     return parse(sgfString);
   }
-  
+
   public static int[] convertSgfPosToCoord(String pos) {
     if (pos.equals("tt") || pos.isEmpty()) return null;
     int[] ret = new int[2];

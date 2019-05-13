@@ -1781,8 +1781,6 @@ public class Board implements LeelazListener {
     cleanedittemp();
     initialize();
   }
-  
-  
 
   public void clearforedit() {
     Lizzie.leelaz.clear();
