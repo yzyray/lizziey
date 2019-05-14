@@ -146,8 +146,10 @@ public class Lizzie {
         Lizzie.frame.isPlayingAgainstLeelaz = false;
         Lizzie.leelaz.isThinking = false;
       }
-      Lizzie.leelaz.togglePonder();
     }
+
+    Lizzie.leelaz.sendCommand("name");
+
     int movenumber = board.getcurrentmovenumber();
     board.saveMoveNumber();
     try {
