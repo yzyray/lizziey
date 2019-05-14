@@ -127,10 +127,9 @@ public class Lizzie {
     if (commandLine.trim().isEmpty()) {
       return;
     }
-    if(leelaz.switching)
-    {
-    	 JOptionPane.showMessageDialog(null, "正在加载引擎,请等待");
-    	return;
+    if (leelaz.switching) {
+      JOptionPane.showMessageDialog(null, "正在加载引擎,请等待");
+      return;
     }
     if (index == Lizzie.leelaz.currentEngineN() && Lizzie.leelaz.process.isAlive()) {
       return;

@@ -290,11 +290,11 @@ public class Config {
     this.largeWinrate = !this.largeWinrate;
     Lizzie.config.uiConfig.put("large-winrate", largeWinrate);
     try {
-        Lizzie.config.save();
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   public void toggleShowVariationGraph() {
@@ -305,16 +305,15 @@ public class Config {
     this.showComment = !this.showComment;
     Lizzie.config.uiConfig.put("show-comment", showComment);
     try {
-        Lizzie.config.save();
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   public void toggleShowCommentNodeColor() {
     this.showCommentNodeColor = !this.showCommentNodeColor;
-    
   }
 
   public void toggleShowBestMoves() {
