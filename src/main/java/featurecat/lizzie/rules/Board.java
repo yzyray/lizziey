@@ -181,7 +181,7 @@ public class Board implements LeelazListener {
   }
 
   public void clearbestmovesafter(BoardHistoryNode node, int movenumber) {
-    if (node.isMainTrunk() && node.getData().moveNumber < movenumber)
+    if (node.isMainTrunk() && node.getData().moveNumber <= movenumber)
       node.getData().setPlayoutsForce(1);
     else node.getData().setPlayoutsForce(0);
     if (node.numberOfChildren() > 1) {
