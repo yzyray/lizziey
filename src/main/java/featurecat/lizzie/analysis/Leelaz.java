@@ -451,7 +451,7 @@ public class Leelaz {
       } else if (line.startsWith("info")) {
         isLoaded = true;
         // Clear switching prompt
-        switching = false;
+
         // Display engine command in the title
         Lizzie.frame.updateTitle();
         if (isResponseUpToDate()) {
@@ -539,6 +539,7 @@ public class Leelaz {
                     + ")");
           }
           isCheckingVersion = false;
+          switching = false;
         }
       }
       if (isheatmap) {
