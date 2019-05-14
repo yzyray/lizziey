@@ -381,6 +381,8 @@ public class Leelaz {
     // stop the ponder
     sendCommand("stop");
     isPondering = false;
+    isThinking = false;
+    Lizzie.frame.isPlayingAgainstLeelaz = false;
     if (isEngineAlive(index)) // 需要添加判断,对应index的进程知否初始化并且alive
     {
       // normalQuit(currentEngineN);
