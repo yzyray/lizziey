@@ -197,7 +197,7 @@ public class LizzieFrame extends JFrame {
       setExtendedState(Frame.MAXIMIZED_BOTH);
     } else if (persisted && Lizzie.config.persistedUi.getBoolean("window-maximized")) {
       setExtendedState(Frame.MAXIMIZED_BOTH);
-      }
+    }
 
     commentPane = new JTextPane();
     commentPane.setEditable(false);
@@ -240,19 +240,27 @@ public class LizzieFrame extends JFrame {
             Lizzie.shutdown();
           }
         });
-   
-    this.addComponentListener(new ComponentAdapter() {//让窗口响应大小改变事件
-        @Override
-        public void componentResized(ComponentEvent e) {
-            Lizzie.menu.setBounds(Lizzie.frame.getX()+Lizzie.frame.getInsets().left,Lizzie.frame.getY()+Lizzie.frame.getInsets().top, Lizzie.frame.getContentPane().getWidth(), 20);
-            
-        }
-        
-        @Override public void componentMoved(ComponentEvent e){
-            Lizzie.menu.setBounds(Lizzie.frame.getX()+Lizzie.frame.getInsets().left,Lizzie.frame.getY()+Lizzie.frame.getInsets().top, Lizzie.frame.getContentPane().getWidth(), 20);
-           
-        }
-    });
+
+    this.addComponentListener(
+        new ComponentAdapter() { // 让窗口响应大小改变事件
+          @Override
+          public void componentResized(ComponentEvent e) {
+            Lizzie.menu.setBounds(
+                Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
+                Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
+                Lizzie.frame.getContentPane().getWidth(),
+                20);
+          }
+
+          @Override
+          public void componentMoved(ComponentEvent e) {
+            Lizzie.menu.setBounds(
+                Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
+                Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
+                Lizzie.frame.getContentPane().getWidth(),
+                20);
+          }
+        });
 
     // Show the playouts in the title
     showPlayouts.scheduleAtFixedRate(
@@ -613,7 +621,7 @@ public class LizzieFrame extends JFrame {
     if (!showControls) {
       // layout parameters
 
-      int topInset = this.getInsets().top+20;
+      int topInset = this.getInsets().top + 20;
       int leftInset = this.getInsets().left;
       int rightInset = this.getInsets().right;
       int bottomInset = this.getInsets().bottom;
