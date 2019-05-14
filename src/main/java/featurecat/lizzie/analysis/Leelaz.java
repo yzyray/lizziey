@@ -149,7 +149,7 @@ public class Leelaz {
     if (engineCommand.trim().isEmpty()) {
       return;
     }
-    switching = true;
+
     commands = splitCommand(engineCommand);
 
     Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
@@ -242,6 +242,7 @@ public class Leelaz {
   }
 
   public void killAllEngines() {
+    switching = false;
     process.destroy();
     process1.destroy();
     process2.destroy();
@@ -255,6 +256,7 @@ public class Leelaz {
   }
 
   public void killOtherEngines() {
+    switching = false;
     switch (currentEngineN) {
       case 0:
         process1.destroy();
@@ -458,6 +460,7 @@ public class Leelaz {
   private void reinitializeStreams(String engineCommand, int index) {
     commands = splitCommand(engineCommand);
     currentEngineN = index;
+    isCheckingVersion = true;
     Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
     Matcher wMatcher = wPattern.matcher(engineCommand);
     if (wMatcher.matches() && wMatcher.groupCount() == 2) {
