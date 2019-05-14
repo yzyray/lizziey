@@ -99,7 +99,7 @@ public class LizzieFrame extends JFrame {
   public boolean isshowrightmenu;
   public ArrayList<Movelist> movelist;
 
-  public int blackorwhite=0;
+  public int blackorwhite = 0;
   private final BufferStrategy bs;
   public boolean iscounting = false;
   public boolean isAutocounting = false;
@@ -168,11 +168,11 @@ public class LizzieFrame extends JFrame {
     countResults = new CountResults();
     boardRenderer = new BoardRenderer(true);
     subBoardRenderer = new SubBoardRenderer(false);
-    variationTree = new VariationTree(); 
+    variationTree = new VariationTree();
     winrateGraph = new WinrateGraph();
-   // MenuTest menu = new MenuTest();
-   // add(menu);
-    //this.setJMenuBar(menu); 
+    // MenuTest menu = new MenuTest();
+    // add(menu);
+    // this.setJMenuBar(menu);
     // this.setVisible(true);
     this.setAlwaysOnTop(Lizzie.config.mainsalwaysontop);
     setMinimumSize(new Dimension(640, 400));
@@ -253,7 +253,7 @@ public class LizzieFrame extends JFrame {
                 Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
                 Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
                 Lizzie.frame.getContentPane().getWidth(),
-                20);
+                25);
           }
 
           @Override
@@ -262,7 +262,7 @@ public class LizzieFrame extends JFrame {
                 Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
                 Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
                 Lizzie.frame.getContentPane().getWidth(),
-                20);
+                25);
           }
         });
 
@@ -626,7 +626,7 @@ public class LizzieFrame extends JFrame {
     if (!showControls) {
       // layout parameters
 
-      int topInset = this.getInsets().top + 20;
+      int topInset = this.getInsets().top + 25;
       int leftInset = this.getInsets().left;
       int rightInset = this.getInsets().right;
       int bottomInset = this.getInsets().bottom;
@@ -920,10 +920,9 @@ public class LizzieFrame extends JFrame {
           subBoardY = tempy;
           subBoardLength = Math.min(tempw, temph);
         }
-       // super.paintComponents(g0);
+        // super.paintComponents(g0);
       }
 
-      
       // initialize
 
       cachedImage = new BufferedImage(width, height, TYPE_INT_ARGB);
@@ -1505,12 +1504,9 @@ public class LizzieFrame extends JFrame {
       }
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
       if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay))
-    	 if (blackorwhite==0)
-        Lizzie.board.place(coords[0], coords[1]);
-      if (blackorwhite==1)
-    	  Lizzie.board.place(coords[0], coords[1],Stone.BLACK);
-    	  if (blackorwhite==2)
-    		  Lizzie.board.place(coords[0], coords[1],Stone.WHITE);
+        if (blackorwhite == 0) Lizzie.board.place(coords[0], coords[1]);
+      if (blackorwhite == 1) Lizzie.board.place(coords[0], coords[1], Stone.BLACK);
+      if (blackorwhite == 2) Lizzie.board.place(coords[0], coords[1], Stone.WHITE);
     }
     if (Lizzie.config.showWinrate && moveNumber >= 0) {
       isPlayingAgainstLeelaz = false;
