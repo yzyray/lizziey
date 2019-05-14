@@ -484,22 +484,22 @@ public class SubBoardRenderer {
   private void renderImages(Graphics2D g) {
     g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_OFF);
     g.drawImage(cachedStonesShadowImage, x, y, null);
-    if (Lizzie.config.showBranchNow()) {
-      g.drawImage(branchStonesShadowImage, x, y, null);
-    }
+    //  if (Lizzie.config.showBranchNow()) {
+    //     g.drawImage(branchStonesShadowImage, x, y, null);
+    // }
     g.drawImage(cachedStonesImage, x, y, null);
     g.drawImage(cachedStonesImagedraged, x, y, null);
     g.drawImage(countblockimage, x, y, null);
-    if (Lizzie.config.showBranchNow()) {
-      g.drawImage(branchStonesImage, x, y, null);
-    }
+    // if (Lizzie.config.showBranchNow()) {
+    g.drawImage(branchStonesImage, x, y, null);
+    // }
   }
 
   /** Draw move numbers and/or mark the last played move */
   private void drawMoveNumbers(Graphics2D g) {
-    if (!Lizzie.config.showBranch) {
-      return;
-    }
+    // if (!Lizzie.config.showBranch) {
+    //  return;
+    // }
     g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
     Board board = Lizzie.board;
     Optional<int[]> lastMoveOpt = branchOpt.map(b -> b.data.lastMove).orElse(board.getLastMove());
@@ -572,8 +572,7 @@ public class SubBoardRenderer {
 
         // don't write the move number if either: the move number is 0, or there will already be
         // playout information written
-        if (moveNumberList[Board.getIndex(i, j)] > 0
-            && (!branchOpt.isPresent() || !Lizzie.frame.isMouseOver(i, j))) {
+        if (moveNumberList[Board.getIndex(i, j)] > 0 && true) {
           boolean reverse = (moveNumberList[Board.getIndex(i, j)] > maxBranchMoves());
           if (lastMoveOpt.isPresent() && lastMoveOpt.get()[0] == i && lastMoveOpt.get()[1] == j) {
             if (reverse) continue;
@@ -713,7 +712,7 @@ public class SubBoardRenderer {
           Color color =
               new Color(hsbColor.getRed(), hsbColor.getGreen(), hsbColor.getBlue(), (int) alpha);
 
-          boolean isMouseOver = Lizzie.frame.isMouseOver(coords[0], coords[1]);
+          boolean isMouseOver = false;
           if (!branchOpt.isPresent()) {
             drawShadow(g, suggestionX, suggestionY, true, alpha / 255.0f);
             g.setColor(color);

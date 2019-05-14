@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 public class Input implements MouseListener, KeyListener, MouseWheelListener, MouseMotionListener {
   public static boolean isinsertmode = false;
   public static boolean Draggedmode = false;
+  public static int insert = 0;
 
   @Override
   public void mouseClicked(MouseEvent e) {}
@@ -21,7 +22,28 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       if (e.getClickCount() == 2) { // TODO: Maybe need to delay check
         Lizzie.frame.onDoubleClicked(e.getX(), e.getY());
       } else {
+    	  if(insert==0)
+    	  {
         Lizzie.frame.onClicked(e.getX(), e.getY());
+    	  }
+    	  else if(insert==1)
+    	  {
+    		  if (Lizzie.frame.iscoordsempty(e.getX(), e.getY())) {
+
+    			     int[]  coords = Lizzie.frame.convertmousexytocoords(e.getX(), e.getY());
+    			      int currentmovenumber=Lizzie.board.getcurrentmovenumber();
+    				     Lizzie.board.savelistforeditmode();
+    				     
+    				     Lizzie.board.editmovelistadd(Lizzie.board.tempallmovelist,currentmovenumber,coords[0],coords[1],true);
+    				     Lizzie.board.clearforedit();
+    				     Lizzie.board.setlist(Lizzie.board.tempallmovelist);
+    				     Lizzie.board.goToMoveNumber(currentmovenumber+1);
+    			    }
+    	  }
+    	  else if(insert==2)
+    	  {
+    		  
+    	  }
       }
 
     } else if (e.getButton() == MouseEvent.BUTTON3) // right click

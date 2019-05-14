@@ -99,6 +99,7 @@ public class LizzieFrame extends JFrame {
   public boolean isshowrightmenu;
   public ArrayList<Movelist> movelist;
 
+  public int blackorwhite=0;
   private final BufferStrategy bs;
   public boolean iscounting = false;
   public boolean isAutocounting = false;
@@ -167,8 +168,11 @@ public class LizzieFrame extends JFrame {
     countResults = new CountResults();
     boardRenderer = new BoardRenderer(true);
     subBoardRenderer = new SubBoardRenderer(false);
-    variationTree = new VariationTree();
+    variationTree = new VariationTree(); 
     winrateGraph = new WinrateGraph();
+   // MenuTest menu = new MenuTest();
+   // add(menu);
+    //this.setJMenuBar(menu); 
     // this.setVisible(true);
     this.setAlwaysOnTop(Lizzie.config.mainsalwaysontop);
     setMinimumSize(new Dimension(640, 400));
@@ -604,6 +608,7 @@ public class LizzieFrame extends JFrame {
    * @param g0 not used
    */
   public void paint(Graphics g0) {
+
     autosaveMaybe();
 
     int width = getWidth();
@@ -915,8 +920,10 @@ public class LizzieFrame extends JFrame {
           subBoardY = tempy;
           subBoardLength = Math.min(tempw, temph);
         }
+       // super.paintComponents(g0);
       }
 
+      
       // initialize
 
       cachedImage = new BufferedImage(width, height, TYPE_INT_ARGB);
@@ -1498,7 +1505,12 @@ public class LizzieFrame extends JFrame {
       }
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
       if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay))
+    	 if (blackorwhite==0)
         Lizzie.board.place(coords[0], coords[1]);
+      if (blackorwhite==1)
+    	  Lizzie.board.place(coords[0], coords[1],Stone.BLACK);
+    	  if (blackorwhite==2)
+    		  Lizzie.board.place(coords[0], coords[1],Stone.WHITE);
     }
     if (Lizzie.config.showWinrate && moveNumber >= 0) {
       isPlayingAgainstLeelaz = false;
