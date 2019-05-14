@@ -582,6 +582,9 @@ public class Leelaz {
       } else if (line.startsWith("info")) {
         isLoaded = true;
         // Clear switching prompt
+        if (!isPondering) {
+          isPondering = true;
+        }
         if (switching) {
           if (!line.contains("->")) {
             switching = false;
