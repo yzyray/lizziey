@@ -246,6 +246,7 @@ public class Leelaz {
       return;
     }
     switching = true;
+    isCheckingVersion = true;
     this.engineCommand = engineCommand;
     // stop the ponder
     if (Lizzie.leelaz.isPondering()) {
@@ -382,7 +383,6 @@ public class Leelaz {
         outputStream = new BufferedOutputStream(process9.getOutputStream());
         break;
     }
-    isCheckingVersion = true;
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
     executor = Executors.newSingleThreadScheduledExecutor();
