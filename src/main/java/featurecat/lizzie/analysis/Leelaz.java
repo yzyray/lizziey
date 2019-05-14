@@ -379,9 +379,8 @@ public class Leelaz {
     isCheckingVersion = true;
     this.engineCommand = engineCommand;
     // stop the ponder
-    if (Lizzie.leelaz.isPondering()) {
-      Lizzie.leelaz.togglePonder();
-    }
+    sendCommand("stop");
+    isPondering = false;
     if (isEngineAlive(index)) // 需要添加判断,对应index的进程知否初始化并且alive
     {
       // normalQuit(currentEngineN);

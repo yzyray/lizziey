@@ -27,6 +27,7 @@ public class Lizzie {
   public static String lizzieVersion = "0.7";
   private static String[] mainArgs;
   public static Menu menu;
+
   /** Launches the game window, and runs the game. */
   public static void main(String[] args) throws IOException {
     setLookAndFeel();
@@ -147,8 +148,6 @@ public class Lizzie {
         Lizzie.leelaz.isThinking = false;
       }
     }
-
-    //  Lizzie.leelaz.sendCommand("name");
 
     int movenumber = board.getcurrentmovenumber();
     board.saveMoveNumber();
