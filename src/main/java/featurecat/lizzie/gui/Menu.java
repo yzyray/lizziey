@@ -41,7 +41,7 @@ public class Menu extends JDialog {
     this.getContentPane().setBackground(Color.LIGHT_GRAY);
     JPanel bar=new JPanel(new BorderLayout());
     bar.setBorder(new EmptyBorder(0, 0, -5, -5));
-    final menuBar menuBar = new menuBar();
+    final MenuBar menuBar = new MenuBar();
     bar.setBounds(0, 0, 250, 20);
     menuBar.setColor(Color.LIGHT_GRAY);
     this.add(bar);

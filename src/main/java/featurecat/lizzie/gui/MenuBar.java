@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JMenuBar;
 
-class menuBar extends JMenuBar
+class MenuBar extends JMenuBar
 {
     Color bgColor=Color.BLUE;
       
