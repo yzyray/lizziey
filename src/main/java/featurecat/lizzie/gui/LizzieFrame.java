@@ -25,6 +25,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -238,6 +240,19 @@ public class LizzieFrame extends JFrame {
             Lizzie.shutdown();
           }
         });
+   
+    this.addComponentListener(new ComponentAdapter() {//让窗口响应大小改变事件
+        @Override
+        public void componentResized(ComponentEvent e) {
+            Lizzie.menu.setBounds(Lizzie.frame.getX()+Lizzie.frame.getInsets().left,Lizzie.frame.getY()+Lizzie.frame.getInsets().top, Lizzie.frame.getContentPane().getWidth(), 20);
+            
+        }
+        
+        @Override public void componentMoved(ComponentEvent e){
+            Lizzie.menu.setBounds(Lizzie.frame.getX()+Lizzie.frame.getInsets().left,Lizzie.frame.getY()+Lizzie.frame.getInsets().top, Lizzie.frame.getContentPane().getWidth(), 20);
+           
+        }
+    });
 
     // Show the playouts in the title
     showPlayouts.scheduleAtFixedRate(
@@ -598,7 +613,7 @@ public class LizzieFrame extends JFrame {
     if (!showControls) {
       // layout parameters
 
-      int topInset = this.getInsets().top;
+      int topInset = this.getInsets().top+20;
       int leftInset = this.getInsets().left;
       int rightInset = this.getInsets().right;
       int bottomInset = this.getInsets().bottom;
