@@ -579,7 +579,11 @@ public class Leelaz {
       } else if (line.startsWith("info")) {
         isLoaded = true;
         // Clear switching prompt
-
+        if (switching) {
+          if (!line.contains("->")) {
+            switching = false;
+          }
+        }
         // Display engine command in the title
         Lizzie.frame.updateTitle();
         if (isResponseUpToDate()) {
