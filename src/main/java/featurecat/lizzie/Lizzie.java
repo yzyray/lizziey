@@ -148,7 +148,7 @@ public class Lizzie {
       }
     }
 
-    Lizzie.leelaz.sendCommand("name");
+    //  Lizzie.leelaz.sendCommand("name");
 
     int movenumber = board.getcurrentmovenumber();
     board.saveMoveNumber();
