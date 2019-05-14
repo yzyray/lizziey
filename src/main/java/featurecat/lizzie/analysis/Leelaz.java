@@ -149,7 +149,7 @@ public class Leelaz {
     if (engineCommand.trim().isEmpty()) {
       return;
     }
-
+    switching = true;
     commands = splitCommand(engineCommand);
 
     Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
