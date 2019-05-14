@@ -391,7 +391,7 @@ public class Menu extends JDialog {
 
     engine10 = new JMenuItem();
 
-    engine10.setText("引擎10:  " + Lizzie.config.leelazConfig.optString("enginename100", ""));
+    engine10.setText("引擎10:  " + Lizzie.config.leelazConfig.optString("enginename10", ""));
 
     engine10.addActionListener(new ItemListener());
     engineMenu.add(engine10);
