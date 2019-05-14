@@ -43,7 +43,7 @@ public class Lizzie {
     //   movelistframe.setLocation(-7, 302);
     movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", true));
     movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
- 
+    
     frame = new LizzieFrame();
     gtpConsole = new GtpConsolePane(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));

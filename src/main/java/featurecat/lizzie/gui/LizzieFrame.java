@@ -181,7 +181,7 @@ public class LizzieFrame extends JFrame {
       this.BoardPositionProportion =
           Lizzie.config.persistedUi.optInt("board-postion-propotion", this.BoardPositionProportion);
     } else {
-      setSize(960, 600);
+      setSize(960, 650);
       setLocationRelativeTo(null); // Start centered, needs to be called *after* setSize...
     }
 
@@ -197,7 +197,7 @@ public class LizzieFrame extends JFrame {
       setExtendedState(Frame.MAXIMIZED_BOTH);
     } else if (persisted && Lizzie.config.persistedUi.getBoolean("window-maximized")) {
       setExtendedState(Frame.MAXIMIZED_BOTH);
-    }
+      }
 
     commentPane = new JTextPane();
     commentPane.setEditable(false);

@@ -4,6 +4,12 @@ import static java.awt.event.InputEvent.*;
 import static java.awt.event.KeyEvent.*;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Window;
 import java.awt.event.*;
 import java.io.IOException;
@@ -15,23 +21,51 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import featurecat.lizzie.Lizzie;
 
 public class Menu extends JDialog {
 
   final ButtonGroup buttonGroup = new ButtonGroup();
-
+  
+  Font headFont;
+  Font winrateFont;
   public Menu(Window owner) {
 	  super(owner);
-    setLayout(new BorderLayout()); 
-    //setAlwaysOnTop(true);
+    setLayout(null); 
     setUndecorated(true);
     setResizable(true);
+   setBounds(Lizzie.frame.getX()+Lizzie.frame.getInsets().left,Lizzie.frame.getY()+Lizzie.frame.getInsets().top, Lizzie.frame.getContentPane().getWidth(), 20);
     
-    final JMenuBar menuBar = new JMenuBar();
-    final JMenu fileMenu = new JMenu("文件（CTRL）"); // 创建“文件”菜单
+    this.getContentPane().setBackground(Color.LIGHT_GRAY);
+    JPanel bar=new JPanel(new BorderLayout());
+    bar.setBorder(new EmptyBorder(0, 0, -5, -5));
+    final menuBar menuBar = new menuBar();
+    bar.setBounds(0, 0, 250, 20);
+    menuBar.setColor(Color.LIGHT_GRAY);
+    this.add(bar);
+    bar.add(menuBar);
+    try {
+        winrateFont =
+            Font.createFont(
+                Font.TRUETYPE_FONT,
+                Thread.currentThread()
+                    .getContextClassLoader()
+                    .getResourceAsStream("fonts/OpenSans-Semibold.ttf"));
+
+      } catch (IOException | FontFormatException e) {
+        e.printStackTrace();
+      }
+
+      winrateFont = new Font("winrateFont", Font.PLAIN, 14);
+      headFont = new Font("winrateFont", Font.BOLD, 12);
+
+    
+    final JMenu fileMenu = new JMenu("文件（Ctrl）"); // 创建“文件”菜单
     fileMenu.setMnemonic('F'); // 设置快捷键
+    fileMenu.setForeground(Color.BLACK);
+    fileMenu.setFont(headFont);
     menuBar.add(fileMenu); // 添加到菜单栏
     final JMenuItem newItem = new JMenuItem("打开（O）"); // 创建菜单项
     newItem.setMnemonic('O'); // 设置快捷键
@@ -65,6 +99,7 @@ public class Menu extends JDialog {
     saveItem.setMnemonic('S');
     saveItem.setAccelerator(KeyStroke.getKeyStroke(VK_S, CTRL_MASK));
     saveItem.addActionListener(new ItemListener());
+
     fileMenu.add(saveItem);
 
     fileMenu.addSeparator();
@@ -80,6 +115,8 @@ public class Menu extends JDialog {
     editMenu.setText("编辑（E）");
     editMenu.setMnemonic('E');
     menuBar.add(editMenu);
+    editMenu.setForeground(Color.BLACK);
+    editMenu.setFont(headFont);
     //URL resource = this.getClass().getResource("/assets/logo.png");
     ImageIcon icon = new ImageIcon();
     try {
@@ -158,6 +195,8 @@ public class Menu extends JDialog {
     final JMenu helpMenu = new JMenu("帮助（H）", false);
     helpMenu.setText("帮助（H）");
     helpMenu.setMnemonic('H');
+    helpMenu.setForeground(Color.BLACK);
+    helpMenu.setFont(headFont);
     menuBar.add(helpMenu);
 
     final JMenuItem aboutItem = new JMenuItem();
@@ -165,8 +204,8 @@ public class Menu extends JDialog {
     aboutItem.setMnemonic('A');
     aboutItem.addActionListener(new ItemListener());
     helpMenu.add(aboutItem);
-    add(menuBar);
-    menuBar.setBounds(0,0, 100,100);
+   
+    //menuBar.setBounds(0,0, 100,100);
     //
   }
 
