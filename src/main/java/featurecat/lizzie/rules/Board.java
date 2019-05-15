@@ -210,6 +210,11 @@ public class Board implements LeelazListener {
     setlist();
   }
 
+  public void savelistforswitch() {
+    // System.out.println("保存board");
+    tempmovelist = getmovelist();
+  }
+
   public void savelist(int movenumber) {
     // System.out.println("保存board");
     tempmovelist = getmovelist();
@@ -316,6 +321,12 @@ public class Board implements LeelazListener {
   public void setlist() {
     // System.out.println("恢复board不恢复branch");
     setmovelist(tempmovelist);
+  }
+
+  public void setlistforswitch() {
+    // System.out.println("恢复board不恢复branch");
+    setmovelist(tempmovelist);
+    tempmovelist.clear();
   }
   /**
    * Open board again when the SZ property is setup by sgf

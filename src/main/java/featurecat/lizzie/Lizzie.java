@@ -153,12 +153,16 @@ public class Lizzie {
     }
 
     int movenumber = board.getcurrentmovenumber();
-    board.saveMoveNumber();
+    // board.saveMoveNumber();
+
+    board.savelistforswitch();
     try {
 
       leelaz.restartEngine(commandLine, index);
       board.clearbestmovesafter(board.getHistory().getStart(), movenumber);
-      board.restoreMoveNumber();
+      // board.restoreMoveNumber();
+
+      board.setlistforswitch();
 
     } catch (IOException e) {
       e.printStackTrace();
