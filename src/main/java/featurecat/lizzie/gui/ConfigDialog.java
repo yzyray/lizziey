@@ -82,6 +82,8 @@ public class ConfigDialog extends JDialog {
   private JRadioButton rdonoponder;
   private JRadioButton rdorect;
   private JRadioButton rdonorect;
+  private JRadioButton rdofast;
+  private JRadioButton rdonofast;
 
   public String enginePath = "";
   public String weightPath = "";
@@ -104,7 +106,7 @@ public class ConfigDialog extends JDialog {
     setTitle(resourceBundle.getString("LizzieConfig.title.config"));
     setModalityType(ModalityType.APPLICATION_MODAL);
     setType(Type.POPUP);
-    setBounds(100, 100, 661, 727);
+    setBounds(100, 100, 661, 787);
     getContentPane().setLayout(new BorderLayout());
     JPanel buttonPane = new JPanel();
     buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -725,6 +727,59 @@ public class ConfigDialog extends JDialog {
     rdorectgp.add(rdonorect);
     rdorectgp.add(rdorect);
 
+    JLabel nofast = new JLabel("是否启用引擎快速切换");
+    nofast.setBounds(6, 625, 157, 16);
+    engineTab.add(nofast);
+
+    rdofast = new JRadioButton("是");
+    rdofast.setBounds(171, 625, 50, 23);
+    engineTab.add(rdofast);
+
+    rdonofast = new JRadioButton("否");
+    rdonofast.setBounds(220, 625, 80, 23);
+    engineTab.add(rdonofast);
+
+    ButtonGroup rdofastgp = new ButtonGroup();
+    rdofastgp.add(rdonofast);
+    rdofastgp.add(rdofast);
+
+    JLabel fastenginehint = new JLabel("如启用快速引擎切换,已经加载过的引擎再次启用时将不必重新加载");
+    fastenginehint.setBounds(6, 650, 437, 16);
+    engineTab.add(fastenginehint);
+    fastenginehint.setVisible(false);
+
+    rdofast.addFocusListener(
+        new FocusListener() {
+
+          @Override
+          public void focusGained(FocusEvent arg0) {
+            // TODO Auto-generated method stub
+            fastenginehint.setVisible(true);
+          }
+
+          @Override
+          public void focusLost(FocusEvent arg0) {
+            // TODO Auto-generated method stub
+            fastenginehint.setVisible(false);
+          }
+        });
+
+    rdonofast.addFocusListener(
+        new FocusListener() {
+
+          @Override
+          public void focusGained(FocusEvent arg0) {
+            // TODO Auto-generated method stub
+            fastenginehint.setVisible(true);
+          }
+
+          @Override
+          public void focusLost(FocusEvent arg0) {
+            // TODO Auto-generated method stub
+            fastenginehint.setVisible(false);
+          }
+        });
+
     JLabel lblAnalyzeUpdateInterval =
         new JLabel(resourceBundle.getString("LizzieConfig.title.analyzeUpdateInterval"));
     lblAnalyzeUpdateInterval.setBounds(331, 380, 157, 16);
@@ -895,6 +950,7 @@ public class ConfigDialog extends JDialog {
     setBoardSize();
     setShowLcbWinrate();
     setPonder();
+    setFastEngine();
     setRect();
     setShowLcbColor();
     setLocationRelativeTo(getOwner());
@@ -995,6 +1051,7 @@ public class ConfigDialog extends JDialog {
       leelazConfig.putOpt("show-lcb-winrate", getShowLcbWinrate());
       leelazConfig.putOpt("show-rect", getRect());
       leelazConfig.putOpt("play-ponder", getPonder());
+      leelazConfig.putOpt("fast-engine-change", getFastEngine());
       leelazConfig.putOpt("show-lcb-color", getShowLcbColor());
       leelazConfig.put("engine-command", txtEngine.getText().trim());
       leelazConfig.putOpt("limit-max-suggestion", txtFieldValue(txtMaxsuggestionmoves));
@@ -1082,6 +1139,27 @@ public class ConfigDialog extends JDialog {
     if (rdonorect.isSelected()) {
       Lizzie.config.showrect = false;
       Lizzie.frame.boardRenderer.removeblock();
+      return false;
+    }
+    return true;
+  }
+
+  private void setFastEngine() {
+
+    if (Lizzie.config.fastChange) {
+      rdofast.setSelected(true);
+    } else {
+      rdonofast.setSelected(true);
+    }
+  }
+
+  private boolean getFastEngine() {
+    if (rdofast.isSelected()) {
+      Lizzie.config.fastChange = true;
+      return true;
+    }
+    if (rdonofast.isSelected()) {
+      Lizzie.config.fastChange = false;
       return false;
     }
     return true;

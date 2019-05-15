@@ -37,6 +37,7 @@ public class Config {
   public boolean playponder = true;
   public boolean showrect = true;
   public boolean showlcbcolor = true;
+  public boolean fastChange = true;
 
   public boolean showStatus = true;
   public boolean showBranch = true;
@@ -210,6 +211,7 @@ public class Config {
     playponder = config.getJSONObject("leelaz").optBoolean("play-ponder", true);
     showrect = config.getJSONObject("leelaz").optBoolean("show-rect", true);
     showlcbcolor = config.getJSONObject("leelaz").optBoolean("show-lcb-color", true);
+    fastChange = config.getJSONObject("leelaz").optBoolean("fast-engine-change", true);
 
     if (theme.fontName() != null) fontName = theme.fontName();
 

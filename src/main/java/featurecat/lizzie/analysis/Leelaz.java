@@ -15,6 +15,7 @@ import java.util.StringTokenizer;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -375,11 +376,11 @@ public class Leelaz {
     if (engineCommand.trim().isEmpty()) {
       return;
     }
-    switching = true;
+
     isCheckingVersion = true;
     this.engineCommand = engineCommand;
     // stop the ponder
-    sendCommand("stop");
+
     isPondering = false;
     // isThinking = false;
     // Lizzie.frame.isPlayingAgainstLeelaz = false;
@@ -415,33 +416,32 @@ public class Leelaz {
         featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
     }
-    if (isEngineAlive(index)) // 需要添加判断,对应index的进程知否初始化并且alive
+    if (Lizzie.config.fastChange && isEngineAlive(index)) // 需要添加判断,对应index的进程知否初始化并且alive
     {
-      normalQuit(currentEngineN);
+      // normalQuit(currentEngineN);
       reinitializeStreams(engineCommand, index);
     } else {
-      normalQuit(currentEngineN);
+      if (!Lizzie.config.fastChange) normalQuit(currentEngineN);
       startEngine(engineCommand, index);
     }
     currentEngineN = index;
-
     ponder();
   }
 
   public void normalQuit(int index) {
-    // sendCommand("quit");
+    sendCommand("quit");
     executor.shutdownNow();
-    //    try {
-    //      while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
-    //        executor.shutdownNow();
-    //      }
-    //      if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
-    //        shutdown();
-    //      }
-    //    } catch (InterruptedException e) {
-    //      executor.shutdownNow();
-    //      Thread.currentThread().interrupt();
-    //    }
+    try {
+      while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+        executor.shutdownNow();
+      }
+      if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
+        shutdown();
+      }
+    } catch (InterruptedException e) {
+      executor.shutdownNow();
+      Thread.currentThread().interrupt();
+    }
   }
 
   /** Initializes the input and output streams */
@@ -954,9 +954,11 @@ public class Leelaz {
           if (line.contains("pass")) {
 
           } else {
-            bestMoves.add(MoveData.fromSummary(line));
-            notifyBestMoveListeners();
-            Lizzie.frame.repaint();
+            if (!switching) {
+              bestMoves.add(MoveData.fromSummary(line));
+              notifyBestMoveListeners();
+              Lizzie.frame.repaint();
+            }
           }
         }
       } else if (line.startsWith("play")) {

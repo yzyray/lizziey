@@ -480,6 +480,7 @@ public class Menu extends JDialog {
     engineMenu.add(closeother);
 
     engineMenu.addSeparator();
+
     final JMenuItem config = new JMenuItem();
     config.setText("设置");
     // aboutItem.setMnemonic('A');
