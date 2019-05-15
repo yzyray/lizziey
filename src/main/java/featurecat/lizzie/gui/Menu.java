@@ -183,7 +183,16 @@ public class Menu extends JDialog {
     subItem.setText("放大小棋盘（ALT+V）");
     subItem.addActionListener(new ItemListener());
     viewMenu.add(subItem);
+
+    final JMenuItem largewin = new JMenuItem();
+    largewin.setText("放大胜率图(Ctrl+W)");
+    largewin.addActionListener(new ItemListener());
+    viewMenu.add(largewin);
     viewMenu.addSeparator();
+
+    final JMenuItem subboard = new JMenuItem("小棋盘"); // 创建“字体”子菜单
+    viewMenu.add(subboard); // 添加到“编辑”菜单
+    subboard.addActionListener(new ItemListener()); // 添加动作监听器
 
     final JMenuItem winratetMenu = new JMenuItem("胜率面板(W)"); // 创建“字体”子菜单
     viewMenu.add(winratetMenu); // 添加到“编辑”菜单
@@ -192,6 +201,18 @@ public class Menu extends JDialog {
     final JMenuItem commitMenu = new JMenuItem("评论面板(T)"); // 创建“字体”子菜单
     viewMenu.add(commitMenu); // 添加到“编辑”菜单
     commitMenu.addActionListener(new ItemListener()); // 添加动作监听器
+
+    final JMenuItem branch = new JMenuItem("分支面板(G)"); // 创建“字体”子菜单
+    viewMenu.add(branch); // 添加到“编辑”菜单
+    branch.addActionListener(new ItemListener()); // 添加动作监听器
+
+    final JMenuItem topleft = new JMenuItem("左上角面板"); // 创建“字体”子菜单
+    viewMenu.add(topleft); // 添加到“编辑”菜单
+    topleft.addActionListener(new ItemListener()); // 添加动作监听器
+
+    final JMenuItem bottomleft = new JMenuItem("左下角状态"); // 创建“字体”子菜单
+    viewMenu.add(bottomleft); // 添加到“编辑”菜单
+    bottomleft.addActionListener(new ItemListener()); // 添加动作监听器
 
     //   fontMenu.setIcon(icon); // 设置菜单图标
     //   fontMenu.setMnemonic('F'); // 设置快捷键
@@ -239,9 +260,13 @@ public class Menu extends JDialog {
 
     final JMenuItem settime = new JMenuItem();
     settime.setText("设置AI用时");
-    // aboutItem.setMnemonic('A');
     settime.addActionListener(new ItemListener());
     gameMenu.add(settime);
+
+    final JMenuItem bestone = new JMenuItem();
+    bestone.setText("落最佳一手(逗号)");
+    bestone.addActionListener(new ItemListener());
+    gameMenu.add(bestone);
 
     gameMenu.addSeparator();
 
@@ -305,7 +330,7 @@ public class Menu extends JDialog {
     analyMenu.add(heatItem);
 
     final JMenuItem countsItem = new JMenuItem();
-    countsItem.setText("形势判断（.）");
+    countsItem.setText("形势判断（点）");
     // aboutItem.setMnemonic('A');
     countsItem.addActionListener(new ItemListener());
     analyMenu.add(countsItem);
@@ -329,8 +354,8 @@ public class Menu extends JDialog {
     ImageIcon iconblack = new ImageIcon();
     try {
       iconblack.setImage(
-          // ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/smallblack.png")));
-          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
+          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/smallblack.png")));
+      // ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -338,8 +363,9 @@ public class Menu extends JDialog {
 
     ImageIcon iconwhite = new ImageIcon();
     try {
-      iconwhite.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
-      // ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/smallwhite.png")));
+      iconwhite.setImage(
+          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/smallwhite.png")));
+      // ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/smallwhite.png"));
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -347,8 +373,8 @@ public class Menu extends JDialog {
 
     ImageIcon iconbh = new ImageIcon();
     try {
-      iconbh.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
-      // iconbh.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/hb.png")));
+      // iconbh.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
+      iconbh.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/hb.png")));
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -540,12 +566,28 @@ public class Menu extends JDialog {
         Lizzie.config.toggleCoordinates();
         return;
       }
-      if (menuItem.getText().startsWith("放大")) {
+      if (menuItem.getText().startsWith("放大小")) {
         Lizzie.config.toggleLargeSubBoard();
+        return;
+      }
+      if (menuItem.getText().startsWith("放大胜")) {
+        Lizzie.config.toggleLargeWinrate();
+        return;
+      }
+      if (menuItem.getText().startsWith("小棋")) {
+        Lizzie.config.toggleShowSubBoard();
         return;
       }
       if (menuItem.getText().startsWith("评论")) {
         Lizzie.config.toggleShowComment();
+        return;
+      }
+      if (menuItem.getText().startsWith("左上")) {
+        Lizzie.config.toggleShowCaptured();
+        return;
+      }
+      if (menuItem.getText().startsWith("左下")) {
+        Lizzie.config.toggleShowStatus();
         return;
       }
       if (menuItem.getText().startsWith("恶手")) {
@@ -562,6 +604,10 @@ public class Menu extends JDialog {
       }
       if (menuItem.getText().startsWith("胜率")) {
         Lizzie.config.toggleShowWinrate();
+        return;
+      }
+      if (menuItem.getText().startsWith("分支")) {
+        Lizzie.config.toggleShowVariationGraph();
         return;
       }
       if (menuItem.getText().startsWith("命令")) {
@@ -781,6 +827,12 @@ public class Menu extends JDialog {
         st.setVisible(true);
         return;
       }
+
+      if (menuItem.getText().startsWith("落最佳")) {
+        if (!Lizzie.frame.playCurrentVariation()) Lizzie.frame.playBestMove();
+        return;
+      }
+
       if (menuItem.getText().startsWith("不显示")) {
         Lizzie.config.allowMoveNumber = 0;
         return;

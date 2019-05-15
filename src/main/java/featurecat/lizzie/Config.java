@@ -80,7 +80,7 @@ public class Config {
   public Optional<Map<Double, Color>> blunderNodeColors;
   public int nodeColorMode = 0;
   public boolean appendWinrateToComment = false;
-  public int boardPositionProportion = 3;
+  public int boardPositionProportion = 4;
   public int limitBranchLength = 0;
   public int limitMaxSuggestion = 0;
   public int limitbadmoves = 0;
@@ -286,10 +286,22 @@ public class Config {
 
   public void toggleShowWinrate() {
     this.showWinrate = !this.showWinrate;
+    Lizzie.config.uiConfig.put("show-winrate", showWinrate);
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   public void toggleLargeWinrate() {
-    this.largeWinrate = !this.largeWinrate;
+    if (this.largeSubBoard) {
+      toggleLargeSubBoard();
+      this.largeWinrate = true;
+    } else {
+      this.largeWinrate = !this.largeWinrate;
+    }
     Lizzie.config.uiConfig.put("large-winrate", largeWinrate);
     try {
       Lizzie.config.save();
@@ -301,11 +313,40 @@ public class Config {
 
   public void toggleShowVariationGraph() {
     this.showVariationGraph = !this.showVariationGraph;
+    Lizzie.config.uiConfig.put("show-variation-graph", showVariationGraph);
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public void toggleShowCaptured() {
+    this.showCaptured = !this.showCaptured;
+    Lizzie.config.uiConfig.put("show-captured", showCaptured);
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   public void toggleShowComment() {
     this.showComment = !this.showComment;
     Lizzie.config.uiConfig.put("show-comment", showComment);
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public void toggleShowStatus() {
+    this.showStatus = !this.showStatus;
+    Lizzie.config.uiConfig.put("show-status", showStatus);
     try {
       Lizzie.config.save();
     } catch (IOException e) {
@@ -345,6 +386,17 @@ public class Config {
     showCoordinates = !showCoordinates;
     try {
       Lizzie.config.uiConfig.put("show-coordinates", showCoordinates);
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public void toggleShowSubBoard() {
+    showSubBoard = !showSubBoard;
+    try {
+      Lizzie.config.uiConfig.put("show-subboard", showSubBoard);
       Lizzie.config.save();
     } catch (IOException e) {
       // TODO Auto-generated catch block
