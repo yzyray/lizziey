@@ -88,11 +88,7 @@ public class Board implements LeelazListener {
    */
   public static Optional<int[]> asCoordinates(String namedCoordinate) {
    try
-   {namedCoordinate = namedCoordinate.trim();}
-   catch (Exception e)
-   {
-	   
-   }
+   {namedCoordinate = namedCoordinate.trim();
     if (namedCoordinate.equalsIgnoreCase("pass") || namedCoordinate.equalsIgnoreCase("resign")) {
       return Optional.empty();
     }
@@ -105,7 +101,13 @@ public class Board implements LeelazListener {
       int y = boardSize - Integer.parseInt(m.group(2));
       return Optional.of(new int[] {x, y});
     }
+   }
+   catch (Exception e)
+   {
+	   
+   }
     return Optional.empty();
+    
   }
 
   public static int asDigit(String name) {

@@ -24,6 +24,7 @@ public class Menu extends JDialog {
 
   Font headFont;
   public static ImageIcon icon;
+  public static ImageIcon stop;
   public static ImageIcon ready;
   public static JMenuItem engine1 = null;
   public static JMenuItem engine2 = null;
@@ -383,7 +384,7 @@ public class Menu extends JDialog {
 
     icon = new ImageIcon();
     try {
-    	icon.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
+    	icon.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/playing.png")));
     	//icon.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/run.png")));
     } catch (IOException e) {
       // TODO Auto-generated catch block
@@ -392,7 +393,15 @@ public class Menu extends JDialog {
 
     ready = new ImageIcon();
     try {
-      ready.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
+      ready.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/ready.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    
+    stop = new ImageIcon();
+    try {
+      stop.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/stop.png")));
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -492,7 +501,8 @@ public class Menu extends JDialog {
   class ItemListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       JMenuItem menuItem = (JMenuItem) e.getSource();
-      System.out.println("您单击的是菜单项：" + menuItem.getText());
+   //   System.out.println("您单击的是菜单项：" + menuItem.getText());
+      Lizzie.frame.setVisible(true);
       if (menuItem.getText().startsWith("打开")) {
         Lizzie.frame.openFile();
         return;
