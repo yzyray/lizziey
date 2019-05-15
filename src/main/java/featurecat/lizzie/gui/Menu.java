@@ -105,7 +105,18 @@ public class Menu extends JDialog {
     fileMenu.add(saveItem);
 
     fileMenu.addSeparator();
-
+    final JMenuItem copyItem = new JMenuItem();
+    copyItem.setText("复制到剪贴板（CTRL+C）");
+    copyItem.addActionListener(new ItemListener());
+    fileMenu.add(copyItem);
+    
+    final JMenuItem pasteItem = new JMenuItem();
+    pasteItem.setText("从剪贴板粘贴（CTRL+V）");
+    pasteItem.addActionListener(new ItemListener());
+    fileMenu.add(pasteItem);
+    
+    fileMenu.addSeparator();
+   
     final JMenuItem exitItem = new JMenuItem();
     exitItem.setText("退出");
     // exitItem.setMnemonic('E');
@@ -187,7 +198,7 @@ public class Menu extends JDialog {
     viewMenu.add(winratetMenu); // 添加到“编辑”菜单
     winratetMenu.addActionListener(new ItemListener()); // 添加动作监听器
 
-    final JMenuItem commitMenu = new JMenuItem("评论面板"); // 创建“字体”子菜单
+    final JMenuItem commitMenu = new JMenuItem("评论面板(T)"); // 创建“字体”子菜单
     viewMenu.add(commitMenu); // 添加到“编辑”菜单
     commitMenu.addActionListener(new ItemListener()); // 添加动作监听器
 
@@ -206,30 +217,13 @@ public class Menu extends JDialog {
     // iCheckBoxItem.addActionListener(new ItemListener()); // 添加动作监听器
     //  fontMenu.add(iCheckBoxItem); // 添加到“字体”子菜单
 
-    final JMenu windowMenu = new JMenu("窗口"); // 创建“属性”子菜单
-    //   attributeMenu.setIcon(icon); // 设置菜单图标
-    // attributeMenu.setMnemonic('A'); // 设置快捷键
-    viewMenu.add(windowMenu); // 添加到“编辑”菜单
+   
 
     final JMenuItem gtpMenu = new JMenuItem("命令窗口(E)"); // 创建“字体”子菜单
-    windowMenu.add(gtpMenu); // 添加到“编辑”菜单
+    viewMenu.add(gtpMenu); // 添加到“编辑”菜单
     gtpMenu.addActionListener(new ItemListener()); // 添加动作监听器
 
-    final JMenuItem badmovesItem = new JMenuItem("恶手列表(B)"); // 创建单选按钮菜单项
-    //  rRadioButtonItem.setMnemonic('R'); // 设置快捷键
-    //    rRadioButtonItem.setAccelerator(
-    //        KeyStroke.getKeyStroke(VK_R, CTRL_MASK | ALT_MASK)); // 设置加速器为“Ctrl+Alt+R”
-    // buttonGroup.add(badmovesItem); // 添加到按钮组
-    // badmovesItem.setSelected(true); // 设置为被选中
-    badmovesItem.addActionListener(new ItemListener()); // 添加动作监听器
-    windowMenu.add(badmovesItem); // 添加到“属性”子菜单
-    final JMenuItem leelasu = new JMenuItem("AI选点列表(U)"); // 创建单选按钮菜单项
-    //  eRadioButtonItem.setMnemonic('E'); // 设置快捷键
-    //  eRadioButtonItem.setAccelerator(
-    //      KeyStroke.getKeyStroke(VK_E, CTRL_MASK | ALT_MASK)); // 设置加速器为“Ctrl+Alt+E”
-    // buttonGroup.add(leelasu); // 添加到按钮组
-    leelasu.addActionListener(new ItemListener()); // 添加动作监听器
-    windowMenu.add(leelasu); // 添加到“属性”子菜单
+    
 
     final JMenu gameMenu = new JMenu("棋局 ", false);
     gameMenu.setText(" 棋局  ");
@@ -263,6 +257,12 @@ public class Menu extends JDialog {
     gameMenu.add(settime);
 
     gameMenu.addSeparator();
+    
+    final JMenuItem empty = new JMenuItem();
+    empty.setText("清空棋盘（Ctrl+Home）");
+    // aboutItem.setMnemonic('A');
+    empty.addActionListener(new ItemListener());
+    gameMenu.add(empty);
 
     final JMenuItem firstItem = new JMenuItem();
     firstItem.setText("跳转到最前（Home）");
@@ -274,20 +274,62 @@ public class Menu extends JDialog {
     lastItem.setText("跳转到最后（End）");
     // aboutItem.setMnemonic('A');
     lastItem.addActionListener(new ItemListener());
-    gameMenu.add(lastItem);
-    gameMenu.addSeparator();
+    gameMenu.add(lastItem);    
 
+    final JMenuItem commetup = new JMenuItem();
+    commetup.setText("跳转到左分支(左)");
+    // aboutItem.setMnemonic('A');
+    commetup.addActionListener(new ItemListener());
+    gameMenu.add(commetup);
+
+    final JMenuItem commetdown = new JMenuItem();
+    commetdown.setText("跳转到右分支(右)");
+    // aboutItem.setMnemonic('A');
+    commetdown.addActionListener(new ItemListener());
+    gameMenu.add(commetdown);
+
+    final JMenuItem branchStart = new JMenuItem();
+    branchStart.setText("返回主分支(CTRL+左)");
+    // aboutItem.setMnemonic('A');
+    branchStart.addActionListener(new ItemListener());
+    gameMenu.add(branchStart);
+    
+    final JMenu analyMenu = new JMenu("分析 ", false);
+    analyMenu.setText(" 分析  ");
+    analyMenu.setForeground(Color.BLACK);
+    analyMenu.setFont(headFont);
+    menuBar.add(analyMenu);
+    
+    
     final JMenuItem anaItem = new JMenuItem();
-    anaItem.setText("分析/停止对局（空格）");
+    anaItem.setText("分析/停止（空格）");
     // aboutItem.setMnemonic('A');
     anaItem.addActionListener(new ItemListener());
-    gameMenu.add(anaItem);
+    analyMenu.add(anaItem);
 
+    final JMenuItem autoanItem = new JMenuItem();
+    autoanItem.setText("自动分析（A）");
+    // aboutItem.setMnemonic('A');
+    autoanItem.addActionListener(new ItemListener());
+    analyMenu.add(autoanItem);   
+    
     final JMenuItem countsItem = new JMenuItem();
     countsItem.setText("形势判断（.）");
     // aboutItem.setMnemonic('A');
     countsItem.addActionListener(new ItemListener());
-    gameMenu.add(countsItem);
+    analyMenu.add(countsItem);
+    analyMenu.addSeparator();
+
+    
+    
+    
+    final JMenuItem badmovesItem = new JMenuItem("恶手列表(B)"); 
+    badmovesItem.addActionListener(new ItemListener()); // 添加动作监听器
+    analyMenu.add(badmovesItem); // 添加到“属性”子菜单
+    
+    final JMenuItem leelasu = new JMenuItem("AI选点列表(U)"); 
+    leelasu.addActionListener(new ItemListener()); // 添加动作监听器
+    analyMenu.add(leelasu); // 添加到“属性”子菜单
 
     final JMenu editMenu = new JMenu("编辑 ", false);
     editMenu.setText(" 编辑  ");
@@ -491,7 +533,7 @@ public class Menu extends JDialog {
   class ItemListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       JMenuItem menuItem = (JMenuItem) e.getSource();
-      //   System.out.println("您单击的是菜单项：" + menuItem.getText());
+         System.out.println("您单击的是菜单项：" + menuItem.getText());
       Lizzie.frame.setVisible(true);
       if (menuItem.getText().startsWith("打开")) {
         Lizzie.frame.openFile();
@@ -733,6 +775,11 @@ public class Menu extends JDialog {
         }
         return;
       }
+      if (menuItem.getText().startsWith("清空棋盘")) {
+          Lizzie.board.clear();
+          return;
+        }
+     
       if (menuItem.getText().startsWith("跳转到最前")) {
         while (Lizzie.board.previousMove()) ;
         return;
@@ -771,6 +818,36 @@ public class Menu extends JDialog {
         Lizzie.config.allowMoveNumber = -1;
         return;
       }
+      if (menuItem.getText().startsWith("自动分")) {
+    	  Input.shouldDisableAnalysis = false;
+          Lizzie.board.toggleAnalysis();
+          return;
+        }
+      
+      if (menuItem.getText().startsWith("返回主分支")) {
+    	  if (Lizzie.board.undoToChildOfPreviousWithVariation()) {
+    	      Lizzie.board.previousMove();
+    	    }
+          return;
+        }
+      
+      if (menuItem.getText().startsWith("跳转到左分")) {
+    	 Input.previousBranch();
+          return;
+        }
+      
+      if (menuItem.getText().startsWith("跳转到右分")) {
+    	  Input.nextBranch();
+          return;
+        }
+      if (menuItem.getText().startsWith("复制到")) {
+    	  Lizzie.frame.copySgf();
+          return;
+        }
+      if (menuItem.getText().startsWith("从剪贴")) {
+    	  Lizzie.frame.pasteSgf();
+          return;
+        }
     }
   }
 }

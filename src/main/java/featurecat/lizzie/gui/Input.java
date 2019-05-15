@@ -10,6 +10,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   public static boolean isinsertmode = false;
   public static boolean Draggedmode = false;
   public static int insert = 0;
+  public static  boolean shouldDisableAnalysis = true;
 
   @Override
   public void mouseClicked(MouseEvent e) {}
@@ -130,7 +131,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     redo(1);
   }
 
-  private void redo(int movesToAdvance) {
+  public static void redo(int movesToAdvance) {
     if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
     if (Lizzie.frame.isPlayingAgainstLeelaz) {
       Lizzie.frame.isPlayingAgainstLeelaz = false;
@@ -173,14 +174,14 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         Lizzie.config.showNextMoves = Lizzie.config.showBestMoves = Lizzie.config.showBranch;
   }
 
-  private void nextBranch() {
+  public static void nextBranch() {
     if (Lizzie.frame.isPlayingAgainstLeelaz) {
       Lizzie.frame.isPlayingAgainstLeelaz = false;
     }
     Lizzie.board.nextBranch();
   }
 
-  private void previousBranch() {
+  public static void previousBranch() {
     if (Lizzie.frame.isPlayingAgainstLeelaz) {
       Lizzie.frame.isPlayingAgainstLeelaz = false;
     }
@@ -216,7 +217,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   public void keyPressed(KeyEvent e) {
     // If any controls key is pressed, let's disable analysis mode.
     // This is probably the user attempting to exit analysis mode.
-    boolean shouldDisableAnalysis = true;
+   
 
     switch (e.getKeyCode()) {
       case VK_E:
