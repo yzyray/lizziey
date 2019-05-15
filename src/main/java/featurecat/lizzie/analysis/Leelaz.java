@@ -64,6 +64,8 @@ public class Leelaz {
 
   private BufferedInputStream inputStream;
   private BufferedOutputStream outputStream;
+  private BufferedInputStream inputStream2;
+  private BufferedOutputStream outputStream2;
 
   private boolean printCommunication;
   public boolean gtpConsole;
@@ -86,6 +88,7 @@ public class Leelaz {
   // public boolean isChanged = false;
   private boolean isLoaded = false;
   private boolean isCheckingVersion;
+  private boolean isCheckingVersion2;
 
   // for Multiple Engine
   private String engineCommand;
@@ -97,6 +100,8 @@ public class Leelaz {
   public boolean switching = true;
   private int currentEngineN = -1;
   private ScheduledExecutorService executor;
+  private ScheduledExecutorService executor2;
+  public boolean execuser = false;
   //  private ScheduledExecutorService executor1;
   //  private ScheduledExecutorService executor2;
   //  private ScheduledExecutorService executor3;
@@ -209,11 +214,19 @@ public class Leelaz {
         break;
     }
     initializeStreams(index);
+    if(!execuser)
     isCheckingVersion = true;
+    else
+    	isCheckingVersion2=true;
+    if (!execuser) {
+      executor = Executors.newSingleThreadScheduledExecutor();
+      executor.execute(this::read);
+    } else {
+      executor2 = Executors.newSingleThreadScheduledExecutor();
+      executor2.execute(this::read2);
+    }
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
-    executor = Executors.newSingleThreadScheduledExecutor();
-    executor.execute(this::read);
   }
 
   private boolean isEngineAlive(int index) {
@@ -377,7 +390,10 @@ public class Leelaz {
       return;
     }
 
-    isCheckingVersion = true;
+    if(!execuser)
+        isCheckingVersion = true;
+        else
+        	isCheckingVersion2=true;
     this.engineCommand = engineCommand;
     // stop the ponder
 
@@ -416,12 +432,12 @@ public class Leelaz {
         featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
     }
-    if (Lizzie.config.fastChange && isEngineAlive(index)) // 需要添加判断,对应index的进程知否初始化并且alive
+    if ( isEngineAlive(index)) // 需要添加判断,对应index的进程知否初始化并且alive
     {
-      // normalQuit(currentEngineN);
+      normalQuit(currentEngineN);
       reinitializeStreams(engineCommand, index);
     } else {
-      if (!Lizzie.config.fastChange) normalQuit(currentEngineN);
+      normalQuit(currentEngineN);
       startEngine(engineCommand, index);
     }
     currentEngineN = index;
@@ -429,18 +445,62 @@ public class Leelaz {
   }
 
   public void normalQuit(int index) {
-    sendCommand("quit");
-    executor.shutdownNow();
-    try {
-      while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
-        executor.shutdownNow();
-      }
-      if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
-        shutdown();
-      }
-    } catch (InterruptedException e) {
+    if (!Lizzie.config.fastChange) 
+    	{sendCommandToLeelaz2("quit");
+    	   if (execuser) {
+    		      executor.shutdown();
+    		      try {
+    		        while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+    		          executor.shutdownNow();
+    		        }
+    		        if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
+    		          shutdown();
+    		        }
+    		      } catch (InterruptedException e) {
+    		        executor.shutdownNow();
+    		        Thread.currentThread().interrupt();
+    		      }
+    		    } else {
+    		      executor2.shutdown();
+    		      try {
+    		        while (!executor2.awaitTermination(1, TimeUnit.SECONDS)) {
+    		          executor2.shutdownNow();
+    		        }
+    		        if (executor2.awaitTermination(1, TimeUnit.SECONDS)) {
+    		          shutdown();
+    		        }
+    		      } catch (InterruptedException e) {
+    		        executor2.shutdownNow();
+    		        Thread.currentThread().interrupt();
+    		      }
+    	}
+    	}
+    if (execuser) {
       executor.shutdownNow();
-      Thread.currentThread().interrupt();
+//      try {
+//        while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+//          executor.shutdownNow();
+//        }
+//        if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
+//          shutdown();
+//        }
+//      } catch (InterruptedException e) {
+//        executor.shutdownNow();
+//        Thread.currentThread().interrupt();
+     // }
+    } else {
+      executor2.shutdownNow();
+//      try {
+//        while (!executor2.awaitTermination(1, TimeUnit.SECONDS)) {
+//          executor2.shutdownNow();
+//        }
+//        if (executor2.awaitTermination(1, TimeUnit.SECONDS)) {
+//          shutdown();
+//        }
+//      } catch (InterruptedException e) {
+//        executor2.shutdownNow();
+//        Thread.currentThread().interrupt();
+//      }
     }
     switch (index) {
       case 0:
@@ -479,54 +539,98 @@ public class Leelaz {
   /** Initializes the input and output streams */
   private void initializeStreams(int index) {
     currentEngineN = index;
-    switch (index) {
-      case 0:
-        inputStream = new BufferedInputStream(process.getInputStream());
-        outputStream = new BufferedOutputStream(process.getOutputStream());
-        break;
-      case 1:
-        inputStream = new BufferedInputStream(process1.getInputStream());
-        outputStream = new BufferedOutputStream(process1.getOutputStream());
-        break;
-      case 2:
-        inputStream = new BufferedInputStream(process2.getInputStream());
-        outputStream = new BufferedOutputStream(process2.getOutputStream());
-        break;
-      case 3:
-        inputStream = new BufferedInputStream(process3.getInputStream());
-        outputStream = new BufferedOutputStream(process3.getOutputStream());
-        break;
-      case 4:
-        inputStream = new BufferedInputStream(process4.getInputStream());
-        outputStream = new BufferedOutputStream(process4.getOutputStream());
-        break;
-      case 5:
-        inputStream = new BufferedInputStream(process5.getInputStream());
-        outputStream = new BufferedOutputStream(process5.getOutputStream());
-        break;
-      case 6:
-        inputStream = new BufferedInputStream(process6.getInputStream());
-        outputStream = new BufferedOutputStream(process6.getOutputStream());
-        break;
-      case 7:
-        inputStream = new BufferedInputStream(process7.getInputStream());
-        outputStream = new BufferedOutputStream(process7.getOutputStream());
-        break;
-      case 8:
-        inputStream = new BufferedInputStream(process8.getInputStream());
-        outputStream = new BufferedOutputStream(process8.getOutputStream());
-        break;
-      case 9:
-        inputStream = new BufferedInputStream(process9.getInputStream());
-        outputStream = new BufferedOutputStream(process9.getOutputStream());
-        break;
+    if (!execuser) {
+      switch (index) {
+        case 0:
+          inputStream = new BufferedInputStream(process.getInputStream());
+          outputStream = new BufferedOutputStream(process.getOutputStream());
+          break;
+        case 1:
+          inputStream = new BufferedInputStream(process1.getInputStream());
+          outputStream = new BufferedOutputStream(process1.getOutputStream());
+          break;
+        case 2:
+          inputStream = new BufferedInputStream(process2.getInputStream());
+          outputStream = new BufferedOutputStream(process2.getOutputStream());
+          break;
+        case 3:
+          inputStream = new BufferedInputStream(process3.getInputStream());
+          outputStream = new BufferedOutputStream(process3.getOutputStream());
+          break;
+        case 4:
+          inputStream = new BufferedInputStream(process4.getInputStream());
+          outputStream = new BufferedOutputStream(process4.getOutputStream());
+          break;
+        case 5:
+          inputStream = new BufferedInputStream(process5.getInputStream());
+          outputStream = new BufferedOutputStream(process5.getOutputStream());
+          break;
+        case 6:
+          inputStream = new BufferedInputStream(process6.getInputStream());
+          outputStream = new BufferedOutputStream(process6.getOutputStream());
+          break;
+        case 7:
+          inputStream = new BufferedInputStream(process7.getInputStream());
+          outputStream = new BufferedOutputStream(process7.getOutputStream());
+          break;
+        case 8:
+          inputStream = new BufferedInputStream(process8.getInputStream());
+          outputStream = new BufferedOutputStream(process8.getOutputStream());
+          break;
+        case 9:
+          inputStream = new BufferedInputStream(process9.getInputStream());
+          outputStream = new BufferedOutputStream(process9.getOutputStream());
+          break;
+      }
+    } else {
+      switch (index) {
+        case 0:
+          inputStream2 = new BufferedInputStream(process.getInputStream());
+          outputStream2 = new BufferedOutputStream(process.getOutputStream());
+          break;
+        case 1:
+          inputStream2 = new BufferedInputStream(process1.getInputStream());
+          outputStream2 = new BufferedOutputStream(process1.getOutputStream());
+          break;
+        case 2:
+          inputStream2 = new BufferedInputStream(process2.getInputStream());
+          outputStream2 = new BufferedOutputStream(process2.getOutputStream());
+          break;
+        case 3:
+          inputStream2 = new BufferedInputStream(process3.getInputStream());
+          outputStream2 = new BufferedOutputStream(process3.getOutputStream());
+          break;
+        case 4:
+          inputStream2 = new BufferedInputStream(process4.getInputStream());
+          outputStream2 = new BufferedOutputStream(process4.getOutputStream());
+          break;
+        case 5:
+          inputStream2 = new BufferedInputStream(process5.getInputStream());
+          outputStream2 = new BufferedOutputStream(process5.getOutputStream());
+          break;
+        case 6:
+          inputStream2 = new BufferedInputStream(process6.getInputStream());
+          outputStream2 = new BufferedOutputStream(process6.getOutputStream());
+          break;
+        case 7:
+          inputStream2 = new BufferedInputStream(process7.getInputStream());
+          outputStream2 = new BufferedOutputStream(process7.getOutputStream());
+          break;
+        case 8:
+          inputStream2 = new BufferedInputStream(process8.getInputStream());
+          outputStream2 = new BufferedOutputStream(process8.getOutputStream());
+          break;
+        case 9:
+          inputStream2 = new BufferedInputStream(process9.getInputStream());
+          outputStream2 = new BufferedOutputStream(process9.getOutputStream());
+          break;
+      }
     }
   }
 
   private void reinitializeStreams(String engineCommand, int index) {
     commands = splitCommand(engineCommand);
     currentEngineN = index;
-    isCheckingVersion = true;
     Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
     Matcher wMatcher = wPattern.matcher(engineCommand);
     if (wMatcher.matches() && wMatcher.groupCount() == 2) {
@@ -537,53 +641,102 @@ public class Leelaz {
           Lizzie.config.leelazConfig.optString(
               "enginename" + String.valueOf(index + 1), currentWeight);
     }
-
-    switch (index) {
-      case 0:
-        inputStream = new BufferedInputStream(process.getInputStream());
-        outputStream = new BufferedOutputStream(process.getOutputStream());
-        break;
-      case 1:
-        inputStream = new BufferedInputStream(process1.getInputStream());
-        outputStream = new BufferedOutputStream(process1.getOutputStream());
-        break;
-      case 2:
-        inputStream = new BufferedInputStream(process2.getInputStream());
-        outputStream = new BufferedOutputStream(process2.getOutputStream());
-        break;
-      case 3:
-        inputStream = new BufferedInputStream(process3.getInputStream());
-        outputStream = new BufferedOutputStream(process3.getOutputStream());
-        break;
-      case 4:
-        inputStream = new BufferedInputStream(process4.getInputStream());
-        outputStream = new BufferedOutputStream(process4.getOutputStream());
-        break;
-      case 5:
-        inputStream = new BufferedInputStream(process5.getInputStream());
-        outputStream = new BufferedOutputStream(process5.getOutputStream());
-        break;
-      case 6:
-        inputStream = new BufferedInputStream(process6.getInputStream());
-        outputStream = new BufferedOutputStream(process6.getOutputStream());
-        break;
-      case 7:
-        inputStream = new BufferedInputStream(process7.getInputStream());
-        outputStream = new BufferedOutputStream(process7.getOutputStream());
-        break;
-      case 8:
-        inputStream = new BufferedInputStream(process8.getInputStream());
-        outputStream = new BufferedOutputStream(process8.getOutputStream());
-        break;
-      case 9:
-        inputStream = new BufferedInputStream(process9.getInputStream());
-        outputStream = new BufferedOutputStream(process9.getOutputStream());
-        break;
+    if (!execuser) {
+      switch (index) {
+        case 0:
+          inputStream = new BufferedInputStream(process.getInputStream());
+          outputStream = new BufferedOutputStream(process.getOutputStream());
+          break;
+        case 1:
+          inputStream = new BufferedInputStream(process1.getInputStream());
+          outputStream = new BufferedOutputStream(process1.getOutputStream());
+          break;
+        case 2:
+          inputStream = new BufferedInputStream(process2.getInputStream());
+          outputStream = new BufferedOutputStream(process2.getOutputStream());
+          break;
+        case 3:
+          inputStream = new BufferedInputStream(process3.getInputStream());
+          outputStream = new BufferedOutputStream(process3.getOutputStream());
+          break;
+        case 4:
+          inputStream = new BufferedInputStream(process4.getInputStream());
+          outputStream = new BufferedOutputStream(process4.getOutputStream());
+          break;
+        case 5:
+          inputStream = new BufferedInputStream(process5.getInputStream());
+          outputStream = new BufferedOutputStream(process5.getOutputStream());
+          break;
+        case 6:
+          inputStream = new BufferedInputStream(process6.getInputStream());
+          outputStream = new BufferedOutputStream(process6.getOutputStream());
+          break;
+        case 7:
+          inputStream = new BufferedInputStream(process7.getInputStream());
+          outputStream = new BufferedOutputStream(process7.getOutputStream());
+          break;
+        case 8:
+          inputStream = new BufferedInputStream(process8.getInputStream());
+          outputStream = new BufferedOutputStream(process8.getOutputStream());
+          break;
+        case 9:
+          inputStream = new BufferedInputStream(process9.getInputStream());
+          outputStream = new BufferedOutputStream(process9.getOutputStream());
+          break;
+      }
+    } else {
+      switch (index) {
+        case 0:
+          inputStream2 = new BufferedInputStream(process.getInputStream());
+          outputStream2 = new BufferedOutputStream(process.getOutputStream());
+          break;
+        case 1:
+          inputStream2 = new BufferedInputStream(process1.getInputStream());
+          outputStream2 = new BufferedOutputStream(process1.getOutputStream());
+          break;
+        case 2:
+          inputStream2 = new BufferedInputStream(process2.getInputStream());
+          outputStream2 = new BufferedOutputStream(process2.getOutputStream());
+          break;
+        case 3:
+          inputStream2 = new BufferedInputStream(process3.getInputStream());
+          outputStream2 = new BufferedOutputStream(process3.getOutputStream());
+          break;
+        case 4:
+          inputStream2 = new BufferedInputStream(process4.getInputStream());
+          outputStream2 = new BufferedOutputStream(process4.getOutputStream());
+          break;
+        case 5:
+          inputStream2 = new BufferedInputStream(process5.getInputStream());
+          outputStream2 = new BufferedOutputStream(process5.getOutputStream());
+          break;
+        case 6:
+          inputStream2 = new BufferedInputStream(process6.getInputStream());
+          outputStream2 = new BufferedOutputStream(process6.getOutputStream());
+          break;
+        case 7:
+          inputStream2 = new BufferedInputStream(process7.getInputStream());
+          outputStream2 = new BufferedOutputStream(process7.getOutputStream());
+          break;
+        case 8:
+          inputStream2 = new BufferedInputStream(process8.getInputStream());
+          outputStream2 = new BufferedOutputStream(process8.getOutputStream());
+          break;
+        case 9:
+          inputStream2 = new BufferedInputStream(process9.getInputStream());
+          outputStream2 = new BufferedOutputStream(process9.getOutputStream());
+          break;
+      }
+    }    
+    if (!execuser) {
+      executor = Executors.newSingleThreadScheduledExecutor();
+      executor.execute(this::read);
+    } else {
+      executor2 = Executors.newSingleThreadScheduledExecutor();
+      executor2.execute(this::read2);
     }
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
-    executor = Executors.newSingleThreadScheduledExecutor();
-    executor.execute(this::read);
   }
 
   public static List<MoveData> parseInfo(String line) {
@@ -1087,6 +1240,167 @@ public class Leelaz {
       }
     }
   }
+  
+  private void parseLine2(String line) {
+	    synchronized (this) {
+	      // Lizzie.gtpConsole.addLineforce(line);
+	      if (printCommunication || gtpConsole) {
+	        if (line.startsWith("info")) {
+	        } else {
+	          Lizzie.gtpConsole.addLine(line);
+	        }
+	      }
+
+	      if (line.startsWith("komi=")) {
+	        try {
+	          dynamicKomi = Float.parseFloat(line.substring("komi=".length()).trim());
+	        } catch (NumberFormatException nfe) {
+	          dynamicKomi = Float.NaN;
+	        }
+	      } else if (line.startsWith("opp_komi=")) {
+	        try {
+	          dynamicOppKomi = Float.parseFloat(line.substring("opp_komi=".length()).trim());
+	        } catch (NumberFormatException nfe) {
+	          dynamicOppKomi = Float.NaN;
+	        }
+	      } else if (line.equals("\n")) {
+	        // End of response
+	      } else if (line.startsWith("info")) {
+	        isLoaded = true;
+	        // Clear switching prompt
+	        if (switching) {
+	          if (!line.contains("->")) {
+	            switching = false;
+	            ponder();
+	            changeEngIco();
+	          }
+	        }
+	        // Display engine command in the title
+	        Lizzie.frame.updateTitle();
+	        if (isResponseUpToDate()) {
+	          // This should not be stale data when the command number match
+	          this.bestMoves = parseInfo(line.substring(5));
+	          notifyBestMoveListeners();
+	          Lizzie.frame.repaint();
+	          // don't follow the maxAnalyzeTime rule if we are in analysis mode
+	          if (System.currentTimeMillis() - startPonderTime > maxAnalyzeTimeMillis
+	              && !Lizzie.board.inAnalysisMode()) {
+	            togglePonder();
+	          }
+	        }
+	      } else if (line.contains("STAGE")) {
+	        Lizzie.gtpConsole.addLineforce(line);
+	      } else if (line.contains("> KoMI")) {
+	        Lizzie.gtpConsole.addLineforce(line);
+	      } else if (line.contains(" ->   ")) {
+	        isLoaded = true;
+	        if (isResponseUpToDate()
+	            || isThinking
+	                && (!isPondering && Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand)) {
+	          if (line.contains("pass")) {
+
+	          } else {
+	            if (!switching) {
+	              bestMoves.add(MoveData.fromSummary(line));
+	              notifyBestMoveListeners();
+	              Lizzie.frame.repaint();
+	            }
+	          }
+	        }
+	      } else if (line.startsWith("play")) {
+	        // In lz-genmove_analyze
+	        if (Lizzie.frame.isPlayingAgainstLeelaz) {
+	          Lizzie.board.place(line.substring(5).trim());
+	        }
+	        isThinking = false;
+
+	      } else if (line.startsWith("=") || line.startsWith("?")) {
+	        if (printCommunication || gtpConsole) {
+	          System.out.print(line);
+	          Lizzie.gtpConsole.addLine(line);
+	        }
+	        String[] params = line.trim().split(" ");
+	        currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
+
+	        trySendCommandFromQueue();
+
+	        if (line.startsWith("?") || params.length == 1) return;
+
+	        if (isSettingHandicap) {
+	          bestMoves = new ArrayList<>();
+	          for (int i = 1; i < params.length; i++) {
+	            Lizzie.board
+	                .asCoordinates(params[i])
+	                .ifPresent(coords -> Lizzie.board.getHistory().setStone(coords, Stone.BLACK));
+	          }
+	          isSettingHandicap = false;
+	        } else if (isThinking && !isPondering) {
+	          if (isInputCommand) {
+	            Lizzie.board.place(params[1]);
+	            togglePonder();
+	            if (Lizzie.frame.isAutocounting) {
+	              if (Lizzie.board.getHistory().isBlacksTurn())
+	                Lizzie.frame.zen.sendCommand("play " + "w " + params[1]);
+	              else Lizzie.frame.zen.sendCommand("play " + "b " + params[1]);
+
+	              Lizzie.frame.zen.countStones();
+	            }
+	          }
+	          if (Lizzie.frame.isPlayingAgainstLeelaz) {
+	            Lizzie.board.place(params[1]);
+	            if (Lizzie.frame.isAutocounting) {
+	              if (Lizzie.board.getHistory().isBlacksTurn())
+	                Lizzie.frame.zen.sendCommand("play " + "w " + params[1]);
+	              else Lizzie.frame.zen.sendCommand("play " + "b " + params[1]);
+
+	              Lizzie.frame.zen.countStones();
+	            }
+	            if (!Lizzie.config.playponder) Lizzie.leelaz.sendCommand("name");
+	          }
+	          if (!isInputCommand) {
+	            isPondering = false;
+	          }
+	          isThinking = false;
+	          if (isInputCommand) {
+	            isInputCommand = false;
+	          }
+
+	        } else if (isCheckingVersion2) {
+	          String[] ver = params[1].split("\\.");
+	          int minor = Integer.parseInt(ver[1]);
+	          Lizzie.config.leelaversion = minor;
+	          // Gtp support added in version 15
+	          if (minor < 15) {
+	            JOptionPane.showMessageDialog(
+	                Lizzie.frame,
+	                "Lizzie requires version 0.15 or later of Leela Zero for analysis (found "
+	                    + params[1]
+	                    + ")");
+	          }
+	          isCheckingVersion2 = false;
+	          switching = false;
+	          changeEngIco();
+	        }
+	      }
+	      if (isheatmap) {
+	        if (line.startsWith(" ")) {
+	          try {
+	            String[] params = line.trim().split("\\s+");
+	            if (params.length == 19) {
+	              for (int i = 0; i < params.length; i++) heatcount.add(Integer.parseInt(params[i]));
+	            }
+	          } catch (Exception ex) {
+	          }
+	        }
+	        if (line.startsWith("winrate:")) {
+	          isheatmap = false;
+	          String[] params = line.trim().split(" ");
+	          heatwinrate = Double.valueOf(params[1]);
+	          Lizzie.frame.repaint();
+	        }
+	      }
+	    }
+	  }
   /**
    * Parse a move-data line of Leelaz output
    *
@@ -1117,8 +1431,34 @@ public class Leelaz {
         line.append((char) c);
 
         if ((c == '\n')) {
-
+        	if(!execuser)
           parseLine(line.toString());
+          line = new StringBuilder();
+        }
+      }
+      // this line will be reached when Leelaz shuts down
+      System.out.println("Leelaz process ended.");
+
+      shutdown();
+      // Do no exit for switching weights
+      // System.exit(-1);
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.exit(-1);
+    }
+  }
+
+  private void read2() {
+    try {
+      int c;
+      StringBuilder line = new StringBuilder();
+      // while ((c = inputStream.read()) != -1) {
+      while ((c = inputStream2.read()) != -1) {
+        line.append((char) c);
+
+        if ((c == '\n')) {
+        	if(execuser)
+          parseLine2(line.toString());
           line = new StringBuilder();
         }
       }
@@ -1155,6 +1495,8 @@ public class Leelaz {
       }
     }
   }
+  
+ 
 
   /** Sends a command from command queue for leelaz to execute if it is ready */
   private void trySendCommandFromQueue() {
@@ -1187,13 +1529,41 @@ public class Leelaz {
     Lizzie.gtpConsole.addCommand(command, cmdNumber);
     command = cmdNumber + " " + command;
     cmdNumber++;
+
     try {
-      outputStream.write((command + "\n").getBytes());
-      outputStream.flush();
+      if (!execuser) {
+        outputStream.write((command + "\n").getBytes());
+        outputStream.flush();
+      } else {
+        outputStream2.write((command + "\n").getBytes());
+        outputStream2.flush();
+      }
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
+  
+  private void sendCommandToLeelaz2(String command) {
+	    if (command.startsWith("fixed_handicap")) isSettingHandicap = true;
+	    if (printCommunication) {
+	      System.out.printf("> %d %s\n", cmdNumber, command);
+	    }
+	    Lizzie.gtpConsole.addCommand(command, cmdNumber);
+	    command = cmdNumber + " " + command;
+	    cmdNumber++;
+
+	    try {
+	      if (execuser) {
+	        outputStream.write((command + "\n").getBytes());
+	        outputStream.flush();
+	      } else {
+	        outputStream2.write((command + "\n").getBytes());
+	        outputStream2.flush();
+	      }
+	    } catch (IOException e) {
+	      e.printStackTrace();
+	    }
+	  }
 
   /** Check whether leelaz is responding to the last command */
   private boolean isResponseUpToDate() {
