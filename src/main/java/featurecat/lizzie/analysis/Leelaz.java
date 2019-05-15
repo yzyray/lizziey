@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -89,7 +91,8 @@ public class Leelaz {
   private boolean isLoaded = false;
   private boolean isCheckingVersion;
   private boolean isCheckingVersion2;
-
+  private boolean first1 = false;
+  private boolean first2 = false;
   // for Multiple Engine
   private String engineCommand;
   private List<String> commands;
@@ -384,6 +387,7 @@ public class Leelaz {
   }
 
   public void restartEngine(String engineCommand, int index) throws IOException {
+
     if (engineCommand.trim().isEmpty()) {
       return;
     }
@@ -437,10 +441,9 @@ public class Leelaz {
       startEngine(engineCommand, index);
     }
     currentEngineN = index;
-    ponder();
   }
 
-  public void normalQuit(int index) {
+  public void normalQuit(int index) throws IOException {
     if (!Lizzie.config.fastChange) {
       sendCommandToLeelaz2("quit");
       if (execuser) {
@@ -471,66 +474,67 @@ public class Leelaz {
         }
       }
     }
-    if (execuser) {
-      executor.shutdownNow();
-      //      try {
-      //        while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
-      //          executor.shutdownNow();
-      //        }
-      //        if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
-      //          shutdown();
-      //        }
-      //      } catch (InterruptedException e) {
-      //        executor.shutdownNow();
-      //        Thread.currentThread().interrupt();
-      // }
-    } else {
-      executor2.shutdownNow();
-      //      try {
-      //        while (!executor2.awaitTermination(1, TimeUnit.SECONDS)) {
-      //          executor2.shutdownNow();
-      //        }
-      //        if (executor2.awaitTermination(1, TimeUnit.SECONDS)) {
-      //          shutdown();
-      //        }
-      //      } catch (InterruptedException e) {
-      //        executor2.shutdownNow();
-      //        Thread.currentThread().interrupt();
-      //      }
-    }
+    //    if (execuser) {
+    //      executor.shutdownNow();
+    //      //      try {
+    //      //        while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+    //      //          executor.shutdownNow();
+    //      //        }
+    //      //        if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
+    //      //          shutdown();
+    //      //        }
+    //      //      } catch (InterruptedException e) {
+    //      //        executor.shutdownNow();
+    //      //        Thread.currentThread().interrupt();
+    //      // }
+    //    } else {
+    //      executor2.shutdownNow();
+    //      //      try {
+    //      //        while (!executor2.awaitTermination(1, TimeUnit.SECONDS)) {
+    //      //          executor2.shutdownNow();
+    //      //        }
+    //      //        if (executor2.awaitTermination(1, TimeUnit.SECONDS)) {
+    //      //          shutdown();
+    //      //        }
+    //      //      } catch (InterruptedException e) {
+    //      //        executor2.shutdownNow();
+    //      //        Thread.currentThread().interrupt();
+    //      //      }
+    //    }
+
     if (!Lizzie.config.fastChange) {
-    switch (index) {
-      case 0:
-        featurecat.lizzie.gui.Menu.engine1.setIcon(null);
-        break;
-      case 1:
-        featurecat.lizzie.gui.Menu.engine2.setIcon(null);
-        break;
-      case 2:
-        featurecat.lizzie.gui.Menu.engine3.setIcon(null);
-        break;
-      case 3:
-        featurecat.lizzie.gui.Menu.engine4.setIcon(null);
-        break;
-      case 4:
-        featurecat.lizzie.gui.Menu.engine5.setIcon(null);
-        break;
-      case 5:
-        featurecat.lizzie.gui.Menu.engine6.setIcon(null);
-        break;
-      case 6:
-        featurecat.lizzie.gui.Menu.engine7.setIcon(null);
-        break;
-      case 7:
-        featurecat.lizzie.gui.Menu.engine8.setIcon(null);
-        break;
-      case 8:
-        featurecat.lizzie.gui.Menu.engine9.setIcon(null);
-        break;
-      case 9:
-        featurecat.lizzie.gui.Menu.engine10.setIcon(null);
-        break;
-    }
+      switch (index) {
+        case 0:
+          featurecat.lizzie.gui.Menu.engine1.setIcon(null);
+          break;
+        case 1:
+          featurecat.lizzie.gui.Menu.engine2.setIcon(null);
+          break;
+        case 2:
+          featurecat.lizzie.gui.Menu.engine3.setIcon(null);
+          break;
+        case 3:
+          featurecat.lizzie.gui.Menu.engine4.setIcon(null);
+          break;
+        case 4:
+          featurecat.lizzie.gui.Menu.engine5.setIcon(null);
+          break;
+        case 5:
+          featurecat.lizzie.gui.Menu.engine6.setIcon(null);
+          break;
+        case 6:
+          featurecat.lizzie.gui.Menu.engine7.setIcon(null);
+          break;
+        case 7:
+          featurecat.lizzie.gui.Menu.engine8.setIcon(null);
+          break;
+        case 8:
+          featurecat.lizzie.gui.Menu.engine9.setIcon(null);
+          break;
+        case 9:
+          featurecat.lizzie.gui.Menu.engine10.setIcon(null);
+          break;
+      }
     }
   }
 
@@ -733,8 +737,18 @@ public class Leelaz {
       executor2 = Executors.newSingleThreadScheduledExecutor();
       executor2.execute(this::read2);
     }
-    sendCommand("version");
-    sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
+
+    Timer timer = new Timer();
+    timer.schedule(
+        new TimerTask() {
+          public void run() {
+            sendCommand("version");
+            ponder();
+            sendCommand("version");
+            this.cancel();
+          }
+        },
+        100);
   }
 
   public static List<MoveData> parseInfo(String line) {
@@ -1079,8 +1093,10 @@ public class Leelaz {
    * @param line output line
    */
   private void parseLine(String line) {
+
     synchronized (this) {
       // Lizzie.gtpConsole.addLineforce(line);
+
       if (printCommunication || gtpConsole) {
         if (line.startsWith("info")) {
         } else {
@@ -1105,13 +1121,13 @@ public class Leelaz {
       } else if (line.startsWith("info")) {
         isLoaded = true;
         // Clear switching prompt
-        if (switching) {
-          if (!line.contains("->")) {
-            switching = false;
-            ponder();
-            changeEngIco();
-          }
-        }
+        //        if (switching) {
+        //          if (!line.contains("->")) {
+        //            switching = false;
+        //            ponder();
+        //            changeEngIco();
+        //          }
+        //        }
         // Display engine command in the title
         Lizzie.frame.updateTitle();
         if (isResponseUpToDate()) {
@@ -1134,15 +1150,15 @@ public class Leelaz {
         if (isResponseUpToDate()
             || isThinking
                 && (!isPondering && Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand)) {
-          if (line.contains("pass")) {
+          if (line.contains("pass")) {}
 
-          } else {
-            if (!switching) {
-              bestMoves.add(MoveData.fromSummary(line));
-              notifyBestMoveListeners();
-              Lizzie.frame.repaint();
-            }
-          }
+          //          else {
+          //            if (!switching) {
+          //              bestMoves.add(MoveData.fromSummary(line));
+          //              notifyBestMoveListeners();
+          //              Lizzie.frame.repaint();
+          //            }
+          //          }
         }
       } else if (line.startsWith("play")) {
         // In lz-genmove_analyze
@@ -1216,6 +1232,7 @@ public class Leelaz {
           }
           isCheckingVersion = false;
           switching = false;
+          ponder();
           changeEngIco();
         }
       }
@@ -1240,6 +1257,7 @@ public class Leelaz {
   }
 
   private void parseLine2(String line) {
+
     synchronized (this) {
       // Lizzie.gtpConsole.addLineforce(line);
       if (printCommunication || gtpConsole) {
@@ -1266,13 +1284,13 @@ public class Leelaz {
       } else if (line.startsWith("info")) {
         isLoaded = true;
         // Clear switching prompt
-        if (switching) {
-          if (!line.contains("->")) {
-            switching = false;
-            ponder();
-            changeEngIco();
-          }
-        }
+        //        if (switching) {
+        //          if (!line.contains("->")) {
+        //            switching = false;
+        //            ponder();
+        //            changeEngIco();
+        //          }
+        //        }
         // Display engine command in the title
         Lizzie.frame.updateTitle();
         if (isResponseUpToDate()) {
@@ -1295,15 +1313,14 @@ public class Leelaz {
         if (isResponseUpToDate()
             || isThinking
                 && (!isPondering && Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand)) {
-          if (line.contains("pass")) {
-
-          } else {
-            if (!switching) {
-              bestMoves.add(MoveData.fromSummary(line));
-              notifyBestMoveListeners();
-              Lizzie.frame.repaint();
-            }
-          }
+          if (line.contains("pass")) {}
+          //          } else {
+          ////            if (!switching) {
+          ////              bestMoves.add(MoveData.fromSummary(line));
+          ////              notifyBestMoveListeners();
+          ////              Lizzie.frame.repaint();
+          ////            }
+          //          }
         }
       } else if (line.startsWith("play")) {
         // In lz-genmove_analyze
@@ -1377,6 +1394,7 @@ public class Leelaz {
           }
           isCheckingVersion2 = false;
           switching = false;
+          ponder();
           changeEngIco();
         }
       }
@@ -1425,6 +1443,7 @@ public class Leelaz {
       int c;
       StringBuilder line = new StringBuilder();
       // while ((c = inputStream.read()) != -1) {
+
       while ((c = inputStream.read()) != -1) {
         line.append((char) c);
 
