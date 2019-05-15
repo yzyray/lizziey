@@ -44,7 +44,7 @@ public class Lizzie {
     //   movelistframe.setLocation(-7, 302);
     movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", true));
     movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
-
+    
     frame = new LizzieFrame();
     gtpConsole = new GtpConsolePane(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
@@ -132,6 +132,10 @@ public class Lizzie {
       JOptionPane.showMessageDialog(null, "正在加载引擎,请等待");
       return;
     }
+//    if (leelaz.isThinking) {
+//        JOptionPane.showMessageDialog(null, "AI正在思考,无法切换");
+//        return;
+//      }
     if (index == Lizzie.leelaz.currentEngineN() && Lizzie.leelaz.process.isAlive()) {
       return;
     }
@@ -142,11 +146,11 @@ public class Lizzie {
     //		 return;
     //	 }
     // Workaround for leelaz no exiting when restarting
-    if (leelaz.isThinking) {
-      if (Lizzie.frame.isPlayingAgainstLeelaz) {
+    if (leelaz.isThinking||Lizzie.frame.isPlayingAgainstLeelaz) {
+     
         Lizzie.frame.isPlayingAgainstLeelaz = false;
         Lizzie.leelaz.isThinking = false;
-      }
+      
     }
 
     int movenumber = board.getcurrentmovenumber();

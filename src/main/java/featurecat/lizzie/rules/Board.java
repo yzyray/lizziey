@@ -87,7 +87,12 @@ public class Board implements LeelazListener {
    * @return an optional array of coordinates, empty for pass and resign
    */
   public static Optional<int[]> asCoordinates(String namedCoordinate) {
-    namedCoordinate = namedCoordinate.trim();
+   try
+   {namedCoordinate = namedCoordinate.trim();}
+   catch (Exception e)
+   {
+	   
+   }
     if (namedCoordinate.equalsIgnoreCase("pass") || namedCoordinate.equalsIgnoreCase("resign")) {
       return Optional.empty();
     }

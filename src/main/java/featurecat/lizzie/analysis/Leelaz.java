@@ -381,8 +381,8 @@ public class Leelaz {
     // stop the ponder
     sendCommand("stop");
     isPondering = false;
-    isThinking = false;
-    Lizzie.frame.isPlayingAgainstLeelaz = false;
+    //isThinking = false;
+    //Lizzie.frame.isPlayingAgainstLeelaz = false;
     if (isEngineAlive(index)) // 需要添加判断,对应index的进程知否初始化并且alive
     {
       // normalQuit(currentEngineN);
@@ -392,7 +392,9 @@ public class Leelaz {
       startEngine(engineCommand, index);
     }
     currentEngineN = index;
+     
     togglePonder();
+    	
   }
 
   public void normalQuit(int index) {
@@ -557,11 +559,10 @@ public class Leelaz {
    */
   private void parseLine(String line) {
     synchronized (this) {
-      // Lizzie.gtpConsole.addLineforce(line);
+       //Lizzie.gtpConsole.addLineforce(line);
       if (printCommunication || gtpConsole) {
         if (line.startsWith("info")) {
-          // 	Lizzie.gtpConsole.addLineforce(line);
-        } else {
+         } else {
           Lizzie.gtpConsole.addLine(line);
         }
       }
@@ -622,6 +623,7 @@ public class Leelaz {
         // In lz-genmove_analyze
         if (Lizzie.frame.isPlayingAgainstLeelaz) {
           Lizzie.board.place(line.substring(5).trim());
+          
         }
         isThinking = false;
 
@@ -643,15 +645,36 @@ public class Leelaz {
             Lizzie.board
                 .asCoordinates(params[i])
                 .ifPresent(coords -> Lizzie.board.getHistory().setStone(coords, Stone.BLACK));
+           
           }
           isSettingHandicap = false;
         } else if (isThinking && !isPondering) {
           if (isInputCommand) {
-            Lizzie.board.place(params[1]);
+            Lizzie.board.place(params[1]);            
             togglePonder();
+            if(Lizzie.frame.isAutocounting)
+            {
+            	if(Lizzie.board.getHistory().isBlacksTurn())
+            		Lizzie.frame.zen.sendCommand("play "+ "w " +params[1]);
+            	else
+            		Lizzie.frame.zen.sendCommand("play "+ "b " +params[1]);
+         
+                Lizzie.frame.zen.countStones();
+            	
+            }
           }
           if (Lizzie.frame.isPlayingAgainstLeelaz) {
             Lizzie.board.place(params[1]);
+            if(Lizzie.frame.isAutocounting)
+            {
+            	if(Lizzie.board.getHistory().isBlacksTurn())
+            		Lizzie.frame.zen.sendCommand("play "+ "w " +params[1]);
+            	else
+            		Lizzie.frame.zen.sendCommand("play "+ "b " +params[1]);
+         
+                Lizzie.frame.zen.countStones();
+            	
+            }
             if (!Lizzie.config.playponder) Lizzie.leelaz.sendCommand("name");
           }
           if (!isInputCommand) {

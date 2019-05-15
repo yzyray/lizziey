@@ -23,25 +23,22 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.DocumentFilter.FilterBypass;
 import javax.swing.text.InternationalFormatter;
 
-public class Avoidmoves extends JDialog {
+public class MovenumberDialog extends JDialog {
   private JFormattedTextField txtMoveNumber;
   public final ResourceBundle resourceBundle = ResourceBundle.getBundle("l10n.DisplayStrings");
   private int changeMoveNumber;
   private static JTextField defaultText = new JTextField();
 
-  public Avoidmoves() {
+  public MovenumberDialog() {
     setType(Type.POPUP);
-    setTitle("输入强制不分析的持续手数");
-    setBounds(0, 0, 340, 150);
+    setTitle("设置显示手数");
+    setBounds(0, 0, 240, 150);
     setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     getContentPane().setLayout(new BorderLayout());
     JPanel buttonPane = new JPanel();
     getContentPane().add(buttonPane, BorderLayout.CENTER);
     JButton okButton = new JButton("确定");
-    okButton.setBounds(80, 68, 74, 29);
-    if (!Lizzie.leelaz.isPondering()) {
-      Lizzie.leelaz.sendCommand("name");
-    }
+    okButton.setBounds(80, 68, 74, 29); 
     okButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -58,8 +55,8 @@ public class Avoidmoves extends JDialog {
     NumberFormat nf = NumberFormat.getIntegerInstance();
     nf.setGroupingUsed(false);
 
-    JLabel lblChangeTo = new JLabel("设置往后多少手内不分析：");
-    lblChangeTo.setBounds(45, 34, 180, 20);
+    JLabel lblChangeTo = new JLabel("设置显示最近手数：");
+    lblChangeTo.setBounds(25, 34, 180, 20);
     buttonPane.add(lblChangeTo);
     lblChangeTo.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -72,7 +69,7 @@ public class Avoidmoves extends JDialog {
 
               private DocumentFilter filter = new DigitOnlyFilter();
             });
-    txtMoveNumber.setBounds(210, 34, 60, 20);
+    txtMoveNumber.setBounds(150, 34, 60, 20);
     buttonPane.add(txtMoveNumber);
     txtMoveNumber.setColumns(10);
 
@@ -91,11 +88,7 @@ public class Avoidmoves extends JDialog {
   }
 
   private void applyChange() {
-    // Lizzie.board.changeMove(txtFieldValue(txtMoveNumber), getChangeToType());
-    featurecat.lizzie.gui.RightClickMenu.startmove = Lizzie.board.getcurrentmovenumber();
-    featurecat.lizzie.gui.RightClickMenu.move =
-        changeMoveNumber + Lizzie.board.getcurrentmovenumber();
-    featurecat.lizzie.gui.RightClickMenu.voidanalyze();
+  Lizzie.config.allowMoveNumber=changeMoveNumber;
   }
 
   private Integer txtFieldValue(JTextField txt) {
