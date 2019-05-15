@@ -156,11 +156,11 @@ public class Lizzie {
     // board.saveMoveNumber();
     leelaz.switching = true;
     leelaz.sendCommand("stop");
+    board.clearbestmovesafter(board.getHistory().getStart(), movenumber);
     board.savelistforswitch();
     try {
 
       leelaz.restartEngine(commandLine, index);
-      board.clearbestmovesafter(board.getHistory().getStart(), movenumber);
       // board.restoreMoveNumber();
 
       board.setlistforswitch();
