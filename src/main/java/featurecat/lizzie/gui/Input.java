@@ -10,7 +10,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   public static boolean isinsertmode = false;
   public static boolean Draggedmode = false;
   public static int insert = 0;
-  public static  boolean shouldDisableAnalysis = true;
+  public static boolean shouldDisableAnalysis = true;
 
   @Override
   public void mouseClicked(MouseEvent e) {}
@@ -217,7 +217,6 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   public void keyPressed(KeyEvent e) {
     // If any controls key is pressed, let's disable analysis mode.
     // This is probably the user attempting to exit analysis mode.
-   
 
     switch (e.getKeyCode()) {
       case VK_E:
