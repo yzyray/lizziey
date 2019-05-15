@@ -38,7 +38,7 @@ public class MovenumberDialog extends JDialog {
     JPanel buttonPane = new JPanel();
     getContentPane().add(buttonPane, BorderLayout.CENTER);
     JButton okButton = new JButton("确定");
-    okButton.setBounds(80, 68, 74, 29); 
+    okButton.setBounds(80, 68, 74, 29);
     okButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -88,7 +88,7 @@ public class MovenumberDialog extends JDialog {
   }
 
   private void applyChange() {
-  Lizzie.config.allowMoveNumber=changeMoveNumber;
+    Lizzie.config.allowMoveNumber = changeMoveNumber;
   }
 
   private Integer txtFieldValue(JTextField txt) {

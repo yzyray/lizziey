@@ -87,27 +87,24 @@ public class Board implements LeelazListener {
    * @return an optional array of coordinates, empty for pass and resign
    */
   public static Optional<int[]> asCoordinates(String namedCoordinate) {
-   try
-   {namedCoordinate = namedCoordinate.trim();
-    if (namedCoordinate.equalsIgnoreCase("pass") || namedCoordinate.equalsIgnoreCase("resign")) {
-      return Optional.empty();
+    try {
+      namedCoordinate = namedCoordinate.trim();
+      if (namedCoordinate.equalsIgnoreCase("pass") || namedCoordinate.equalsIgnoreCase("resign")) {
+        return Optional.empty();
+      }
+      // coordinates take the form C16 A19 Q5 K10 etc. I is not used.
+      String reg = "(\\D+)(\\d+)";
+      Pattern p = Pattern.compile(reg);
+      Matcher m = p.matcher(namedCoordinate);
+      if (m.find() && m.groupCount() == 2) {
+        int x = asDigit(m.group(1));
+        int y = boardSize - Integer.parseInt(m.group(2));
+        return Optional.of(new int[] {x, y});
+      }
+    } catch (Exception e) {
+
     }
-    // coordinates take the form C16 A19 Q5 K10 etc. I is not used.
-    String reg = "(\\D+)(\\d+)";
-    Pattern p = Pattern.compile(reg);
-    Matcher m = p.matcher(namedCoordinate);
-    if (m.find() && m.groupCount() == 2) {
-      int x = asDigit(m.group(1));
-      int y = boardSize - Integer.parseInt(m.group(2));
-      return Optional.of(new int[] {x, y});
-    }
-   }
-   catch (Exception e)
-   {
-	   
-   }
     return Optional.empty();
-    
   }
 
   public static int asDigit(String name) {

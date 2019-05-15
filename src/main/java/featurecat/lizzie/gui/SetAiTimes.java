@@ -44,7 +44,7 @@ public class SetAiTimes extends JDialog {
     getContentPane().add(buttonPane, BorderLayout.CENTER);
     JButton okButton = new JButton("确定");
     okButton.setBounds(120, 100, 74, 29);
-  
+
     okButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -78,17 +78,16 @@ public class SetAiTimes extends JDialog {
     txtMoveNumber.setBounds(210, 24, 60, 20);
     buttonPane.add(txtMoveNumber);
     txtMoveNumber.setColumns(10);
-    
-    txtMoveNumber.setText( String.valueOf(Lizzie.config.leelazConfig.getInt("max-game-thinking-time-seconds")));
-    
-    
+
+    txtMoveNumber.setText(
+        String.valueOf(Lizzie.config.leelazConfig.getInt("max-game-thinking-time-seconds")));
 
     JLabel noponder = new JLabel("对弈时AI是否后台计算");
     noponder.setBounds(45, 60, 180, 20);
     buttonPane.add(noponder);
 
     rdoponder = new JRadioButton("是");
-    rdoponder.setBounds(200,60, 40, 23);
+    rdoponder.setBounds(200, 60, 40, 23);
     buttonPane.add(rdoponder);
 
     rdonoponder = new JRadioButton("否");
@@ -99,12 +98,11 @@ public class SetAiTimes extends JDialog {
     rdopondergp.add(rdonoponder);
     rdopondergp.add(rdoponder);
     if (Lizzie.config.playponder) {
-        rdoponder.setSelected(true);
-      } else {
-        rdonoponder.setSelected(true);
-      }
-    
-    
+      rdoponder.setSelected(true);
+    } else {
+      rdonoponder.setSelected(true);
+    }
+
     setLocationRelativeTo(getOwner());
   }
 
@@ -118,30 +116,28 @@ public class SetAiTimes extends JDialog {
       }
     }
   }
-  
+
   private boolean getPonder() {
-	    if (rdoponder.isSelected()) {
-	      Lizzie.config.playponder = true;
-	      return true;
-	    }
-	    if (rdonoponder.isSelected()) {
-	      Lizzie.config.playponder = false;
-	      return false;
-	    }
-	    return true;
-	  }
+    if (rdoponder.isSelected()) {
+      Lizzie.config.playponder = true;
+      return true;
+    }
+    if (rdonoponder.isSelected()) {
+      Lizzie.config.playponder = false;
+      return false;
+    }
+    return true;
+  }
 
   private void applyChange() {
-	  try {
-		  Lizzie.config.leelazConfig.putOpt("max-game-thinking-time-seconds", txtFieldValue(txtMoveNumber));
-		  Lizzie.config.leelazConfig.putOpt("play-ponder", getPonder());
-	  Lizzie.config.save();
-	    } catch (IOException e) {
-	      e.printStackTrace();
-	    }
-		   
-		    
-		
+    try {
+      Lizzie.config.leelazConfig.putOpt(
+          "max-game-thinking-time-seconds", txtFieldValue(txtMoveNumber));
+      Lizzie.config.leelazConfig.putOpt("play-ponder", getPonder());
+      Lizzie.config.save();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   private Integer txtFieldValue(JTextField txt) {

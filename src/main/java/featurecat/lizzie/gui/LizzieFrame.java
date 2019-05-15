@@ -249,13 +249,14 @@ public class LizzieFrame extends JFrame {
         new ComponentAdapter() { // 让窗口响应大小改变事件
           @Override
           public void componentResized(ComponentEvent e) {
-          try {  Lizzie.menu.setBounds(
-                Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
-                Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
-                Lizzie.frame.getContentPane().getWidth(),
-                25);}
-          catch (Exception ex)
-          {}
+            try {
+              Lizzie.menu.setBounds(
+                  Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
+                  Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
+                  Lizzie.frame.getContentPane().getWidth(),
+                  25);
+            } catch (Exception ex) {
+            }
           }
 
           @Override

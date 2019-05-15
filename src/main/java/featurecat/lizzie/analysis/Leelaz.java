@@ -382,37 +382,37 @@ public class Leelaz {
     // stop the ponder
     sendCommand("stop");
     isPondering = false;
-    //isThinking = false;
-    //Lizzie.frame.isPlayingAgainstLeelaz = false;
-    switch (index) {    
-    case 0:
-      featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.stop);
-      break;
-    case 1:
+    // isThinking = false;
+    // Lizzie.frame.isPlayingAgainstLeelaz = false;
+    switch (index) {
+      case 0:
+        featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.stop);
+        break;
+      case 1:
         featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
-    case 2:
+      case 2:
         featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
-    case 3:
+      case 3:
         featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
-    case 4:
+      case 4:
         featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
-    case 5:
+      case 5:
         featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
-    case 6:
+      case 6:
         featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
-    case 7:
+      case 7:
         featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
-    case 8:
+      case 8:
         featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
-    case 9:
+      case 9:
         featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
     }
@@ -425,9 +425,8 @@ public class Leelaz {
       startEngine(engineCommand, index);
     }
     currentEngineN = index;
-     
+
     ponder();
-    	
   }
 
   public void normalQuit(int index) {
@@ -592,10 +591,10 @@ public class Leelaz {
    */
   private void parseLine(String line) {
     synchronized (this) {
-       //Lizzie.gtpConsole.addLineforce(line);
+      // Lizzie.gtpConsole.addLineforce(line);
       if (printCommunication || gtpConsole) {
         if (line.startsWith("info")) {
-         } else {
+        } else {
           Lizzie.gtpConsole.addLine(line);
         }
       }
@@ -618,313 +617,313 @@ public class Leelaz {
         isLoaded = true;
         // Clear switching prompt
         if (switching) {
-          if (!line.contains("->")) {
+          if (line.startsWith("Setting max")) {
             switching = false;
             ponder();
             switch (currentEngineN) {
-            case 0:
-              featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.icon);
-              if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              break;
-            case 1:
-              featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.icon);
-              if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              break;
-            case 2:
-              featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.icon);
-              if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              break;
-            case 3:
-              featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.icon);
-              if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              break;
-            case 4:
-              featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.icon);
-              if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              break;
-            case 5:
-              featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.icon);
-              if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              break;
-            case 6:
-              featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.icon);
-              if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              break;
-            case 7:
-              featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.icon);
-              if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              break;
-            case 8:
-              featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.icon);
-              featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.icon);
-              if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              break;
-            case 9:
-              featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.icon);
-              featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.icon);
-              if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-                featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-              }
-              break;
-          }
+              case 0:
+                featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.icon);
+                if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                break;
+              case 1:
+                featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.icon);
+                if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                break;
+              case 2:
+                featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.icon);
+                if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                break;
+              case 3:
+                featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.icon);
+                if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                break;
+              case 4:
+                featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.icon);
+                if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                break;
+              case 5:
+                featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.icon);
+                if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                break;
+              case 6:
+                featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.icon);
+                if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                break;
+              case 7:
+                featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.icon);
+                if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                break;
+              case 8:
+                featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.icon);
+                featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.icon);
+                if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                break;
+              case 9:
+                featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.icon);
+                featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.icon);
+                if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
+                  featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
+                }
+                break;
+            }
           }
         }
         // Display engine command in the title
@@ -961,7 +960,6 @@ public class Leelaz {
         // In lz-genmove_analyze
         if (Lizzie.frame.isPlayingAgainstLeelaz) {
           Lizzie.board.place(line.substring(5).trim());
-          
         }
         isThinking = false;
 
@@ -983,35 +981,28 @@ public class Leelaz {
             Lizzie.board
                 .asCoordinates(params[i])
                 .ifPresent(coords -> Lizzie.board.getHistory().setStone(coords, Stone.BLACK));
-           
           }
           isSettingHandicap = false;
         } else if (isThinking && !isPondering) {
           if (isInputCommand) {
-            Lizzie.board.place(params[1]);            
+            Lizzie.board.place(params[1]);
             togglePonder();
-            if(Lizzie.frame.isAutocounting)
-            {
-            	if(Lizzie.board.getHistory().isBlacksTurn())
-            		Lizzie.frame.zen.sendCommand("play "+ "w " +params[1]);
-            	else
-            		Lizzie.frame.zen.sendCommand("play "+ "b " +params[1]);
-         
-                Lizzie.frame.zen.countStones();
-            	
+            if (Lizzie.frame.isAutocounting) {
+              if (Lizzie.board.getHistory().isBlacksTurn())
+                Lizzie.frame.zen.sendCommand("play " + "w " + params[1]);
+              else Lizzie.frame.zen.sendCommand("play " + "b " + params[1]);
+
+              Lizzie.frame.zen.countStones();
             }
           }
           if (Lizzie.frame.isPlayingAgainstLeelaz) {
             Lizzie.board.place(params[1]);
-            if(Lizzie.frame.isAutocounting)
-            {
-            	if(Lizzie.board.getHistory().isBlacksTurn())
-            		Lizzie.frame.zen.sendCommand("play "+ "w " +params[1]);
-            	else
-            		Lizzie.frame.zen.sendCommand("play "+ "b " +params[1]);
-         
-                Lizzie.frame.zen.countStones();
-            	
+            if (Lizzie.frame.isAutocounting) {
+              if (Lizzie.board.getHistory().isBlacksTurn())
+                Lizzie.frame.zen.sendCommand("play " + "w " + params[1]);
+              else Lizzie.frame.zen.sendCommand("play " + "b " + params[1]);
+
+              Lizzie.frame.zen.countStones();
             }
             if (!Lizzie.config.playponder) Lizzie.leelaz.sendCommand("name");
           }
