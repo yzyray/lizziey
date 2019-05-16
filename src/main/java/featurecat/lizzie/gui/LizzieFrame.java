@@ -119,7 +119,7 @@ public class LizzieFrame extends JFrame {
   private boolean isReplayVariation = false;
   private RightClickMenu RightClickMenu = new RightClickMenu();
   private RightClickMenu2 RightClickMenu2 = new RightClickMenu2();
-  private ChangeMoveDialog2 ChangeMoveDialog2 = new ChangeMoveDialog2();
+  //private ChangeMoveDialog2 ChangeMoveDialog2 = new ChangeMoveDialog2();
 
   // Save the player title
   private String playerTitle = "";
@@ -319,10 +319,10 @@ public class LizzieFrame extends JFrame {
     Avoidmoves.setVisible(true);
   }
 
-  public void openChangeMoveDialog2(int movenumber, boolean isthisbranch) {
-    ChangeMoveDialog2.Store(movenumber, isthisbranch);
-    ChangeMoveDialog2.setVisible(true);
-  }
+  //public void openChangeMoveDialog2(int movenumber, boolean isthisbranch) {
+   // ChangeMoveDialog2.Store(movenumber, isthisbranch);
+  //  ChangeMoveDialog2.setVisible(true);
+ // }
 
   public void openRightClickMenu(int x, int y) {
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);

@@ -36,7 +36,7 @@ public class Menu extends JDialog {
   public static JMenuItem engine8 = null;
   public static JMenuItem engine9 = null;
   public static JMenuItem engine10 = null;
-  private boolean onlyboard =false;
+  private boolean onlyboard = false;
 
   public Menu(Window owner) {
     super(owner);
@@ -65,7 +65,7 @@ public class Menu extends JDialog {
 
     headFont = new Font("幼圆", Font.BOLD, 17);
     onlyboard = Lizzie.config.uiConfig.optBoolean("only-board", false);
-    
+
     final JMenu fileMenu = new JMenu(" 文件  "); // 创建“文件”菜单
     // fileMenu.setMnemonic('F'); // 设置快捷键
     fileMenu.setForeground(Color.BLACK);
@@ -190,6 +190,12 @@ public class Menu extends JDialog {
     largewin.setText("放大胜率图(Ctrl+W)");
     largewin.addActionListener(new ItemListener());
     viewMenu.add(largewin);
+    
+    
+    final JMenuItem alwaysontop = new JMenuItem();
+    alwaysontop.setText("总在最前(Q)");
+    alwaysontop.addActionListener(new ItemListener());
+    viewMenu.add(alwaysontop);
     viewMenu.addSeparator();
 
     final JMenuItem subboard = new JMenuItem("小棋盘"); // 创建“字体”子菜单
@@ -215,16 +221,14 @@ public class Menu extends JDialog {
     final JMenuItem bottomleft = new JMenuItem("左下角状态"); // 创建“字体”子菜单
     viewMenu.add(bottomleft); // 添加到“编辑”菜单
     bottomleft.addActionListener(new ItemListener()); // 添加动作监听器
-    
+
     final JMenuItem gtpMenu = new JMenuItem("命令窗口(E)"); // 创建“字体”子菜单
     viewMenu.add(gtpMenu); // 添加到“编辑”菜单
     gtpMenu.addActionListener(new ItemListener()); // 添加动作监听器
-    
+
     final JMenuItem allview = new JMenuItem("精简模式"); // 创建“字体”子菜单
     viewMenu.add(allview); // 添加到“编辑”菜单
     allview.addActionListener(new ItemListener()); // 添加动作监听器
-
-   
 
     final JMenu gameMenu = new JMenu("棋局 ", false);
     gameMenu.setText(" 棋局  ");
@@ -540,7 +544,7 @@ public class Menu extends JDialog {
   class ItemListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       JMenuItem menuItem = (JMenuItem) e.getSource();
-  //    System.out.println("您单击的是菜单项：" + menuItem.getText());
+      //    System.out.println("您单击的是菜单项：" + menuItem.getText());
       Lizzie.frame.setVisible(true);
       if (menuItem.getText().startsWith("打开")) {
         Lizzie.frame.openFile();
@@ -584,9 +588,9 @@ public class Menu extends JDialog {
         return;
       }
       if (menuItem.getText().startsWith("分支")) {
-          Lizzie.config.toggleShowVariationGraph();
-          return;
-        }
+        Lizzie.config.toggleShowVariationGraph();
+        return;
+      }
       if (menuItem.getText().startsWith("恶手")) {
         Lizzie.frame.toggleBadMoves();
         return;
@@ -602,7 +606,7 @@ public class Menu extends JDialog {
       if (menuItem.getText().startsWith("胜率")) {
         Lizzie.config.toggleShowWinrate();
         return;
-      }   
+      }
       if (menuItem.getText().startsWith("命令")) {
         Lizzie.frame.toggleGtpConsole();
         return;
@@ -882,49 +886,43 @@ public class Menu extends JDialog {
         return;
       }
       if (menuItem.getText().startsWith("精简")) {
-    	      if(onlyboard)	  
-    	      {
-    	    	  if(!Lizzie.config.showSubBoard)
-    	    	  Lizzie.config.toggleShowSubBoard();
-    	    	  if(!Lizzie.config.showComment)
-        	    	  Lizzie.config.toggleShowComment();
-    	    	  if(!Lizzie.config.showCaptured)
-        	    	  Lizzie.config.toggleShowCaptured();
-    	    	  if(!Lizzie.config.showStatus)
-        	    	  Lizzie.config.toggleShowStatus();
-    	    	  if(!Lizzie.config.showVariationGraph)
-        	    	  Lizzie.config.toggleShowVariationGraph();   
-    	    	  if(!Lizzie.config.showWinrate)
-    	    	  Lizzie.config.toggleShowWinrate();
-    	    	 if(Lizzie.frame.getWidth()-Lizzie.frame.getHeight()<500)
-    	    	  Lizzie.frame.setBounds(Lizzie.frame.getX(), Lizzie.frame.getY(), Lizzie.frame.getHeight()+600, Lizzie.frame.getHeight());
-    	      }
-    	      else
-    	      {
-    	    	  if(Lizzie.config.showSubBoard)
-        	    	  Lizzie.config.toggleShowSubBoard();
-        	    	  if(Lizzie.config.showComment)
-            	    	  Lizzie.config.toggleShowComment();
-        	    	  if(Lizzie.config.showCaptured)
-            	    	  Lizzie.config.toggleShowCaptured();
-        	    	  if(Lizzie.config.showStatus)
-            	    	  Lizzie.config.toggleShowStatus();
-        	    	  if(Lizzie.config.showVariationGraph)
-            	    	  Lizzie.config.toggleShowVariationGraph();
-        	    	  if(Lizzie.config.showWinrate)
-            	    	  Lizzie.config.toggleShowWinrate();
-        	    	  int minlength=Math.min(Lizzie.frame.getWidth(), Lizzie.frame.getHeight());
-        	    	  Lizzie.frame.setBounds(Lizzie.frame.getX(), Lizzie.frame.getY(), (int)(minlength*0.95), minlength);
-    	      }
-    	      onlyboard=!onlyboard;
-    	      try {
-    	          Lizzie.config.uiConfig.put("only-board", onlyboard);
-    	          Lizzie.config.save();
-    	        } catch (IOException ex) {
-    	          // TODO Auto-generated catch block
-    	          ex.printStackTrace();
-    	        }    	      
-    	      
+        if (onlyboard) {
+          if (!Lizzie.config.showSubBoard) Lizzie.config.toggleShowSubBoard();
+          if (!Lizzie.config.showComment) Lizzie.config.toggleShowComment();
+          if (!Lizzie.config.showCaptured) Lizzie.config.toggleShowCaptured();
+          if (!Lizzie.config.showStatus) Lizzie.config.toggleShowStatus();
+          if (!Lizzie.config.showVariationGraph) Lizzie.config.toggleShowVariationGraph();
+          if (!Lizzie.config.showWinrate) Lizzie.config.toggleShowWinrate();
+          if (Lizzie.frame.getWidth() - Lizzie.frame.getHeight() < 500)
+            Lizzie.frame.setBounds(
+                Lizzie.frame.getX(),
+                Lizzie.frame.getY(),
+                Lizzie.frame.getHeight() + 600,
+                Lizzie.frame.getHeight());
+        } else {
+          if (Lizzie.config.showSubBoard) Lizzie.config.toggleShowSubBoard();
+          if (Lizzie.config.showComment) Lizzie.config.toggleShowComment();
+          if (Lizzie.config.showCaptured) Lizzie.config.toggleShowCaptured();
+          if (Lizzie.config.showStatus) Lizzie.config.toggleShowStatus();
+          if (Lizzie.config.showVariationGraph) Lizzie.config.toggleShowVariationGraph();
+          if (Lizzie.config.showWinrate) Lizzie.config.toggleShowWinrate();
+          int minlength = Math.min(Lizzie.frame.getWidth(), Lizzie.frame.getHeight());
+          Lizzie.frame.setBounds(
+              Lizzie.frame.getX(), Lizzie.frame.getY(), (int) (minlength * 0.95), minlength);
+        }
+        onlyboard = !onlyboard;
+        try {
+          Lizzie.config.uiConfig.put("only-board", onlyboard);
+          Lizzie.config.save();
+        } catch (IOException ex) {
+          // TODO Auto-generated catch block
+          ex.printStackTrace();
+        }       
+        return;
+      }
+      
+      if (menuItem.getText().startsWith("总在最")) {
+      	Lizzie.frame.toggleAlwaysOntop();
           return;
         }
       

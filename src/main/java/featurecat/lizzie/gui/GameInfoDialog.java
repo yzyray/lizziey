@@ -4,6 +4,7 @@
 
 package featurecat.lizzie.gui;
 
+import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -41,7 +42,7 @@ public class GameInfoDialog extends JDialog {
     setResizable(false);
     setTitle("Game Info");
     setModal(true);
-
+    setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout());
 

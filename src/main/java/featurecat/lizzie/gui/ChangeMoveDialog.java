@@ -43,6 +43,7 @@ public class ChangeMoveDialog extends JDialog {
     setModalityType(ModalityType.APPLICATION_MODAL);
     setType(Type.POPUP);
     setBounds(100, 100, 414, 207);
+    setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     getContentPane().setLayout(new BorderLayout());
     JPanel buttonPane = new JPanel();
     getContentPane().add(buttonPane, BorderLayout.CENTER);

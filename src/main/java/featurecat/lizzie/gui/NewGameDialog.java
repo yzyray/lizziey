@@ -4,6 +4,7 @@
 
 package featurecat.lizzie.gui;
 
+import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -54,7 +55,7 @@ public class NewGameDialog extends JDialog {
     contentPane.setLayout(new BorderLayout());
 
     initDialogPane(contentPane);
-
+    setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     pack();
     setLocationRelativeTo(getOwner());
   }
