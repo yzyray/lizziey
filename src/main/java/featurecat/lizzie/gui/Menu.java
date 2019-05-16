@@ -1,8 +1,5 @@
 package featurecat.lizzie.gui;
 
-import static java.awt.event.InputEvent.*;
-import static java.awt.event.KeyEvent.*;
-
 import featurecat.lizzie.Lizzie;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,7 +7,6 @@ import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.*;
 import java.io.IOException;
-import java.net.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JMenu;
@@ -190,8 +186,7 @@ public class Menu extends JDialog {
     largewin.setText("放大胜率图(Ctrl+W)");
     largewin.addActionListener(new ItemListener());
     viewMenu.add(largewin);
-    
-    
+
     final JMenuItem alwaysontop = new JMenuItem();
     alwaysontop.setText("总在最前(Q)");
     alwaysontop.addActionListener(new ItemListener());
@@ -254,6 +249,11 @@ public class Menu extends JDialog {
     // aboutItem.setMnemonic('A');
     continueGameWhiteItem.addActionListener(new ItemListener());
     gameMenu.add(continueGameWhiteItem);
+
+    final JMenuItem breakplay = new JMenuItem();
+    breakplay.setText("中断对局");
+    breakplay.addActionListener(new ItemListener());
+    gameMenu.add(breakplay);
 
     final JMenuItem settime = new JMenuItem();
     settime.setText("设置AI用时");
@@ -917,15 +917,21 @@ public class Menu extends JDialog {
         } catch (IOException ex) {
           // TODO Auto-generated catch block
           ex.printStackTrace();
-        }       
+        }
         return;
       }
-      
+
       if (menuItem.getText().startsWith("总在最")) {
-      	Lizzie.frame.toggleAlwaysOntop();
-          return;
+        Lizzie.frame.toggleAlwaysOntop();
+        return;
+      }
+      if (menuItem.getText().startsWith("中断对局")) {
+        if (Lizzie.frame.isPlayingAgainstLeelaz) {
+          Lizzie.frame.isPlayingAgainstLeelaz = false;
+          Lizzie.leelaz.isThinking = false;
         }
-      
+        return;
+      }
     }
   }
 }
