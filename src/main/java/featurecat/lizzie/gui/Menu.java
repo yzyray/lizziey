@@ -36,6 +36,7 @@ public class Menu extends JDialog {
   public static JMenuItem engine8 = null;
   public static JMenuItem engine9 = null;
   public static JMenuItem engine10 = null;
+  private boolean onlyboard =false;
 
   public Menu(Window owner) {
     super(owner);
@@ -63,7 +64,8 @@ public class Menu extends JDialog {
     bar.add(menuBar);
 
     headFont = new Font("幼圆", Font.BOLD, 17);
-
+    onlyboard = Lizzie.config.uiConfig.optBoolean("only-board", false);
+    
     final JMenu fileMenu = new JMenu(" 文件  "); // 创建“文件”菜单
     // fileMenu.setMnemonic('F'); // 设置快捷键
     fileMenu.setForeground(Color.BLACK);
@@ -213,25 +215,16 @@ public class Menu extends JDialog {
     final JMenuItem bottomleft = new JMenuItem("左下角状态"); // 创建“字体”子菜单
     viewMenu.add(bottomleft); // 添加到“编辑”菜单
     bottomleft.addActionListener(new ItemListener()); // 添加动作监听器
-
-    //   fontMenu.setIcon(icon); // 设置菜单图标
-    //   fontMenu.setMnemonic('F'); // 设置快捷键
-    //  final JCheckBoxMenuItem bCheckBoxItem = new JCheckBoxMenuItem("加粗（B）"); // 创建复选框菜单项
-    //   bCheckBoxItem.setMnemonic('B'); // 设置快捷键
-    //   bCheckBoxItem.setAccelerator(
-    //       KeyStroke.getKeyStroke(VK_B, CTRL_MASK | ALT_MASK)); // 设置加速器为“Ctrl+Alt+B”
-    // fontMenu.add(fontMenu);
-    //  fontMenu.add(bCheckBoxItem); // 添加到“字体”子菜单
-    //  final JCheckBoxMenuItem iCheckBoxItem = new JCheckBoxMenuItem("斜体（I）"); // 创建复选框菜单项
-    //   iCheckBoxItem.setMnemonic('I'); // 设置快捷键
-    //   iCheckBoxItem.setAccelerator(
-    //      KeyStroke.getKeyStroke(VK_I, CTRL_MASK | ALT_MASK)); // 设置加速器为“Ctrl+Alt+I”
-    // iCheckBoxItem.addActionListener(new ItemListener()); // 添加动作监听器
-    //  fontMenu.add(iCheckBoxItem); // 添加到“字体”子菜单
-
+    
     final JMenuItem gtpMenu = new JMenuItem("命令窗口(E)"); // 创建“字体”子菜单
     viewMenu.add(gtpMenu); // 添加到“编辑”菜单
     gtpMenu.addActionListener(new ItemListener()); // 添加动作监听器
+    
+    final JMenuItem allview = new JMenuItem("精简模式"); // 创建“字体”子菜单
+    viewMenu.add(allview); // 添加到“编辑”菜单
+    allview.addActionListener(new ItemListener()); // 添加动作监听器
+
+   
 
     final JMenu gameMenu = new JMenu("棋局 ", false);
     gameMenu.setText(" 棋局  ");
@@ -547,7 +540,7 @@ public class Menu extends JDialog {
   class ItemListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       JMenuItem menuItem = (JMenuItem) e.getSource();
-      System.out.println("您单击的是菜单项：" + menuItem.getText());
+  //    System.out.println("您单击的是菜单项：" + menuItem.getText());
       Lizzie.frame.setVisible(true);
       if (menuItem.getText().startsWith("打开")) {
         Lizzie.frame.openFile();
@@ -590,6 +583,10 @@ public class Menu extends JDialog {
         Lizzie.config.toggleShowStatus();
         return;
       }
+      if (menuItem.getText().startsWith("分支")) {
+          Lizzie.config.toggleShowVariationGraph();
+          return;
+        }
       if (menuItem.getText().startsWith("恶手")) {
         Lizzie.frame.toggleBadMoves();
         return;
@@ -605,11 +602,7 @@ public class Menu extends JDialog {
       if (menuItem.getText().startsWith("胜率")) {
         Lizzie.config.toggleShowWinrate();
         return;
-      }
-      if (menuItem.getText().startsWith("分支")) {
-        Lizzie.config.toggleShowVariationGraph();
-        return;
-      }
+      }   
       if (menuItem.getText().startsWith("命令")) {
         Lizzie.frame.toggleGtpConsole();
         return;
@@ -888,6 +881,53 @@ public class Menu extends JDialog {
         Lizzie.frame.pasteSgf();
         return;
       }
+      if (menuItem.getText().startsWith("精简")) {
+    	      if(onlyboard)	  
+    	      {
+    	    	  if(!Lizzie.config.showSubBoard)
+    	    	  Lizzie.config.toggleShowSubBoard();
+    	    	  if(!Lizzie.config.showComment)
+        	    	  Lizzie.config.toggleShowComment();
+    	    	  if(!Lizzie.config.showCaptured)
+        	    	  Lizzie.config.toggleShowCaptured();
+    	    	  if(!Lizzie.config.showStatus)
+        	    	  Lizzie.config.toggleShowStatus();
+    	    	  if(!Lizzie.config.showVariationGraph)
+        	    	  Lizzie.config.toggleShowVariationGraph();   
+    	    	  if(!Lizzie.config.showWinrate)
+    	    	  Lizzie.config.toggleShowWinrate();
+    	    	 if(Lizzie.frame.getWidth()-Lizzie.frame.getHeight()<500)
+    	    	  Lizzie.frame.setBounds(Lizzie.frame.getX(), Lizzie.frame.getY(), Lizzie.frame.getHeight()+600, Lizzie.frame.getHeight());
+    	      }
+    	      else
+    	      {
+    	    	  if(Lizzie.config.showSubBoard)
+        	    	  Lizzie.config.toggleShowSubBoard();
+        	    	  if(Lizzie.config.showComment)
+            	    	  Lizzie.config.toggleShowComment();
+        	    	  if(Lizzie.config.showCaptured)
+            	    	  Lizzie.config.toggleShowCaptured();
+        	    	  if(Lizzie.config.showStatus)
+            	    	  Lizzie.config.toggleShowStatus();
+        	    	  if(Lizzie.config.showVariationGraph)
+            	    	  Lizzie.config.toggleShowVariationGraph();
+        	    	  if(Lizzie.config.showWinrate)
+            	    	  Lizzie.config.toggleShowWinrate();
+        	    	  int minlength=Math.min(Lizzie.frame.getWidth(), Lizzie.frame.getHeight());
+        	    	  Lizzie.frame.setBounds(Lizzie.frame.getX(), Lizzie.frame.getY(), (int)(minlength*0.95), minlength);
+    	      }
+    	      onlyboard=!onlyboard;
+    	      try {
+    	          Lizzie.config.uiConfig.put("only-board", onlyboard);
+    	          Lizzie.config.save();
+    	        } catch (IOException ex) {
+    	          // TODO Auto-generated catch block
+    	          ex.printStackTrace();
+    	        }    	      
+    	      
+          return;
+        }
+      
     }
   }
 }

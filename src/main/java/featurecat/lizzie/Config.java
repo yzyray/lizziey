@@ -199,7 +199,7 @@ public class Config {
     showCoordinates = uiConfig.optBoolean("show-coordinates");
     replayBranchIntervalSeconds = uiConfig.optDouble("replay-branch-interval-seconds", 1.0);
     colorByWinrateInsteadOfVisits = uiConfig.optBoolean("color-by-winrate-instead-of-visits");
-    boardPositionProportion = uiConfig.optInt("board-postion-proportion", 3);
+    boardPositionProportion = uiConfig.optInt("board-postion-proportion", 4);
     limitBranchLength = leelazConfig.optInt("limit-branch-length", 0);
     limitMaxSuggestion = leelazConfig.optInt("limit-max-suggestion", 0);
     limitbadmoves = leelazConfig.optInt("badmoves-winrate-limits", 0);
