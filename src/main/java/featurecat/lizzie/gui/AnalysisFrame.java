@@ -42,20 +42,8 @@ public class AnalysisFrame extends JPanel {
     dataModel = getTableModel();
     table = new JTable(dataModel);
 
-    try {
-      winrateFont =
-          Font.createFont(
-              Font.TRUETYPE_FONT,
-              Thread.currentThread()
-                  .getContextClassLoader()
-                  .getResourceAsStream("fonts/OpenSans-Semibold.ttf"));
-
-    } catch (IOException | FontFormatException e) {
-      e.printStackTrace();
-    }
-
-    winrateFont = new Font("winrateFont", Font.PLAIN, 14);
-    headFont = new Font("winrateFont", Font.PLAIN, 13);
+    winrateFont = new Font("微软雅黑", Font.PLAIN, 14);
+    headFont = new Font("微软雅黑", Font.PLAIN, 13);
 
     table.getTableHeader().setFont(headFont);
     table.setFont(winrateFont);
