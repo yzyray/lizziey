@@ -42,7 +42,8 @@ public class Leelaz {
   private JSONObject leelazConfig;
   public ArrayList<Integer> heatcount = new ArrayList<Integer>();
   public double heatwinrate;
-  public Process process;
+
+  public Process process0;
   public Process process1;
   public Process process2;
   public Process process3;
@@ -176,7 +177,7 @@ public class Leelaz {
     processBuilder.redirectErrorStream(true);
     switch (index) {
       case 0:
-        process = processBuilder.start();
+        process0 = processBuilder.start();
         isprostart = true;
         break;
       case 1:
@@ -230,10 +231,10 @@ public class Leelaz {
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
   }
 
-  private boolean isEngineAlive(int index) {
+  public boolean isEngineAlive(int index) {
     switch (index) {
       case 0:
-        return (isprostart && process.isAlive());
+        return (isprostart && process0.isAlive());
       case 1:
         return (ispro1start && process1.isAlive());
       case 2:
@@ -258,130 +259,437 @@ public class Leelaz {
 
   public void killAllEngines() {
     switching = false;
-    process.destroyForcibly();
-    process1.destroyForcibly();
-    process2.destroyForcibly();
-    process3.destroyForcibly();
-    process4.destroyForcibly();
-    process5.destroyForcibly();
-    process6.destroyForcibly();
-    process7.destroyForcibly();
-    process8.destroyForcibly();
-    process9.destroyForcibly();
+    try {
+      process0.destroy();
+    } catch (Exception e) {
+    }
+    try {
+      process1.destroy();
+    } catch (Exception e) {
+    }
+    try {
+      process2.destroy();
+    } catch (Exception e) {
+    }
+    try {
+      process3.destroy();
+    } catch (Exception e) {
+    }
+    try {
+      process4.destroy();
+    } catch (Exception e) {
+    }
+    try {
+      process5.destroy();
+    } catch (Exception e) {
+    }
+    try {
+      process6.destroy();
+    } catch (Exception e) {
+    }
+    try {
+      process7.destroy();
+    } catch (Exception e) {
+    }
+    try {
+      process8.destroy();
+    } catch (Exception e) {
+    }
+    try {
+      process9.destroy();
+    } catch (Exception e) {
+    }
   }
 
   public void killOtherEngines() {
     switching = false;
     switch (currentEngineN) {
       case 0:
-        process1.destroyForcibly();
-        process2.destroyForcibly();
-        process3.destroyForcibly();
-        process4.destroyForcibly();
-        process5.destroyForcibly();
-        process6.destroyForcibly();
-        process7.destroyForcibly();
-        process8.destroyForcibly();
-        process9.destroyForcibly();
+        try {
+          process1.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process2.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process3.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process4.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process5.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process6.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process7.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process8.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process9.destroy();
+        } catch (Exception e) {
+        }
         break;
       case 1:
-        process.destroyForcibly();
-        process2.destroyForcibly();
-        process3.destroyForcibly();
-        process4.destroyForcibly();
-        process5.destroyForcibly();
-        process6.destroyForcibly();
-        process7.destroyForcibly();
-        process8.destroyForcibly();
-        process9.destroyForcibly();
+        try {
+          process0.destroy();
+        } catch (Exception e) {
+        }
+
+        try {
+          process2.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process3.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process4.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process5.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process6.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process7.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process8.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process9.destroy();
+        } catch (Exception e) {
+        }
         break;
       case 2:
-        process.destroyForcibly();
-        process1.destroyForcibly();
-        process3.destroyForcibly();
-        process4.destroyForcibly();
-        process5.destroyForcibly();
-        process6.destroyForcibly();
-        process7.destroyForcibly();
-        process8.destroyForcibly();
-        process9.destroyForcibly();
+        try {
+          process0.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process1.destroy();
+        } catch (Exception e) {
+        }
+
+        try {
+          process3.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process4.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process5.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process6.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process7.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process8.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process9.destroy();
+        } catch (Exception e) {
+        }
         break;
       case 3:
-        process.destroyForcibly();
-        process1.destroyForcibly();
-        process2.destroyForcibly();
-        process4.destroyForcibly();
-        process5.destroyForcibly();
-        process6.destroyForcibly();
-        process7.destroyForcibly();
-        process8.destroyForcibly();
-        process9.destroyForcibly();
+        try {
+          process0.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process1.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process2.destroy();
+        } catch (Exception e) {
+        }
+
+        try {
+          process4.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process5.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process6.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process7.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process8.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process9.destroy();
+        } catch (Exception e) {
+        }
         break;
       case 4:
-        process.destroyForcibly();
-        process1.destroyForcibly();
-        process2.destroyForcibly();
-        process3.destroyForcibly();
-        process5.destroyForcibly();
-        process6.destroyForcibly();
-        process7.destroyForcibly();
-        process8.destroyForcibly();
-        process9.destroyForcibly();
+        try {
+          process0.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process1.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process2.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process3.destroy();
+        } catch (Exception e) {
+        }
+
+        try {
+          process5.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process6.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process7.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process8.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process9.destroy();
+        } catch (Exception e) {
+        }
         break;
       case 5:
-        process.destroyForcibly();
-        process1.destroyForcibly();
-        process2.destroyForcibly();
-        process3.destroyForcibly();
-        process4.destroyForcibly();
-        process6.destroyForcibly();
-        process7.destroyForcibly();
-        process8.destroyForcibly();
-        process9.destroyForcibly();
-        break;
+        try {
+          process0.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process1.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process2.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process3.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process4.destroy();
+        } catch (Exception e) {
+        }
+
+        try {
+          process6.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process7.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process8.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process9.destroy();
+        } catch (Exception e) {
+        }
       case 6:
-        process.destroyForcibly();
-        process1.destroyForcibly();
-        process2.destroyForcibly();
-        process3.destroyForcibly();
-        process4.destroyForcibly();
-        process5.destroyForcibly();
-        process7.destroyForcibly();
-        process8.destroyForcibly();
-        process9.destroyForcibly();
-        break;
+        try {
+          process0.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process1.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process2.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process3.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process4.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process5.destroy();
+        } catch (Exception e) {
+        }
+
+        try {
+          process7.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process8.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process9.destroy();
+        } catch (Exception e) {
+        }
       case 7:
-        process.destroyForcibly();
-        process1.destroyForcibly();
-        process2.destroyForcibly();
-        process3.destroyForcibly();
-        process4.destroyForcibly();
-        process5.destroyForcibly();
-        process6.destroyForcibly();
-        process8.destroyForcibly();
-        process9.destroyForcibly();
+        try {
+          process0.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process1.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process2.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process3.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process4.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process5.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process6.destroy();
+        } catch (Exception e) {
+        }
+
+        try {
+          process8.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process9.destroy();
+        } catch (Exception e) {
+        }
         break;
       case 8:
-        process.destroyForcibly();
-        process1.destroyForcibly();
-        process2.destroyForcibly();
-        process3.destroyForcibly();
-        process4.destroyForcibly();
-        process5.destroyForcibly();
-        process6.destroyForcibly();
-        process7.destroyForcibly();
-        process9.destroyForcibly();
+        try {
+          process0.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process1.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process2.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process3.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process4.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process5.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process6.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process7.destroy();
+        } catch (Exception e) {
+        }
+
+        try {
+          process9.destroy();
+        } catch (Exception e) {
+        }
         break;
       case 9:
-        process.destroyForcibly();
-        process1.destroyForcibly();
-        process2.destroyForcibly();
-        process3.destroyForcibly();
-        process4.destroyForcibly();
-        process5.destroyForcibly();
-        process6.destroyForcibly();
-        process7.destroyForcibly();
-        process8.destroyForcibly();
+        try {
+          process0.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process1.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process2.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process3.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process4.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process5.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process6.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process7.destroy();
+        } catch (Exception e) {
+        }
+        try {
+          process8.destroy();
+        } catch (Exception e) {
+        }
+
         break;
     }
   }
@@ -453,7 +761,7 @@ public class Leelaz {
             executor.shutdownNow();
           }
           if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
-            shutdown();
+            shutdown(index);
           }
         } catch (InterruptedException e) {
           executor.shutdownNow();
@@ -466,7 +774,7 @@ public class Leelaz {
             executor2.shutdownNow();
           }
           if (executor2.awaitTermination(1, TimeUnit.SECONDS)) {
-            shutdown();
+            shutdown(index);
           }
         } catch (InterruptedException e) {
           executor2.shutdownNow();
@@ -544,8 +852,8 @@ public class Leelaz {
     if (!execuser) {
       switch (index) {
         case 0:
-          inputStream = new BufferedInputStream(process.getInputStream());
-          outputStream = new BufferedOutputStream(process.getOutputStream());
+          inputStream = new BufferedInputStream(process0.getInputStream());
+          outputStream = new BufferedOutputStream(process0.getOutputStream());
           break;
         case 1:
           inputStream = new BufferedInputStream(process1.getInputStream());
@@ -587,8 +895,8 @@ public class Leelaz {
     } else {
       switch (index) {
         case 0:
-          inputStream2 = new BufferedInputStream(process.getInputStream());
-          outputStream2 = new BufferedOutputStream(process.getOutputStream());
+          inputStream2 = new BufferedInputStream(process0.getInputStream());
+          outputStream2 = new BufferedOutputStream(process0.getOutputStream());
           break;
         case 1:
           inputStream2 = new BufferedInputStream(process1.getInputStream());
@@ -646,8 +954,8 @@ public class Leelaz {
     if (!execuser) {
       switch (index) {
         case 0:
-          inputStream = new BufferedInputStream(process.getInputStream());
-          outputStream = new BufferedOutputStream(process.getOutputStream());
+          inputStream = new BufferedInputStream(process0.getInputStream());
+          outputStream = new BufferedOutputStream(process0.getOutputStream());
           break;
         case 1:
           inputStream = new BufferedInputStream(process1.getInputStream());
@@ -689,8 +997,8 @@ public class Leelaz {
     } else {
       switch (index) {
         case 0:
-          inputStream2 = new BufferedInputStream(process.getInputStream());
-          outputStream2 = new BufferedOutputStream(process.getOutputStream());
+          inputStream2 = new BufferedInputStream(process0.getInputStream());
+          outputStream2 = new BufferedOutputStream(process0.getOutputStream());
           break;
         case 1:
           inputStream2 = new BufferedInputStream(process1.getInputStream());
@@ -1455,7 +1763,6 @@ public class Leelaz {
       // this line will be reached when Leelaz shuts down
       System.out.println("Leelaz process ended.");
 
-      shutdown();
       // Do no exit for switching weights
       // System.exit(-1);
     } catch (IOException e) {
@@ -1480,7 +1787,6 @@ public class Leelaz {
       // this line will be reached when Leelaz shuts down
       System.out.println("Leelaz process ended.");
 
-      shutdown();
       // Do no exit for switching weights
       // System.exit(-1);
     } catch (IOException e) {
@@ -1784,8 +2090,29 @@ public class Leelaz {
   }
 
   /** End the process */
-  public void shutdown() {
-    process.destroy();
+  public void shutdown(int index) {
+    switch (index) {
+      case 0:
+        process0.destroy();
+      case 1:
+        process1.destroy();
+      case 2:
+        process2.destroy();
+      case 3:
+        process3.destroy();
+      case 4:
+        process4.destroy();
+      case 5:
+        process5.destroy();
+      case 6:
+        process6.destroy();
+      case 7:
+        process7.destroy();
+      case 8:
+        process8.destroy();
+      case 9:
+        process9.destroy();
+    }
   }
 
   public List<MoveData> getBestMoves() {

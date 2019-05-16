@@ -99,7 +99,7 @@ public class Lizzie {
       e.printStackTrace(); // Failed to save config
     }
 
-    if (leelaz != null) leelaz.shutdown();
+    if (leelaz != null) leelaz.killAllEngines();
     System.exit(0);
   }
 
@@ -136,7 +136,7 @@ public class Lizzie {
     //        JOptionPane.showMessageDialog(null, "AI正在思考,无法切换");
     //        return;
     //      }
-    if (index == Lizzie.leelaz.currentEngineN() && Lizzie.leelaz.process.isAlive()) {
+    if (index == Lizzie.leelaz.currentEngineN() && Lizzie.leelaz.isEngineAlive(index)) {
       return;
     }
     //    if(leelaz.isEngineBusy(index))
