@@ -520,8 +520,10 @@ public class LizzieFrame extends JFrame {
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
     chooser.setFileFilter(filter);
+    JFrame frame = new JFrame();
+    frame.setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     chooser.setMultiSelectionEnabled(false);
-    int result = chooser.showSaveDialog(null);
+    int result = chooser.showSaveDialog(frame);
     if (result == JFileChooser.APPROVE_OPTION) {
       File file = chooser.getSelectedFile();
       if (file.exists()) {
@@ -558,6 +560,7 @@ public class LizzieFrame extends JFrame {
     chooser.setFileFilter(filter);
     chooser.setMultiSelectionEnabled(false);
     JFrame frame = new JFrame();
+    frame.setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     Action details = chooser.getActionMap().get("viewTypeDetails");
     details.actionPerformed(null);
     // Find the JTable on the file chooser panel and manually do the sort
@@ -1527,7 +1530,10 @@ public class LizzieFrame extends JFrame {
 
   public void noautocounting() {
     this.isAutocounting = false;
-    Lizzie.frame.subBoardRenderer.removecountblock();
+    try {
+      Lizzie.frame.subBoardRenderer.removecountblock();
+    } catch (Exception ex) {
+    }
     Lizzie.frame.repaint();
     // Lizzie.frame.iscounting=false;
     this.countResults.isAutocounting = false;
