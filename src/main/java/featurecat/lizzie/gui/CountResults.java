@@ -47,7 +47,11 @@ public class CountResults extends JFrame {
             Lizzie.frame.repaint();
             Lizzie.frame.iscounting = false;
             iscounted = false;
-            Lizzie.frame.subBoardRenderer.removecountblock();
+            try {
+              Lizzie.frame.subBoardRenderer.removecountblock();
+            } catch (Exception es) {
+            }
+
             Lizzie.frame.repaint();
             button2.setText("自动判断");
             Lizzie.frame.isAutocounting = false;
@@ -79,8 +83,13 @@ public class CountResults extends JFrame {
               Lizzie.frame.zen.syncboradstat();
               Lizzie.frame.zen.countStones();
               button2.setText("停止判断");
+
             } else {
-              Lizzie.frame.subBoardRenderer.removecountblock();
+              try {
+                Lizzie.frame.subBoardRenderer.removecountblock();
+              } catch (Exception es) {
+              }
+              Lizzie.frame.boardRenderer.removecountblock();
               Lizzie.frame.repaint();
               // Lizzie.frame.iscounting=false;
               button2.setText("自动判断");

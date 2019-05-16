@@ -133,7 +133,13 @@ public class YaZenGtp {
           int blackpoint = Integer.parseInt(params[7]);
           int whitepoint = Integer.parseInt(params[8]);
           if (!Lizzie.frame.isAutocounting) Lizzie.frame.boardRenderer.drawcountblock(tempcount);
-          else Lizzie.frame.subBoardRenderer.drawcountblock(tempcount);
+          else {
+            if (Lizzie.config.showSubBoard) {
+              Lizzie.frame.boardRenderer.removecountblock();
+              Lizzie.frame.subBoardRenderer.drawcountblock(tempcount);
+            } else Lizzie.frame.boardRenderer.drawcountblock(tempcount);
+          }
+
           Lizzie.frame.repaint();
           if (firstcount) {
             results = LizzieFrame.countResults;
