@@ -67,7 +67,7 @@ public class Menu extends JDialog {
     fileMenu.setForeground(Color.BLACK);
     fileMenu.setFont(headFont);
     menuBar.add(fileMenu); // 添加到菜单栏
-    final JMenuItem openItem = new JMenuItem("打开（CTRL+O）"); // 创建菜单项
+    final JMenuItem openItem = new JMenuItem("打开（O）"); // 创建菜单项
     // openItem.setMnemonic('O'); // 设置快捷键
     // 设置加速器为“Ctrl+N”
     // openItem.setAccelerator(KeyStroke.getKeyStroke(VK_O, CTRL_MASK));
@@ -95,7 +95,7 @@ public class Menu extends JDialog {
     // fileMenu.addSeparator(); // 添加分隔线
 
     final JMenuItem saveItem = new JMenuItem();
-    saveItem.setText("保存（CTRL+S）");
+    saveItem.setText("保存（S）");
     // saveItem.setMnemonic('S');
     // saveItem.setAccelerator(KeyStroke.getKeyStroke(VK_S, CTRL_MASK));
     saveItem.addActionListener(new ItemListener());
