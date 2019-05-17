@@ -671,7 +671,7 @@ public class Menu extends JDialog {
         return;
       }
 
-      if (menuItem.getText().startsWith("引擎1")) {
+      if (menuItem.getText().startsWith("引擎1")&&!menuItem.getText().startsWith("引擎10")) {
         Lizzie.switchEngine(0);
         return;
       }

@@ -61,7 +61,7 @@ public class Leelaz {
 
   // fixed_handicap
   public boolean isSettingHandicap = false;
-
+boolean stopread=false;
   // genmove
   public boolean isheatmap = false;
   public boolean isThinking = false;
@@ -69,8 +69,6 @@ public class Leelaz {
   // public boolean isChanged = false;
   private boolean isLoaded = false;
   private boolean isCheckingVersion;
-  private boolean first1 = false;
-  private boolean first2 = false;
   // for Multiple Engine
   private String engineCommand;
   private List<String> commands;
@@ -152,12 +150,13 @@ public class Leelaz {
     process[index] = processBuilder.start();
     
     initializeStreams(index);
-   isCheckingVersion = true;
-
+    //isCheckingVersion = true;
     executor[index]=Executors.newSingleThreadScheduledExecutor();
     executor[index].execute(this::read);    
+    isCheckingVersion=true;
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
+   // ponder();
   }
 
   public boolean isEngineAlive(int index) {    
@@ -195,7 +194,7 @@ public class Leelaz {
       return;
     }
 
-    isCheckingVersion = true;
+  //  isCheckingVersion = true;
     this.engineCommand = engineCommand;
     // stop the ponder
 
@@ -236,10 +235,16 @@ public class Leelaz {
     }
     if (isEngineAlive(index)) // 需要添加判断,对应index的进程知否初始化并且alive
     {
-      normalQuit(currentEngineN);
+    	normalQuit(currentEngineN);
+      outputStream[this.currentEngineN].write(("stop" + "\n").getBytes());
+      outputStream[this.currentEngineN].flush();
+      stopread=true;
       reinitializeStreams(engineCommand, index);
     } else {
       normalQuit(currentEngineN);
+      outputStream[this.currentEngineN].write(("stop" + "\n").getBytes());
+      outputStream[this.currentEngineN].flush();
+      stopread=true;         
       startEngine(engineCommand, index);
     }
     currentEngineN = index;
@@ -330,6 +335,7 @@ public class Leelaz {
   /** Initializes the input and output streams */
   private void initializeStreams(int index) {
     currentEngineN = index;
+    
     inputStream[index] = new BufferedInputStream(process[index].getInputStream());
     outputStream[index] = new BufferedOutputStream(process[index].getOutputStream());
     
@@ -348,23 +354,25 @@ public class Leelaz {
           Lizzie.config.leelazConfig.optString(
               "enginename" + String.valueOf(index + 1), currentWeight);
     }
+    isCheckingVersion = true;
     inputStream[index]=new BufferedInputStream(process[index].getInputStream());
-    outputStream[index] = new BufferedOutputStream(process[index].getOutputStream());
+    outputStream[index] = new BufferedOutputStream(process[index].getOutputStream());  
     executor[index] = Executors.newSingleThreadScheduledExecutor();
+    stopread=false;
     executor[index].execute(this::read);
-    sendCommand("version");
-    ponder();
-//    Timer timer = new Timer();
-//    timer.schedule(
-//        new TimerTask() {
-//          public void run() {
-//            sendCommand("version");
-//            ponder();
-//            sendCommand("version");
-//            this.cancel();
-//          }
-//        },
-//        100);
+ //   sendCommand("version");
+  //  ponder();
+    Timer timer = new Timer();
+    timer.schedule(
+        new TimerTask() {
+          public void run() {
+            sendCommand("version");
+            //ponder();
+            //sendCommand("version");
+            this.cancel();
+          }
+        },
+        100);
   }
 
   public static List<MoveData> parseInfo(String line) {
@@ -641,7 +649,6 @@ public class Leelaz {
         break;
       case 8:
         featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.icon);
-        featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.icon);
         if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
           featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
         }
@@ -671,8 +678,7 @@ public class Leelaz {
         }
         break;
       case 9:
-        featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.icon);
-        featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.icon);
+        featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.icon);       
         if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
           featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
         }
@@ -711,12 +717,12 @@ public class Leelaz {
   private void parseLine(String line) {
 
     synchronized (this) {
-      // Lizzie.gtpConsole.addLineforce(line);
+       //Lizzie.gtpConsole.addLineforce(line);
 
       if (printCommunication || gtpConsole) {
         if (line.startsWith("info")) {
         } else {
-          Lizzie.gtpConsole.addLine(line);
+         Lizzie.gtpConsole.addLine(line);
         }
       }
 
@@ -734,16 +740,27 @@ public class Leelaz {
         }
       } else if (line.equals("\n")) {
         // End of response
-      } else if (line.startsWith("info")) {
+    	
+      } 
+//      else   if (switching) {
+//          if (line.contains("tree")) {
+//            //switching = false;
+//            sendCommand("version");
+//          //  ponder();
+//           //changeEngIco();
+//          }
+//        }
+      else if (line.startsWith("info")) {
         isLoaded = true;
         // Clear switching prompt
-        //        if (switching) {
-        //          if (!line.contains("->")) {
-        //            switching = false;
-        //            ponder();
-        //            changeEngIco();
-        //          }
-        //        }
+             //   if (switching) {
+             //     if (!line.contains("->")) {
+              //      switching = false;
+              //      sendCommand("version");
+                    //ponder();
+                //   //changeEngIco();
+               //   }
+              //  }
         // Display engine command in the title
         Lizzie.frame.updateTitle();
         if (isResponseUpToDate()) {
@@ -783,7 +800,10 @@ public class Leelaz {
         }
         isThinking = false;
 
-      } else if (line.startsWith("=") || line.startsWith("?")) {
+      } 
+      
+    
+      else if (line.startsWith("=") || line.startsWith("?")) {
         if (printCommunication || gtpConsole) {
           System.out.print(line);
           Lizzie.gtpConsole.addLine(line);
@@ -842,7 +862,7 @@ public class Leelaz {
           if (minor < 15) {
             JOptionPane.showMessageDialog(
                 Lizzie.frame,
-                "Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本为: "
+                "Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本是: "
                     + params[1]
                     + ")");
           }
@@ -851,6 +871,7 @@ public class Leelaz {
           ponder();
           changeEngIco();
         }
+        
       }
       if (isheatmap) {
         if (line.startsWith(" ")) {
@@ -1063,7 +1084,11 @@ public class Leelaz {
 
       while ((c = inputStream[currentEngineN].read()) != -1) {
         line.append((char) c);
-
+        if(stopread)
+        {
+        	stopread=false;
+        	return;
+        }
         if ((c == '\n')) {
           parseLine(line.toString());
           line = new StringBuilder();

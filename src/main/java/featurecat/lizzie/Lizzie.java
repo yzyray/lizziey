@@ -155,7 +155,7 @@ public class Lizzie {
     int movenumber = board.getcurrentmovenumber();
     // board.saveMoveNumber();
     leelaz.switching = true;
-    leelaz.sendCommand("stop");
+   
     board.clearbestmovesafter(board.getHistory().getStart(), movenumber);
     board.savelistforswitch();
    // leelaz.execuser = !leelaz.execuser;
