@@ -231,11 +231,11 @@ public class Leelaz {
         featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
     }
-    if (isEngineAlive(index)) // 需要添加判断,对应index的进程知否初始化并且alive
+    if (isEngineAlive(index) && Lizzie.config.fastChange) // 需要添加判断,对应index的进程知否初始化并且alive
     {
 
       if (isEngineAlive(currentEngineN)) {
-        normalQuit(currentEngineN);
+        // normalQuit(currentEngineN);
         outputStream[this.currentEngineN].write(("stop" + "\n").getBytes());
         outputStream[this.currentEngineN].flush();
         stopread = true;
@@ -244,10 +244,13 @@ public class Leelaz {
     } else {
 
       if (isEngineAlive(currentEngineN)) {
-        normalQuit(currentEngineN);
-        outputStream[this.currentEngineN].write(("stop" + "\n").getBytes());
-        outputStream[this.currentEngineN].flush();
-        stopread = true;
+        if (!Lizzie.config.fastChange) {
+          normalQuit(currentEngineN);
+        } else {
+          outputStream[this.currentEngineN].write(("stop" + "\n").getBytes());
+          outputStream[this.currentEngineN].flush();
+          stopread = true;
+        }
       }
       startEngine(engineCommand, index);
     }
@@ -255,83 +258,53 @@ public class Leelaz {
   }
 
   public void normalQuit(int index) throws IOException {
-    if (!Lizzie.config.fastChange) {
-      sendCommandToLeelaz("quit", index);
 
-      executor[index].shutdown();
-      try {
-        while (!executor[index].awaitTermination(1, TimeUnit.SECONDS)) {
-          executor[index].shutdownNow();
-        }
-        if (executor[index].awaitTermination(1, TimeUnit.SECONDS)) {
-          shutdown(index);
-        }
-      } catch (InterruptedException e) {
+    sendCommandToLeelaz("quit", index);
+
+    executor[index].shutdown();
+    try {
+      while (!executor[index].awaitTermination(1, TimeUnit.SECONDS)) {
         executor[index].shutdownNow();
-        Thread.currentThread().interrupt();
       }
+      if (executor[index].awaitTermination(1, TimeUnit.SECONDS)) {
+        shutdown(index);
+      }
+    } catch (InterruptedException e) {
+      executor[index].shutdownNow();
+      Thread.currentThread().interrupt();
     }
-    //    if (execuser) {
-    //      executor.shutdownNow();
-    //      //      try {
-    //      //        while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
-    //      //          executor.shutdownNow();
-    //      //        }
-    //      //        if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
-    //      //          shutdown();
-    //      //        }
-    //      //      } catch (InterruptedException e) {
-    //      //        executor.shutdownNow();
-    //      //        Thread.currentThread().interrupt();
-    //      // }
-    //    } else {
-    //      executor2.shutdownNow();
-    //      //      try {
-    //      //        while (!executor2.awaitTermination(1, TimeUnit.SECONDS)) {
-    //      //          executor2.shutdownNow();
-    //      //        }
-    //      //        if (executor2.awaitTermination(1, TimeUnit.SECONDS)) {
-    //      //          shutdown();
-    //      //        }
-    //      //      } catch (InterruptedException e) {
-    //      //        executor2.shutdownNow();
-    //      //        Thread.currentThread().interrupt();
-    //      //      }
-    //    }
 
-    if (!Lizzie.config.fastChange) {
-      switch (index) {
-        case 0:
-          featurecat.lizzie.gui.Menu.engine1.setIcon(null);
-          break;
-        case 1:
-          featurecat.lizzie.gui.Menu.engine2.setIcon(null);
-          break;
-        case 2:
-          featurecat.lizzie.gui.Menu.engine3.setIcon(null);
-          break;
-        case 3:
-          featurecat.lizzie.gui.Menu.engine4.setIcon(null);
-          break;
-        case 4:
-          featurecat.lizzie.gui.Menu.engine5.setIcon(null);
-          break;
-        case 5:
-          featurecat.lizzie.gui.Menu.engine6.setIcon(null);
-          break;
-        case 6:
-          featurecat.lizzie.gui.Menu.engine7.setIcon(null);
-          break;
-        case 7:
-          featurecat.lizzie.gui.Menu.engine8.setIcon(null);
-          break;
-        case 8:
-          featurecat.lizzie.gui.Menu.engine9.setIcon(null);
-          break;
-        case 9:
-          featurecat.lizzie.gui.Menu.engine10.setIcon(null);
-          break;
-      }
+    switch (index) {
+      case 0:
+        featurecat.lizzie.gui.Menu.engine1.setIcon(null);
+        break;
+      case 1:
+        featurecat.lizzie.gui.Menu.engine2.setIcon(null);
+        break;
+      case 2:
+        featurecat.lizzie.gui.Menu.engine3.setIcon(null);
+        break;
+      case 3:
+        featurecat.lizzie.gui.Menu.engine4.setIcon(null);
+        break;
+      case 4:
+        featurecat.lizzie.gui.Menu.engine5.setIcon(null);
+        break;
+      case 5:
+        featurecat.lizzie.gui.Menu.engine6.setIcon(null);
+        break;
+      case 6:
+        featurecat.lizzie.gui.Menu.engine7.setIcon(null);
+        break;
+      case 7:
+        featurecat.lizzie.gui.Menu.engine8.setIcon(null);
+        break;
+      case 8:
+        featurecat.lizzie.gui.Menu.engine9.setIcon(null);
+        break;
+      case 9:
+        featurecat.lizzie.gui.Menu.engine10.setIcon(null);
+        break;
     }
   }
 
