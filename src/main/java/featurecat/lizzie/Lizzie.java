@@ -155,10 +155,10 @@ public class Lizzie {
     int movenumber = board.getcurrentmovenumber();
     // board.saveMoveNumber();
     leelaz.switching = true;
-   
+
     board.clearbestmovesafter(board.getHistory().getStart(), movenumber);
     board.savelistforswitch();
-   // leelaz.execuser = !leelaz.execuser;
+    // leelaz.execuser = !leelaz.execuser;
     try {
 
       leelaz.restartEngine(commandLine, index);
