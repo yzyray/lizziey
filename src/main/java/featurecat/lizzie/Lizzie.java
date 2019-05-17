@@ -158,7 +158,7 @@ public class Lizzie {
     leelaz.sendCommand("stop");
     board.clearbestmovesafter(board.getHistory().getStart(), movenumber);
     board.savelistforswitch();
-    leelaz.execuser = !leelaz.execuser;
+   // leelaz.execuser = !leelaz.execuser;
     try {
 
       leelaz.restartEngine(commandLine, index);
