@@ -842,7 +842,7 @@ public class Leelaz {
         }
       }
       if (isheatmap) {
-        if (line.startsWith(" ")) {
+        if (line.startsWith(" ")||Character.isDigit(line.charAt(0))) {
           try {
             String[] params = line.trim().split("\\s+");
             if (params.length == 19) {
