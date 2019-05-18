@@ -82,7 +82,17 @@ public class MovelistFrame extends JPanel {
                     && Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()
                     && !(Lizzie.board.getHistory().getCurrentHistoryNode().getData().lastMove
                         == passstep)) {
-
+                	   int previousplayouts = 0;
+                       previousplayouts =
+                               Lizzie.board
+                                   .getHistory()
+                                   .getCurrentHistoryNode()
+                                   .previous()
+                                   .get()
+                                   .getData()
+                                   .getPlayouts();
+                    if(previousplayouts==0)
+                    {return;}
                   double lastwr = -99.0;
                   try {
                     lastwr =
@@ -110,7 +120,7 @@ public class MovelistFrame extends JPanel {
                   }
                   double wr = lastwr;
                   int playouts = 0;
-                  int previousplayouts = 0;
+               
                   if (!Lizzie.board
                       .getHistory()
                       .getCurrentHistoryNode()
@@ -135,15 +145,9 @@ public class MovelistFrame extends JPanel {
                             .stream()
                             .mapToInt(move -> move.playouts)
                             .sum();
-                    previousplayouts =
-                        Lizzie.board
-                            .getHistory()
-                            .getCurrentHistoryNode()
-                            .previous()
-                            .get()
-                            .getData()
-                            .getPlayouts();
+               
                   }
+              
                   int[] coords =
                       Lizzie.board.getHistory().getCurrentHistoryNode().getData().lastMove.get();
                   int movenumer = Lizzie.board.getHistory().getMoveNumber();
