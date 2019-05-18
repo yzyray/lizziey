@@ -351,7 +351,7 @@ public class MovelistFrame extends JPanel {
         } else {
           setForeground(Color.BLACK);
         }
-        return super.getTableCellRendererComponent(table, value, false, false, row, column);
+        return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
       }
       if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
           && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
@@ -362,14 +362,14 @@ public class MovelistFrame extends JPanel {
                 Color.RGBtoHSB(255, 153, 18, null)[2]);
         setBackground(Color.WHITE);
         setForeground(hsbColor);
-        return super.getTableCellRendererComponent(table, value, false, false, row, column);
+        return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
       }
       if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
         setBackground(Color.WHITE);
         setForeground(Color.RED);
-        return super.getTableCellRendererComponent(table, value, false, false, row, column);
+        return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
       } else {
-        return renderer.getTableCellRendererComponent(table, value, false, false, row, column);
+        return renderer.getTableCellRendererComponent(table, value, isSelected, false, row, column);
       }
     }
   }
