@@ -96,11 +96,19 @@ public class MovelistFrame extends JPanel {
                             .get(0)
                             .winrate;
                   } catch (Exception ex) {
+                    lastwr =
+                        Lizzie.board
+                            .getHistory()
+                            .getCurrentHistoryNode()
+                            .previous()
+                            .get()
+                            .getData()
+                            .getWinrate();
                   }
                   if (lastwr == -99.0) {
                     return;
                   }
-                  double wr = 100 - lastwr;
+                  double wr = lastwr;
                   int playouts = 0;
                   int previousplayouts = 0;
                   if (!Lizzie.board

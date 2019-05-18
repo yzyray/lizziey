@@ -985,12 +985,19 @@ public class Board implements LeelazListener {
                   .get(0)
                   .winrate;
         } catch (Exception ex) {
-
+          lastwr =
+              Lizzie.board
+                  .getHistory()
+                  .getCurrentHistoryNode()
+                  .previous()
+                  .get()
+                  .getData()
+                  .getWinrate();
         }
         if (lastwr == -99.0) {
 
         } else {
-          double wr = 100 - lastwr;
+          double wr = lastwr;
           int playouts = 0;
           int previousplayouts = 0;
           if (!Lizzie.board.getHistory().getCurrentHistoryNode().getData().bestMoves.isEmpty()) {
@@ -1367,11 +1374,20 @@ public class Board implements LeelazListener {
                   .get(0)
                   .winrate;
         } catch (Exception ex) {
+          lastwr =
+              Lizzie.board
+                  .getHistory()
+                  .getCurrentHistoryNode()
+                  .previous()
+                  .get()
+                  .getData()
+                  .getWinrate();
         }
         if (lastwr == -99.0) {
 
         } else {
-          double wr = 100 - lastwr;
+          double wr = lastwr;
+
           int playouts = 0;
           int previousplayouts = 0;
           if (!Lizzie.board.getHistory().getCurrentHistoryNode().getData().bestMoves.isEmpty()) {
@@ -2574,12 +2590,19 @@ public class Board implements LeelazListener {
                 .get(0)
                 .winrate;
       } catch (Exception ex) {
-
+        lastwr =
+            Lizzie.board
+                .getHistory()
+                .getCurrentHistoryNode()
+                .previous()
+                .get()
+                .getData()
+                .getWinrate();
       }
       if (lastwr == -99.0) {
 
       } else {
-        double wr = 100 - lastwr;
+        double wr = lastwr;
         int playouts = 0;
         int previousplayouts = 0;
         if (!Lizzie.board.getHistory().getCurrentHistoryNode().getData().bestMoves.isEmpty()) {
@@ -2674,12 +2697,19 @@ public class Board implements LeelazListener {
                 .get(0)
                 .winrate;
       } catch (Exception ex) {
-
+        lastwr =
+            Lizzie.board
+                .getHistory()
+                .getCurrentHistoryNode()
+                .previous()
+                .get()
+                .getData()
+                .getWinrate();
       }
       if (lastwr == -99.0) {
-
+        return;
       } else {
-        double wr = 100 - lastwr;
+        double wr = lastwr;
         int playouts = 0;
         int previousplayouts = 0;
         if (!Lizzie.board.getHistory().getCurrentHistoryNode().getData().bestMoves.isEmpty()) {
