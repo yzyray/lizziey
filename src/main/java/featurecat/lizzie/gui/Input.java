@@ -365,7 +365,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_I:
         // stop the ponder
-        //if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+        // if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
         Lizzie.frame.editGameInfo();
         break;
       case VK_S:
@@ -422,7 +422,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           if (!Lizzie.frame.showControls) {
             if (Lizzie.leelaz.isPondering()) {
               wasPonderingWhenControlsShown = true;
-              //Lizzie.leelaz.togglePonder();
+              // Lizzie.leelaz.togglePonder();
             } else {
               wasPonderingWhenControlsShown = false;
             }
@@ -593,7 +593,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   public void keyReleased(KeyEvent e) {
     switch (e.getKeyCode()) {
       case VK_X:
-        if (wasPonderingWhenControlsShown)// Lizzie.leelaz.togglePonder();
+        if (wasPonderingWhenControlsShown) // Lizzie.leelaz.togglePonder();
         Lizzie.frame.showControls = false;
         Lizzie.frame.repaint();
         break;
