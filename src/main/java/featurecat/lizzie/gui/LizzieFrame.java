@@ -143,7 +143,8 @@ public class LizzieFrame extends JFrame {
   private JPanel mainPanel;
   public int mainPanleX;
   public int mainPanleY;
-  private boolean firstTime=false;
+  private boolean firstTime = true;
+  private boolean firstTimeuntil = false;
   // boolean lastponder = true;
 
   static {
@@ -981,7 +982,6 @@ public class LizzieFrame extends JFrame {
       boardRenderer.draw(g);
 
       if (Lizzie.leelaz != null && Lizzie.leelaz.isLoaded()) {
-    	  firstTime=true;
         if (Lizzie.config.showStatus) {
           String statusKey = "LizzieFrame.display." + (Lizzie.leelaz.isPondering() ? "on" : "off");
           String statusText = resourceBundle.getString(statusKey);
@@ -1002,28 +1002,39 @@ public class LizzieFrame extends JFrame {
         }
 
         // Todo: Make board move over when there is no space beside the board
-        if(firstTime)
-        {
-        	drawContainer(g, contx, conty, contw, conth);
-        	drawContainer(g, vx, vy, vw, vh);
-        	firstTime=false;
-        }
-        if (Lizzie.config.showWinrate) {        	
-           if (backgroundG.isPresent()) {
-          if (isSmallCap) {
-            contw = contw + contw;
-          }
-          drawContainer(backgroundG.get(), contx, conty, contw, conth);
 
+        if (firstTime) {
+          Timer timer = new Timer();
+          timer.schedule(
+              new TimerTask() {
+                public void run() {
+                  firstTimeuntil = true;
+                  firstTime = false;
+                  this.cancel();
+                }
+              },
+              200);
+          if (firstTimeuntil) {
+            drawContainer(g, contx, conty, contw, conth);
+            drawContainer(g, vx, vy, vw, vh);
+            firstTimeuntil = false;
+          }
+        }
+        if (Lizzie.config.showWinrate) {
+          if (backgroundG.isPresent()) {
+            if (isSmallCap) {
+              contw = contw + contw;
             }
+            drawContainer(backgroundG.get(), contx, conty, contw, conth);
+          }
           drawMoveStatistics(g, statx, staty, statw, stath);
           winrateGraph.draw(g, grx, gry, grw, grh);
         }
 
         if (Lizzie.config.showVariationGraph || Lizzie.config.showComment) {
-            if (backgroundG.isPresent()) {
-          drawContainer(backgroundG.get(), vx, vy, vw, vh);
-            }
+          if (backgroundG.isPresent()) {
+            drawContainer(backgroundG.get(), vx, vy, vw, vh);
+          }
           if (Lizzie.config.showVariationGraph) {
             if (isSmallCap) {
               variationTree.drawsmall(g, treex, treey, treew, treeh);
