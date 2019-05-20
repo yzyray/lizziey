@@ -57,7 +57,7 @@ public class Config {
   private String persistFilename = "persist";
 
   public Theme theme;
-  public float winrateStrokeWidth = 3;
+  public float winrateStrokeWidth = 2;
   public int leelaversion = 17;
   public int minimumBlunderBarWidth = 3;
   public int shadowSize = 90;
@@ -462,8 +462,8 @@ public class Config {
         String.format(
             "%s --gtp --lagbuffer 0 --weights %%network-file", getBestDefaultLeelazPath()));
     leelaz.put("engine-start-location", ".");
-    leelaz.put("max-analyze-time-minutes", 5);
-    leelaz.put("limit-max-suggestion", 50);
+    leelaz.put("max-analyze-time-minutes", 10);
+    leelaz.put("limit-max-suggestion", 0);
     leelaz.put("limit-branch-length", 0);
     leelaz.put("badmoves-winrate-limits", 0);
     leelaz.put("badmoves-playouts-limits", 0);
@@ -490,7 +490,7 @@ public class Config {
     ui.put("show-leelaz-variation", true);
     ui.put("show-winrate", true);
     ui.put("large-winrate", false);
-    ui.put("winrate-stroke-width", 3);
+    ui.put("winrate-stroke-width", 2);
     ui.put("show-blunder-bar", true);
     ui.put("minimum-blunder-bar-width", 3);
     ui.put("weighted-blunder-bar-height", false);
@@ -513,7 +513,7 @@ public class Config {
     ui.put("show-dynamic-komi", true);
     ui.put("min-playout-ratio-for-stats", 0.0);
     ui.put("theme", "default");
-    ui.put("only-last-move-number", 10);
+    ui.put("only-last-move-number", 1);
     ui.put("new-move-number-in-branch", true);
     ui.put("append-winrate-to-comment", false);
     ui.put("replay-branch-interval-seconds", 1.0);

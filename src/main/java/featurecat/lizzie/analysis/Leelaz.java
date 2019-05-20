@@ -156,6 +156,7 @@ public class Leelaz {
     isCheckingVersion = true;
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
+    Lizzie.frame.menu.engineMenu.setText(currentEnginename);
     // ponder();
   }
 
@@ -348,6 +349,7 @@ public class Leelaz {
           }
         },
         100);
+    Lizzie.frame.menu.engineMenu.setText(currentEnginename);
   }
 
   public static List<MoveData> parseInfo(String line) {

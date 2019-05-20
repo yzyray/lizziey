@@ -115,7 +115,7 @@ public class Theme {
 
   /** The stroke width of the winrate line */
   public int winrateStrokeWidth() {
-    return getIntByKey("winrate-stroke-width", 3);
+    return getIntByKey("winrate-stroke-width", 2);
   }
 
   /** The minimum width of the blunder bar */

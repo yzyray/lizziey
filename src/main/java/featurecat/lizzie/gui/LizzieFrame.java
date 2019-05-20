@@ -94,7 +94,7 @@ public class LizzieFrame extends JFrame {
   public static SubBoardRenderer subBoardRenderer;
   private static VariationTree variationTree;
   private static WinrateGraph winrateGraph;
-  private static Menu menu;
+  public static Menu menu;
   public static CountResults countResults;
   public static Font uiFont;
   public static Font winrateFont;
@@ -102,7 +102,7 @@ public class LizzieFrame extends JFrame {
   public ArrayList<Movelist> movelist;
 
   public int blackorwhite = 0;
-  private final BufferStrategy bs;
+ // private final BufferStrategy bs;
   public boolean iscounting = false;
   public boolean isAutocounting = false;
 
@@ -202,7 +202,7 @@ public class LizzieFrame extends JFrame {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-            paintMianBoard(g);
+            paintMianPanel(g);
         }
     };
     Input input = new Input();
@@ -252,8 +252,8 @@ public class LizzieFrame extends JFrame {
 
     setVisible(true);
 
-    createBufferStrategy(2);
-    bs = getBufferStrategy();
+  //  createBufferStrategy(2);
+ //   bs = getBufferStrategy();
 
     
 
@@ -640,7 +640,7 @@ public class LizzieFrame extends JFrame {
    *
    * @param g0 not used
    */
-  public void paintMianBoard(Graphics g0) {
+  public void paintMianPanel(Graphics g0) {
 
     autosaveMaybe();
 
@@ -670,6 +670,7 @@ public class LizzieFrame extends JFrame {
       boolean noBasic = !Lizzie.config.showCaptured;
       boolean noSubBoard = !Lizzie.config.showSubBoard;
       boolean noComment = !Lizzie.config.showComment;
+      boolean isSmallCap =false;
       // board
       int maxSize = (int) (min(width - leftInset - rightInset, height - topInset - bottomInset));
       maxSize = max(maxSize, Board.boardSize + 5); // don't let maxWidth become too small
@@ -706,10 +707,16 @@ public class LizzieFrame extends JFrame {
       // pondering message
       double ponderingSize = .040;
       int ponderingX = leftInset;
+      
       int ponderingY =
-          height - bottomInset - (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize);
+          height - bottomInset;// - (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize);
       int ponderingY2 =
-          height - bottomInset - (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize * 0.4);
+          height - bottomInset;// - (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize * 0.4);
+      if(Lizzie.config.showStatus)
+      {
+    	  ponderingY =ponderingY- (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize);
+    	  ponderingY2=ponderingY2- (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize * 0.4);
+      }
       // dynamic komi
       double dynamicKomiSize = .02;
       int dynamicKomiX = leftInset;
@@ -736,7 +743,7 @@ public class LizzieFrame extends JFrame {
           int spaceW = boardX - panelMargin - leftInset;
           int spaceH = height - topInset - bottomInset;
           int panelW = spaceW / 2;
-          int panelH = spaceH / 4;
+          int panelH = spaceH*2 / 7;
 
           // captured stones
           capw = (noVariation && noComment) ? spaceW : panelW;
@@ -744,21 +751,23 @@ public class LizzieFrame extends JFrame {
           // move statistics (winrate bar)
           staty = capy + caph;
           statw = capw;
-          stath = (int) (panelH * 0.4);
+          stath = (int) (panelH * 0.33);
           // winrate graph
           gry = staty + stath;
-          grw = statw;
+          grw = spaceW;
           grh = panelH - caph - stath;
           // variation tree container
           vx = statx + statw;
           vw = panelW;
-          vh = panelH;
+          vh = stath+caph;
           // subboard
           subBoardY = gry + grh;
           subBoardWidth = spaceW;
           subBoardHeight = ponderingY - subBoardY;
           subBoardLength = Math.min(subBoardWidth, subBoardHeight);
           subBoardX = statx + (spaceW - subBoardLength) / 2;
+          isSmallCap=true;
+          
         } else if (Lizzie.config.showLargeWinrate()) {
           boardX = width - maxSize - panelMargin;
           int spaceW = boardX - panelMargin - leftInset;
@@ -805,9 +814,9 @@ public class LizzieFrame extends JFrame {
           capw = panelW / 2;
           caph = panelH / 2;
           // move statistics (winrate bar)
-          staty = capy + caph;
+          staty = capy + caph/3;
           statw = capw;
-          stath = caph;
+          stath = caph/3;
           // winrate graph
           gry = staty + stath;
           grw = statw;
@@ -1007,6 +1016,11 @@ public class LizzieFrame extends JFrame {
             drawContainer(backgroundG.get(), vx, vy, vw, vh);
           }
           if (Lizzie.config.showVariationGraph) {
+        	  if(isSmallCap)
+        	  {
+            variationTree.drawsmall(g, treex, treey, treew, treeh);
+        	  }
+        	  else
             variationTree.draw(g, treex, treey, treew, treeh);
           }
           if (Lizzie.config.showComment) {
@@ -1029,14 +1043,14 @@ public class LizzieFrame extends JFrame {
         drawPonderingState(g, loadingText, loadingX, loadingY, loadingSize);
       }
 
-      if (Lizzie.config.showCaptured) drawCaptured(g, capx, capy, capw, caph);
+      if (Lizzie.config.showCaptured) drawCaptured(g, capx, capy, capw, caph,isSmallCap);
 
       // cleanup
       g.dispose();
     }
 
     // draw the image
-//    Graphics2D bsGraphics = (Graphics2D) bs.getDrawGraphics();
+ //   Graphics2D bsGraphics = (Graphics2D) bs.getDrawGraphics();
 //    bsGraphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 //    bsGraphics.drawImage(cachedBackground, 0, 0, null);
 //    bsGraphics.drawImage(cachedImage, 0, 0, null);
@@ -1437,7 +1451,7 @@ public class LizzieFrame extends JFrame {
     }
   }
 
-  private void drawCaptured(Graphics2D g, int posX, int posY, int width, int height) {
+  private void drawCaptured(Graphics2D g, int posX, int posY, int width, int height,boolean isSmallCap) {
     // Draw border
     g.setColor(new Color(0, 0, 0, 130));
     g.fillRect(posX, posY, width, height);
@@ -1483,16 +1497,40 @@ public class LizzieFrame extends JFrame {
       bdiam = smallDiam;
     }
     g.setColor(Color.black);
+    if(isSmallCap)
+    {
+    	diam=diam*3/2;
+    	bdiam=bdiam*3/2;
+    	wdiam=wdiam*3/2;
+    	 g.fillOval(
+    		        posX + width / 4 - bdiam / 2, posY + height * 2 / 8 + (diam - bdiam) / 2, bdiam, bdiam);
+
+    		    g.setColor(Color.WHITE);
+    		    g.fillOval(
+    		        posX + width * 3 / 4 - wdiam / 2, posY + height * 2 / 8 + (diam - wdiam) / 2, wdiam, wdiam);
+    		 // Status Indicator
+    		    int statusDiam = height / 4;
+    		    g.setColor((Lizzie.leelaz != null && Lizzie.leelaz.isPondering()) ? Color.GREEN : Color.RED);
+    		    g.fillOval(
+    		        posX - strokeRadius + width / 2 - statusDiam / 2,
+    		        posY + height * 3 / 10 + (diam - statusDiam) / 2,
+    		        statusDiam,
+    		        statusDiam);
+    }    	
+    else {
     g.fillOval(
         posX + width / 4 - bdiam / 2, posY + height * 3 / 8 + (diam - bdiam) / 2, bdiam, bdiam);
 
     g.setColor(Color.WHITE);
     g.fillOval(
         posX + width * 3 / 4 - wdiam / 2, posY + height * 3 / 8 + (diam - wdiam) / 2, wdiam, wdiam);
-
+    }
     // Draw captures
-    String bval = "", wval = "";
-    setPanelFont(g, (float) (height * 0.18));
+    String bval = "", wval = "";    
+    if(isSmallCap)
+    	 setPanelFont(g, (float) (height * 0.40));
+    else
+    	setPanelFont(g, (float) (height * 0.18));
     if (Lizzie.board.inScoreMode()) {
       double score[] = Lizzie.board.getScore(Lizzie.board.scoreStones());
       bval = String.format("%.0f", score[0]);
