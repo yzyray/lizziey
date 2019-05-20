@@ -42,6 +42,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -93,6 +94,7 @@ public class LizzieFrame extends JFrame {
   public static SubBoardRenderer subBoardRenderer;
   private static VariationTree variationTree;
   private static WinrateGraph winrateGraph;
+  private static Menu menu;
   public static CountResults countResults;
   public static Font uiFont;
   public static Font winrateFont;
@@ -141,6 +143,9 @@ public class LizzieFrame extends JFrame {
   private Stone draggedstone;
   private int[] startcoords = new int[2];
   private int draggedmovenumer;
+  private JPanel mainPanel;
+  public int  mainPanleX;
+  public int  mainPanleY;
   // boolean lastponder = true;
 
   static {
@@ -172,6 +177,7 @@ public class LizzieFrame extends JFrame {
     subBoardRenderer = new SubBoardRenderer(false);
     variationTree = new VariationTree();
     winrateGraph = new WinrateGraph();
+    menu = new Menu();
     // MenuTest menu = new MenuTest();
     // add(menu);
     // this.setJMenuBar(menu);
@@ -191,6 +197,27 @@ public class LizzieFrame extends JFrame {
       setLocationRelativeTo(null); // Start centered, needs to be called *after* setSize...
     }
 
+    mainPanel = new JPanel(true) {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            paintMianBoard(g);
+        }
+    };
+    Input input = new Input();
+
+   // addMouseListener(input);
+    addKeyListener(input);
+   // addMouseWheelListener(input);
+   // addMouseMotionListener(input);
+    mainPanel.addMouseMotionListener(input);
+    mainPanel.addMouseListener(input);
+    mainPanel.addMouseWheelListener(input);
+    getContentPane().add(mainPanel, BorderLayout.CENTER);
+    setJMenuBar(menu);
+    menu.setVisible(true);
+    this.getJMenuBar().setBorder(new EmptyBorder(0, 0,0,0));
     // Allow change font in the config
     if (Lizzie.config.uiFontName != null) {
       uiFont = new Font(Lizzie.config.uiFontName, Font.PLAIN, 12);
@@ -228,12 +255,7 @@ public class LizzieFrame extends JFrame {
     createBufferStrategy(2);
     bs = getBufferStrategy();
 
-    Input input = new Input();
-
-    addMouseListener(input);
-    addKeyListener(input);
-    addMouseWheelListener(input);
-    addMouseMotionListener(input);
+    
 
     // necessary for Windows users - otherwise Lizzie shows a blank white screen on startup until
     // updates occur.
@@ -247,29 +269,32 @@ public class LizzieFrame extends JFrame {
           }
         });
 
-    this.addComponentListener(
-        new ComponentAdapter() { // 让窗口响应大小改变事件
-          @Override
-          public void componentResized(ComponentEvent e) {
-            try {
-              Lizzie.menu.setBounds(
-                  Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
-                  Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
-                  Lizzie.frame.getContentPane().getWidth(),
-                  25);
-            } catch (Exception ex) {
-            }
-          }
-
-          @Override
-          public void componentMoved(ComponentEvent e) {
-            Lizzie.menu.setBounds(
-                Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
-                Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
-                Lizzie.frame.getContentPane().getWidth(),
-                25);
-          }
-        });
+//    this.addComponentListener(
+//        new ComponentAdapter() { // 让窗口响应大小改变事件
+//          @Override
+//          public void componentResized(ComponentEvent e) {
+//            try {
+//              Lizzie.menu.setBounds(
+//                  Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
+//                  Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
+//                  Lizzie.frame.getContentPane().getWidth(),
+//                  25);
+//            } catch (Exception ex) {
+//            }
+//          }
+//
+//          @Override
+//          public void componentMoved(ComponentEvent e) {
+//        	  try {
+//            Lizzie.menu.setBounds(
+//                Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
+//                Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
+//                Lizzie.frame.getContentPane().getWidth(),
+//                25);
+//        	  } catch (Exception ex) {
+//              }
+//          }
+//        });
 
     // Show the playouts in the title
     showPlayouts.scheduleAtFixedRate(
@@ -364,7 +389,7 @@ public class LizzieFrame extends JFrame {
       timer.schedule(
           new TimerTask() {
             public void run() {
-              Lizzie.frame.showmenu(x, y);
+              Lizzie.frame.showmenu(x,y);
               this.cancel();
             }
           },
@@ -375,11 +400,11 @@ public class LizzieFrame extends JFrame {
   }
 
   public void showmenu(int x, int y) {
-    RightClickMenu.show(this, x, y);
+    RightClickMenu.show(this.getRootPane(), x, y);
   }
 
   public void showmenu2(int x, int y) {
-    RightClickMenu2.show(this, x, y);
+    RightClickMenu2.show(this.getRootPane(), x, y);
   }
 
   public static void openAvoidMoveDialog() {
@@ -615,18 +640,18 @@ public class LizzieFrame extends JFrame {
    *
    * @param g0 not used
    */
-  public void paint(Graphics g0) {
+  public void paintMianBoard(Graphics g0) {
 
     autosaveMaybe();
 
-    int width = getWidth();
-    int height = getHeight();
+    int width = this.getRootPane().getWidth();
+    int height = this.getRootPane().getHeight();
 
     Optional<Graphics2D> backgroundG;
     if (cachedBackgroundWidth != width
         || cachedBackgroundHeight != height
         || redrawBackgroundAnyway) {
-      backgroundG = Optional.of(createBackground());
+      backgroundG = Optional.of(createBackground(width,height));
     } else {
       backgroundG = Optional.empty();
     }
@@ -634,10 +659,10 @@ public class LizzieFrame extends JFrame {
     if (!showControls) {
       // layout parameters
 
-      int topInset = this.getInsets().top + 25;
-      int leftInset = this.getInsets().left;
-      int rightInset = this.getInsets().right;
-      int bottomInset = this.getInsets().bottom;
+      int topInset = this.getRootPane().getInsets().top;
+      int leftInset = this.getRootPane().getInsets().left;
+      int rightInset = this.getRootPane().getInsets().right;
+      int bottomInset = this.getRootPane().getInsets().bottom+this.getJMenuBar().getHeight();
       int maxBound = Math.max(width, height);
 
       boolean noWinrate = !Lizzie.config.showWinrate;
@@ -1011,14 +1036,17 @@ public class LizzieFrame extends JFrame {
     }
 
     // draw the image
-    Graphics2D bsGraphics = (Graphics2D) bs.getDrawGraphics();
-    bsGraphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-    bsGraphics.drawImage(cachedBackground, 0, 0, null);
-    bsGraphics.drawImage(cachedImage, 0, 0, null);
+//    Graphics2D bsGraphics = (Graphics2D) bs.getDrawGraphics();
+//    bsGraphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+//    bsGraphics.drawImage(cachedBackground, 0, 0, null);
+//    bsGraphics.drawImage(cachedImage, 0, 0, null);
 
     // cleanup
-    bsGraphics.dispose();
-    bs.show();
+  //  bsGraphics.dispose();
+    //bs.show();
+    g0.drawImage(cachedBackground, 0, 0, null);
+    g0.drawImage(cachedImage, 0, 0, null);
+    
   }
 
   /**
@@ -1030,8 +1058,8 @@ public class LizzieFrame extends JFrame {
     redrawBackgroundAnyway = true;
   }
 
-  private Graphics2D createBackground() {
-    cachedBackground = new BufferedImage(getWidth(), getHeight(), TYPE_INT_RGB);
+  private Graphics2D createBackground(int width,int hight) {
+    cachedBackground = new BufferedImage(width, hight, TYPE_INT_RGB);
     cachedBackgroundWidth = cachedBackground.getWidth();
     cachedBackgroundHeight = cachedBackground.getHeight();
     cachedBackgroundShowControls = showControls;
@@ -1048,8 +1076,8 @@ public class LizzieFrame extends JFrame {
     g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
     BufferedImage wallpaper = boardRenderer.getWallpaper();
-    int drawWidth = max(wallpaper.getWidth(), getWidth());
-    int drawHeight = max(wallpaper.getHeight(), getHeight());
+    int drawWidth = max(wallpaper.getWidth(), this.getRootPane().getWidth());
+    int drawHeight = max(wallpaper.getHeight(), this.getRootPane().getHeight());
     // Support seamless texture
     boardRenderer.drawTextureImage(g, wallpaper, 0, 0, drawWidth, drawHeight);
 
@@ -1078,14 +1106,14 @@ public class LizzieFrame extends JFrame {
   }
 
   private void drawPonderingState(Graphics2D g, String text, int x, int y, double size) {
-    int fontSize = (int) (max(getWidth(), getHeight()) * size);
+    int fontSize = (int) (max(this.getRootPane().getWidth(), this.getRootPane().getHeight()) * size);
     Font font = new Font(Lizzie.config.fontName, Font.PLAIN, fontSize);
     FontMetrics fm = g.getFontMetrics(font);
     int stringWidth = fm.stringWidth(text);
     // Truncate too long text when display switching prompt
     if (Lizzie.leelaz != null && Lizzie.leelaz.isLoaded()) {
       int mainBoardX = boardRenderer.getLocation().x;
-      if (getWidth() > getHeight() && (mainBoardX > x) && stringWidth > (mainBoardX - x)) {
+      if (this.getRootPane().getWidth() > this.getRootPane().getHeight() && (mainBoardX > x) && stringWidth > (mainBoardX - x)) {
         text = truncateStringByWidth(text, fm, mainBoardX - x);
         stringWidth = fm.stringWidth(text);
       }
@@ -1173,10 +1201,10 @@ public class LizzieFrame extends JFrame {
   void drawControls() {
     userAlreadyKnowsAboutCommandString = true;
 
-    cachedImage = new BufferedImage(getWidth(), getHeight(), TYPE_INT_ARGB);
+    cachedImage = new BufferedImage(this.getRootPane().getWidth(), this.getRootPane().getHeight(), TYPE_INT_ARGB);
 
     // redraw background
-    createBackground();
+    createBackground(this.getRootPane().getWidth(), this.getRootPane().getHeight());
 
     List<String> commandsToShow = new ArrayList<>(Arrays.asList(commands));
     if (Lizzie.leelaz.getDynamicKomi().isPresent()) {
@@ -1185,7 +1213,7 @@ public class LizzieFrame extends JFrame {
 
     Graphics2D g = cachedImage.createGraphics();
 
-    int maxSize = min(getWidth(), getHeight());
+    int maxSize = min(this.getRootPane().getWidth(), this.getRootPane().getHeight());
     int fontSize = (int) (maxSize * min(0.034, 0.80 / commandsToShow.size()));
     Font font = new Font(Lizzie.config.fontName, Font.PLAIN, fontSize);
     g.setFont(font);
@@ -1194,11 +1222,11 @@ public class LizzieFrame extends JFrame {
     int maxCmdWidth = commandsToShow.stream().mapToInt(c -> metrics.stringWidth(c)).max().orElse(0);
     int lineHeight = (int) (font.getSize() * 1.15);
 
-    int boxWidth = min((int) (maxCmdWidth * 1.4), getWidth());
+    int boxWidth = min((int) (maxCmdWidth * 1.4), this.getRootPane().getWidth());
     int boxHeight =
         min(commandsToShow.size() * lineHeight, getHeight() - getInsets().top - getInsets().bottom);
 
-    int commandsX = min(getWidth() / 2 - boxWidth / 2, getWidth());
+    int commandsX = min(this.getRootPane().getWidth() / 2 - boxWidth / 2, this.getRootPane().getWidth());
     int top = this.getInsets().top;
     int commandsY = top + min((getHeight() - top) / 2 - boxHeight / 2, getHeight() - top);
 
@@ -1251,7 +1279,7 @@ public class LizzieFrame extends JFrame {
   private void drawCommandString(Graphics2D g) {
     if (userAlreadyKnowsAboutCommandString) return;
 
-    int maxSize = (int) (min(getWidth(), getHeight()) * 0.98);
+    int maxSize = (int) (min(this.getRootPane().getWidth(), this.getRootPane().getHeight()) * 0.98);
 
     Font font = new Font(Lizzie.config.fontName, Font.PLAIN, (int) (maxSize * 0.023));
     String commandString = resourceBundle.getString("LizzieFrame.prompt.showControlsHint");
@@ -1259,8 +1287,8 @@ public class LizzieFrame extends JFrame {
 
     int showCommandsHeight = (int) (font.getSize() * 1.1);
     int showCommandsWidth = g.getFontMetrics(font).stringWidth(commandString) + 4 * strokeRadius;
-    int showCommandsX = this.getInsets().left;
-    int showCommandsY = getHeight() - showCommandsHeight - this.getInsets().bottom;
+    int showCommandsX = this.getRootPane().getInsets().left;
+    int showCommandsY = this.getRootPane().getHeight() - showCommandsHeight - this.getRootPane().getInsets().bottom-this.getJMenuBar().getHeight();
     g.setColor(new Color(0, 0, 0, 130));
     g.fillRect(showCommandsX, showCommandsY, showCommandsWidth, showCommandsHeight);
     if (Lizzie.config.showBorder) {
@@ -1828,7 +1856,7 @@ public class LizzieFrame extends JFrame {
    */
   private void drawComment(Graphics2D g, int x, int y, int w, int h) {
     String comment = Lizzie.board.getHistory().getData().comment;
-    int fontSize = (int) (min(getWidth(), getHeight()) * 0.0294);
+    int fontSize = (int) (min(this.getRootPane().getWidth(), this.getRootPane().getHeight()) * 0.0294);
     if (Lizzie.config.commentFontSize > 0) {
       fontSize = Lizzie.config.commentFontSize;
     } else if (fontSize < 16) {

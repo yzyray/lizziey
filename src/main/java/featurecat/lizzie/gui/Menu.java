@@ -14,7 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class Menu extends JDialog {
+public class Menu extends MenuBar {
 
   final ButtonGroup buttonGroup = new ButtonGroup();
 
@@ -34,24 +34,24 @@ public class Menu extends JDialog {
   public static JMenuItem engine10 = null;
   private boolean onlyboard = false;
 
-  public Menu(Window owner) {
-    super(owner);
-    setLayout(null);
-    setUndecorated(true);
-    setResizable(true);
-    setBounds(
-        Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
-        Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
-        Lizzie.frame.getContentPane().getWidth(),
-        25);
+  public Menu() {
+  //  super(owner);
+    //setLayout(null);
+    //setUndecorated(true);
+   // setResizable(true);
+//    setBounds(
+//        Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
+//        Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
+//        Lizzie.frame.getContentPane().getWidth(),
+//        25);
     Color hsbColor =
         Color.getHSBColor(
             Color.RGBtoHSB(232, 232, 232, null)[0],
             Color.RGBtoHSB(232, 232, 232, null)[1],
             Color.RGBtoHSB(232, 232, 232, null)[2]);
-    this.getContentPane().setBackground(hsbColor);
+    this.setBackground(hsbColor);
     JPanel bar = new JPanel(new BorderLayout());
-    bar.setBorder(new EmptyBorder(0, 0, -5, -5));
+    bar.setBorder(new EmptyBorder(0, 0, -1, -1));
     final MenuBar menuBar = new MenuBar();
     bar.setBounds(0, 0, 450, 25);
 

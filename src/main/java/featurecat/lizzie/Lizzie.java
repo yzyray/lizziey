@@ -26,7 +26,7 @@ public class Lizzie {
   public static Leelaz leelaz;
   public static String lizzieVersion = "0.7";
   private static String[] mainArgs;
-  public static Menu menu;
+//  public static Menu menu;
 
   /** Launches the game window, and runs the game. */
   public static void main(String[] args) throws IOException {
@@ -48,8 +48,8 @@ public class Lizzie {
     frame = new LizzieFrame();
     gtpConsole = new GtpConsolePane(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
-    menu = new Menu(frame);
-    menu.setVisible(true);
+  //  menu = new Menu(frame);
+  //  menu.setVisible(true);
     try {
       leelaz = new Leelaz();
 
