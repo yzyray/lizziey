@@ -287,7 +287,18 @@ public class Config {
   public void toggleShowWinrate() {
     this.showWinrate = !this.showWinrate;
     Lizzie.config.uiConfig.put("show-winrate", showWinrate);
-    Lizzie.frame.redrawBackgroundAnyway=true;
+    Lizzie.frame.redrawBackgroundAnyway = true;
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public void toggleLargeWinrateOnly() {
+    this.largeWinrate = !this.largeWinrate;
+    Lizzie.config.uiConfig.put("large-winrate", largeWinrate);
     try {
       Lizzie.config.save();
     } catch (IOException e) {
@@ -374,7 +385,7 @@ public class Config {
 
   public void toggleLargeSubBoard() {
     this.largeSubBoard = !this.largeSubBoard;
-    Lizzie.frame.redrawBackgroundAnyway=true;
+    Lizzie.frame.redrawBackgroundAnyway = true;
     try {
       Lizzie.config.uiConfig.put("large-subboard", largeSubBoard);
       Lizzie.config.save();
@@ -419,6 +430,10 @@ public class Config {
 
   public boolean showLargeWinrate() {
     return showWinrate && largeWinrate;
+  }
+
+  public boolean showLargeWinrateOnly() {
+    return largeWinrate;
   }
 
   public boolean showBestMovesNow() {

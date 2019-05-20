@@ -912,8 +912,8 @@ public class Menu extends MenuBar {
 
         if (!Lizzie.config.showSubBoard) Lizzie.config.toggleShowSubBoard();
         if (!Lizzie.config.showWinrate) Lizzie.config.toggleShowWinrate();
+        if (Lizzie.config.showLargeWinrateOnly()) Lizzie.config.toggleLargeWinrate();
         if (!Lizzie.config.showLargeSubBoard()) Lizzie.config.toggleLargeSubBoard();
-        if (Lizzie.config.showLargeWinrate()) Lizzie.config.toggleLargeWinrate();
         if (Lizzie.config.showComment) Lizzie.config.toggleShowComment();
         if (!Lizzie.config.showCaptured) Lizzie.config.toggleShowCaptured();
         if (Lizzie.config.showStatus) Lizzie.config.toggleShowStatus();
@@ -924,7 +924,7 @@ public class Menu extends MenuBar {
               Lizzie.frame.getY(),
               Lizzie.frame.getHeight() + 485,
               Lizzie.frame.getHeight());
-       // Lizzie.frame.redrawBackgroundAnyway=true;
+        // Lizzie.frame.redrawBackgroundAnyway=true;
         return;
       }
       if (menuItem.getText().startsWith("默认")) {
@@ -943,7 +943,7 @@ public class Menu extends MenuBar {
               Lizzie.frame.getY(),
               Lizzie.frame.getHeight() + 600,
               Lizzie.frame.getHeight());
-       // Lizzie.frame.redrawBackgroundAnyway=true;
+        // Lizzie.frame.redrawBackgroundAnyway=true;
         return;
       }
 
