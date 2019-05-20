@@ -270,58 +270,58 @@ public class VariationTree {
     }
     return drawTree(g, startx, curposy, 0, posy + height, posx + strokeRadius, node, 0, true, calc);
   }
-  
+
   public Optional<BoardHistoryNode> drawsmall(
-	      Graphics2D g, int posx, int posy, int width, int height) {
-	    if (width <= 0 || height <= 0) {
-	      return Optional.empty(); // we don't have enough space
-	    }
+      Graphics2D g, int posx, int posy, int width, int height) {
+    if (width <= 0 || height <= 0) {
+      return Optional.empty(); // we don't have enough space
+    }
 
-	    // Use dense tree for saving space if large-subboard
-	    YSPACING = (Lizzie.config.showLargeSubBoard() ? 20 : 30);
-	    XSPACING = YSPACING;
+    // Use dense tree for saving space if large-subboard
+    YSPACING = (Lizzie.config.showLargeSubBoard() ? 20 : 30);
+    XSPACING = YSPACING;
 
-	    int strokeRadius = Lizzie.config.showBorder ? 2 : 0;
-	    
-	      // Draw background
-	      area.setBounds(posx, posy, width, height);
-	      g.setColor(new Color(0, 0, 0, 60));
-	      g.fillRect(posx, posy, width, height);
+    int strokeRadius = Lizzie.config.showBorder ? 2 : 0;
 
-	      if (Lizzie.config.showBorder) {
-	        // draw edge of panel
-	        g.setStroke(new BasicStroke(2 * strokeRadius));
-	        g.drawLine(
-	            posx + strokeRadius,
-	            posy + strokeRadius,
-	            posx + strokeRadius,
-	            posy - strokeRadius + height);
-	        g.setStroke(new BasicStroke(1));
-	      }
-	    
+    // Draw background
+    area.setBounds(posx, posy, width, height);
+    g.setColor(new Color(0, 0, 0, 60));
+    g.fillRect(posx, posy, width, height);
 
-	    int middleY = posy + height / 2;
-	    int xoffset = 30;
-	    laneUsageList.clear();
+    if (Lizzie.config.showBorder) {
+      // draw edge of panel
+      g.setStroke(new BasicStroke(2 * strokeRadius));
+      g.drawLine(
+          posx + strokeRadius,
+          posy + strokeRadius,
+          posx + strokeRadius,
+          posy - strokeRadius + height);
+      g.setStroke(new BasicStroke(1));
+    }
 
-	    curMove = Lizzie.board.getHistory().getCurrentHistoryNode();
+    int middleY = posy + height / 2;
+    int xoffset = 30;
+    laneUsageList.clear();
 
-	    // Is current move a variation? If so, find top of variation
-	    BoardHistoryNode top = curMove.findTop();
-	    int curposy = middleY - YSPACING * (curMove.getData().moveNumber - top.getData().moveNumber);
-	    // Go to very top of tree (visible in assigned area)
-	    BoardHistoryNode node = top;
-	    while (curposy > posy + YSPACING && node.previous().isPresent()) {
-	      node = node.previous().get();
-	      curposy -= YSPACING;
-	    }
-	    int lane = getCurLane(node, curMove, curposy, posy + height, 0, true);
-	    int startx = posx + xoffset;
-	    if (((lane + 1) * XSPACING + xoffset + DOT_DIAM + strokeRadius - width) > 0) {
-	      startx = startx - ((lane + 1) * XSPACING + xoffset + DOT_DIAM + strokeRadius - width);
-	    }
-	    return drawTree(g, startx, curposy, 0, posy + height*9/10, posx + strokeRadius, node, 0, true, false);
-	  }
+    curMove = Lizzie.board.getHistory().getCurrentHistoryNode();
+
+    // Is current move a variation? If so, find top of variation
+    BoardHistoryNode top = curMove.findTop();
+    int curposy = middleY - YSPACING * (curMove.getData().moveNumber - top.getData().moveNumber);
+    // Go to very top of tree (visible in assigned area)
+    BoardHistoryNode node = top;
+    while (curposy > posy + YSPACING && node.previous().isPresent()) {
+      node = node.previous().get();
+      curposy -= YSPACING;
+    }
+    int lane = getCurLane(node, curMove, curposy, posy + height, 0, true);
+    int startx = posx + xoffset;
+    if (((lane + 1) * XSPACING + xoffset + DOT_DIAM + strokeRadius - width) > 0) {
+      startx = startx - ((lane + 1) * XSPACING + xoffset + DOT_DIAM + strokeRadius - width);
+    }
+    return drawTree(
+        g, startx, curposy, 0, posy + height * 9 / 10, posx + strokeRadius, node, 0, true, false);
+  }
 
   private void drawLine(Graphics g, int x1, int y1, int x2, int y2, int minx) {
     if (x1 <= minx && x2 <= minx) {

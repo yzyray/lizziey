@@ -163,13 +163,13 @@ public class CountResults extends JFrame {
       e1.printStackTrace();
     }
     int withtimes = (340 / image.getWidth(getOwner())) + 1;
-    int highttimes =(260/image.getHeight(getOwner())) +1;
-    
+    int highttimes = (260 / image.getHeight(getOwner())) + 1;
+
     for (int i = 0; i < highttimes; i++) {
-    	for (int j = 0; j < withtimes; j++) {
-    	      g2.drawImage(image, image.getWidth(getOwner()) * j, image.getHeight(getOwner())*i, null);
-    	    }
+      for (int j = 0; j < withtimes; j++) {
+        g2.drawImage(image, image.getWidth(getOwner()) * j, image.getHeight(getOwner()) * i, null);
       }
+    }
 
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setColor(Color.BLACK);
