@@ -143,8 +143,7 @@ public class LizzieFrame extends JFrame {
   private JPanel mainPanel;
   public int mainPanleX;
   public int mainPanleY;
-  private boolean firstTime = true;
-  private boolean firstTimeuntil = false;
+  boolean isSmallCap=false;
   // boolean lastponder = true;
 
   static {
@@ -630,7 +629,7 @@ public class LizzieFrame extends JFrame {
   private boolean cachedShowLargeSubBoard = true;
   private boolean cachedLargeWinrate = true;
   private boolean cachedShowComment = true;
-  private boolean redrawBackgroundAnyway = false;
+  public boolean redrawBackgroundAnyway = false;
   private int cachedBoardPositionProportion = BoardPositionProportion;
 
   /**
@@ -639,7 +638,7 @@ public class LizzieFrame extends JFrame {
    * @param g0 not used
    */
   public void paintMianPanel(Graphics g0) {
-
+	  isSmallCap=false;
     autosaveMaybe();
 
     int width = this.getRootPane().getWidth();
@@ -667,8 +666,7 @@ public class LizzieFrame extends JFrame {
       boolean noVariation = !Lizzie.config.showVariationGraph;
       boolean noBasic = !Lizzie.config.showCaptured;
       boolean noSubBoard = !Lizzie.config.showSubBoard;
-      boolean noComment = !Lizzie.config.showComment;
-      boolean isSmallCap = false;
+      boolean noComment = !Lizzie.config.showComment;      
       // board
       int maxSize = (int) (min(width - leftInset - rightInset, height - topInset - bottomInset));
       maxSize = max(maxSize, Board.boardSize + 5); // don't let maxWidth become too small
@@ -980,7 +978,19 @@ public class LizzieFrame extends JFrame {
       boardRenderer.setLocation(boardX, boardY);
       boardRenderer.setBoardLength(maxSize);
       boardRenderer.draw(g);
+      if (backgroundG.isPresent()) {
+      if (Lizzie.config.showWinrate) {         
+            if (isSmallCap) {             
+              drawContainer(backgroundG.get(), contx, conty, contw*2, conth);
+            }
+            else
+            drawContainer(backgroundG.get(), contx, conty, contw, conth);          
+        }
 
+        if (Lizzie.config.showVariationGraph || Lizzie.config.showComment) {
+            drawContainer(backgroundG.get(), vx, vy, vw, vh);          
+        }
+      }
       if (Lizzie.leelaz != null && Lizzie.leelaz.isLoaded()) {
         if (Lizzie.config.showStatus) {
           String statusKey = "LizzieFrame.display." + (Lizzie.leelaz.isPondering() ? "on" : "off");
@@ -1002,48 +1012,30 @@ public class LizzieFrame extends JFrame {
         }
 
         // Todo: Make board move over when there is no space beside the board
-
-        if (firstTime) {
-          Timer timer = new Timer();
-          timer.schedule(
-              new TimerTask() {
-                public void run() {
-                  firstTimeuntil = true;
-                  firstTime = false;
-                  this.cancel();
-                }
-              },
-              200);
-          if (firstTimeuntil) {
-            drawContainer(g, contx, conty, contw, conth);
-            drawContainer(g, vx, vy, vw, vh);
-            firstTimeuntil = false;
-          }
-        }
         if (Lizzie.config.showWinrate) {
-          if (backgroundG.isPresent()) {
-            if (isSmallCap) {
-              contw = contw + contw;
+            if (backgroundG.isPresent()) {
+              if (isSmallCap) {
+                contw = contw + contw;
+              }
+              drawContainer(backgroundG.get(), contx, conty, contw, conth);
             }
-            drawContainer(backgroundG.get(), contx, conty, contw, conth);
+            drawMoveStatistics(g, statx, staty, statw, stath);
+            winrateGraph.draw(g, grx, gry, grw, grh);
           }
-          drawMoveStatistics(g, statx, staty, statw, stath);
-          winrateGraph.draw(g, grx, gry, grw, grh);
-        }
 
-        if (Lizzie.config.showVariationGraph || Lizzie.config.showComment) {
-          if (backgroundG.isPresent()) {
-            drawContainer(backgroundG.get(), vx, vy, vw, vh);
+          if (Lizzie.config.showVariationGraph || Lizzie.config.showComment) {
+            if (backgroundG.isPresent()) {
+              drawContainer(backgroundG.get(), vx, vy, vw, vh);
+            }
+            if (Lizzie.config.showVariationGraph) {
+              if (isSmallCap) {
+                variationTree.drawsmall(g, treex, treey, treew, treeh);
+              } else variationTree.draw(g, treex, treey, treew, treeh);
+            }
+            if (Lizzie.config.showComment) {
+              drawComment(g, cx, cy, cw, ch);
+            }
           }
-          if (Lizzie.config.showVariationGraph) {
-            if (isSmallCap) {
-              variationTree.drawsmall(g, treex, treey, treew, treeh);
-            } else variationTree.draw(g, treex, treey, treew, treeh);
-          }
-          if (Lizzie.config.showComment) {
-            drawComment(g, cx, cy, cw, ch);
-          }
-        }
         // 更改布局为大棋盘,一整条分支列表,小棋盘,评论放在左下,做到这里
         if (Lizzie.config.showSubBoard) {
           try {
@@ -1114,6 +1106,12 @@ public class LizzieFrame extends JFrame {
 
     return g;
   }
+  
+  private void drawContainerFirst(Graphics g, int vx, int vy, int vw, int vh) {
+	    BufferedImage result = new BufferedImage(vw, vh, TYPE_INT_ARGB);
+	    filter20.filter(cachedImage.getSubimage(vx, vy, vw, vh), result);
+	    g.drawImage(result, vx, vy, null);
+	  }
 
   private void drawContainer(Graphics g, int vx, int vy, int vw, int vh) {
     if (vw <= 0
@@ -1622,9 +1620,9 @@ public class LizzieFrame extends JFrame {
       noautocounting();
       Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
     }
-    if (Lizzie.config.showSubBoard && subBoardRenderer.isInside(x, y)) {
-      Lizzie.config.toggleLargeSubBoard();
-    }
+//    if (Lizzie.config.showSubBoard && subBoardRenderer.isInside(x, y)) {
+//      Lizzie.config.toggleLargeSubBoard();
+//    }
     if (Lizzie.config.showVariationGraph) {
       variationTree.onClicked(x, y);
     }

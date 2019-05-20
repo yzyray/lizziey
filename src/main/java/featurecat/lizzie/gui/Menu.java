@@ -924,6 +924,7 @@ public class Menu extends MenuBar {
               Lizzie.frame.getY(),
               Lizzie.frame.getHeight() + 485,
               Lizzie.frame.getHeight());
+       // Lizzie.frame.redrawBackgroundAnyway=true;
         return;
       }
       if (menuItem.getText().startsWith("默认")) {
@@ -942,6 +943,7 @@ public class Menu extends MenuBar {
               Lizzie.frame.getY(),
               Lizzie.frame.getHeight() + 600,
               Lizzie.frame.getHeight());
+       // Lizzie.frame.redrawBackgroundAnyway=true;
         return;
       }
 
