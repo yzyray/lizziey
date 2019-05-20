@@ -4,7 +4,6 @@ import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.gui.GtpConsolePane;
 import featurecat.lizzie.gui.LizzieFrame;
-import featurecat.lizzie.gui.Menu;
 import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Board;
 import java.io.File;
@@ -26,7 +25,7 @@ public class Lizzie {
   public static Leelaz leelaz;
   public static String lizzieVersion = "0.7";
   private static String[] mainArgs;
-//  public static Menu menu;
+  //  public static Menu menu;
 
   /** Launches the game window, and runs the game. */
   public static void main(String[] args) throws IOException {
@@ -48,8 +47,8 @@ public class Lizzie {
     frame = new LizzieFrame();
     gtpConsole = new GtpConsolePane(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
-  //  menu = new Menu(frame);
-  //  menu.setVisible(true);
+    //  menu = new Menu(frame);
+    //  menu.setVisible(true);
     try {
       leelaz = new Leelaz();
 

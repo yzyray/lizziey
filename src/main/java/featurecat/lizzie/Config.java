@@ -57,7 +57,7 @@ public class Config {
   private String persistFilename = "persist";
 
   public Theme theme;
-  public float winrateStrokeWidth = 2;
+  public int winrateStrokeWidth = 2;
   public int leelaversion = 17;
   public int minimumBlunderBarWidth = 3;
   public int shadowSize = 90;
