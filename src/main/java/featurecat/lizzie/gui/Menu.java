@@ -192,7 +192,19 @@ public class Menu extends MenuBar {
     alwaysontop.addActionListener(new ItemListener());
     viewMenu.add(alwaysontop);
     viewMenu.addSeparator();
-
+    final JMenuItem toolMenu = new JMenuItem("底部工具栏"); // 创建“字体”子菜单
+    viewMenu.add(toolMenu); // 添加到“编辑”菜单
+    toolMenu.addActionListener(new ItemListener()); // 添加动作监听器
+    
+    final JMenuItem bigtoolMenu = new JMenuItem("详细工具栏"); // 创建“字体”子菜单
+    viewMenu.add(bigtoolMenu); // 添加到“编辑”菜单
+    bigtoolMenu.addActionListener(new ItemListener()); // 添加动作监听器     viewMenu.addSeparator();
+    
+    final JMenuItem closeTool = new JMenuItem("关闭工具栏"); // 创建“字体”子菜单
+    viewMenu.add(closeTool); // 添加到“编辑”菜单
+    closeTool.addActionListener(new ItemListener()); // 添加动作监听器     viewMenu.addSeparator();
+    viewMenu.addSeparator();
+    
     final JMenuItem subboard = new JMenuItem("小棋盘"); // 创建“字体”子菜单
     viewMenu.add(subboard); // 添加到“编辑”菜单
     subboard.addActionListener(new ItemListener()); // 添加动作监听器
@@ -220,7 +232,9 @@ public class Menu extends MenuBar {
     final JMenuItem gtpMenu = new JMenuItem("命令窗口(E)"); // 创建“字体”子菜单
     viewMenu.add(gtpMenu); // 添加到“编辑”菜单
     gtpMenu.addActionListener(new ItemListener()); // 添加动作监听器
-
+    
+    
+    
     final JMenuItem defview = new JMenuItem("默认模式"); // 创建“字体”子菜单
     viewMenu.add(defview); // 添加到“编辑”菜单
     defview.addActionListener(new ItemListener()); // 添加动作监听器
@@ -958,6 +972,25 @@ public class Menu extends MenuBar {
         }
         return;
       }
+      if (menuItem.getText().startsWith("底部")) {
+          Lizzie.frame.toolbarHeight=20;
+          Lizzie.frame.mainPanel.setBounds(0,0, Lizzie.frame.getWidth()-Lizzie.frame.getInsets().left-Lizzie.frame.getInsets().right, Lizzie.frame.getHeight()-Lizzie.frame.getJMenuBar().getHeight()-Lizzie.frame.getInsets().top-Lizzie.frame.getInsets().bottom-Lizzie.frame.toolbarHeight);
+          Lizzie.frame.toolbar.setBounds(0, Lizzie.frame.getHeight()-Lizzie.frame.getJMenuBar().getHeight()-Lizzie.frame.getInsets().top-Lizzie.frame.getInsets().bottom-Lizzie.frame.toolbarHeight,Lizzie.frame.getWidth()-Lizzie.frame.getInsets().left-Lizzie.frame.getInsets().right,Lizzie.frame.toolbarHeight);
+
+          return;
+        }
+      if (menuItem.getText().startsWith("详细")) {
+    	  Lizzie.frame.toolbarHeight=50;
+    	  Lizzie.frame.mainPanel.setBounds(0,0, Lizzie.frame.getWidth()-Lizzie.frame.getInsets().left-Lizzie.frame.getInsets().right, Lizzie.frame.getHeight()-Lizzie.frame.getJMenuBar().getHeight()-Lizzie.frame.getInsets().top-Lizzie.frame.getInsets().bottom-Lizzie.frame.toolbarHeight);
+    	  Lizzie.frame.toolbar.setBounds(0, Lizzie.frame.getHeight()-Lizzie.frame.getJMenuBar().getHeight()-Lizzie.frame.getInsets().top-Lizzie.frame.getInsets().bottom-Lizzie.frame.toolbarHeight,Lizzie.frame.getWidth()-Lizzie.frame.getInsets().left-Lizzie.frame.getInsets().right,Lizzie.frame.toolbarHeight);
+    	  return;
+        }
+      if (menuItem.getText().startsWith("关闭工")) {
+    	  Lizzie.frame.toolbarHeight=0;
+    	  Lizzie.frame.mainPanel.setBounds(0,0, Lizzie.frame.getWidth()-Lizzie.frame.getInsets().left-Lizzie.frame.getInsets().right, Lizzie.frame.getHeight()-Lizzie.frame.getJMenuBar().getHeight()-Lizzie.frame.getInsets().top-Lizzie.frame.getInsets().bottom-Lizzie.frame.toolbarHeight);
+    	  Lizzie.frame.toolbar.setBounds(0, Lizzie.frame.getHeight()-Lizzie.frame.getJMenuBar().getHeight()-Lizzie.frame.getInsets().top-Lizzie.frame.getInsets().bottom-Lizzie.frame.toolbarHeight,Lizzie.frame.getWidth()-Lizzie.frame.getInsets().left-Lizzie.frame.getInsets().right,Lizzie.frame.toolbarHeight);
+    	  return;
+        }
     }
   }
 }
