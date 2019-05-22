@@ -66,36 +66,19 @@ public class Menu extends MenuBar {
     // fileMenu.setMnemonic('F'); // 设置快捷键
     fileMenu.setForeground(Color.BLACK);
     fileMenu.setFont(headFont);
-    menuBar.add(fileMenu); // 添加到菜单栏
-    final JMenuItem openItem = new JMenuItem("打开（O）"); // 创建菜单项
-    // openItem.setMnemonic('O'); // 设置快捷键
-    // 设置加速器为“Ctrl+N”
-    // openItem.setAccelerator(KeyStroke.getKeyStroke(VK_O, CTRL_MASK));
-    openItem.addActionListener(new ItemListener()); // 添加动作监听器
-    fileMenu.add(openItem); // 添加到“文件”菜单
-    //    final JMenu openMenu = new JMenu("保存（S）"); // 创建“打开”子菜单
-    //    openMenu.setMnemonic('S'); // 设置快捷键
-    //    fileMenu.add(openMenu); // 添加到“文件”菜单
-    //    // 创建子菜单项
-    //    final JMenuItem openNewItem = new JMenuItem("未打开过的（N）");
-    //    openNewItem.setMnemonic('N'); // 设置快捷键
-    //    // 设置加速器为“Ctrl+Alt+N”
-    //    openNewItem.setAccelerator(KeyStroke.getKeyStroke(VK_N, CTRL_MASK | ALT_MASK));
-    //    openNewItem.addActionListener(new ItemListener()); // 添加动作监听器
-    //    openMenu.add(openNewItem); // 添加到“打开”子菜单
-    //    // 创建子菜单项
-    //    final JMenuItem openClosedItem = new JMenuItem("刚打开过的（C）");
-    //    openClosedItem.setMnemonic('C'); // 设置快捷键
-    // 设置加速器
-    //    openClosedItem.setAccelerator(KeyStroke.getKeyStroke(VK_C, CTRL_MASK | ALT_MASK));
-    //    openClosedItem.setEnabled(false); // 禁用菜单项
-    //    // 添加动作监听器
-    //    openClosedItem.addActionListener(new ItemListener());
-    //    openMenu.add(openClosedItem); // 添加到“打开”子菜单
-    // fileMenu.addSeparator(); // 添加分隔线
+
+    menuBar.add(fileMenu);
+    final JMenuItem openItem = new JMenuItem("打开棋谱（O）");
+    openItem.addActionListener(new ItemListener());
+    fileMenu.add(openItem);
+
+    menuBar.add(fileMenu);
+    final JMenuItem openUrlItem = new JMenuItem("打开在线棋谱（Q）");
+    openUrlItem.addActionListener(new ItemListener());
+    fileMenu.add(openUrlItem);
 
     final JMenuItem saveItem = new JMenuItem();
-    saveItem.setText("保存（S）");
+    saveItem.setText("打开棋谱（S）");
     // saveItem.setMnemonic('S');
     // saveItem.setAccelerator(KeyStroke.getKeyStroke(VK_S, CTRL_MASK));
     saveItem.addActionListener(new ItemListener());
@@ -572,7 +555,7 @@ public class Menu extends MenuBar {
       JMenuItem menuItem = (JMenuItem) e.getSource();
       //    System.out.println("您单击的是菜单项：" + menuItem.getText());
       Lizzie.frame.setVisible(true);
-      if (menuItem.getText().startsWith("打开")) {
+      if (menuItem.getText().startsWith("打开棋谱")) {
         Lizzie.frame.openFile();
         return;
       }
@@ -1067,7 +1050,12 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("还原上次")) {
         Lizzie.board.resumePreviousGame();
+        return;
       }
+      if (menuItem.getText().startsWith("打开在线")) {
+        Lizzie.frame.openOnlineDialog();
+      }
+      return;
     }
   }
 }

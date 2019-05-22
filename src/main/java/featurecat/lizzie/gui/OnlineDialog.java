@@ -39,7 +39,7 @@ public class OnlineDialog extends JDialog {
     setTitle(resourceBundle.getString("OnlineDialog.title.config"));
     setModalityType(ModalityType.APPLICATION_MODAL);
     setType(Type.POPUP);
-    setBounds(100, 100, 414, 207);
+    setBounds(100, 100, 490, 207);
     getContentPane().setLayout(new BorderLayout());
     this.setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     JPanel buttonPane = new JPanel();
@@ -77,7 +77,7 @@ public class OnlineDialog extends JDialog {
     nf.setGroupingUsed(false);
 
     txtUrl = new JTextField();
-    txtUrl.setBounds(69, 48, 319, 20);
+    txtUrl.setBounds(69, 48, 380, 20);
     buttonPane.add(txtUrl);
     txtUrl.setColumns(10);
 
@@ -106,6 +106,11 @@ public class OnlineDialog extends JDialog {
     JLabel lblPrompt1 = new JLabel(resourceBundle.getString("OnlineDialog.lblPrompt1.text"));
     lblPrompt1.setBounds(10, 11, 398, 14);
     buttonPane.add(lblPrompt1);
+
+    JLabel lblPrompt2 =
+        new JLabel("仅支持弈客直播，例如:https://home.yikeweiqi.com/#/live/room/18328/1/15630642");
+    lblPrompt2.setBounds(10, 30, 475, 14);
+    buttonPane.add(lblPrompt2);
 
     setLocationRelativeTo(getOwner());
   }
