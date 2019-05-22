@@ -1240,7 +1240,7 @@ public class Board implements LeelazListener {
    * @param zobrist the zobrist object to modify
    * @return number of removed stones
    */
-  private int removeDeadChain(int x, int y, Stone color, Stone[] stones, Zobrist zobrist) {
+  public static int removeDeadChain(int x, int y, Stone color, Stone[] stones, Zobrist zobrist) {
     if (!isValid(x, y) || stones[getIndex(x, y)] != color) return 0;
 
     boolean hasLiberties = hasLibertiesHelper(x, y, color, stones);
@@ -1259,7 +1259,7 @@ public class Board implements LeelazListener {
    * @param stones the stones array to modify
    * @return whether or not this chain has liberties
    */
-  private boolean hasLibertiesHelper(int x, int y, Stone color, Stone[] stones) {
+  private static boolean hasLibertiesHelper(int x, int y, Stone color, Stone[] stones) {
     if (!isValid(x, y)) return false;
 
     if (stones[getIndex(x, y)] == Stone.EMPTY) return true; // a liberty was found
@@ -1293,7 +1293,7 @@ public class Board implements LeelazListener {
    *     their unrecursed version
    * @return number of removed stones
    */
-  private int cleanupHasLibertiesHelper(
+  private static int cleanupHasLibertiesHelper(
       int x, int y, Stone color, Stone[] stones, Zobrist zobrist, boolean removeStones) {
     int removed = 0;
     if (!isValid(x, y) || stones[getIndex(x, y)] != color) return 0;
@@ -1339,6 +1339,36 @@ public class Board implements LeelazListener {
     return history.getNextMove();
   }
 
+  public int moveNumberByCoord(int[] coord) {
+    int moveNumber = 0;
+    if (Lizzie.board.isValid(coord)) {
+      int index = Lizzie.board.getIndex(coord[0], coord[1]);
+      if (Lizzie.board.getHistory().getStones()[index] != Stone.EMPTY) {
+        BoardHistoryNode cur = Lizzie.board.getHistory().getCurrentHistoryNode();
+        moveNumber = cur.getData().moveNumberList[index];
+        if (!cur.isMainTrunk()) {
+          if (moveNumber > 0) {
+            moveNumber = cur.getData().moveNumber - cur.getData().moveMNNumber + moveNumber;
+          } else {
+            BoardHistoryNode p = cur.firstParentWithVariations().orElse(cur);
+            while (p != cur && moveNumber == 0) {
+              moveNumber = p.getData().moveNumberList[index];
+              if (moveNumber > 0) {
+                BoardHistoryNode topOfTop = p.firstParentWithVariations().orElse(p);
+                if (topOfTop != p) {
+                  moveNumber = p.getData().moveNumber - p.getData().moveMNNumber + moveNumber;
+                }
+              } else {
+                cur = p;
+                p = cur.firstParentWithVariations().orElse(cur);
+              }
+            }
+          }
+        }
+      }
+    }
+    return moveNumber;
+  }
   /**
    * Gets current board move number
    *

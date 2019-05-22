@@ -295,12 +295,7 @@ public class LizzieFrame extends JFrame {
     }
 
     setVisible(true);
-    Input input = new Input();
-    mainPanel.addKeyListener(input);
-    mainPanel.addMouseMotionListener(input);
-    mainPanel.addMouseListener(input);
-    mainPanel.addMouseWheelListener(input);
-    toolbar.addMouseWheelListener(input);
+
     //  createBufferStrategy(2);
     //   bs = getBufferStrategy();
 
@@ -342,6 +337,12 @@ public class LizzieFrame extends JFrame {
         1,
         1,
         TimeUnit.SECONDS);
+    Input input = new Input();
+    mainPanel.addKeyListener(input);
+    mainPanel.addMouseMotionListener(input);
+    mainPanel.addMouseListener(input);
+    mainPanel.addMouseWheelListener(input);
+    toolbar.addMouseWheelListener(input);
   }
 
   /** Clears related status from empty board. */
@@ -349,6 +350,11 @@ public class LizzieFrame extends JFrame {
     if (winrateGraph != null) {
       winrateGraph.clear();
     }
+  }
+
+  public void openOnlineDialog() {
+    OnlineDialog onlineDialog = new OnlineDialog();
+    onlineDialog.setVisible(true);
   }
 
   public static void openConfigDialog() {
@@ -1103,6 +1109,10 @@ public class LizzieFrame extends JFrame {
     redrawBackgroundAnyway = true;
   }
 
+  public void refresh() {
+    repaint();
+  }
+
   private Graphics2D createBackground(int width, int hight) {
     cachedBackground = new BufferedImage(width, hight, TYPE_INT_RGB);
     cachedBackgroundWidth = cachedBackground.getWidth();
@@ -1727,10 +1737,12 @@ public class LizzieFrame extends JFrame {
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
     if (boardCoordinates.isPresent()) {
       int[] coords = boardCoordinates.get();
-      this.noautocounting();
-      int movenumber = Lizzie.board.getmovenumber(coords);
-      Lizzie.board.savelist(Lizzie.board.getmovenumber(coords));
-      Lizzie.board.setlist();
+      if (!isPlayingAgainstLeelaz) {
+        int moveNumber = Lizzie.board.moveNumberByCoord(coords);
+        if (moveNumber > 0) {
+          Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
+        }
+      }
     }
   }
 

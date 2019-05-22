@@ -805,8 +805,8 @@ public class ConfigDialog extends JDialog {
     engineTab.add(rdonoloadzen);
 
     ButtonGroup rdoloadzengp = new ButtonGroup();
-    rdofastgp.add(rdonoloadzen);
-    rdofastgp.add(rdoloadzen);
+    rdoloadzengp.add(rdonoloadzen);
+    rdoloadzengp.add(rdoloadzen);
 
     JLabel fastenginehint = new JLabel("如启用快速引擎切换,已经加载过的引擎再次启用时将不必重新加载");
     fastenginehint.setBounds(6, 650, 437, 16);
