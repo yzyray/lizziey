@@ -112,6 +112,12 @@ public class Menu extends MenuBar {
     pasteItem.setText("从剪贴板粘贴（CTRL+V）");
     pasteItem.addActionListener(new ItemListener());
     fileMenu.add(pasteItem);
+    final JMenuItem resumeItem = new JMenuItem();
+    fileMenu.addSeparator();
+
+    resumeItem.setText("还原上次关闭前的状态");
+    resumeItem.addActionListener(new ItemListener());
+    fileMenu.add(resumeItem);
 
     fileMenu.addSeparator();
 
@@ -195,16 +201,16 @@ public class Menu extends MenuBar {
     final JMenuItem toolMenu = new JMenuItem("底部工具栏"); // 创建“字体”子菜单
     viewMenu.add(toolMenu); // 添加到“编辑”菜单
     toolMenu.addActionListener(new ItemListener()); // 添加动作监听器
-    
+
     final JMenuItem bigtoolMenu = new JMenuItem("详细工具栏"); // 创建“字体”子菜单
     viewMenu.add(bigtoolMenu); // 添加到“编辑”菜单
     bigtoolMenu.addActionListener(new ItemListener()); // 添加动作监听器     viewMenu.addSeparator();
-    
+
     final JMenuItem closeTool = new JMenuItem("关闭工具栏"); // 创建“字体”子菜单
     viewMenu.add(closeTool); // 添加到“编辑”菜单
     closeTool.addActionListener(new ItemListener()); // 添加动作监听器     viewMenu.addSeparator();
     viewMenu.addSeparator();
-    
+
     final JMenuItem subboard = new JMenuItem("小棋盘"); // 创建“字体”子菜单
     viewMenu.add(subboard); // 添加到“编辑”菜单
     subboard.addActionListener(new ItemListener()); // 添加动作监听器
@@ -232,9 +238,7 @@ public class Menu extends MenuBar {
     final JMenuItem gtpMenu = new JMenuItem("命令窗口(E)"); // 创建“字体”子菜单
     viewMenu.add(gtpMenu); // 添加到“编辑”菜单
     gtpMenu.addActionListener(new ItemListener()); // 添加动作监听器
-    
-    
-    
+
     final JMenuItem defview = new JMenuItem("默认模式"); // 创建“字体”子菜单
     viewMenu.add(defview); // 添加到“编辑”菜单
     defview.addActionListener(new ItemListener()); // 添加动作监听器
@@ -920,6 +924,7 @@ public class Menu extends MenuBar {
         int minlength = Math.min(Lizzie.frame.getWidth(), Lizzie.frame.getHeight());
         Lizzie.frame.setBounds(
             Lizzie.frame.getX(), Lizzie.frame.getY(), (int) (minlength * 0.95), minlength);
+        Lizzie.frame.repaint();
         return;
       }
       if (menuItem.getText().startsWith("经典")) {
@@ -939,6 +944,7 @@ public class Menu extends MenuBar {
               Lizzie.frame.getHeight() + 485,
               Lizzie.frame.getHeight());
         // Lizzie.frame.redrawBackgroundAnyway=true;
+        Lizzie.frame.repaint();
         return;
       }
       if (menuItem.getText().startsWith("默认")) {
@@ -957,7 +963,7 @@ public class Menu extends MenuBar {
               Lizzie.frame.getY(),
               Lizzie.frame.getHeight() + 600,
               Lizzie.frame.getHeight());
-        // Lizzie.frame.redrawBackgroundAnyway=true;
+        Lizzie.frame.repaint();
         return;
       }
 
@@ -973,24 +979,90 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("底部")) {
-          Lizzie.frame.toolbarHeight=20;
-          Lizzie.frame.mainPanel.setBounds(0,0, Lizzie.frame.getWidth()-Lizzie.frame.getInsets().left-Lizzie.frame.getInsets().right, Lizzie.frame.getHeight()-Lizzie.frame.getJMenuBar().getHeight()-Lizzie.frame.getInsets().top-Lizzie.frame.getInsets().bottom-Lizzie.frame.toolbarHeight);
-          Lizzie.frame.toolbar.setBounds(0, Lizzie.frame.getHeight()-Lizzie.frame.getJMenuBar().getHeight()-Lizzie.frame.getInsets().top-Lizzie.frame.getInsets().bottom-Lizzie.frame.toolbarHeight,Lizzie.frame.getWidth()-Lizzie.frame.getInsets().left-Lizzie.frame.getInsets().right,Lizzie.frame.toolbarHeight);
+        Lizzie.frame.toolbarHeight = 20;
+        Lizzie.frame.toolbar.setVisible(true);
+        Lizzie.frame.mainPanel.setBounds(
+            0,
+            0,
+            Lizzie.frame.getWidth()
+                - Lizzie.frame.getInsets().left
+                - Lizzie.frame.getInsets().right,
+            Lizzie.frame.getHeight()
+                - Lizzie.frame.getJMenuBar().getHeight()
+                - Lizzie.frame.getInsets().top
+                - Lizzie.frame.getInsets().bottom
+                - Lizzie.frame.toolbarHeight);
+        Lizzie.frame.toolbar.setBounds(
+            0,
+            Lizzie.frame.getHeight()
+                - Lizzie.frame.getJMenuBar().getHeight()
+                - Lizzie.frame.getInsets().top
+                - Lizzie.frame.getInsets().bottom
+                - Lizzie.frame.toolbarHeight,
+            Lizzie.frame.getWidth()
+                - Lizzie.frame.getInsets().left
+                - Lizzie.frame.getInsets().right,
+            Lizzie.frame.toolbarHeight);
 
-          return;
-        }
+        return;
+      }
       if (menuItem.getText().startsWith("详细")) {
-    	  Lizzie.frame.toolbarHeight=50;
-    	  Lizzie.frame.mainPanel.setBounds(0,0, Lizzie.frame.getWidth()-Lizzie.frame.getInsets().left-Lizzie.frame.getInsets().right, Lizzie.frame.getHeight()-Lizzie.frame.getJMenuBar().getHeight()-Lizzie.frame.getInsets().top-Lizzie.frame.getInsets().bottom-Lizzie.frame.toolbarHeight);
-    	  Lizzie.frame.toolbar.setBounds(0, Lizzie.frame.getHeight()-Lizzie.frame.getJMenuBar().getHeight()-Lizzie.frame.getInsets().top-Lizzie.frame.getInsets().bottom-Lizzie.frame.toolbarHeight,Lizzie.frame.getWidth()-Lizzie.frame.getInsets().left-Lizzie.frame.getInsets().right,Lizzie.frame.toolbarHeight);
-    	  return;
-        }
+        Lizzie.frame.toolbarHeight = 60;
+        Lizzie.frame.toolbar.setVisible(true);
+        Lizzie.frame.mainPanel.setBounds(
+            0,
+            0,
+            Lizzie.frame.getWidth()
+                - Lizzie.frame.getInsets().left
+                - Lizzie.frame.getInsets().right,
+            Lizzie.frame.getHeight()
+                - Lizzie.frame.getJMenuBar().getHeight()
+                - Lizzie.frame.getInsets().top
+                - Lizzie.frame.getInsets().bottom
+                - Lizzie.frame.toolbarHeight);
+        Lizzie.frame.toolbar.setBounds(
+            0,
+            Lizzie.frame.getHeight()
+                - Lizzie.frame.getJMenuBar().getHeight()
+                - Lizzie.frame.getInsets().top
+                - Lizzie.frame.getInsets().bottom
+                - Lizzie.frame.toolbarHeight,
+            Lizzie.frame.getWidth()
+                - Lizzie.frame.getInsets().left
+                - Lizzie.frame.getInsets().right,
+            Lizzie.frame.toolbarHeight);
+        return;
+      }
       if (menuItem.getText().startsWith("关闭工")) {
-    	  Lizzie.frame.toolbarHeight=0;
-    	  Lizzie.frame.mainPanel.setBounds(0,0, Lizzie.frame.getWidth()-Lizzie.frame.getInsets().left-Lizzie.frame.getInsets().right, Lizzie.frame.getHeight()-Lizzie.frame.getJMenuBar().getHeight()-Lizzie.frame.getInsets().top-Lizzie.frame.getInsets().bottom-Lizzie.frame.toolbarHeight);
-    	  Lizzie.frame.toolbar.setBounds(0, Lizzie.frame.getHeight()-Lizzie.frame.getJMenuBar().getHeight()-Lizzie.frame.getInsets().top-Lizzie.frame.getInsets().bottom-Lizzie.frame.toolbarHeight,Lizzie.frame.getWidth()-Lizzie.frame.getInsets().left-Lizzie.frame.getInsets().right,Lizzie.frame.toolbarHeight);
-    	  return;
-        }
+        Lizzie.frame.toolbarHeight = 0;
+        Lizzie.frame.toolbar.setVisible(false);
+        Lizzie.frame.mainPanel.setBounds(
+            0,
+            0,
+            Lizzie.frame.getWidth()
+                - Lizzie.frame.getInsets().left
+                - Lizzie.frame.getInsets().right,
+            Lizzie.frame.getHeight()
+                - Lizzie.frame.getJMenuBar().getHeight()
+                - Lizzie.frame.getInsets().top
+                - Lizzie.frame.getInsets().bottom
+                - Lizzie.frame.toolbarHeight);
+        Lizzie.frame.toolbar.setBounds(
+            0,
+            Lizzie.frame.getHeight()
+                - Lizzie.frame.getJMenuBar().getHeight()
+                - Lizzie.frame.getInsets().top
+                - Lizzie.frame.getInsets().bottom
+                - Lizzie.frame.toolbarHeight,
+            Lizzie.frame.getWidth()
+                - Lizzie.frame.getInsets().left
+                - Lizzie.frame.getInsets().right,
+            Lizzie.frame.toolbarHeight);
+        return;
+      }
+      if (menuItem.getText().startsWith("还原上次")) {
+        Lizzie.board.resumePreviousGame();
+      }
     }
   }
 }

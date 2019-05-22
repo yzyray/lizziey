@@ -46,6 +46,7 @@ public class Config {
   public boolean showSubBoard = true;
   public boolean largeSubBoard = false;
   public boolean startMaximized = true;
+  public boolean loadZen = true;
 
   public JSONObject config;
   public JSONObject leelazConfig;
@@ -120,6 +121,36 @@ public class Config {
     return mergedcfg;
   }
 
+  private JSONObject loadAndMergeConfigdef(
+      JSONObject defaultCfg, String fileName, boolean needValidation) throws IOException {
+    File file = new File(fileName);
+
+    System.err.printf("Creating config file %s\n", fileName);
+    try {
+      writeConfig(defaultCfg, file);
+    } catch (JSONException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+
+    FileInputStream fp = new FileInputStream(file);
+
+    JSONObject mergedcfg = new JSONObject(new JSONTokener(fp));
+    boolean modified = mergeDefaults(mergedcfg, defaultCfg);
+
+    fp.close();
+
+    // Validate and correct settings
+    if (needValidation && validateAndCorrectSettings(mergedcfg)) {
+      modified = true;
+    }
+
+    if (modified) {
+      writeConfig(mergedcfg, file);
+    }
+    return mergedcfg;
+  }
+
   /**
    * Check settings to ensure its consistency, especially for those whose types are not <code>
    * boolean</code>. If any inconsistency is found, try to correct it or to report it. <br>
@@ -161,7 +192,11 @@ public class Config {
     JSONObject persistConfig = createPersistConfig();
 
     // Main properties
-    this.config = loadAndMergeConfig(defaultConfig, configFilename, true);
+    try {
+      this.config = loadAndMergeConfig(defaultConfig, configFilename, true);
+    } catch (Exception e) {
+      this.config = loadAndMergeConfigdef(defaultConfig, configFilename, true);
+    }
     // Persisted properties
     this.persisted = loadAndMergeConfig(persistConfig, persistFilename, false);
 
@@ -210,6 +245,7 @@ public class Config {
     showlcbwinrate = config.getJSONObject("leelaz").optBoolean("show-lcb-winrate", true);
     playponder = config.getJSONObject("leelaz").optBoolean("play-ponder", true);
     showrect = config.getJSONObject("leelaz").optBoolean("show-rect", true);
+    loadZen = config.getJSONObject("leelaz").optBoolean("load-zen", true);
     showlcbcolor = config.getJSONObject("leelaz").optBoolean("show-lcb-color", true);
     fastChange = config.getJSONObject("leelaz").optBoolean("fast-engine-change", true);
 
@@ -593,6 +629,7 @@ public class Config {
       mainPos.put(Lizzie.frame.getY());
       mainPos.put(Lizzie.frame.getWidth());
       mainPos.put(Lizzie.frame.getHeight());
+      mainPos.put(Lizzie.frame.toolbarHeight);
     }
     persistedUi.put("main-window-position", mainPos);
     JSONArray gtpPos = new JSONArray();

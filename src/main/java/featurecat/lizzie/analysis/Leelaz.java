@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -122,9 +123,72 @@ public class Leelaz {
 
     // Initialize current engine number and start engine
     currentEngineN = 0;
+
     startEngine(engineCommand, 0);
+    Optional<JSONArray> enginePreloadOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
+
+    Optional<JSONArray> enginesOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
+    Optional<JSONArray> emptyOpt = Optional.empty();
+    if (enginePreloadOpt != emptyOpt && enginesOpt != emptyOpt) {
+      for (int i = 0; i < 9; i++) {
+        if (i < (enginePreloadOpt.get().length() - 1) && i < (enginesOpt.get().length() - 1)) {
+          if (enginePreloadOpt.get().getBoolean(i)) {
+            String commandLine = enginesOpt.get().getString(i);
+            prestartEngine(commandLine, i + 1);
+          }
+        }
+      }
+    }
     featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.stop);
     Lizzie.frame.refreshBackground();
+  }
+
+  public void prestartEngine(String engineCommand, int index) throws IOException {
+    if (engineCommand.trim().isEmpty()) {
+      return;
+    }
+
+    List<String> commands = splitCommand(engineCommand);
+
+    ProcessBuilder processBuilder = new ProcessBuilder(commands);
+    processBuilder.redirectErrorStream(true);
+    process[index] = processBuilder.start();
+    process[index].getOutputStream().write(("version" + "\n").getBytes());
+    process[index].getOutputStream().flush();
+    switch (index) {
+      case 0:
+        featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.stop);
+        break;
+      case 1:
+        featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.stop);
+        break;
+      case 2:
+        featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.stop);
+        break;
+      case 3:
+        featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.stop);
+        break;
+      case 4:
+        featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.stop);
+        break;
+      case 5:
+        featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.stop);
+        break;
+      case 6:
+        featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.stop);
+        break;
+      case 7:
+        featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.stop);
+        break;
+      case 8:
+        featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.stop);
+        break;
+      case 9:
+        featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.stop);
+        break;
+    }
   }
 
   public void startEngine(String engineCommand, int index) throws IOException {
@@ -143,6 +207,7 @@ public class Leelaz {
       currentEnginename =
           Lizzie.config.leelazConfig.optString(
               "enginename" + String.valueOf(index + 1), currentWeight);
+      if (currentEnginename.equals("")) currentEnginename = currentWeight;
     }
 
     ProcessBuilder processBuilder = new ProcessBuilder(commands);
@@ -156,7 +221,7 @@ public class Leelaz {
     isCheckingVersion = true;
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
-    Lizzie.frame.menu.engineMenu.setText(currentEnginename);
+    Lizzie.frame.menu.engineMenu.setText("引擎:" + currentEnginename);
     // ponder();
   }
 
@@ -329,6 +394,7 @@ public class Leelaz {
       currentEnginename =
           Lizzie.config.leelazConfig.optString(
               "enginename" + String.valueOf(index + 1), currentWeight);
+      if (currentEnginename.equals("")) currentEnginename = currentWeight;
     }
     isCheckingVersion = true;
     inputStream[index] = new BufferedInputStream(process[index].getInputStream());
@@ -338,6 +404,7 @@ public class Leelaz {
     executor[index].execute(this::read);
     //   sendCommand("version");
     //  ponder();
+    // sendCommand("version");
     Timer timer = new Timer();
     timer.schedule(
         new TimerTask() {
@@ -349,7 +416,7 @@ public class Leelaz {
           }
         },
         100);
-    Lizzie.frame.menu.engineMenu.setText(currentEnginename);
+    Lizzie.frame.menu.engineMenu.setText("引擎:" + currentEnginename);
   }
 
   public static List<MoveData> parseInfo(String line) {
@@ -760,15 +827,13 @@ public class Leelaz {
         if (isResponseUpToDate()
             || isThinking
                 && (!isPondering && Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand)) {
-          if (line.contains("pass")) {}
+          if (line.contains("pass")) {
+          } else {
 
-          //          else {
-          //            if (!switching) {
-          //              bestMoves.add(MoveData.fromSummary(line));
-          //              notifyBestMoveListeners();
-          //              Lizzie.frame.repaint();
-          //            }
-          //          }
+            bestMoves.add(MoveData.fromSummary(line));
+            notifyBestMoveListeners();
+            Lizzie.frame.repaint();
+          }
         }
       } else if (line.startsWith("play")) {
         // In lz-genmove_analyze

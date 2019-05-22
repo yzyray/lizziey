@@ -68,6 +68,16 @@ public class ConfigDialog extends JDialog {
   private JTextField nameEngine8;
   private JTextField nameEngine9;
   private JTextField[] txts;
+  private JCheckBox chkPreload1;
+  private JCheckBox chkPreload2;
+  private JCheckBox chkPreload3;
+  private JCheckBox chkPreload4;
+  private JCheckBox chkPreload5;
+  private JCheckBox chkPreload6;
+  private JCheckBox chkPreload7;
+  private JCheckBox chkPreload8;
+  private JCheckBox chkPreload9;
+  private JCheckBox[] chkPreloads;
   private JRadioButton rdoBoardSize19;
   private JRadioButton rdoBoardSize13;
   private JRadioButton rdoBoardSize9;
@@ -84,6 +94,8 @@ public class ConfigDialog extends JDialog {
   private JRadioButton rdonorect;
   private JRadioButton rdofast;
   private JRadioButton rdonofast;
+  private JRadioButton rdoloadzen;
+  private JRadioButton rdonoloadzen;
 
   public String enginePath = "";
   public String weightPath = "";
@@ -139,18 +151,28 @@ public class ConfigDialog extends JDialog {
     tabbedPane.addTab(resourceBundle.getString("LizzieConfig.title.engine"), null, engineTab, null);
     engineTab.setLayout(null);
 
+    JLabel lblPreload = new JLabel("预加载");
+    lblPreload.setBounds(570, 14, 92, 16);
+    lblPreload.setHorizontalAlignment(SwingConstants.LEFT);
+    engineTab.add(lblPreload);
+
     JLabel lblEngine = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + "1|别名");
     lblEngine.setBounds(6, 44, 92, 16);
     lblEngine.setHorizontalAlignment(SwingConstants.LEFT);
     engineTab.add(lblEngine);
 
     txtEngine = new JTextField();
-    txtEngine.setBounds(87, 40, 432, 26);
+    txtEngine.setBounds(87, 40, 420, 26);
     engineTab.add(txtEngine);
     txtEngine.setColumns(10);
+    JCheckBox chkPreload = new JCheckBox();
+    chkPreload.setBounds(570, 41, 23, 23);
+    chkPreload.setSelected(true);
+    chkPreload.setEnabled(false);
+    engineTab.add(chkPreload);
 
     nameEngine = new JTextField();
-    nameEngine.setBounds(525, 40, 60, 26);
+    nameEngine.setBounds(510, 40, 60, 26);
     engineTab.add(nameEngine);
 
     JLabel lblEngine1 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + "2|别名");
@@ -160,11 +182,14 @@ public class ConfigDialog extends JDialog {
 
     txtEngine1 = new JTextField();
     txtEngine1.setColumns(10);
-    txtEngine1.setBounds(87, 75, 432, 26);
+    txtEngine1.setBounds(87, 75, 420, 26);
     engineTab.add(txtEngine1);
+    chkPreload1 = new JCheckBox();
+    chkPreload1.setBounds(570, 76, 23, 23);
+    engineTab.add(chkPreload1);
 
     nameEngine1 = new JTextField();
-    nameEngine1.setBounds(525, 75, 60, 26);
+    nameEngine1.setBounds(510, 75, 60, 26);
     engineTab.add(nameEngine1);
 
     JLabel lblEngine2 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + "3|别名");
@@ -174,11 +199,14 @@ public class ConfigDialog extends JDialog {
 
     txtEngine2 = new JTextField();
     txtEngine2.setColumns(10);
-    txtEngine2.setBounds(87, 105, 432, 26);
+    txtEngine2.setBounds(87, 105, 420, 26);
     engineTab.add(txtEngine2);
+    chkPreload2 = new JCheckBox();
+    chkPreload2.setBounds(570, 106, 23, 23);
+    engineTab.add(chkPreload2);
 
     nameEngine2 = new JTextField();
-    nameEngine2.setBounds(525, 105, 60, 26);
+    nameEngine2.setBounds(510, 105, 60, 26);
     engineTab.add(nameEngine2);
 
     JLabel lblEngine3 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + "4|别名");
@@ -188,11 +216,14 @@ public class ConfigDialog extends JDialog {
 
     txtEngine3 = new JTextField();
     txtEngine3.setColumns(10);
-    txtEngine3.setBounds(87, 135, 432, 26);
+    txtEngine3.setBounds(87, 135, 420, 26);
     engineTab.add(txtEngine3);
+    chkPreload3 = new JCheckBox();
+    chkPreload3.setBounds(570, 136, 23, 23);
+    engineTab.add(chkPreload3);
 
     nameEngine3 = new JTextField();
-    nameEngine3.setBounds(525, 135, 60, 26);
+    nameEngine3.setBounds(510, 135, 60, 26);
     engineTab.add(nameEngine3);
 
     JLabel lblEngine4 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + "5|别名");
@@ -202,11 +233,14 @@ public class ConfigDialog extends JDialog {
 
     txtEngine4 = new JTextField();
     txtEngine4.setColumns(10);
-    txtEngine4.setBounds(87, 165, 432, 26);
+    txtEngine4.setBounds(87, 165, 420, 26);
     engineTab.add(txtEngine4);
+    chkPreload4 = new JCheckBox();
+    chkPreload4.setBounds(570, 166, 23, 23);
+    engineTab.add(chkPreload4);
 
     nameEngine4 = new JTextField();
-    nameEngine4.setBounds(525, 165, 60, 26);
+    nameEngine4.setBounds(510, 165, 60, 26);
     engineTab.add(nameEngine4);
 
     JLabel lblEngine5 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + "6|别名");
@@ -216,11 +250,14 @@ public class ConfigDialog extends JDialog {
 
     txtEngine5 = new JTextField();
     txtEngine5.setColumns(10);
-    txtEngine5.setBounds(87, 195, 432, 26);
+    txtEngine5.setBounds(87, 195, 420, 26);
     engineTab.add(txtEngine5);
+    chkPreload5 = new JCheckBox();
+    chkPreload5.setBounds(570, 196, 23, 23);
+    engineTab.add(chkPreload5);
 
     nameEngine5 = new JTextField();
-    nameEngine5.setBounds(525, 195, 60, 26);
+    nameEngine5.setBounds(510, 195, 60, 26);
     engineTab.add(nameEngine5);
 
     JLabel lblEngine6 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + "7|别名");
@@ -230,11 +267,14 @@ public class ConfigDialog extends JDialog {
 
     txtEngine6 = new JTextField();
     txtEngine6.setColumns(10);
-    txtEngine6.setBounds(87, 225, 432, 26);
+    txtEngine6.setBounds(87, 225, 420, 26);
     engineTab.add(txtEngine6);
+    chkPreload6 = new JCheckBox();
+    chkPreload6.setBounds(570, 226, 23, 23);
+    engineTab.add(chkPreload6);
 
     nameEngine6 = new JTextField();
-    nameEngine6.setBounds(525, 225, 60, 26);
+    nameEngine6.setBounds(510, 225, 60, 26);
     engineTab.add(nameEngine6);
 
     JLabel lblEngine7 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + "8|别名");
@@ -244,11 +284,14 @@ public class ConfigDialog extends JDialog {
 
     txtEngine7 = new JTextField();
     txtEngine7.setColumns(10);
-    txtEngine7.setBounds(87, 255, 432, 26);
+    txtEngine7.setBounds(87, 255, 420, 26);
     engineTab.add(txtEngine7);
+    chkPreload7 = new JCheckBox();
+    chkPreload7.setBounds(570, 256, 23, 23);
+    engineTab.add(chkPreload7);
 
     nameEngine7 = new JTextField();
-    nameEngine7.setBounds(525, 255, 60, 26);
+    nameEngine7.setBounds(510, 255, 60, 26);
     engineTab.add(nameEngine7);
 
     JLabel lblEngine8 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + "9|别名");
@@ -258,11 +301,14 @@ public class ConfigDialog extends JDialog {
 
     txtEngine8 = new JTextField();
     txtEngine8.setColumns(10);
-    txtEngine8.setBounds(87, 285, 432, 26);
+    txtEngine8.setBounds(87, 285, 420, 26);
     engineTab.add(txtEngine8);
+    chkPreload8 = new JCheckBox();
+    chkPreload8.setBounds(570, 286, 23, 23);
+    engineTab.add(chkPreload8);
 
     nameEngine8 = new JTextField();
-    nameEngine8.setBounds(525, 285, 60, 26);
+    nameEngine8.setBounds(510, 285, 60, 26);
     engineTab.add(nameEngine8);
 
     JLabel lblEngine9 = new JLabel(resourceBundle.getString("LizzieConfig.title.engine") + "10|别名");
@@ -272,11 +318,14 @@ public class ConfigDialog extends JDialog {
 
     txtEngine9 = new JTextField();
     txtEngine9.setColumns(10);
-    txtEngine9.setBounds(87, 315, 432, 26);
+    txtEngine9.setBounds(87, 315, 420, 26);
     engineTab.add(txtEngine9);
+    chkPreload9 = new JCheckBox();
+    chkPreload9.setBounds(570, 316, 23, 23);
+    engineTab.add(chkPreload9);
 
     nameEngine9 = new JTextField();
-    nameEngine9.setBounds(525, 315, 60, 26);
+    nameEngine9.setBounds(510, 315, 60, 26);
     engineTab.add(nameEngine9);
 
     JButton button = new JButton("...");
@@ -743,6 +792,22 @@ public class ConfigDialog extends JDialog {
     rdofastgp.add(rdonofast);
     rdofastgp.add(rdofast);
 
+    JLabel noloadzen = new JLabel("是否预加载Zen(用于点目)");
+    noloadzen.setBounds(331, 625, 157, 16);
+    engineTab.add(noloadzen);
+
+    rdoloadzen = new JRadioButton("是");
+    rdoloadzen.setBounds(496, 625, 50, 23);
+    engineTab.add(rdoloadzen);
+
+    rdonoloadzen = new JRadioButton("否");
+    rdonoloadzen.setBounds(545, 625, 80, 23);
+    engineTab.add(rdonoloadzen);
+
+    ButtonGroup rdoloadzengp = new ButtonGroup();
+    rdofastgp.add(rdonoloadzen);
+    rdofastgp.add(rdoloadzen);
+
     JLabel fastenginehint = new JLabel("如启用快速引擎切换,已经加载过的引擎再次启用时将不必重新加载");
     fastenginehint.setBounds(6, 650, 437, 16);
     engineTab.add(fastenginehint);
@@ -927,6 +992,30 @@ public class ConfigDialog extends JDialog {
                     txts[i].setText(a.getString(i));
                   });
         });
+
+    chkPreloads =
+        new JCheckBox[] {
+          chkPreload1,
+          chkPreload2,
+          chkPreload3,
+          chkPreload4,
+          chkPreload5,
+          chkPreload6,
+          chkPreload7,
+          chkPreload8,
+          chkPreload9
+        };
+    Optional<JSONArray> enginePreloadOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
+    enginePreloadOpt.ifPresent(
+        a -> {
+          IntStream.range(0, a.length())
+              .forEach(
+                  i -> {
+                    chkPreloads[i].setSelected(a.optBoolean(i));
+                  });
+        });
+
     txtMaxAnalyzeTime.setText(String.valueOf(leelazConfig.getInt("max-analyze-time-minutes")));
     txtAnalyzeUpdateInterval.setText(
         String.valueOf(leelazConfig.getInt("analyze-update-interval-centisec")));
@@ -937,21 +1026,22 @@ public class ConfigDialog extends JDialog {
     chkPrintEngineLog.setSelected(leelazConfig.getBoolean("print-comms"));
     curPath = (new File("")).getAbsoluteFile().toPath();
     osName = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
-    nameEngine.setText(leelazConfig.optString("enginename1", "引擎1"));
-    nameEngine1.setText(leelazConfig.optString("enginename2", "引擎2"));
-    nameEngine2.setText(leelazConfig.optString("enginename3", "引擎3"));
-    nameEngine3.setText(leelazConfig.optString("enginename4", "引擎4"));
-    nameEngine4.setText(leelazConfig.optString("enginename5", "引擎5"));
-    nameEngine5.setText(leelazConfig.optString("enginename6", "引擎6"));
-    nameEngine6.setText(leelazConfig.optString("enginename7", "引擎7"));
-    nameEngine7.setText(leelazConfig.optString("enginename8", "引擎8"));
-    nameEngine8.setText(leelazConfig.optString("enginename9", "引擎9"));
-    nameEngine9.setText(leelazConfig.optString("enginename10", "引擎10"));
+    nameEngine.setText(leelazConfig.optString("enginename1", ""));
+    nameEngine1.setText(leelazConfig.optString("enginename2", ""));
+    nameEngine2.setText(leelazConfig.optString("enginename3", ""));
+    nameEngine3.setText(leelazConfig.optString("enginename4", ""));
+    nameEngine4.setText(leelazConfig.optString("enginename5", ""));
+    nameEngine5.setText(leelazConfig.optString("enginename6", ""));
+    nameEngine6.setText(leelazConfig.optString("enginename7", ""));
+    nameEngine7.setText(leelazConfig.optString("enginename8", ""));
+    nameEngine8.setText(leelazConfig.optString("enginename9", ""));
+    nameEngine9.setText(leelazConfig.optString("enginename10", ""));
     setBoardSize();
     setShowLcbWinrate();
     setPonder();
     setFastEngine();
     setRect();
+    setLoadZen();
     setShowLcbColor();
     setLocationRelativeTo(getOwner());
   }
@@ -1050,10 +1140,14 @@ public class ConfigDialog extends JDialog {
       leelazConfig.putOpt("print-comms", chkPrintEngineLog.isSelected());
       leelazConfig.putOpt("show-lcb-winrate", getShowLcbWinrate());
       leelazConfig.putOpt("show-rect", getRect());
+      leelazConfig.putOpt("load-zen", getLoadZen());
       leelazConfig.putOpt("play-ponder", getPonder());
       leelazConfig.putOpt("fast-engine-change", getFastEngine());
       leelazConfig.putOpt("show-lcb-color", getShowLcbColor());
       leelazConfig.put("engine-command", txtEngine.getText().trim());
+      JSONArray preloads = new JSONArray();
+      Arrays.asList(chkPreloads).forEach(t -> preloads.put(t.isSelected()));
+      leelazConfig.put("engine-preload-list", preloads);
       leelazConfig.putOpt("limit-max-suggestion", txtFieldValue(txtMaxsuggestionmoves));
       leelazConfig.putOpt("limit-branch-length", txtFieldValue(txtlimitBranchLength));
       Lizzie.config.limitMaxSuggestion = txtFieldValue(txtMaxsuggestionmoves);
@@ -1122,6 +1216,25 @@ public class ConfigDialog extends JDialog {
     return osName != null && !osName.contains("darwin") && osName.contains("win");
   }
 
+  private void setLoadZen() {
+
+    if (Lizzie.config.loadZen) {
+      rdoloadzen.setSelected(true);
+    } else {
+      rdonoloadzen.setSelected(true);
+    }
+  }
+
+  private boolean getLoadZen() {
+    if (rdoloadzen.isSelected()) {
+      Lizzie.config.loadZen = true;
+    }
+    if (rdonoloadzen.isSelected()) {
+      Lizzie.config.loadZen = false;
+    }
+    return Lizzie.config.loadZen;
+  }
+
   private void setRect() {
 
     if (Lizzie.config.showrect) {
@@ -1150,6 +1263,24 @@ public class ConfigDialog extends JDialog {
       rdofast.setSelected(true);
     } else {
       rdonofast.setSelected(true);
+      chkPreload1.setSelected(false);
+      chkPreload1.setEnabled(false);
+      chkPreload2.setSelected(false);
+      chkPreload2.setEnabled(false);
+      chkPreload3.setSelected(false);
+      chkPreload3.setEnabled(false);
+      chkPreload4.setSelected(false);
+      chkPreload4.setEnabled(false);
+      chkPreload5.setSelected(false);
+      chkPreload5.setEnabled(false);
+      chkPreload6.setSelected(false);
+      chkPreload6.setEnabled(false);
+      chkPreload7.setSelected(false);
+      chkPreload7.setEnabled(false);
+      chkPreload8.setSelected(false);
+      chkPreload8.setEnabled(false);
+      chkPreload9.setSelected(false);
+      chkPreload9.setEnabled(false);
     }
   }
 
@@ -1160,6 +1291,15 @@ public class ConfigDialog extends JDialog {
     }
     if (rdonofast.isSelected()) {
       Lizzie.config.fastChange = false;
+      chkPreload1.setSelected(false);
+      chkPreload2.setSelected(false);
+      chkPreload3.setSelected(false);
+      chkPreload4.setSelected(false);
+      chkPreload5.setSelected(false);
+      chkPreload6.setSelected(false);
+      chkPreload7.setSelected(false);
+      chkPreload8.setSelected(false);
+      chkPreload9.setSelected(false);
       return false;
     }
     return true;

@@ -99,6 +99,15 @@ public class Lizzie {
     }
 
     if (leelaz != null) leelaz.killAllEngines();
+    if (Lizzie.frame.zen != null
+        && Lizzie.frame.zen.process != null
+        && Lizzie.frame.zen.process.isAlive()) {
+
+      try {
+        Lizzie.frame.zen.process.destroy();
+      } catch (Exception e) {
+      }
+    }
     System.exit(0);
   }
 
