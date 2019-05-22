@@ -921,9 +921,14 @@ public class Menu extends MenuBar {
         if (Lizzie.config.showStatus) Lizzie.config.toggleShowStatus();
         if (Lizzie.config.showVariationGraph) Lizzie.config.toggleShowVariationGraph();
         if (Lizzie.config.showWinrate) Lizzie.config.toggleShowWinrate();
-        int minlength = Math.min(Lizzie.frame.getWidth(), Lizzie.frame.getHeight());
+        int minlength =
+            Math.min(
+                Lizzie.frame.getWidth(), Lizzie.frame.getHeight() - Lizzie.frame.toolbarHeight);
         Lizzie.frame.setBounds(
-            Lizzie.frame.getX(), Lizzie.frame.getY(), (int) (minlength * 0.95), minlength);
+            Lizzie.frame.getX(),
+            Lizzie.frame.getY(),
+            (int) (minlength * 0.94),
+            minlength + Lizzie.frame.toolbarHeight);
         Lizzie.frame.repaint();
         return;
       }
