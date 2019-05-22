@@ -2801,4 +2801,9 @@ public class Board implements LeelazListener {
       Lizzie.leelaz.ponder();
     }
   }
+
+  public int getMaxMoveNumber() {
+    // TODO Auto-generated method stub
+    return history.mainTrunkLength();
+  }
 }

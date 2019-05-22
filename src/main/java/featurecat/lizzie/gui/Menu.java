@@ -984,7 +984,7 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("底部")) {
-        Lizzie.frame.toolbarHeight = 20;
+        Lizzie.frame.toolbarHeight = 26;
         Lizzie.frame.toolbar.setVisible(true);
         Lizzie.frame.mainPanel.setBounds(
             0,
@@ -1012,7 +1012,7 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("详细")) {
-        Lizzie.frame.toolbarHeight = 60;
+        Lizzie.frame.toolbarHeight = 70;
         Lizzie.frame.toolbar.setVisible(true);
         Lizzie.frame.mainPanel.setBounds(
             0,

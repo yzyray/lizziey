@@ -146,7 +146,7 @@ public class LizzieFrame extends JFrame {
   public JPanel mainPanel;
   public int mainPanleX;
   public int mainPanleY;
-  public int toolbarHeight = 20;
+  public int toolbarHeight = 26;
   boolean isSmallCap = false;
   boolean firstTime = true;
   // boolean lastponder = true;
@@ -300,6 +300,7 @@ public class LizzieFrame extends JFrame {
     mainPanel.addMouseMotionListener(input);
     mainPanel.addMouseListener(input);
     mainPanel.addMouseWheelListener(input);
+    toolbar.addMouseWheelListener(input);
     //  createBufferStrategy(2);
     //   bs = getBufferStrategy();
 
