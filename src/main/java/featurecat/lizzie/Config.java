@@ -568,7 +568,7 @@ public class Config {
     ui.put("theme", "default");
     ui.put("only-last-move-number", 1);
     ui.put("new-move-number-in-branch", true);
-    ui.put("append-winrate-to-comment", false);
+    ui.put("append-winrate-to-comment", true);
     ui.put("replay-branch-interval-seconds", 1.0);
     ui.put("gtp-console-style", defaultGtpConsoleStyle);
     config.put("ui", ui);

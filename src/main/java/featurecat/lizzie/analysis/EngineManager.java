@@ -15,6 +15,7 @@ public class EngineManager {
 
   private List<Leelaz> engineList;
   public static int currentEngineNo;
+  //  public boolean firstTime =true;
 
   public EngineManager(Config config) throws JSONException, IOException {
 

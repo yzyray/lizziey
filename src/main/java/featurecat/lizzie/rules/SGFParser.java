@@ -552,12 +552,11 @@ public class SGFParser {
       }
     }
 
-    String wf = "%s's winrate: %s %s\n(%s / %s playouts)";
+    String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
     boolean blackWinrate =
         !node.getData().blackToPlay || Lizzie.config.uiConfig.getBoolean("win-rate-always-black");
     String nc =
-        String.format(
-            wf, blackWinrate ? "Black" : "White", curWinrate, lastMoveDiff, engine, playouts);
+        String.format(wf, blackWinrate ? "黑" : "白", curWinrate, lastMoveDiff, engine, playouts);
 
     if (!data.comment.isEmpty()) {
       String wp =

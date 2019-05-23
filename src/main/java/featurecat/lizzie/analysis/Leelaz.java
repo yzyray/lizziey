@@ -248,6 +248,10 @@ public class Leelaz {
     try {
       process = processBuilder.start();
     } catch (IOException e) {
+      if (index == 0) {
+        Lizzie.frame.openConfigDialog();
+        System.exit(1);
+      }
       return;
     }
     initializeStreams();
