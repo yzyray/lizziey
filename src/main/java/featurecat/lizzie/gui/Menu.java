@@ -858,6 +858,7 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("清空棋盘")) {
         Lizzie.board.clear();
+        Lizzie.frame.refresh();
         return;
       }
 
