@@ -21,7 +21,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import org.json.JSONArray;
 
@@ -37,8 +36,7 @@ public class CountResults extends JDialog {
   public JButton button2 = new JButton("自动判断");
 
   public CountResults(Window owner) {
-	  super(owner);
-	  this.setAlwaysOnTop(true);
+    super(owner);
     this.add(buttonpanel, BorderLayout.SOUTH);
     this.setResizable(false);
 

@@ -152,7 +152,7 @@ public class BottomToolbar extends JPanel {
               Lizzie.frame.boardRenderer.removecountblock();
               Lizzie.frame.repaint();
               Lizzie.frame.iscounting = false;
-              Lizzie.frame.countResults.setVisible(false);
+              Lizzie.countResults.setVisible(false);
             } else {
               Lizzie.frame.countstones();
             }

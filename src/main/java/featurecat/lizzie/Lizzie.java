@@ -3,6 +3,7 @@ package featurecat.lizzie;
 import featurecat.lizzie.analysis.EngineManager;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.gui.AnalysisFrame;
+import featurecat.lizzie.gui.CountResults;
 import featurecat.lizzie.gui.GtpConsolePane;
 import featurecat.lizzie.gui.LizzieFrame;
 import featurecat.lizzie.gui.MovelistFrame;
@@ -20,6 +21,7 @@ public class Lizzie {
   public static AnalysisFrame analysisFrame;
   public static JDialog movelistframe;
   public static MovelistFrame movelistFrame;
+  public static CountResults countResults;
   public static Board board;
   public static Leelaz leelaz;
   public static String lizzieVersion = "0.7";
@@ -46,6 +48,7 @@ public class Lizzie {
 
     frame = new LizzieFrame();
     gtpConsole = new GtpConsolePane(frame);
+    countResults = new CountResults(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
     //  menu = new Menu(frame);
     //  menu.setVisible(true);

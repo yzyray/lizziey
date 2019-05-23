@@ -95,7 +95,7 @@ public class LizzieFrame extends JFrame {
   private static WinrateGraph winrateGraph;
   public static Menu menu;
   public static BottomToolbar toolbar;
-  public static CountResults countResults;
+
   public static Font uiFont;
   public static Font winrateFont;
   public boolean isshowrightmenu;
@@ -175,7 +175,7 @@ public class LizzieFrame extends JFrame {
   /** Creates a window */
   public LizzieFrame() {
     super(DEFAULT_TITLE);
-    countResults = new CountResults(Lizzie.frame);
+
     boardRenderer = new BoardRenderer(true);
     subBoardRenderer = new SubBoardRenderer(false);
     variationTree = new VariationTree();
@@ -1597,8 +1597,8 @@ public class LizzieFrame extends JFrame {
       bval = String.format("%.0f", score[0]);
       wval = String.format("%.1f", score[1]);
     } else if (iscounting || isAutocounting) {
-      bval = String.format("%d", this.countResults.allblackcounts);
-      wval = String.format("%d", this.countResults.allwhitecounts);
+      bval = String.format("%d", Lizzie.countResults.allblackcounts);
+      wval = String.format("%d", Lizzie.countResults.allwhitecounts);
     } else {
       bval = String.format("%d", Lizzie.board.getData().blackCaptures);
       wval = String.format("%d", Lizzie.board.getData().whiteCaptures);
@@ -1670,8 +1670,8 @@ public class LizzieFrame extends JFrame {
     }
     Lizzie.frame.repaint();
     // Lizzie.frame.iscounting=false;
-    this.countResults.isAutocounting = false;
-    this.countResults.button2.setText("自动判断");
+    Lizzie.countResults.isAutocounting = false;
+    Lizzie.countResults.button2.setText("自动判断");
   }
 
   public void insertMove(int x, int y, boolean isblack) {

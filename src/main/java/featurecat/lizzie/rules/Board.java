@@ -7,7 +7,6 @@ import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.analysis.LeelazListener;
 import featurecat.lizzie.analysis.MoveData;
-import featurecat.lizzie.gui.LizzieFrame;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -955,8 +954,8 @@ public class Board implements LeelazListener {
     if (Lizzie.frame.isheatmap) Lizzie.frame.toggleheatmap();
     if (Lizzie.frame.iscounting) {
       Lizzie.frame.boardRenderer.removecountblock();
-      LizzieFrame.countResults.button.setText("形式判断");
-      LizzieFrame.countResults.iscounted = false;
+      Lizzie.countResults.button.setText("形式判断");
+      Lizzie.countResults.iscounted = false;
       Lizzie.frame.iscounting = false;
     }
     synchronized (this) {
@@ -1384,8 +1383,8 @@ public class Board implements LeelazListener {
     if (Lizzie.frame.isheatmap) Lizzie.frame.toggleheatmap();
     if (Lizzie.frame.iscounting) {
       Lizzie.frame.boardRenderer.removecountblock();
-      LizzieFrame.countResults.button.setText("形式判断");
-      LizzieFrame.countResults.iscounted = false;
+      Lizzie.countResults.button.setText("形式判断");
+      Lizzie.countResults.iscounted = false;
       Lizzie.frame.iscounting = false;
     }
     synchronized (this) {
@@ -1863,8 +1862,8 @@ public class Board implements LeelazListener {
     if (Lizzie.frame.isheatmap) Lizzie.frame.toggleheatmap();
     if (Lizzie.frame.iscounting) {
       Lizzie.frame.boardRenderer.removecountblock();
-      LizzieFrame.countResults.button.setText("形式判断");
-      LizzieFrame.countResults.iscounted = false;
+      Lizzie.countResults.button.setText("形式判断");
+      Lizzie.countResults.iscounted = false;
       Lizzie.frame.iscounting = false;
     }
     synchronized (this) {

@@ -2,7 +2,6 @@ package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.gui.CountResults;
-import featurecat.lizzie.gui.LizzieFrame;
 import featurecat.lizzie.rules.Movelist;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -142,7 +141,7 @@ public class YaZenGtp {
 
           Lizzie.frame.repaint();
           if (firstcount) {
-            results = LizzieFrame.countResults;
+            results = Lizzie.countResults;
             results.Counts(
                 blackEatCount,
                 whiteEatCount,
@@ -251,6 +250,6 @@ public class YaZenGtp {
     Lizzie.frame.isAutocounting = true;
     syncboradstat();
     countStones();
-    Lizzie.frame.countResults.isAutocounting = true;
+    Lizzie.countResults.isAutocounting = true;
   }
 }

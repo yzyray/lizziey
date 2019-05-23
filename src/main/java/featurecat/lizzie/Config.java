@@ -684,10 +684,10 @@ public class Config {
     persistedUi.put("badmoves-list-position", badmoveslistPos);
 
     JSONArray movecountPos = new JSONArray();
-    movecountPos.put(Lizzie.frame.countResults.getX());
-    movecountPos.put(Lizzie.frame.countResults.getY());
-    movecountPos.put(Lizzie.frame.countResults.getWidth());
-    movecountPos.put(Lizzie.frame.countResults.getHeight());
+    movecountPos.put(Lizzie.countResults.getX());
+    movecountPos.put(Lizzie.countResults.getY());
+    movecountPos.put(Lizzie.countResults.getWidth());
+    movecountPos.put(Lizzie.countResults.getHeight());
     persistedUi.put("movecount-position", movecountPos);
 
     writeConfig(this.persisted, new File(persistFilename));
