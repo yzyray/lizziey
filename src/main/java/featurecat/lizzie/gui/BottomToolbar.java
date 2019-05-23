@@ -2,11 +2,11 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.NumberFormat;
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
@@ -75,6 +75,28 @@ public class BottomToolbar extends JPanel {
     add(txtMoveNumber);
     txtMoveNumber.setColumns(3);
 
+    txtMoveNumber.addKeyListener(
+        new KeyListener() {
+          @Override
+          public void keyPressed(KeyEvent arg0) {
+            int key = arg0.getKeyCode();
+            if (key == '\n') {
+              checkMove();
+              txtMoveNumber.setFocusable(false);
+              txtMoveNumber.setFocusable(true);
+              txtMoveNumber.setBackground(Color.WHITE);
+              txtMoveNumber.setText("");
+              Lizzie.board.goToMoveNumberBeyondBranch(changeMoveNumber);
+              setAllUnfocuse();
+            }
+          }
+
+          @Override
+          public void keyReleased(KeyEvent e) {}
+
+          @Override
+          public void keyTyped(KeyEvent e) {}
+        });
     analyse.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -193,27 +215,9 @@ public class BottomToolbar extends JPanel {
     }
   }
 
-  private boolean checkMove() {
+  private void checkMove() {
 
     changeMoveNumber = txtFieldValue(txtMoveNumber);
-    //  changePosition = getChangeToType();
-    Color c = Color.RED;
-    if (changeMoveNumber < 0 || changeMoveNumber > Lizzie.board.getMaxMoveNumber()) {
-      Action action = txtMoveNumber.getActionMap().get("postTip");
-      if (action != null) {
-        ActionEvent ae =
-            new ActionEvent(
-                txtMoveNumber,
-                ActionEvent.ACTION_PERFORMED,
-                "postTip",
-                EventQueue.getMostRecentEventTime(),
-                0);
-        action.actionPerformed(ae);
-      }
-      txtMoveNumber.setBackground(Color.red);
-      return false;
-    }
-    return true;
   }
 
   public void setButtonLocation(int boardmid) {
