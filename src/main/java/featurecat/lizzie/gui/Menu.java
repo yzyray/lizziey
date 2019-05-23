@@ -77,7 +77,7 @@ public class Menu extends MenuBar {
     fileMenu.add(openUrlItem);
 
     final JMenuItem saveItem = new JMenuItem();
-    saveItem.setText("打开棋谱（S）");
+    saveItem.setText("保存棋谱（S）");
     // saveItem.setMnemonic('S');
     // saveItem.setAccelerator(KeyStroke.getKeyStroke(VK_S, CTRL_MASK));
     saveItem.addActionListener(new ItemListener());
