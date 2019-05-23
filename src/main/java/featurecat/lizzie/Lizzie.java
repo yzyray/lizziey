@@ -1,5 +1,6 @@
 package featurecat.lizzie;
 
+import featurecat.lizzie.analysis.EngineManager;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.gui.GtpConsolePane;
@@ -8,9 +9,7 @@ import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Board;
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 import javax.swing.*;
-import org.json.JSONArray;
 
 /** Main class. */
 public class Lizzie {
@@ -25,6 +24,7 @@ public class Lizzie {
   public static Leelaz leelaz;
   public static String lizzieVersion = "0.7";
   private static String[] mainArgs;
+  public static EngineManager engineManager;
   //  public static Menu menu;
 
   /** Launches the game window, and runs the game. */
@@ -50,7 +50,7 @@ public class Lizzie {
     //  menu = new Menu(frame);
     //  menu.setVisible(true);
     try {
-      leelaz = new Leelaz();
+      engineManager = new EngineManager(config);
 
       if (config.handicapInsteadOfWinrate) {
         leelaz.estimatePassWinrate();
@@ -85,9 +85,9 @@ public class Lizzie {
     if (config.config.getJSONObject("ui").getBoolean("confirm-exit")) {
       int ret =
           JOptionPane.showConfirmDialog(
-              null, "是否保存SGF棋谱?", "保存SGF棋谱?", JOptionPane.OK_CANCEL_OPTION);
+              null, "Do you want to save this SGF?", "Save SGF?", JOptionPane.OK_CANCEL_OPTION);
       if (ret == JOptionPane.OK_OPTION) {
-        LizzieFrame.saveFile();
+        frame.saveFile();
       }
     }
     board.autosaveToMemory();
@@ -98,7 +98,8 @@ public class Lizzie {
       e.printStackTrace(); // Failed to save config
     }
 
-    if (leelaz != null) leelaz.killAllEngines();
+    // if (leelaz != null)
+    engineManager.forcekillAllEngines();
     if (Lizzie.frame.zen != null
         && Lizzie.frame.zen.process != null
         && Lizzie.frame.zen.process.isAlive()) {
@@ -109,73 +110,5 @@ public class Lizzie {
       }
     }
     System.exit(0);
-  }
-
-  /**
-   * Switch the Engine by index number
-   *
-   * @param index engine index
-   */
-  public static void switchEngine(int index) {
-    // BoardData.isChanged = true;
-    // added for change bestmoves immediatly not wait until totalplayouts>last engine's
-    // totalplayouts
-    String commandLine;
-    if (index == 0) {
-      String networkFile = Lizzie.config.leelazConfig.getString("network-file");
-      commandLine = Lizzie.config.leelazConfig.getString("engine-command");
-      commandLine = commandLine.replaceAll("%network-file", networkFile);
-    } else {
-      Optional<JSONArray> enginesOpt =
-          Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
-      if (enginesOpt.map(e -> e.length() < index).orElse(true)) {
-        return;
-      }
-      commandLine = enginesOpt.get().getString(index - 1);
-    }
-    if (commandLine.trim().isEmpty()) {
-      return;
-    }
-    if (leelaz.switching) {
-      JOptionPane.showMessageDialog(null, "正在加载引擎,请等待");
-      return;
-    }
-    //    if (leelaz.isThinking) {
-    //        JOptionPane.showMessageDialog(null, "AI正在思考,无法切换");
-    //        return;
-    //      }
-    if (index == Lizzie.leelaz.currentEngineN() && Lizzie.leelaz.isEngineAlive(index)) {
-      return;
-    }
-    //    if(leelaz.isEngineBusy(index))
-    //	 {
-    //		 JOptionPane.showMessageDialog(null, "请不要频繁切换");
-    //		 System.out.println("频繁切换");
-    //		 return;
-    //	 }
-    // Workaround for leelaz no exiting when restarting
-    if (leelaz.isThinking || Lizzie.frame.isPlayingAgainstLeelaz) {
-
-      Lizzie.frame.isPlayingAgainstLeelaz = false;
-      Lizzie.leelaz.isThinking = false;
-    }
-
-    int movenumber = board.getcurrentmovenumber();
-    // board.saveMoveNumber();
-    leelaz.switching = true;
-
-    board.clearbestmovesafter(board.getHistory().getStart(), movenumber);
-    board.savelistforswitch();
-    // leelaz.execuser = !leelaz.execuser;
-    try {
-
-      leelaz.restartEngine(commandLine, index);
-      // board.restoreMoveNumber();
-
-      board.setlistforswitch();
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 }

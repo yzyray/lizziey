@@ -1,6 +1,7 @@
 package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.rules.Board;
 import featurecat.lizzie.rules.BoardData;
 import featurecat.lizzie.rules.Stone;
 import java.io.BufferedInputStream;
@@ -12,8 +13,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -21,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,18 +38,16 @@ public class Leelaz {
   private int cmdNumber;
   private int currentCmdNum;
   private ArrayDeque<String> cmdQueue;
-  private JSONObject leelazConfig;
-  public ArrayList<Integer> heatcount = new ArrayList<Integer>();
-  public double heatwinrate;
 
-  public Process[] process = new Process[10];
+  public Process process;
 
-  private BufferedInputStream[] inputStream = new BufferedInputStream[10];
-  private BufferedOutputStream[] outputStream = new BufferedOutputStream[10];
+  private BufferedInputStream inputStream;
+  private BufferedOutputStream outputStream;
 
   private boolean printCommunication;
   public boolean gtpConsole;
 
+  public Board board;
   private List<MoveData> bestMoves;
   private List<MoveData> bestMovesTemp;
 
@@ -62,47 +58,45 @@ public class Leelaz {
 
   // fixed_handicap
   public boolean isSettingHandicap = false;
-  boolean stopread = false;
+
   // genmove
-  public boolean isheatmap = false;
   public boolean isThinking = false;
   public boolean isInputCommand = false;
-  // public boolean isChanged = false;
+
+  public boolean preload = false;
+  public boolean started = false;
   private boolean isLoaded = false;
   private boolean isCheckingVersion;
+
   // for Multiple Engine
-  private String engineCommand;
+  public String engineCommand;
   private List<String> commands;
   private JSONObject config;
   private String currentWeightFile = "";
   private String currentWeight = "";
-  public String currentEnginename = "";
-  public boolean switching = true;
+  public boolean switching = false;
   private int currentEngineN = -1;
-  private ScheduledExecutorService[] executor = new ScheduledExecutorService[10];
-  //  private ScheduledExecutorService executor1;
-  //  private ScheduledExecutorService executor2;
-  //  private ScheduledExecutorService executor3;
-  //  private ScheduledExecutorService executor4;
-  //  private ScheduledExecutorService executor5;
-  //  private ScheduledExecutorService executor6;
-  //  private ScheduledExecutorService executor7;
-  //  private ScheduledExecutorService executor8;
-  //  private ScheduledExecutorService executor9;
+  private ScheduledExecutorService executor;
 
   // dynamic komi and opponent komi as reported by dynamic-komi version of leelaz
   private float dynamicKomi = Float.NaN;
   private float dynamicOppKomi = Float.NaN;
-
+  public boolean isheatmap = false;
+  public int version = -1;
+  public ArrayList<Integer> heatcount = new ArrayList<Integer>();
+  public String currentEnginename = "";
+  // public double heatwinrate;
   /**
    * Initializes the leelaz process and starts reading output
    *
    * @throws IOException
    */
-  public Leelaz() throws IOException, JSONException {
+  public Leelaz(String engineCommand) throws IOException, JSONException {
+    board = new Board();
     bestMoves = new ArrayList<>();
     bestMovesTemp = new ArrayList<>();
     listeners = new CopyOnWriteArrayList<>();
+
     isPondering = false;
     startPonderTime = System.currentTimeMillis();
     cmdNumber = 1;
@@ -117,154 +111,159 @@ public class Leelaz {
     maxAnalyzeTimeMillis = MINUTE * config.getInt("max-analyze-time-minutes");
 
     // command string for starting the engine
-    engineCommand = config.getString("engine-command");
-    // substitute in the weights file
-    engineCommand = engineCommand.replaceAll("%network-file", config.getString("network-file"));
+    //    if (engineCommand == null || engineCommand.isEmpty()) {
+    //      engineCommand = config.getString("engine-command");
+    //      // substitute in the weights file
+    //      engineCommand = engineCommand.replaceAll("%network-file",
+    // config.getString("network-file"));
+    //    }
+    this.engineCommand = engineCommand;
 
     // Initialize current engine number and start engine
     currentEngineN = 0;
-
-    startEngine(engineCommand, 0);
-    Optional<JSONArray> enginePreloadOpt =
-        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
-
-    Optional<JSONArray> enginesOpt =
-        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
-    Optional<JSONArray> emptyOpt = Optional.empty();
-    if (enginePreloadOpt != emptyOpt && enginesOpt != emptyOpt) {
-      for (int i = 0; i < 9; i++) {
-        if (i < (enginePreloadOpt.get().length() - 1) && i < (enginesOpt.get().length() - 1)) {
-          if (enginePreloadOpt.get().getBoolean(i)) {
-            String commandLine = enginesOpt.get().getString(i);
-            prestartEngine(commandLine, i + 1);
-          }
-        }
-      }
-    }
-    featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.stop);
-    Lizzie.frame.refreshBackground();
   }
 
-  public void prestartEngine(String engineCommand, int index) throws IOException {
-    if (engineCommand.trim().isEmpty()) {
-      return;
-    }
-
-    List<String> commands = splitCommand(engineCommand);
-
-    ProcessBuilder processBuilder = new ProcessBuilder(commands);
-    processBuilder.redirectErrorStream(true);
-    process[index] = processBuilder.start();
-    process[index].getOutputStream().write(("version" + "\n").getBytes());
-    process[index].getOutputStream().flush();
-    switch (index) {
-      case 0:
-        featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 1:
-        featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 2:
-        featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 3:
-        featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 4:
-        featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 5:
-        featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 6:
-        featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 7:
-        featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 8:
-        featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 9:
-        featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-    }
+  public void updateCommand(String engineCommand) {
+    this.engineCommand = engineCommand;
   }
 
-  public void startEngine(String engineCommand, int index) throws IOException {
+  public void getEngineName(int index) {
+    currentEnginename =
+        Lizzie.config.leelazConfig.optString(
+            "enginename" + String.valueOf(index + 1), currentWeight);
+    if (currentEnginename.equals("")) currentEnginename = currentWeight;
+  }
+
+  public void startEngine() throws IOException {
     if (engineCommand.trim().isEmpty()) {
       return;
     }
 
     commands = splitCommand(engineCommand);
 
+    // Get weight name
     Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
     Matcher wMatcher = wPattern.matcher(engineCommand);
     if (wMatcher.matches() && wMatcher.groupCount() == 2) {
       currentWeightFile = wMatcher.group(2);
       String[] names = currentWeightFile.split("[\\\\|/]");
       currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
-      currentEnginename =
-          Lizzie.config.leelazConfig.optString(
-              "enginename" + String.valueOf(index + 1), currentWeight);
-      if (currentEnginename.equals("")) currentEnginename = currentWeight;
     }
 
-    ProcessBuilder processBuilder = new ProcessBuilder(commands);
-    processBuilder.redirectErrorStream(true);
-    process[index] = processBuilder.start();
+    // Check if engine is present
+    // Commented for remote ssh. TODO keep or remove this code?
+    //    File startfolder = new File(config.optString("engine-start-location", "."));
+    //    File lef = startfolder.toPath().resolve(new File(commands.get(0)).toPath()).toFile();
+    //    System.out.println(lef.getPath());
+    //    if (!lef.exists()) {
+    //      JOptionPane.showMessageDialog(
+    //          null,
+    //          resourceBundle.getString("LizzieFrame.display.leelaz-missing"),
+    //          "Lizzie - Error!",
+    //          JOptionPane.ERROR_MESSAGE);
+    //      throw new IOException("engine not present");
+    //    }
 
-    initializeStreams(index);
-    // isCheckingVersion = true;
-    executor[index] = Executors.newSingleThreadScheduledExecutor();
-    executor[index].execute(this::read);
+    // Check if network file is present
+    //    File wf = startfolder.toPath().resolve(new File(currentWeightFile).toPath()).toFile();
+    //    if (!wf.exists()) {
+    //      JOptionPane.showMessageDialog(
+    //          null, resourceBundle.getString("LizzieFrame.display.network-missing"));
+    //      throw new IOException("network-file not present");
+    //    }
+
+    // run leelaz
+    ProcessBuilder processBuilder = new ProcessBuilder(commands);
+    // Commented for remote ssh
+    //    processBuilder.directory(startfolder);
+    processBuilder.redirectErrorStream(true);
+    process = processBuilder.start();
+
+    initializeStreams();
+
+    // Send a version request to check that we have a supported version
+    // Response handled in parseLine
     isCheckingVersion = true;
     sendCommand("version");
     sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
-    Lizzie.frame.menu.engineMenu.setText("引擎:" + currentEnginename);
-    // ponder();
+
+    // start a thread to continuously read Leelaz output
+    // new Thread(this::read).start();
+    // can stop engine for switching weights
+    executor = Executors.newSingleThreadScheduledExecutor();
+    executor.execute(this::read);
+    started = true;
+    Lizzie.frame.refreshBackground();
   }
 
-  public boolean isEngineAlive(int index) {
-    return process[index] != null && process[index].isAlive();
-  }
-
-  public void killAllEngines() {
-    switching = false;
-    for (int i = 0; i < process.length; i++) {
-      try {
-        process[i].destroy();
-      } catch (Exception e) {
-      }
-    }
-  }
-
-  public void killOtherEngines() {
-    switching = false;
-    for (int i = 0; i < process.length; i++)
-      if (i != currentEngineN) {
-        {
-          try {
-            process[i].destroy();
-          } catch (Exception e) {
-          }
-        }
-      }
-  }
-
-  public void restartEngine(String engineCommand, int index) throws IOException {
-
+  public void startEngine(int index) throws IOException {
     if (engineCommand.trim().isEmpty()) {
       return;
     }
 
-    //  isCheckingVersion = true;
-    this.engineCommand = engineCommand;
-    // stop the ponder
+    commands = splitCommand(engineCommand);
 
-    isPondering = false;
-    // isThinking = false;
-    // Lizzie.frame.isPlayingAgainstLeelaz = false;
+    // Get weight name
+    Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
+    Matcher wMatcher = wPattern.matcher(engineCommand);
+    if (wMatcher.matches() && wMatcher.groupCount() == 2) {
+      currentWeightFile = wMatcher.group(2);
+      String[] names = currentWeightFile.split("[\\\\|/]");
+      currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
+      currentEngineN = index;
+      currentEnginename =
+          Lizzie.config.leelazConfig.optString(
+              "enginename" + String.valueOf(index + 1), currentWeight);
+      if (currentEnginename.equals("")) currentEnginename = currentWeight;
+    }
+
+    // Check if engine is present
+    // Commented for remote ssh. TODO keep or remove this code?
+    //    File startfolder = new File(config.optString("engine-start-location", "."));
+    //    File lef = startfolder.toPath().resolve(new File(commands.get(0)).toPath()).toFile();
+    //    System.out.println(lef.getPath());
+    //    if (!lef.exists()) {
+    //      JOptionPane.showMessageDialog(
+    //          null,
+    //          resourceBundle.getString("LizzieFrame.display.leelaz-missing"),
+    //          "Lizzie - Error!",
+    //          JOptionPane.ERROR_MESSAGE);
+    //      throw new IOException("engine not present");
+    //    }
+
+    // Check if network file is present
+    //    File wf = startfolder.toPath().resolve(new File(currentWeightFile).toPath()).toFile();
+    //    if (!wf.exists()) {
+    //      JOptionPane.showMessageDialog(
+    //          null, resourceBundle.getString("LizzieFrame.display.network-missing"));
+    //      throw new IOException("network-file not present");
+    //    }
+
+    // run leelaz
+    ProcessBuilder processBuilder = new ProcessBuilder(commands);
+    // Commented for remote ssh
+    //    processBuilder.directory(startfolder);
+
+    processBuilder.redirectErrorStream(true);
+    try {
+      process = processBuilder.start();
+    } catch (IOException e) {
+      return;
+    }
+    initializeStreams();
+
+    // Send a version request to check that we have a supported version
+    // Response handled in parseLine
+    isCheckingVersion = true;
+    sendCommand("version");
+    sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
+
+    // start a thread to continuously read Leelaz output
+    // new Thread(this::read).start();
+    // can stop engine for switching weights
+    executor = Executors.newSingleThreadScheduledExecutor();
+    executor.execute(this::read);
+    started = true;
     switch (index) {
       case 0:
         featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.stop);
@@ -297,126 +296,45 @@ public class Leelaz {
         featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.stop);
         break;
     }
-    if (isEngineAlive(index) && Lizzie.config.fastChange) // 需要添加判断,对应index的进程知否初始化并且alive
-    {
-
-      if (isEngineAlive(currentEngineN)) {
-        // normalQuit(currentEngineN);
-        outputStream[this.currentEngineN].write(("stop" + "\n").getBytes());
-        outputStream[this.currentEngineN].flush();
-        stopread = true;
-      }
-      reinitializeStreams(engineCommand, index);
-    } else {
-
-      if (isEngineAlive(currentEngineN)) {
-        if (!Lizzie.config.fastChange) {
-          normalQuit(currentEngineN);
-        } else {
-          outputStream[this.currentEngineN].write(("stop" + "\n").getBytes());
-          outputStream[this.currentEngineN].flush();
-          stopread = true;
-        }
-      }
-      startEngine(engineCommand, index);
-    }
-    currentEngineN = index;
   }
 
-  public void normalQuit(int index) throws IOException {
+  public void restartEngine(int index) throws IOException {
+    if (engineCommand.trim().isEmpty()) {
+      return;
+    }
+    switching = true;
+    this.engineCommand = engineCommand;
+    // stop the ponder
+    if (Lizzie.leelaz.isPondering()) {
+      Lizzie.leelaz.togglePonder();
+    }
+    normalQuit();
+    startEngine(index);
+    //    currentEngineN = index;
+    togglePonder();
+  }
 
-    sendCommandToLeelaz("quit", index);
-
-    executor[index].shutdown();
+  public void normalQuit() {
+    sendCommand("quit");
+    executor.shutdown();
     try {
-      while (!executor[index].awaitTermination(1, TimeUnit.SECONDS)) {
-        executor[index].shutdownNow();
+      while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+        executor.shutdownNow();
       }
-      if (executor[index].awaitTermination(1, TimeUnit.SECONDS)) {
-        shutdown(index);
+      if (executor.awaitTermination(1, TimeUnit.SECONDS)) {
+        shutdown();
       }
     } catch (InterruptedException e) {
-      executor[index].shutdownNow();
+      executor.shutdownNow();
       Thread.currentThread().interrupt();
     }
-
-    switch (index) {
-      case 0:
-        featurecat.lizzie.gui.Menu.engine1.setIcon(null);
-        break;
-      case 1:
-        featurecat.lizzie.gui.Menu.engine2.setIcon(null);
-        break;
-      case 2:
-        featurecat.lizzie.gui.Menu.engine3.setIcon(null);
-        break;
-      case 3:
-        featurecat.lizzie.gui.Menu.engine4.setIcon(null);
-        break;
-      case 4:
-        featurecat.lizzie.gui.Menu.engine5.setIcon(null);
-        break;
-      case 5:
-        featurecat.lizzie.gui.Menu.engine6.setIcon(null);
-        break;
-      case 6:
-        featurecat.lizzie.gui.Menu.engine7.setIcon(null);
-        break;
-      case 7:
-        featurecat.lizzie.gui.Menu.engine8.setIcon(null);
-        break;
-      case 8:
-        featurecat.lizzie.gui.Menu.engine9.setIcon(null);
-        break;
-      case 9:
-        featurecat.lizzie.gui.Menu.engine10.setIcon(null);
-        break;
-    }
+    started = false;
   }
 
   /** Initializes the input and output streams */
-  private void initializeStreams(int index) {
-    currentEngineN = index;
-
-    inputStream[index] = new BufferedInputStream(process[index].getInputStream());
-    outputStream[index] = new BufferedOutputStream(process[index].getOutputStream());
-  }
-
-  private void reinitializeStreams(String engineCommand, int index) {
-    commands = splitCommand(engineCommand);
-    currentEngineN = index;
-    Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
-    Matcher wMatcher = wPattern.matcher(engineCommand);
-    if (wMatcher.matches() && wMatcher.groupCount() == 2) {
-      currentWeightFile = wMatcher.group(2);
-      String[] names = currentWeightFile.split("[\\\\|/]");
-      currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
-      currentEnginename =
-          Lizzie.config.leelazConfig.optString(
-              "enginename" + String.valueOf(index + 1), currentWeight);
-      if (currentEnginename.equals("")) currentEnginename = currentWeight;
-    }
-    isCheckingVersion = true;
-    inputStream[index] = new BufferedInputStream(process[index].getInputStream());
-    outputStream[index] = new BufferedOutputStream(process[index].getOutputStream());
-    executor[index] = Executors.newSingleThreadScheduledExecutor();
-    stopread = false;
-    executor[index].execute(this::read);
-    //   sendCommand("version");
-    //  ponder();
-    // sendCommand("version");
-    Timer timer = new Timer();
-    timer.schedule(
-        new TimerTask() {
-          public void run() {
-            sendCommand("version");
-            // ponder();
-            // sendCommand("version");
-            this.cancel();
-          }
-        },
-        100);
-    Lizzie.frame.menu.engineMenu.setText("引擎:" + currentEnginename);
+  private void initializeStreams() {
+    inputStream = new BufferedInputStream(process.getInputStream());
+    outputStream = new BufferedOutputStream(process.getOutputStream());
   }
 
   public static List<MoveData> parseInfo(String line) {
@@ -449,327 +367,17 @@ public class Leelaz {
     return bestMoves;
   }
 
-  private void changeEngIco() {
-    switch (currentEngineN) {
-      case 0:
-        featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.icon);
-        if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        break;
-      case 1:
-        featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.icon);
-        if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        break;
-      case 2:
-        featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.icon);
-        if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        break;
-      case 3:
-        featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.icon);
-        if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        break;
-      case 4:
-        featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.icon);
-        if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        break;
-      case 5:
-        featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.icon);
-        if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        break;
-      case 6:
-        featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.icon);
-        if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        break;
-      case 7:
-        featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.icon);
-        if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        break;
-      case 8:
-        featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.icon);
-        if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        break;
-      case 9:
-        featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.icon);
-        if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null) {
-          featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-        }
-        break;
-    }
-  }
   /**
    * Parse a line of Leelaz output
    *
    * @param line output line
    */
   private void parseLine(String line) {
-
     synchronized (this) {
-      // Lizzie.gtpConsole.addLineforce(line);
-
+      Lizzie.gtpConsole.addLine(line);
       if (printCommunication || gtpConsole) {
-        if (line.startsWith("info")) {
-        } else {
-          Lizzie.gtpConsole.addLine(line);
-        }
+        // Lizzie.gtpConsole.addLine(line);
       }
-
       if (line.startsWith("komi=")) {
         try {
           dynamicKomi = Float.parseFloat(line.substring("komi=".length()).trim());
@@ -784,51 +392,31 @@ public class Leelaz {
         }
       } else if (line.equals("\n")) {
         // End of response
-
-      }
-      //      else   if (switching) {
-      //          if (line.contains("tree")) {
-      //            //switching = false;
-      //            sendCommand("version");
-      //          //  ponder();
-      //           //changeEngIco();
-      //          }
-      //        }
-      else if (line.startsWith("info")) {
+      } else if (line.startsWith("info")) {
         isLoaded = true;
         // Clear switching prompt
-        //   if (switching) {
-        //     if (!line.contains("->")) {
-        //      switching = false;
-        //      sendCommand("version");
-        // ponder();
-        //   //changeEngIco();
-        //   }
-        //  }
+        switching = false;
+
         // Display engine command in the title
         Lizzie.frame.updateTitle();
         if (isResponseUpToDate()) {
           // This should not be stale data when the command number match
           this.bestMoves = parseInfo(line.substring(5));
           notifyBestMoveListeners();
-          Lizzie.frame.repaint();
+          Lizzie.frame.refresh();
           // don't follow the maxAnalyzeTime rule if we are in analysis mode
           if (System.currentTimeMillis() - startPonderTime > maxAnalyzeTimeMillis
               && !Lizzie.board.inAnalysisMode()) {
             togglePonder();
           }
         }
-      } else if (line.contains("STAGE")) {
-        Lizzie.gtpConsole.addLineforce(line);
-      } else if (line.contains("> KoMI")) {
-        Lizzie.gtpConsole.addLineforce(line);
-      } else if (line.contains(" ->   ")) {
+      } else if (line.contains(" -> ")) {
         isLoaded = true;
         if (isResponseUpToDate()
             || isThinking
                 && (!isPondering && Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand)) {
           if (line.contains("pass")) {
-          } else {
+          } else if (!switching) {
 
             bestMoves.add(MoveData.fromSummary(line));
             notifyBestMoveListeners();
@@ -892,20 +480,85 @@ public class Leelaz {
           if (isInputCommand) {
             isInputCommand = false;
           }
-
         } else if (isCheckingVersion) {
           String[] ver = params[1].split("\\.");
           int minor = Integer.parseInt(ver[1]);
-          Lizzie.config.leelaversion = minor;
           // Gtp support added in version 15
+          // Gtp support added in version 15
+          version = minor;
+          if (this.currentEngineN == EngineManager.currentEngineNo) {
+            Lizzie.config.leelaversion = minor;
+          }
           if (minor < 15) {
             JOptionPane.showMessageDialog(
                 Lizzie.frame, "Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本是: " + params[1] + ")");
           }
           isCheckingVersion = false;
-          switching = false;
-          ponder();
-          changeEngIco();
+
+          switch (currentEngineN) {
+            case 0:
+              featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
+              break;
+            case 1:
+              featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
+              break;
+            case 2:
+              featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
+              break;
+            case 3:
+              featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
+              break;
+            case 4:
+              featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
+              break;
+            case 5:
+              featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
+              break;
+            case 6:
+              featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
+              break;
+            case 7:
+              featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
+              break;
+            case 8:
+              featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
+              break;
+            case 9:
+              featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.icon);
+              break;
+          }
+          switch (Lizzie.engineManager.currentEngineNo) {
+            case 0:
+              featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.icon);
+              break;
+            case 1:
+              featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.icon);
+              break;
+            case 2:
+              featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.icon);
+              break;
+            case 3:
+              featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.icon);
+              break;
+            case 4:
+              featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.icon);
+              break;
+            case 5:
+              featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.icon);
+              break;
+            case 6:
+              featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.icon);
+              break;
+            case 7:
+              featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.icon);
+              break;
+            case 8:
+              featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.icon);
+              break;
+            case 9:
+              featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.icon);
+              break;
+          }
         }
       }
       if (isheatmap) {
@@ -921,175 +574,13 @@ public class Leelaz {
         if (line.startsWith("winrate:")) {
           isheatmap = false;
           String[] params = line.trim().split(" ");
-          heatwinrate = Double.valueOf(params[1]);
-          Lizzie.frame.repaint();
+          // heatwinrate = Double.valueOf(params[1]);
+          Lizzie.frame.refresh();
         }
       }
     }
   }
 
-  //  private void parseLine2(String line) {
-  //
-  //    synchronized (this) {
-  //      // Lizzie.gtpConsole.addLineforce(line);
-  //      if (printCommunication || gtpConsole) {
-  //        if (line.startsWith("info")) {
-  //        } else {
-  //          Lizzie.gtpConsole.addLine(line);
-  //        }
-  //      }
-  //
-  //      if (line.startsWith("komi=")) {
-  //        try {
-  //          dynamicKomi = Float.parseFloat(line.substring("komi=".length()).trim());
-  //        } catch (NumberFormatException nfe) {
-  //          dynamicKomi = Float.NaN;
-  //        }
-  //      } else if (line.startsWith("opp_komi=")) {
-  //        try {
-  //          dynamicOppKomi = Float.parseFloat(line.substring("opp_komi=".length()).trim());
-  //        } catch (NumberFormatException nfe) {
-  //          dynamicOppKomi = Float.NaN;
-  //        }
-  //      } else if (line.equals("\n")) {
-  //        // End of response
-  //      } else if (line.startsWith("info")) {
-  //        isLoaded = true;
-  //        // Clear switching prompt
-  //        //        if (switching) {
-  //        //          if (!line.contains("->")) {
-  //        //            switching = false;
-  //        //            ponder();
-  //        //            changeEngIco();
-  //        //          }
-  //        //        }
-  //        // Display engine command in the title
-  //        Lizzie.frame.updateTitle();
-  //        if (isResponseUpToDate()) {
-  //          // This should not be stale data when the command number match
-  //          this.bestMoves = parseInfo(line.substring(5));
-  //          notifyBestMoveListeners();
-  //          Lizzie.frame.repaint();
-  //          // don't follow the maxAnalyzeTime rule if we are in analysis mode
-  //          if (System.currentTimeMillis() - startPonderTime > maxAnalyzeTimeMillis
-  //              && !Lizzie.board.inAnalysisMode()) {
-  //            togglePonder();
-  //          }
-  //        }
-  //      } else if (line.contains("STAGE")) {
-  //        Lizzie.gtpConsole.addLineforce(line);
-  //      } else if (line.contains("> KoMI")) {
-  //        Lizzie.gtpConsole.addLineforce(line);
-  //      } else if (line.contains(" ->   ")) {
-  //        isLoaded = true;
-  //        if (isResponseUpToDate()
-  //            || isThinking
-  //                && (!isPondering && Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand)) {
-  //          if (line.contains("pass")) {}
-  //          //          } else {
-  //          ////            if (!switching) {
-  //          ////              bestMoves.add(MoveData.fromSummary(line));
-  //          ////              notifyBestMoveListeners();
-  //          ////              Lizzie.frame.repaint();
-  //          ////            }
-  //          //          }
-  //        }
-  //      } else if (line.startsWith("play")) {
-  //        // In lz-genmove_analyze
-  //        if (Lizzie.frame.isPlayingAgainstLeelaz) {
-  //          Lizzie.board.place(line.substring(5).trim());
-  //        }
-  //        isThinking = false;
-  //
-  //      } else if (line.startsWith("=") || line.startsWith("?")) {
-  //        if (printCommunication || gtpConsole) {
-  //          System.out.print(line);
-  //          Lizzie.gtpConsole.addLine(line);
-  //        }
-  //        String[] params = line.trim().split(" ");
-  //        currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
-  //
-  //        trySendCommandFromQueue();
-  //
-  //        if (line.startsWith("?") || params.length == 1) return;
-  //
-  //        if (isSettingHandicap) {
-  //          bestMoves = new ArrayList<>();
-  //          for (int i = 1; i < params.length; i++) {
-  //            Lizzie.board
-  //                .asCoordinates(params[i])
-  //                .ifPresent(coords -> Lizzie.board.getHistory().setStone(coords, Stone.BLACK));
-  //          }
-  //          isSettingHandicap = false;
-  //        } else if (isThinking && !isPondering) {
-  //          if (isInputCommand) {
-  //            Lizzie.board.place(params[1]);
-  //            togglePonder();
-  //            if (Lizzie.frame.isAutocounting) {
-  //              if (Lizzie.board.getHistory().isBlacksTurn())
-  //                Lizzie.frame.zen.sendCommand("play " + "w " + params[1]);
-  //              else Lizzie.frame.zen.sendCommand("play " + "b " + params[1]);
-  //
-  //              Lizzie.frame.zen.countStones();
-  //            }
-  //          }
-  //          if (Lizzie.frame.isPlayingAgainstLeelaz) {
-  //            Lizzie.board.place(params[1]);
-  //            if (Lizzie.frame.isAutocounting) {
-  //              if (Lizzie.board.getHistory().isBlacksTurn())
-  //                Lizzie.frame.zen.sendCommand("play " + "w " + params[1]);
-  //              else Lizzie.frame.zen.sendCommand("play " + "b " + params[1]);
-  //
-  //              Lizzie.frame.zen.countStones();
-  //            }
-  //            if (!Lizzie.config.playponder) Lizzie.leelaz.sendCommand("name");
-  //          }
-  //          if (!isInputCommand) {
-  //            isPondering = false;
-  //          }
-  //          isThinking = false;
-  //          if (isInputCommand) {
-  //            isInputCommand = false;
-  //          }
-  //
-  //        } else if (isCheckingVersion2) {
-  //          String[] ver = params[1].split("\\.");
-  //          int minor = Integer.parseInt(ver[1]);
-  //          Lizzie.config.leelaversion = minor;
-  //          // Gtp support added in version 15
-  //          if (minor < 15) {
-  //            JOptionPane.showMessageDialog(
-  //                Lizzie.frame,
-  //                "Lizzie requires version 0.15 or later of Leela Zero for analysis (found "
-  //                    + params[1]
-  //                    + ")");
-  //          }
-  //          isCheckingVersion2 = false;
-  //          switching = false;
-  //          ponder();
-  //          changeEngIco();
-  //        }
-  //      }
-  //      if (isheatmap) {
-  //        if (line.startsWith(" ")) {
-  //          try {
-  //            String[] params = line.trim().split("\\s+");
-  //            if (params.length == 19) {
-  //              for (int i = 0; i < params.length; i++)
-  // heatcount.add(Integer.parseInt(params[i]));
-  //            }
-  //          } catch (Exception ex) {
-  //          }
-  //        }
-  //        if (line.startsWith("winrate:")) {
-  //          isheatmap = false;
-  //          String[] params = line.trim().split(" ");
-  //          heatwinrate = Double.valueOf(params[1]);
-  //          Lizzie.frame.repaint();
-  //        }
-  //      }
-  //    }
-  //  }
   /**
    * Parse a move-data line of Leelaz output
    *
@@ -1110,23 +601,13 @@ public class Leelaz {
     }
   }
 
-  /**
-   * Continually reads and processes output from leelaz
-   *
-   * @return
-   */
+  /** Continually reads and processes output from leelaz */
   private void read() {
     try {
       int c;
       StringBuilder line = new StringBuilder();
-      // while ((c = inputStream.read()) != -1) {
-
-      while ((c = inputStream[currentEngineN].read()) != -1) {
+      while ((c = inputStream.read()) != -1) {
         line.append((char) c);
-        if (stopread) {
-          stopread = false;
-          return;
-        }
         if ((c == '\n')) {
           parseLine(line.toString());
           line = new StringBuilder();
@@ -1135,6 +616,7 @@ public class Leelaz {
       // this line will be reached when Leelaz shuts down
       System.out.println("Leelaz process ended.");
 
+      shutdown();
       // Do no exit for switching weights
       // System.exit(-1);
     } catch (IOException e) {
@@ -1142,30 +624,6 @@ public class Leelaz {
       System.exit(-1);
     }
   }
-
-  //  private void read2() {
-  //    try {
-  //      int c;
-  //      StringBuilder line = new StringBuilder();
-  //      // while ((c = inputStream.read()) != -1) {
-  //      while ((c = inputStream2.read()) != -1) {
-  //        line.append((char) c);
-  //
-  //        if ((c == '\n')) {
-  //          if (execuser) parseLine2(line.toString());
-  //          line = new StringBuilder();
-  //        }
-  //      }
-  //      // this line will be reached when Leelaz shuts down
-  //      System.out.println("Leelaz process ended.");
-  //
-  //      // Do no exit for switching weights
-  //      // System.exit(-1);
-  //    } catch (IOException e) {
-  //      e.printStackTrace();
-  //      System.exit(-1);
-  //    }
-  //  }
 
   /**
    * Sends a command to command queue for leelaz to execute
@@ -1180,12 +638,6 @@ public class Leelaz {
       }
       cmdQueue.addLast(command);
       trySendCommandFromQueue();
-    }
-    if (Lizzie.frame.isAutocounting) {
-      if (command.startsWith("play") || command.startsWith("undo")) {
-        Lizzie.frame.zen.sendCommand(command);
-        Lizzie.frame.zen.countStones();
-      }
     }
   }
 
@@ -1220,30 +672,9 @@ public class Leelaz {
     Lizzie.gtpConsole.addCommand(command, cmdNumber);
     command = cmdNumber + " " + command;
     cmdNumber++;
-
     try {
-      outputStream[this.currentEngineN].write((command + "\n").getBytes());
-      outputStream[this.currentEngineN].flush();
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private void sendCommandToLeelaz(String command, int index) {
-    if (command.startsWith("fixed_handicap")) isSettingHandicap = true;
-    if (printCommunication) {
-      System.out.printf("> %d %s\n", cmdNumber, command);
-    }
-    Lizzie.gtpConsole.addCommand(command, cmdNumber);
-    command = cmdNumber + " " + command;
-    cmdNumber++;
-
-    try {
-      {
-        outputStream[index].write((command + "\n").getBytes());
-        outputStream[index].flush();
-      }
+      outputStream.write((command + "\n").getBytes());
+      outputStream.flush();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -1277,7 +708,7 @@ public class Leelaz {
       sendCommand("play " + colorString + " " + move);
       bestMoves = new ArrayList<>();
 
-      if (isPondering && !Lizzie.frame.isPlayingAgainstLeelaz) ponderwithavoid();
+      if (isPondering && !Lizzie.frame.isPlayingAgainstLeelaz) ponder();
     }
   }
 
@@ -1316,9 +747,6 @@ public class Leelaz {
   }
 
   public void genmove_analyze(String color) {
-    if (!Lizzie.config.playponder && Lizzie.frame.isPlayingAgainstLeelaz) {
-      return;
-    }
     String command =
         "lz-genmove_analyze "
             + color
@@ -1380,7 +808,6 @@ public class Leelaz {
             parameters));
     Lizzie.board.clearbestmoves();
   }
-  // this is copyed from https://github.com/zsalch/lizzie/tree/n_avoiddialog
 
   /** This initializes leelaz's pondering mode at its current position */
   public void ponder() {
@@ -1455,8 +882,8 @@ public class Leelaz {
   }
 
   /** End the process */
-  public void shutdown(int index) {
-    process[index].destroy();
+  public void shutdown() {
+    process.destroy();
   }
 
   public List<MoveData> getBestMoves() {
@@ -1499,7 +926,6 @@ public class Leelaz {
    * Return the best win rate and total number of playouts.
    * If no analysis available, win rate is negative and playouts is 0.
    */
-
   public WinrateStats getWinrateStats() {
     WinrateStats stats = new WinrateStats(-100, 0);
 
@@ -1519,7 +945,6 @@ public class Leelaz {
 
     return stats;
   }
-
   /*
    * initializes the normalizing factor for winrate_to_handicap_stones conversion.
    */
@@ -1648,6 +1073,10 @@ public class Leelaz {
       commandList.add(param.toString());
     }
     return commandList;
+  }
+
+  public boolean isStarted() {
+    return started;
   }
 
   public boolean isLoaded() {

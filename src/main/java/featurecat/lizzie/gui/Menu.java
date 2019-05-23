@@ -72,7 +72,6 @@ public class Menu extends MenuBar {
     openItem.addActionListener(new ItemListener());
     fileMenu.add(openItem);
 
-    menuBar.add(fileMenu);
     final JMenuItem openUrlItem = new JMenuItem("打开在线棋谱（Q）");
     openUrlItem.addActionListener(new ItemListener());
     fileMenu.add(openUrlItem);
@@ -95,8 +94,9 @@ public class Menu extends MenuBar {
     pasteItem.setText("从剪贴板粘贴（CTRL+V）");
     pasteItem.addActionListener(new ItemListener());
     fileMenu.add(pasteItem);
-    final JMenuItem resumeItem = new JMenuItem();
     fileMenu.addSeparator();
+
+    final JMenuItem resumeItem = new JMenuItem();
 
     resumeItem.setText("还原上次关闭前的状态");
     resumeItem.addActionListener(new ItemListener());
@@ -535,6 +535,12 @@ public class Menu extends MenuBar {
     closeall.addActionListener(new ItemListener());
     engineMenu.add(closeall);
 
+    final JMenuItem forcecloseall = new JMenuItem();
+    forcecloseall.setText("强制关闭所有引擎");
+    // aboutItem.setMnemonic('A');
+    forcecloseall.addActionListener(new ItemListener());
+    engineMenu.add(forcecloseall);
+
     final JMenuItem closeother = new JMenuItem();
     closeother.setText("关闭当前以外引擎");
     // aboutItem.setMnemonic('A');
@@ -548,6 +554,22 @@ public class Menu extends MenuBar {
     // aboutItem.setMnemonic('A');
     config.addActionListener(new ItemListener());
     engineMenu.add(config);
+  }
+
+  public void updateEngineName() {
+    engine1.setText("引擎1:  " + Lizzie.config.leelazConfig.optString("enginename1", ""));
+
+    engine2.setText("引擎2:  " + Lizzie.config.leelazConfig.optString("enginename2", ""));
+    engine3.setText("引擎3:  " + Lizzie.config.leelazConfig.optString("enginename3", ""));
+    engine4.setText("引擎4:  " + Lizzie.config.leelazConfig.optString("enginename4", ""));
+    engine5.setText("引擎5:  " + Lizzie.config.leelazConfig.optString("enginename5", ""));
+
+    engine6.setText("引擎6:  " + Lizzie.config.leelazConfig.optString("enginename6", ""));
+    engine7.setText("引擎7:  " + Lizzie.config.leelazConfig.optString("enginename7", ""));
+    engine8.setText("引擎8:  " + Lizzie.config.leelazConfig.optString("enginename8", ""));
+    engine9.setText("引擎9:  " + Lizzie.config.leelazConfig.optString("enginename9", ""));
+
+    engine10.setText("引擎10:  " + Lizzie.config.leelazConfig.optString("enginename10", ""));
   }
 
   class ItemListener implements ActionListener {
@@ -681,43 +703,43 @@ public class Menu extends MenuBar {
       }
 
       if (menuItem.getText().startsWith("引擎1") && !menuItem.getText().startsWith("引擎10")) {
-        Lizzie.switchEngine(0);
+        Lizzie.engineManager.switchEngine(0);
         return;
       }
       if (menuItem.getText().startsWith("引擎2")) {
-        Lizzie.switchEngine(1);
+        Lizzie.engineManager.switchEngine(1);
         return;
       }
       if (menuItem.getText().startsWith("引擎3")) {
-        Lizzie.switchEngine(2);
+        Lizzie.engineManager.switchEngine(2);
         return;
       }
       if (menuItem.getText().startsWith("引擎4")) {
-        Lizzie.switchEngine(3);
+        Lizzie.engineManager.switchEngine(3);
         return;
       }
       if (menuItem.getText().startsWith("引擎5")) {
-        Lizzie.switchEngine(4);
+        Lizzie.engineManager.switchEngine(4);
         return;
       }
       if (menuItem.getText().startsWith("引擎6")) {
-        Lizzie.switchEngine(5);
+        Lizzie.engineManager.switchEngine(5);
         return;
       }
       if (menuItem.getText().startsWith("引擎7")) {
-        Lizzie.switchEngine(6);
+        Lizzie.engineManager.switchEngine(6);
         return;
       }
       if (menuItem.getText().startsWith("引擎8")) {
-        Lizzie.switchEngine(7);
+        Lizzie.engineManager.switchEngine(7);
         return;
       }
       if (menuItem.getText().startsWith("引擎9")) {
-        Lizzie.switchEngine(8);
+        Lizzie.engineManager.switchEngine(8);
         return;
       }
       if (menuItem.getText().startsWith("引擎10")) {
-        Lizzie.switchEngine(9);
+        Lizzie.engineManager.switchEngine(9);
         return;
       }
       if (menuItem.getText().startsWith("交替落")) {
@@ -748,7 +770,7 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("关闭所有")) {
         try {
-          Lizzie.leelaz.killAllEngines();
+          Lizzie.engineManager.killAllEngines();
         } catch (Exception ex) {
 
         }
@@ -764,9 +786,28 @@ public class Menu extends MenuBar {
         engine10.setIcon(null);
         return;
       }
+
+      if (menuItem.getText().startsWith("强制关闭所有")) {
+        try {
+          Lizzie.engineManager.forcekillAllEngines();
+        } catch (Exception ex) {
+        }
+        engine1.setIcon(null);
+        engine2.setIcon(null);
+        engine3.setIcon(null);
+        engine4.setIcon(null);
+        engine5.setIcon(null);
+        engine6.setIcon(null);
+        engine7.setIcon(null);
+        engine8.setIcon(null);
+        engine9.setIcon(null);
+        engine10.setIcon(null);
+        return;
+      }
+
       if (menuItem.getText().startsWith("关闭当前")) {
         try {
-          Lizzie.leelaz.killOtherEngines();
+          Lizzie.engineManager.killOtherEngines();
         } catch (Exception ex) {
 
         }

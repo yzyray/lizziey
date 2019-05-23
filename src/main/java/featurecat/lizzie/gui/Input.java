@@ -570,12 +570,12 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       case VK_8:
       case VK_9:
         if (controlIsPressed(e)) {
-          Lizzie.switchEngine(e.getKeyCode() - VK_1);
+          Lizzie.engineManager.switchEngine(e.getKeyCode() - VK_1);
         }
         break;
       case VK_0:
         if (controlIsPressed(e)) {
-          Lizzie.switchEngine(9);
+          Lizzie.engineManager.switchEngine(9);
         }
         break;
 
