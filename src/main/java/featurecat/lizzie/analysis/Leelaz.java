@@ -318,6 +318,38 @@ public class Leelaz {
   }
 
   public void normalQuit() {
+    switch (currentEngineN) {
+      case 0:
+        featurecat.lizzie.gui.Menu.engine1.setIcon(null);
+        break;
+      case 1:
+        featurecat.lizzie.gui.Menu.engine2.setIcon(null);
+        break;
+      case 2:
+        featurecat.lizzie.gui.Menu.engine3.setIcon(null);
+        break;
+      case 3:
+        featurecat.lizzie.gui.Menu.engine4.setIcon(null);
+        break;
+      case 4:
+        featurecat.lizzie.gui.Menu.engine5.setIcon(null);
+        break;
+      case 5:
+        featurecat.lizzie.gui.Menu.engine6.setIcon(null);
+        break;
+      case 6:
+        featurecat.lizzie.gui.Menu.engine7.setIcon(null);
+        break;
+      case 7:
+        featurecat.lizzie.gui.Menu.engine8.setIcon(null);
+        break;
+      case 8:
+        featurecat.lizzie.gui.Menu.engine9.setIcon(null);
+        break;
+      case 9:
+        featurecat.lizzie.gui.Menu.engine10.setIcon(null);
+        break;
+    }
     sendCommand("quit");
     executor.shutdown();
     try {
@@ -413,7 +445,11 @@ public class Leelaz {
             togglePonder();
           }
         }
-      } else if (line.contains(" -> ")) {
+      } else if (line.contains("STAGE")) {
+        Lizzie.gtpConsole.addLineforce(line);
+      } else if (line.contains("> KoMI")) {
+        Lizzie.gtpConsole.addLineforce(line);
+      } else if (line.contains(" ->   ")) {
         isLoaded = true;
         if (isResponseUpToDate()
             || isThinking

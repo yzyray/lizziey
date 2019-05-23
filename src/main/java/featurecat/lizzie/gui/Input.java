@@ -511,7 +511,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         }
         break;
       case VK_Q:
-        // Lizzie.frame.toggleAlwaysOntop();
+        //  Lizzie.frame.toggleAlwaysOntop();
         Lizzie.frame.openOnlineDialog();
         break;
 
