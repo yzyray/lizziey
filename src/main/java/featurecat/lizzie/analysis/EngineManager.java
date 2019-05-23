@@ -27,7 +27,7 @@ public class EngineManager {
     // Start default engine
     Leelaz lz = new Leelaz(engineCommand);
     Lizzie.leelaz = lz;
-    Lizzie.board = lz.board;
+    // Lizzie.board = lz.board;
     if (engineCommand.equals("")) {
       Lizzie.frame.openConfigDialog();
       System.exit(1);
@@ -59,7 +59,7 @@ public class EngineManager {
                               try {
                                 e = new Leelaz(cmd);
                                 // TODO: how sync the board
-                                e.board = Lizzie.board;
+                                // e.board = Lizzie.board;
                                 e.preload =
                                     enginePreloadOpt.map(p -> p.optBoolean(i)).orElse(false);
                                 if (e.preload) {

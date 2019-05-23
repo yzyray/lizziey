@@ -1,7 +1,6 @@
 package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Lizzie;
-import featurecat.lizzie.rules.Board;
 import featurecat.lizzie.rules.BoardData;
 import featurecat.lizzie.rules.Stone;
 import java.io.BufferedInputStream;
@@ -47,7 +46,7 @@ public class Leelaz {
   private boolean printCommunication;
   public boolean gtpConsole;
 
-  public Board board;
+  // public Board board;
   private List<MoveData> bestMoves;
   private List<MoveData> bestMovesTemp;
 
@@ -92,7 +91,7 @@ public class Leelaz {
    * @throws IOException
    */
   public Leelaz(String engineCommand) throws IOException, JSONException {
-    board = new Board();
+    // board = new Board();
     bestMoves = new ArrayList<>();
     bestMovesTemp = new ArrayList<>();
     listeners = new CopyOnWriteArrayList<>();
