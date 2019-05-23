@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -19,11 +20,12 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import org.json.JSONArray;
 
-public class CountResults extends JFrame {
+public class CountResults extends JDialog {
   public int allblackcounts = 0;
   public int allwhitecounts = 0;
   int blackEat = 0;
@@ -34,8 +36,9 @@ public class CountResults extends JFrame {
   public JButton button = new JButton("形式判断");
   public JButton button2 = new JButton("自动判断");
 
-  public CountResults() {
-    this.setAlwaysOnTop(true);
+  public CountResults(Window owner) {
+	  super(owner);
+	  this.setAlwaysOnTop(true);
     this.add(buttonpanel, BorderLayout.SOUTH);
     this.setResizable(false);
 

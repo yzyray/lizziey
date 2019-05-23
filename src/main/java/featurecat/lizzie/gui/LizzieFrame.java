@@ -175,7 +175,7 @@ public class LizzieFrame extends JFrame {
   /** Creates a window */
   public LizzieFrame() {
     super(DEFAULT_TITLE);
-    countResults = new CountResults();
+    countResults = new CountResults(Lizzie.frame);
     boardRenderer = new BoardRenderer(true);
     subBoardRenderer = new SubBoardRenderer(false);
     variationTree = new VariationTree();
