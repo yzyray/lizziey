@@ -95,6 +95,7 @@ public class Config {
     File file = new File(fileName);
     if (!file.canRead()) {
       System.err.printf("Creating config file %s\n", fileName);
+
       try {
         writeConfig(defaultCfg, file);
       } catch (JSONException e) {
@@ -124,7 +125,6 @@ public class Config {
   private JSONObject loadAndMergeConfigdef(
       JSONObject defaultCfg, String fileName, boolean needValidation) throws IOException {
     File file = new File(fileName);
-
     System.err.printf("Creating config file %s\n", fileName);
     try {
       writeConfig(defaultCfg, file);
@@ -187,6 +187,31 @@ public class Config {
     return madeCorrections;
   }
 
+  public static void copyFile(File sourceFile, File targetFile) throws IOException {
+    // 新建文件输入流并对它进行缓冲
+    FileInputStream input = new FileInputStream(sourceFile);
+    BufferedInputStream inBuff = new BufferedInputStream(input);
+
+    // 新建文件输出流并对它进行缓冲
+    FileOutputStream output = new FileOutputStream(targetFile);
+    BufferedOutputStream outBuff = new BufferedOutputStream(output);
+
+    // 缓冲数组
+    byte[] b = new byte[1024 * 5];
+    int len;
+    while ((len = inBuff.read(b)) != -1) {
+      outBuff.write(b, 0, len);
+    }
+    // 刷新此缓冲的输出流
+    outBuff.flush();
+
+    // 关闭流
+    inBuff.close();
+    outBuff.close();
+    output.close();
+    input.close();
+  }
+
   public Config() throws IOException {
     JSONObject defaultConfig = createDefaultConfig();
     JSONObject persistConfig = createPersistConfig();
@@ -195,6 +220,14 @@ public class Config {
     try {
       this.config = loadAndMergeConfig(defaultConfig, configFilename, true);
     } catch (Exception e) {
+      try {
+        File file = new File("");
+        String courseFile = file.getCanonicalPath();
+        File fileconfig = new File(courseFile + "\\" + configFilename);
+        File wrongfileconfig = new File(courseFile + "\\" + "config_wrong.txt");
+        copyFile(fileconfig, wrongfileconfig);
+      } catch (Exception ex) {
+      }
       this.config = loadAndMergeConfigdef(defaultConfig, configFilename, true);
     }
     // Persisted properties
@@ -272,6 +305,11 @@ public class Config {
 
     System.out.println(Locale.getDefault().getLanguage()); // todo add config option for language...
     setLanguage(Locale.getDefault().getLanguage());
+  }
+
+  private File File(String fileold) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   // Modifies config by adding in values from default_config that are missing.
