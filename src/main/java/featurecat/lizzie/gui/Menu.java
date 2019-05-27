@@ -175,6 +175,11 @@ public class Menu extends MenuBar {
     largewin.setText("放大胜率图(Ctrl+W)");
     largewin.addActionListener(new ItemListener());
     viewMenu.add(largewin);
+    
+    final JMenuItem appentComment = new JMenuItem();
+    appentComment.setText("记录胜率到评论中");
+    appentComment.addActionListener(new ItemListener());
+    viewMenu.add(appentComment);
 
     final JMenuItem alwaysontop = new JMenuItem();
     alwaysontop.setText("总在最前(Q)");
@@ -963,7 +968,7 @@ public class Menu extends MenuBar {
         if (!Lizzie.config.showWinrate) Lizzie.config.toggleShowWinrate();
         if (Lizzie.config.showLargeWinrateOnly()) Lizzie.config.toggleLargeWinrate();
         if (!Lizzie.config.showLargeSubBoard()) Lizzie.config.toggleLargeSubBoard();
-        if (Lizzie.config.showComment) Lizzie.config.toggleShowComment();
+        if (!Lizzie.config.showComment) Lizzie.config.toggleShowComment();
         if (!Lizzie.config.showCaptured) Lizzie.config.toggleShowCaptured();
         if (Lizzie.config.showStatus) Lizzie.config.toggleShowStatus();
         if (!Lizzie.config.showVariationGraph) Lizzie.config.toggleShowVariationGraph();
@@ -1096,8 +1101,14 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("打开在线")) {
         Lizzie.frame.openOnlineDialog();
+        return;
       }
-      return;
-    }
+      if (menuItem.getText().startsWith("记录胜")) {
+          Lizzie.config.toggleappendWinrateToComment();
+          return;
+        }
+      
+     }
+    
   }
 }

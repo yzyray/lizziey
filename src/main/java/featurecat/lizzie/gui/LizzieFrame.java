@@ -1821,7 +1821,7 @@ public class LizzieFrame extends JFrame {
     if (Lizzie.config.showComment && commentRect.contains(e.getX(), e.getY())) {
       scrollPane.dispatchEvent(e);
       createCommentImage(true, commentRect.width, commentRect.height);
-      getGraphics()
+      mainPanel.getGraphics()
           .drawImage(
               cachedCommentImage,
               commentRect.x,
@@ -1957,14 +1957,15 @@ public class LizzieFrame extends JFrame {
    */
   private void drawComment(Graphics2D g, int x, int y, int w, int h) {
     String comment = Lizzie.board.getHistory().getData().comment;
-    int fontSize = (int) (min(mainPanel.getWidth(), mainPanel.getHeight()) * 0.0294);
+    int fontSize = (int) (min(mainPanel.getWidth(), mainPanel.getHeight()) * 0.0234);
     if (Lizzie.config.commentFontSize > 0) {
       fontSize = Lizzie.config.commentFontSize;
-    } else if (fontSize < 16) {
-      fontSize = 16;
+    } else if (fontSize < 12) {
+      fontSize = 12;
     }
     Font font = new Font(Lizzie.config.fontName, Font.PLAIN, fontSize);
     commentPane.setFont(font);
+    
     commentPane.setText(comment);
     commentPane.setSize(w, h);
     createCommentImage(!comment.equals(this.cachedComment), w, h);

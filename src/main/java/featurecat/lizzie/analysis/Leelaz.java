@@ -979,7 +979,8 @@ public class Leelaz {
       int totalPlayouts = moves.stream().mapToInt(move -> move.playouts).sum();
       stats.totalPlayouts = totalPlayouts;
 
-      stats.maxWinrate = BoardData.getWinrateFromBestMoves(moves);
+      stats.maxWinrate =bestMoves.get(0).winrate;
+    	//BoardData.getWinrateFromBestMoves(moves);
     }
 
     return stats;
