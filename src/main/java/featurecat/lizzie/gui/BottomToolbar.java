@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.NumberFormat;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -25,7 +27,8 @@ public class BottomToolbar extends JPanel {
   JButton forward10;
   JButton backward10;
   JButton forward1;
-  // JButton backward1;
+  JButton gotomove;
+  JButton backward1;
   JButton openfile;
   JButton savefile;
   JButton analyse;
@@ -47,9 +50,10 @@ public class BottomToolbar extends JPanel {
     countButton = new JButton("形势判断");
     forward10 = new JButton(">>");
     backward10 = new JButton("<<");
-    forward1 = new JButton("跳转");
+    gotomove = new JButton("跳转");
     savefile = new JButton("保存");
-    // backward1 = new JButton("<");
+    backward1 = new JButton("<");
+    forward1 = new JButton(">");
     openfile = new JButton("打开");
     analyse = new JButton("分析|暂停");
     add(clearButton);
@@ -59,11 +63,23 @@ public class BottomToolbar extends JPanel {
     add(forward10);
     add(savefile);
     add(backward10);
+    add(gotomove);
+    add(backward1);
     add(forward1);
-    // add(backward1);
     add(openfile);
     add(analyse);
-
+    firstButton.setFocusable(false);
+    lastButton.setFocusable(false);
+    clearButton.setFocusable(false);
+    countButton.setFocusable(false);
+    forward10.setFocusable(false);
+    backward10.setFocusable(false);
+    gotomove.setFocusable(false);
+    openfile.setFocusable(false);
+    analyse.setFocusable(false);
+    forward1.setFocusable(false);
+    backward1.setFocusable(false);
+    savefile.setFocusable(false);
     NumberFormat nf = NumberFormat.getIntegerInstance();
     nf.setGroupingUsed(false);
     txtMoveNumber =
@@ -90,7 +106,7 @@ public class BottomToolbar extends JPanel {
               txtMoveNumber.setBackground(Color.WHITE);
               txtMoveNumber.setText("");
               Lizzie.board.goToMoveNumberBeyondBranch(changeMoveNumber);
-              setAllUnfocuse();
+              //  setAllUnfocuse();
             }
           }
 
@@ -104,24 +120,38 @@ public class BottomToolbar extends JPanel {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.leelaz.togglePonder();
-            setAllUnfocuse();
+            // setAllUnfocuse();
           }
         });
     forward10.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Input.redo(10);
-            setAllUnfocuse();
+            //  setAllUnfocuse();
           }
         });
     backward10.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Input.undo(10);
-            setAllUnfocuse();
+            //  setAllUnfocuse();
           }
         });
     forward1.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Input.redo(1);
+            // setAllUnfocuse();
+          }
+        });
+    backward1.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Input.undo(1);
+            //  setAllUnfocuse();
+          }
+        });
+    gotomove.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             checkMove();
@@ -132,7 +162,7 @@ public class BottomToolbar extends JPanel {
             // Lizzie.board.savelist(changeMoveNumber);
             // Lizzie.board.setlist();
             Lizzie.board.goToMoveNumberBeyondBranch(changeMoveNumber);
-            setAllUnfocuse();
+            //  setAllUnfocuse();
           }
         });
     //        backward1.addActionListener(
@@ -146,35 +176,35 @@ public class BottomToolbar extends JPanel {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.openFile();
-            setAllUnfocuse();
+            // setAllUnfocuse();
           }
         });
     savefile.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.saveFile();
-            setAllUnfocuse();
+            //  setAllUnfocuse();
           }
         });
     clearButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.board.clear();
-            setAllUnfocuse();
+            //  setAllUnfocuse();
           }
         });
     lastButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             while (Lizzie.board.nextMove()) ;
-            setAllUnfocuse();
+            //   setAllUnfocuse();
           }
         });
     firstButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             while (Lizzie.board.previousMove()) ;
-            setAllUnfocuse();
+            //   setAllUnfocuse();
           }
         });
     countButton.addActionListener(
@@ -188,23 +218,59 @@ public class BottomToolbar extends JPanel {
             } else {
               Lizzie.frame.countstones();
             }
-            setAllUnfocuse();
+            //    setAllUnfocuse();
+          }
+        });
+
+    this.addMouseListener(
+        new MouseListener() {
+          public void mouseClicked(MouseEvent e) {
+            if (txtMoveNumber.isFocusOwner()) {
+              txtMoveNumber.setFocusable(false);
+              txtMoveNumber.setFocusable(true);
+            }
+          }
+
+          @Override
+          public void mousePressed(MouseEvent e) {
+            // TODO Auto-generated method stub
+
+          }
+
+          @Override
+          public void mouseReleased(MouseEvent e) {
+            // TODO Auto-generated method stub
+
+          }
+
+          @Override
+          public void mouseEntered(MouseEvent e) {
+            // TODO Auto-generated method stub
+
+          }
+
+          @Override
+          public void mouseExited(MouseEvent e) {
+            // TODO Auto-generated method stub
+
           }
         });
   }
 
-  public void setAllUnfocuse() {
-    firstButton.setFocusable(false);
-    lastButton.setFocusable(false);
-    clearButton.setFocusable(false);
-    countButton.setFocusable(false);
-    forward10.setFocusable(false);
-    backward10.setFocusable(false);
-    forward1.setFocusable(false);
-    openfile.setFocusable(false);
-    analyse.setFocusable(false);
-    savefile.setFocusable(false);
-  }
+  //  public void setAllUnfocuse() {
+  //    firstButton.setFocusable(false);
+  //    lastButton.setFocusable(false);
+  //    clearButton.setFocusable(false);
+  //    countButton.setFocusable(false);
+  //    forward10.setFocusable(false);
+  //    backward10.setFocusable(false);
+  //    gotomove.setFocusable(false);
+  //    openfile.setFocusable(false);
+  //    analyse.setFocusable(false);
+  //    forward1.setFocusable(false);
+  //    backward1.setFocusable(false);
+  //    savefile.setFocusable(false);
+  // }
 
   private class DigitOnlyFilter extends DocumentFilter {
     @Override
@@ -232,16 +298,20 @@ public class BottomToolbar extends JPanel {
   }
 
   public void setButtonLocation(int boardmid) {
-    openfile.setBounds(boardmid - 286, 0, 56, 26);
-    txtMoveNumber.setBounds(boardmid + 2, 1, 28, 24);
-    forward1.setBounds(boardmid + 30, 0, 56, 26);
-    backward10.setBounds(boardmid - 43, 0, 45, 26);
-    forward10.setBounds(boardmid + 85, 0, 45, 26);
-    firstButton.setBounds(boardmid - 87, 0, 45, 26);
-    lastButton.setBounds(boardmid + 129, 0, 45, 26);
-    analyse.setBounds(boardmid - 176, 0, 90, 26);
-    savefile.setBounds(boardmid - 231, 0, 56, 26);
-    clearButton.setBounds(boardmid + 173, 0, 80, 26);
-    countButton.setBounds(boardmid + 252, 0, 80, 26);
+    int w = Lizzie.frame.getWidth();
+    if (w - boardmid - 30 < 370) boardmid = w / 2 - 50;
+    forward1.setBounds(boardmid + 21, 0, 38, 26);
+    backward1.setBounds(boardmid - 16, 0, 38, 26);
+    openfile.setBounds(boardmid - 303, 0, 56, 26);
+    txtMoveNumber.setBounds(boardmid + 305, 1, 28, 24);
+    gotomove.setBounds(boardmid + 333, 0, 56, 26);
+    backward10.setBounds(boardmid - 60, 0, 45, 26);
+    forward10.setBounds(boardmid + 58, 0, 45, 26);
+    firstButton.setBounds(boardmid - 104, 0, 45, 26);
+    lastButton.setBounds(boardmid + 102, 0, 45, 26);
+    analyse.setBounds(boardmid - 193, 0, 90, 26);
+    savefile.setBounds(boardmid - 248, 0, 56, 26);
+    clearButton.setBounds(boardmid + 146, 0, 80, 26);
+    countButton.setBounds(boardmid + 225, 0, 80, 26);
   }
 }

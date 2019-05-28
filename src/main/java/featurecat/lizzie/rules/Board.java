@@ -2019,9 +2019,9 @@ public class Board implements LeelazListener {
     }
     double lastWR = lastNode.get().bestMoves.get(0).winrate;
     if (lastNode.get().blackToPlay == node.getData().blackToPlay) {
-      return Lizzie.board.getData().bestMoves.get(0).winrate - lastWR;
+      return lastWR - Lizzie.board.getData().bestMoves.get(0).winrate;
     } else {
-      return Lizzie.board.getData().bestMoves.get(0).winrate - (100 - lastWR);
+      return (100 - lastWR) - Lizzie.board.getData().bestMoves.get(0).winrate;
     }
   }
 
@@ -2039,9 +2039,9 @@ public class Board implements LeelazListener {
     }
     double lastWR = lastNode.get().bestMoves.get(0).winrate;
     if (lastNode.get().blackToPlay == node.getData().blackToPlay) {
-      return (100 - node.getData().winrate) - (100 - lastWR);
+      return lastWR - node.getData().winrate;
     } else {
-      return (100 - node.getData().winrate) - (lastWR);
+      return (100 - lastWR) - node.getData().winrate;
     }
   }
 
@@ -2180,7 +2180,6 @@ public class Board implements LeelazListener {
       // we won't set playouts here. but setting winrate is ok... it shows the user
       // that we are
       // computing. i think its fine.
-
     }
     if (Lizzie.config.appendWinrateToComment && !Lizzie.frame.urlSgf) {
       // Append the winrate to the comment

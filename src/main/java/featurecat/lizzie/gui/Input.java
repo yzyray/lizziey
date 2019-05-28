@@ -42,7 +42,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
         }
       }
-
+      if (Lizzie.frame.toolbar.txtMoveNumber.isFocusOwner()) {
+        Lizzie.frame.toolbar.txtMoveNumber.setFocusable(false);
+        Lizzie.frame.toolbar.txtMoveNumber.setFocusable(true);
+      }
     } else if (e.getButton() == MouseEvent.BUTTON3) // right click
       // undo();
 

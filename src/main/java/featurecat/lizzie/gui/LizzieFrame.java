@@ -343,7 +343,7 @@ public class LizzieFrame extends JFrame {
     mainPanel.addMouseMotionListener(input);
     mainPanel.addMouseListener(input);
     mainPanel.addMouseWheelListener(input);
-    toolbar.addMouseWheelListener(input);
+    toolbar.addMouseListener(input);
   }
 
   /** Clears related status from empty board. */
@@ -1031,7 +1031,7 @@ public class LizzieFrame extends JFrame {
           drawPonderingState(g, text1, text2, ponderingX, ponderingY, ponderingY2, ponderingSize);
         }
         if (firstTime) {
-          toolbar.setAllUnfocuse();
+          // toolbar.setAllUnfocuse();
           firstTime = false;
         }
         Optional<String> dynamicKomi = Lizzie.leelaz.getDynamicKomi();

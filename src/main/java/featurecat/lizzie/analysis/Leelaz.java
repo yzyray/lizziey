@@ -409,9 +409,9 @@ public class Leelaz {
   private void parseLine(String line) {
     synchronized (this) {
       Lizzie.gtpConsole.addLine(line);
-      if (printCommunication || gtpConsole) {
-        // Lizzie.gtpConsole.addLine(line);
-      }
+      // if (printCommunication || gtpConsole) {
+      // Lizzie.gtpConsole.addLine(line);
+      // }
       if (line.startsWith("komi=")) {
         try {
           dynamicKomi = Float.parseFloat(line.substring("komi=".length()).trim());
@@ -521,7 +521,6 @@ public class Leelaz {
         } else if (isCheckingVersion) {
           String[] ver = params[1].split("\\.");
           int minor = Integer.parseInt(ver[1]);
-          // Gtp support added in version 15
           // Gtp support added in version 15
           version = minor;
           if (this.currentEngineN == EngineManager.currentEngineNo) {
