@@ -54,27 +54,24 @@ public class EngineManager {
                         .forEach(
                             i -> {
                               String cmd = m.optString(i);
-                              if (cmd != null && !cmd.isEmpty()) {
-                                Leelaz e;
-                                try {
-                                  e = new Leelaz(cmd);
-                                  // TODO: how sync the board
-                                  // e.board = Lizzie.board;
-                                  e.preload =
-                                      enginePreloadOpt.map(p -> p.optBoolean(i)).orElse(false);
-                                  if (e.preload) {
-                                    e.startEngine(i + 1);
-                                  }
-                                  // TODO: Need keep analyze?
-                                  // e.togglePonder();
-                                  engineList.add(e);
-                                } catch (JSONException | IOException e1) {
-                                  e1.printStackTrace();
+                              //  if (cmd != null && !cmd.isEmpty()) {
+                              Leelaz e;
+                              try {
+                                e = new Leelaz(cmd);
+                                // TODO: how sync the board
+                                // e.board = Lizzie.board;
+                                e.preload =
+                                    enginePreloadOpt.map(p -> p.optBoolean(i)).orElse(false);
+                                if (e.preload) {
+                                  e.startEngine(i + 1);
                                 }
-                              } else {
-                                // empty
-                                engineList.add(null);
+                                // TODO: Need keep analyze?
+                                // e.togglePonder();
+                                engineList.add(e);
+                              } catch (JSONException | IOException e1) {
+                                e1.printStackTrace();
                               }
+                              // }
                             });
                   });
             })
@@ -91,18 +88,7 @@ public class EngineManager {
     Optional<JSONArray> enginesOpt =
         Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
     for (int i = 0; i < enginesOpt.get().length(); i++) {
-      if (engineList.get(i + 1) == null) {
-        engineList.remove(i + 1);
-        try {
-          engineList.add(i + 1, new Leelaz(enginesOpt.get().optString(i)));
-        } catch (JSONException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        } catch (IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
-      } else engineList.get(i + 1).engineCommand = enginesOpt.get().optString(i);
+      engineList.get(i + 1).engineCommand = enginesOpt.get().optString(i);
     }
   }
 
@@ -141,8 +127,7 @@ public class EngineManager {
    */
   public void switchEngine(int index) {
     if (index == this.currentEngineNo || index > this.engineList.size()) return;
-    Leelaz newEng = engineList.get(index);
-    if (newEng == null) return;
+
     //    if (curEng.isThinking) {
     //      if (Lizzie.frame.isPlayingAgainstLeelaz) {
     //        Lizzie.frame.isPlayingAgainstLeelaz = false;
@@ -158,7 +143,7 @@ public class EngineManager {
     int movenumber = Lizzie.board.getcurrentmovenumber();
     Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart(), movenumber);
     try {
-      // Leelaz newEng = engineList.get(index);
+      Leelaz newEng = engineList.get(index);
       if (newEng.engineCommand.equals("")) return;
       if (currentEngineNo != -1) {
         Leelaz curEng = engineList.get(this.currentEngineNo);

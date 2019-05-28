@@ -450,8 +450,10 @@ public class SGFParser {
 
   /** Generate node with variations */
   public static void appendComment() {
-    Lizzie.board.getHistory().getData().comment =
-        formatCommentOne(Lizzie.board.getHistory().getCurrentHistoryNode());
+    if (Lizzie.board.getHistory().getCurrentHistoryNode().getData().getPlayouts() > 0) {
+      Lizzie.board.getHistory().getData().comment =
+          formatCommentOne(Lizzie.board.getHistory().getCurrentHistoryNode());
+    }
   }
 
   private static String generateNode(Board board, BoardHistoryNode node) throws IOException {

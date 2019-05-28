@@ -117,7 +117,9 @@ public class LizzieFrame extends JFrame {
   public boolean playerIsBlack = true;
   public int winRateGridLines = 3;
   public int BoardPositionProportion = Lizzie.config.boardPositionProportion;
-
+  private long lastAutocomTime = System.currentTimeMillis();
+  private int autoIntervalCom;
+  private int autoInterval;
   private long lastAutosaveTime = System.currentTimeMillis();
   private boolean isReplayVariation = false;
   private RightClickMenu RightClickMenu = new RightClickMenu();
@@ -303,7 +305,11 @@ public class LizzieFrame extends JFrame {
     // necessary for Windows users - otherwise Lizzie shows a blank white screen on startup until
     // updates occur.
     repaint();
-
+    autoIntervalCom =
+        Lizzie.config.config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec")
+            * 50;
+    autoInterval =
+        Lizzie.config.config.getJSONObject("ui").getInt("autosave-interval-seconds") * 1000;
     // When the window is closed: save the SGF file, then run shutdown()
     this.addWindowListener(
         new WindowAdapter() {
@@ -1862,12 +1868,23 @@ public class LizzieFrame extends JFrame {
   }
 
   private void autosaveMaybe() {
-    int interval =
-        Lizzie.config.config.getJSONObject("ui").getInt("autosave-interval-seconds") * 1000;
-    long currentTime = System.currentTimeMillis();
-    if (interval > 0 && currentTime - lastAutosaveTime >= interval) {
-      Lizzie.board.autosave();
-      lastAutosaveTime = currentTime;
+
+    if (autoInterval > 0) {
+      long currentTime = System.currentTimeMillis();
+      if (currentTime - lastAutosaveTime >= autoInterval) {
+        Lizzie.board.autosave();
+        lastAutosaveTime = currentTime;
+        Lizzie.board.updateComment();
+      }
+    }
+    if (Lizzie.config.appendWinrateToComment && !Lizzie.frame.urlSgf) {
+      long currentTime = System.currentTimeMillis();
+
+      if (autoIntervalCom > 0 && currentTime - lastAutocomTime >= autoIntervalCom) {
+        lastAutocomTime = currentTime;
+        // Append the winrate to the comment
+        SGFParser.appendComment();
+      }
     }
   }
 

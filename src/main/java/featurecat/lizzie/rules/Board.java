@@ -2181,6 +2181,10 @@ public class Board implements LeelazListener {
       // that we are
       // computing. i think its fine.
     }
+    updateComment();
+  }
+
+  public void updateComment() {
     if (Lizzie.config.appendWinrateToComment && !Lizzie.frame.urlSgf) {
       // Append the winrate to the comment
       SGFParser.appendComment();

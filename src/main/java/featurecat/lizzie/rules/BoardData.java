@@ -160,18 +160,18 @@ public class BoardData {
     	//added for change bestmoves when playouts is not increased
       bestMoves = moves;
       setPlayouts(MoveData.getPlayouts(moves));
-      winrate = getWinrateFromBestMoves(moves);
+      winrate = moves.get(0).winrate;
+    		  //getWinrateFromBestMoves(moves);
     }
-  int a=  MoveData.getPlayouts(moves) ;
-  int b=3;
   }
 
   public static double getWinrateFromBestMoves(List<MoveData> bestMoves) {
     // return the weighted average winrate of bestMoves
-    return bestMoves
-        .stream()
-        .mapToDouble(move -> move.winrate * move.playouts / MoveData.getPlayouts(bestMoves))
-        .sum();
+	  return bestMoves.get(0).winrate;
+//    return bestMoves
+//        .stream()
+//        .mapToDouble(move -> move.winrate * move.playouts / MoveData.getPlayouts(bestMoves))
+//        .sum();
   }
 
   public String bestMovesToString() {
