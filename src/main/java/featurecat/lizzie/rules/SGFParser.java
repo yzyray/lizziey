@@ -349,7 +349,7 @@ public class SGFParser {
   }
 
   public static void save(Board board, String filename) throws IOException {
-    try (Writer writer = new OutputStreamWriter(new FileOutputStream(filename))) {
+    try (Writer writer = new OutputStreamWriter(new FileOutputStream(filename), "UTF-8")) {
       saveToStream(board, writer);
     }
   }
