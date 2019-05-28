@@ -27,6 +27,7 @@ public class BottomToolbar extends JPanel {
   JButton forward1;
   // JButton backward1;
   JButton openfile;
+  JButton savefile;
   JButton analyse;
   JFormattedTextField txtMoveNumber;
   private int changeMoveNumber;
@@ -47,14 +48,16 @@ public class BottomToolbar extends JPanel {
     forward10 = new JButton(">>");
     backward10 = new JButton("<<");
     forward1 = new JButton("跳转");
+    savefile = new JButton("保存");
     // backward1 = new JButton("<");
-    openfile = new JButton("打开文件");
+    openfile = new JButton("打开");
     analyse = new JButton("分析|暂停");
     add(clearButton);
     add(lastButton);
     add(firstButton);
     add(countButton);
     add(forward10);
+    add(savefile);
     add(backward10);
     add(forward1);
     // add(backward1);
@@ -146,6 +149,13 @@ public class BottomToolbar extends JPanel {
             setAllUnfocuse();
           }
         });
+    savefile.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.saveFile();
+            setAllUnfocuse();
+          }
+        });
     clearButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -193,6 +203,7 @@ public class BottomToolbar extends JPanel {
     forward1.setFocusable(false);
     openfile.setFocusable(false);
     analyse.setFocusable(false);
+    savefile.setFocusable(false);
   }
 
   private class DigitOnlyFilter extends DocumentFilter {
@@ -221,15 +232,16 @@ public class BottomToolbar extends JPanel {
   }
 
   public void setButtonLocation(int boardmid) {
-    txtMoveNumber.setBounds(boardmid - 11, 1, 28, 24);
-    forward1.setBounds(boardmid + 17, 0, 56, 26);
-    backward10.setBounds(boardmid - 56, 0, 45, 26);
-    forward10.setBounds(boardmid + 72, 0, 45, 26);
-    firstButton.setBounds(boardmid - 100, 0, 45, 26);
-    lastButton.setBounds(boardmid + 116, 0, 45, 26);
-    analyse.setBounds(boardmid - 189, 0, 90, 26);
-    openfile.setBounds(boardmid - 268, 0, 80, 26);
-    clearButton.setBounds(boardmid + 160, 0, 80, 26);
-    countButton.setBounds(boardmid + 239, 0, 80, 26);
+    openfile.setBounds(boardmid - 286, 0, 56, 26);
+    txtMoveNumber.setBounds(boardmid + 2, 1, 28, 24);
+    forward1.setBounds(boardmid + 30, 0, 56, 26);
+    backward10.setBounds(boardmid - 43, 0, 45, 26);
+    forward10.setBounds(boardmid + 85, 0, 45, 26);
+    firstButton.setBounds(boardmid - 87, 0, 45, 26);
+    lastButton.setBounds(boardmid + 129, 0, 45, 26);
+    analyse.setBounds(boardmid - 176, 0, 90, 26);
+    savefile.setBounds(boardmid - 231, 0, 56, 26);
+    clearButton.setBounds(boardmid + 173, 0, 80, 26);
+    countButton.setBounds(boardmid + 252, 0, 80, 26);
   }
 }

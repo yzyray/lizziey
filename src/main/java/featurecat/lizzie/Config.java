@@ -283,6 +283,7 @@ public class Config {
     fastChange = config.getJSONObject("leelaz").optBoolean("fast-engine-change", true);
 
     if (theme.fontName() != null) fontName = theme.fontName();
+    else fontName = "黑体";
 
     if (theme.uiFontName() != null) uiFontName = theme.uiFontName();
 

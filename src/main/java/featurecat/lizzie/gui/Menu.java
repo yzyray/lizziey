@@ -98,7 +98,7 @@ public class Menu extends MenuBar {
 
     final JMenuItem resumeItem = new JMenuItem();
 
-    resumeItem.setText("还原上次关闭前的状态");
+    resumeItem.setText("还原上次关闭前的棋谱");
     resumeItem.addActionListener(new ItemListener());
     fileMenu.add(resumeItem);
 
@@ -1097,6 +1097,7 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("还原上次")) {
         Lizzie.board.resumePreviousGame();
+        Lizzie.board.setMovelistAll();
         return;
       }
       if (menuItem.getText().startsWith("打开在线")) {

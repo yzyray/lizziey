@@ -58,7 +58,7 @@ public class OnlineDialog extends JDialog {
     getRootPane().setDefaultButton(okButton);
 
     JButton cancelButton = new JButton(resourceBundle.getString("OnlineDialog.button.cancel"));
-    cancelButton.setBounds(231, 138, 74, 29);
+    cancelButton.setBounds(281, 138, 74, 29);
     cancelButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -67,6 +67,16 @@ public class OnlineDialog extends JDialog {
         });
     cancelButton.setActionCommand("Cancel");
     buttonPane.add(cancelButton);
+
+    JButton quitButton = new JButton("中断");
+    quitButton.setBounds(195, 138, 74, 29);
+    quitButton.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.urlSgf = false;
+          }
+        });
+    buttonPane.add(quitButton);
 
     JLabel lblUrl = new JLabel(resourceBundle.getString("OnlineDialog.title.url"));
     lblUrl.setBounds(10, 51, 56, 14);
@@ -117,6 +127,7 @@ public class OnlineDialog extends JDialog {
 
   private void applyChange() {
     //
+    Lizzie.frame.urlSgf = true;
     String id = checkUrl();
     if (id != null && !id.isEmpty()) {
       try {
@@ -208,6 +219,9 @@ public class OnlineDialog extends JDialog {
         new Runnable() {
           @Override
           public void run() {
+            if (!Lizzie.frame.urlSgf) {
+              online.shutdown();
+            }
             try {
               ajax.open("GET", ajaxUrl, true);
               ajax.send(params);

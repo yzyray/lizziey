@@ -96,6 +96,7 @@ public class LizzieFrame extends JFrame {
   public static Menu menu;
   public static BottomToolbar toolbar;
 
+  public static boolean urlSgf = false;
   public static Font uiFont;
   public static Font winrateFont;
   public boolean isshowrightmenu;
@@ -1959,11 +1960,11 @@ public class LizzieFrame extends JFrame {
    */
   private void drawComment(Graphics2D g, int x, int y, int w, int h) {
     String comment = Lizzie.board.getHistory().getData().comment;
-    int fontSize = (int) (min(mainPanel.getWidth(), mainPanel.getHeight()) * 0.0234);
+    int fontSize = (int) (min(mainPanel.getWidth(), mainPanel.getHeight()) * 0.025);
     if (Lizzie.config.commentFontSize > 0) {
       fontSize = Lizzie.config.commentFontSize;
-    } else if (fontSize < 12) {
-      fontSize = 12;
+    } else if (fontSize < 13) {
+      fontSize = 13;
     }
     Font font = new Font(Lizzie.config.fontName, Font.PLAIN, fontSize);
     commentPane.setFont(font);

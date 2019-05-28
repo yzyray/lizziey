@@ -2006,10 +2006,6 @@ public class Board implements LeelazListener {
 
   public double lastWinrateDiff2(BoardHistoryNode node) {
 
-    // if(Lizzie.board.getData().getPlayouts()==0)
-    if (node.getData().getPlayouts() == 0) {
-      return 0;
-    }
     // Last winrate
     Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
     boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
@@ -2030,9 +2026,7 @@ public class Board implements LeelazListener {
   }
 
   public double lastWinrateDiff(BoardHistoryNode node) {
-    if (node.getData().getPlayouts() == 0) {
-      return 0;
-    }
+
     Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
     boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
     while (!validLastWinrate && node.previous().isPresent()) {
@@ -2188,7 +2182,7 @@ public class Board implements LeelazListener {
       // computing. i think its fine.
 
     }
-    if (Lizzie.config.appendWinrateToComment) {
+    if (Lizzie.config.appendWinrateToComment && !Lizzie.frame.urlSgf) {
       // Append the winrate to the comment
       SGFParser.appendComment();
     }
