@@ -376,7 +376,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_O:
         Lizzie.frame.noautocounting();
-       // if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+        // if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
         LizzieFrame.openFile();
         break;
 

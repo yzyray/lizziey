@@ -449,12 +449,11 @@ public class SGFParser {
   }
 
   /** Generate node with variations */
-  
-  public static void appendComment()
-  {
-	  Lizzie.board.getHistory().getData().comment = formatCommentOne(Lizzie.board.getHistory().getCurrentHistoryNode());
+  public static void appendComment() {
+    Lizzie.board.getHistory().getData().comment =
+        formatCommentOne(Lizzie.board.getHistory().getCurrentHistoryNode());
   }
-  
+
   private static String generateNode(Board board, BoardHistoryNode node) throws IOException {
     StringBuilder builder = new StringBuilder("");
 
@@ -565,8 +564,8 @@ public class SGFParser {
         String.format(wf, blackWinrate ? "黑" : "白", curWinrate, lastMoveDiff, engine, playouts);
 
     if (!data.comment.isEmpty()) {
-    	String wp =
-  	          "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\([^\\(\\)/]* \\/ [0-9\\.]*[kmKM]* 计算量\\)";
+      String wp =
+          "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\([^\\(\\)/]* \\/ [0-9\\.]*[kmKM]* 计算量\\)";
       if (data.comment.matches("(?s).*" + wp + "(?s).*")) {
         nc = data.comment.replaceAll(wp, nc);
       } else {
@@ -575,71 +574,70 @@ public class SGFParser {
     }
     return nc;
   }
-  
-  
+
   private static String formatCommentOne(BoardHistoryNode node) {
-	    BoardData data = node.getData();
-	    String engine = Lizzie.leelaz.currentWeight();
+    BoardData data = node.getData();
+    String engine = Lizzie.leelaz.currentWeight();
 
-	    // Playouts
-	    String playouts = Lizzie.frame.getPlayoutsString(data.getPlayouts());
+    // Playouts
+    String playouts = Lizzie.frame.getPlayoutsString(data.getPlayouts());
 
-	    // Last winrate
-	    Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
-	    boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
-	    double lastWR = validLastWinrate ? lastNode.get().getWinrate() : 50;
+    // Last winrate
+    Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
+    boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
+    double lastWR = validLastWinrate ? lastNode.get().getWinrate() : 50;
 
-	    // Current winrate
-	    boolean validWinrate = (data.getPlayouts() > 0);
-	    double curWR;
-	    if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black")) {
-	      curWR = validWinrate ? data.getWinrate() : lastWR;
-	    } else {
-	      curWR = validWinrate ? data.getWinrate() : 100 - lastWR;
-	    }
+    // Current winrate
+    boolean validWinrate = (data.getPlayouts() > 0);
+    double curWR;
+    if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black")) {
+      curWR = validWinrate ? data.getWinrate() : lastWR;
+    } else {
+      curWR = validWinrate ? data.getWinrate() : 100 - lastWR;
+    }
 
-	    String curWinrate = "";
-	    if (Lizzie.config.handicapInsteadOfWinrate) {
-	      curWinrate = String.format("%.2f", Leelaz.winrateToHandicap(100 - curWR));
-	    } else {
-	      curWinrate = String.format("%.1f%%", 100 - curWR);
-	    }
+    String curWinrate = "";
+    if (Lizzie.config.handicapInsteadOfWinrate) {
+      curWinrate = String.format("%.2f", Leelaz.winrateToHandicap(100 - curWR));
+    } else {
+      curWinrate = String.format("%.1f%%", 100 - curWR);
+    }
 
-	    // Last move difference winrate
-	    String lastMoveDiff = "";
-	    if (validLastWinrate && validWinrate) {
-	      if (Lizzie.config.handicapInsteadOfWinrate) {
-	        double currHandicapedWR = Leelaz.winrateToHandicap(100 - curWR);
-	        double lastHandicapedWR = Leelaz.winrateToHandicap(lastWR);
-	        lastMoveDiff = String.format(": %.2f", currHandicapedWR - lastHandicapedWR);
-	      } else {
-	        double diff;
-	        if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black")) {
-	          diff = lastWR - curWR;
-	        } else {
-	          diff = 100 - lastWR - curWR;
-	        }
-	        lastMoveDiff = String.format("(%s%.1f%%)", diff >= 0 ? "+" : "-", Math.abs(diff));
-	      }
-	    }
+    // Last move difference winrate
+    String lastMoveDiff = "";
+    if (validLastWinrate && validWinrate) {
+      if (Lizzie.config.handicapInsteadOfWinrate) {
+        double currHandicapedWR = Leelaz.winrateToHandicap(100 - curWR);
+        double lastHandicapedWR = Leelaz.winrateToHandicap(lastWR);
+        lastMoveDiff = String.format(": %.2f", currHandicapedWR - lastHandicapedWR);
+      } else {
+        double diff;
+        if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black")) {
+          diff = lastWR - curWR;
+        } else {
+          diff = 100 - lastWR - curWR;
+        }
+        lastMoveDiff = String.format("(%s%.1f%%)", diff >= 0 ? "+" : "-", Math.abs(diff));
+      }
+    }
 
-	    String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
-	    boolean blackWinrate =
-	        !node.getData().blackToPlay || Lizzie.config.uiConfig.getBoolean("win-rate-always-black");
-	    String nc =
-	        String.format(wf, blackWinrate ? "黑" : "白", curWinrate, lastMoveDiff, engine, playouts);
+    String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
+    boolean blackWinrate =
+        !node.getData().blackToPlay || Lizzie.config.uiConfig.getBoolean("win-rate-always-black");
+    String nc =
+        String.format(wf, blackWinrate ? "黑" : "白", curWinrate, lastMoveDiff, engine, playouts);
 
-	    if (!data.comment.isEmpty()) {
-	      String wp =
-	          "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\([^\\(\\)/]* \\/ [0-9\\.]*[kmKM]* 计算量\\)";
-	      if (data.comment.matches("(?s).*" + wp + "(?s).*")) {
-	        nc = data.comment.replaceAll(wp, nc);
-	      } else {
-	        nc = String.format("%s\n\n%s", nc, data.comment);
-	      }
-	    }
-	    return nc;
-	  }
+    if (!data.comment.isEmpty()) {
+      String wp =
+          "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\([^\\(\\)/]* \\/ [0-9\\.]*[kmKM]* 计算量\\)";
+      if (data.comment.matches("(?s).*" + wp + "(?s).*")) {
+        nc = data.comment.replaceAll(wp, nc);
+      } else {
+        nc = String.format("%s\n\n%s", nc, data.comment);
+      }
+    }
+    return nc;
+  }
 
   /** Format Comment with following format: <Winrate> <Playouts> */
   private static String formatNodeData(BoardHistoryNode node) {

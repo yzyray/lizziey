@@ -640,6 +640,7 @@ public class LizzieFrame extends JFrame {
           "Error",
           JOptionPane.ERROR);
     }
+    Lizzie.board.setMovelistAll();
   }
 
   private BufferedImage cachedImage;
@@ -1821,7 +1822,8 @@ public class LizzieFrame extends JFrame {
     if (Lizzie.config.showComment && commentRect.contains(e.getX(), e.getY())) {
       scrollPane.dispatchEvent(e);
       createCommentImage(true, commentRect.width, commentRect.height);
-      mainPanel.getGraphics()
+      mainPanel
+          .getGraphics()
           .drawImage(
               cachedCommentImage,
               commentRect.x,
@@ -1965,7 +1967,7 @@ public class LizzieFrame extends JFrame {
     }
     Font font = new Font(Lizzie.config.fontName, Font.PLAIN, fontSize);
     commentPane.setFont(font);
-    
+
     commentPane.setText(comment);
     commentPane.setSize(w, h);
     createCommentImage(!comment.equals(this.cachedComment), w, h);

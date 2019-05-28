@@ -1,7 +1,6 @@
 package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Lizzie;
-import featurecat.lizzie.rules.BoardData;
 import featurecat.lizzie.rules.Stone;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -979,8 +978,8 @@ public class Leelaz {
       int totalPlayouts = moves.stream().mapToInt(move -> move.playouts).sum();
       stats.totalPlayouts = totalPlayouts;
 
-      stats.maxWinrate =bestMoves.get(0).winrate;
-    	//BoardData.getWinrateFromBestMoves(moves);
+      stats.maxWinrate = bestMoves.get(0).winrate;
+      // BoardData.getWinrateFromBestMoves(moves);
     }
 
     return stats;

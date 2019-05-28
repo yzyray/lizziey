@@ -175,7 +175,7 @@ public class Menu extends MenuBar {
     largewin.setText("放大胜率图(Ctrl+W)");
     largewin.addActionListener(new ItemListener());
     viewMenu.add(largewin);
-    
+
     final JMenuItem appentComment = new JMenuItem();
     appentComment.setText("记录胜率到评论中");
     appentComment.addActionListener(new ItemListener());
@@ -1104,11 +1104,9 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("记录胜")) {
-          Lizzie.config.toggleappendWinrateToComment();
-          return;
-        }
-      
-     }
-    
+        Lizzie.config.toggleappendWinrateToComment();
+        return;
+      }
+    }
   }
 }

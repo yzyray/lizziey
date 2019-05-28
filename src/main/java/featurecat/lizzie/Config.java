@@ -341,18 +341,17 @@ public class Config {
     this.showlcbwinrate = !this.showlcbwinrate;
   }
 
-  
-  
   public void toggleappendWinrateToComment() {
-  this.appendWinrateToComment=!appendWinrateToComment;
-  Lizzie.config.uiConfig.put("append-winrate-to-comment", appendWinrateToComment);
-  try {
-    Lizzie.config.save();
-  } catch (IOException e) {
-    // TODO Auto-generated catch block
-    e.printStackTrace();
+    this.appendWinrateToComment = !appendWinrateToComment;
+    Lizzie.config.uiConfig.put("append-winrate-to-comment", appendWinrateToComment);
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
-  }
+
   public void toggleShowMoveNumber() {
     if (this.onlyLastMoveNumber > 0) {
       allowMoveNumber =
