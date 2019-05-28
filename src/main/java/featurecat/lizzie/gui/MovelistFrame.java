@@ -341,7 +341,7 @@ public class MovelistFrame extends JPanel {
           Movelistwr mwr = Lizzie.board.movelistwr.get(i);
           if (!mwr.isdelete)
             if (mwr.isblack && checkBlack.isSelected() || !mwr.isblack && checkWhite.isSelected())
-              if (Math.abs(mwr.diffwinrate) > (int) dropwinratechooser.getValue())
+              if (Math.abs(mwr.diffwinrate) >= (int) dropwinratechooser.getValue())
                 if (mwr.playouts >= (int) playoutschooser.getValue()
                     && mwr.previousplayouts >= (int) playoutschooser.getValue()) row = row + 1;
         }
@@ -370,7 +370,7 @@ public class MovelistFrame extends JPanel {
 
           if (mwr.isblack && checkBlack.isSelected() || !mwr.isblack && checkWhite.isSelected())
             if (!mwr.isdelete)
-              if (Math.abs(mwr.diffwinrate) > (int) dropwinratechooser.getValue())
+              if (Math.abs(mwr.diffwinrate) >= (int) dropwinratechooser.getValue())
                 if (mwr.playouts >= (int) playoutschooser.getValue()
                     && mwr.previousplayouts >= (int) playoutschooser.getValue()) data2.add(mwr);
         }
