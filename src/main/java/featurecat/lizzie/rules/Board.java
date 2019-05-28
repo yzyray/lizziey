@@ -2045,9 +2045,9 @@ public class Board implements LeelazListener {
     }
     double lastWR = lastNode.get().bestMoves.get(0).winrate;
     if (lastNode.get().blackToPlay == node.getData().blackToPlay) {
-      return node.getData().winrate - lastWR;
+      return (100 - node.getData().winrate) - (100 - lastWR);
     } else {
-      return node.getData().winrate - (100 - lastWR);
+      return (100 - node.getData().winrate) - (lastWR);
     }
   }
 
