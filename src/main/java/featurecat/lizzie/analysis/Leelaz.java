@@ -664,6 +664,9 @@ public class Leelaz {
             Lizzie.board.nextMove();
           }
         }
+      } else {
+        Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
+        Lizzie.frame.toolbar.isAutoAna = false;
       }
   }
 

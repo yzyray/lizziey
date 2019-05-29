@@ -38,7 +38,7 @@ public class BottomToolbar extends JPanel {
   private int changeMoveNumber;
   public boolean isAutoAna = false;
 
-  JCheckBox chkAutoAnalyse;
+  public JCheckBox chkAutoAnalyse;
   public JCheckBox chkAnaTime;
   public JCheckBox chkAnaPlayouts;
   public JCheckBox chkAnaFirstPlayouts;
