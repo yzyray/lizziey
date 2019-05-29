@@ -220,6 +220,14 @@ public class LizzieFrame extends JFrame {
       setSize(960, 650);
       setLocationRelativeTo(null); // Start centered, needs to be called *after* setSize...
     }
+    if (Lizzie.config.startMaximized && !persisted) {
+      setExtendedState(Frame.MAXIMIZED_BOTH);
+
+    } else if (persisted && Lizzie.config.persistedUi.getBoolean("window-maximized")) {
+      setExtendedState(Frame.MAXIMIZED_BOTH);
+      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("main-window-position");
+      this.toolbarHeight = pos.getInt(0);
+    }
 
     mainPanel =
         new JPanel(true) {
@@ -280,11 +288,6 @@ public class LizzieFrame extends JFrame {
       winrateFont = new Font(Lizzie.config.winrateFontName, Font.BOLD, 12);
     }
 
-    if (Lizzie.config.startMaximized && !persisted) {
-      setExtendedState(Frame.MAXIMIZED_BOTH);
-    } else if (persisted && Lizzie.config.persistedUi.getBoolean("window-maximized")) {
-      setExtendedState(Frame.MAXIMIZED_BOTH);
-    }
     htmlKit = new HtmlKit();
     htmlDoc = (HTMLDocument) htmlKit.createDefaultDocument();
     htmlStyle = htmlKit.getStyleSheet();
@@ -383,7 +386,7 @@ public class LizzieFrame extends JFrame {
     mainPanel.addMouseMotionListener(input);
     mainPanel.addMouseListener(input);
     mainPanel.addMouseWheelListener(input);
-    toolbar.addMouseListener(input);
+    toolbar.addMouseWheelListener(input);
   }
 
   /** Clears related status from empty board. */

@@ -42,10 +42,49 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
         }
       }
+
       if (Lizzie.frame.toolbar.txtMoveNumber.isFocusOwner()) {
+
+        Lizzie.frame.toolbar.txtAnaTime.setFocusable(false);
+        Lizzie.frame.toolbar.txtAnaPlayouts.setFocusable(false);
+        Lizzie.frame.toolbar.txtAnaFirstPlayouts.setFocusable(false);
         Lizzie.frame.toolbar.txtMoveNumber.setFocusable(false);
+        Lizzie.frame.toolbar.txtAnaTime.setFocusable(true);
+        Lizzie.frame.toolbar.txtAnaPlayouts.setFocusable(true);
+        Lizzie.frame.toolbar.txtAnaFirstPlayouts.setFocusable(true);
         Lizzie.frame.toolbar.txtMoveNumber.setFocusable(true);
       }
+      if (Lizzie.frame.toolbar.txtAnaTime.isFocusOwner()) {
+        Lizzie.frame.toolbar.txtAnaPlayouts.setFocusable(false);
+        Lizzie.frame.toolbar.txtAnaFirstPlayouts.setFocusable(false);
+        Lizzie.frame.toolbar.txtMoveNumber.setFocusable(false);
+        Lizzie.frame.toolbar.txtAnaTime.setFocusable(false);
+        Lizzie.frame.toolbar.txtAnaPlayouts.setFocusable(true);
+        Lizzie.frame.toolbar.txtAnaFirstPlayouts.setFocusable(true);
+        Lizzie.frame.toolbar.txtMoveNumber.setFocusable(true);
+        Lizzie.frame.toolbar.txtAnaTime.setFocusable(true);
+      }
+      if (Lizzie.frame.toolbar.txtAnaPlayouts.isFocusOwner()) {
+        Lizzie.frame.toolbar.txtAnaTime.setFocusable(false);
+        Lizzie.frame.toolbar.txtAnaFirstPlayouts.setFocusable(false);
+        Lizzie.frame.toolbar.txtMoveNumber.setFocusable(false);
+        Lizzie.frame.toolbar.txtAnaPlayouts.setFocusable(false);
+        Lizzie.frame.toolbar.txtAnaTime.setFocusable(true);
+        Lizzie.frame.toolbar.txtAnaFirstPlayouts.setFocusable(true);
+        Lizzie.frame.toolbar.txtMoveNumber.setFocusable(true);
+        Lizzie.frame.toolbar.txtAnaPlayouts.setFocusable(true);
+      }
+      if (Lizzie.frame.toolbar.txtAnaFirstPlayouts.isFocusOwner()) {
+        Lizzie.frame.toolbar.txtAnaTime.setFocusable(false);
+        Lizzie.frame.toolbar.txtAnaPlayouts.setFocusable(false);
+        Lizzie.frame.toolbar.txtMoveNumber.setFocusable(false);
+        Lizzie.frame.toolbar.txtAnaFirstPlayouts.setFocusable(false);
+        Lizzie.frame.toolbar.txtAnaTime.setFocusable(true);
+        Lizzie.frame.toolbar.txtAnaPlayouts.setFocusable(true);
+        Lizzie.frame.toolbar.txtMoveNumber.setFocusable(true);
+        Lizzie.frame.toolbar.txtAnaFirstPlayouts.setFocusable(true);
+      }
+
     } else if (e.getButton() == MouseEvent.BUTTON3) // right click
       // undo();
 

@@ -10,7 +10,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.NumberFormat;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.AttributeSet;
@@ -34,6 +36,20 @@ public class BottomToolbar extends JPanel {
   JButton analyse;
   JFormattedTextField txtMoveNumber;
   private int changeMoveNumber;
+  public boolean isAutoAna = false;
+
+  JCheckBox chkAutoAnalyse;
+  public JCheckBox chkAnaTime;
+  public JCheckBox chkAnaPlayouts;
+  public JCheckBox chkAnaFirstPlayouts;
+  public JFormattedTextField txtAnaTime;
+  public JFormattedTextField txtAnaPlayouts;
+  public JFormattedTextField txtAnaFirstPlayouts;
+  // JButton cancelAutoAna;
+  JLabel lblchkAutoAnalyse;
+  JLabel lbltxtAnaTime;
+  JLabel lbltxtAnaPlayouts;
+  JLabel lblAnaFirstPlayouts;
 
   public BottomToolbar() {
     Color hsbColor =
@@ -68,6 +84,7 @@ public class BottomToolbar extends JPanel {
     add(forward1);
     add(openfile);
     add(analyse);
+
     firstButton.setFocusable(false);
     lastButton.setFocusable(false);
     clearButton.setFocusable(false);
@@ -80,6 +97,7 @@ public class BottomToolbar extends JPanel {
     forward1.setFocusable(false);
     backward1.setFocusable(false);
     savefile.setFocusable(false);
+
     NumberFormat nf = NumberFormat.getIntegerInstance();
     nf.setGroupingUsed(false);
     txtMoveNumber =
@@ -226,15 +244,51 @@ public class BottomToolbar extends JPanel {
         new MouseListener() {
           public void mouseClicked(MouseEvent e) {
             if (txtMoveNumber.isFocusOwner()) {
+
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
               txtMoveNumber.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
               txtMoveNumber.setFocusable(true);
+            }
+            if (txtAnaTime.isFocusOwner()) {
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaTime.setFocusable(true);
+            }
+            if (txtAnaPlayouts.isFocusOwner()) {
+              txtAnaTime.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+            }
+            if (txtAnaFirstPlayouts.isFocusOwner()) {
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
             }
           }
 
           @Override
           public void mousePressed(MouseEvent e) {
             // TODO Auto-generated method stub
-
           }
 
           @Override
@@ -255,6 +309,267 @@ public class BottomToolbar extends JPanel {
 
           }
         });
+
+    chkAutoAnalyse = new JCheckBox();
+    add(chkAutoAnalyse);
+    lblchkAutoAnalyse = new JLabel("自动分析");
+    chkAutoAnalyse.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD
+            isAutoAna = chkAutoAnalyse.isSelected();
+            if (txtMoveNumber.isFocusOwner()) {
+
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+            }
+            if (txtAnaTime.isFocusOwner()) {
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaTime.setFocusable(true);
+            }
+            if (txtAnaPlayouts.isFocusOwner()) {
+              txtAnaTime.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+            }
+            if (txtAnaFirstPlayouts.isFocusOwner()) {
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+            }
+          }
+        });
+    add(lblchkAutoAnalyse);
+    chkAutoAnalyse.setBounds(5, 26, 20, 20);
+    lblchkAutoAnalyse.setBounds(25, 26, 60, 20);
+
+    chkAnaTime = new JCheckBox();
+    lbltxtAnaTime = new JLabel("按时间(秒):");
+
+    chkAnaTime.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD
+            if (txtMoveNumber.isFocusOwner()) {
+
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+            }
+            if (txtAnaTime.isFocusOwner()) {
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaTime.setFocusable(true);
+            }
+            if (txtAnaPlayouts.isFocusOwner()) {
+              txtAnaTime.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+            }
+            if (txtAnaFirstPlayouts.isFocusOwner()) {
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+            }
+          }
+        });
+
+    add(chkAnaTime);
+    add(lbltxtAnaTime);
+    chkAnaTime.setBounds(135, 26, 20, 20);
+    lbltxtAnaTime.setBounds(155, 26, 80, 20);
+    txtAnaTime =
+        new JFormattedTextField(
+            new InternationalFormatter(nf) {
+              protected DocumentFilter getDocumentFilter() {
+                return filter;
+              }
+
+              private DocumentFilter filter = new DigitOnlyFilter();
+            });
+    add(txtAnaTime);
+    txtAnaTime.setBounds(220, 26, 50, 18);
+
+    chkAnaPlayouts = new JCheckBox();
+    chkAnaPlayouts.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD
+            if (txtMoveNumber.isFocusOwner()) {
+
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+            }
+            if (txtAnaTime.isFocusOwner()) {
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaTime.setFocusable(true);
+            }
+            if (txtAnaPlayouts.isFocusOwner()) {
+              txtAnaTime.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+            }
+            if (txtAnaFirstPlayouts.isFocusOwner()) {
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+            }
+          }
+        });
+    lbltxtAnaPlayouts = new JLabel("总计算量:");
+    add(chkAnaPlayouts);
+    add(lbltxtAnaPlayouts);
+    chkAnaPlayouts.setBounds(5, 48, 20, 20);
+    lbltxtAnaPlayouts.setBounds(25, 48, 80, 20);
+    txtAnaPlayouts =
+        new JFormattedTextField(
+            new InternationalFormatter(nf) {
+              protected DocumentFilter getDocumentFilter() {
+                return filter;
+              }
+
+              private DocumentFilter filter = new DigitOnlyFilter();
+            });
+    add(txtAnaPlayouts);
+    txtAnaPlayouts.setBounds(85, 48, 50, 18);
+
+    chkAnaFirstPlayouts = new JCheckBox();
+    chkAnaFirstPlayouts.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD
+            if (txtMoveNumber.isFocusOwner()) {
+
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+            }
+            if (txtAnaTime.isFocusOwner()) {
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaTime.setFocusable(true);
+            }
+            if (txtAnaPlayouts.isFocusOwner()) {
+              txtAnaTime.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+            }
+            if (txtAnaFirstPlayouts.isFocusOwner()) {
+              txtAnaTime.setFocusable(false);
+              txtAnaPlayouts.setFocusable(false);
+              txtMoveNumber.setFocusable(false);
+              txtAnaFirstPlayouts.setFocusable(false);
+              txtAnaTime.setFocusable(true);
+              txtAnaPlayouts.setFocusable(true);
+              txtMoveNumber.setFocusable(true);
+              txtAnaFirstPlayouts.setFocusable(true);
+            }
+          }
+        });
+    lblAnaFirstPlayouts = new JLabel("首位计算量:");
+    add(chkAnaFirstPlayouts);
+    add(lblAnaFirstPlayouts);
+    chkAnaFirstPlayouts.setBounds(135, 48, 20, 20);
+    lblAnaFirstPlayouts.setBounds(155, 48, 80, 20);
+    txtAnaFirstPlayouts =
+        new JFormattedTextField(
+            new InternationalFormatter(nf) {
+              protected DocumentFilter getDocumentFilter() {
+                return filter;
+              }
+
+              private DocumentFilter filter = new DigitOnlyFilter();
+            });
+    add(txtAnaFirstPlayouts);
+    txtAnaFirstPlayouts.setBounds(220, 48, 50, 18);
+
+    chkAutoAnalyse.setFocusable(false);
+    chkAnaTime.setFocusable(false);
+    chkAnaPlayouts.setFocusable(false);
+    chkAnaFirstPlayouts.setFocusable(false);
   }
 
   //  public void setAllUnfocuse() {

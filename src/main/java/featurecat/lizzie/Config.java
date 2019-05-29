@@ -685,6 +685,8 @@ public class Config {
       mainPos.put(Lizzie.frame.getWidth());
       mainPos.put(Lizzie.frame.getHeight());
       mainPos.put(Lizzie.frame.toolbarHeight);
+    } else {
+      mainPos.put(Lizzie.frame.toolbarHeight);
     }
     persistedUi.put("main-window-position", mainPos);
     JSONArray gtpPos = new JSONArray();

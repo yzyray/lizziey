@@ -437,10 +437,13 @@ public class Leelaz {
           // This should not be stale data when the command number match
           this.bestMoves = parseInfo(line.substring(5));
           notifyBestMoveListeners();
+          //  if() {
+          notifyAutoAna();
+          //  }
           Lizzie.frame.refresh();
           // don't follow the maxAnalyzeTime rule if we are in analysis mode
           if (System.currentTimeMillis() - startPonderTime > Lizzie.config.maxAnalyzeTimeMillis
-              && !Lizzie.board.inAnalysisMode()) {
+              && !Lizzie.frame.toolbar.isAutoAna) {
             togglePonder();
           }
         }
@@ -616,6 +619,52 @@ public class Leelaz {
         }
       }
     }
+  }
+
+  private void notifyAutoAna() {
+    if (Lizzie.frame.toolbar.isAutoAna)
+      if (Lizzie.board.getHistory().getNext().isPresent()) {
+        int time = 0;
+        int playouts = 0;
+        int firstPlayouts = 0;
+        if (Lizzie.frame.toolbar.chkAnaTime.isSelected()) {
+          try {
+            time = 1000 * Integer.parseInt(Lizzie.frame.toolbar.txtAnaTime.getText());
+          } catch (NumberFormatException err) {
+          }
+        }
+        if (Lizzie.frame.toolbar.chkAnaPlayouts.isSelected()) {
+          try {
+            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtAnaPlayouts.getText());
+          } catch (NumberFormatException err) {
+          }
+        }
+        if (Lizzie.frame.toolbar.chkAnaFirstPlayouts.isSelected()) {
+          try {
+            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtAnaFirstPlayouts.getText());
+          } catch (NumberFormatException err) {
+          }
+        }
+        if (firstPlayouts > 0) {
+          if (bestMoves.get(0).playouts >= firstPlayouts) {
+            Lizzie.board.nextMove();
+          }
+        }
+        if (playouts > 0) {
+          int sum = 0;
+          for (MoveData move : bestMoves) {
+            sum += move.playouts;
+          }
+          if (sum >= playouts) {
+            Lizzie.board.nextMove();
+          }
+        }
+        if (time > 0) {
+          if (System.currentTimeMillis() - startPonderTime > time) {
+            Lizzie.board.nextMove();
+          }
+        }
+      }
   }
 
   /**
