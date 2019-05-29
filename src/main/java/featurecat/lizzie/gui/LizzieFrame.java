@@ -43,6 +43,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -152,6 +156,9 @@ public class LizzieFrame extends JFrame {
   public int toolbarHeight = 26;
   boolean isSmallCap = false;
   boolean firstTime = true;
+  private HTMLDocument htmlDoc;
+  private HtmlKit htmlKit;
+  private StyleSheet htmlStyle;
   // boolean lastponder = true;
 
   static {
@@ -278,10 +285,37 @@ public class LizzieFrame extends JFrame {
     } else if (persisted && Lizzie.config.persistedUi.getBoolean("window-maximized")) {
       setExtendedState(Frame.MAXIMIZED_BOTH);
     }
-
+    htmlKit = new HtmlKit();
+    htmlDoc = (HTMLDocument) htmlKit.createDefaultDocument();
+    htmlStyle = htmlKit.getStyleSheet();
+    String style =
+        "body {background:#"
+            + String.format(
+                "%02x%02x%02x",
+                Lizzie.config.commentBackgroundColor.getRed(),
+                Lizzie.config.commentBackgroundColor.getGreen(),
+                Lizzie.config.commentBackgroundColor.getBlue())
+            + "; color:#"
+            + String.format(
+                "%02x%02x%02x",
+                Lizzie.config.commentFontColor.getRed(),
+                Lizzie.config.commentFontColor.getGreen(),
+                Lizzie.config.commentFontColor.getBlue())
+            + "; font-family:"
+            + Lizzie.config.fontName
+            + ", Consolas, Menlo, Monaco, 'Ubuntu Mono', monospace;"
+            + (Lizzie.config.commentFontSize > 0
+                ? "font-size:" + Lizzie.config.commentFontSize
+                : "")
+            + "}";
+    htmlStyle.addRule(style);
     commentPane = new JTextPane();
+    commentPane.setBorder(BorderFactory.createEmptyBorder());
+    commentPane.setEditorKit(htmlKit);
+    commentPane.setDocument(htmlDoc);
     commentPane.setEditable(false);
-    commentPane.setMargin(new Insets(5, 5, 5, 5));
+
+    // commentPane.setMargin(new Insets(5, 5, 5, 5));
     commentPane.setBackground(Lizzie.config.commentBackgroundColor);
     commentPane.setForeground(Lizzie.config.commentFontColor);
     scrollPane = new JScrollPane();
@@ -1975,17 +2009,52 @@ public class LizzieFrame extends JFrame {
    * @param w
    * @param h
    */
-  private void drawComment(Graphics2D g, int x, int y, int w, int h) {
-    String comment = Lizzie.board.getHistory().getData().comment;
-    int fontSize = (int) (min(mainPanel.getWidth(), mainPanel.getHeight()) * 0.025);
-    if (Lizzie.config.commentFontSize > 0) {
-      fontSize = Lizzie.config.commentFontSize;
-    } else if (fontSize < 13) {
-      fontSize = 13;
+  private void addText(String text) {
+    try {
+      htmlDoc.remove(0, htmlDoc.getLength());
+      htmlKit.insertHTML(htmlDoc, htmlDoc.getLength(), text, 0, 0, null);
+      commentPane.setCaretPosition(htmlDoc.getLength());
+    } catch (BadLocationException | IOException e) {
+      e.printStackTrace();
     }
-    Font font = new Font(Lizzie.config.fontName, Font.PLAIN, fontSize);
-    commentPane.setFont(font);
+  }
 
+  private void drawComment(Graphics2D g, int x, int y, int w, int h) {
+
+    String comment = Lizzie.board.getHistory().getData().comment;
+    int fontSize = (int) (min(getWidth(), getHeight()) * 0.0225);
+    //	    if (Lizzie.config.commentFontSize > 0) {
+    //	      fontSize = Lizzie.config.commentFontSize;
+    //	    } else if (fontSize < 12) {
+    //	      fontSize = 12;
+    //	    }
+
+    if (Lizzie.config.commentFontSize != fontSize) {
+      Lizzie.config.commentFontSize = fontSize;
+      String style =
+          "body {background:#"
+              + String.format(
+                  "%02x%02x%02x",
+                  Lizzie.config.commentBackgroundColor.getRed(),
+                  Lizzie.config.commentBackgroundColor.getGreen(),
+                  Lizzie.config.commentBackgroundColor.getBlue())
+              + "; color:#"
+              + String.format(
+                  "%02x%02x%02x",
+                  Lizzie.config.commentFontColor.getRed(),
+                  Lizzie.config.commentFontColor.getGreen(),
+                  Lizzie.config.commentFontColor.getBlue())
+              + "; font-family:"
+              + Lizzie.config.fontName
+              + ", Consolas, Menlo, Monaco, 'Ubuntu Mono', monospace;"
+              + (Lizzie.config.commentFontSize > 0
+                  ? "font-size:" + Lizzie.config.commentFontSize
+                  : "")
+              + "}";
+      htmlStyle.addRule(style);
+    }
+    // commentPane.setFont(font);
+    comment = comment.replaceAll("(\r\n)|(\n)", "<br />").replaceAll(" ", "&nbsp;");
     commentPane.setText(comment);
     commentPane.setSize(w, h);
     createCommentImage(!comment.equals(this.cachedComment), w, h);
@@ -2162,6 +2231,23 @@ public class LizzieFrame extends JFrame {
       isheatmap = false;
       Lizzie.leelaz.heatcount.clear();
       // if (lastponder) Lizzie.leelaz.ponder();
+    }
+  }
+
+  public static class HtmlKit extends HTMLEditorKit {
+    private StyleSheet style = new StyleSheet();
+
+    @Override
+    public void setStyleSheet(StyleSheet styleSheet) {
+      style = styleSheet;
+    }
+
+    @Override
+    public StyleSheet getStyleSheet() {
+      if (style == null) {
+        style = super.getStyleSheet();
+      }
+      return style;
     }
   }
 }

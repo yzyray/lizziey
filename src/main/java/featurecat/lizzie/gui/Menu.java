@@ -8,9 +8,6 @@ import java.awt.event.*;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class Menu extends MenuBar {
@@ -430,6 +427,19 @@ public class Menu extends MenuBar {
     // aboutItem.setMnemonic('A');
     bhisItem.addActionListener(new ItemListener());
     editMenu.add(bhisItem);
+
+    editMenu.addSeparator();
+    final JMenuItem clearsave = new JMenuItem();
+    clearsave.setText("清除Lizzie所有选点缓存");
+    // aboutItem.setMnemonic('A');
+    clearsave.addActionListener(new ItemListener());
+    editMenu.add(clearsave);
+
+    final JMenuItem clearthis = new JMenuItem();
+    clearthis.setText("清除Lizzie当前选点缓存");
+    // aboutItem.setMnemonic('A');
+    clearthis.addActionListener(new ItemListener());
+    editMenu.add(clearthis);
 
     engineMenu = new JMenu("引擎 ", false);
     engineMenu.setText(" 引擎  ");
@@ -1106,6 +1116,17 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("记录胜")) {
         Lizzie.config.toggleappendWinrateToComment();
+        return;
+      }
+      if (menuItem.getText().startsWith("清除Lizzie所有")) {
+        Lizzie.board.clearbestmovesafter(
+            Lizzie.board.getHistory().getStart(), Lizzie.board.getHistory().getMoveNumber());
+        JOptionPane.showMessageDialog(null, "已清空所有Lizzie缓存的引擎推荐点");
+        return;
+      }
+      if (menuItem.getText().startsWith("清除Lizzie当前")) {
+        Lizzie.board.clearbestmoves();
+        JOptionPane.showMessageDialog(null, "已清空当前一步Lizzie缓存的引擎推荐点");
         return;
       }
     }

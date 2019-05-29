@@ -311,6 +311,7 @@ public class MovelistFrame extends JPanel {
       Lizzie.frame.boardRenderer.removedrawmovestone();
       Lizzie.frame.repaint();
       selectedorder = -1;
+      table.clearSelection();
     }
   }
 
@@ -318,7 +319,6 @@ public class MovelistFrame extends JPanel {
     int movenumber = Integer.parseInt(table.getValueAt(row, 1).toString());
     Lizzie.board.goToMoveNumber(1);
     Lizzie.board.goToMoveNumber(movenumber - 1);
-
     int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString());
     Lizzie.frame.clickbadmove = coords;
     Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);

@@ -1134,8 +1134,10 @@ public class ConfigDialog extends JDialog {
     try {
 
       leelazConfig.putOpt("max-analyze-time-minutes", txtFieldValue(txtMaxAnalyzeTime));
+      Lizzie.config.maxAnalyzeTimeMillis = txtFieldValue(txtMaxAnalyzeTime);
       leelazConfig.putOpt(
           "analyze-update-interval-centisec", txtFieldValue(txtAnalyzeUpdateInterval));
+      Lizzie.config.analyzeUpdateIntervalCentisec = txtFieldValue(txtAnalyzeUpdateInterval);
       leelazConfig.putOpt("max-game-thinking-time-seconds", txtFieldValue(txtMaxGameThinkingTime));
       leelazConfig.putOpt("print-comms", chkPrintEngineLog.isSelected());
       leelazConfig.putOpt("show-lcb-winrate", getShowLcbWinrate());

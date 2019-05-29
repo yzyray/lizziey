@@ -32,7 +32,7 @@ public class Leelaz {
 
   private static final long MINUTE = 60 * 1000; // number of milliseconds in a minute
 
-  private long maxAnalyzeTimeMillis; // , maxThinkingTimeMillis;
+  // private long maxAnalyzeTimeMillis; // , maxThinkingTimeMillis;
   private int cmdNumber;
   private int currentCmdNum;
   private ArrayDeque<String> cmdQueue;
@@ -106,7 +106,7 @@ public class Leelaz {
 
     printCommunication = config.getBoolean("print-comms");
     gtpConsole = printCommunication;
-    maxAnalyzeTimeMillis = MINUTE * config.getInt("max-analyze-time-minutes");
+    // maxAnalyzeTimeMillis = MINUTE * config.getInt("max-analyze-time-minutes");
 
     // command string for starting the engine
     //    if (engineCommand == null || engineCommand.isEmpty()) {
@@ -439,7 +439,7 @@ public class Leelaz {
           notifyBestMoveListeners();
           Lizzie.frame.refresh();
           // don't follow the maxAnalyzeTime rule if we are in analysis mode
-          if (System.currentTimeMillis() - startPonderTime > maxAnalyzeTimeMillis
+          if (System.currentTimeMillis() - startPonderTime > Lizzie.config.maxAnalyzeTimeMillis
               && !Lizzie.board.inAnalysisMode()) {
             togglePonder();
           }
@@ -785,13 +785,7 @@ public class Leelaz {
 
   public void genmove_analyze(String color) {
     String command =
-        "lz-genmove_analyze "
-            + color
-            + " "
-            + Lizzie.config
-                .config
-                .getJSONObject("leelaz")
-                .getInt("analyze-update-interval-centisec");
+        "lz-genmove_analyze " + color + " " + Lizzie.config.analyzeUpdateIntervalCentisec;
     sendCommand(command);
     isThinking = true;
     isPondering = false;
@@ -839,10 +833,7 @@ public class Leelaz {
       startPonderTime = System.currentTimeMillis();
     }
     sendCommand(
-        String.format(
-            "lz-analyze %d %s",
-            Lizzie.config.config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec"),
-            parameters));
+        String.format("lz-analyze %d %s", Lizzie.config.analyzeUpdateIntervalCentisec, parameters));
     Lizzie.board.clearbestmoves();
   }
 
@@ -869,11 +860,7 @@ public class Leelaz {
       featurecat.lizzie.gui.RightClickMenu.isforcing = false;
       sendCommand(
           "lz-analyze "
-              + Lizzie.config
-                  .config
-                  .getJSONObject("leelaz")
-                  .getInt(
-                      "analyze-update-interval-centisec")); // until it responds to this, incoming
+              + Lizzie.config.analyzeUpdateIntervalCentisec); // until it responds to this, incoming
       // ponder results are obsolete
     }
   }
@@ -900,11 +887,7 @@ public class Leelaz {
       featurecat.lizzie.gui.RightClickMenu.isforcing = false;
       sendCommand(
           "lz-analyze "
-              + Lizzie.config
-                  .config
-                  .getJSONObject("leelaz")
-                  .getInt(
-                      "analyze-update-interval-centisec")); // until it responds to this, incoming
+              + Lizzie.config.analyzeUpdateIntervalCentisec); // until it responds to this, incoming
       // ponder results are obsolete
     }
   }

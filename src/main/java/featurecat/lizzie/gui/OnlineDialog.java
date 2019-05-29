@@ -5,12 +5,16 @@ import featurecat.lizzie.rules.BoardHistoryList;
 import featurecat.lizzie.rules.SGFParser;
 import featurecat.lizzie.util.AjaxHttpRequest;
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -123,6 +127,22 @@ public class OnlineDialog extends JDialog {
     buttonPane.add(lblPrompt2);
 
     setLocationRelativeTo(getOwner());
+    String pastContent =
+        Optional.ofNullable(Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null))
+            .filter(cc -> cc.isDataFlavorSupported(DataFlavor.stringFlavor))
+            .flatMap(
+                cc -> {
+                  try {
+                    return Optional.of((String) cc.getTransferData(DataFlavor.stringFlavor));
+                  } catch (UnsupportedFlavorException e) {
+                    e.printStackTrace();
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
+                  return Optional.empty();
+                })
+            .orElse("");
+    txtUrl.setText(pastContent);
   }
 
   private void applyChange() {
@@ -207,8 +227,10 @@ public class OnlineDialog extends JDialog {
                 int diffMove = Lizzie.board.getHistory().sync(liveNode);
                 //                System.out.println(liveNode + "diff:" + diffMove);
                 if (diffMove > 0) {
+                  int curMoveNumber = Lizzie.board.getHistory().getData().moveNumber;
                   Lizzie.board.goToMoveNumberBeyondBranch(diffMove - 1);
                   while (Lizzie.board.nextMove()) ;
+                  if (diffMove != curMoveNumber) Lizzie.leelaz.ponder();
                 }
               }
             }
@@ -221,6 +243,7 @@ public class OnlineDialog extends JDialog {
           public void run() {
             if (!Lizzie.frame.urlSgf) {
               online.shutdown();
+              return;
             }
             try {
               ajax.open("GET", ajaxUrl, true);

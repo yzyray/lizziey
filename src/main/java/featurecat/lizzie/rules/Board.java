@@ -198,7 +198,7 @@ public class Board implements LeelazListener {
   }
 
   public void clearbestmoves() {
-    history.getCurrentHistoryNode().getData().setPlayoutsForce(0);
+    history.getCurrentHistoryNode().getData().setPlayoutsForce(1);
   }
 
   public void savelist() {
@@ -2173,7 +2173,7 @@ public class Board implements LeelazListener {
   }
 
   public void updateWinrate() {
-    updateMovelist();
+    updateMovelist(Lizzie.board.history.getCurrentHistoryNode());
     Leelaz.WinrateStats stats = Lizzie.leelaz.getWinrateStats();
     if (stats.maxWinrate >= 0 && stats.totalPlayouts > history.getData().getPlayouts()) {
       history.getData().winrate = stats.maxWinrate;

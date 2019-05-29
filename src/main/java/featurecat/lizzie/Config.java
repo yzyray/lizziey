@@ -86,6 +86,8 @@ public class Config {
   public int limitMaxSuggestion = 0;
   public int limitbadmoves = 0;
   public int limitbadplayouts = 0;
+  public long maxAnalyzeTimeMillis;
+  public int analyzeUpdateIntervalCentisec;
   public String gtpConsoleStyle = "";
   private final String defaultGtpConsoleStyle =
       "body {background:#000000; color:#d0d0d0; font-family:Consolas, Menlo, Monaco, 'Ubuntu Mono', monospace; margin:4px;} .command {color:#ffffff;font-weight:bold;} .winrate {color:#ffffff;font-weight:bold;} .coord {color:#ffffff;font-weight:bold;}";
@@ -281,7 +283,10 @@ public class Config {
     loadZen = config.getJSONObject("leelaz").optBoolean("load-zen", true);
     showlcbcolor = config.getJSONObject("leelaz").optBoolean("show-lcb-color", true);
     fastChange = config.getJSONObject("leelaz").optBoolean("fast-engine-change", true);
-
+    maxAnalyzeTimeMillis =
+        60 * 1000 * config.getJSONObject("leelaz").getInt("max-analyze-time-minutes");
+    analyzeUpdateIntervalCentisec =
+        config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec");
     if (theme.fontName() != null) fontName = theme.fontName();
     else fontName = "黑体";
 
