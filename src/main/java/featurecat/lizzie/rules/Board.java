@@ -184,9 +184,9 @@ public class Board implements LeelazListener {
   }
 
   public void clearbestmovesafter(BoardHistoryNode node, int movenumber) {
-    if (node.isMainTrunk() && node.getData().moveNumber <= movenumber)
-      node.getData().setPlayoutsForce(1);
-    else node.getData().setPlayoutsForce(0);
+    if (node.getData().moveNumber <= movenumber) {
+      if (node.getData().getPlayouts() > 0) node.getData().setPlayoutsForce(1);
+    }
     if (node.numberOfChildren() > 1) {
       // Variation
       for (BoardHistoryNode sub : node.getVariations()) {
@@ -198,7 +198,8 @@ public class Board implements LeelazListener {
   }
 
   public void clearbestmoves() {
-    history.getCurrentHistoryNode().getData().setPlayoutsForce(1);
+    if (history.getCurrentHistoryNode().getData().getPlayouts() > 0)
+      history.getCurrentHistoryNode().getData().setPlayoutsForce(1);
   }
 
   public void savelist() {
@@ -2080,12 +2081,7 @@ public class Board implements LeelazListener {
       }
     }
     if (node.getData().winrate >= 0 && isLarger) {
-      double winrateDiff;
-      try {
-        winrateDiff = lastWinrateDiff(node);
-      } catch (Exception e) {
-        winrateDiff = 0;
-      }
+      double winrateDiff = lastWinrateDiff(node);
       Optional<int[]> passstep = Optional.empty();
       if (node.previous().isPresent() && !(node.getData().lastMove == passstep)) {
         int[] coords = node.getData().lastMove.get();
@@ -2140,12 +2136,7 @@ public class Board implements LeelazListener {
       }
     }
     if (stats.maxWinrate >= 0 && isLarger) {
-      double winrateDiff;
-      try {
-        winrateDiff = lastWinrateDiff2(history.getCurrentHistoryNode());
-      } catch (Exception e) {
-        winrateDiff = 0;
-      }
+      double winrateDiff = lastWinrateDiff2(history.getCurrentHistoryNode());
 
       Optional<int[]> passstep = Optional.empty();
       if (history.getCurrentHistoryNode().previous().isPresent()
