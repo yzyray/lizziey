@@ -73,11 +73,12 @@ public class OnlineDialog extends JDialog {
     buttonPane.add(cancelButton);
 
     JButton quitButton = new JButton("中断");
-    quitButton.setBounds(195, 138, 74, 29);
+    quitButton.setBounds(192, 138, 74, 29);
     quitButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.urlSgf = false;
+            setVisible(false);
           }
         });
     buttonPane.add(quitButton);
