@@ -185,7 +185,7 @@ public class Board implements LeelazListener {
 
   public void clearbestmovesafter(BoardHistoryNode node) {
     // if (node.getData().moveNumber <= movenumber) {
-    if (node.getData().getPlayouts() > 0) node.getData().setPlayoutsForce(1);
+    if (node.getData().getPlayouts() > 0) node.getData().isChanged = true;
     // }
     if (node.numberOfChildren() > 1) {
       // Variation
@@ -199,7 +199,7 @@ public class Board implements LeelazListener {
 
   public void clearbestmoves() {
     if (history.getCurrentHistoryNode().getData().getPlayouts() > 0)
-      history.getCurrentHistoryNode().getData().setPlayoutsForce(1);
+      history.getCurrentHistoryNode().getData().isChanged = true;
   }
 
   public void savelist() {

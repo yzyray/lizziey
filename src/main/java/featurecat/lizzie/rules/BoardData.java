@@ -24,7 +24,7 @@ public class BoardData {
   public List<MoveData> bestMoves;
   public int blackCaptures;
   public int whiteCaptures;
-
+public boolean isChanged=false;
   public String comment = "";
 
   // Node properties
@@ -154,14 +154,16 @@ public class BoardData {
 
   public void tryToSetBestMoves(List<MoveData> moves) {
     // MoveData.getPlayouts(moves) > playouts	
-    if (MoveData.getPlayouts(moves) > playouts ) {
-	  //这里还有问题
+    if (MoveData.getPlayouts(moves) > playouts||isChanged ) {
 	
     	//added for change bestmoves when playouts is not increased
       bestMoves = moves;
       setPlayouts(MoveData.getPlayouts(moves));
       winrate = moves.get(0).winrate;
-    		  //getWinrateFromBestMoves(moves);
+      if(isChanged)
+		{isChanged=false;
+		}
+    		  
     }
   }
 
@@ -188,7 +190,7 @@ public class BoardData {
   }
 
   public void setPlayouts(int playouts) {
-    if (playouts > this.playouts) {
+    if (playouts > this.playouts||isChanged) {
       this.playouts = playouts;
     }
   }

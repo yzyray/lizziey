@@ -7,8 +7,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-//import java.sql.Date;
+//import featurecat.lizzie.rules.Board;
+import featurecat.lizzie.rules.BoardData;
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class Leelaz {
   private boolean printCommunication;
   public boolean gtpConsole;
 
-  // public Board board;
+ // public Board board;
   private List<MoveData> bestMoves;
   private List<MoveData> bestMovesTemp;
 
@@ -97,7 +97,7 @@ public class Leelaz {
    * @throws IOException
    */
   public Leelaz(String engineCommand) throws IOException, JSONException {
-    // board = new Board();
+   // board = new Board();
     bestMoves = new ArrayList<>();
     bestMovesTemp = new ArrayList<>();
     listeners = new CopyOnWriteArrayList<>();
@@ -139,67 +139,7 @@ public class Leelaz {
     if (currentEnginename.equals("")) currentEnginename = currentWeight;
   }
 
-  public void startEngine() throws IOException {
-    if (engineCommand.trim().isEmpty()) {
-      return;
-    }
-
-    commands = splitCommand(engineCommand);
-
-    // Get weight name
-    Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
-    Matcher wMatcher = wPattern.matcher(engineCommand);
-    if (wMatcher.matches() && wMatcher.groupCount() == 2) {
-      currentWeightFile = wMatcher.group(2);
-      String[] names = currentWeightFile.split("[\\\\|/]");
-      currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
-    }
-
-    // Check if engine is present
-    // Commented for remote ssh. TODO keep or remove this code?
-    //    File startfolder = new File(config.optString("engine-start-location", "."));
-    //    File lef = startfolder.toPath().resolve(new File(commands.get(0)).toPath()).toFile();
-    //    System.out.println(lef.getPath());
-    //    if (!lef.exists()) {
-    //      JOptionPane.showMessageDialog(
-    //          null,
-    //          resourceBundle.getString("LizzieFrame.display.leelaz-missing"),
-    //          "Lizzie - Error!",
-    //          JOptionPane.ERROR_MESSAGE);
-    //      throw new IOException("engine not present");
-    //    }
-
-    // Check if network file is present
-    //    File wf = startfolder.toPath().resolve(new File(currentWeightFile).toPath()).toFile();
-    //    if (!wf.exists()) {
-    //      JOptionPane.showMessageDialog(
-    //          null, resourceBundle.getString("LizzieFrame.display.network-missing"));
-    //      throw new IOException("network-file not present");
-    //    }
-
-    // run leelaz
-    ProcessBuilder processBuilder = new ProcessBuilder(commands);
-    // Commented for remote ssh
-    //    processBuilder.directory(startfolder);
-    processBuilder.redirectErrorStream(true);
-    process = processBuilder.start();
-
-    initializeStreams();
-
-    // Send a version request to check that we have a supported version
-    // Response handled in parseLine
-    isCheckingVersion = true;
-    sendCommand("version");
-    sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
-
-    // start a thread to continuously read Leelaz output
-    // new Thread(this::read).start();
-    // can stop engine for switching weights
-    executor = Executors.newSingleThreadScheduledExecutor();
-    executor.execute(this::read);
-    started = true;
-    Lizzie.frame.refreshBackground();
-  }
+ 
 
   public void startEngine(int index) throws IOException {
     if (engineCommand.trim().isEmpty()) {
@@ -378,7 +318,7 @@ public class Leelaz {
     outputStream = new BufferedOutputStream(process.getOutputStream());
   }
 
-  public static List<MoveData> parseInfo(String line) {
+  public  List<MoveData> parseInfo(String line) {
     List<MoveData> bestMoves = new ArrayList<>();
     String[] variations = line.split(" info ");
     int k = (Lizzie.config.limitMaxSuggestion > 0 ? Lizzie.config.limitMaxSuggestion : 361);
@@ -1178,7 +1118,8 @@ public class Leelaz {
       int totalPlayouts = moves.stream().mapToInt(move -> move.playouts).sum();
       stats.totalPlayouts = totalPlayouts;
 
-      stats.maxWinrate = bestMoves.get(0).winrate;
+      //stats.maxWinrate = bestMoves.get(0).winrate;
+      stats.maxWinrate = BoardData.getWinrateFromBestMoves(moves);
       // BoardData.getWinrateFromBestMoves(moves);
     }
 
