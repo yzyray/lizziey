@@ -538,8 +538,8 @@ public class BottomToolbar extends JPanel {
             setTxtUnfocuse();
           }
         });
-    lblchkShowBlack = new JLabel("分析黑");
-    lblchkShowWhite = new JLabel("分析白");
+    lblchkShowBlack = new JLabel("显示黑");
+    lblchkShowWhite = new JLabel("显示白");
     autoPlayPanel.add(lblchkShowBlack);
     autoPlayPanel.add(lblchkShowWhite);
     autoPlayPanel.add(chkShowWhite);

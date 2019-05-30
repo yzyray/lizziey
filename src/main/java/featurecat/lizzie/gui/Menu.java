@@ -562,6 +562,11 @@ public class Menu extends MenuBar {
     closeother.addActionListener(new ItemListener());
     engineMenu.add(closeother);
 
+    final JMenuItem restartZen = new JMenuItem();
+    restartZen.setText("重启Zen(形势判断用)");
+    // aboutItem.setMnemonic('A');
+    restartZen.addActionListener(new ItemListener());
+    engineMenu.add(restartZen);
     engineMenu.addSeparator();
 
     final JMenuItem config = new JMenuItem();
@@ -1148,6 +1153,10 @@ public class Menu extends MenuBar {
       if (menuItem.getText().startsWith("清除Lizzie当前")) {
         Lizzie.board.clearbestmoves();
         JOptionPane.showMessageDialog(null, "已清空当前一步Lizzie缓存的引擎推荐点");
+        return;
+      }
+      if (menuItem.getText().startsWith("重启Z")) {
+        Lizzie.frame.restartZen();
         return;
       }
     }

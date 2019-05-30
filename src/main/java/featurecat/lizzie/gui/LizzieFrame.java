@@ -527,6 +527,22 @@ public class LizzieFrame extends JFrame {
     iscounting = true;
   }
 
+  public void restartZen() {
+    if (zen != null && zen.process != null && zen.process.isAlive()) {
+
+      try {
+        Lizzie.frame.zen.process.destroy();
+      } catch (Exception e) {
+      }
+    }
+    try {
+      zen = new YaZenGtp();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
   public void toggleAlwaysOntop() {
     if (this.isAlwaysOnTop()) {
       this.setAlwaysOnTop(false);
