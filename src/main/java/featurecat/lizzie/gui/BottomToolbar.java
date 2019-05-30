@@ -672,6 +672,14 @@ public class BottomToolbar extends JPanel {
     chkAnaPlayouts.setFocusable(false);
     chkAnaFirstPlayouts.setFocusable(false);
     chkAnaAutoSave.setFocusable(false);
+    chkShowBlack.setFocusable(false);
+    chkShowWhite.setFocusable(false);
+    chkAutoPlayBlack.setFocusable(false);
+    chkAutoPlayWhite.setFocusable(false);
+    chkAutoPlay.setFocusable(false);
+    chkAutoPlayTime.setFocusable(false);
+    chkAutoPlayPlayouts.setFocusable(false);
+    chkAutoPlayFirstPlayouts.setFocusable(false);
 
     chkShowBlack.setSelected(true);
     chkShowWhite.setSelected(true);
