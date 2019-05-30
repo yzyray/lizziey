@@ -93,7 +93,7 @@ public class Lizzie {
         frame.saveFile();
       }
     }
-    board.autosaveToMemory();
+    // board.autosaveToMemory();
 
     try {
       config.persist();

@@ -1931,7 +1931,7 @@ public class LizzieFrame extends JFrame {
       if (currentTime - lastAutosaveTime >= autoInterval) {
         Lizzie.board.autosave();
         lastAutosaveTime = currentTime;
-        Lizzie.board.updateComment();
+        // Lizzie.board.updateComment();
       }
     }
     if (Lizzie.config.appendWinrateToComment && !Lizzie.frame.urlSgf) {

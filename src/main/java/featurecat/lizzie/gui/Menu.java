@@ -94,10 +94,10 @@ public class Menu extends MenuBar {
     fileMenu.addSeparator();
 
     final JMenuItem resumeItem = new JMenuItem();
-
-    resumeItem.setText("还原上次关闭前的棋谱");
-    resumeItem.addActionListener(new ItemListener());
-    fileMenu.add(resumeItem);
+    //
+    //    resumeItem.setText("还原上次关闭前的棋谱");
+    //    resumeItem.addActionListener(new ItemListener());
+    //    fileMenu.add(resumeItem);
 
     fileMenu.addSeparator();
 
@@ -1131,11 +1131,11 @@ public class Menu extends MenuBar {
             Lizzie.frame.toolbarHeight);
         return;
       }
-      if (menuItem.getText().startsWith("还原上次")) {
-        Lizzie.board.resumePreviousGame();
-        Lizzie.board.setMovelistAll();
-        return;
-      }
+      //      if (menuItem.getText().startsWith("还原上次")) {
+      //        Lizzie.board.resumePreviousGame();
+      //        Lizzie.board.setMovelistAll();
+      //        return;
+      //      }
       if (menuItem.getText().startsWith("打开在线")) {
         Lizzie.frame.openOnlineDialog();
         return;
