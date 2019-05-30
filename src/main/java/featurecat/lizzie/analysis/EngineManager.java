@@ -140,8 +140,8 @@ public class EngineManager {
     //      curEng.togglePonder();
     //    }
     Lizzie.board.saveMoveNumber();
-    int movenumber = Lizzie.board.getcurrentmovenumber();
-    Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart(), movenumber);
+    // int movenumber = Lizzie.board.getcurrentmovenumber();
+    Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
     try {
       Leelaz newEng = engineList.get(index);
       if (newEng.engineCommand.equals("")) return;

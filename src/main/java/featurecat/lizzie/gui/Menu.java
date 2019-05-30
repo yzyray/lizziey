@@ -436,7 +436,7 @@ public class Menu extends MenuBar {
     editMenu.add(clearsave);
 
     final JMenuItem clearthis = new JMenuItem();
-    clearthis.setText("清除Lizzie当前选点缓存");
+    clearthis.setText("清除当前选点缓存");
     // aboutItem.setMnemonic('A');
     clearthis.addActionListener(new ItemListener());
     editMenu.add(clearthis);
@@ -1145,8 +1145,7 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("清除Lizzie所有")) {
-        Lizzie.board.clearbestmovesafter(
-            Lizzie.board.getHistory().getStart(), Lizzie.board.getHistory().getMoveNumber());
+        Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
         JOptionPane.showMessageDialog(null, "已清空所有Lizzie缓存的引擎推荐点");
         return;
       }

@@ -183,17 +183,17 @@ public class Board implements LeelazListener {
     return c != null && c.length == 2 && isValid(c[0], c[1]);
   }
 
-  public void clearbestmovesafter(BoardHistoryNode node, int movenumber) {
-    if (node.getData().moveNumber <= movenumber) {
-      if (node.getData().getPlayouts() > 0) node.getData().setPlayoutsForce(1);
-    }
+  public void clearbestmovesafter(BoardHistoryNode node) {
+    // if (node.getData().moveNumber <= movenumber) {
+    if (node.getData().getPlayouts() > 0) node.getData().setPlayoutsForce(1);
+    // }
     if (node.numberOfChildren() > 1) {
       // Variation
       for (BoardHistoryNode sub : node.getVariations()) {
-        clearbestmovesafter(sub, movenumber);
+        clearbestmovesafter(sub);
       }
     } else if (node.numberOfChildren() == 1) {
-      clearbestmovesafter(node.next().orElse(null), movenumber);
+      clearbestmovesafter(node.next().orElse(null));
     }
   }
 
