@@ -675,6 +675,8 @@ public class BottomToolbar extends JPanel {
 
     chkShowBlack.setSelected(true);
     chkShowWhite.setSelected(true);
+    chkAutoPlayBlack.setSelected(true);
+    chkAutoPlayWhite.setSelected(true);
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter") != null
