@@ -649,6 +649,7 @@ public class Leelaz {
     		  if(Lizzie.frame.toolbar.lastMove<Lizzie.board.getHistory().getData().moveNumber)
     	  {
     		  Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
+    		  togglePonder();
   	        Lizzie.frame.toolbar.isAutoAna = false;
   	        if(Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
   	        {
@@ -729,6 +730,7 @@ public class Leelaz {
      
       }else {
         Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
+        togglePonder();
         Lizzie.frame.toolbar.isAutoAna = false;
         if(Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
         {
