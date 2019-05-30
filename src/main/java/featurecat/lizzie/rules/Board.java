@@ -1937,13 +1937,18 @@ public class Board implements LeelazListener {
       if (!getNextMove().isPresent()) return;
       String answer = JOptionPane.showInputDialog("设置自动分析每步计算量(例如 100 (快速) 或 50000 (慢速)): ");
       try {
-        playoutsAnalysis = Integer.parseInt(answer);
+        // playoutsAnalysis = Integer.parseInt(answer);
+        Lizzie.frame.toolbar.txtAnaPlayouts.setText(answer);
       } catch (NumberFormatException err) {
         System.out.println("Not a valid number");
         return;
       }
-      Lizzie.leelaz.addListener(this);
-      analysisMode = true;
+      Lizzie.frame.toolbar.chkAnaPlayouts.setSelected(true);
+      Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);
+      Lizzie.frame.toolbar.isAutoAna = true;
+      Lizzie.frame.toolbar.startAutoAna = true;
+      // Lizzie.leelaz.addListener(this);
+      // analysisMode = true;
       if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
     }
   }

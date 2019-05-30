@@ -898,18 +898,39 @@ public class Menu extends MenuBar {
 
       if (menuItem.getText().startsWith("不显示")) {
         Lizzie.config.allowMoveNumber = 0;
+        Lizzie.config.uiConfig.put("allow-move-number", 0);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+        }
+
         return;
       }
       if (menuItem.getText().startsWith("最近1手")) {
         Lizzie.config.allowMoveNumber = 1;
+        Lizzie.config.uiConfig.put("allow-move-number", 1);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+        }
         return;
       }
       if (menuItem.getText().startsWith("最近5手")) {
         Lizzie.config.allowMoveNumber = 5;
+        Lizzie.config.uiConfig.put("allow-move-number", 5);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+        }
         return;
       }
       if (menuItem.getText().startsWith("最近10手")) {
         Lizzie.config.allowMoveNumber = 10;
+        Lizzie.config.uiConfig.put("allow-move-number", 10);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+        }
         return;
       }
       if (menuItem.getText().startsWith("自定义")) {

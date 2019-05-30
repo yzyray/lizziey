@@ -122,9 +122,14 @@ public class BoardRenderer {
     if (!isShowingRawBoard()) {
       drawMoveNumbers(g);
       //        timer.lap("movenumbers");
-      if (!Lizzie.frame.isPlayingAgainstLeelaz && Lizzie.config.showBestMovesNow())
-        drawLeelazSuggestions(g);
-
+      if (!Lizzie.frame.isPlayingAgainstLeelaz && Lizzie.config.showBestMovesNow()) {
+        if ((Lizzie.board.getHistory().isBlacksTurn()
+                && Lizzie.frame.toolbar.chkShowBlack.isSelected())
+            || (!Lizzie.board.getHistory().isBlacksTurn()
+                && Lizzie.frame.toolbar.chkShowWhite.isSelected())) {
+          drawLeelazSuggestions(g);
+        }
+      }
       if (Lizzie.config.showNextMoves) {
         drawNextMoves(g);
       }

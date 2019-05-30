@@ -7,6 +7,7 @@ import java.awt.EventQueue;
 import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ResourceBundle;
 import javax.swing.Action;
@@ -89,6 +90,11 @@ public class MovenumberDialog extends JDialog {
 
   private void applyChange() {
     Lizzie.config.allowMoveNumber = changeMoveNumber;
+    Lizzie.config.uiConfig.put("allow-move-number", changeMoveNumber);
+    try {
+      Lizzie.config.save();
+    } catch (IOException es) {
+    }
   }
 
   private Integer txtFieldValue(JTextField txt) {

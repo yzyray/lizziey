@@ -244,7 +244,9 @@ public class Config {
     showBorder = uiConfig.optBoolean("show-border", false);
     showMoveNumber = uiConfig.getBoolean("show-move-number");
     onlyLastMoveNumber = uiConfig.optInt("only-last-move-number");
+
     allowMoveNumber = showMoveNumber ? (onlyLastMoveNumber > 0 ? onlyLastMoveNumber : -1) : 0;
+    allowMoveNumber = uiConfig.optInt("allow-move-number", allowMoveNumber);
     newMoveNumberInBranch = uiConfig.optBoolean("new-move-number-in-branch", true);
     showStatus = uiConfig.getBoolean("show-status");
     showBranch = uiConfig.getBoolean("show-leelaz-variation");
@@ -739,6 +741,68 @@ public class Config {
     badmoveslistPos.put(
         featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(7).getWidth());
     persistedUi.put("badmoves-list-position", badmoveslistPos);
+
+    JSONArray toolbarParameter = new JSONArray();
+    try {
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtFirstAnaMove.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+    try {
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtLastAnaMove.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+    if (Lizzie.frame.toolbar.chkAnaTime.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    try {
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtAnaTime.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+    if (Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    if (Lizzie.frame.toolbar.chkAnaPlayouts.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    try {
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtAnaPlayouts.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+    if (Lizzie.frame.toolbar.chkAnaFirstPlayouts.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    try {
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtAnaFirstPlayouts.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+    if (Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    if (Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    if (Lizzie.frame.toolbar.chkAutoPlayTime.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    try {
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtAutoPlayTime.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+    if (Lizzie.frame.toolbar.chkAutoPlayPlayouts.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    try {
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtAutoPlayPlayouts.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+    if (Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    try {
+      toolbarParameter.put(
+          Integer.parseInt(Lizzie.frame.toolbar.txtAutoPlayFirstPlayouts.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+    persistedUi.put("toolbar-parameter", toolbarParameter);
 
     JSONArray movecountPos = new JSONArray();
     movecountPos.put(Lizzie.countResults.getX());

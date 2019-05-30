@@ -1,12 +1,18 @@
 package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.rules.SGFParser;
 import featurecat.lizzie.rules.Stone;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+//import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -83,6 +89,7 @@ public class Leelaz {
   public int version = -1;
   public ArrayList<Integer> heatcount = new ArrayList<Integer>();
   public String currentEnginename = "";
+  boolean analysed=false;
   // public double heatwinrate;
   /**
    * Initializes the leelaz process and starts reading output
@@ -436,9 +443,10 @@ public class Leelaz {
         if (isResponseUpToDate()) {
           // This should not be stale data when the command number match
           this.bestMoves = parseInfo(line.substring(5));
-          notifyBestMoveListeners();
+          //notifyBestMoveListeners();
           //  if() {
           notifyAutoAna();
+          notifyAutoPlay();
           //  }
           Lizzie.frame.refresh();
           // don't follow the maxAnalyzeTime rule if we are in analysis mode
@@ -460,7 +468,9 @@ public class Leelaz {
           } else if (!switching) {
 
             bestMoves.add(MoveData.fromSummary(line));
-            notifyBestMoveListeners();
+           // notifyBestMoveListeners();
+            notifyAutoAna();
+            notifyAutoPlay();
             Lizzie.frame.repaint();
           }
         }
@@ -620,11 +630,114 @@ public class Leelaz {
       }
     }
   }
-
+  private void notifyAutoPlay() {
+	  if (Lizzie.frame.toolbar.isAutoPlay) {
+		  if((Lizzie.board.getHistory().isBlacksTurn()&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getHistory().isBlacksTurn()&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
+		  {
+			  int time = 0;
+		        int playouts = 0;
+		        int firstPlayouts = 0;
+		        if (Lizzie.frame.toolbar.chkAutoPlayTime.isSelected()) {
+		          try {
+		            time = 1000 * Integer.parseInt(Lizzie.frame.toolbar.txtAutoPlayTime.getText());
+		          } catch (NumberFormatException err) {
+		          }
+		        }
+		        if (Lizzie.frame.toolbar.chkAutoPlayPlayouts.isSelected()) {
+		          try {
+		            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtAutoPlayPlayouts.getText());
+		          } catch (NumberFormatException err) {
+		          }
+		        }
+		        if (Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.isSelected()) {
+		          try {
+		            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtAutoPlayFirstPlayouts.getText());
+		          } catch (NumberFormatException err) {
+		          }
+		        }
+		        if(!bestMoves.isEmpty())
+		        {
+		        if (firstPlayouts > 0) {
+		          if (bestMoves.get(0).playouts >= firstPlayouts) {
+		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
+		            Lizzie.board.place(coords[0],coords[1]);
+		           return;
+		          }
+		        }
+		        if (playouts > 0) {
+		          int sum = 0;
+		          for (MoveData move : bestMoves) {
+		            sum += move.playouts;
+		          }
+		          if (sum >= playouts) {
+		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
+			            Lizzie.board.place(coords[0],coords[1]);
+			           return;
+		            
+		          }
+		        }
+		        
+		        if (time > 0) {
+		          if (System.currentTimeMillis() - startPonderTime > time) {
+		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
+			            Lizzie.board.place(coords[0],coords[1]);
+			           return;
+		          
+		          }
+		        }
+		        }
+		     
+		  }
+	  }
+  }
   private void notifyAutoAna() {
-    if (Lizzie.frame.toolbar.isAutoAna)
+    if (Lizzie.frame.toolbar.isAutoAna) {
+    	
+    	if(Lizzie.frame.toolbar.startAutoAna)
+    	{
+    		analysed=false;
+    		if(Lizzie.frame.toolbar.firstMove!=-1)
+    	{
+    		Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove-1);
+    		
+    	}
+    		Lizzie.frame.toolbar.startAutoAna=false;
+    	}
       if (Lizzie.board.getHistory().getNext().isPresent()) {
-        int time = 0;
+    	  if(Lizzie.frame.toolbar.lastMove!=-1)
+    	  {
+    		  if(Lizzie.frame.toolbar.lastMove<Lizzie.board.getHistory().getData().moveNumber)
+    	  {
+    		  Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
+  	        Lizzie.frame.toolbar.isAutoAna = false;
+  	        if(Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
+  	        {
+  	        	 File file = new File("");
+  	        	 String courseFile ="";
+  	             try {
+  					 courseFile = file.getCanonicalPath();
+  				} catch (IOException e) {
+  					// TODO Auto-generated catch block
+  					e.printStackTrace();
+  				}
+  	             String df= new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+  	             File autoSaveFile=new File(courseFile+ "\\" + "AutoSave"+"\\"+df+".sgf");
+
+  	             File fileParent = autoSaveFile.getParentFile();
+  	             if (!fileParent.exists()) {
+  	             fileParent.mkdirs();
+  	             }
+  	             try {
+  	            	  SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+  				} catch (IOException e) {
+  					// TODO Auto-generated catch block
+  					e.printStackTrace();
+  				}
+  	        }
+  	        return;
+    	  }
+    	  }
+    	int time = 0;
         int playouts = 0;
         int firstPlayouts = 0;
         if (Lizzie.frame.toolbar.chkAnaTime.isSelected()) {
@@ -645,9 +758,13 @@ public class Leelaz {
           } catch (NumberFormatException err) {
           }
         }
+        if(!bestMoves.isEmpty())
+        {
         if (firstPlayouts > 0) {
           if (bestMoves.get(0).playouts >= firstPlayouts) {
             Lizzie.board.nextMove();
+            analysed=true;
+            return;
           }
         }
         if (playouts > 0) {
@@ -657,18 +774,67 @@ public class Leelaz {
           }
           if (sum >= playouts) {
             Lizzie.board.nextMove();
+            analysed=true;
+            return;
           }
+        }
         }
         if (time > 0) {
           if (System.currentTimeMillis() - startPonderTime > time) {
             Lizzie.board.nextMove();
+            analysed=true;
+            return;
           }
         }
-      } else {
+     
+      }else {
         Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
         Lizzie.frame.toolbar.isAutoAna = false;
+        if(Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
+        {
+        	 File file = new File("");
+        	 String courseFile ="";
+             try {
+				 courseFile = file.getCanonicalPath();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+             String df= new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+             File autoSaveFile=new File(courseFile+ "\\" + "AutoSave"+"\\"+df+".sgf");
+
+             File fileParent = autoSaveFile.getParentFile();
+             if (!fileParent.exists()) {
+             fileParent.mkdirs();
+             }
+             try {
+            	  SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        return;
       }
+    }
   }
+  
+  // 判断文件夹是否存在
+  private  void judeDirExists(File file) {
+
+      if (file.exists()) {
+          if (file.isDirectory()) {
+              System.out.println("dir exists");
+          } else {
+              System.out.println("the same name file exists, can not create dir");
+          }
+      } else {
+          System.out.println("dir not exists, create it ...");
+          file.mkdir();
+      }
+
+  }
+
 
   /**
    * Parse a move-data line of Leelaz output

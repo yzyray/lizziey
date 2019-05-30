@@ -1134,7 +1134,7 @@ public class ConfigDialog extends JDialog {
     try {
 
       leelazConfig.putOpt("max-analyze-time-minutes", txtFieldValue(txtMaxAnalyzeTime));
-      Lizzie.config.maxAnalyzeTimeMillis = txtFieldValue(txtMaxAnalyzeTime);
+      Lizzie.config.maxAnalyzeTimeMillis = 60 * 1000 * txtFieldValue(txtMaxAnalyzeTime);
       leelazConfig.putOpt(
           "analyze-update-interval-centisec", txtFieldValue(txtAnalyzeUpdateInterval));
       Lizzie.config.analyzeUpdateIntervalCentisec = txtFieldValue(txtAnalyzeUpdateInterval);
