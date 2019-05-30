@@ -2080,7 +2080,12 @@ public class Board implements LeelazListener {
       }
     }
     if (node.getData().winrate >= 0 && isLarger) {
-      double winrateDiff = lastWinrateDiff(node);
+      double winrateDiff;
+      try {
+        winrateDiff = lastWinrateDiff(node);
+      } catch (Exception e) {
+        winrateDiff = 0;
+      }
       Optional<int[]> passstep = Optional.empty();
       if (node.previous().isPresent() && !(node.getData().lastMove == passstep)) {
         int[] coords = node.getData().lastMove.get();
@@ -2135,7 +2140,13 @@ public class Board implements LeelazListener {
       }
     }
     if (stats.maxWinrate >= 0 && isLarger) {
-      double winrateDiff = lastWinrateDiff2(history.getCurrentHistoryNode());
+      double winrateDiff;
+      try {
+        winrateDiff = lastWinrateDiff2(history.getCurrentHistoryNode());
+      } catch (Exception e) {
+        winrateDiff = 0;
+      }
+
       Optional<int[]> passstep = Optional.empty();
       if (history.getCurrentHistoryNode().previous().isPresent()
           && !(history.getCurrentHistoryNode().getData().lastMove == passstep)) {
