@@ -1159,6 +1159,9 @@ public class LizzieFrame extends JFrame {
     // bs.show();
     g0.drawImage(cachedBackground, 0, 0, null);
     g0.drawImage(cachedImage, 0, 0, null);
+    if (showControls) {
+      drawControls();
+    }
   }
 
   /**
@@ -1351,8 +1354,9 @@ public class LizzieFrame extends JFrame {
         min(commandsToShow.size() * lineHeight, getHeight() - getInsets().top - getInsets().bottom);
 
     int commandsX = min(mainPanel.getWidth() / 2 - boxWidth / 2, mainPanel.getWidth());
-    int top = this.getInsets().top;
-    int commandsY = top + min((getHeight() - top) / 2 - boxHeight / 2, getHeight() - top);
+    int top = mainPanel.getInsets().top;
+    int commandsY =
+        top + min((mainPanel.getHeight() - top) / 2 - boxHeight / 2, mainPanel.getHeight() - top);
 
     BufferedImage result = new BufferedImage(boxWidth, boxHeight, TYPE_INT_ARGB);
     filter10.filter(

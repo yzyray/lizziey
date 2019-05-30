@@ -420,20 +420,19 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       case VK_X:
         if (controlIsPressed(e)) {
           Lizzie.frame.openConfigDialog();
+        } else {
+          if (!Lizzie.frame.showControls) {
+            //                    if (Lizzie.leelaz.isPondering()) {
+            //                      wasPonderingWhenControlsShown = true;
+            //                       Lizzie.leelaz.togglePonder();
+            //                    } else {
+            wasPonderingWhenControlsShown = false;
+            //   }
+
+            Lizzie.frame.drawControls();
+          }
+          Lizzie.frame.showControls = true;
         }
-        //        else {
-        //          if (!Lizzie.frame.showControls) {
-        //            if (Lizzie.leelaz.isPondering()) {
-        //              wasPonderingWhenControlsShown = true;
-        //               Lizzie.leelaz.togglePonder();
-        //            } else {
-        //              wasPonderingWhenControlsShown = false;
-        //            }
-        //
-        //            Lizzie.frame.drawControls();
-        //          }
-        //          Lizzie.frame.showControls = true;
-        //        }
         break;
 
       case VK_W:
@@ -597,11 +596,11 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   @Override
   public void keyReleased(KeyEvent e) {
     switch (e.getKeyCode()) {
-        //      case VK_X:
-        //        if (wasPonderingWhenControlsShown)  Lizzie.leelaz.togglePonder();
-        //        Lizzie.frame.showControls = false;
-        //        Lizzie.frame.repaint();
-        //        break;
+      case VK_X:
+        // if (wasPonderingWhenControlsShown)  Lizzie.leelaz.togglePonder();
+        Lizzie.frame.showControls = false;
+        Lizzie.frame.repaint();
+        break;
 
       case VK_Z:
         stopTemporaryBoard();
