@@ -426,12 +426,12 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
             //                      wasPonderingWhenControlsShown = true;
             //                       Lizzie.leelaz.togglePonder();
             //                    } else {
-            wasPonderingWhenControlsShown = false;
+            // wasPonderingWhenControlsShown = false;
             //   }
 
-            Lizzie.frame.drawControls();
+            // Lizzie.frame.drawControls();
+            Lizzie.frame.showControls = true;
           }
-          Lizzie.frame.showControls = true;
         }
         break;
 

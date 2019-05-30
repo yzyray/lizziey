@@ -1326,7 +1326,7 @@ public class LizzieFrame extends JFrame {
 
   /** Display the controls */
   void drawControls() {
-    userAlreadyKnowsAboutCommandString = true;
+    // userAlreadyKnowsAboutCommandString = true;
 
     cachedImage = new BufferedImage(mainPanel.getWidth(), mainPanel.getHeight(), TYPE_INT_ARGB);
 
@@ -1402,10 +1402,10 @@ public class LizzieFrame extends JFrame {
     refreshBackground();
   }
 
-  private boolean userAlreadyKnowsAboutCommandString = false;
+  // private boolean userAlreadyKnowsAboutCommandString = false;
 
   private void drawCommandString(Graphics2D g) {
-    if (userAlreadyKnowsAboutCommandString) return;
+    // if (userAlreadyKnowsAboutCommandString) return;
 
     int maxSize = (int) (min(mainPanel.getWidth(), mainPanel.getHeight()) * 0.98);
 
