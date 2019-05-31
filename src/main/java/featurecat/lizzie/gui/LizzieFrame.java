@@ -27,7 +27,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -700,13 +699,7 @@ public class LizzieFrame extends JFrame {
     table.getRowSorter().toggleSortOrder(3);
     table.getRowSorter().toggleSortOrder(3);
     Robot robot = null;
-    try {
-      robot = new Robot();
-      robot.keyPress(KeyEvent.VK_CONTROL);
-    } catch (AWTException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+
     int result = chooser.showOpenDialog(frame);
 
     // chooser.showOpenDialog(null);
@@ -745,13 +738,6 @@ public class LizzieFrame extends JFrame {
                 - Lizzie.frame.getInsets().right,
             Lizzie.frame.toolbarHeight);
       }
-    }
-    try {
-      robot = new Robot();
-      robot.keyRelease(KeyEvent.VK_CONTROL);
-    } catch (AWTException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
     }
   }
 

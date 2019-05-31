@@ -70,7 +70,7 @@ public class Menu extends MenuBar {
     fileMenu.add(openItem);
 
     menuBar.add(fileMenu);
-    final JMenuItem batchfile = new JMenuItem("批量分析棋谱（CTRL+O）");
+    final JMenuItem batchfile = new JMenuItem("批量分析棋谱（ALT+O）");
     batchfile.addActionListener(new ItemListener());
     fileMenu.add(batchfile);
 
