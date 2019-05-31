@@ -384,6 +384,18 @@ public class LizzieFrame extends JFrame {
         1,
         1,
         TimeUnit.SECONDS);
+    Timer timer = new Timer();
+    timer.schedule(
+        new TimerTask() {
+          public void run() {
+            addInput();
+            this.cancel();
+          }
+        },
+        1000);
+  }
+
+  private void addInput() {
     Input input = new Input();
     mainPanel.addKeyListener(input);
     mainPanel.addMouseMotionListener(input);
@@ -684,60 +696,48 @@ public class LizzieFrame extends JFrame {
   }
 
   public void openFileAll() {
-    FileNameExtensionFilter filter = new FileNameExtensionFilter("*.sgf or *.gib", "SGF", "GIB");
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
-    JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
-    chooser.setFileFilter(filter);
-
-    chooser.setMultiSelectionEnabled(true);
     JFrame frame = new JFrame();
+    FileDialog fileDialog = new FileDialog(frame, "批量棋谱选择");
+    fileDialog.setDirectory(filesystem.getString("last-folder"));
+    fileDialog.setFile("*.sgf;*.gib;*.SGF;*.GIB;");
+
     frame.setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
-    Action details = chooser.getActionMap().get("viewTypeDetails");
-    details.actionPerformed(null);
-    // Find the JTable on the file chooser panel and manually do the sort
-    JTable table = SwingUtils.getDescendantsOfType(JTable.class, chooser).get(0);
-    table.getRowSorter().toggleSortOrder(3);
-    table.getRowSorter().toggleSortOrder(3);
-    Robot robot = null;
+    frame.setLocationRelativeTo(null);
+    fileDialog.setMultipleMode(true);
+    fileDialog.setMode(0);
+    fileDialog.setVisible(true);
 
-    int result = chooser.showOpenDialog(frame);
+    File[] files = fileDialog.getFiles();
 
-    // chooser.showOpenDialog(null);
-    if (result == JFileChooser.APPROVE_OPTION) {
-      File[] files = chooser.getSelectedFiles();
-      if (files.length > 0) {
-        isBatchAna = true;
-        BatchAnaNum = 0;
-        Batchfiles = files;
-        loadFile(files[0]);
-        toolbar.chkAnaAutoSave.setSelected(true);
-        toolbar.chkAnaAutoSave.setEnabled(false);
+    if (files.length > 0) {
+      isBatchAna = true;
+      BatchAnaNum = 0;
+      Batchfiles = files;
+      loadFile(files[0]);
+      toolbar.chkAnaAutoSave.setSelected(true);
+      toolbar.chkAnaAutoSave.setEnabled(false);
 
-        Lizzie.frame.toolbarHeight = 70;
-        Lizzie.frame.toolbar.setVisible(true);
-        Lizzie.frame.mainPanel.setBounds(
-            0,
-            0,
-            Lizzie.frame.getWidth()
-                - Lizzie.frame.getInsets().left
-                - Lizzie.frame.getInsets().right,
-            Lizzie.frame.getHeight()
-                - Lizzie.frame.getJMenuBar().getHeight()
-                - Lizzie.frame.getInsets().top
-                - Lizzie.frame.getInsets().bottom
-                - Lizzie.frame.toolbarHeight);
-        Lizzie.frame.toolbar.setBounds(
-            0,
-            Lizzie.frame.getHeight()
-                - Lizzie.frame.getJMenuBar().getHeight()
-                - Lizzie.frame.getInsets().top
-                - Lizzie.frame.getInsets().bottom
-                - Lizzie.frame.toolbarHeight,
-            Lizzie.frame.getWidth()
-                - Lizzie.frame.getInsets().left
-                - Lizzie.frame.getInsets().right,
-            Lizzie.frame.toolbarHeight);
-      }
+      Lizzie.frame.toolbarHeight = 70;
+      Lizzie.frame.toolbar.setVisible(true);
+      Lizzie.frame.mainPanel.setBounds(
+          0,
+          0,
+          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
+          Lizzie.frame.getHeight()
+              - Lizzie.frame.getJMenuBar().getHeight()
+              - Lizzie.frame.getInsets().top
+              - Lizzie.frame.getInsets().bottom
+              - Lizzie.frame.toolbarHeight);
+      Lizzie.frame.toolbar.setBounds(
+          0,
+          Lizzie.frame.getHeight()
+              - Lizzie.frame.getJMenuBar().getHeight()
+              - Lizzie.frame.getInsets().top
+              - Lizzie.frame.getInsets().bottom
+              - Lizzie.frame.toolbarHeight,
+          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
+          Lizzie.frame.toolbarHeight);
     }
   }
 
