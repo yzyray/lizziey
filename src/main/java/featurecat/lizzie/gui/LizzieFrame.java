@@ -27,6 +27,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -113,6 +114,9 @@ public class LizzieFrame extends JFrame {
 
   public static final int[] outOfBoundCoordinate = new int[] {-1, -1};
 
+  public boolean isBatchAna = false;
+  public int BatchAnaNum = -1;
+  public File[] Batchfiles;
   public int[] suggestionclick = outOfBoundCoordinate;
   public int[] clickbadmove = outOfBoundCoordinate;
   public int[] mouseOverCoordinate = outOfBoundCoordinate;
@@ -678,6 +682,52 @@ public class LizzieFrame extends JFrame {
 
     // chooser.showOpenDialog(null);
     if (result == JFileChooser.APPROVE_OPTION) loadFile(chooser.getSelectedFile());
+  }
+
+  public void openFileAll() {
+    FileNameExtensionFilter filter = new FileNameExtensionFilter("*.sgf or *.gib", "SGF", "GIB");
+    JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
+    JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
+    chooser.setFileFilter(filter);
+
+    chooser.setMultiSelectionEnabled(true);
+    JFrame frame = new JFrame();
+    frame.setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
+    Action details = chooser.getActionMap().get("viewTypeDetails");
+    details.actionPerformed(null);
+    // Find the JTable on the file chooser panel and manually do the sort
+    JTable table = SwingUtils.getDescendantsOfType(JTable.class, chooser).get(0);
+    table.getRowSorter().toggleSortOrder(3);
+    table.getRowSorter().toggleSortOrder(3);
+    Robot robot = null;
+    try {
+      robot = new Robot();
+      robot.keyPress(KeyEvent.VK_CONTROL);
+    } catch (AWTException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    int result = chooser.showOpenDialog(frame);
+
+    // chooser.showOpenDialog(null);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      File[] files = chooser.getSelectedFiles();
+      if (files.length > 0) {
+        isBatchAna = true;
+        BatchAnaNum = 0;
+        Batchfiles = files;
+        loadFile(files[0]);
+        toolbar.chkAnaAutoSave.setSelected(true);
+        toolbar.chkAnaAutoSave.setEnabled(false);
+        try {
+          robot = new Robot();
+          robot.keyRelease(KeyEvent.VK_CONTROL);
+        } catch (AWTException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+    }
   }
 
   public static void loadFile(File file) {

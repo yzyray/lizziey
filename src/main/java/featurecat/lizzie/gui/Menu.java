@@ -69,6 +69,11 @@ public class Menu extends MenuBar {
     openItem.addActionListener(new ItemListener());
     fileMenu.add(openItem);
 
+    menuBar.add(fileMenu);
+    final JMenuItem batchfile = new JMenuItem("批量分析棋谱（CTRL+O）");
+    batchfile.addActionListener(new ItemListener());
+    fileMenu.add(batchfile);
+
     final JMenuItem openUrlItem = new JMenuItem("打开在线棋谱（Q）");
     openUrlItem.addActionListener(new ItemListener());
     fileMenu.add(openUrlItem);
@@ -1156,6 +1161,10 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("重启Z")) {
         Lizzie.frame.restartZen();
+        return;
+      }
+      if (menuItem.getText().startsWith("批量")) {
+        Lizzie.frame.openFileAll();
         return;
       }
     }

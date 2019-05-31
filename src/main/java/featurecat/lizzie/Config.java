@@ -72,7 +72,7 @@ public class Config {
   public Color winrateMissLineColor = null;
   public Color blunderBarColor = null;
   public boolean solidStoneIndicator = false;
-  public boolean showCommentNodeColor = false;
+  public boolean showCommentNodeColor = true;
   public boolean badmovesalwaysontop = false;
   public boolean mainsalwaysontop = false;
   public boolean suggestionsalwaysontop = false;

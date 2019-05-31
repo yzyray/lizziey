@@ -23,8 +23,10 @@ public class SGFParser {
 
   public static boolean load(String filename) throws IOException {
     // Clear the board
+    //  Lizzie.board.getHistory().getCurrentHistoryNode().getData().setPlayouts(0);
+    //  Lizzie.board.getHistory().getCurrentHistoryNode().getData().bestMoves.clear();
+    // Lizzie.board=new Board();
     Lizzie.board.clear();
-
     File file = new File(filename);
     if (!file.exists() || !file.canRead()) {
       return false;
@@ -77,7 +79,13 @@ public class SGFParser {
     if (sgfMatcher.matches()) {
       value = sgfMatcher.group(1);
     } else {
-      return false;
+      value = "(;" + value.substring(1);
+      Matcher sgfMatcher2 = SGF_PATTERN.matcher(value);
+      if (sgfMatcher2.matches()) {
+        value = sgfMatcher2.group(1);
+      } else {
+        return false;
+      }
     }
 
     // Determine the SZ property
@@ -480,7 +488,7 @@ public class SGFParser {
 
         if (Lizzie.config.appendWinrateToComment) {
           // Append the winrate to the comment of sgf
-          data.comment = formatComment(node);
+          if (data.getPlayouts() > 0) data.comment = formatComment(node);
         }
 
         // Write the comment

@@ -1,6 +1,7 @@
 package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.gui.LizzieFrame;
 import featurecat.lizzie.rules.SGFParser;
 import featurecat.lizzie.rules.Stone;
 import java.io.BufferedInputStream;
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -90,6 +93,7 @@ public class Leelaz {
   public ArrayList<Integer> heatcount = new ArrayList<Integer>();
   public String currentEnginename = "";
   boolean analysed=false;
+  private boolean isSaving=false;
   // public double heatwinrate;
   /**
    * Initializes the leelaz process and starts reading output
@@ -630,6 +634,84 @@ public class Leelaz {
 		  }
 	  }
   }
+  
+  private void saveAndLoad() {
+	  if(!Lizzie.frame.isBatchAna)
+	  {  File file = new File("");
+   	 String courseFile ="";
+        try {
+			 courseFile = file.getCanonicalPath();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        String df= new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        File autoSaveFile=new File(courseFile+ "\\" + "AutoSave"+"\\"+df+".sgf");
+
+        File fileParent = autoSaveFile.getParentFile();
+        if (!fileParent.exists()) {
+        fileParent.mkdirs();
+        }
+        try {
+       	  SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   
+        isSaving=false;
+        JOptionPane.showMessageDialog(null, "自动分析已完毕,棋谱在目录AutoSave中");
+	  }
+	  else {
+    	  String name =Lizzie.frame.Batchfiles[Lizzie.frame.BatchAnaNum].getName();
+    	  String path=Lizzie.frame.Batchfiles[Lizzie.frame.BatchAnaNum].getParent();
+		  String filename=path+"\\"+name.replaceAll("\\..*$", "")+"_已分析.sgf";
+		  File autoSaveFile=new File(filename);
+		  try {
+	       	  SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}     
+		  if(Lizzie.frame.Batchfiles.length>(Lizzie.frame.BatchAnaNum+1)) {
+			  Timer timer = new Timer();
+		      timer.schedule(
+		          new TimerTask() {
+		            public void run() {
+		            	loadAutoBatchFile();
+		              this.cancel();
+		            }
+		          },
+		          300);
+		  }
+		  else {
+			  Lizzie.frame.isBatchAna=false;
+			  Lizzie.frame.toolbar.chkAnaAutoSave.setEnabled(true);
+			  JOptionPane.showMessageDialog(null, "批量棋谱已全部分析完毕");
+		  }
+	  }
+	  
+       
+  }
+  
+  private void loadAutoBatchFile() {
+
+	  Lizzie.frame.BatchAnaNum=Lizzie.frame.BatchAnaNum+1;		
+	  LizzieFrame.loadFile(Lizzie.frame.Batchfiles[Lizzie.frame.BatchAnaNum]);
+	  try {
+          Lizzie.frame.toolbar.firstMove = Integer.parseInt(Lizzie.frame.toolbar.txtFirstAnaMove.getText());
+        } catch (Exception ex) {
+        }
+        try {
+        	Lizzie.frame.toolbar.lastMove = Integer.parseInt(Lizzie.frame.toolbar.txtLastAnaMove.getText());
+        } catch (Exception ex) {
+        }
+        Lizzie.frame.toolbar.isAutoAna = true;
+        Lizzie.frame.toolbar.startAutoAna = true;
+        Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);
+        if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+        isSaving=false;
+  }
+  
   private void notifyAutoAna() {
     if (Lizzie.frame.toolbar.isAutoAna) {
     	
@@ -651,31 +733,14 @@ public class Leelaz {
     		  Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
     		  togglePonder();
   	        Lizzie.frame.toolbar.isAutoAna = false;
-  	        if(Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
+  	        if(!isSaving&&Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
   	        {
-  	        	 File file = new File("");
-  	        	 String courseFile ="";
-  	             try {
-  					 courseFile = file.getCanonicalPath();
-  				} catch (IOException e) {
-  					// TODO Auto-generated catch block
-  					e.printStackTrace();
-  				}
-  	             String df= new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-  	             File autoSaveFile=new File(courseFile+ "\\" + "AutoSave"+"\\"+df+".sgf");
-
-  	             File fileParent = autoSaveFile.getParentFile();
-  	             if (!fileParent.exists()) {
-  	             fileParent.mkdirs();
-  	             }
-  	             try {
-  	            	  SGFParser.save(Lizzie.board, autoSaveFile.getPath());
-  				} catch (IOException e) {
-  					// TODO Auto-generated catch block
-  					e.printStackTrace();
-  				}
+  	        	isSaving=true;
+  	        	saveAndLoad();
   	        }
-  	        return;
+  	        else {
+  	      JOptionPane.showMessageDialog(null, "自动分析已完毕");
+  	        }return;
     	  }
     	  }
     	int time = 0;
@@ -732,31 +797,13 @@ public class Leelaz {
         Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
         togglePonder();
         Lizzie.frame.toolbar.isAutoAna = false;
-        if(Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
+        if(!isSaving&&Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
         {
-        	 File file = new File("");
-        	 String courseFile ="";
-             try {
-				 courseFile = file.getCanonicalPath();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-             String df= new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-             File autoSaveFile=new File(courseFile+ "\\" + "AutoSave"+"\\"+df+".sgf");
-
-             File fileParent = autoSaveFile.getParentFile();
-             if (!fileParent.exists()) {
-             fileParent.mkdirs();
-             }
-             try {
-            	  SGFParser.save(Lizzie.board, autoSaveFile.getPath());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
-        return;
+        	isSaving=true;
+        	saveAndLoad();
+        }else {
+        JOptionPane.showMessageDialog(null, "自动分析已完毕");
+        }return;
       }
     }
   }
