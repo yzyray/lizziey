@@ -719,14 +719,39 @@ public class LizzieFrame extends JFrame {
         loadFile(files[0]);
         toolbar.chkAnaAutoSave.setSelected(true);
         toolbar.chkAnaAutoSave.setEnabled(false);
-        try {
-          robot = new Robot();
-          robot.keyRelease(KeyEvent.VK_CONTROL);
-        } catch (AWTException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
+
+        Lizzie.frame.toolbarHeight = 70;
+        Lizzie.frame.toolbar.setVisible(true);
+        Lizzie.frame.mainPanel.setBounds(
+            0,
+            0,
+            Lizzie.frame.getWidth()
+                - Lizzie.frame.getInsets().left
+                - Lizzie.frame.getInsets().right,
+            Lizzie.frame.getHeight()
+                - Lizzie.frame.getJMenuBar().getHeight()
+                - Lizzie.frame.getInsets().top
+                - Lizzie.frame.getInsets().bottom
+                - Lizzie.frame.toolbarHeight);
+        Lizzie.frame.toolbar.setBounds(
+            0,
+            Lizzie.frame.getHeight()
+                - Lizzie.frame.getJMenuBar().getHeight()
+                - Lizzie.frame.getInsets().top
+                - Lizzie.frame.getInsets().bottom
+                - Lizzie.frame.toolbarHeight,
+            Lizzie.frame.getWidth()
+                - Lizzie.frame.getInsets().left
+                - Lizzie.frame.getInsets().right,
+            Lizzie.frame.toolbarHeight);
       }
+    }
+    try {
+      robot = new Robot();
+      robot.keyRelease(KeyEvent.VK_CONTROL);
+    } catch (AWTException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
   }
 

@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.swing.*;
 
 /** Main class. */
@@ -62,20 +61,20 @@ public class Lizzie {
         leelaz.estimatePassWinrate();
       }
       if (mainArgs.length == 1) {
-    	  Timer timer = new Timer();
-	      timer.schedule(
-	          new TimerTask() {
-	            public void run() {
-	            	frame.loadFile(new File(mainArgs[0]));
-	              this.cancel();
-	            }
-	          },
-	          500);
-    	  //frame.loadFile(new File(mainArgs[0]));
+        Timer timer = new Timer();
+        timer.schedule(
+            new TimerTask() {
+              public void run() {
+                frame.loadFile(new File(mainArgs[0]));
+                this.cancel();
+              }
+            },
+            500);
+        // frame.loadFile(new File(mainArgs[0]));
       } else if (config.config.getJSONObject("ui").getBoolean("resume-previous-game")) {
         board.resumePreviousGame();
       }
-      //frame.loadFile(new File("C:\\Users\\Administrator\\Desktop\\lizzie\\1.sgf"));
+      // frame.loadFile(new File("C:\\Users\\Administrator\\Desktop\\lizzie\\1.sgf"));
       leelaz.togglePonder();
     } catch (IOException e) {
       frame.openConfigDialog();
