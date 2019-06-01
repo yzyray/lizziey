@@ -231,7 +231,10 @@ public class LizzieFrame extends JFrame {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("main-window-position");
       this.toolbarHeight = pos.getInt(0);
     }
-
+    if(toolbarHeight==26)
+ 	   toolbar.detail.setIcon(toolbar.iconDown);  
+    if(toolbarHeight==70)
+    	toolbar.detail.setIcon(toolbar.iconUp); 
     mainPanel =
         new JPanel(true) {
           @Override
@@ -719,6 +722,7 @@ public class LizzieFrame extends JFrame {
       toolbar.chkAnaAutoSave.setEnabled(false);
 
       Lizzie.frame.toolbarHeight = 70;
+      toolbar.detail.setIcon(toolbar.iconUp);
       Lizzie.frame.toolbar.setVisible(true);
       Lizzie.frame.mainPanel.setBounds(
           0,

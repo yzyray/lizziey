@@ -10,8 +10,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.text.NumberFormat;
+
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
@@ -38,6 +42,7 @@ public class BottomToolbar extends JPanel {
   JButton openfile;
   JButton savefile;
   JButton analyse;
+  JButton detail;
   JFormattedTextField txtMoveNumber;
   private int changeMoveNumber;
   public boolean isAutoAna = false;
@@ -92,6 +97,8 @@ public class BottomToolbar extends JPanel {
 
   JPanel anaPanel;
   JPanel autoPlayPanel;
+  ImageIcon iconUp;
+  ImageIcon iconDown;
 
   public BottomToolbar() {
     Color hsbColor =
@@ -114,6 +121,24 @@ public class BottomToolbar extends JPanel {
     forward1 = new JButton(">");
     openfile = new JButton("打开");
     analyse = new JButton("分析|暂停");
+     iconUp = new ImageIcon();
+    try {
+    	iconUp.setImage(
+          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/up.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    iconDown = new ImageIcon();
+    try {
+    	iconDown.setImage(
+          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/down.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+   detail = new JButton("");  
+   
     add(clearButton);
     add(lastButton);
     add(firstButton);
@@ -126,7 +151,7 @@ public class BottomToolbar extends JPanel {
     add(forward1);
     add(openfile);
     add(analyse);
-
+    add(detail);
     firstButton.setFocusable(false);
     lastButton.setFocusable(false);
     clearButton.setFocusable(false);
@@ -139,6 +164,7 @@ public class BottomToolbar extends JPanel {
     forward1.setFocusable(false);
     backward1.setFocusable(false);
     savefile.setFocusable(false);
+    detail.setFocusable(false);
 
     NumberFormat nf = NumberFormat.getIntegerInstance();
     nf.setGroupingUsed(false);
@@ -176,6 +202,42 @@ public class BottomToolbar extends JPanel {
           @Override
           public void keyTyped(KeyEvent e) {}
         });
+    detail.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                  if(Lizzie.frame.toolbarHeight==26)
+                  {
+                	  Lizzie.frame.toolbarHeight = 70;
+                      detail.setIcon(iconUp);
+                      Lizzie.frame.setBounds(Lizzie.frame.getX(), Lizzie.frame.getY(), Lizzie.frame.getWidth(), Lizzie.frame.getHeight()+44);
+                      Lizzie.frame.toolbar.setBounds(
+                          0,
+                          Lizzie.frame.getHeight()
+                              - Lizzie.frame.getJMenuBar().getHeight()
+                              - Lizzie.frame.getInsets().top
+                              - Lizzie.frame.getInsets().bottom
+                              - Lizzie.frame.toolbarHeight,
+                          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
+                          Lizzie.frame.toolbarHeight);
+                   
+                  }
+                  else
+                  {
+                	  Lizzie.frame.toolbarHeight = 26;
+                      detail.setIcon(iconDown);
+                      Lizzie.frame.setBounds(Lizzie.frame.getX(), Lizzie.frame.getY(), Lizzie.frame.getWidth(), Lizzie.frame.getHeight()-44);
+                      Lizzie.frame.toolbar.setBounds(
+                          0,
+                          Lizzie.frame.getHeight()
+                              - Lizzie.frame.getJMenuBar().getHeight()
+                              - Lizzie.frame.getInsets().top
+                              - Lizzie.frame.getInsets().bottom
+                              - Lizzie.frame.toolbarHeight,
+                          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
+                          Lizzie.frame.toolbarHeight);
+                  }
+                }
+              });
     analyse.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -966,8 +1028,10 @@ public class BottomToolbar extends JPanel {
   }
 
   public void setButtonLocation(int boardmid) {
-    int w = Lizzie.frame.getWidth();
+    int w = Lizzie.frame.getWidth();    
     if (w - boardmid - 30 < 370) boardmid = w / 2 - 50;
+    if(boardmid-303<19)boardmid=322;
+    detail.setBounds(0,0,20,26);
     forward1.setBounds(boardmid + 21, 0, 38, 26);
     backward1.setBounds(boardmid - 16, 0, 38, 26);
     openfile.setBounds(boardmid - 303, 0, 56, 26);
@@ -981,5 +1045,6 @@ public class BottomToolbar extends JPanel {
     savefile.setBounds(boardmid - 248, 0, 56, 26);
     clearButton.setBounds(boardmid + 146, 0, 80, 26);
     countButton.setBounds(boardmid + 225, 0, 80, 26);
+    
   }
 }

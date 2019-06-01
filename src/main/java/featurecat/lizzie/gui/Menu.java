@@ -1055,19 +1055,17 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("底部")) {
+    	  int nowHeight=Lizzie.frame.toolbarHeight;
         Lizzie.frame.toolbarHeight = 26;
         Lizzie.frame.toolbar.setVisible(true);
-        Lizzie.frame.mainPanel.setBounds(
-            0,
-            0,
-            Lizzie.frame.getWidth()
-                - Lizzie.frame.getInsets().left
-                - Lizzie.frame.getInsets().right,
+        Lizzie.frame.toolbar.detail.setIcon(Lizzie.frame.toolbar.iconDown);
+        Lizzie.frame.setBounds(
+        		 Lizzie.frame.getX(),
+                 Lizzie.frame.getY(),
+            Lizzie.frame.getWidth(),
             Lizzie.frame.getHeight()
-                - Lizzie.frame.getJMenuBar().getHeight()
-                - Lizzie.frame.getInsets().top
-                - Lizzie.frame.getInsets().bottom
-                - Lizzie.frame.toolbarHeight);
+                
+                +26- nowHeight);
         Lizzie.frame.toolbar.setBounds(
             0,
             Lizzie.frame.getHeight()
@@ -1083,19 +1081,16 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("详细")) {
+    	  int nowHeight=Lizzie.frame.toolbarHeight;
         Lizzie.frame.toolbarHeight = 70;
         Lizzie.frame.toolbar.setVisible(true);
-        Lizzie.frame.mainPanel.setBounds(
-            0,
-            0,
-            Lizzie.frame.getWidth()
-                - Lizzie.frame.getInsets().left
-                - Lizzie.frame.getInsets().right,
+        Lizzie.frame.toolbar.detail.setIcon(Lizzie.frame.toolbar.iconUp);
+        Lizzie.frame.setBounds(
+            Lizzie.frame.getX(),
+            Lizzie.frame.getY(),
+            Lizzie.frame.getWidth(),
             Lizzie.frame.getHeight()
-                - Lizzie.frame.getJMenuBar().getHeight()
-                - Lizzie.frame.getInsets().top
-                - Lizzie.frame.getInsets().bottom
-                - Lizzie.frame.toolbarHeight);
+                +70- nowHeight);
         Lizzie.frame.toolbar.setBounds(
             0,
             Lizzie.frame.getHeight()
@@ -1110,19 +1105,15 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("关闭工")) {
+    	  int nowHeight=Lizzie.frame.toolbarHeight;
         Lizzie.frame.toolbarHeight = 0;
         Lizzie.frame.toolbar.setVisible(false);
-        Lizzie.frame.mainPanel.setBounds(
-            0,
-            0,
-            Lizzie.frame.getWidth()
-                - Lizzie.frame.getInsets().left
-                - Lizzie.frame.getInsets().right,
+        Lizzie.frame.setBounds(
+        		 Lizzie.frame.getX(),
+                 Lizzie.frame.getY(),
+            Lizzie.frame.getWidth(),
             Lizzie.frame.getHeight()
-                - Lizzie.frame.getJMenuBar().getHeight()
-                - Lizzie.frame.getInsets().top
-                - Lizzie.frame.getInsets().bottom
-                - Lizzie.frame.toolbarHeight);
+                - nowHeight);
         Lizzie.frame.toolbar.setBounds(
             0,
             Lizzie.frame.getHeight()
