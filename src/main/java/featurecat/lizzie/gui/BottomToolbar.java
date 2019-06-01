@@ -1051,9 +1051,9 @@ public class BottomToolbar extends JPanel {
     forward1.setBounds(boardmid + 21, 0, 38, 26);
     backward1.setBounds(boardmid - 16, 0, 38, 26);
     openfile.setBounds(boardmid - 303, 0, 56, 26);
-    txtMoveNumber.setBounds(boardmid + 305, 1, 28, 24);
-    gotomove.setBounds(boardmid + 333, 0, 56, 26);
-    heatMap.setBounds(boardmid + 388, 0, 80, 26);
+    txtMoveNumber.setBounds(boardmid + 384, 1, 28, 24);
+    gotomove.setBounds(boardmid + 412, 0, 56, 26);
+    heatMap.setBounds(boardmid + 304, 0, 80, 26);
     backward10.setBounds(boardmid - 60, 0, 45, 26);
     forward10.setBounds(boardmid + 58, 0, 45, 26);
     firstButton.setBounds(boardmid - 104, 0, 45, 26);

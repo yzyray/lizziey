@@ -605,7 +605,11 @@ public class Leelaz {
 		          if (bestMoves.get(0).playouts >= firstPlayouts) {
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
 		            Lizzie.board.place(coords[0],coords[1]);
-		           return;
+		            if((Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
+		            {
+		            	 return;
+		            }
+		          sendCommand("name");
 		          }
 		        }
 		        if (playouts > 0) {
@@ -616,7 +620,11 @@ public class Leelaz {
 		          if (sum >= playouts) {
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
 			            Lizzie.board.place(coords[0],coords[1]);
-			           return;
+			            if((Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
+			            {
+			            	 return;
+			            }
+			          sendCommand("name");
 		            
 		          }
 		        }
@@ -625,7 +633,11 @@ public class Leelaz {
 		          if (System.currentTimeMillis() - startPonderTime > time) {
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
 			            Lizzie.board.place(coords[0],coords[1]);
-			           return;
+			            if((Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
+			            {
+			            	 return;
+			            }
+			          sendCommand("name");
 		          
 		          }
 		        }
