@@ -1055,17 +1055,16 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("底部")) {
-    	  int nowHeight=Lizzie.frame.toolbarHeight;
+        int nowHeight = Lizzie.frame.toolbarHeight;
         Lizzie.frame.toolbarHeight = 26;
         Lizzie.frame.toolbar.setVisible(true);
         Lizzie.frame.toolbar.detail.setIcon(Lizzie.frame.toolbar.iconDown);
         Lizzie.frame.setBounds(
-        		 Lizzie.frame.getX(),
-                 Lizzie.frame.getY(),
+            Lizzie.frame.getX(),
+            Lizzie.frame.getY(),
             Lizzie.frame.getWidth(),
-            Lizzie.frame.getHeight()
-                
-                +26- nowHeight);
+            Lizzie.frame.getHeight() + 26 - nowHeight);
+
         Lizzie.frame.toolbar.setBounds(
             0,
             Lizzie.frame.getHeight()
@@ -1081,7 +1080,7 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("详细")) {
-    	  int nowHeight=Lizzie.frame.toolbarHeight;
+        int nowHeight = Lizzie.frame.toolbarHeight;
         Lizzie.frame.toolbarHeight = 70;
         Lizzie.frame.toolbar.setVisible(true);
         Lizzie.frame.toolbar.detail.setIcon(Lizzie.frame.toolbar.iconUp);
@@ -1089,8 +1088,7 @@ public class Menu extends MenuBar {
             Lizzie.frame.getX(),
             Lizzie.frame.getY(),
             Lizzie.frame.getWidth(),
-            Lizzie.frame.getHeight()
-                +70- nowHeight);
+            Lizzie.frame.getHeight() + 70 - nowHeight);
         Lizzie.frame.toolbar.setBounds(
             0,
             Lizzie.frame.getHeight()
@@ -1105,15 +1103,14 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("关闭工")) {
-    	  int nowHeight=Lizzie.frame.toolbarHeight;
+        int nowHeight = Lizzie.frame.toolbarHeight;
         Lizzie.frame.toolbarHeight = 0;
         Lizzie.frame.toolbar.setVisible(false);
         Lizzie.frame.setBounds(
-        		 Lizzie.frame.getX(),
-                 Lizzie.frame.getY(),
+            Lizzie.frame.getX(),
+            Lizzie.frame.getY(),
             Lizzie.frame.getWidth(),
-            Lizzie.frame.getHeight()
-                - nowHeight);
+            Lizzie.frame.getHeight() - nowHeight);
         Lizzie.frame.toolbar.setBounds(
             0,
             Lizzie.frame.getHeight()
