@@ -169,7 +169,11 @@ public boolean isChanged=false;
 
   public static double getWinrateFromBestMoves(List<MoveData> bestMoves) {
     // return the weighted average winrate of bestMoves
-	  return bestMoves.get(0).winrate;
+	  double winrate=0;
+	try {  winrate=bestMoves.get(0).winrate;}
+	catch (Exception e) 
+	{}
+	  return winrate;
 //    return bestMoves
 //        .stream()
 //        .mapToDouble(move -> move.winrate * move.playouts / MoveData.getPlayouts(bestMoves))
