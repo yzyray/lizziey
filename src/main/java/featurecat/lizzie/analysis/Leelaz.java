@@ -359,7 +359,7 @@ public class Leelaz {
    */
   private void parseLine(String line) {
     synchronized (this) {
-      Lizzie.gtpConsole.addLine(line);
+      Lizzie.gtpConsole.addLineforce(line);
       // if (printCommunication || gtpConsole) {
       // Lizzie.gtpConsole.addLine(line);
       // }
@@ -764,6 +764,7 @@ public class Leelaz {
     		  Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
     		  togglePonder();
   	        Lizzie.frame.toolbar.isAutoAna = false;
+  	        Lizzie.frame.addInput();
   	        if(!isSaving&&Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
   	        {
   	        	isSaving=true;
@@ -834,6 +835,7 @@ public class Leelaz {
         Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
         togglePonder();
         Lizzie.frame.toolbar.isAutoAna = false;
+        Lizzie.frame.addInput();
         if(!isSaving&&Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
         {
         	isSaving=true;

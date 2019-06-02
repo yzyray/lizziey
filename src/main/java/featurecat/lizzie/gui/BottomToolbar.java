@@ -13,6 +13,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -459,10 +461,29 @@ public class BottomToolbar extends JPanel {
               lastMove = Integer.parseInt(txtLastAnaMove.getText());
             } catch (Exception ex) {
             }
-            isAutoAna = chkAutoAnalyse.isSelected();
-            startAutoAna = chkAutoAnalyse.isSelected();
-            if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+            if (chkAutoAnalyse.isSelected()) {
+              Lizzie.leelaz.sendCommand("name");
+              Timer timer = new Timer();
+              timer.schedule(
+                  new TimerTask() {
+                    public void run() {
+                      startAutoAna();
+                      this.cancel();
+                    }
+                  },
+                  300);
+
+            } else {
+              isAutoAna = false;
+              startAutoAna = false;
+              if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+            }
             setTxtUnfocuse();
+            if (isAutoAna) {
+              Lizzie.frame.removeInput();
+            } else {
+              Lizzie.frame.addInput();
+            }
           }
         });
     anaPanel.add(lblchkAutoAnalyse);
@@ -1059,6 +1080,12 @@ public class BottomToolbar extends JPanel {
       txtFirstAnaMove.setFocusable(true);
       txtAutoPlayFirstPlayouts.setFocusable(true);
     }
+  }
+
+  private void startAutoAna() {
+    isAutoAna = true;
+    startAutoAna = true;
+    Lizzie.leelaz.ponder();
   }
 
   private class DigitOnlyFilter extends DocumentFilter {

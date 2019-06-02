@@ -162,6 +162,8 @@ public class LizzieFrame extends JFrame {
   private HTMLDocument htmlDoc;
   private HtmlKit htmlKit;
   private StyleSheet htmlStyle;
+  Input input = new Input();
+  boolean noInput = true;
   // boolean lastponder = true;
 
   static {
@@ -390,19 +392,29 @@ public class LizzieFrame extends JFrame {
         new TimerTask() {
           public void run() {
             addInput();
+            mainPanel.addMouseMotionListener(input);
+            toolbar.addMouseWheelListener(input);
             this.cancel();
           }
         },
         1000);
   }
 
-  private void addInput() {
-    Input input = new Input();
-    mainPanel.addKeyListener(input);
-    mainPanel.addMouseMotionListener(input);
-    mainPanel.addMouseListener(input);
-    mainPanel.addMouseWheelListener(input);
-    toolbar.addMouseWheelListener(input);
+  public void addInput() {
+    if (noInput) {
+      mainPanel.addKeyListener(input);
+      mainPanel.addMouseListener(input);
+      mainPanel.addMouseWheelListener(input);
+    }
+    noInput = false;
+  }
+
+  public void removeInput() {
+    if (!noInput) {
+      mainPanel.removeKeyListener(input);
+      mainPanel.removeMouseListener(input);
+      mainPanel.removeMouseWheelListener(input);
+    }
   }
 
   /** Clears related status from empty board. */
