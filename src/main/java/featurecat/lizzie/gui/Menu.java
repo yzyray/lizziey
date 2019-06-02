@@ -281,6 +281,10 @@ public class Menu extends MenuBar {
     bestone.addActionListener(new ItemListener());
     gameMenu.add(bestone);
 
+    final JMenuItem pass = new JMenuItem();
+    pass.setText("停一手(P)");
+    pass.addActionListener(new ItemListener());
+    gameMenu.add(pass);
     gameMenu.addSeparator();
 
     final JMenuItem empty = new JMenuItem();
@@ -1165,6 +1169,10 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("批量")) {
         Lizzie.frame.openFileAll();
+        return;
+      }
+      if (menuItem.getText().startsWith("停一")) {
+        Lizzie.board.pass();
         return;
       }
     }
