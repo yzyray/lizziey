@@ -197,13 +197,7 @@ public class LizzieFrame extends JFrame {
     winrateGraph = new WinrateGraph();
     menu = new Menu();
     toolbar = new BottomToolbar();
-    if (Lizzie.config.loadZen) {
-      try {
-        zen = new YaZenGtp();
-      } catch (IOException e1) {
-        e1.printStackTrace();
-      }
-    }
+
     // MenuTest menu = new MenuTest();
     // add(menu);
     // this.setJMenuBar(menu);
@@ -394,6 +388,13 @@ public class LizzieFrame extends JFrame {
             addInput();
             mainPanel.addMouseMotionListener(input);
             toolbar.addMouseWheelListener(input);
+            if (Lizzie.config.loadZen) {
+              try {
+                zen = new YaZenGtp();
+              } catch (IOException e1) {
+                e1.printStackTrace();
+              }
+            }
             this.cancel();
           }
         },
