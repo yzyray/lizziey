@@ -2,6 +2,7 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
 import java.awt.Color;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -43,6 +44,7 @@ public class BottomToolbar extends JPanel {
   JButton analyse;
   JButton detail;
   JButton heatMap;
+  JButton backMain;
   JFormattedTextField txtMoveNumber;
   private int changeMoveNumber;
   public boolean isAutoAna = false;
@@ -122,6 +124,7 @@ public class BottomToolbar extends JPanel {
     openfile = new JButton("打开");
     analyse = new JButton("分析|暂停");
     heatMap = new JButton("策略网络");
+    backMain = new JButton("返回主分支");
     iconUp = new ImageIcon();
     try {
       iconUp.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/up.png")));
@@ -152,6 +155,7 @@ public class BottomToolbar extends JPanel {
     add(analyse);
     add(detail);
     add(heatMap);
+    add(backMain);
     firstButton.setFocusable(false);
     lastButton.setFocusable(false);
     clearButton.setFocusable(false);
@@ -166,6 +170,23 @@ public class BottomToolbar extends JPanel {
     savefile.setFocusable(false);
     detail.setFocusable(false);
     heatMap.setFocusable(false);
+    backMain.setFocusable(false);
+
+    firstButton.setMargin(new Insets(0, 0, 0, 0));
+    lastButton.setMargin(new Insets(0, 0, 0, 0));
+    clearButton.setMargin(new Insets(0, 0, 0, 0));
+    countButton.setMargin(new Insets(0, 0, 0, 0));
+    forward10.setMargin(new Insets(0, 0, 0, 0));
+    backward10.setMargin(new Insets(0, 0, 0, 0));
+    gotomove.setMargin(new Insets(0, 0, 0, 0));
+    openfile.setMargin(new Insets(0, 0, 0, 0));
+    analyse.setMargin(new Insets(0, 0, 0, 0));
+    forward1.setMargin(new Insets(0, 0, 0, 0));
+    backward1.setMargin(new Insets(0, 0, 0, 0));
+    savefile.setMargin(new Insets(0, 0, 0, 0));
+    detail.setMargin(new Insets(0, 0, 0, 0));
+    heatMap.setMargin(new Insets(0, 0, 0, 0));
+    backMain.setMargin(new Insets(0, 0, 0, 0));
 
     NumberFormat nf = NumberFormat.getIntegerInstance();
     nf.setGroupingUsed(false);
@@ -203,6 +224,15 @@ public class BottomToolbar extends JPanel {
           @Override
           public void keyTyped(KeyEvent e) {}
         });
+    backMain.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            while (!Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()) {
+              Lizzie.board.previousMove();
+            }
+          }
+        });
+
     heatMap.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -1045,22 +1075,25 @@ public class BottomToolbar extends JPanel {
 
   public void setButtonLocation(int boardmid) {
     int w = Lizzie.frame.getWidth();
-    if (boardmid - 303 < 19) boardmid = 322;
-    if (boardmid + 484 > w && (w - 789 > 0)) boardmid = w - 484;
+
+    if (boardmid + 364 > w) boardmid = w - 364;
+    if (boardmid - 297 < 0) boardmid = 297;
     detail.setBounds(0, 0, 20, 26);
-    forward1.setBounds(boardmid + 21, 0, 38, 26);
-    backward1.setBounds(boardmid - 16, 0, 38, 26);
-    openfile.setBounds(boardmid - 303, 0, 56, 26);
-    txtMoveNumber.setBounds(boardmid + 384, 1, 28, 24);
-    gotomove.setBounds(boardmid + 412, 0, 56, 26);
-    heatMap.setBounds(boardmid + 304, 0, 80, 26);
-    backward10.setBounds(boardmid - 60, 0, 45, 26);
-    forward10.setBounds(boardmid + 58, 0, 45, 26);
-    firstButton.setBounds(boardmid - 104, 0, 45, 26);
-    lastButton.setBounds(boardmid + 102, 0, 45, 26);
-    analyse.setBounds(boardmid - 193, 0, 90, 26);
-    savefile.setBounds(boardmid - 248, 0, 56, 26);
-    clearButton.setBounds(boardmid + 146, 0, 80, 26);
-    countButton.setBounds(boardmid + 225, 0, 80, 26);
+
+    openfile.setBounds(boardmid - 278, 0, 40, 26);
+    savefile.setBounds(boardmid - 239, 0, 40, 26);
+    analyse.setBounds(boardmid - 200, 0, 65, 26);
+    backMain.setBounds(boardmid - 136, 0, 70, 26);
+    firstButton.setBounds(boardmid - 67, 0, 30, 26);
+    backward10.setBounds(boardmid - 38, 0, 30, 26);
+    backward1.setBounds(boardmid - 9, 0, 30, 26);
+    forward1.setBounds(boardmid + 20, 0, 30, 26);
+    forward10.setBounds(boardmid + 49, 0, 30, 26);
+    lastButton.setBounds(boardmid + 78, 0, 30, 26);
+    clearButton.setBounds(boardmid + 107, 0, 60, 26);
+    countButton.setBounds(boardmid + 166, 0, 60, 26);
+    heatMap.setBounds(boardmid + 225, 0, 60, 26);
+    txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
+    gotomove.setBounds(boardmid + 313, 0, 35, 26);
   }
 }
