@@ -697,20 +697,26 @@ public class LizzieFrame extends JFrame {
   }
 
   public void openFileAll() {
+    boolean onTop = false;
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     JFrame frame = new JFrame();
     FileDialog fileDialog = new FileDialog(frame, "批量棋谱选择");
+    if (this.isAlwaysOnTop()) {
+      this.setAlwaysOnTop(false);
+      fileDialog.setAlwaysOnTop(true);
+      onTop = true;
+    }
+
+    fileDialog.setLocationRelativeTo(null);
     fileDialog.setDirectory(filesystem.getString("last-folder"));
     fileDialog.setFile("*.sgf;*.gib;*.SGF;*.GIB;");
 
-    frame.setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
-    frame.setLocationRelativeTo(null);
     fileDialog.setMultipleMode(true);
     fileDialog.setMode(0);
     fileDialog.setVisible(true);
 
     File[] files = fileDialog.getFiles();
-
+    if (onTop) this.setAlwaysOnTop(true);
     if (files.length > 0) {
       isBatchAna = true;
       BatchAnaNum = 0;
