@@ -479,7 +479,7 @@ public class BottomToolbar extends JPanel {
               if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
             }
             setTxtUnfocuse();
-            if (isAutoAna) {
+            if (chkAutoAnalyse.isSelected()) {
               Lizzie.frame.removeInput();
             } else {
               Lizzie.frame.addInput();
