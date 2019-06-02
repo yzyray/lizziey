@@ -59,7 +59,13 @@ public class YaZenGtp {
       process = processBuilder.start();
     } catch (IOException e) {
       // TODO Auto-generated catch block
+      boolean onTop = false;
+      if (Lizzie.frame.isAlwaysOnTop()) {
+        Lizzie.frame.setAlwaysOnTop(false);
+        onTop = true;
+      }
       JOptionPane.showMessageDialog(null, "点目失败,请确认Lizzie目录下是否有YAZenGtop.exe和Zen.dll");
+      if (onTop) Lizzie.frame.setAlwaysOnTop(true);
       return;
     }
     initializeStreams();

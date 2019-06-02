@@ -1936,7 +1936,13 @@ public class Board implements LeelazListener {
       analysisMode = false;
     } else {
       if (!getNextMove().isPresent()) return;
+      boolean onTop = false;
+      if (Lizzie.frame.isAlwaysOnTop()) {
+        Lizzie.frame.setAlwaysOnTop(false);
+        onTop = true;
+      }
       String answer = JOptionPane.showInputDialog("设置自动分析每步计算量(例如 100 (快速) 或 50000 (慢速)): ");
+
       try {
         // playoutsAnalysis = Integer.parseInt(answer);
         Lizzie.frame.toolbar.txtAnaPlayouts.setText(answer);
@@ -1951,6 +1957,7 @@ public class Board implements LeelazListener {
       // Lizzie.leelaz.addListener(this);
       // analysisMode = true;
       if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+      if (onTop) Lizzie.frame.setAlwaysOnTop(true);
     }
   }
 
@@ -2208,7 +2215,13 @@ public class Board implements LeelazListener {
 
       if (history.getStones()[getIndex(changeCoord.get()[0], changeCoord.get()[1])]
           != Stone.EMPTY) {
+        boolean onTop = false;
+        if (Lizzie.frame.isAlwaysOnTop()) {
+          Lizzie.frame.setAlwaysOnTop(false);
+          onTop = true;
+        }
         JOptionPane.showMessageDialog(null, "更改的位置与现有棋子冲突");
+        if (onTop) Lizzie.frame.setAlwaysOnTop(true);
         return false;
       }
       changeCoord.map(c -> changeMove2(moveNumber, c));
@@ -2308,7 +2321,13 @@ public class Board implements LeelazListener {
               && changeNode.get().next().get().getData().lastMove == passstep)
           || (changeNode.get().previous().get().getData().moveNumber > 0
               && changeNode.get().previous().get().getData().lastMove == passstep)) {
+        boolean onTop = false;
+        if (Lizzie.frame.isAlwaysOnTop()) {
+          Lizzie.frame.setAlwaysOnTop(false);
+          onTop = true;
+        }
         JOptionPane.showMessageDialog(null, "修改失败,步连续两步PASS将导致终局");
+        if (onTop) Lizzie.frame.setAlwaysOnTop(true);
         goToMoveNumber(currentMoveNumber);
         return false;
       }
@@ -2366,7 +2385,13 @@ public class Board implements LeelazListener {
 
       if (history.getStones()[getIndex(changeCoord.get()[0], changeCoord.get()[1])]
           != Stone.EMPTY) {
+        boolean onTop = false;
+        if (Lizzie.frame.isAlwaysOnTop()) {
+          Lizzie.frame.setAlwaysOnTop(false);
+          onTop = true;
+        }
         JOptionPane.showMessageDialog(null, "修改失败,更改的位置与现有棋子冲突");
+        if (onTop) Lizzie.frame.setAlwaysOnTop(true);
         return false;
       }
       changeCoord.map(c -> changeMove(moveNumber, c, false));
@@ -2455,7 +2480,14 @@ public class Board implements LeelazListener {
                   && changeNode.get().next().get().getData().lastMove == passstep)
               || (changeNode.get().previous().get().getData().moveNumber > 0
                   && changeNode.get().previous().get().getData().lastMove == passstep)) {
+            boolean onTop = false;
+            if (Lizzie.frame.isAlwaysOnTop()) {
+              Lizzie.frame.setAlwaysOnTop(false);
+              onTop = true;
+            }
             JOptionPane.showMessageDialog(null, "修改失败,步连续两步PASS将导致终局");
+
+            if (onTop) Lizzie.frame.setAlwaysOnTop(true);
             goToMoveNumber(currentMoveNumber);
             return false;
           }
@@ -2472,7 +2504,13 @@ public class Board implements LeelazListener {
                 && changeNode.get().next().get().getData().lastMove == passstep)
             || (changeNode.get().previous().get().getData().moveNumber > 0
                 && changeNode.get().previous().get().getData().lastMove == passstep)) {
+          boolean onTop = false;
+          if (Lizzie.frame.isAlwaysOnTop()) {
+            Lizzie.frame.setAlwaysOnTop(false);
+            onTop = true;
+          }
           JOptionPane.showMessageDialog(null, "修改失败,步连续两步PASS将导致终局");
+          if (onTop) Lizzie.frame.setAlwaysOnTop(true);
           goToMoveNumber(currentMoveNumber);
           return false;
         }
@@ -2548,7 +2586,7 @@ public class Board implements LeelazListener {
     // JOptionPane.showMessageDialog(null, "已经是当前分支最后一步,不能插入棋子");
     // return false;
     // }
-    featurecat.lizzie.gui.Input.isinsertmode = true;
+    // featurecat.lizzie.gui.Input.isinsertmode = true;
     Optional<BoardHistoryNode> relink = changeNode;
     Optional<BoardHistoryNode> node = relink;
     Optional<int[]> passstep = Optional.empty();
@@ -2588,7 +2626,7 @@ public class Board implements LeelazListener {
     goToMoveNumber(insertoricurrentMoveNumber); // 需要重新获取插入后的步数
     insertorimove.clear();
     insertoriisblack.clear();
-    featurecat.lizzie.gui.Input.isinsertmode = false;
+    //  featurecat.lizzie.gui.Input.isinsertmode = false;
   }
 
   public void insertMove(int coords[], boolean isblack) {

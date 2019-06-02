@@ -484,8 +484,14 @@ public class Leelaz {
             Lizzie.config.leelaversion = minor;
           }
           if (minor < 15) {
+        	  boolean onTop=false;
+              if (Lizzie.frame.isAlwaysOnTop()) {
+            	  Lizzie.frame.setAlwaysOnTop(false);          
+                  onTop = true;
+                }              
             JOptionPane.showMessageDialog(
                 Lizzie.frame, "Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本是: " + params[1] + ")");
+            if(onTop)Lizzie.frame.setAlwaysOnTop(true);
           }
           isCheckingVersion = false;
 
@@ -671,7 +677,14 @@ public class Leelaz {
 			e.printStackTrace();
 		}   
         isSaving=false;
+        boolean onTop=false;
+        if (Lizzie.frame.isAlwaysOnTop()) {
+      	  Lizzie.frame.setAlwaysOnTop(false);          
+            onTop = true;
+          }
+
         JOptionPane.showMessageDialog(null, "自动分析已完毕,棋谱在目录AutoSave中");
+        if(onTop)Lizzie.frame.setAlwaysOnTop(true);
 	  }
 	  else {
     	  String name =Lizzie.frame.Batchfiles[Lizzie.frame.BatchAnaNum].getName();
@@ -698,7 +711,13 @@ public class Leelaz {
 		  else {
 			  Lizzie.frame.isBatchAna=false;
 			  Lizzie.frame.toolbar.chkAnaAutoSave.setEnabled(true);
+			  boolean onTop=false;
+              if (Lizzie.frame.isAlwaysOnTop()) {
+            	  Lizzie.frame.setAlwaysOnTop(false);          
+                  onTop = true;
+                }
 			  JOptionPane.showMessageDialog(null, "批量棋谱已全部分析完毕");
+			  if(onTop)Lizzie.frame.setAlwaysOnTop(true);
 		  }
 	  }
 	  
@@ -751,7 +770,13 @@ public class Leelaz {
   	        	saveAndLoad();
   	        }
   	        else {
+  	        	 boolean onTop=false;
+  	              if (Lizzie.frame.isAlwaysOnTop()) {
+  	            	  Lizzie.frame.setAlwaysOnTop(false);          
+  	                  onTop = true;
+  	                }
   	      JOptionPane.showMessageDialog(null, "自动分析已完毕");
+  	    if(onTop)Lizzie.frame.setAlwaysOnTop(true);
   	        }return;
     	  }
     	  }
@@ -814,7 +839,13 @@ public class Leelaz {
         	isSaving=true;
         	saveAndLoad();
         }else {
+        	 boolean onTop=false;
+             if (Lizzie.frame.isAlwaysOnTop()) {
+           	  Lizzie.frame.setAlwaysOnTop(false);          
+                 onTop = true;
+               }
         JOptionPane.showMessageDialog(null, "自动分析已完毕");
+        if(onTop)Lizzie.frame.setAlwaysOnTop(true);
         }return;
       }
     }

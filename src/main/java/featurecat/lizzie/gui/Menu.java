@@ -1139,12 +1139,24 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("清除Lizzie所有")) {
         Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
+        boolean onTop = false;
+        if (Lizzie.frame.isAlwaysOnTop()) {
+          Lizzie.frame.setAlwaysOnTop(false);
+          onTop = true;
+        }
         JOptionPane.showMessageDialog(null, "已清空所有Lizzie缓存的引擎推荐点");
+        if (onTop) Lizzie.frame.setAlwaysOnTop(true);
         return;
       }
       if (menuItem.getText().startsWith("清除Lizzie当前")) {
         Lizzie.board.clearbestmoves();
+        boolean onTop = false;
+        if (Lizzie.frame.isAlwaysOnTop()) {
+          Lizzie.frame.setAlwaysOnTop(false);
+          onTop = true;
+        }
         JOptionPane.showMessageDialog(null, "已清空当前一步Lizzie缓存的引擎推荐点");
+        if (onTop) Lizzie.frame.setAlwaysOnTop(true);
         return;
       }
       if (menuItem.getText().startsWith("重启Z")) {
