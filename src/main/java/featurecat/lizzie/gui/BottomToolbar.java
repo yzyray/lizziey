@@ -45,6 +45,7 @@ public class BottomToolbar extends JPanel {
   JButton detail;
   JButton heatMap;
   JButton backMain;
+  JButton batchOpen;
   JFormattedTextField txtMoveNumber;
   private int changeMoveNumber;
   public boolean isAutoAna = false;
@@ -125,6 +126,7 @@ public class BottomToolbar extends JPanel {
     analyse = new JButton("分析|暂停");
     heatMap = new JButton("策略网络");
     backMain = new JButton("返回主分支");
+    batchOpen = new JButton("批量打开");
     iconUp = new ImageIcon();
     try {
       iconUp.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/up.png")));
@@ -156,6 +158,8 @@ public class BottomToolbar extends JPanel {
     add(detail);
     add(heatMap);
     add(backMain);
+    add(batchOpen);
+
     firstButton.setFocusable(false);
     lastButton.setFocusable(false);
     clearButton.setFocusable(false);
@@ -171,6 +175,7 @@ public class BottomToolbar extends JPanel {
     detail.setFocusable(false);
     heatMap.setFocusable(false);
     backMain.setFocusable(false);
+    batchOpen.setFocusable(false);
 
     firstButton.setMargin(new Insets(0, 0, 0, 0));
     lastButton.setMargin(new Insets(0, 0, 0, 0));
@@ -187,6 +192,7 @@ public class BottomToolbar extends JPanel {
     detail.setMargin(new Insets(0, 0, 0, 0));
     heatMap.setMargin(new Insets(0, 0, 0, 0));
     backMain.setMargin(new Insets(0, 0, 0, 0));
+    batchOpen.setMargin(new Insets(0, 0, 0, 0));
 
     NumberFormat nf = NumberFormat.getIntegerInstance();
     nf.setGroupingUsed(false);
@@ -224,6 +230,13 @@ public class BottomToolbar extends JPanel {
           @Override
           public void keyTyped(KeyEvent e) {}
         });
+    batchOpen.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.openFileAll();
+          }
+        });
+
     backMain.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -1077,9 +1090,9 @@ public class BottomToolbar extends JPanel {
     int w = Lizzie.frame.getWidth();
 
     if (boardmid + 364 > w) boardmid = w - 364;
-    if (boardmid - 297 < 0) boardmid = 297;
+    if (boardmid - 357 < 0) boardmid = 357;
     detail.setBounds(0, 0, 20, 26);
-
+    batchOpen.setBounds(boardmid - 337, 0, 60, 26);
     openfile.setBounds(boardmid - 278, 0, 40, 26);
     savefile.setBounds(boardmid - 239, 0, 40, 26);
     analyse.setBounds(boardmid - 200, 0, 65, 26);
