@@ -405,8 +405,8 @@ public class LizzieFrame extends JFrame {
       mainPanel.addKeyListener(input);
       mainPanel.addMouseListener(input);
       mainPanel.addMouseWheelListener(input);
+      noInput = false;
     }
-    noInput = false;
   }
 
   public void removeInput() {
@@ -414,6 +414,7 @@ public class LizzieFrame extends JFrame {
       mainPanel.removeKeyListener(input);
       mainPanel.removeMouseListener(input);
       mainPanel.removeMouseWheelListener(input);
+      noInput = true;
     }
   }
 

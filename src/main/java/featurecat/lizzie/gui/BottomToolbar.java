@@ -20,15 +20,9 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
-import javax.swing.text.DocumentFilter.FilterBypass;
-import javax.swing.text.InternationalFormatter;
 import org.json.JSONArray;
 
 public class BottomToolbar extends JPanel {
@@ -48,8 +42,8 @@ public class BottomToolbar extends JPanel {
   JButton heatMap;
   JButton backMain;
   JButton batchOpen;
-  JFormattedTextField txtMoveNumber;
-  private int changeMoveNumber;
+  JTextField txtMoveNumber;
+  private int changeMoveNumber = 0;
   public boolean isAutoAna = false;
   public boolean isAutoPlay = false;
   public int firstMove = -1;
@@ -71,15 +65,15 @@ public class BottomToolbar extends JPanel {
   public JCheckBox chkAutoPlayPlayouts;
   public JCheckBox chkAutoPlayFirstPlayouts;
 
-  public JFormattedTextField txtAnaTime;
-  public JFormattedTextField txtAnaPlayouts;
-  public JFormattedTextField txtAnaFirstPlayouts;
-  public JFormattedTextField txtFirstAnaMove;
-  public JFormattedTextField txtLastAnaMove;
+  public JTextField txtAnaTime;
+  public JTextField txtAnaPlayouts;
+  public JTextField txtAnaFirstPlayouts;
+  public JTextField txtFirstAnaMove;
+  public JTextField txtLastAnaMove;
 
-  public JFormattedTextField txtAutoPlayTime;
-  public JFormattedTextField txtAutoPlayPlayouts;
-  public JFormattedTextField txtAutoPlayFirstPlayouts;
+  public JTextField txtAutoPlayTime;
+  public JTextField txtAutoPlayPlayouts;
+  public JTextField txtAutoPlayFirstPlayouts;
   // JButton cancelAutoAna;
 
   JLabel lblchkShowBlack;
@@ -196,17 +190,11 @@ public class BottomToolbar extends JPanel {
     backMain.setMargin(new Insets(0, 0, 0, 0));
     batchOpen.setMargin(new Insets(0, 0, 0, 0));
 
-    NumberFormat nf = NumberFormat.getIntegerInstance();
-    nf.setGroupingUsed(false);
-    txtMoveNumber =
-        new JFormattedTextField(
-            new InternationalFormatter(nf) {
-              protected DocumentFilter getDocumentFilter() {
-                return filter;
-              }
+    NumberFormat nf = NumberFormat.getNumberInstance();
 
-              private DocumentFilter filter = new DigitOnlyFilter();
-            });
+    nf.setGroupingUsed(false);
+    nf.setParseIntegerOnly(true);
+    txtMoveNumber = new JTextField();
     add(txtMoveNumber);
     txtMoveNumber.setColumns(3);
 
@@ -221,8 +209,7 @@ public class BottomToolbar extends JPanel {
               txtMoveNumber.setFocusable(true);
               txtMoveNumber.setBackground(Color.WHITE);
               txtMoveNumber.setText("");
-              Lizzie.board.goToMoveNumberBeyondBranch(changeMoveNumber);
-              //  setAllUnfocuse();
+              if (changeMoveNumber != 0) Lizzie.board.goToMoveNumberBeyondBranch(changeMoveNumber);
             }
           }
 
@@ -338,14 +325,14 @@ public class BottomToolbar extends JPanel {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             checkMove();
-            txtMoveNumber.setFocusable(false);
-            txtMoveNumber.setFocusable(true);
+
             txtMoveNumber.setBackground(Color.WHITE);
             txtMoveNumber.setText("");
             // Lizzie.board.savelist(changeMoveNumber);
             // Lizzie.board.setlist();
-            Lizzie.board.goToMoveNumberBeyondBranch(changeMoveNumber);
-            //  setAllUnfocuse();
+            if (changeMoveNumber != 0) Lizzie.board.goToMoveNumberBeyondBranch(changeMoveNumber);
+
+            setTxtUnfocuse();
           }
         });
     //        backward1.addActionListener(
@@ -456,10 +443,12 @@ public class BottomToolbar extends JPanel {
             try {
               firstMove = Integer.parseInt(txtFirstAnaMove.getText());
             } catch (Exception ex) {
+              firstMove = -1;
             }
             try {
               lastMove = Integer.parseInt(txtLastAnaMove.getText());
             } catch (Exception ex) {
+              lastMove = -1;
             }
             if (chkAutoAnalyse.isSelected()) {
               Lizzie.leelaz.sendCommand("name");
@@ -494,15 +483,7 @@ public class BottomToolbar extends JPanel {
     lblAnaMove.setBounds(78, 0, 40, 20);
     anaPanel.add(lblAnaMove);
 
-    txtFirstAnaMove =
-        new JFormattedTextField(
-            new InternationalFormatter(nf) {
-              protected DocumentFilter getDocumentFilter() {
-                return filter;
-              }
-
-              private DocumentFilter filter = new DigitOnlyFilter();
-            });
+    txtFirstAnaMove = new JTextField();
     anaPanel.add(txtFirstAnaMove);
     txtFirstAnaMove.setBounds(108, 2, 37, 18);
 
@@ -527,15 +508,7 @@ public class BottomToolbar extends JPanel {
     lblAnaMoveAnd.setBounds(147, 0, 15, 20);
     anaPanel.add(lblAnaMoveAnd);
 
-    txtLastAnaMove =
-        new JFormattedTextField(
-            new InternationalFormatter(nf) {
-              protected DocumentFilter getDocumentFilter() {
-                return filter;
-              }
-
-              private DocumentFilter filter = new DigitOnlyFilter();
-            });
+    txtLastAnaMove = new JTextField();
     anaPanel.add(txtLastAnaMove);
     txtLastAnaMove.setBounds(162, 2, 38, 18);
 
@@ -572,15 +545,7 @@ public class BottomToolbar extends JPanel {
     anaPanel.add(lbltxtAnaTime);
     chkAnaTime.setBounds(205, 1, 20, 18);
     lbltxtAnaTime.setBounds(225, 0, 80, 20);
-    txtAnaTime =
-        new JFormattedTextField(
-            new InternationalFormatter(nf) {
-              protected DocumentFilter getDocumentFilter() {
-                return filter;
-              }
-
-              private DocumentFilter filter = new DigitOnlyFilter();
-            });
+    txtAnaTime = new JTextField();
     anaPanel.add(txtAnaTime);
     txtAnaTime.setBounds(290, 2, 50, 18);
 
@@ -613,15 +578,7 @@ public class BottomToolbar extends JPanel {
     anaPanel.add(lbltxtAnaPlayouts);
     chkAnaPlayouts.setBounds(75, 22, 20, 20);
     lbltxtAnaPlayouts.setBounds(95, 22, 80, 20);
-    txtAnaPlayouts =
-        new JFormattedTextField(
-            new InternationalFormatter(nf) {
-              protected DocumentFilter getDocumentFilter() {
-                return filter;
-              }
-
-              private DocumentFilter filter = new DigitOnlyFilter();
-            });
+    txtAnaPlayouts = new JTextField();
     anaPanel.add(txtAnaPlayouts);
     txtAnaPlayouts.setBounds(150, 23, 50, 18);
 
@@ -639,15 +596,7 @@ public class BottomToolbar extends JPanel {
     anaPanel.add(lblAnaFirstPlayouts);
     chkAnaFirstPlayouts.setBounds(205, 22, 20, 20);
     lblAnaFirstPlayouts.setBounds(225, 22, 80, 20);
-    txtAnaFirstPlayouts =
-        new JFormattedTextField(
-            new InternationalFormatter(nf) {
-              protected DocumentFilter getDocumentFilter() {
-                return filter;
-              }
-
-              private DocumentFilter filter = new DigitOnlyFilter();
-            });
+    txtAnaFirstPlayouts = new JTextField();
     anaPanel.add(txtAnaFirstPlayouts);
     txtAnaFirstPlayouts.setBounds(290, 23, 50, 18);
 
@@ -727,15 +676,7 @@ public class BottomToolbar extends JPanel {
 
     chkAutoPlayTime = new JCheckBox();
     lblAutoPlay = new JLabel("按时间(秒):");
-    txtAutoPlayTime =
-        new JFormattedTextField(
-            new InternationalFormatter(nf) {
-              protected DocumentFilter getDocumentFilter() {
-                return filter;
-              }
-
-              private DocumentFilter filter = new DigitOnlyFilter();
-            });
+    txtAutoPlayTime = new JTextField();
     chkAutoPlayTime.addActionListener(
         new ActionListener() {
           @Override
@@ -753,15 +694,7 @@ public class BottomToolbar extends JPanel {
 
     chkAutoPlayPlayouts = new JCheckBox();
     lblAutoPlayPlayouts = new JLabel("总计算量:");
-    txtAutoPlayPlayouts =
-        new JFormattedTextField(
-            new InternationalFormatter(nf) {
-              protected DocumentFilter getDocumentFilter() {
-                return filter;
-              }
-
-              private DocumentFilter filter = new DigitOnlyFilter();
-            });
+    txtAutoPlayPlayouts = new JTextField();
     chkAutoPlayPlayouts.addActionListener(
         new ActionListener() {
           @Override
@@ -779,15 +712,7 @@ public class BottomToolbar extends JPanel {
 
     chkAutoPlayFirstPlayouts = new JCheckBox();
     lblAutoPlayFirstPlayouts = new JLabel("首位计算量:");
-    txtAutoPlayFirstPlayouts =
-        new JFormattedTextField(
-            new InternationalFormatter(nf) {
-              protected DocumentFilter getDocumentFilter() {
-                return filter;
-              }
-
-              private DocumentFilter filter = new DigitOnlyFilter();
-            });
+    txtAutoPlayFirstPlayouts = new JTextField();
     chkAutoPlayFirstPlayouts.addActionListener(
         new ActionListener() {
           @Override
@@ -1088,29 +1013,12 @@ public class BottomToolbar extends JPanel {
     Lizzie.leelaz.ponder();
   }
 
-  private class DigitOnlyFilter extends DocumentFilter {
-    @Override
-    public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
-        throws BadLocationException {
-      String newStr = string != null ? string.replaceAll("\\D++", "") : "";
-      if (!newStr.isEmpty()) {
-        fb.insertString(offset, newStr, attr);
-      }
-    }
-  }
-
-  private Integer txtFieldValue(JTextField txt) {
-    if (txt.getText().trim().isEmpty()
-        || txt.getText().trim().length() >= String.valueOf(Integer.MAX_VALUE).length()) {
-      return 0;
-    } else {
-      return Integer.parseInt(txt.getText().trim());
-    }
-  }
-
   private void checkMove() {
-
-    changeMoveNumber = txtFieldValue(txtMoveNumber);
+    try {
+      changeMoveNumber = Integer.parseInt(Lizzie.frame.toolbar.txtMoveNumber.getText());
+    } catch (NumberFormatException err) {
+      changeMoveNumber = 0;
+    }
   }
 
   public void setButtonLocation(int boardmid) {

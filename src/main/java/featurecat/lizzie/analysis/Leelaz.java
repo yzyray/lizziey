@@ -94,6 +94,7 @@ public class Leelaz {
   public String currentEnginename = "";
   boolean analysed=false;
   private boolean isSaving=false;
+  private boolean isClosing=false;
   // public double heatwinrate;
   /**
    * Initializes the leelaz process and starts reading output
@@ -359,7 +360,7 @@ public class Leelaz {
    */
   private void parseLine(String line) {
     synchronized (this) {
-      Lizzie.gtpConsole.addLineforce(line);
+      Lizzie.gtpConsole.addLine(line);
       // if (printCommunication || gtpConsole) {
       // Lizzie.gtpConsole.addLine(line);
       // }
@@ -389,8 +390,7 @@ public class Leelaz {
           this.bestMoves = parseInfo(line.substring(5));
           //notifyBestMoveListeners();
           //  if() {
-          notifyAutoAna();
-          notifyAutoPlay();
+         
           //  }
           Lizzie.frame.refresh();
           // don't follow the maxAnalyzeTime rule if we are in analysis mode
@@ -581,6 +581,8 @@ public class Leelaz {
     }
   }
   private void notifyAutoPlay() {
+	  if(this.bestMoves.isEmpty())
+	  {return;}
 	  if (Lizzie.frame.toolbar.isAutoPlay) {
 		  if((Lizzie.board.getHistory().isBlacksTurn()&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getHistory().isBlacksTurn()&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
 		  {
@@ -605,8 +607,7 @@ public class Leelaz {
 		          } catch (NumberFormatException err) {
 		          }
 		        }
-		        if(!bestMoves.isEmpty())
-		        {
+		       
 		        if (firstPlayouts > 0) {
 		          if (bestMoves.get(0).playouts >= firstPlayouts) {
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
@@ -647,7 +648,6 @@ public class Leelaz {
 		          
 		          }
 		        }
-		        }
 		     
 		  }
 	  }
@@ -683,8 +683,9 @@ public class Leelaz {
             onTop = true;
           }
 
-        JOptionPane.showMessageDialog(null, "自动分析已完毕,棋谱在目录AutoSave中");
+        if(analysed)JOptionPane.showMessageDialog(null, "自动分析已完毕,棋谱在目录AutoSave中");
         if(onTop)Lizzie.frame.setAlwaysOnTop(true);
+        return;
 	  }
 	  else {
     	  String name =Lizzie.frame.Batchfiles[Lizzie.frame.BatchAnaNum].getName();
@@ -718,6 +719,8 @@ public class Leelaz {
                 }
 			  JOptionPane.showMessageDialog(null, "批量棋谱已全部分析完毕");
 			  if(onTop)Lizzie.frame.setAlwaysOnTop(true);
+			  Lizzie.frame.addInput();
+			  return;
 		  }
 	  }
 	  
@@ -744,41 +747,42 @@ public class Leelaz {
   }
   
   private void notifyAutoAna() {
+	  if(this.bestMoves.isEmpty())
+	  {return;}
     if (Lizzie.frame.toolbar.isAutoAna) {
     	
     	if(Lizzie.frame.toolbar.startAutoAna)
     	{
-    		analysed=false;
     		if(Lizzie.frame.toolbar.firstMove!=-1)
-    	{
-    		Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove-1);
-    		
-    	}
+        	{
+        		Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove-1);        		
+        	}
+    		if(!Lizzie.board.getHistory().getNext().isPresent())
+    		{
+    			 Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
+    			  togglePonder();
+    		        Lizzie.frame.toolbar.isAutoAna = false;
+    		        Lizzie.frame.addInput();
+    			if(Lizzie.frame.isBatchAna)
+    			{
+    				loadAutoBatchFile();
+    			}
+    			return;
+    		}
+    		else {
+    		analysed=false;
+    		  isClosing=false;
     		Lizzie.frame.toolbar.startAutoAna=false;
+    		}
     	}
+    	if(isClosing)return;
       if (Lizzie.board.getHistory().getNext().isPresent()) {
     	  if(Lizzie.frame.toolbar.lastMove!=-1)
     	  {
     		  if(Lizzie.frame.toolbar.lastMove<Lizzie.board.getHistory().getData().moveNumber)
     	  {
-    		  Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
-    		  togglePonder();
-  	        Lizzie.frame.toolbar.isAutoAna = false;
-  	        Lizzie.frame.addInput();
-  	        if(!isSaving&&Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
-  	        {
-  	        	isSaving=true;
-  	        	saveAndLoad();
-  	        }
-  	        else {
-  	        	 boolean onTop=false;
-  	              if (Lizzie.frame.isAlwaysOnTop()) {
-  	            	  Lizzie.frame.setAlwaysOnTop(false);          
-  	                  onTop = true;
-  	                }
-  	      JOptionPane.showMessageDialog(null, "自动分析已完毕");
-  	    if(onTop)Lizzie.frame.setAlwaysOnTop(true);
-  	        }return;
+    		 closeAutoAna();
+    		 return;
     	  }
     	  }
     	int time = 0;
@@ -802,8 +806,7 @@ public class Leelaz {
           } catch (NumberFormatException err) {
           }
         }
-        if(!bestMoves.isEmpty())
-        {
+        
         if (firstPlayouts > 0) {
           if (bestMoves.get(0).playouts >= firstPlayouts) {
             Lizzie.board.nextMove();
@@ -822,7 +825,7 @@ public class Leelaz {
             return;
           }
         }
-        }
+       
         if (time > 0) {
           if (System.currentTimeMillis() - startPonderTime > time) {
             Lizzie.board.nextMove();
@@ -832,23 +835,7 @@ public class Leelaz {
         }
      
       }else {
-        Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
-        togglePonder();
-        Lizzie.frame.toolbar.isAutoAna = false;
-        Lizzie.frame.addInput();
-        if(!isSaving&&Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
-        {
-        	isSaving=true;
-        	saveAndLoad();
-        }else {
-        	 boolean onTop=false;
-             if (Lizzie.frame.isAlwaysOnTop()) {
-           	  Lizzie.frame.setAlwaysOnTop(false);          
-                 onTop = true;
-               }
-        JOptionPane.showMessageDialog(null, "自动分析已完毕");
-        if(onTop)Lizzie.frame.setAlwaysOnTop(true);
-        }return;
+    	  closeAutoAna();
       }
     }
   }
@@ -899,6 +886,8 @@ public class Leelaz {
         line.append((char) c);
         if ((c == '\n')) {
           parseLine(line.toString());
+          notifyAutoAna();
+          notifyAutoPlay();
           line = new StringBuilder();
         }
       }
@@ -912,6 +901,34 @@ public class Leelaz {
       e.printStackTrace();
       System.exit(-1);
     }
+  }
+  
+  private void closeAutoAna() {
+	  if(!isClosing)
+	  {
+		  Lizzie.frame.toolbar.isAutoAna = false;
+		  isClosing=true;
+		  Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
+		  togglePonder();
+	        
+	        Lizzie.frame.addInput();
+	        if(!isSaving&&Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()&&analysed)
+	        {
+	        	isSaving=true;
+	        	saveAndLoad();
+	        	
+	        }else {
+	        	 boolean onTop=false;
+	             if (Lizzie.frame.isAlwaysOnTop()) {
+	           	  Lizzie.frame.setAlwaysOnTop(false);          
+	                 onTop = true;
+	               }
+	             if(analysed)JOptionPane.showMessageDialog(null, "自动分析已完毕");
+	        if(onTop)Lizzie.frame.setAlwaysOnTop(true);
+	       
+	  }
+	      
+	  }
   }
 
   /**
