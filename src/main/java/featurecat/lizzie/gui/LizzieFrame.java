@@ -882,11 +882,11 @@ public class LizzieFrame extends JFrame {
             ponderingY2 - (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize * 0.4);
       }
       // dynamic komi
-      double dynamicKomiSize = .02;
-      int dynamicKomiX = leftInset;
-      int dynamicKomiY = ponderingY - (int) (maxBound * dynamicKomiSize);
-      int dynamicKomiLabelX = leftInset;
-      int dynamicKomiLabelY = dynamicKomiY - (int) (maxBound * dynamicKomiSize);
+      //   double dynamicKomiSize = .02;
+      //  int dynamicKomiX = leftInset;
+      //  int dynamicKomiY = ponderingY - (int) (maxBound * dynamicKomiSize);
+      // int dynamicKomiLabelX = leftInset;
+      // int dynamicKomiLabelY = dynamicKomiY - (int) (maxBound * dynamicKomiSize);
 
       // loading message;
       double loadingSize = 0.03;
@@ -1176,12 +1176,12 @@ public class LizzieFrame extends JFrame {
           // toolbar.setAllUnfocuse();
           firstTime = false;
         }
-        Optional<String> dynamicKomi = Lizzie.leelaz.getDynamicKomi();
-        if (Lizzie.config.showDynamicKomi && dynamicKomi.isPresent()) {
-          String text = resourceBundle.getString("LizzieFrame.display.dynamic-komi");
-          drawPonderingState(g, text, dynamicKomiLabelX, dynamicKomiLabelY, dynamicKomiSize);
-          drawPonderingState(g, dynamicKomi.get(), dynamicKomiX, dynamicKomiY, dynamicKomiSize);
-        }
+        // Optional<String> dynamicKomi = Lizzie.leelaz.getDynamicKomi();
+        // if (Lizzie.config.showDynamicKomi && dynamicKomi.isPresent()) {
+        //   String text = resourceBundle.getString("LizzieFrame.display.dynamic-komi");
+        //    drawPonderingState(g, text, dynamicKomiLabelX, dynamicKomiLabelY, dynamicKomiSize);
+        //   drawPonderingState(g, dynamicKomi.get(), dynamicKomiX, dynamicKomiY, dynamicKomiSize);
+        //  }
 
         // Todo: Make board move over when there is no space beside the board
         if (Lizzie.config.showWinrate) {
@@ -1284,12 +1284,6 @@ public class LizzieFrame extends JFrame {
     boardRenderer.drawTextureImage(g, wallpaper, 0, 0, drawWidth, drawHeight);
 
     return g;
-  }
-
-  private void drawContainerFirst(Graphics g, int vx, int vy, int vw, int vh) {
-    BufferedImage result = new BufferedImage(vw, vh, TYPE_INT_ARGB);
-    filter20.filter(cachedImage.getSubimage(vx, vy, vw, vh), result);
-    g.drawImage(result, vx, vy, null);
   }
 
   private void drawContainer(Graphics g, int vx, int vy, int vw, int vh) {
@@ -1417,9 +1411,9 @@ public class LizzieFrame extends JFrame {
     createBackground(mainPanel.getWidth(), mainPanel.getHeight());
 
     List<String> commandsToShow = new ArrayList<>(Arrays.asList(commands));
-    if (Lizzie.leelaz.getDynamicKomi().isPresent()) {
-      commandsToShow.add(resourceBundle.getString("LizzieFrame.commands.keyD"));
-    }
+    //  if (Lizzie.leelaz.getDynamicKomi().isPresent()) {
+    //   commandsToShow.add(resourceBundle.getString("LizzieFrame.commands.keyD"));
+    // }
 
     Graphics2D g = cachedImage.createGraphics();
 

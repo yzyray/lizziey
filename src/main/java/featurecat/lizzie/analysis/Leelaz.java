@@ -360,26 +360,29 @@ public class Leelaz {
    */
   private void parseLine(String line) {
     synchronized (this) {
+    	if(Lizzie.gtpConsole.isVisible())
       Lizzie.gtpConsole.addLine(line);
       // if (printCommunication || gtpConsole) {
       // Lizzie.gtpConsole.addLine(line);
       // }
-      if (line.startsWith("komi=")) {
-        try {
-          dynamicKomi = Float.parseFloat(line.substring("komi=".length()).trim());
-        } catch (NumberFormatException nfe) {
-          dynamicKomi = Float.NaN;
-        }
-      } else if (line.startsWith("opp_komi=")) {
-        try {
-          dynamicOppKomi = Float.parseFloat(line.substring("opp_komi=".length()).trim());
-        } catch (NumberFormatException nfe) {
-          dynamicOppKomi = Float.NaN;
-        }
-      } else if (line.equals("\n")) {
+//      if (line.startsWith("komi=")) {
+//        try {
+//          dynamicKomi = Float.parseFloat(line.substring("komi=".length()).trim());
+//        } catch (NumberFormatException nfe) {
+//          dynamicKomi = Float.NaN;
+//        }
+//      } else if (line.startsWith("opp_komi=")) {
+//        try {
+//          dynamicOppKomi = Float.parseFloat(line.substring("opp_komi=".length()).trim());
+//        } catch (NumberFormatException nfe) {
+//          dynamicOppKomi = Float.NaN;
+//        }
+  //   } else
+    	// if (line.equals("\n")) {
         // End of response
-      } else if (line.startsWith("info")) {
-        isLoaded = true;
+    //  } else 
+    	  if (line.startsWith("info")) {
+        
         // Clear switching prompt
         switching = false;
 
@@ -400,22 +403,26 @@ public class Leelaz {
           }
         }
       } else if (line.contains("STAGE")) {
-        Lizzie.gtpConsole.addLineforce(line);
+    		if(Lizzie.gtpConsole.isVisible())
+        Lizzie.gtpConsole.addLineforce(line);    		
       } else if (line.contains("> KoMI")) {
+    		if(Lizzie.gtpConsole.isVisible())
         Lizzie.gtpConsole.addLineforce(line);
-      } else if (line.contains(" ->   ")) {
-        isLoaded = true;
-        if (isResponseUpToDate()
-            || isThinking
-                && (!isPondering && Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand)) {
-          if (line.contains("pass")) {
-          } 
+      } 
+      //else if (line.contains(" ->   ")) {
+     //   isLoaded = true;
+       // if (isResponseUpToDate()
+       //     || isThinking
+        //        && (!isPondering && Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand)) {
+        //  if (line.contains("pass")) {
+        //  } 
          // else if (!switching) {
            // bestMoves.add(MoveData.fromSummary(line));          
           //  Lizzie.frame.repaint();
          // }
-        }
-      } else if (line.startsWith("play")) {
+       // }
+     // } 
+    else if (line.startsWith("play")) {
         // In lz-genmove_analyze
         if (Lizzie.frame.isPlayingAgainstLeelaz) {
           Lizzie.board.place(line.substring(5).trim());
@@ -491,7 +498,7 @@ public class Leelaz {
             if(onTop)Lizzie.frame.setAlwaysOnTop(true);
           }
           isCheckingVersion = false;
-
+          isLoaded = true;
           switch (currentEngineN) {
             case 0:
               featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
@@ -1178,13 +1185,13 @@ public class Leelaz {
     }
   }
 
-  public Optional<String> getDynamicKomi() {
-    if (Float.isNaN(dynamicKomi) || Float.isNaN(dynamicOppKomi)) {
-      return Optional.empty();
-    } else {
-      return Optional.of(String.format("%.1f / %.1f", dynamicKomi, dynamicOppKomi));
-    }
-  }
+  //public Optional<String> getDynamicKomi() {
+ //   if (Float.isNaN(dynamicKomi) || Float.isNaN(dynamicOppKomi)) {
+ //     return Optional.empty();
+ //   } else {
+ //     return Optional.of(String.format("%.1f / %.1f", dynamicKomi, dynamicOppKomi));
+ //   }
+ // }
 
   public boolean isPondering() {
     return isPondering;
@@ -1287,9 +1294,9 @@ public class Leelaz {
     return Math.signum(pWinrate - 50) * handicapSymmetric;
   }
 
-  public synchronized void addListener(LeelazListener listener) {
-    listeners.add(listener);
-  }
+ // public synchronized void addListener(LeelazListener listener) {
+  //  listeners.add(listener);
+  //}
 
   // Beware, due to race conditions, bestMoveNotification can be called once even after item is
   // removed
@@ -1298,11 +1305,11 @@ public class Leelaz {
     listeners.remove(listener);
   }
 
-  private synchronized void notifyBestMoveListeners() {
-    for (LeelazListener listener : listeners) {
-      listener.bestMoveNotification(bestMoves);
-    }
-  }
+ // private synchronized void notifyBestMoveListeners() {
+ //   for (LeelazListener listener : listeners) {
+ //     listener.bestMoveNotification(bestMoves);
+  //  }
+ // }
 
   private static enum ParamState {
     NORMAL,

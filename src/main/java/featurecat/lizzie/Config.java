@@ -29,7 +29,7 @@ public class Config {
   public boolean showBestMovesTemporarily = false;
   public boolean showCaptured = true;
   public boolean handicapInsteadOfWinrate = false;
-  public boolean showDynamicKomi = true;
+  public boolean showDynamicKomi = false;
   public double replayBranchIntervalSeconds = 1.0;
   public boolean showCoordinates = true;
   public boolean colorByWinrateInsteadOfVisits = false;
@@ -262,8 +262,8 @@ public class Config {
     showNextMoves = uiConfig.getBoolean("show-next-moves");
     showSubBoard = uiConfig.getBoolean("show-subboard");
     largeSubBoard = uiConfig.getBoolean("large-subboard");
-    handicapInsteadOfWinrate = uiConfig.getBoolean("handicap-instead-of-winrate");
-    showDynamicKomi = uiConfig.getBoolean("show-dynamic-komi");
+    // handicapInsteadOfWinrate = uiConfig.getBoolean("handicap-instead-of-winrate");
+    // showDynamicKomi = uiConfig.getBoolean("show-dynamic-komi");
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);
     suggestionsalwaysontop = uiConfig.optBoolean("suggestions-always-ontop", false);
@@ -472,9 +472,9 @@ public class Config {
     this.showNextMoves = !this.showNextMoves;
   }
 
-  public void toggleHandicapInsteadOfWinrate() {
-    this.handicapInsteadOfWinrate = !this.handicapInsteadOfWinrate;
-  }
+  // public void toggleHandicapInsteadOfWinrate() {
+  // this.handicapInsteadOfWinrate = !this.handicapInsteadOfWinrate;
+  // }
 
   public void toggleLargeSubBoard() {
     this.largeSubBoard = !this.largeSubBoard;
@@ -620,7 +620,7 @@ public class Config {
     ui.put("autosave-interval-seconds", -1);
     ui.put("handicap-instead-of-winrate", false);
     ui.put("board-size", 19);
-    ui.put("show-dynamic-komi", true);
+    ui.put("show-dynamic-komi", false);
     ui.put("min-playout-ratio-for-stats", 0.0);
     ui.put("theme", "default");
     ui.put("only-last-move-number", 1);
