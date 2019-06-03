@@ -4,7 +4,6 @@ import static java.awt.event.KeyEvent.*;
 
 import featurecat.lizzie.Lizzie;
 import java.awt.event.*;
-import java.util.Optional;
 import javax.swing.SwingUtilities;
 
 public class Input implements MouseListener, KeyListener, MouseWheelListener, MouseMotionListener {
@@ -16,11 +15,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   @Override
   public void mouseClicked(MouseEvent e) {
     if (SwingUtilities.isMiddleMouseButton(e)) {
-      Optional<int[]> boardCoordinates =
-          Lizzie.frame.boardRenderer.convertScreenToCoordinates(e.getX(), e.getY());
-      if (boardCoordinates.isPresent()) {
-        if (!Lizzie.frame.playCurrentVariation()) Lizzie.frame.playBestMove();
-      }
+
+      Lizzie.frame.playCurrentVariation();
     }
   }
 
@@ -330,7 +326,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_COMMA:
-        if (!Lizzie.frame.playCurrentVariation()) Lizzie.frame.playBestMove();
+        Lizzie.frame.playBestMove();
         break;
 
       case VK_M:
