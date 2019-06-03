@@ -697,7 +697,7 @@ public class Menu extends MenuBar {
         Lizzie.frame.playerIsBlack = playerIsBlack;
         Lizzie.frame.isPlayingAgainstLeelaz = true;
         if (Lizzie.board.getData().blackToPlay != playerIsBlack) {
-          Lizzie.leelaz.genmove("B");
+          Lizzie.leelaz.genmove("W");
         }
         return;
       }
