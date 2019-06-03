@@ -409,14 +409,11 @@ public class Leelaz {
             || isThinking
                 && (!isPondering && Lizzie.frame.isPlayingAgainstLeelaz || isInputCommand)) {
           if (line.contains("pass")) {
-          } else if (!switching) {
-
-            bestMoves.add(MoveData.fromSummary(line));
-           // notifyBestMoveListeners();
-            notifyAutoAna();
-            notifyAutoPlay();
-            Lizzie.frame.repaint();
-          }
+          } 
+         // else if (!switching) {
+           // bestMoves.add(MoveData.fromSummary(line));          
+          //  Lizzie.frame.repaint();
+         // }
         }
       } else if (line.startsWith("play")) {
         // In lz-genmove_analyze
