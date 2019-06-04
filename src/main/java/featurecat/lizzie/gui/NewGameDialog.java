@@ -127,7 +127,7 @@ public class NewGameDialog extends JDialog {
     ((GridBagLayout) buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0};
 
     // ---- okButton ----
-    okButton.setText("OK");
+    okButton.setText("确定");
     okButton.addActionListener(e -> apply());
 
     int center = GridBagConstraints.CENTER;
