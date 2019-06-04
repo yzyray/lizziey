@@ -1592,6 +1592,8 @@ public class LizzieFrame extends JFrame {
       }
       if (Lizzie.leelaz.isColorEngine) {
         text = text + " 阶段:" + Lizzie.leelaz.stage + " 贴目:" + Lizzie.leelaz.komi;
+      } else {
+        text = text + " 贴目:" + Lizzie.board.getHistory().getGameInfo().getKomi();
       }
       g.drawString(
           resourceBundle.getString("LizzieFrame.display.lastMove") + text,
