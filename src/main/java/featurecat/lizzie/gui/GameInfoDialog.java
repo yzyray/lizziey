@@ -73,7 +73,7 @@ public class GameInfoDialog extends JDialog {
     // read-only
     textFieldKomi = new JFormattedTextField(FORMAT_KOMI);
     textFieldHandicap = new JFormattedTextField(FORMAT_HANDICAP);
-    textFieldKomi.setEditable(false);
+    textFieldKomi.setEditable(true);
     textFieldHandicap.setEditable(false);
 
     contentPanel.add(new JLabel("Black"));
@@ -133,7 +133,10 @@ public class GameInfoDialog extends JDialog {
     // apply new values
     gameInfo.setPlayerBlack(playerBlack);
     gameInfo.setPlayerWhite(playerWhite);
-
+    Lizzie.leelaz.sendCommand("komi " + textFieldKomi.getText());
+    if (Lizzie.leelaz.isPondering()) {
+      Lizzie.leelaz.ponder();
+    }
     // close window
     setVisible(false);
   }

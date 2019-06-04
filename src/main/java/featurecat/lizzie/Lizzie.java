@@ -8,6 +8,7 @@ import featurecat.lizzie.gui.GtpConsolePane;
 import featurecat.lizzie.gui.LizzieFrame;
 import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Board;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
@@ -34,6 +35,7 @@ public class Lizzie {
   /** Launches the game window, and runs the game. */
   public static void main(String[] args) throws IOException {
     setLookAndFeel();
+    setUIFont(new javax.swing.plaf.FontUIResource("Serif", Font.PLAIN, 12));
     mainArgs = args;
     config = new Config();
     board = new Board();
@@ -93,6 +95,15 @@ public class Lizzie {
       e.printStackTrace();
     } catch (UnsupportedLookAndFeelException e) {
       e.printStackTrace();
+    }
+  }
+
+  public static void setUIFont(javax.swing.plaf.FontUIResource f) {
+    java.util.Enumeration keys = UIManager.getDefaults().keys();
+    while (keys.hasMoreElements()) {
+      Object key = keys.nextElement();
+      Object value = UIManager.get(key);
+      if (value instanceof javax.swing.plaf.FontUIResource) UIManager.put(key, f);
     }
   }
 
