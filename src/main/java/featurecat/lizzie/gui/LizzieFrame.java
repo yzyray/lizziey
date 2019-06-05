@@ -132,6 +132,7 @@ public class LizzieFrame extends JFrame {
   private RightClickMenu RightClickMenu = new RightClickMenu();
   private RightClickMenu2 RightClickMenu2 = new RightClickMenu2();
   private int boardPos = 0;
+  public String komi = "7.5";
   // private ChangeMoveDialog2 ChangeMoveDialog2 = new ChangeMoveDialog2();
 
   // Save the player title
@@ -624,7 +625,7 @@ public class LizzieFrame extends JFrame {
     Lizzie.board.clear();
     Lizzie.board.getHistory().setGameInfo(gameInfo);
     Lizzie.leelaz.sendCommand("komi " + gameInfo.getKomi());
-
+    Lizzie.frame.komi = gameInfo.getKomi() + "";
     Lizzie.leelaz.sendCommand(
         "time_settings 0 "
             + Lizzie.config.config.getJSONObject("leelaz").getInt("max-game-thinking-time-seconds")
@@ -1591,6 +1592,11 @@ public class LizzieFrame extends JFrame {
         text = String.format(": %.1f%%", 100 - lastWR - curWR);
       }
 
+      if (Lizzie.leelaz.isColorEngine) {
+        text = text + " 阶段:" + Lizzie.leelaz.stage + " 贴目:" + Lizzie.leelaz.komi;
+      } else {
+        text = text + " 贴目:" + komi;
+      }
       g.drawString(
           resourceBundle.getString("LizzieFrame.display.lastMove") + text,
           posX + 2 * strokeRadius,

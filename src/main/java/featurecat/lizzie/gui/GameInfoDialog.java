@@ -122,7 +122,8 @@ public class GameInfoDialog extends JDialog {
     textFieldBlack.setText(gameInfo.getPlayerBlack());
     textFieldWhite.setText(gameInfo.getPlayerWhite());
     textFieldHandicap.setText(FORMAT_HANDICAP.format(gameInfo.getHandicap()));
-    textFieldKomi.setText(FORMAT_KOMI.format(gameInfo.getKomi()));
+    textFieldKomi.setText(Lizzie.frame.komi);
+    // textFieldKomi.setText(FORMAT_KOMI.format(gameInfo.getKomi()));
   }
 
   public void apply() {
@@ -134,6 +135,7 @@ public class GameInfoDialog extends JDialog {
     gameInfo.setPlayerBlack(playerBlack);
     gameInfo.setPlayerWhite(playerWhite);
     Lizzie.leelaz.sendCommand("komi " + textFieldKomi.getText());
+    Lizzie.frame.komi = textFieldKomi.getText();
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.ponder();
     }
