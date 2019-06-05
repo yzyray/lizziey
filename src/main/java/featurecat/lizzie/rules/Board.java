@@ -2068,6 +2068,10 @@ public class Board implements LeelazListener {
   }
 
   public void updateMovelist(BoardHistoryNode node) {
+	  if(!node.isMainTrunk())
+	  {
+		  return;
+	  }
     boolean isupdate = false;
     boolean isLarger = true;
     int movenumer = node.getData().moveNumber;
@@ -2123,6 +2127,10 @@ public class Board implements LeelazListener {
   }
 
   public void updateMovelist() {
+	  if(!history.getCurrentHistoryNode().isMainTrunk())
+	  {
+		  return;
+	  }
     boolean isupdate = false;
     boolean isLarger = true;
     int movenumer = Lizzie.board.getHistory().getMoveNumber();
