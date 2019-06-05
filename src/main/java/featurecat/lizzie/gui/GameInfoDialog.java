@@ -40,7 +40,7 @@ public class GameInfoDialog extends JDialog {
   private void initComponents() {
     setMinimumSize(new Dimension(100, 100));
     setResizable(false);
-    setTitle("Game Info");
+    setTitle("棋局信息");
     setModal(true);
     setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     Container contentPane = getContentPane();
@@ -73,16 +73,16 @@ public class GameInfoDialog extends JDialog {
     // read-only
     textFieldKomi = new JFormattedTextField(FORMAT_KOMI);
     textFieldHandicap = new JFormattedTextField(FORMAT_HANDICAP);
-    textFieldKomi.setEditable(false);
+    textFieldKomi.setEditable(true);
     textFieldHandicap.setEditable(false);
 
-    contentPanel.add(new JLabel("Black"));
+    contentPanel.add(new JLabel("黑:"));
     contentPanel.add(textFieldBlack);
-    contentPanel.add(new JLabel("White"));
+    contentPanel.add(new JLabel("白:"));
     contentPanel.add(textFieldWhite);
-    contentPanel.add(new JLabel("Komi"));
+    contentPanel.add(new JLabel("贴目:"));
     contentPanel.add(textFieldKomi);
-    contentPanel.add(new JLabel("Handicap"));
+    contentPanel.add(new JLabel("让子:"));
     contentPanel.add(textFieldHandicap);
 
     dialogPane.add(contentPanel, BorderLayout.CENTER);
@@ -95,7 +95,7 @@ public class GameInfoDialog extends JDialog {
     ((GridBagLayout) buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0};
 
     // ---- okButton ----
-    okButton.setText("OK");
+    okButton.setText("确定");
     okButton.addActionListener(e -> apply());
 
     buttonBar.add(
@@ -133,7 +133,10 @@ public class GameInfoDialog extends JDialog {
     // apply new values
     gameInfo.setPlayerBlack(playerBlack);
     gameInfo.setPlayerWhite(playerWhite);
-
+    Lizzie.leelaz.sendCommand("komi " + textFieldKomi.getText());
+    if (Lizzie.leelaz.isPondering()) {
+      Lizzie.leelaz.ponder();
+    }
     // close window
     setVisible(false);
   }

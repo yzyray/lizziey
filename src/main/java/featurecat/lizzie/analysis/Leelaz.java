@@ -95,6 +95,9 @@ public class Leelaz {
   boolean analysed=false;
   private boolean isSaving=false;
   private boolean isClosing=false;
+  public boolean isColorEngine=false;
+  public int stage=-1;
+  public float komi =(float) 7.5;
   // public double heatwinrate;
   /**
    * Initializes the leelaz process and starts reading output
@@ -402,12 +405,16 @@ public class Leelaz {
             togglePonder();
           }
         }
-      } else if (line.contains("STAGE")) {
-    		if(Lizzie.gtpConsole.isVisible())
-        Lizzie.gtpConsole.addLineforce(line);    		
-      } else if (line.contains("> KoMI")) {
-    		if(Lizzie.gtpConsole.isVisible())
-        Lizzie.gtpConsole.addLineforce(line);
+      } else if(line.startsWith("| ST")) {       
+        String[] params = line.trim().split(" ");
+        if(params.length==13)        	
+        {         	
+        	isColorEngine=true;
+        	if(Lizzie.gtpConsole.isVisible())
+        	 Lizzie.gtpConsole.addLineforce(line);
+        	stage= Integer.parseInt(params[3].substring(0,params[3].length()-1));
+        	komi= Float.parseFloat(params[6].substring(0,params[6].length()-1));
+        }
       } 
       //else if (line.contains(" ->   ")) {
      //   isLoaded = true;

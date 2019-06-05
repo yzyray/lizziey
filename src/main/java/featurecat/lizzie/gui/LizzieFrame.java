@@ -1590,7 +1590,11 @@ public class LizzieFrame extends JFrame {
       } else {
         text = String.format(": %.1f%%", 100 - lastWR - curWR);
       }
-
+      if (Lizzie.leelaz.isColorEngine) {
+        text = text + " 阶段:" + Lizzie.leelaz.stage + " 贴目:" + Lizzie.leelaz.komi;
+      } else {
+        text = text + " 贴目:" + Lizzie.board.getHistory().getGameInfo().getKomi();
+      }
       g.drawString(
           resourceBundle.getString("LizzieFrame.display.lastMove") + text,
           posX + 2 * strokeRadius,
