@@ -8,6 +8,7 @@ import featurecat.lizzie.gui.GtpConsolePane;
 import featurecat.lizzie.gui.LizzieFrame;
 import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Board;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
@@ -34,7 +35,7 @@ public class Lizzie {
   /** Launches the game window, and runs the game. */
   public static void main(String[] args) throws IOException {
     setLookAndFeel();
-
+    setUIFont(new javax.swing.plaf.FontUIResource("", Font.PLAIN, 12));
     mainArgs = args;
     config = new Config();
     board = new Board();
@@ -55,7 +56,7 @@ public class Lizzie {
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
     //  menu = new Menu(frame);
     //  menu.setVisible(true);
-    setUIFont(new javax.swing.plaf.FontUIResource(frame.winrateFont));
+
     try {
       engineManager = new EngineManager(config);
 
