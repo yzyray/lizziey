@@ -96,6 +96,21 @@ public class BottomToolbar extends JPanel {
 
   JPanel anaPanel;
   JPanel autoPlayPanel;
+
+  JPanel enginePkPanel;
+
+  public JCheckBox chkenginePk;
+  public JCheckBox chkenginePkgenmove;
+  public JCheckBox chkenginePkTime;
+
+  public JButton btnStartPk;
+
+  JLabel lblenginePk;
+  JLabel lblgenmove;
+  JLabel lblenginePkTime;
+
+  public JTextField txtenginePkTime;
+
   ImageIcon iconUp;
   ImageIcon iconDown;
 
@@ -433,6 +448,12 @@ public class BottomToolbar extends JPanel {
     autoPlayPanel.setBounds(350, 26, 335, 44);
     autoPlayPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
+    enginePkPanel = new JPanel();
+    enginePkPanel.setLayout(null);
+    add(enginePkPanel);
+    enginePkPanel.setBounds(685, 26, 400, 44);
+    enginePkPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
     chkAutoAnalyse = new JCheckBox();
     anaPanel.add(chkAutoAnalyse);
     lblchkAutoAnalyse = new JLabel("自动分析");
@@ -728,6 +749,69 @@ public class BottomToolbar extends JPanel {
     lblAutoPlayFirstPlayouts.setBounds(205, 22, 70, 20);
     txtAutoPlayFirstPlayouts.setBounds(272, 23, 50, 18);
 
+    chkenginePk = new JCheckBox();
+    lblenginePk = new JLabel("引擎对战");
+    enginePkPanel.add(chkenginePk);
+    enginePkPanel.add(lblenginePk);
+
+    chkenginePk.setBounds(5, 1, 20, 18);
+    lblenginePk.setBounds(25, 0, 60, 18);
+    chkenginePk.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD未完成
+            setTxtUnfocuse();
+          }
+        });
+
+    chkenginePkgenmove = new JCheckBox();
+    lblgenmove = new JLabel("genmove");
+    enginePkPanel.add(chkenginePkgenmove);
+    enginePkPanel.add(lblgenmove);
+    chkenginePkgenmove.setBounds(70, 23, 20, 18);
+    lblgenmove.setBounds(90, 22, 60, 18);
+
+    chkenginePkgenmove.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD未完成
+            setTxtUnfocuse();
+          }
+        });
+
+    chkenginePkTime = new JCheckBox();
+    lblenginePkTime = new JLabel("按时间(秒):");
+    txtenginePkTime = new JTextField();
+    enginePkPanel.add(chkenginePkTime);
+    enginePkPanel.add(lblenginePkTime);
+    enginePkPanel.add(txtenginePkTime);
+    chkenginePkTime.setBounds(142, 23, 20, 18);
+    lblenginePkTime.setBounds(162, 22, 60, 18);
+    txtenginePkTime.setBounds(225, 24, 40, 18);
+    chkenginePkTime.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            setTxtUnfocuse();
+          }
+        });
+
+    btnStartPk = new JButton("开始对战");
+    enginePkPanel.add(btnStartPk);
+    btnStartPk.setBounds(8, 22, 60, 20);
+    btnStartPk.setMargin(new Insets(0, 0, 0, 0));
+
+    btnStartPk.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD未完成
+            setTxtUnfocuse();
+          }
+        });
+
     chkAutoPlay.setFocusable(false);
     chkAutoPlayBlack.setFocusable(false);
     chkAutoPlayWhite.setFocusable(false);
@@ -747,6 +831,10 @@ public class BottomToolbar extends JPanel {
     chkAutoPlayTime.setFocusable(false);
     chkAutoPlayPlayouts.setFocusable(false);
     chkAutoPlayFirstPlayouts.setFocusable(false);
+    btnStartPk.setFocusable(false);
+    chkenginePk.setFocusable(false);
+    chkenginePkTime.setFocusable(false);
+    chkenginePkgenmove.setFocusable(false);
 
     chkShowBlack.setSelected(true);
     chkShowWhite.setSelected(true);
@@ -817,6 +905,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayPlayouts.setFocusable(false);
       txtAutoPlayFirstPlayouts.setFocusable(false);
       txtAnaTime.setFocusable(false);
+      txtenginePkTime.setFocusable(false);
       txtAnaPlayouts.setFocusable(false);
       txtAnaFirstPlayouts.setFocusable(false);
       txtFirstAnaMove.setFocusable(false);
@@ -827,6 +916,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayFirstPlayouts.setFocusable(true);
       txtAnaTime.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
+      txtenginePkTime.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
       txtLastAnaMove.setFocusable(true);
       txtFirstAnaMove.setFocusable(true);
@@ -838,6 +928,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayFirstPlayouts.setFocusable(false);
       txtAnaPlayouts.setFocusable(false);
       txtFirstAnaMove.setFocusable(false);
+      txtenginePkTime.setFocusable(false);
       txtLastAnaMove.setFocusable(false);
       txtAnaFirstPlayouts.setFocusable(false);
       txtMoveNumber.setFocusable(false);
@@ -849,6 +940,7 @@ public class BottomToolbar extends JPanel {
       txtAnaFirstPlayouts.setFocusable(true);
       txtLastAnaMove.setFocusable(true);
       txtLastAnaMove.setFocusable(true);
+      txtenginePkTime.setFocusable(true);
       txtFirstAnaMove.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
       txtMoveNumber.setFocusable(true);
@@ -860,6 +952,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayFirstPlayouts.setFocusable(false);
       txtAnaTime.setFocusable(false);
       txtFirstAnaMove.setFocusable(false);
+      txtenginePkTime.setFocusable(false);
       txtLastAnaMove.setFocusable(false);
       txtAnaFirstPlayouts.setFocusable(false);
       txtMoveNumber.setFocusable(false);
@@ -870,6 +963,7 @@ public class BottomToolbar extends JPanel {
       txtAnaTime.setFocusable(true);
       txtLastAnaMove.setFocusable(true);
       txtFirstAnaMove.setFocusable(true);
+      txtenginePkTime.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
       txtMoveNumber.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
@@ -879,6 +973,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayPlayouts.setFocusable(false);
       txtAutoPlayFirstPlayouts.setFocusable(false);
       txtAnaTime.setFocusable(false);
+      txtenginePkTime.setFocusable(false);
       txtFirstAnaMove.setFocusable(false);
       txtLastAnaMove.setFocusable(false);
       txtAnaPlayouts.setFocusable(false);
@@ -889,6 +984,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayFirstPlayouts.setFocusable(true);
       txtAnaTime.setFocusable(true);
       txtLastAnaMove.setFocusable(true);
+      txtenginePkTime.setFocusable(true);
       txtFirstAnaMove.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
       txtMoveNumber.setFocusable(true);
@@ -898,6 +994,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayTime.setFocusable(false);
       txtAutoPlayPlayouts.setFocusable(false);
       txtAutoPlayFirstPlayouts.setFocusable(false);
+      txtenginePkTime.setFocusable(false);
       txtAnaTime.setFocusable(false);
       txtFirstAnaMove.setFocusable(false);
 
@@ -908,6 +1005,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayTime.setFocusable(true);
       txtAutoPlayPlayouts.setFocusable(true);
       txtAutoPlayFirstPlayouts.setFocusable(true);
+      txtenginePkTime.setFocusable(true);
       txtAnaTime.setFocusable(true);
 
       txtFirstAnaMove.setFocusable(true);
@@ -921,6 +1019,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayTime.setFocusable(false);
       txtAutoPlayPlayouts.setFocusable(false);
       txtAutoPlayFirstPlayouts.setFocusable(false);
+      txtenginePkTime.setFocusable(false);
       txtLastAnaMove.setFocusable(false);
       txtAnaPlayouts.setFocusable(false);
       txtMoveNumber.setFocusable(false);
@@ -932,6 +1031,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayPlayouts.setFocusable(true);
       txtAutoPlayFirstPlayouts.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
+      txtenginePkTime.setFocusable(true);
       txtMoveNumber.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
       txtFirstAnaMove.setFocusable(true);
@@ -944,6 +1044,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayFirstPlayouts.setFocusable(false);
       txtLastAnaMove.setFocusable(false);
       txtAnaPlayouts.setFocusable(false);
+      txtenginePkTime.setFocusable(false);
       txtMoveNumber.setFocusable(false);
       txtAnaFirstPlayouts.setFocusable(false);
       txtFirstAnaMove.setFocusable(false);
@@ -955,6 +1056,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayFirstPlayouts.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
       txtMoveNumber.setFocusable(true);
+      txtenginePkTime.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
       txtFirstAnaMove.setFocusable(true);
       txtAutoPlayTime.setFocusable(true);
@@ -963,7 +1065,7 @@ public class BottomToolbar extends JPanel {
     if (txtAutoPlayPlayouts.isFocusOwner()) {
       txtAnaTime.setFocusable(false);
       txtAutoPlayTime.setFocusable(false);
-
+      txtenginePkTime.setFocusable(false);
       txtAutoPlayFirstPlayouts.setFocusable(false);
       txtLastAnaMove.setFocusable(false);
       txtAnaPlayouts.setFocusable(false);
@@ -974,7 +1076,7 @@ public class BottomToolbar extends JPanel {
       txtAnaTime.setFocusable(true);
       txtLastAnaMove.setFocusable(true);
       txtAutoPlayTime.setFocusable(true);
-
+      txtenginePkTime.setFocusable(true);
       txtAutoPlayFirstPlayouts.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
       txtMoveNumber.setFocusable(true);
@@ -987,6 +1089,29 @@ public class BottomToolbar extends JPanel {
       txtAnaTime.setFocusable(false);
       txtAutoPlayTime.setFocusable(false);
       txtAutoPlayPlayouts.setFocusable(false);
+      txtenginePkTime.setFocusable(false);
+      txtLastAnaMove.setFocusable(false);
+      txtAnaPlayouts.setFocusable(false);
+      txtMoveNumber.setFocusable(false);
+      txtAnaFirstPlayouts.setFocusable(false);
+      txtFirstAnaMove.setFocusable(false);
+      txtAutoPlayFirstPlayouts.setFocusable(false);
+      txtAnaTime.setFocusable(true);
+      txtLastAnaMove.setFocusable(true);
+      txtAutoPlayTime.setFocusable(true);
+      txtAutoPlayPlayouts.setFocusable(true);
+      txtenginePkTime.setFocusable(true);
+      txtAnaPlayouts.setFocusable(true);
+      txtMoveNumber.setFocusable(true);
+      txtAnaFirstPlayouts.setFocusable(true);
+      txtFirstAnaMove.setFocusable(true);
+      txtAutoPlayFirstPlayouts.setFocusable(true);
+    }
+
+    if (txtenginePkTime.isFocusOwner()) {
+      txtAnaTime.setFocusable(false);
+      txtAutoPlayTime.setFocusable(false);
+      txtAutoPlayPlayouts.setFocusable(false);
 
       txtLastAnaMove.setFocusable(false);
       txtAnaPlayouts.setFocusable(false);
@@ -994,6 +1119,8 @@ public class BottomToolbar extends JPanel {
       txtAnaFirstPlayouts.setFocusable(false);
       txtFirstAnaMove.setFocusable(false);
       txtAutoPlayFirstPlayouts.setFocusable(false);
+      txtenginePkTime.setFocusable(false);
+      txtenginePkTime.setFocusable(true);
       txtAnaTime.setFocusable(true);
       txtLastAnaMove.setFocusable(true);
       txtAutoPlayTime.setFocusable(true);

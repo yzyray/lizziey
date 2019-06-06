@@ -6,9 +6,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.Optional;
+import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import org.json.JSONArray;
 
 public class Menu extends MenuBar {
 
@@ -18,16 +21,7 @@ public class Menu extends MenuBar {
   public static ImageIcon icon;
   public static ImageIcon stop;
   public static ImageIcon ready;
-  public static JMenuItem engine1 = null;
-  public static JMenuItem engine2 = null;
-  public static JMenuItem engine3 = null;
-  public static JMenuItem engine4 = null;
-  public static JMenuItem engine5 = null;
-  public static JMenuItem engine6 = null;
-  public static JMenuItem engine7 = null;
-  public static JMenuItem engine8 = null;
-  public static JMenuItem engine9 = null;
-  public static JMenuItem engine10 = null;
+  public static JMenuItem[] engine = new JMenuItem[10];
   public static JMenu engineMenu;
   // private boolean onlyboard = false;
 
@@ -482,75 +476,27 @@ public class Menu extends MenuBar {
       e.printStackTrace();
     }
 
-    engine1 = new JMenuItem();
+    for (int i = 0; i < engine.length; i++) {
+      engine[i] = new JMenuItem();
+      engine[i].addActionListener(new ItemListener());
+      engineMenu.add(engine[i]);
+      engine[i].setText("引擎" + (i + 1) + ":");
+      engine[i].setVisible(false);
+    }
 
-    engine1.setText("引擎1:  " + Lizzie.config.leelazConfig.optString("enginename1", ""));
+    Optional<JSONArray> enginesNameOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+    enginesNameOpt.ifPresent(
+        a -> {
+          IntStream.range(0, a.length())
+              .forEach(
+                  i -> {
+                    String name = a.getString(i);
+                    engine[i].setText(engine[i].getText() + name);
 
-    engine1.addActionListener(new ItemListener());
-    engineMenu.add(engine1);
-
-    engine2 = new JMenuItem();
-
-    engine2.setText("引擎2:  " + Lizzie.config.leelazConfig.optString("enginename2", ""));
-
-    engine2.addActionListener(new ItemListener());
-    engineMenu.add(engine2);
-
-    engine3 = new JMenuItem();
-
-    engine3.setText("引擎3:  " + Lizzie.config.leelazConfig.optString("enginename3", ""));
-
-    engine3.addActionListener(new ItemListener());
-    engineMenu.add(engine3);
-
-    engine4 = new JMenuItem();
-
-    engine4.setText("引擎4:  " + Lizzie.config.leelazConfig.optString("enginename4", ""));
-
-    engine4.addActionListener(new ItemListener());
-    engineMenu.add(engine4);
-
-    engine5 = new JMenuItem();
-
-    engine5.setText("引擎5:  " + Lizzie.config.leelazConfig.optString("enginename5", ""));
-
-    engine5.addActionListener(new ItemListener());
-    engineMenu.add(engine5);
-
-    engine6 = new JMenuItem();
-
-    engine6.setText("引擎6:  " + Lizzie.config.leelazConfig.optString("enginename6", ""));
-
-    engine6.addActionListener(new ItemListener());
-    engineMenu.add(engine6);
-
-    engine7 = new JMenuItem();
-
-    engine7.setText("引擎7:  " + Lizzie.config.leelazConfig.optString("enginename7", ""));
-
-    engine7.addActionListener(new ItemListener());
-    engineMenu.add(engine7);
-
-    engine8 = new JMenuItem();
-
-    engine8.setText("引擎8:  " + Lizzie.config.leelazConfig.optString("enginename8", ""));
-
-    engine8.addActionListener(new ItemListener());
-    engineMenu.add(engine8);
-
-    engine9 = new JMenuItem();
-
-    engine9.setText("引擎9:  " + Lizzie.config.leelazConfig.optString("enginename9", ""));
-
-    engine9.addActionListener(new ItemListener());
-    engineMenu.add(engine9);
-
-    engine10 = new JMenuItem();
-
-    engine10.setText("引擎10:  " + Lizzie.config.leelazConfig.optString("enginename10", ""));
-
-    engine10.addActionListener(new ItemListener());
-    engineMenu.add(engine10);
+                    if (!name.equals("")) engine[i].setVisible(true);
+                  });
+        });
 
     engineMenu.addSeparator();
     final JMenuItem closeall = new JMenuItem();
@@ -586,19 +532,22 @@ public class Menu extends MenuBar {
   }
 
   public void updateEngineName() {
-    engine1.setText("引擎1:  " + Lizzie.config.leelazConfig.optString("enginename1", ""));
+    Optional<JSONArray> enginesNameOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+    enginesNameOpt.ifPresent(
+        a -> {
+          IntStream.range(0, a.length())
+              .forEach(
+                  i -> {
+                    String name = a.getString(i);
+                    engine[i].setText(engine[i].getText() + name);
 
-    engine2.setText("引擎2:  " + Lizzie.config.leelazConfig.optString("enginename2", ""));
-    engine3.setText("引擎3:  " + Lizzie.config.leelazConfig.optString("enginename3", ""));
-    engine4.setText("引擎4:  " + Lizzie.config.leelazConfig.optString("enginename4", ""));
-    engine5.setText("引擎5:  " + Lizzie.config.leelazConfig.optString("enginename5", ""));
-
-    engine6.setText("引擎6:  " + Lizzie.config.leelazConfig.optString("enginename6", ""));
-    engine7.setText("引擎7:  " + Lizzie.config.leelazConfig.optString("enginename7", ""));
-    engine8.setText("引擎8:  " + Lizzie.config.leelazConfig.optString("enginename8", ""));
-    engine9.setText("引擎9:  " + Lizzie.config.leelazConfig.optString("enginename9", ""));
-
-    engine10.setText("引擎10:  " + Lizzie.config.leelazConfig.optString("enginename10", ""));
+                    if (!name.equals("")) engine[i].setVisible(true);
+                    else {
+                      engine[i].setVisible(false);
+                    }
+                  });
+        });
   }
 
   class ItemListener implements ActionListener {
@@ -803,16 +752,9 @@ public class Menu extends MenuBar {
         } catch (Exception ex) {
 
         }
-        engine1.setIcon(null);
-        engine2.setIcon(null);
-        engine3.setIcon(null);
-        engine4.setIcon(null);
-        engine5.setIcon(null);
-        engine6.setIcon(null);
-        engine7.setIcon(null);
-        engine8.setIcon(null);
-        engine9.setIcon(null);
-        engine10.setIcon(null);
+        for (int i = 0; i < engine.length; i++) {
+          engine[i].setIcon(null);
+        }
         return;
       }
 
@@ -821,16 +763,9 @@ public class Menu extends MenuBar {
           Lizzie.engineManager.forcekillAllEngines();
         } catch (Exception ex) {
         }
-        engine1.setIcon(null);
-        engine2.setIcon(null);
-        engine3.setIcon(null);
-        engine4.setIcon(null);
-        engine5.setIcon(null);
-        engine6.setIcon(null);
-        engine7.setIcon(null);
-        engine8.setIcon(null);
-        engine9.setIcon(null);
-        engine10.setIcon(null);
+        for (int i = 0; i < engine.length; i++) {
+          engine[i].setIcon(null);
+        }
         return;
       }
 
@@ -841,48 +776,11 @@ public class Menu extends MenuBar {
 
         }
 
-        engine1.setIcon(null);
-        engine2.setIcon(null);
-        engine3.setIcon(null);
-        engine4.setIcon(null);
-        engine5.setIcon(null);
-        engine6.setIcon(null);
-        engine7.setIcon(null);
-        engine8.setIcon(null);
-        engine9.setIcon(null);
-        engine10.setIcon(null);
-        switch (Lizzie.leelaz.currentEngineN()) {
-          case 0:
-            engine1.setIcon(icon);
-            break;
-          case 1:
-            engine2.setIcon(icon);
-            break;
-          case 2:
-            engine3.setIcon(icon);
-            break;
-          case 3:
-            engine4.setIcon(icon);
-            break;
-          case 4:
-            engine5.setIcon(icon);
-            break;
-          case 5:
-            engine6.setIcon(icon);
-            break;
-          case 6:
-            engine7.setIcon(icon);
-            break;
-          case 7:
-            engine8.setIcon(icon);
-            break;
-          case 8:
-            engine9.setIcon(icon);
-            break;
-          case 9:
-            engine10.setIcon(icon);
-            break;
+        for (int i = 0; i < engine.length; i++) {
+          engine[i].setIcon(null);
         }
+        engine[Lizzie.leelaz.currentEngineN()].setIcon(icon);
+
         return;
       }
       if (menuItem.getText().startsWith("清空棋盘")) {

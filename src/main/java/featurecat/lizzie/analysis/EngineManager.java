@@ -226,87 +226,15 @@ public class EngineManager {
   }
 
   private void changeEngIco() {
-    if (featurecat.lizzie.gui.Menu.engine1.getIcon() != null
-        && featurecat.lizzie.gui.Menu.engine1.getIcon() != featurecat.lizzie.gui.Menu.stop) {
-      featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
+    for (int i = 0; i < Lizzie.frame.menu.engine.length; i++) {
+      if (featurecat.lizzie.gui.Menu.engine[i].getIcon() != null
+          && featurecat.lizzie.gui.Menu.engine[i].getIcon() != featurecat.lizzie.gui.Menu.stop) {
+        featurecat.lizzie.gui.Menu.engine[i].setIcon(featurecat.lizzie.gui.Menu.ready);
+      }
     }
-    if (featurecat.lizzie.gui.Menu.engine2.getIcon() != null
-        && featurecat.lizzie.gui.Menu.engine2.getIcon() != featurecat.lizzie.gui.Menu.stop) {
-      featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-    }
-    if (featurecat.lizzie.gui.Menu.engine3.getIcon() != null
-        && featurecat.lizzie.gui.Menu.engine3.getIcon() != featurecat.lizzie.gui.Menu.stop) {
-      featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-    }
-    if (featurecat.lizzie.gui.Menu.engine4.getIcon() != null
-        && featurecat.lizzie.gui.Menu.engine4.getIcon() != featurecat.lizzie.gui.Menu.stop) {
-      featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-    }
-    if (featurecat.lizzie.gui.Menu.engine5.getIcon() != null
-        && featurecat.lizzie.gui.Menu.engine5.getIcon() != featurecat.lizzie.gui.Menu.stop) {
-      featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-    }
-    if (featurecat.lizzie.gui.Menu.engine6.getIcon() != null
-        && featurecat.lizzie.gui.Menu.engine6.getIcon() != featurecat.lizzie.gui.Menu.stop) {
-      featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-    }
-    if (featurecat.lizzie.gui.Menu.engine7.getIcon() != null
-        && featurecat.lizzie.gui.Menu.engine7.getIcon() != featurecat.lizzie.gui.Menu.stop) {
-      featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-    }
-    if (featurecat.lizzie.gui.Menu.engine8.getIcon() != null
-        && featurecat.lizzie.gui.Menu.engine8.getIcon() != featurecat.lizzie.gui.Menu.stop) {
-      featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-    }
-    if (featurecat.lizzie.gui.Menu.engine9.getIcon() != null
-        && featurecat.lizzie.gui.Menu.engine9.getIcon() != featurecat.lizzie.gui.Menu.stop) {
-      featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-    }
-    if (featurecat.lizzie.gui.Menu.engine10.getIcon() != null
-        && featurecat.lizzie.gui.Menu.engine10.getIcon() != featurecat.lizzie.gui.Menu.stop) {
-      featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.ready);
-    }
-    switch (currentEngineNo) {
-      case 0:
-        if (featurecat.lizzie.gui.Menu.engine1.getIcon() == null) break;
-        featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.icon);
-        break;
-      case 1:
-        if (featurecat.lizzie.gui.Menu.engine2.getIcon() == null) break;
-        featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.icon);
-        break;
-      case 2:
-        if (featurecat.lizzie.gui.Menu.engine3.getIcon() == null) break;
-        featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.icon);
-        break;
-      case 3:
-        if (featurecat.lizzie.gui.Menu.engine4.getIcon() == null) break;
-        featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.icon);
-        break;
-      case 4:
-        if (featurecat.lizzie.gui.Menu.engine5.getIcon() == null) break;
-        featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.icon);
-        break;
-      case 5:
-        if (featurecat.lizzie.gui.Menu.engine6.getIcon() == null) break;
-        featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.icon);
-        break;
-      case 6:
-        if (featurecat.lizzie.gui.Menu.engine7.getIcon() == null) break;
-        featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.icon);
-        break;
-      case 7:
-        if (featurecat.lizzie.gui.Menu.engine8.getIcon() == null) break;
-        featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.icon);
-        break;
-      case 8:
-        if (featurecat.lizzie.gui.Menu.engine9.getIcon() == null) break;
-        featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.icon);
-        break;
-      case 9:
-        if (featurecat.lizzie.gui.Menu.engine10.getIcon() == null) break;
-        featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.icon);
-        break;
+    if (featurecat.lizzie.gui.Menu.engine[currentEngineNo].getIcon() == null) {
+    } else {
+      featurecat.lizzie.gui.Menu.engine[currentEngineNo].setIcon(featurecat.lizzie.gui.Menu.icon);
     }
   }
 }

@@ -26,7 +26,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
+
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -141,9 +146,17 @@ public class Leelaz {
   }
 
   public void getEngineName(int index) {
-    currentEnginename =
-        Lizzie.config.leelazConfig.optString(
-            "enginename" + String.valueOf(index + 1), currentWeight);
+    Optional<JSONArray> enginesNameOpt =
+            Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+        enginesNameOpt.ifPresent(
+            a -> {
+              IntStream.range(0, a.length())
+                  .forEach(
+                      i -> {
+                    	  if(i==index)
+                    		  currentEnginename=  a.getString(i);
+                      });
+            });
     if (currentEnginename.equals("")) currentEnginename = currentWeight;
   }
 
@@ -164,9 +177,17 @@ public class Leelaz {
       String[] names = currentWeightFile.split("[\\\\|/]");
       currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
       currentEngineN = index;
-      currentEnginename =
-          Lizzie.config.leelazConfig.optString(
-              "enginename" + String.valueOf(index + 1), currentWeight);
+      Optional<JSONArray> enginesNameOpt =
+              Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+          enginesNameOpt.ifPresent(
+              a -> {
+                IntStream.range(0, a.length())
+                    .forEach(
+                        i -> {
+                      	  if(i==index)
+                      		  currentEnginename=  a.getString(i);
+                        });
+              });
       if (currentEnginename.equals("")) currentEnginename = currentWeight;
     }
 
@@ -221,38 +242,8 @@ public class Leelaz {
     executor = Executors.newSingleThreadScheduledExecutor();
     executor.execute(this::read);
     started = true;
-    switch (index) {
-      case 0:
-        featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 1:
-        featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 2:
-        featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 3:
-        featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 4:
-        featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 5:
-        featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 6:
-        featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 7:
-        featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 8:
-        featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-      case 9:
-        featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.stop);
-        break;
-    }
+    featurecat.lizzie.gui.Menu.engine[index].setIcon(featurecat.lizzie.gui.Menu.stop);
+   
   }
 
   public void restartEngine(int index) throws IOException {
@@ -290,38 +281,8 @@ public class Leelaz {
 	  }
 
   public void normalQuit() {
-    switch (currentEngineN) {
-      case 0:
-        featurecat.lizzie.gui.Menu.engine1.setIcon(null);
-        break;
-      case 1:
-        featurecat.lizzie.gui.Menu.engine2.setIcon(null);
-        break;
-      case 2:
-        featurecat.lizzie.gui.Menu.engine3.setIcon(null);
-        break;
-      case 3:
-        featurecat.lizzie.gui.Menu.engine4.setIcon(null);
-        break;
-      case 4:
-        featurecat.lizzie.gui.Menu.engine5.setIcon(null);
-        break;
-      case 5:
-        featurecat.lizzie.gui.Menu.engine6.setIcon(null);
-        break;
-      case 6:
-        featurecat.lizzie.gui.Menu.engine7.setIcon(null);
-        break;
-      case 7:
-        featurecat.lizzie.gui.Menu.engine8.setIcon(null);
-        break;
-      case 8:
-        featurecat.lizzie.gui.Menu.engine9.setIcon(null);
-        break;
-      case 9:
-        featurecat.lizzie.gui.Menu.engine10.setIcon(null);
-        break;
-    }
+	  featurecat.lizzie.gui.Menu.engine[currentEngineN].setIcon(null);
+    
     sendCommand("quit");
     executor.shutdown();
     try {
@@ -524,70 +485,9 @@ public class Leelaz {
           }
           isCheckingVersion = false;
           isLoaded = true;
-          switch (currentEngineN) {
-            case 0:
-              featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.ready);
-              break;
-            case 1:
-              featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.ready);
-              break;
-            case 2:
-              featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.ready);
-              break;
-            case 3:
-              featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.ready);
-              break;
-            case 4:
-              featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.ready);
-              break;
-            case 5:
-              featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.ready);
-              break;
-            case 6:
-              featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.ready);
-              break;
-            case 7:
-              featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.ready);
-              break;
-            case 8:
-              featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.ready);
-              break;
-            case 9:
-              featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.icon);
-              break;
-          }
-          switch (Lizzie.engineManager.currentEngineNo) {
-            case 0:
-              featurecat.lizzie.gui.Menu.engine1.setIcon(featurecat.lizzie.gui.Menu.icon);
-              break;
-            case 1:
-              featurecat.lizzie.gui.Menu.engine2.setIcon(featurecat.lizzie.gui.Menu.icon);
-              break;
-            case 2:
-              featurecat.lizzie.gui.Menu.engine3.setIcon(featurecat.lizzie.gui.Menu.icon);
-              break;
-            case 3:
-              featurecat.lizzie.gui.Menu.engine4.setIcon(featurecat.lizzie.gui.Menu.icon);
-              break;
-            case 4:
-              featurecat.lizzie.gui.Menu.engine5.setIcon(featurecat.lizzie.gui.Menu.icon);
-              break;
-            case 5:
-              featurecat.lizzie.gui.Menu.engine6.setIcon(featurecat.lizzie.gui.Menu.icon);
-              break;
-            case 6:
-              featurecat.lizzie.gui.Menu.engine7.setIcon(featurecat.lizzie.gui.Menu.icon);
-              break;
-            case 7:
-              featurecat.lizzie.gui.Menu.engine8.setIcon(featurecat.lizzie.gui.Menu.icon);
-              break;
-            case 8:
-              featurecat.lizzie.gui.Menu.engine9.setIcon(featurecat.lizzie.gui.Menu.icon);
-              break;
-            case 9:
-              featurecat.lizzie.gui.Menu.engine10.setIcon(featurecat.lizzie.gui.Menu.icon);
-              break;
-          }
+          featurecat.lizzie.gui.Menu.engine[currentEngineN].setIcon(featurecat.lizzie.gui.Menu.ready);
+          featurecat.lizzie.gui.Menu.engine[Lizzie.engineManager.currentEngineNo].setIcon(featurecat.lizzie.gui.Menu.icon);
+        
         }
       }
       if (isheatmap) {

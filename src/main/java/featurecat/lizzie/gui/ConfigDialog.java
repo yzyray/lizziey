@@ -68,6 +68,7 @@ public class ConfigDialog extends JDialog {
   private JTextField nameEngine8;
   private JTextField nameEngine9;
   private JTextField[] txts;
+  private JTextField[] names;
   private JCheckBox chkPreload1;
   private JCheckBox chkPreload2;
   private JCheckBox chkPreload3;
@@ -968,6 +969,32 @@ public class ConfigDialog extends JDialog {
 
     JTabbedPane tabTheme = new JTabbedPane(JTabbedPane.TOP);
     tabbedPane.addTab(resourceBundle.getString("LizzieConfig.title.theme"), null, tabTheme, null);
+
+    names =
+        new JTextField[] {
+          nameEngine,
+          nameEngine1,
+          nameEngine2,
+          nameEngine3,
+          nameEngine4,
+          nameEngine5,
+          nameEngine6,
+          nameEngine7,
+          nameEngine8,
+          nameEngine9
+        };
+    leelazConfig = Lizzie.config.leelazConfig;
+    Optional<JSONArray> enginesNameOpt =
+        Optional.ofNullable(leelazConfig.optJSONArray("engine-name-list"));
+    enginesNameOpt.ifPresent(
+        a -> {
+          IntStream.range(0, a.length())
+              .forEach(
+                  i -> {
+                    names[i].setText(a.getString(i));
+                  });
+        });
+
     txts =
         new JTextField[] {
           txtEngine1,
@@ -980,7 +1007,7 @@ public class ConfigDialog extends JDialog {
           txtEngine8,
           txtEngine9
         };
-    leelazConfig = Lizzie.config.leelazConfig;
+
     txtEngine.setText(leelazConfig.getString("engine-command"));
     Optional<JSONArray> enginesOpt =
         Optional.ofNullable(leelazConfig.optJSONArray("engine-command-list"));
@@ -1026,16 +1053,6 @@ public class ConfigDialog extends JDialog {
     chkPrintEngineLog.setSelected(leelazConfig.getBoolean("print-comms"));
     curPath = (new File("")).getAbsoluteFile().toPath();
     osName = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
-    nameEngine.setText(leelazConfig.optString("enginename1", ""));
-    nameEngine1.setText(leelazConfig.optString("enginename2", ""));
-    nameEngine2.setText(leelazConfig.optString("enginename3", ""));
-    nameEngine3.setText(leelazConfig.optString("enginename4", ""));
-    nameEngine4.setText(leelazConfig.optString("enginename5", ""));
-    nameEngine5.setText(leelazConfig.optString("enginename6", ""));
-    nameEngine6.setText(leelazConfig.optString("enginename7", ""));
-    nameEngine7.setText(leelazConfig.optString("enginename8", ""));
-    nameEngine8.setText(leelazConfig.optString("enginename9", ""));
-    nameEngine9.setText(leelazConfig.optString("enginename10", ""));
     setBoardSize();
     setShowLcbWinrate();
     setPonder();
@@ -1157,16 +1174,9 @@ public class ConfigDialog extends JDialog {
       JSONArray engines = new JSONArray();
       Arrays.asList(txts).forEach(t -> engines.put(t.getText().trim()));
       leelazConfig.put("engine-command-list", engines);
-      leelazConfig.putOpt("enginename1", txtFieldString(nameEngine));
-      leelazConfig.putOpt("enginename2", txtFieldString(nameEngine1));
-      leelazConfig.putOpt("enginename3", txtFieldString(nameEngine2));
-      leelazConfig.putOpt("enginename4", txtFieldString(nameEngine3));
-      leelazConfig.putOpt("enginename5", txtFieldString(nameEngine4));
-      leelazConfig.putOpt("enginename6", txtFieldString(nameEngine5));
-      leelazConfig.putOpt("enginename7", txtFieldString(nameEngine6));
-      leelazConfig.putOpt("enginename8", txtFieldString(nameEngine7));
-      leelazConfig.putOpt("enginename9", txtFieldString(nameEngine8));
-      leelazConfig.putOpt("enginename10", txtFieldString(nameEngine9));
+      JSONArray enginenames = new JSONArray();
+      Arrays.asList(names).forEach(t -> enginenames.put(t.getText().trim()));
+      leelazConfig.put("engine-name-list", enginenames);
       Lizzie.config.uiConfig.put("board-size", getBoardSize());
       Lizzie.config.save();
     } catch (IOException e) {
