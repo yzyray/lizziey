@@ -54,9 +54,8 @@ public class BoardHistoryNode {
   }
 
   public BoardHistoryNode addOrGoto(BoardData data, boolean newBranch) {
-    return addOrGoto(data, false, false);
-  }
-
+	    return addOrGoto(data, newBranch, false);
+	  }
   /**
    * If we already have a next node with the same BoardData, move to it, otherwise add it and move
    * to it.
@@ -160,6 +159,9 @@ public class BoardHistoryNode {
           //                    variations.set(i, variations.get(0));
           //                    variations.set(0, currentNext);
           //                }
+        	 if (i != 0 && changeMove) {
+                 break;
+               }
           return variations.get(i);
         }
       }
@@ -181,7 +183,7 @@ public class BoardHistoryNode {
     }
     BoardHistoryNode node = new BoardHistoryNode(data);
     if (changeMove) {
-      Optional<BoardHistoryNode> next = next();
+    	Optional<BoardHistoryNode> next = next(true);
       next.ifPresent(
           n -> {
             node.variations = n.variations;
@@ -214,9 +216,19 @@ public class BoardHistoryNode {
   }
 
   public Optional<BoardHistoryNode> next() {
-    return variations.isEmpty() ? Optional.empty() : Optional.of(variations.get(0));
+	   return next(false);
+	  }
+
+	  public Optional<BoardHistoryNode> next(boolean includeDummy) {
+	    return variations.isEmpty() || (!includeDummy && variations.get(0).isEndDummay())
+	        ? Optional.empty()
+	        : Optional.of(variations.get(0));
   }
 
+	  public boolean isEndDummay() {
+		    return this.data.dummy && variations.isEmpty();
+		  }
+	  
   public Optional<BoardHistoryNode> now() {
     return Optional.of(this);
   }
@@ -445,7 +457,7 @@ public class BoardHistoryNode {
    * @return index of child node, -1 if child node not a child of parent
    */
   public int indexOfNode(BoardHistoryNode childNode) {
-    if (!next().isPresent()) {
+	  if (!next(true).isPresent()) {
       return -1;
     }
     for (int i = 0; i < numberOfChildren(); i++) {
@@ -575,41 +587,53 @@ public class BoardHistoryNode {
   }
 
   public void sync(BoardHistoryNode node) {
-    BoardData sData = this.getData();
-    BoardData dData = node.getData();
-    sData.moveMNNumber = dData.moveMNNumber;
-    sData.moveNumber = dData.moveNumber;
-    sData.lastMove = dData.lastMove;
-    sData.moveNumberList = dData.moveNumberList;
-    sData.blackToPlay = dData.blackToPlay;
-    sData.dummy = dData.dummy;
-    sData.lastMoveColor = dData.lastMoveColor;
-    sData.stones = dData.stones;
-    sData.zobrist = dData.zobrist;
-    sData.verify = dData.verify;
-    sData.blackCaptures = dData.blackCaptures;
-    sData.whiteCaptures = dData.whiteCaptures;
-    sData.comment = dData.comment;
-  }
+	    if (node == null) return;
+
+	    BoardHistoryNode cur = this;
+	    // Compare
+	    while (node != null) {
+	      if (!cur.compare(node)) {
+	        BoardData sData = cur.getData();
+	        sData.sync(node.getData());
+	        if (node.numberOfChildren() > 0) {
+	          for (int i = 0; i < node.numberOfChildren(); i++) {
+	            if (node.getVariation(i).isPresent()) {
+	              if (cur.variations.size() <= i) {
+	                cur.addOrGoto(node.getVariation(i).get().getData().clone(), (i > 0));
+	              }
+	              if (i > 0) {
+	                cur.variations.get(i).sync(node.getVariation(i).get());
+	              }
+	            }
+	          }
+	        }
+	      }
+	      cur = cur.next(true).map(n -> n).orElse(null);
+	      node = node.next(true).map(n -> n).orElse(null);
+	    }
+	  }
 
   public boolean compare(BoardHistoryNode node) {
-    BoardData sData = this.getData();
-    BoardData dData = node.getData();
+	    BoardData sData = this.getData();
+	    BoardData dData = node.getData();
 
-    boolean dMove =
-        sData.lastMove.isPresent() && dData.lastMove.isPresent()
-            || !sData.lastMove.isPresent() && !dData.lastMove.isPresent();
-    if (dMove && sData.lastMove.isPresent()) {
-      int[] sM = sData.lastMove.get();
-      int[] dM = dData.lastMove.get();
-      dMove =
-          (sM != null
-              && sM.length == 2
-              && dM != null
-              && dM.length == 2
-              && sM[0] == dM[0]
-              && sM[1] == dM[1]);
-    }
-    return dMove && sData.comment != null && sData.comment.equals(dData.comment);
-  }
+	    boolean dMove =
+	        sData.lastMove.isPresent() && dData.lastMove.isPresent()
+	            || !sData.lastMove.isPresent() && !dData.lastMove.isPresent();
+	    if (dMove && sData.lastMove.isPresent()) {
+	      int[] sM = sData.lastMove.get();
+	      int[] dM = dData.lastMove.get();
+	      dMove =
+	          (sM != null
+	              && sM.length == 2
+	              && dM != null
+	              && dM.length == 2
+	              && sM[0] == dM[0]
+	              && sM[1] == dM[1]);
+	    }
+	    return dMove
+	        && sData.comment != null
+	        && sData.comment.equals(dData.comment)
+	        && this.numberOfChildren() == node.numberOfChildren();
+	  }
 }
