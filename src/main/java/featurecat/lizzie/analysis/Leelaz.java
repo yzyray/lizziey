@@ -270,6 +270,24 @@ public class Leelaz {
     //    currentEngineN = index;
     togglePonder();
   }
+  
+  public void restartClosedEngine(int index) throws IOException {
+	    if (engineCommand.trim().isEmpty()) {
+	      return;
+	    }
+	    switching = true;
+	    this.engineCommand = engineCommand;
+	    // stop the ponder
+//	    if (Lizzie.leelaz.isPondering()) {
+//	      Lizzie.leelaz.togglePonder();
+//	    }
+// normalQuit();
+	    Lizzie.board.saveMoveNumber();
+	    startEngine(index);
+	    //    currentEngineN = index;
+	    Lizzie.board.restoreMoveNumber();
+	    ponder();
+	  }
 
   public void normalQuit() {
     switch (currentEngineN) {

@@ -2,11 +2,14 @@ package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Config;
 import featurecat.lizzie.Lizzie;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import javax.swing.Timer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +19,7 @@ public class EngineManager {
   private List<Leelaz> engineList;
   public static int currentEngineNo;
   //  public boolean firstTime =true;
+  Timer timer;
 
   public EngineManager(Config config) throws JSONException, IOException {
 
@@ -80,6 +84,32 @@ public class EngineManager {
                   });
             })
         .start();
+
+    timer =
+        new Timer(
+            10000,
+            new ActionListener() {
+              public void actionPerformed(ActionEvent evt) {
+                checkEngineAlive();
+                try {
+                } catch (Exception e) {
+                }
+              }
+            });
+    timer.start();
+  }
+
+  private void checkEngineAlive() {
+    if (engineList.get(currentEngineNo).process != null
+        && engineList.get(currentEngineNo).process.isAlive()) {
+    } else {
+      try {
+        engineList.get(currentEngineNo).restartClosedEngine(currentEngineNo);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
   }
 
   public void updateEngines() {
