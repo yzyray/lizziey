@@ -101,7 +101,7 @@ public class OnlineDialog extends JDialog {
         });
     cancelButton.setActionCommand("Cancel");
     buttonPane.add(cancelButton);
-    
+
     JButton quitButton = new JButton("中断");
     quitButton.setBounds(192, 138, 74, 29);
     quitButton.addActionListener(
@@ -151,39 +151,40 @@ public class OnlineDialog extends JDialog {
     JLabel lblPrompt1 = new JLabel(resourceBundle.getString("OnlineDialog.lblPrompt1.text"));
     lblPrompt1.setBounds(10, 11, 398, 14);
     buttonPane.add(lblPrompt1);
-    
+
     JLabel lblPrompt2 =
-            new JLabel("支持弈客直播，例如:https://home.yikeweiqi.com/#/live/room/18328/1/15630642");
-        lblPrompt2.setBounds(10, 30, 475, 14);
-        buttonPane.add(lblPrompt2);
-        JLabel lblPrompt3 =
-                new JLabel("支持野狐(腾讯围棋)分享链接，例如:http://share.foxwq.com/index.html?gameid=369&showtype=1&showid=83&chessid=383699091456898&status=0&createtime=1559816204&title=%E9%9F%A9%E5%9B%BD%E5%9B%B4%E6%A3%8BTV%E6%9D%AF32%E5%BC%BA%E6%88%98&chatid=880&support=1");
-            lblPrompt3.setBounds(10, 50, 755, 14);
-            buttonPane.add(lblPrompt3);
+        new JLabel("支持弈客直播，例如:https://home.yikeweiqi.com/#/live/room/18328/1/15630642");
+    lblPrompt2.setBounds(10, 30, 475, 14);
+    buttonPane.add(lblPrompt2);
+    JLabel lblPrompt3 =
+        new JLabel(
+            "支持野狐(腾讯围棋)分享链接，例如:http://share.foxwq.com/index.html?gameid=369&showtype=1&showid=83&chessid=383699091456898&status=0&createtime=1559816204&title=%E9%9F%A9%E5%9B%BD%E5%9B%B4%E6%A3%8BTV%E6%9D%AF32%E5%BC%BA%E6%88%98&chatid=880&support=1");
+    lblPrompt3.setBounds(10, 50, 755, 14);
+    buttonPane.add(lblPrompt3);
     txtUrl.selectAll();
 
     setLocationRelativeTo(getOwner());
     String pastContent =
-            Optional.ofNullable(Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null))
-                .filter(cc -> cc.isDataFlavorSupported(DataFlavor.stringFlavor))
-                .flatMap(
-                    cc -> {
-                      try {
-                        return Optional.of((String) cc.getTransferData(DataFlavor.stringFlavor));
-                      } catch (UnsupportedFlavorException e) {
-                        e.printStackTrace();
-                      } catch (IOException e) {
-                        e.printStackTrace();
-                      }
-                      return Optional.empty();
-                    })
-                .orElse("");
+        Optional.ofNullable(Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null))
+            .filter(cc -> cc.isDataFlavorSupported(DataFlavor.stringFlavor))
+            .flatMap(
+                cc -> {
+                  try {
+                    return Optional.of((String) cc.getTransferData(DataFlavor.stringFlavor));
+                  } catch (UnsupportedFlavorException e) {
+                    e.printStackTrace();
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
+                  return Optional.empty();
+                })
+            .orElse("");
     txtUrl.setText(pastContent);
   }
 
   private void applyChange() {
     //
-	  Lizzie.frame.urlSgf = true;
+    Lizzie.frame.urlSgf = true;
     int type = checkUrl();
 
     if (type > 0) {
@@ -273,7 +274,7 @@ public class OnlineDialog extends JDialog {
     //    if (!online.isShutdown()) {
     //      online.shutdown();
     //    }
-  
+
     if (schedule != null && !schedule.isCancelled() && !schedule.isDone()) {
       schedule.cancel(false);
     }
@@ -324,10 +325,10 @@ public class OnlineDialog extends JDialog {
               new Runnable() {
                 @Override
                 public void run() {
-                	 if (!Lizzie.frame.urlSgf) {
-                	        online.shutdown();
-                	        return;
-                	      }
+                  if (!Lizzie.frame.urlSgf) {
+                    online.shutdown();
+                    return;
+                  }
                   try {
                     ajax.open("GET", ajaxUrl, true);
                     ajax.send(params);
@@ -515,10 +516,10 @@ public class OnlineDialog extends JDialog {
                 new Runnable() {
                   @Override
                   public void run() {
-                	  if (!Lizzie.frame.urlSgf) {
-                          online.shutdown();
-                          return;
-                        }
+                    if (!Lizzie.frame.urlSgf) {
+                      online.shutdown();
+                      return;
+                    }
                     if (client.isOpen()) {
                       byte[] req2 =
                           req2(

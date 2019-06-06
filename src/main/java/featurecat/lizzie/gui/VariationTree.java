@@ -145,11 +145,11 @@ public class VariationTree {
 
     // Draw main line
     while (cur.next(true).isPresent() && posy + YSPACING < maxposy) {
-        posy += YSPACING;
-        cur = cur.next(true).get();
-        if (cur.isEndDummay()) {
-          continue;
-        }
+      posy += YSPACING;
+      cur = cur.next(true).get();
+      if (cur.isEndDummay()) {
+        continue;
+      }
       if (calc) {
         if (inNode(curposx + dotoffset, posy + dotoffset)) {
           return Optional.of(cur);

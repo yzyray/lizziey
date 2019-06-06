@@ -728,8 +728,8 @@ public class Board implements LeelazListener {
   }
 
   public void place(int x, int y, Stone color, boolean newBranch) {
-	    place(x, y, color, newBranch, false);
-	  }
+    place(x, y, color, newBranch, false);
+  }
 
   /**
    * Places a stone onto the board representation. Thread safe

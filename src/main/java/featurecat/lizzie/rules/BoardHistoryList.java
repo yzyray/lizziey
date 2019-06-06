@@ -56,20 +56,20 @@ public class BoardHistoryList {
       }
     }
   }
-  
+
   public void toBranchTop() {
-	    BoardHistoryNode start = head;
-	    BoardHistoryNode top = start;
-	    while (start.previous().isPresent()) {
-	      BoardHistoryNode pre = start.previous().get();
-	      if (pre.next(true).isPresent() && pre.next(true).get() != start) {
-	        previous();
-	        break;
-	      }
-	      previous();
-	      start = pre;
-	    }
-	  }
+    BoardHistoryNode start = head;
+    BoardHistoryNode top = start;
+    while (start.previous().isPresent()) {
+      BoardHistoryNode pre = start.previous().get();
+      if (pre.next(true).isPresent() && pre.next(true).get() != start) {
+        previous();
+        break;
+      }
+      previous();
+      start = pre;
+    }
+  }
 
   public BoardHistoryList shallowCopy() {
     BoardHistoryList copy = new BoardHistoryList(null);
@@ -126,11 +126,11 @@ public class BoardHistoryList {
    * @return the data of next node, Optional.empty if there is no next node
    */
   public Optional<BoardData> next() {
-	  return next(false);
-	  }
+    return next(false);
+  }
 
-	  public Optional<BoardData> next(boolean includeDummay) {
-	    Optional<BoardHistoryNode> n = head.next(includeDummay);
+  public Optional<BoardData> next(boolean includeDummay) {
+    Optional<BoardHistoryNode> n = head.next(includeDummay);
     n.ifPresent(x -> head = x);
     return n.map(x -> x.getData());
   }
@@ -354,8 +354,8 @@ public class BoardHistoryList {
   }
 
   public void place(int x, int y, Stone color, boolean newBranch) {
-	    place(x, y, color, newBranch, false);
-	  }
+    place(x, y, color, newBranch, false);
+  }
 
   public void place(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
     synchronized (this) {
@@ -494,60 +494,60 @@ public class BoardHistoryList {
   }
 
   public boolean goToMoveNumber(int moveNumber, boolean withinBranch) {
-	    int delta = moveNumber - this.getMoveNumber();
-	    boolean moved = false;
-	    for (int i = 0; i < Math.abs(delta); i++) {
-	      if (withinBranch && delta < 0) {
-	        BoardHistoryNode currentNode = this.getCurrentHistoryNode();
-	        if (!currentNode.isFirstChild()) {
-	          break;
-	        }
-	      }
-	      if (!(delta > 0 ? next().isPresent() : previous().isPresent())) {
-	        break;
-	      }
-	      moved = true;
-	    }
-	    return moved;
-	  }
-  
+    int delta = moveNumber - this.getMoveNumber();
+    boolean moved = false;
+    for (int i = 0; i < Math.abs(delta); i++) {
+      if (withinBranch && delta < 0) {
+        BoardHistoryNode currentNode = this.getCurrentHistoryNode();
+        if (!currentNode.isFirstChild()) {
+          break;
+        }
+      }
+      if (!(delta > 0 ? next().isPresent() : previous().isPresent())) {
+        break;
+      }
+      moved = true;
+    }
+    return moved;
+  }
+
   public int sync(BoardHistoryList newList) {
-	    int diffMoveNo = -1;
+    int diffMoveNo = -1;
 
-	    BoardHistoryNode node = this.getCurrentHistoryNode();
-	    BoardHistoryNode prev = node.previous().map(p -> p).orElse(null);
-	    // From begin
-	    while (prev != null) {
-	      node = prev;
-	      prev = node.previous().map(p -> p).orElse(null);
-	    }
-	    // Compare
-	    BoardHistoryNode newNode = newList.getCurrentHistoryNode();
+    BoardHistoryNode node = this.getCurrentHistoryNode();
+    BoardHistoryNode prev = node.previous().map(p -> p).orElse(null);
+    // From begin
+    while (prev != null) {
+      node = prev;
+      prev = node.previous().map(p -> p).orElse(null);
+    }
+    // Compare
+    BoardHistoryNode newNode = newList.getCurrentHistoryNode();
 
-	    while (newNode != null) {
-	      if (node == null) {
-	        // Add
-	        prev.addOrGoto(newNode.getData().clone());
-	        node = prev.next().map(n -> n).orElse(null);
-	        if (diffMoveNo < 0) {
-	          diffMoveNo = newNode.getData().moveNumber;
-	        }
-	        node.sync(newNode);
-	        break;
-	      } else {
-	        if (!node.compare(newNode)) {
-	          if (diffMoveNo < 0) {
-	            diffMoveNo = newNode.getData().moveNumber;
-	          }
-	          node.sync(newNode);
-	          break;
-	        }
-	      }
-	      prev = node;
-	      node = node.next().map(n -> n).orElse(null);
-	      newNode = newNode.next().map(n -> n).orElse(null);
-	    }
+    while (newNode != null) {
+      if (node == null) {
+        // Add
+        prev.addOrGoto(newNode.getData().clone());
+        node = prev.next().map(n -> n).orElse(null);
+        if (diffMoveNo < 0) {
+          diffMoveNo = newNode.getData().moveNumber;
+        }
+        node.sync(newNode);
+        break;
+      } else {
+        if (!node.compare(newNode)) {
+          if (diffMoveNo < 0) {
+            diffMoveNo = newNode.getData().moveNumber;
+          }
+          node.sync(newNode);
+          break;
+        }
+      }
+      prev = node;
+      node = node.next().map(n -> n).orElse(null);
+      newNode = newNode.next().map(n -> n).orElse(null);
+    }
 
-	    return diffMoveNo;
-	  }
-	}
+    return diffMoveNo;
+  }
+}

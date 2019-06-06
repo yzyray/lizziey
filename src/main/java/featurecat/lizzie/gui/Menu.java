@@ -124,6 +124,11 @@ public class Menu extends MenuBar {
     rightItem.addActionListener(new ItemListener());
     viewMenu.add(rightItem);
 
+    final JMenuItem alwaysBlack = new JMenuItem();
+    alwaysBlack.setText("总是显示黑胜率");
+    alwaysBlack.addActionListener(new ItemListener());
+    viewMenu.add(alwaysBlack);
+
     final JMenuItem coordsItem = new JMenuItem();
     coordsItem.setText("坐标（C）");
     coordsItem.addActionListener(new ItemListener());
@@ -265,12 +270,12 @@ public class Menu extends MenuBar {
     breakplay.addActionListener(new ItemListener());
     gameMenu.add(breakplay);
     gameMenu.addSeparator();
-    
+
     final JMenuItem settime = new JMenuItem();
     settime.setText("设置AI用时");
     settime.addActionListener(new ItemListener());
     gameMenu.add(settime);
-    
+
     final JMenuItem setinfo = new JMenuItem();
     setinfo.setText("设置棋局信息");
     setinfo.addActionListener(new ItemListener());
@@ -1081,10 +1086,27 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("设置棋局信")) {
-    	  Lizzie.frame.editGameInfo();
-          return;
+        Lizzie.frame.editGameInfo();
+        return;
+      }
+      if (menuItem.getText().startsWith("总是显示黑")) {
+        if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black")) {
+          Lizzie.config.uiConfig.put("win-rate-always-black", false);
+          try {
+            Lizzie.config.save();
+          } catch (IOException es) {
+            // TODO Auto-generated catch block
+          }
+        } else {
+          Lizzie.config.uiConfig.put("win-rate-always-black", true);
+          try {
+            Lizzie.config.save();
+          } catch (IOException es) {
+            // TODO Auto-generated catch block
+          }
         }
-      
+        return;
+      }
     }
   }
 }

@@ -466,38 +466,35 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         //        if (isinsertmode) {
         //          return;
         //        }
-    	  if(e.isAltDown()) {
-        if (!Lizzie.leelaz.isThinking) {
-          Lizzie.leelaz.sendCommand(
-              "time_settings 0 "
-                  + Lizzie.config
-                      .config
-                      .getJSONObject("leelaz")
-                      .getInt("max-game-thinking-time-seconds")
-                  + " 1");
-          Lizzie.frame.playerIsBlack = !Lizzie.board.getData().blackToPlay;
-          Lizzie.frame.isPlayingAgainstLeelaz = true;
-          Lizzie.leelaz.genmove((Lizzie.board.getData().blackToPlay ? "B" : "W"));
+        if (e.isAltDown()) {
+          if (!Lizzie.leelaz.isThinking) {
+            Lizzie.leelaz.sendCommand(
+                "time_settings 0 "
+                    + Lizzie.config
+                        .config
+                        .getJSONObject("leelaz")
+                        .getInt("max-game-thinking-time-seconds")
+                    + " 1");
+            Lizzie.frame.playerIsBlack = !Lizzie.board.getData().blackToPlay;
+            Lizzie.frame.isPlayingAgainstLeelaz = true;
+            Lizzie.leelaz.genmove((Lizzie.board.getData().blackToPlay ? "B" : "W"));
+          }
+        } else {
+          if (!Lizzie.frame.toolbar.isAutoPlay) {
+            Lizzie.frame.toolbar.isAutoPlay = true;
+            Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
+
+            Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlayPlayouts.setSelected(false);
+            Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.setSelected(false);
+            Lizzie.frame.toolbar.txtAutoPlayTime.setText("1");
+          } else {
+            Lizzie.frame.toolbar.isAutoPlay = false;
+            Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
+          }
         }
-    	  }
-    	  else {
-    		  if(!Lizzie.frame.toolbar.isAutoPlay) {
-    		  Lizzie.frame.toolbar.isAutoPlay=true;
-    		  Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
-    		  
-    		  Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(true);
-    		  Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
-    		  Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
-    		  Lizzie.frame.toolbar.chkAutoPlayPlayouts.setSelected(false);
-    		  Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.setSelected(false);
-    		  Lizzie.frame.toolbar.txtAutoPlayTime.setText("1");
-    		  }
-    		  else
-    		  {
-    			  Lizzie.frame.toolbar.isAutoPlay=false;
-        		  Lizzie.frame.toolbar.chkAutoPlay.setSelected(false); 
-    		  }
-    	  }
         break;
 
       case VK_B:
