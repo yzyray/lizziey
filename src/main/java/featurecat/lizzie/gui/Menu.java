@@ -1062,7 +1062,7 @@ public class Menu extends MenuBar {
         if (onTop) Lizzie.frame.setAlwaysOnTop(true);
         return;
       }
-      if (menuItem.getText().startsWith("清除Lizzie当前")) {
+      if (menuItem.getText().startsWith("清除当前")) {
         Lizzie.board.clearbestmoves();
         boolean onTop = false;
         if (Lizzie.frame.isAlwaysOnTop()) {

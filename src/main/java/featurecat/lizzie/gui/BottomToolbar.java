@@ -12,7 +12,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.imageio.ImageIO;
@@ -42,6 +41,7 @@ public class BottomToolbar extends JPanel {
   JButton heatMap;
   JButton backMain;
   JButton batchOpen;
+  JButton refresh;
   JTextField txtMoveNumber;
   private int changeMoveNumber = 0;
   public boolean isAutoAna = false;
@@ -138,6 +138,7 @@ public class BottomToolbar extends JPanel {
     heatMap = new JButton("策略网络");
     backMain = new JButton("返回主分支");
     batchOpen = new JButton("批量打开");
+    refresh = new JButton("刷新");
     iconUp = new ImageIcon();
     try {
       iconUp.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/up.png")));
@@ -170,7 +171,7 @@ public class BottomToolbar extends JPanel {
     add(heatMap);
     add(backMain);
     add(batchOpen);
-
+    add(refresh);
     firstButton.setFocusable(false);
     lastButton.setFocusable(false);
     clearButton.setFocusable(false);
@@ -187,6 +188,7 @@ public class BottomToolbar extends JPanel {
     heatMap.setFocusable(false);
     backMain.setFocusable(false);
     batchOpen.setFocusable(false);
+    refresh.setFocusable(false);
 
     firstButton.setMargin(new Insets(0, 0, 0, 0));
     lastButton.setMargin(new Insets(0, 0, 0, 0));
@@ -204,11 +206,12 @@ public class BottomToolbar extends JPanel {
     heatMap.setMargin(new Insets(0, 0, 0, 0));
     backMain.setMargin(new Insets(0, 0, 0, 0));
     batchOpen.setMargin(new Insets(0, 0, 0, 0));
+    refresh.setMargin(new Insets(0, 0, 0, 0));
 
-    NumberFormat nf = NumberFormat.getNumberInstance();
+    // NumberFormat nf = NumberFormat.getNumberInstance();
 
-    nf.setGroupingUsed(false);
-    nf.setParseIntegerOnly(true);
+    // nf.setGroupingUsed(false);
+    // nf.setParseIntegerOnly(true);
     txtMoveNumber = new JTextField();
     add(txtMoveNumber);
     txtMoveNumber.setColumns(3);
@@ -234,6 +237,14 @@ public class BottomToolbar extends JPanel {
           @Override
           public void keyTyped(KeyEvent e) {}
         });
+
+    refresh.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.board.clearbestmoves();
+          }
+        });
+
     batchOpen.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -1152,11 +1163,12 @@ public class BottomToolbar extends JPanel {
     int w = Lizzie.frame.getWidth();
 
     if (boardmid + 364 > w) boardmid = w - 364;
-    if (boardmid - 357 < 0) boardmid = 357;
+    if (boardmid - 395 < 0) boardmid = 395;
     detail.setBounds(0, 0, 20, 26);
-    batchOpen.setBounds(boardmid - 337, 0, 60, 26);
-    openfile.setBounds(boardmid - 278, 0, 40, 26);
-    savefile.setBounds(boardmid - 239, 0, 40, 26);
+    batchOpen.setBounds(boardmid - 376, 0, 60, 26);
+    openfile.setBounds(boardmid - 317, 0, 40, 26);
+    savefile.setBounds(boardmid - 278, 0, 40, 26);
+    refresh.setBounds(boardmid - 239, 0, 40, 26);
     analyse.setBounds(boardmid - 200, 0, 65, 26);
     backMain.setBounds(boardmid - 136, 0, 70, 26);
     firstButton.setBounds(boardmid - 67, 0, 30, 26);

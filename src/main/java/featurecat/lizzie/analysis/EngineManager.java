@@ -87,7 +87,7 @@ public class EngineManager {
 
     timer =
         new Timer(
-            10000,
+            5000,
             new ActionListener() {
               public void actionPerformed(ActionEvent evt) {
                 checkEngineAlive();
