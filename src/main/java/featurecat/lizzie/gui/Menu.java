@@ -249,13 +249,13 @@ public class Menu extends MenuBar {
     gameMenu.add(newGameItem);
 
     final JMenuItem continueGameBlackItem = new JMenuItem();
-    continueGameBlackItem.setText("续弈(我执黑)");
+    continueGameBlackItem.setText("续弈(我执黑)(ALT+回车)");
     // aboutItem.setMnemonic('A');
     continueGameBlackItem.addActionListener(new ItemListener());
     gameMenu.add(continueGameBlackItem);
 
     final JMenuItem continueGameWhiteItem = new JMenuItem();
-    continueGameWhiteItem.setText("续弈(我执白)");
+    continueGameWhiteItem.setText("续弈(我执白)(ALT+回车)");
     // aboutItem.setMnemonic('A');
     continueGameWhiteItem.addActionListener(new ItemListener());
     gameMenu.add(continueGameWhiteItem);
@@ -264,11 +264,18 @@ public class Menu extends MenuBar {
     breakplay.setText("中断对局");
     breakplay.addActionListener(new ItemListener());
     gameMenu.add(breakplay);
-
+    gameMenu.addSeparator();
+    
     final JMenuItem settime = new JMenuItem();
     settime.setText("设置AI用时");
     settime.addActionListener(new ItemListener());
     gameMenu.add(settime);
+    
+    final JMenuItem setinfo = new JMenuItem();
+    setinfo.setText("设置棋局信息");
+    setinfo.addActionListener(new ItemListener());
+    gameMenu.add(setinfo);
+    gameMenu.addSeparator();
 
     final JMenuItem bestone = new JMenuItem();
     bestone.setText("落最佳一手(逗号)");
@@ -1073,6 +1080,11 @@ public class Menu extends MenuBar {
         Lizzie.board.pass();
         return;
       }
+      if (menuItem.getText().startsWith("设置棋局信")) {
+    	  Lizzie.frame.editGameInfo();
+          return;
+        }
+      
     }
   }
 }

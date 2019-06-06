@@ -287,6 +287,10 @@ public class Config {
     fastChange = config.getJSONObject("leelaz").optBoolean("fast-engine-change", true);
     maxAnalyzeTimeMillis =
         60 * 1000 * config.getJSONObject("leelaz").getInt("max-analyze-time-minutes");
+    if(maxAnalyzeTimeMillis==0)
+    {
+    	maxAnalyzeTimeMillis=9999*60*1000;
+    }
     analyzeUpdateIntervalCentisec =
         config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec");
     if (theme.fontName() != null) fontName = theme.fontName();
