@@ -277,6 +277,7 @@ public class Leelaz {
 	    startEngine(index);
 	    //    currentEngineN = index;
 	    Lizzie.board.restoreMoveNumber();
+	    Lizzie.board.clearbestmoves();
 	    ponder();
 	  }
 
