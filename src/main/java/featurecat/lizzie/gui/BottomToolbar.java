@@ -892,8 +892,8 @@ public class BottomToolbar extends JPanel {
                 Lizzie.board.clear();
                 Lizzie.leelaz.ponder();
                 Lizzie.frame.setPlayers(
-                    Lizzie.engineManager.engineList.get(engineBlack).currentEnginename,
-                    Lizzie.engineManager.engineList.get(engineWhite).currentEnginename);
+                    Lizzie.engineManager.engineList.get(engineWhite).currentEnginename,
+                    Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
                 GameInfo gameinfo = new GameInfo();
                 gameinfo.setPlayerWhite(
                     Lizzie.engineManager.engineList.get(engineWhite).currentEnginename);

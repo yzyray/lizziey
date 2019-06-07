@@ -46,7 +46,6 @@ public class Board implements LeelazListener {
   public String boardstatbeforeedit = "";
   public String boardstatafteredit = "";
   public boolean isLoadingFile = false;
-
   // Save the node for restore move when in the branch
   private Optional<BoardHistoryNode> saveNode;
 
@@ -2203,15 +2202,17 @@ public class Board implements LeelazListener {
       // computing. i think its fine.
     }
     if (Lizzie.leelaz.isPondering() && !isLoadingFile) {
-      if (MoveData.getPlayouts(history.getData().bestMoves) > history.getData().getPlayouts())
-        updateComment();
+      // if (MoveData.getPlayouts(history.getData().bestMoves) > history.getData().getPlayouts())
+      updateComment();
     }
   }
 
   public void updateComment() {
     if (Lizzie.config.appendWinrateToComment && !Lizzie.frame.urlSgf) {
       // Append the winrate to the comment
-      SGFParser.appendComment();
+      {
+        SGFParser.appendComment();
+      }
     }
   }
 

@@ -5,6 +5,7 @@ import static java.util.Arrays.asList;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
 import featurecat.lizzie.analysis.Leelaz;
+import featurecat.lizzie.analysis.MoveData;
 import featurecat.lizzie.util.EncodingDetector;
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -35,6 +36,7 @@ public class SGFParser {
 
     String encoding = EncodingDetector.detect(filename);
     FileInputStream fp = new FileInputStream(file);
+    if (encoding == "WINDOWS-1252") encoding = "gb2312";
     InputStreamReader reader = new InputStreamReader(fp, encoding);
     StringBuilder builder = new StringBuilder();
     while (reader.ready()) {
@@ -360,13 +362,14 @@ public class SGFParser {
   }
 
   public static void save(Board board, String filename) throws IOException {
-    try (Writer writer = new OutputStreamWriter(new FileOutputStream(filename), "UTF-8")) {
+    try (Writer writer = new OutputStreamWriter(new FileOutputStream(filename), "gb2312")) {
       saveToStream(board, writer);
     }
   }
 
   private static void saveToStream(Board board, Writer writer) throws IOException {
     // collect game info
+
     BoardHistoryList history = board.getHistory().shallowCopy();
     GameInfo gameInfo = history.getGameInfo();
     String playerB = gameInfo.getPlayerBlack();
@@ -385,9 +388,9 @@ public class SGFParser {
             komi, playerW, playerB, date, Lizzie.lizzieVersion, Board.boardSize));
 
     // To append the winrate to the comment of sgf we might need to update the Winrate
-    if (Lizzie.config.appendWinrateToComment) {
-      Lizzie.board.updateWinrate();
-    }
+    // if (Lizzie.config.appendWinrateToComment) {
+    //  Lizzie.board.updateWinrate();
+    // }
 
     // move to the first move
     history.toStart();
@@ -529,16 +532,29 @@ public class SGFParser {
   private static String formatComment(BoardHistoryNode node) {
     BoardData data = node.getData();
     String engine = Lizzie.leelaz.currentEnginename;
-
+    //    if (Lizzie.frame.toolbar.isEnginePk) {
+    //      if (node.getData().blackToPlay) {
+    //        engine =
+    //
+    // Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename;
+    //      } else {
+    //        engine =
+    //
+    // Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename;
+    //      }
+    //
+    //    } else {
+    //  engine
+    //  }
     // Playouts
     String playouts = Lizzie.frame.getPlayoutsString(data.getPlayouts());
 
     // Last winrate
     Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
     boolean validLastWinrate = false;
-    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 3) {
-      lastNode = node.previous().get().previous().flatMap(n -> Optional.of(n.getData()));
-    }
+    //    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 3) {
+    //      lastNode = node.previous().get().previous().flatMap(n -> Optional.of(n.getData()));
+    //    }
     double lastWR = validLastWinrate ? lastNode.get().getWinrate() : 50;
     if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 3) {
       lastWR = 100 - lastWR;
@@ -576,9 +592,9 @@ public class SGFParser {
         lastMoveDiff = String.format("(%s%.1f%%)", diff >= 0 ? "+" : "-", Math.abs(diff));
       }
     }
-    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() <= 3) {
-      lastMoveDiff = "";
-    }
+    //    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() <= 3) {
+    //      lastMoveDiff = "";
+    //    }
     String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
     boolean blackWinrate =
         !node.getData().blackToPlay || Lizzie.config.uiConfig.getBoolean("win-rate-always-black");
@@ -613,7 +629,9 @@ public class SGFParser {
     String engine = Lizzie.leelaz.currentEnginename;
 
     // Playouts
-    String playouts = Lizzie.frame.getPlayoutsString(data.getPlayouts());
+    String playouts =
+        Lizzie.frame.getPlayoutsString(
+            MoveData.getPlayouts(Lizzie.board.getHistory().getData().bestMoves));
 
     // Last winrate
     Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));

@@ -653,6 +653,7 @@ public class LizzieFrame extends JFrame {
   }
 
   public static void saveFile() {
+
     FileNameExtensionFilter filter = new FileNameExtensionFilter("*.sgf", "SGF");
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
@@ -2039,13 +2040,18 @@ public class LizzieFrame extends JFrame {
       if (autoIntervalCom > 0 && currentTime - lastAutocomTime >= autoIntervalCom) {
         lastAutocomTime = currentTime;
         // Append the winrate to the comment
-        SGFParser.appendComment();
+        if (Lizzie.leelaz.isPondering() && !Lizzie.board.isLoadingFile) {
+          // if (MoveData.getPlayouts(Lizzie.board.getHistory().getData().bestMoves) >
+          // Lizzie.board.getHistory().getData().getPlayouts())
+          // 重要!做保存文件时不更新的判断
+          SGFParser.appendComment();
+        }
       }
     }
   }
 
   public void setPlayers(String whitePlayer, String blackPlayer) {
-    playerTitle = String.format("(%s [白] vs %s [黑])", whitePlayer, blackPlayer);
+    playerTitle = String.format("(%s [黑] vs %s [白])", blackPlayer, whitePlayer);
     updateTitle();
   }
 
