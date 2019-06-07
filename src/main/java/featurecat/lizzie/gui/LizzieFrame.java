@@ -196,9 +196,8 @@ public class LizzieFrame extends JFrame {
     subBoardRenderer = new SubBoardRenderer(false);
     variationTree = new VariationTree();
     winrateGraph = new WinrateGraph();
-    menu = new Menu();
     toolbar = new BottomToolbar();
-
+    menu = new Menu();
     // MenuTest menu = new MenuTest();
     // add(menu);
     // this.setJMenuBar(menu);
@@ -1520,12 +1519,19 @@ public class LizzieFrame extends JFrame {
 
     double lastWR = 50; // winrate the previous move
     boolean validLastWinrate = false; // whether it was actually calculated
-    Optional<BoardData> previous = Lizzie.board.getHistory().getPrevious();
-    if (previous.isPresent() && previous.get().getPlayouts() > 0) {
-      lastWR = previous.get().winrate;
-      validLastWinrate = true;
+    Optional<BoardHistoryNode> previous =
+        Lizzie.board.getHistory().getCurrentHistoryNode().previous();
+    if (toolbar.isEnginePk && Lizzie.board.getHistory().getMoveNumber() > 3) {
+      previous = Lizzie.board.getHistory().getCurrentHistoryNode().previous().get().previous();
     }
 
+    if (previous.isPresent() && previous.get().getData().getPlayouts() > 0) {
+      lastWR = previous.get().getData().winrate;
+      validLastWinrate = true;
+    }
+    if (toolbar.isEnginePk && Lizzie.board.getHistory().getMoveNumber() > 3) {
+      lastWR = 100 - lastWR;
+    }
     Leelaz.WinrateStats stats = Lizzie.leelaz.getWinrateStats();
     double curWR = stats.maxWinrate; // winrate on this move
     boolean validWinrate = (stats.totalPlayouts > 0); // and whether it was actually calculated
@@ -1584,18 +1590,28 @@ public class LizzieFrame extends JFrame {
     // Last move
     if (validLastWinrate && validWinrate) {
       String text;
-      if (Lizzie.config.handicapInsteadOfWinrate) {
-        double currHandicapedWR = Lizzie.leelaz.winrateToHandicap(100 - curWR);
-        double lastHandicapedWR = Lizzie.leelaz.winrateToHandicap(lastWR);
-        text = String.format(": %.2f", currHandicapedWR - lastHandicapedWR);
-      } else {
-        text = String.format(": %.1f%%", 100 - lastWR - curWR);
+      //   if (Lizzie.config.handicapInsteadOfWinrate) {
+      //   double currHandicapedWR = Lizzie.leelaz.winrateToHandicap(100 - curWR);
+      //    double lastHandicapedWR = Lizzie.leelaz.winrateToHandicap(lastWR);
+      //    text = String.format(": %.2f", currHandicapedWR - lastHandicapedWR);
+      //  } else {
+      text = String.format(": %.1f%%", 100 - lastWR - curWR);
+      // }
+      if (toolbar.isEnginePk && Lizzie.board.getHistory().getMoveNumber() <= 3) {
+        text = "";
       }
-
       if (Lizzie.leelaz.isColorEngine) {
         text = text + " 阶段:" + Lizzie.leelaz.stage + " 贴目:" + Lizzie.leelaz.komi;
       } else {
         text = text + " 贴目:" + komi;
+      }
+      if (toolbar.isEnginePk) {
+        text =
+            text
+                + " 黑:"
+                + Lizzie.engineManager.engineList.get(toolbar.engineBlack).currentEnginename
+                + " 白:"
+                + Lizzie.engineManager.engineList.get(toolbar.engineWhite).currentEnginename;
       }
       g.drawString(
           resourceBundle.getString("LizzieFrame.display.lastMove") + text,

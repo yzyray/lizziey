@@ -77,7 +77,7 @@ public class GtpConsolePane extends JDialog {
     lblCommand.setOpaque(true);
     lblCommand.setBackground(Color.DARK_GRAY);
     lblCommand.setForeground(Color.WHITE);
-    lblCommand.setText(Lizzie.leelaz == null ? "GTP>" : Lizzie.leelaz.currentShortWeight() + ">");
+    lblCommand.setText(Lizzie.leelaz == null ? "GTP>" : Lizzie.leelaz.currentEnginename + ">");
     pnlCommand.setLayout(new BorderLayout(0, 0));
     pnlCommand.add(lblCommand, BorderLayout.WEST);
     pnlCommand.add(txtCommand);
@@ -95,7 +95,7 @@ public class GtpConsolePane extends JDialog {
     if (command == null || command.trim().length() == 0) {
       return;
     }
-    lblCommand.setText(Lizzie.leelaz == null ? "GTP>" : Lizzie.leelaz.currentShortWeight() + ">");
+    lblCommand.setText(Lizzie.leelaz == null ? "GTP>" : Lizzie.leelaz.currentEnginename + ">");
     this.command = command;
     this.isAnalyzeCommand =
         command.startsWith("lz-analyze") || command.startsWith("lz-genmove_analyze");
@@ -135,7 +135,7 @@ public class GtpConsolePane extends JDialog {
   public String formatCommand(String command, int commandNumber) {
     return String.format(
         "<span class=\"command\">"
-            + (Lizzie.leelaz == null ? "GTP" : Lizzie.leelaz.currentShortWeight())
+            + (Lizzie.leelaz == null ? "GTP" : Lizzie.leelaz.currentEnginename)
             + "> %d %s </span><br />",
         commandNumber,
         command);

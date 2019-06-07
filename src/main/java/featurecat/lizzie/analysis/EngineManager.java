@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 public class EngineManager {
 
-  private List<Leelaz> engineList;
+  public List<Leelaz> engineList;
   public static int currentEngineNo;
   //  public boolean firstTime =true;
   Timer timer;
@@ -140,6 +140,27 @@ public class EngineManager {
 
       } else engineList.get(i + 1).engineCommand = enginesOpt.get().optString(i);
     }
+    int j = Lizzie.frame.toolbar.enginePkBlack.getItemCount();
+    Lizzie.frame.toolbar.removeEngineLis();
+    for (int i = 0; i < j; i++) {
+      Lizzie.frame.toolbar.enginePkBlack.removeItemAt(0);
+      Lizzie.frame.toolbar.enginePkWhite.removeItemAt(0);
+    }
+    Optional<JSONArray> enginesNameOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+    enginesNameOpt.ifPresent(
+        a -> {
+          IntStream.range(0, a.length())
+              .forEach(
+                  i -> {
+                    String name = a.getString(i);
+                    if (!name.equals("")) {
+                      Lizzie.frame.toolbar.enginePkBlack.addItem("[" + (i + 1) + "]" + name);
+                      Lizzie.frame.toolbar.enginePkWhite.addItem("[" + (i + 1) + "]" + name);
+                    }
+                  });
+        });
+    Lizzie.frame.toolbar.addEngineLis();
   }
 
   public void killAllEngines() {
@@ -175,6 +196,19 @@ public class EngineManager {
    *
    * @param index engine index
    */
+  public void startEngine(int index) {
+    if (index > this.engineList.size()) return;
+    Leelaz newEng = engineList.get(index);
+    if (!newEng.isStarted()) {
+      try {
+        newEng.startEngine(index);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+  }
+
   public void switchEngine(int index) {
     if (index == this.currentEngineNo || index > this.engineList.size()) return;
     Leelaz newEng = engineList.get(index);
@@ -212,6 +246,7 @@ public class EngineManager {
       } catch (Exception e) {
         e.printStackTrace();
       }
+
       Lizzie.board.restoreMoveNumber();
       Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
       this.currentEngineNo = index;

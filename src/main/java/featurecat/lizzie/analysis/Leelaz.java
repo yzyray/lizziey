@@ -511,8 +511,7 @@ public class Leelaz {
     }
   }
   private void notifyAutoPlay() {
-	  if(this.bestMoves.isEmpty())
-	  {return;}
+
 	  if (Lizzie.frame.toolbar.isAutoPlay) {
 		  if((Lizzie.board.getHistory().isBlacksTurn()&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getHistory().isBlacksTurn()&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
 		  {
@@ -677,8 +676,7 @@ public class Leelaz {
   }
   
   private void notifyAutoAna() {
-	  if(this.bestMoves.isEmpty())
-	  {return;}
+	
     if (Lizzie.frame.toolbar.isAutoAna) {
     	
     	if(Lizzie.frame.toolbar.startAutoAna)
@@ -770,6 +768,101 @@ public class Leelaz {
     }
   }
   
+  
+  private void notifyAutoPK() {	
+	  if (Lizzie.frame.toolbar.isEnginePk) {
+		  
+			  int time = 0;
+		        int playouts = 0;
+		        int firstPlayouts = 0;
+		        if (Lizzie.frame.toolbar.chkenginePkTime.isSelected()) {
+		          try {
+		            time = 1000 * Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTime.getText());
+		          } catch (NumberFormatException err) {
+		          }
+		        }
+		        if (Lizzie.frame.toolbar.chkenginePkPlayouts.isSelected()) {
+		          try {
+		            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkPlayputs.getText());
+		          } catch (NumberFormatException err) {
+		          }
+		        }
+		        if (Lizzie.frame.toolbar.chkenginePkFirstPlayputs.isSelected()) {
+		          try {
+		            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkFirstPlayputs.getText());
+		          } catch (NumberFormatException err) {
+		          }
+		        }
+		       
+		        if (firstPlayouts > 0) {
+		          if (bestMoves.get(0).playouts >= firstPlayouts) {
+		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);		                       
+		         
+		          Lizzie.leelaz.playMove( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		          sendCommand("name");
+		          if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
+		          { Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+		          Lizzie.leelaz.isPondering=true;
+		          Lizzie.board.place(coords[0],coords[1]);		
+		          }
+		          
+		          else
+		          {  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+		          Lizzie.leelaz.isPondering=true;
+		          Lizzie.board.place(coords[0],coords[1]);		
+		          }
+		          return;
+		          }
+		        }
+		        if (playouts > 0) {
+		          int sum = 0;
+		          for (MoveData move : bestMoves) {
+		            sum += move.playouts;
+		          }
+		          if (sum >= playouts) {
+		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
+		        	
+			          Lizzie.leelaz.playMove( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+			          sendCommand("name");
+			          if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
+			          { Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+			          Lizzie.leelaz.isPondering=true;
+			          Lizzie.board.place(coords[0],coords[1]);		
+			          }
+			          
+			          else
+			          {  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+			          Lizzie.leelaz.isPondering=true;
+			          Lizzie.board.place(coords[0],coords[1]);		
+			          }
+			          return;
+		          			        
+		          }
+		        }
+		        
+		        if (time > 0) {
+		          if (System.currentTimeMillis() - startPonderTime > time) {
+		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
+		        	  
+			          Lizzie.leelaz.playMove( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+			          sendCommand("name");
+			          if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
+			          { Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+			          Lizzie.leelaz.isPondering=true;
+			          Lizzie.board.place(coords[0],coords[1]);		
+			          }
+			          
+			          else
+			          {  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+			          Lizzie.leelaz.isPondering=true;
+			          Lizzie.board.place(coords[0],coords[1]);		
+			          }
+			          return;
+		          }
+		        }
+		 
+	  }
+  }
   // 判断文件夹是否存在
   private  void judeDirExists(File file) {
 
@@ -816,8 +909,11 @@ public class Leelaz {
         line.append((char) c);
         if ((c == '\n')) {
           parseLine(line.toString());
-          notifyAutoAna();
+          if(!this.bestMoves.isEmpty())
+    	  { notifyAutoAna();
           notifyAutoPlay();
+          notifyAutoPK();}
+         
           line = new StringBuilder();
         }
       }

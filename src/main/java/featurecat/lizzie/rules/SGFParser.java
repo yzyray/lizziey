@@ -26,6 +26,7 @@ public class SGFParser {
     //  Lizzie.board.getHistory().getCurrentHistoryNode().getData().setPlayouts(0);
     //  Lizzie.board.getHistory().getCurrentHistoryNode().getData().bestMoves.clear();
     // Lizzie.board=new Board();
+    Lizzie.board.isLoadingFile = true;
     Lizzie.board.clear();
     File file = new File(filename);
     if (!file.exists() || !file.canRead()) {
@@ -43,10 +44,12 @@ public class SGFParser {
     fp.close();
     String value = builder.toString();
     if (value.isEmpty()) {
+      Lizzie.board.isLoadingFile = false;
       return false;
     }
 
     boolean returnValue = parse(value);
+    Lizzie.board.isLoadingFile = false;
     return returnValue;
   }
 
@@ -488,7 +491,9 @@ public class SGFParser {
 
         if (Lizzie.config.appendWinrateToComment) {
           // Append the winrate to the comment of sgf
-          if (data.getPlayouts() > 0) data.comment = formatComment(node);
+          if (!Lizzie.frame.toolbar.isEnginePk) {
+            if (data.getPlayouts() > 0) data.comment = formatComment(node);
+          }
         }
 
         // Write the comment
@@ -523,16 +528,21 @@ public class SGFParser {
    */
   private static String formatComment(BoardHistoryNode node) {
     BoardData data = node.getData();
-    String engine = Lizzie.leelaz.currentWeight();
+    String engine = Lizzie.leelaz.currentEnginename;
 
     // Playouts
     String playouts = Lizzie.frame.getPlayoutsString(data.getPlayouts());
 
     // Last winrate
     Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
-    boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
+    boolean validLastWinrate = false;
+    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 3) {
+      lastNode = node.previous().get().previous().flatMap(n -> Optional.of(n.getData()));
+    }
     double lastWR = validLastWinrate ? lastNode.get().getWinrate() : 50;
-
+    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 3) {
+      lastWR = 100 - lastWR;
+    }
     // Current winrate
     boolean validWinrate = (data.getPlayouts() > 0);
     double curWR;
@@ -566,16 +576,29 @@ public class SGFParser {
         lastMoveDiff = String.format("(%s%.1f%%)", diff >= 0 ? "+" : "-", Math.abs(diff));
       }
     }
-
+    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() <= 3) {
+      lastMoveDiff = "";
+    }
     String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
     boolean blackWinrate =
         !node.getData().blackToPlay || Lizzie.config.uiConfig.getBoolean("win-rate-always-black");
     String nc =
-        String.format(wf, blackWinrate ? "黑" : "白", curWinrate, lastMoveDiff, engine, playouts);
+        String.format(
+            wf,
+            blackWinrate ? "白" : "黑",
+            String.format("%.1f%%", curWR),
+            lastMoveDiff,
+            engine,
+            playouts);
 
     if (!data.comment.isEmpty()) {
+      //  String wp =
+      //     "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\([^\\(\\)/]* \\/ [0-9\\.]*[kmKM]*
+      // 计算量\\)";
       String wp =
-          "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\([^\\(\\)/]* \\/ [0-9\\.]*[kmKM]* 计算量\\)";
+          "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\("
+              + engine
+              + " / [0-9\\.]*[kmKM]* 计算量\\)";
       if (data.comment.matches("(?s).*" + wp + "(?s).*")) {
         nc = data.comment.replaceAll(wp, nc);
       } else {
@@ -587,16 +610,22 @@ public class SGFParser {
 
   private static String formatCommentOne(BoardHistoryNode node) {
     BoardData data = node.getData();
-    String engine = Lizzie.leelaz.currentWeight();
+    String engine = Lizzie.leelaz.currentEnginename;
 
     // Playouts
     String playouts = Lizzie.frame.getPlayoutsString(data.getPlayouts());
 
     // Last winrate
     Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
+    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 3) {
+      lastNode = node.previous().get().previous().flatMap(n -> Optional.of(n.getData()));
+    }
     boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
-    double lastWR = validLastWinrate ? lastNode.get().getWinrate() : 50;
 
+    double lastWR = validLastWinrate ? lastNode.get().getWinrate() : 50;
+    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 3) {
+      lastWR = 100 - lastWR;
+    }
     // Current winrate
     boolean validWinrate = (data.getPlayouts() > 0);
     double curWR;
@@ -630,16 +659,27 @@ public class SGFParser {
         lastMoveDiff = String.format("(%s%.1f%%)", diff >= 0 ? "+" : "-", Math.abs(diff));
       }
     }
-
+    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() <= 3) {
+      lastMoveDiff = "";
+    }
     String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
     boolean blackWinrate =
         !node.getData().blackToPlay || Lizzie.config.uiConfig.getBoolean("win-rate-always-black");
     String nc =
-        String.format(wf, blackWinrate ? "黑" : "白", curWinrate, lastMoveDiff, engine, playouts);
+        String.format(
+            wf,
+            blackWinrate ? "白" : "黑",
+            String.format("%.1f%%", curWR),
+            lastMoveDiff,
+            engine,
+            playouts);
 
     if (!data.comment.isEmpty()) {
+      // [^\\(\\)/]*
       String wp =
-          "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\([^\\(\\)/]* \\/ [0-9\\.]*[kmKM]* 计算量\\)";
+          "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\("
+              + engine
+              + " / [0-9\\.]*[kmKM]* 计算量\\)";
       if (data.comment.matches("(?s).*" + wp + "(?s).*")) {
         nc = data.comment.replaceAll(wp, nc);
       } else {
