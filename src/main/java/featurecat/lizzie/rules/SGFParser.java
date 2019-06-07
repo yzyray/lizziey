@@ -626,8 +626,18 @@ public class SGFParser {
 
   private static String formatCommentOne(BoardHistoryNode node) {
     BoardData data = node.getData();
-    String engine = Lizzie.leelaz.currentEnginename;
-
+    String engine = "";
+    if (Lizzie.frame.toolbar.isEnginePk) {
+      if (node.getData().blackToPlay)
+        engine =
+            Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename;
+      else {
+        engine =
+            Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename;
+      }
+    } else {
+      engine = Lizzie.leelaz.currentEnginename;
+    }
     // Playouts
     String playouts =
         Lizzie.frame.getPlayoutsString(

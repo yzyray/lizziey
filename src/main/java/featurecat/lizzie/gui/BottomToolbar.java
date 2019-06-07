@@ -915,6 +915,7 @@ public class BottomToolbar extends JPanel {
               enginePkWhite.setEnabled(true);
               chkenginePkgenmove.setEnabled(true);
               chkenginePk.setEnabled(true);
+              Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
               Lizzie.engineManager.switchEngine(Lizzie.engineManager.currentEngineNo);
             }
             setTxtUnfocuse();
