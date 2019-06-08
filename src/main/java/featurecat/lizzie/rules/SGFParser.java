@@ -556,7 +556,7 @@ public class SGFParser {
     //      lastNode = node.previous().get().previous().flatMap(n -> Optional.of(n.getData()));
     //    }
     double lastWR = validLastWinrate ? lastNode.get().getWinrate() : 50;
-    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 3) {
+    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 2) {
       lastWR = 100 - lastWR;
     }
     // Current winrate
@@ -645,13 +645,13 @@ public class SGFParser {
 
     // Last winrate
     Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
-    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 3) {
+    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 2) {
       lastNode = node.previous().get().previous().flatMap(n -> Optional.of(n.getData()));
     }
     boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
 
     double lastWR = validLastWinrate ? lastNode.get().getWinrate() : 50;
-    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 3) {
+    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 2) {
       lastWR = 100 - lastWR;
     }
     // Current winrate
@@ -687,7 +687,7 @@ public class SGFParser {
         lastMoveDiff = String.format("(%s%.1f%%)", diff >= 0 ? "+" : "-", Math.abs(diff));
       }
     }
-    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() <= 3) {
+    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() <= 2) {
       lastMoveDiff = "";
     }
     String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
