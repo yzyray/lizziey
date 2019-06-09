@@ -664,7 +664,7 @@ public class BoardRenderer {
         if (moveNumberList[Board.getIndex(i, j)] > 0
             && (!branchOpt.isPresent() || !Lizzie.frame.isMouseOver(i, j))) {
           boolean reverse = (moveNumberList[Board.getIndex(i, j)] > maxBranchMoves());
-          if (lastMoveOpt.isPresent() && lastMoveOpt.get()[0] == i && lastMoveOpt.get()[1] == j) {
+          if ((lastMoveOpt.isPresent() && lastMoveOpt.get()[0] == i && lastMoveOpt.get()[1] == j)) {
             if (reverse) continue;
             g.setColor(Color.RED.brighter()); // stoneHere.isBlack() ? Color.RED.brighter() :
             // Color.BLUE.brighter());

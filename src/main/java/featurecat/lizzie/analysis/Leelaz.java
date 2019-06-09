@@ -28,6 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -99,10 +100,12 @@ public class Leelaz {
   public String currentEnginename = "";
   boolean analysed=false;
   private boolean isSaving=false;
+  private boolean isResigning=false;
   private boolean isClosing=false;
   public boolean isColorEngine=false;
   public int stage=-1;
   public float komi =(float) 7.5;
+  public int resignMoveCounts=0;
   // public double heatwinrate;
   /**
    * Initializes the leelaz process and starts reading output
@@ -655,7 +658,39 @@ public class Leelaz {
 	  
        
   }
-  
+  private void savePkFile() {
+	  File file = new File("");
+	   	 String courseFile ="";
+	        try {
+				 courseFile = file.getCanonicalPath();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        String sf= new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+	        String df="黑_"+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+"_白_"+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename;
+	        if(Lizzie.frame.toolbar.isEnginePkBatch)
+	        {
+	        	df=df+"_"+Lizzie.frame.toolbar.EnginePkBatchNumberNow;
+	        }
+	        if(currentEngineN==Lizzie.frame.toolbar.engineBlack)
+	        {df=df+"_白胜";}
+	        else
+	        {df=df+"_黑胜";}
+	        df=df+sf;
+	        File autoSaveFile=new File(courseFile+ "\\" + "PkAutoSave"+"\\"+df+".sgf");
+
+	        File fileParent = autoSaveFile.getParentFile();
+	        if (!fileParent.exists()) {
+	        fileParent.mkdirs();
+	        }
+	        try {
+	       	  SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}   
+  }
   private void loadAutoBatchFile() {
 
 	  Lizzie.frame.BatchAnaNum=Lizzie.frame.BatchAnaNum+1;		
@@ -768,9 +803,145 @@ public class Leelaz {
     }
   }
   
+  private void pkResign() {
+	  if(isResigning)
+	  {return;}
+	  isResigning=true;
+	 
+	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).sendCommand("name");
+	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).notPondering();
+	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).sendCommand("name");
+	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).notPondering();
+	  Lizzie.board.updateComment();
+	  if(currentEngineN==Lizzie.frame.toolbar.engineBlack)
+      {
+		  //df=df+"_白胜";
+		  Lizzie.frame.toolbar.pkWhiteWins=Lizzie.frame.toolbar.pkWhiteWins+1;
+		  }
+      else
+      {
+    	  //df=df+"_黑胜";
+    	  Lizzie.frame.toolbar.pkBlackWins=Lizzie.frame.toolbar.pkBlackWins+1;
+    	  }
+	  Lizzie.frame.toolbar.lblenginePkResult.setText(Lizzie.frame.toolbar.pkBlackWins+":"+Lizzie.frame.toolbar.pkWhiteWins);
+	  if(Lizzie.frame.toolbar.chkenginePkAutosave.isSelected())
+	  {savePkFile();	  
+	  }
+	  if(Lizzie.frame.toolbar.isEnginePkBatch&&Lizzie.frame.toolbar.EnginePkBatchNumberNow<Lizzie.frame.toolbar.EnginePkBatchNumber)
+	  {
+		  Lizzie.frame.toolbar.EnginePkBatchNumberNow=Lizzie.frame.toolbar.EnginePkBatchNumberNow+1;
+		  //下一盘PK
+		  if(Lizzie.frame.toolbar.exChange)
+		  {
+			  int temp=Lizzie.frame.toolbar.engineBlack;
+			  Lizzie.frame.toolbar.engineBlack=Lizzie.frame.toolbar.engineWhite;
+			  Lizzie.frame.toolbar.engineWhite=temp;
+			  if(Lizzie.frame.toolbar.EnginePkBatchNumberNow%2==0)
+			  {
+				 // Lizzie.frame.toolbar.enginePkBlack.setSelectedIndex(Lizzie.frame.toolbar.engineWhite);
+				//  Lizzie.frame.toolbar.enginePkWhite.setSelectedIndex(Lizzie.frame.toolbar.engineBlack);
+				   Lizzie.frame.toolbar.lblengineWhite.setText("黑:");
+					  Lizzie.frame.toolbar.lblengineBlack.setText("白:");
+					  Lizzie.frame.toolbar.lblenginePkPlayputs.setText("总计算量  白:");
+					
+					  Lizzie.frame.toolbar.lblenginePkPlayputsWhite.setText("黑:");
+					  Lizzie.frame.toolbar.lblenginePkFirstPlayputs.setText("首位计算量  白:");
+					  Lizzie.frame.toolbar.lblenginePkFirstPlayputsWhite.setText("黑:");
+					   
+			  }
+			  else {
+				//  Lizzie.frame.toolbar.enginePkBlack.setSelectedIndex(Lizzie.frame.toolbar.engineBlack);
+				//  Lizzie.frame.toolbar.enginePkWhite.setSelectedIndex(Lizzie.frame.toolbar.engineWhite);
+				   Lizzie.frame.toolbar.lblengineWhite.setText("白:");
+					  Lizzie.frame.toolbar.lblengineBlack.setText("黑:");
+					  Lizzie.frame.toolbar.lblenginePkPlayputs.setText("总计算量  黑:");
+						
+					  Lizzie.frame.toolbar.lblenginePkPlayputsWhite.setText("白:");
+					  Lizzie.frame.toolbar.lblenginePkFirstPlayputs.setText("首位计算量  黑:");
+					  Lizzie.frame.toolbar.lblenginePkFirstPlayputsWhite.setText("白:");
+			  }
+		  }
+		  
+		  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).resignMoveCounts=0;
+    	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).resignMoveCounts=0; 
+     
+        Lizzie.board.clear();
+        if(Lizzie.frame.toolbar.chkenginePkContinue.isSelected())
+        {	SGFParser.loadFromString(Lizzie.frame.toolbar.startGame);
+        while (Lizzie.board.nextMove()) ;}
+        if(Lizzie.board.getHistory().isBlacksTurn())
+        {Lizzie.engineManager.startEngine(Lizzie.frame.toolbar.engineWhite);
+        Lizzie.engineManager.startEngine(Lizzie.frame.toolbar.engineBlack);
+        }
+        else
+        {
+        	Lizzie.engineManager.startEngine(Lizzie.frame.toolbar.engineBlack);
+        	Lizzie.engineManager.startEngine(Lizzie.frame.toolbar.engineWhite);                    
+        }
+        Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
+        Lizzie.leelaz.ponder();
+        Lizzie.frame.setPlayers(
+            Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename,
+            Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename);
+        GameInfo gameinfo = new GameInfo();
+        gameinfo.setPlayerWhite(
+            Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename);
+        gameinfo.setPlayerBlack(
+            Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename);
+        Lizzie.board.getHistory().setGameInfo(gameinfo);
+	  }
+	  else {
+		  //结束PKLizzie.engineManager.engineList.get(engineBlack).notPondering();
+          Lizzie.frame.addInput();
+          Lizzie.frame.toolbar.enginePkBlack.setEnabled(true);
+          Lizzie.frame.toolbar.enginePkWhite.setEnabled(true);
+          Lizzie.frame.toolbar.txtenginePkBatch.setEnabled(true);
+          Lizzie.frame.toolbar.isEnginePk=false;
+          Lizzie.frame.toolbar.btnStartPk.setText("开始对战");
+          Lizzie.frame.toolbar.chkenginePkBatch.setEnabled(true);
+         // chkenginePkgenmove.setEnabled(true);
+          Lizzie.frame.toolbar.chkenginePk.setEnabled(true);
+          Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
+          Lizzie.engineManager.switchEngine(Lizzie.engineManager.currentEngineNo);
+          Lizzie.frame.toolbar.lblengineWhite.setText("白:");
+		  Lizzie.frame.toolbar.lblengineBlack.setText("黑:");
+		  Lizzie.frame.toolbar.lblenginePkPlayputs.setText("总计算量  黑:");
+			
+		  Lizzie.frame.toolbar.lblenginePkPlayputsWhite.setText("白:");
+		  Lizzie.frame.toolbar.lblenginePkFirstPlayputs.setText("首位计算量  黑:");
+		  Lizzie.frame.toolbar.lblenginePkFirstPlayputsWhite.setText("白:");
+        boolean onTop = false;
+        if (Lizzie.frame.isAlwaysOnTop()) {
+          Lizzie.frame.setAlwaysOnTop(false);
+          onTop = true;
+        }
+        
+        if(Lizzie.frame.toolbar.isEnginePkBatch)
+        JOptionPane.showMessageDialog(Lizzie.frame,"批量对战已结束,比分为"+Lizzie.frame.toolbar.pkBlackWins+":"+Lizzie.frame.toolbar.pkWhiteWins+"棋谱保存在PkAutoSave文件夹下" );
+        else
+        {
+        	String jg="对战已结束，";
+        	if(currentEngineN==Lizzie.frame.toolbar.engineBlack)
+            {
+      		  //df=df+"_白胜";
+        		jg=jg+"白胜";
+            }
+        	else {
+        		jg=jg+"黑胜";
+        	}
+        	if(Lizzie.frame.toolbar.chkenginePkAutosave.isSelected())
+        	{jg=jg+"，棋谱保存在PkAutoSave文件夹下";}
+        	 JOptionPane.showMessageDialog(Lizzie.frame,jg );
+        }	
+        if (onTop) Lizzie.frame.setAlwaysOnTop(true);
+        
+	  }
+	  
+  }
   
   private void notifyAutoPK() {	
 	  if (Lizzie.frame.toolbar.isEnginePk) {
+		  double curWR=this.bestMoves.get(0).winrate;
 		  
 			  int time = 0;
 		        int playouts = 0;
@@ -782,22 +953,53 @@ public class Leelaz {
 		          }
 		        }
 		        if (Lizzie.frame.toolbar.chkenginePkPlayouts.isSelected()) {
+		        	if(Lizzie.board.getData().blackToPlay) {
 		          try {
 		            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkPlayputs.getText());
 		          } catch (NumberFormatException err) {
 		          }
+		        	}
+		        	else {
+		        		 try {
+		 		            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkPlayputsWhite.getText());
+		 		          } catch (NumberFormatException err) {
+		 		          }
+		        	}
 		        }
 		        if (Lizzie.frame.toolbar.chkenginePkFirstPlayputs.isSelected()) {
+		        	if(Lizzie.board.getData().blackToPlay) {
 		          try {
 		            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkFirstPlayputs.getText());
 		          } catch (NumberFormatException err) {
 		          }
+		        	}
+		        	else {
+		        		 try {
+		 		            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkFirstPlayputsWhite.getText());
+		 		          } catch (NumberFormatException err) {
+		 		          }
+		        	}
 		        }
 		       
 		        if (firstPlayouts > 0) {
 		          if (bestMoves.get(0).playouts >= firstPlayouts) {
-		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);		                       
-		         
+		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);		 
+		        	  if(curWR<Lizzie.frame.toolbar.pkResginWinrate)
+		    		  { resignMoveCounts=resignMoveCounts+1;
+		    		
+		    			  }
+		        	  else {
+		        		  if(resignMoveCounts>0)
+				        	  resignMoveCounts=0;
+		        	  }
+		        	  if(resignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
+		    		  {
+		        		   sendCommand("name");
+				           pkResign();
+		    			  return;
+		    		  }
+		        	  
+		        	  isResigning=false;
 		          Lizzie.leelaz.playMove( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 		          sendCommand("name");
 		          if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
@@ -821,7 +1023,21 @@ public class Leelaz {
 		          }
 		          if (sum >= playouts) {
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
-		        	
+		        	  if(curWR<Lizzie.frame.toolbar.pkResginWinrate)
+		    		  { resignMoveCounts=resignMoveCounts+1;
+		    		
+		    			  }
+		        	  else {
+		        		  if(resignMoveCounts>0)
+				        	  resignMoveCounts=0;
+		        	  }
+		        	  if(resignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
+		    		  {
+		        		  sendCommand("name");				        
+		    			  pkResign();
+		    			  return;
+		    		  }
+		        	  isResigning=false;
 			          Lizzie.leelaz.playMove( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 			          sendCommand("name");
 			          if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
@@ -843,7 +1059,21 @@ public class Leelaz {
 		        if (time > 0) {
 		          if (System.currentTimeMillis() - startPonderTime > time) {
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
-		        	  
+		        	  if(curWR<Lizzie.frame.toolbar.pkResginWinrate)
+		    		  { resignMoveCounts=resignMoveCounts+1;
+		    		
+		    			  }
+		        	  else {
+		        		  if(resignMoveCounts>0)
+				        	  resignMoveCounts=0;
+		        	  }
+		        	  if(resignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
+		    		  {
+		        		  sendCommand("name");
+		    			  pkResign();
+		    			  return;
+		    		  }
+		        	  isResigning=false;
 			          Lizzie.leelaz.playMove( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 			          sendCommand("name");
 			          if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
@@ -863,22 +1093,6 @@ public class Leelaz {
 		 
 	  }
   }
-  // 判断文件夹是否存在
-  private  void judeDirExists(File file) {
-
-      if (file.exists()) {
-          if (file.isDirectory()) {
-              System.out.println("dir exists");
-          } else {
-              System.out.println("the same name file exists, can not create dir");
-          }
-      } else {
-          System.out.println("dir not exists, create it ...");
-          file.mkdir();
-      }
-
-  }
-
 
   /**
    * Parse a move-data line of Leelaz output

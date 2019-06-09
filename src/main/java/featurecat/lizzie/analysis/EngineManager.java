@@ -198,6 +198,7 @@ public class EngineManager {
    */
   public void startEngine(int index) {
     if (index > this.engineList.size()) return;
+    // Lizzie.board.saveMoveNumber();
     Leelaz newEng = engineList.get(index);
     if (!newEng.isStarted()) {
       try {
@@ -207,6 +208,10 @@ public class EngineManager {
         e.printStackTrace();
       }
     }
+    Lizzie.leelaz = newEng;
+    Lizzie.leelaz.clear();
+    this.currentEngineNo = index;
+    Lizzie.board.restoreMoveNumber(index);
   }
 
   public void switchEngine(int index) {

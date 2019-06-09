@@ -601,8 +601,8 @@ public class SGFParser {
     String nc =
         String.format(
             wf,
-            blackWinrate ? "白" : "黑",
-            String.format("%.1f%%", curWR),
+            blackWinrate ? "黑" : "白",
+            String.format("%.1f%%", 100 - curWR),
             lastMoveDiff,
             engine,
             playouts);
@@ -639,10 +639,17 @@ public class SGFParser {
       engine = Lizzie.leelaz.currentEnginename;
     }
     // Playouts
-    String playouts =
-        Lizzie.frame.getPlayoutsString(
-            MoveData.getPlayouts(Lizzie.board.getHistory().getData().bestMoves));
-
+    String playouts = "";
+    if (Lizzie.frame.toolbar.isEnginePk) {
+      if (Lizzie.board.getHistory().getPrevious().isPresent())
+        playouts =
+            Lizzie.frame.getPlayoutsString(
+                MoveData.getPlayouts(Lizzie.board.getHistory().getPrevious().get().bestMoves));
+    } else {
+      playouts =
+          Lizzie.frame.getPlayoutsString(
+              MoveData.getPlayouts(Lizzie.board.getHistory().getData().bestMoves));
+    }
     // Last winrate
     Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
     if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 2) {
@@ -696,8 +703,8 @@ public class SGFParser {
     String nc =
         String.format(
             wf,
-            blackWinrate ? "白" : "黑",
-            String.format("%.1f%%", curWR),
+            blackWinrate ? "黑" : "白",
+            String.format("%.1f%%", 100 - curWR),
             lastMoveDiff,
             engine,
             playouts);

@@ -197,9 +197,28 @@ public class Board implements LeelazListener {
     }
   }
 
+  public void clearbestmovesafter2(BoardHistoryNode node) {
+    // if (node.getData().moveNumber <= movenumber) {
+    //  if (node.getData().getPlayouts() > 0) node.getData().isChanged = true;
+    // }
+    node.getData().setPlayouts(0);
+    if (node.numberOfChildren() > 1) {
+      // Variation
+      for (BoardHistoryNode sub : node.getVariations()) {
+        clearbestmovesafter(sub);
+      }
+    } else if (node.numberOfChildren() == 1) {
+      clearbestmovesafter2(node.next().orElse(null));
+    }
+  }
+
   public void clearbestmoves() {
     if (history.getCurrentHistoryNode().getData().getPlayouts() > 0)
       history.getCurrentHistoryNode().getData().isChanged = true;
+  }
+
+  public void clearbestmoves2() {
+    history.getCurrentHistoryNode().getData().setPlayouts(0);
   }
 
   public void savelist() {
@@ -1348,6 +1367,31 @@ public class Board implements LeelazListener {
   /** Restore move number by saved node */
   public void restoreMoveNumber() {
     saveNode.ifPresent(n -> restoreMoveNumber(n));
+  }
+
+  public void restoreMoveNumber(int index) {
+    Stone[] stones = history.getStones();
+    for (int i = 0; i < stones.length; i++) {
+      Stone stone = stones[i];
+      if (stone.isBlack() || stone.isWhite()) {
+        int y = i % Board.boardSize;
+        int x = (i - y) / Board.boardSize;
+
+        String colorString = "";
+        switch (stone) {
+          case BLACK:
+            colorString = "B";
+            break;
+          case WHITE:
+            colorString = "W";
+            break;
+        }
+        Lizzie.engineManager
+            .engineList
+            .get(index)
+            .sendCommand("play " + colorString + " " + convertCoordinatesToName(x, y));
+      }
+    }
   }
 
   /** Restore move number by node */

@@ -2,6 +2,7 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
+import featurecat.lizzie.rules.SGFParser;
 import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -24,7 +25,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.json.JSONArray;
@@ -54,15 +54,19 @@ public class BottomToolbar extends JPanel {
   public int firstMove = -1;
   public int lastMove = -1;
   public boolean startAutoAna = false;
-  public int pkBlackWins=0;
-  public int pkWhiteWins=0;
-  
+  public int pkBlackWins = 0;
+  public int pkWhiteWins = 0;
+
   public boolean isEnginePk = false;
   public int engineBlack = -1;
   public int engineWhite = -1;
-  public int pkLoseMove=2;
-  public double pkLoseWinrate=0.10;
+  public int pkResignMoveCounts = 2;
+  public double pkResginWinrate = 40;
+  public boolean isEnginePkBatch = false;
+  public int EnginePkBatchNumber = 1;
+  public int EnginePkBatchNumberNow = 1;
   public boolean isGenmove = false;
+  public boolean exChange = true;
   public JCheckBox chkAutoAnalyse;
   public JCheckBox chkAnaTime;
   public JCheckBox chkAnaPlayouts;
@@ -114,23 +118,34 @@ public class BottomToolbar extends JPanel {
   JPanel enginePkPanel;
 
   public JCheckBox chkenginePk;
- // public JCheckBox chkenginePkgenmove;
+  // public JCheckBox chkenginePkgenmove;
   public JCheckBox chkenginePkTime;
   public JCheckBox chkenginePkPlayouts;
   public JCheckBox chkenginePkFirstPlayputs;
 
+  public JCheckBox chkenginePkBatch;
+  public JCheckBox chkenginePkContinue;
+  public String startGame;
+  public JCheckBox chkenginePkAutosave;
+
   public JButton btnStartPk;
   public JButton btnEnginePkConfig;
+  public JButton btnEnginePkStop;
 
   JLabel lblenginePk;
-  //JLabel lblgenmove;
+  // JLabel lblgenmove;
   JLabel lblenginePkTime;
-  JLabel lblengineBlack;
-  JLabel lblengineWhite;
-  JLabel lblenginePkPlayputs;
-  JLabel lblenginePkFirstPlayputs;
-  JLabel lblenginePkPlayputsWhite;
-  JLabel lblenginePkFirstPlayputsWhite;
+  public JLabel lblengineBlack;
+  public JLabel lblengineWhite;
+  public JLabel lblenginePkPlayputs;
+  public JLabel lblenginePkFirstPlayputs;
+  public JLabel lblenginePkPlayputsWhite;
+  public JLabel lblenginePkFirstPlayputsWhite;
+
+  JLabel lblenginePkBatch;
+  JLabel lblenginePkExchange;
+  JLabel lblenginePkAutosave;
+
   public JLabel lblenginePkResult;
 
   public JTextField txtenginePkTime;
@@ -138,13 +153,12 @@ public class BottomToolbar extends JPanel {
   public JTextField txtenginePkFirstPlayputs;
   public JTextField txtenginePkPlayputsWhite;
   public JTextField txtenginePkFirstPlayputsWhite;
+  public JTextField txtenginePkBatch;
 
   public JComboBox enginePkBlack;
   ItemListener enginePkBlackLis;
   public JComboBox enginePkWhite;
   ItemListener enginePkWhiteLis;
-  
-  
 
   ImageIcon iconUp;
   ImageIcon iconDown;
@@ -818,55 +832,67 @@ public class BottomToolbar extends JPanel {
           }
         });
 
-   // chkenginePkgenmove = new JCheckBox();
-  //  lblgenmove = new JLabel("genmove");
-  //  enginePkPanel.add(chkenginePkgenmove);
-  //  enginePkPanel.add(lblgenmove);
-  //  chkenginePkgenmove.setBounds(70, 23, 20, 18);
-  //  lblgenmove.setBounds(90, 22, 60, 18);
+    // chkenginePkgenmove = new JCheckBox();
+    //  lblgenmove = new JLabel("genmove");
+    //  enginePkPanel.add(chkenginePkgenmove);
+    //  enginePkPanel.add(lblgenmove);
+    //  chkenginePkgenmove.setBounds(70, 23, 20, 18);
+    //  lblgenmove.setBounds(90, 22, 60, 18);
 
-//    chkenginePkgenmove.addActionListener(
-//        new ActionListener() {
-//          @Override
-//          public void actionPerformed(ActionEvent e) {
-//            // TBD未完成
-//            setTxtUnfocuse();
-//            if (chkenginePkgenmove.isSelected()) {
-//              chkenginePkPlayouts.setSelected(false);
-//              chkenginePkPlayouts.setEnabled(false);
-//              chkenginePkFirstPlayputs.setSelected(false);
-//              chkenginePkFirstPlayputs.setEnabled(false);
-//            } else {
-//              chkenginePkFirstPlayputs.setEnabled(true);
-//              chkenginePkPlayouts.setEnabled(true);
-//            }
-//          }
-//        });
+    //    chkenginePkgenmove.addActionListener(
+    //        new ActionListener() {
+    //          @Override
+    //          public void actionPerformed(ActionEvent e) {
+    //            // TBD未完成
+    //            setTxtUnfocuse();
+    //            if (chkenginePkgenmove.isSelected()) {
+    //              chkenginePkPlayouts.setSelected(false);
+    //              chkenginePkPlayouts.setEnabled(false);
+    //              chkenginePkFirstPlayputs.setSelected(false);
+    //              chkenginePkFirstPlayputs.setEnabled(false);
+    //            } else {
+    //              chkenginePkFirstPlayputs.setEnabled(true);
+    //              chkenginePkPlayouts.setEnabled(true);
+    //            }
+    //          }
+    //        });
 
-    btnEnginePkConfig = new JButton ("设置");
+    btnEnginePkConfig = new JButton("设置");
     enginePkPanel.add(btnEnginePkConfig);
-    btnEnginePkConfig.setBounds(67, 22, 40, 20);
+    btnEnginePkConfig.setBounds(67, 22, 35, 20);
     btnEnginePkConfig.setMargin(new Insets(0, 0, 0, 0));
     btnEnginePkConfig.addActionListener(
-            new ActionListener() {
-              @Override
-              public void actionPerformed(ActionEvent e) {
-                // TBD未完成
-            	  setTxtUnfocuse();  
-              }
-            });
-    
-    
-    
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD未完成
+            setTxtUnfocuse();
+          }
+        });
+    btnEnginePkStop = new JButton("暂停");
+    enginePkPanel.add(btnEnginePkStop);
+    btnEnginePkStop.setBounds(101, 22, 35, 20);
+    btnEnginePkStop.setMargin(new Insets(0, 0, 0, 0));
+    btnEnginePkStop.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD未完成
+            Lizzie.leelaz.togglePonder();
+            if (Lizzie.leelaz.isPondering()) btnEnginePkStop.setText("暂停");
+            else btnEnginePkStop.setText("继续");
+          }
+        });
+
     chkenginePkTime = new JCheckBox();
     lblenginePkTime = new JLabel("按时间(秒):");
     txtenginePkTime = new JTextField();
     enginePkPanel.add(chkenginePkTime);
     enginePkPanel.add(lblenginePkTime);
     enginePkPanel.add(txtenginePkTime);
-    chkenginePkTime.setBounds(105, 23, 20, 18);
-    lblenginePkTime.setBounds(125, 22, 60, 18);
-    txtenginePkTime.setBounds(188, 24, 30, 18);
+    chkenginePkTime.setBounds(135, 23, 20, 18);
+    lblenginePkTime.setBounds(155, 22, 60, 18);
+    txtenginePkTime.setBounds(218, 24, 30, 18);
     chkenginePkTime.addActionListener(
         new ActionListener() {
           @Override
@@ -888,36 +914,71 @@ public class BottomToolbar extends JPanel {
             if (!chkenginePk.isSelected()) {
               return;
             }
-            if (engineWhite == engineBlack) {
-              boolean onTop = false;
-              if (Lizzie.frame.isAlwaysOnTop()) {
-                Lizzie.frame.setAlwaysOnTop(false);
-                onTop = true;
-              }
-              JOptionPane.showMessageDialog(Lizzie.frame, "黑白棋不可选择相同引擎");
-              if (onTop) Lizzie.frame.setAlwaysOnTop(true);
-              return;
-            }
+            //            if (engineWhite == engineBlack) {
+            //              boolean onTop = false;
+            //              if (Lizzie.frame.isAlwaysOnTop()) {
+            //                Lizzie.frame.setAlwaysOnTop(false);
+            //                onTop = true;
+            //              }
+            //              JOptionPane.showMessageDialog(Lizzie.frame, "黑白棋不可选择相同引擎");
+            //              if (onTop) Lizzie.frame.setAlwaysOnTop(true);
+            //              return;
+            //            }
             if (!isEnginePk) {
               isAutoAna = false;
               isAutoPlay = false;
               isEnginePk = true;
               btnStartPk.setText("停止对战");
               Lizzie.frame.removeInput();
+              EnginePkBatchNumberNow = 1;
+              isEnginePkBatch = chkenginePkBatch.isSelected();
+              try {
+                EnginePkBatchNumber = Integer.parseInt(txtenginePkBatch.getText());
+              } catch (NumberFormatException err) {
+              }
+
+              txtenginePkBatch.setEnabled(false);
+
+              chkenginePkBatch.setEnabled(false);
               enginePkBlack.setEnabled(false);
               enginePkWhite.setEnabled(false);
-     //         chkenginePkgenmove.setEnabled(false);
+              //         chkenginePkgenmove.setEnabled(false);
               chkenginePk.setEnabled(false);
+              if (isEnginePkBatch) {
+                chkenginePkAutosave.setSelected(true);
+                chkenginePkAutosave.setEnabled(false);
+              }
+              if (chkenginePkContinue.isSelected()) {
+                try {
+                  startGame = SGFParser.saveToString();
+                } catch (IOException e1) {
+                  // TODO Auto-generated catch block
+                  e1.printStackTrace();
+                }
+              }
+              lblenginePkResult.setText("0:0");
+              pkBlackWins = 0;
+              pkWhiteWins = 0;
               if (!isGenmove) {
                 // 分析模式对战
-                Lizzie.board.clear();
+                Lizzie.engineManager.engineList.get(engineBlack).resignMoveCounts = 0;
+                Lizzie.engineManager.engineList.get(engineWhite).resignMoveCounts = 0;
+
                 Lizzie.leelaz.sendCommand("name");
                 Lizzie.leelaz.notPondering();
-                // Lizzie.engineManager.startEngine(engineBlack);
-                Lizzie.engineManager.switchEngine(engineWhite);
                 Lizzie.board.clear();
-                Lizzie.engineManager.switchEngine(engineBlack);
-                Lizzie.board.clear();
+                if (chkenginePkContinue.isSelected()) {
+                  SGFParser.loadFromString(startGame);
+                  while (Lizzie.board.nextMove()) ;
+                }
+                if (Lizzie.board.getHistory().isBlacksTurn()) {
+                  Lizzie.engineManager.startEngine(engineWhite);
+                  Lizzie.engineManager.startEngine(engineBlack);
+                } else {
+                  Lizzie.engineManager.startEngine(engineBlack);
+                  Lizzie.engineManager.startEngine(engineWhite);
+                }
+                Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
                 Lizzie.leelaz.ponder();
                 Lizzie.frame.setPlayers(
                     Lizzie.engineManager.engineList.get(engineWhite).currentEnginename,
@@ -941,10 +1002,15 @@ public class BottomToolbar extends JPanel {
               Lizzie.frame.addInput();
               enginePkBlack.setEnabled(true);
               enginePkWhite.setEnabled(true);
-             // chkenginePkgenmove.setEnabled(true);
+              txtenginePkBatch.setEnabled(true);
+              chkenginePkAutosave.setEnabled(true);
+              chkenginePkBatch.setEnabled(true);
+              // chkenginePkgenmove.setEnabled(true);
               chkenginePk.setEnabled(true);
               Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
               Lizzie.engineManager.switchEngine(Lizzie.engineManager.currentEngineNo);
+              lblengineWhite.setText("白:");
+              lblengineBlack.setText("黑:");
             }
             setTxtUnfocuse();
           }
@@ -956,43 +1022,73 @@ public class BottomToolbar extends JPanel {
     lblengineBlack = new JLabel("黑:");
     enginePkPanel.add(lblengineBlack);
     lblengineBlack.setBounds(80, 0, 15, 20);
-    
-    lblenginePkResult = new JLabel("999:999");
+
+    lblenginePkResult = new JLabel("0:0");
     enginePkPanel.add(lblenginePkResult);
     lblenginePkResult.setBounds(170, 0, 45, 20);
-    
-    
+
     enginePkWhite = new JComboBox();
     addEngineLis();
     enginePkPanel.add(enginePkWhite);
     enginePkWhite.setBounds(235, 2, 70, 18);
-    
-   
-    
+
     lblengineWhite = new JLabel("白:");
     enginePkPanel.add(lblengineWhite);
     lblengineWhite.setBounds(220, 0, 15, 20);
 
     enginePkBlack.setEnabled(false);
     enginePkWhite.setEnabled(false);
-    
+
     lblenginePkFirstPlayputs = new JLabel("首位计算量  黑:");
     chkenginePkFirstPlayputs = new JCheckBox();
     txtenginePkFirstPlayputs = new JTextField();
     enginePkPanel.add(lblenginePkFirstPlayputs);
     enginePkPanel.add(chkenginePkFirstPlayputs);
     enginePkPanel.add(txtenginePkFirstPlayputs);
-    chkenginePkFirstPlayputs.setBounds(218, 23, 20, 18);
-    lblenginePkFirstPlayputs.setBounds(238, 22, 90, 18);
-    txtenginePkFirstPlayputs.setBounds(320, 24, 50, 18);
+    chkenginePkFirstPlayputs.setBounds(248, 23, 20, 18);
+    lblenginePkFirstPlayputs.setBounds(268, 22, 90, 18);
+    txtenginePkFirstPlayputs.setBounds(350, 24, 50, 18);
     lblenginePkFirstPlayputsWhite = new JLabel("白:");
     txtenginePkFirstPlayputsWhite = new JTextField();
     enginePkPanel.add(lblenginePkFirstPlayputsWhite);
     enginePkPanel.add(txtenginePkFirstPlayputsWhite);
-    lblenginePkFirstPlayputsWhite.setBounds(370, 22, 20, 18);
-    txtenginePkFirstPlayputsWhite.setBounds(385, 24, 50, 18);
-    
+    lblenginePkFirstPlayputsWhite.setBounds(400, 22, 20, 18);
+    txtenginePkFirstPlayputsWhite.setBounds(415, 24, 50, 18);
+
     chkenginePkFirstPlayputs.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            setTxtUnfocuse();
+          }
+        });
+
+    chkenginePkBatch = new JCheckBox();
+    lblenginePkBatch = new JLabel("多盘:");
+    txtenginePkBatch = new JTextField();
+    enginePkPanel.add(chkenginePkBatch);
+    enginePkPanel.add(lblenginePkBatch);
+    enginePkPanel.add(txtenginePkBatch);
+    chkenginePkBatch.setBounds(465, 23, 20, 18);
+    lblenginePkBatch.setBounds(485, 22, 30, 20);
+    txtenginePkBatch.setBounds(515, 24, 30, 18);
+
+    chkenginePkBatch.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            setTxtUnfocuse();
+          }
+        });
+
+    chkenginePkContinue = new JCheckBox();
+    lblenginePkExchange = new JLabel("续弈");
+    enginePkPanel.add(chkenginePkContinue);
+    enginePkPanel.add(lblenginePkExchange);
+    chkenginePkContinue.setBounds(545, 23, 20, 18);
+    lblenginePkExchange.setBounds(565, 22, 50, 20);
+
+    chkenginePkContinue.addActionListener(
         new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
@@ -1016,15 +1112,28 @@ public class BottomToolbar extends JPanel {
             setTxtUnfocuse();
           }
         });
-    
-    lblenginePkPlayputsWhite= new JLabel("白:");
+
+    lblenginePkPlayputsWhite = new JLabel("白:");
     txtenginePkPlayputsWhite = new JTextField();
     enginePkPanel.add(lblenginePkPlayputsWhite);
     enginePkPanel.add(txtenginePkPlayputsWhite);
-    lblenginePkPlayputsWhite.setBounds(445, 0, 15, 18);
-    txtenginePkPlayputsWhite.setBounds(460, 2, 50, 18);
+    lblenginePkPlayputsWhite.setBounds(450, 0, 15, 18);
+    txtenginePkPlayputsWhite.setBounds(465, 2, 50, 18);
 
-    
+    chkenginePkAutosave = new JCheckBox();
+    lblenginePkAutosave = new JLabel("自动保存");
+    enginePkPanel.add(chkenginePkAutosave);
+    enginePkPanel.add(lblenginePkAutosave);
+    chkenginePkAutosave.setBounds(515, 1, 20, 18);
+    lblenginePkAutosave.setBounds(535, 0, 50, 20);
+
+    chkenginePkAutosave.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            setTxtUnfocuse();
+          }
+        });
 
     chkAutoPlay.setFocusable(false);
     chkAutoPlayBlack.setFocusable(false);
@@ -1050,10 +1159,14 @@ public class BottomToolbar extends JPanel {
     chkenginePkTime.setFocusable(false);
     chkenginePkPlayouts.setFocusable(false);
     chkenginePkFirstPlayputs.setFocusable(false);
-    //chkenginePkgenmove.setFocusable(false);
+    // chkenginePkgenmove.setFocusable(false);
     enginePkBlack.setFocusable(false);
     enginePkWhite.setFocusable(false);
     btnEnginePkConfig.setFocusable(false);
+    chkenginePkAutosave.setFocusable(false);
+    chkenginePkContinue.setFocusable(false);
+    chkenginePkBatch.setFocusable(false);
+    btnEnginePkStop.setFocusable(false);
 
     chkShowBlack.setSelected(true);
     chkShowWhite.setSelected(true);
