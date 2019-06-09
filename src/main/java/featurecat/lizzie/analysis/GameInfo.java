@@ -12,6 +12,15 @@ public class GameInfo {
   private Date date = new Date();
   private double komi = DEFAULT_KOMI;
   private int handicap = 0;
+  private String result = "";
+
+  public String getResult() {
+    return result;
+  }
+
+  public void setResult(String result) {
+    this.result = result;
+  }
 
   public String getPlayerBlack() {
     return playerBlack;

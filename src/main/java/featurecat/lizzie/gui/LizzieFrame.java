@@ -137,6 +137,7 @@ public class LizzieFrame extends JFrame {
 
   // Save the player title
   private String playerTitle = "";
+  private String resultTitle = "";
 
   // Display Comment
   private JScrollPane scrollPane;
@@ -1589,22 +1590,23 @@ public class LizzieFrame extends JFrame {
     setPanelFont(g, (int) (min(width, height) * 0.2));
 
     // Last move
-    if (validLastWinrate && validWinrate) {
-      String text;
+    // validLastWinrate && validWinrate
+    if (true) {
+      String text = "";
       //   if (Lizzie.config.handicapInsteadOfWinrate) {
       //   double currHandicapedWR = Lizzie.leelaz.winrateToHandicap(100 - curWR);
       //    double lastHandicapedWR = Lizzie.leelaz.winrateToHandicap(lastWR);
       //    text = String.format(": %.2f", currHandicapedWR - lastHandicapedWR);
       //  } else {
-      text = String.format(": %.1f%%", 100 - lastWR - curWR);
+
       // }
       if (toolbar.isEnginePk && Lizzie.board.getHistory().getMoveNumber() <= 3) {
         text = "";
       }
       if (Lizzie.leelaz.isColorEngine) {
-        text = text + " 阶段:" + Lizzie.leelaz.stage + " 贴目:" + Lizzie.leelaz.komi;
+        text = text + "阶段:" + Lizzie.leelaz.stage + " 贴目:" + Lizzie.leelaz.komi;
       } else {
-        text = text + " 贴目:" + komi;
+        text = text + "贴目:" + komi;
       }
       if (toolbar.isEnginePk) {
         text =
@@ -1613,11 +1615,18 @@ public class LizzieFrame extends JFrame {
                 + Lizzie.engineManager.engineList.get(toolbar.engineBlack).currentEnginename
                 + " 白:"
                 + Lizzie.engineManager.engineList.get(toolbar.engineWhite).currentEnginename;
+      } else {
+        text = text + playerTitle;
       }
+      text =
+          text
+              + " "
+              + resourceBundle.getString("LizzieFrame.display.lastMove")
+              + String.format(": %.1f%%", 100 - lastWR - curWR);
+      int textlength = (int) (width / (min(width, height) * 0.12));
+      text = text.substring(0, min(textlength, text.length()));
       g.drawString(
-          resourceBundle.getString("LizzieFrame.display.lastMove") + text,
-          posX + 2 * strokeRadius,
-          posY + height - 2 * strokeRadius); // - font.getSize());
+          text, posX + 2 * strokeRadius, posY + height - 2 * strokeRadius); // - font.getSize());
     } else {
       // I think it's more elegant to just not display anything when we don't have
       // valid data --dfannius
@@ -2055,9 +2064,15 @@ public class LizzieFrame extends JFrame {
     updateTitle();
   }
 
+  public void setResult(String result) {
+    resultTitle = String.format("(结果:%s)", result);
+    updateTitle();
+  }
+
   public void updateTitle() {
     StringBuilder sb = new StringBuilder(DEFAULT_TITLE);
     sb.append(playerTitle);
+    sb.append(resultTitle);
     sb.append(" [" + Lizzie.leelaz.engineCommand() + "]");
     sb.append(visitsString);
     setTitle(sb.toString());

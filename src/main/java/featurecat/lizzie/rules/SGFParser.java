@@ -126,6 +126,7 @@ public class SGFParser {
     }
 
     String blackPlayer = "", whitePlayer = "";
+    String result = "";
 
     // Support unicode characters (UTF-8)
     for (int i = 0; i < value.length(); i++) {
@@ -271,10 +272,12 @@ public class SGFParser {
             blackPlayer = tagContent;
           } else if (tag.equals("PW")) {
             whitePlayer = tagContent;
+          } else if (tag.equals("RE")) {
+            result = tagContent;
           } else if (tag.equals("KM")) {
             try {
               if (tagContent.trim().isEmpty()) {
-                tagContent = "0.0";
+                tagContent = "7.5";
               }
               Lizzie.board.getHistory().getGameInfo().setKomi(Double.parseDouble(tagContent));
             } catch (NumberFormatException e) {
@@ -339,7 +342,7 @@ public class SGFParser {
     }
 
     Lizzie.frame.setPlayers(whitePlayer, blackPlayer);
-
+    Lizzie.frame.setResult(result);
     // Rewind to game start
     while (Lizzie.board.previousMove()) ;
 
@@ -374,6 +377,7 @@ public class SGFParser {
     GameInfo gameInfo = history.getGameInfo();
     String playerB = gameInfo.getPlayerBlack();
     String playerW = gameInfo.getPlayerWhite();
+    String result = gameInfo.getResult();
     Double komi = gameInfo.getKomi();
     Integer handicap = gameInfo.getHandicap();
     String date = SGF_DATE_FORMAT.format(gameInfo.getDate());
@@ -384,8 +388,8 @@ public class SGFParser {
     if (handicap != 0) generalProps.append(String.format("HA[%s]", handicap));
     generalProps.append(
         String.format(
-            "KM[%s]PW[%s]PB[%s]DT[%s]AP[Lizzie: %s]SZ[%d]",
-            komi, playerW, playerB, date, Lizzie.lizzieVersion, Board.boardSize));
+            "KM[%s]PW[%s]PB[%s]DT[%s]AP[Lizzie: %s]RE[%s]SZ[%d]",
+            komi, playerW, playerB, date, Lizzie.lizzieVersion, result, Board.boardSize));
 
     // To append the winrate to the comment of sgf we might need to update the Winrate
     // if (Lizzie.config.appendWinrateToComment) {
@@ -630,10 +634,10 @@ public class SGFParser {
     if (Lizzie.frame.toolbar.isEnginePk) {
       if (node.getData().blackToPlay)
         engine =
-            Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename;
+            Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename;
       else {
         engine =
-            Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename;
+            Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename;
       }
     } else {
       engine = Lizzie.leelaz.currentEnginename;

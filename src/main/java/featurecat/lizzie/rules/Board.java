@@ -1369,30 +1369,47 @@ public class Board implements LeelazListener {
     saveNode.ifPresent(n -> restoreMoveNumber(n));
   }
 
-  public void restoreMoveNumber(int index) {
-    Stone[] stones = history.getStones();
-    for (int i = 0; i < stones.length; i++) {
-      Stone stone = stones[i];
-      if (stone.isBlack() || stone.isWhite()) {
-        int y = i % Board.boardSize;
-        int x = (i - y) / Board.boardSize;
-
-        String colorString = "";
-        switch (stone) {
-          case BLACK:
-            colorString = "B";
-            break;
-          case WHITE:
-            colorString = "W";
-            break;
-        }
+  public void restoreMoveNumber(int index, ArrayList<Movelist> mv) {
+    // while (previousMove()) ;
+    int lenth = mv.size();
+    for (int i = 0; i < lenth; i++) {
+      Movelist move = mv.get(lenth - 1 - i);
+      if (!move.ispass) {
+        //	        placeinsert(move.x, move.y, move.isblack ? Stone.BLACK : Stone.WHITE);
+        //	        mvnumber[getIndex(move.x, move.y)] = i + 1;
+        //	      } else {
+        //	        passinsert(move.isblack ? Stone.BLACK : Stone.WHITE, false);
+        String color = move.isblack ? "b" : "w";
         Lizzie.engineManager
             .engineList
             .get(index)
-            .sendCommand("play " + colorString + " " + convertCoordinatesToName(x, y));
+            .sendCommand("play " + color + " " + convertCoordinatesToName(move.x, move.y));
       }
     }
   }
+  //    Stone[] stones = history.getStones();
+  //    for (int i = 0; i < stones.length; i++) {
+  //      Stone stone = stones[i];
+  //      if (stone.isBlack() || stone.isWhite()) {
+  //        int y = i % Board.boardSize;
+  //        int x = (i - y) / Board.boardSize;
+  //
+  //        String colorString = "";
+  //        switch (stone) {
+  //          case BLACK:
+  //            colorString = "B";
+  //            break;
+  //          case WHITE:
+  //            colorString = "W";
+  //            break;
+  //        }
+  //        Lizzie.engineManager
+  //            .engineList
+  //            .get(index)
+  //            .sendCommand("play " + colorString + " " + convertCoordinatesToName(x, y));
+  //      }
+  //    }
+  //  }
 
   /** Restore move number by node */
   public void restoreMoveNumber(BoardHistoryNode node) {

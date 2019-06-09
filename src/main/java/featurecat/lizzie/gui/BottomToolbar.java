@@ -2,7 +2,7 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
-import featurecat.lizzie.rules.SGFParser;
+import featurecat.lizzie.rules.Movelist;
 import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -16,6 +16,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.imageio.ImageIO;
@@ -61,10 +64,11 @@ public class BottomToolbar extends JPanel {
   public int engineBlack = -1;
   public int engineWhite = -1;
   public int pkResignMoveCounts = 2;
-  public double pkResginWinrate = 40;
+  public double pkResginWinrate = 10;
   public boolean isEnginePkBatch = false;
-  public int EnginePkBatchNumber = 1;
+  // public int EnginePkBatchNumber = 1;
   public int EnginePkBatchNumberNow = 1;
+  public String batchPkName = "";
   public boolean isGenmove = false;
   public boolean exChange = true;
   public JCheckBox chkAutoAnalyse;
@@ -125,7 +129,7 @@ public class BottomToolbar extends JPanel {
 
   public JCheckBox chkenginePkBatch;
   public JCheckBox chkenginePkContinue;
-  public String startGame;
+  public ArrayList<Movelist> startGame;
   public JCheckBox chkenginePkAutosave;
 
   public JButton btnStartPk;
@@ -932,12 +936,11 @@ public class BottomToolbar extends JPanel {
               Lizzie.frame.removeInput();
               EnginePkBatchNumberNow = 1;
               isEnginePkBatch = chkenginePkBatch.isSelected();
-              try {
-                EnginePkBatchNumber = Integer.parseInt(txtenginePkBatch.getText());
-              } catch (NumberFormatException err) {
+              if (batchPkName == "") {
+                batchPkName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
               }
 
-              txtenginePkBatch.setEnabled(false);
+              // txtenginePkBatch.setEnabled(false);
 
               chkenginePkBatch.setEnabled(false);
               enginePkBlack.setEnabled(false);
@@ -949,46 +952,41 @@ public class BottomToolbar extends JPanel {
                 chkenginePkAutosave.setEnabled(false);
               }
               if (chkenginePkContinue.isSelected()) {
-                try {
-                  startGame = SGFParser.saveToString();
-                } catch (IOException e1) {
-                  // TODO Auto-generated catch block
-                  e1.printStackTrace();
-                }
+                startGame = Lizzie.board.getmovelist();
               }
               lblenginePkResult.setText("0:0");
               pkBlackWins = 0;
               pkWhiteWins = 0;
+              featurecat.lizzie.gui.Menu.engineMenu.setText("对战中");
               if (!isGenmove) {
                 // 分析模式对战
                 Lizzie.engineManager.engineList.get(engineBlack).resignMoveCounts = 0;
                 Lizzie.engineManager.engineList.get(engineWhite).resignMoveCounts = 0;
-
+                Lizzie.frame.setResult("");
                 Lizzie.leelaz.sendCommand("name");
                 Lizzie.leelaz.notPondering();
                 Lizzie.board.clear();
                 if (chkenginePkContinue.isSelected()) {
-                  SGFParser.loadFromString(startGame);
-                  while (Lizzie.board.nextMove()) ;
+                  Lizzie.board.setlist(startGame);
                 }
                 if (Lizzie.board.getHistory().isBlacksTurn()) {
-                  Lizzie.engineManager.startEngine(engineWhite);
-                  Lizzie.engineManager.startEngine(engineBlack);
+                  Lizzie.engineManager.startEngineForPk(engineWhite);
+                  Lizzie.engineManager.startEngineForPk(engineBlack);
                 } else {
-                  Lizzie.engineManager.startEngine(engineBlack);
-                  Lizzie.engineManager.startEngine(engineWhite);
+                  Lizzie.engineManager.startEngineForPk(engineBlack);
+                  Lizzie.engineManager.startEngineForPk(engineWhite);
                 }
                 Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
                 Lizzie.leelaz.ponder();
                 Lizzie.frame.setPlayers(
                     Lizzie.engineManager.engineList.get(engineWhite).currentEnginename,
                     Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
-                GameInfo gameinfo = new GameInfo();
-                gameinfo.setPlayerWhite(
+                GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
+                gameInfo.setPlayerWhite(
                     Lizzie.engineManager.engineList.get(engineWhite).currentEnginename);
-                gameinfo.setPlayerBlack(
+                gameInfo.setPlayerBlack(
                     Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
-                Lizzie.board.getHistory().setGameInfo(gameinfo);
+                // Lizzie.board.getHistory().setGameInfo(gameinfo);
               } else {
                 // genmove对战
               }
@@ -1002,15 +1000,14 @@ public class BottomToolbar extends JPanel {
               Lizzie.frame.addInput();
               enginePkBlack.setEnabled(true);
               enginePkWhite.setEnabled(true);
-              txtenginePkBatch.setEnabled(true);
+              // txtenginePkBatch.setEnabled(true);
               chkenginePkAutosave.setEnabled(true);
               chkenginePkBatch.setEnabled(true);
+              batchPkName = "";
               // chkenginePkgenmove.setEnabled(true);
               chkenginePk.setEnabled(true);
               Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
-              Lizzie.engineManager.switchEngine(Lizzie.engineManager.currentEngineNo);
-              lblengineWhite.setText("白:");
-              lblengineBlack.setText("黑:");
+              Lizzie.engineManager.changeEngIcoForEndPk();
             }
             setTxtUnfocuse();
           }

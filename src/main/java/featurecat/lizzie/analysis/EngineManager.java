@@ -2,6 +2,7 @@ package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Config;
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.rules.Movelist;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class EngineManager {
   public static int currentEngineNo;
   //  public boolean firstTime =true;
   Timer timer;
+  Timer timer2;
 
   public EngineManager(Config config) throws JSONException, IOException {
 
@@ -100,16 +102,63 @@ public class EngineManager {
   }
 
   private void checkEngineAlive() {
-    if (engineList.get(currentEngineNo).process != null
-        && engineList.get(currentEngineNo).process.isAlive()) {
+    if (Lizzie.frame.toolbar.isEnginePk) {
+
+      timer2 =
+          new Timer(
+              5000,
+              new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                  checkEnginePK();
+
+                  try {
+                  } catch (Exception e) {
+                  }
+                }
+              });
+      timer2.start();
+
+    } else {
+      if (engineList.get(currentEngineNo).process != null
+          && engineList.get(currentEngineNo).process.isAlive()) {
+      } else {
+        try {
+          engineList.get(currentEngineNo).restartClosedEngine(currentEngineNo);
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+    }
+  }
+
+  private void checkEnginePK() {
+    if (engineList.get(Lizzie.frame.toolbar.engineBlack).process != null
+        && engineList.get(Lizzie.frame.toolbar.engineBlack).process.isAlive()) {
     } else {
       try {
-        engineList.get(currentEngineNo).restartClosedEngine(currentEngineNo);
+        engineList
+            .get(Lizzie.frame.toolbar.engineBlack)
+            .restartClosedEngine(Lizzie.frame.toolbar.engineBlack);
       } catch (IOException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
     }
+    if (engineList.get(Lizzie.frame.toolbar.engineWhite).process != null
+        && engineList.get(Lizzie.frame.toolbar.engineWhite).process.isAlive()) {
+    } else {
+      try {
+        engineList
+            .get(Lizzie.frame.toolbar.engineWhite)
+            .restartClosedEngine(Lizzie.frame.toolbar.engineWhite);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+    timer2.stop();
+    timer2 = null;
   }
 
   public void updateEngines() {
@@ -196,10 +245,11 @@ public class EngineManager {
    *
    * @param index engine index
    */
-  public void startEngine(int index) {
+  public void startEngineForPk(int index) {
     if (index > this.engineList.size()) return;
     // Lizzie.board.saveMoveNumber();
     Leelaz newEng = engineList.get(index);
+    ArrayList<Movelist> mv = Lizzie.board.getmovelist();
     if (!newEng.isStarted()) {
       try {
         newEng.startEngine(index);
@@ -211,7 +261,7 @@ public class EngineManager {
     Lizzie.leelaz = newEng;
     Lizzie.leelaz.clear();
     this.currentEngineNo = index;
-    Lizzie.board.restoreMoveNumber(index);
+    Lizzie.board.restoreMoveNumber(index, mv);
   }
 
   public void switchEngine(int index) {
@@ -263,6 +313,26 @@ public class EngineManager {
     }
 
     changeEngIco();
+  }
+
+  public void changeEngIcoForEndPk() {
+    for (int i = 0; i < Lizzie.frame.menu.engine.length; i++) {
+      if (featurecat.lizzie.gui.Menu.engine[i].getIcon() != null
+          && featurecat.lizzie.gui.Menu.engine[i].getIcon() != featurecat.lizzie.gui.Menu.stop) {
+        featurecat.lizzie.gui.Menu.engine[i].setIcon(featurecat.lizzie.gui.Menu.ready);
+      }
+    }
+    if (featurecat.lizzie.gui.Menu.engine[Lizzie.leelaz.currentEngineN()].getIcon() == null) {
+    } else {
+      featurecat.lizzie.gui.Menu.engine[Lizzie.leelaz.currentEngineN()].setIcon(
+          featurecat.lizzie.gui.Menu.icon);
+    }
+    featurecat.lizzie.gui.Menu.engineMenu.setText(
+        "引擎"
+            + (currentEngineNo + 1)
+            + ": "
+            + engineList.get(Lizzie.leelaz.currentEngineN()).currentEnginename);
+    this.currentEngineNo = Lizzie.leelaz.currentEngineN();
   }
 
   private void changeEngIco() {

@@ -112,7 +112,6 @@ public class BoardHistoryList {
   public Optional<BoardData> previous() {
     if (!head.previous().isPresent()) return Optional.empty();
     else head = head.previous().get();
-
     return Optional.of(head.getData());
   }
 
