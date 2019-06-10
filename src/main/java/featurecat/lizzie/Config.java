@@ -827,8 +827,7 @@ public class Config {
     }
 
     try {
-      toolbarParameter.put(
-          Integer.parseInt(Lizzie.frame.toolbar.txtenginePkPlayputs.getText()));
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtenginePkPlayputs.getText()));
     } catch (NumberFormatException err) {
       toolbarParameter.put(-1);
     }

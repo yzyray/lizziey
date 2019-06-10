@@ -540,7 +540,7 @@ public class BottomToolbar extends JPanel {
               lastMove = -1;
             }
             if (chkAutoAnalyse.isSelected()) {
-              Lizzie.leelaz.sendCommand("name");
+              Lizzie.leelaz.nameCmd();
               Timer timer = new Timer();
               timer.schedule(
                   new TimerTask() {
@@ -967,25 +967,30 @@ public class BottomToolbar extends JPanel {
               pkBlackWins = 0;
               pkWhiteWins = 0;
               featurecat.lizzie.gui.Menu.engineMenu.setText("对战中");
+              featurecat.lizzie.gui.Menu.engineMenu.setEnabled(false);
               if (!isGenmove) {
                 // 分析模式对战
-                Lizzie.engineManager.engineList.get(engineBlack).resignMoveCounts = 0;
-                Lizzie.engineManager.engineList.get(engineWhite).resignMoveCounts = 0;
+                Lizzie.engineManager.engineList.get(engineBlack).blackResignMoveCounts = 0;
+                Lizzie.engineManager.engineList.get(engineBlack).whiteResignMoveCounts = 0;
+                Lizzie.engineManager.engineList.get(engineWhite).blackResignMoveCounts = 0;
+                Lizzie.engineManager.engineList.get(engineBlack).whiteResignMoveCounts = 0;
                 Lizzie.frame.setResult("");
-                try {
-                Lizzie.leelaz.sendCommand("name");}
-                catch (Exception es)
-                {}
+
+                Lizzie.leelaz.nameCmd();
                 Lizzie.leelaz.notPondering();
                 Lizzie.board.clear();
                 if (chkenginePkContinue.isSelected()) {
                   Lizzie.board.setlist(startGame);
                 }
                 if (Lizzie.board.getHistory().isBlacksTurn()) {
+                  Lizzie.engineManager.engineList.get(engineWhite).notPondering();
                   Lizzie.engineManager.startEngineForPk(engineWhite);
+                  Lizzie.engineManager.engineList.get(engineWhite).Pondering();
                   Lizzie.engineManager.startEngineForPk(engineBlack);
                 } else {
+                  Lizzie.engineManager.engineList.get(engineBlack).notPondering();
                   Lizzie.engineManager.startEngineForPk(engineBlack);
+                  Lizzie.engineManager.engineList.get(engineBlack).Pondering();
                   Lizzie.engineManager.startEngineForPk(engineWhite);
                 }
                 Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
@@ -1006,9 +1011,9 @@ public class BottomToolbar extends JPanel {
               isEnginePk = false;
               btnStartPk.setText("开始对战");
               Lizzie.engineManager.engineList.get(engineBlack).notPondering();
-              Lizzie.engineManager.engineList.get(engineBlack).sendCommand("name");
+              Lizzie.engineManager.engineList.get(engineBlack).nameCmd();
               Lizzie.engineManager.engineList.get(engineWhite).notPondering();
-              Lizzie.engineManager.engineList.get(engineWhite).sendCommand("name");
+              Lizzie.engineManager.engineList.get(engineWhite).nameCmd();
               Lizzie.frame.addInput();
               enginePkBlack.setEnabled(true);
               enginePkWhite.setEnabled(true);

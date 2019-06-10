@@ -106,7 +106,7 @@ public class EnginePkConfig extends JDialog {
       Lizzie.frame.toolbar.pkResginWinrate = Double.parseDouble(txtresignSetting2.getText());
     } catch (NumberFormatException err) {
     }
-   double a= Double.parseDouble(txtresignSetting2.getText());
+    double a = Double.parseDouble(txtresignSetting2.getText());
     Lizzie.frame.toolbar.AutosavePk = chkAutosave.isSelected();
     Lizzie.frame.toolbar.isGenmove = chkGenmove.isSelected();
     Lizzie.frame.toolbar.batchPkName = txtnameSetting.getText();

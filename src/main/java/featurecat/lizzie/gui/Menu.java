@@ -74,10 +74,7 @@ public class Menu extends MenuBar {
 
     final JMenuItem saveItem = new JMenuItem();
     saveItem.setText("保存棋谱（S）");
-    // saveItem.setMnemonic('S');
-    // saveItem.setAccelerator(KeyStroke.getKeyStroke(VK_S, CTRL_MASK));
     saveItem.addActionListener(new ItemListener());
-
     fileMenu.add(saveItem);
 
     fileMenu.addSeparator();
@@ -92,11 +89,20 @@ public class Menu extends MenuBar {
     fileMenu.add(pasteItem);
     fileMenu.addSeparator();
 
+    final JMenuItem resume = new JMenuItem();
+    resume.setText("打开关闭前的棋谱或自动保存的棋谱");
+    resume.addActionListener(new ItemListener());
+    fileMenu.add(resume);
+
     final JMenuItem resumeItem = new JMenuItem();
-    //
-    //    resumeItem.setText("还原上次关闭前的棋谱");
-    //    resumeItem.addActionListener(new ItemListener());
-    //    fileMenu.add(resumeItem);
+    resumeItem.setText("打开自动保存棋谱(10秒一次)");
+    resumeItem.addActionListener(new ItemListener());
+    fileMenu.add(resumeItem);
+
+    final JMenuItem resumeItem2 = new JMenuItem();
+    resumeItem2.setText("关闭自动保存棋谱");
+    resumeItem2.addActionListener(new ItemListener());
+    fileMenu.add(resumeItem2);
 
     fileMenu.addSeparator();
 
@@ -574,7 +580,7 @@ public class Menu extends MenuBar {
   class ItemListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       JMenuItem menuItem = (JMenuItem) e.getSource();
-      System.out.println("您单击的是菜单项：" + menuItem.getText());
+      // System.out.println("您单击的是菜单项：" + menuItem.getText());
       Lizzie.frame.setVisible(true);
       if (menuItem.getText().startsWith("打开棋谱")) {
         Lizzie.frame.openFile();
@@ -1047,11 +1053,33 @@ public class Menu extends MenuBar {
             Lizzie.frame.toolbarHeight);
         return;
       }
-      //      if (menuItem.getText().startsWith("还原上次")) {
-      //        Lizzie.board.resumePreviousGame();
-      //        Lizzie.board.setMovelistAll();
-      //        return;
-      //      }
+      if (menuItem.getText().startsWith("打开关闭前")) {
+        Lizzie.board.resumePreviousGame();
+        return;
+      }
+      if (menuItem.getText().startsWith("关闭自动保存")) {
+
+        Lizzie.config.uiConfig.put("autosave-interval-seconds", -1);
+        Lizzie.config.uiConfig.put("resume-previous-game", false);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
+
+      if (menuItem.getText().startsWith("打开自动保存")) {
+
+        Lizzie.config.uiConfig.put("autosave-interval-seconds", 10);
+        Lizzie.config.uiConfig.put("resume-previous-game", true);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
       if (menuItem.getText().startsWith("打开在线")) {
         Lizzie.frame.openOnlineDialog();
         return;

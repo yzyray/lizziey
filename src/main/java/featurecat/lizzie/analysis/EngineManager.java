@@ -89,7 +89,7 @@ public class EngineManager {
 
     timer =
         new Timer(
-            5000,
+            1000,
             new ActionListener() {
               public void actionPerformed(ActionEvent evt) {
                 checkEngineAlive();
@@ -103,10 +103,10 @@ public class EngineManager {
 
   private void checkEngineAlive() {
     if (Lizzie.frame.toolbar.isEnginePk) {
-
+      if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
       timer2 =
           new Timer(
-              5000,
+              1000,
               new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                   checkEnginePK();
@@ -158,10 +158,10 @@ public class EngineManager {
       }
     }
     try {
-    timer2.stop();
-    timer2 = null;}
-    catch (Exception ex) {
-    	
+      timer2.stop();
+      timer2 = null;
+    } catch (Exception ex) {
+
     }
   }
 
@@ -265,7 +265,9 @@ public class EngineManager {
     Lizzie.leelaz = newEng;
     Lizzie.leelaz.clear();
     this.currentEngineNo = index;
+    // Lizzie.leelaz.notPondering();
     Lizzie.board.restoreMoveNumber(index, mv);
+    // Lizzie.leelaz.Pondering();
   }
 
   public void switchEngine(int index) {
@@ -336,6 +338,7 @@ public class EngineManager {
             + (currentEngineNo + 1)
             + ": "
             + engineList.get(Lizzie.leelaz.currentEngineN()).currentEnginename);
+    featurecat.lizzie.gui.Menu.engineMenu.setEnabled(true);
     this.currentEngineNo = Lizzie.leelaz.currentEngineN();
   }
 

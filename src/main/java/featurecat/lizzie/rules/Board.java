@@ -1712,6 +1712,15 @@ public class Board implements LeelazListener {
     initialize();
   }
 
+  public void clearforpk() {
+    // Lizzie.leelaz.clear();
+    Lizzie.frame.resetTitle();
+    Lizzie.frame.clear();
+    movelistwr.clear();
+    // cleanedittemp();
+    initialize();
+  }
+
   public void clearforedit() {
     Lizzie.leelaz.clear();
     Lizzie.frame.clear();
@@ -2074,6 +2083,7 @@ public class Board implements LeelazListener {
     try {
       SGFParser.loadFromString(Lizzie.config.persisted.getString("autosave"));
       while (nextMove()) ;
+      Lizzie.board.setMovelistAll();
     } catch (JSONException err) {
     }
   }
