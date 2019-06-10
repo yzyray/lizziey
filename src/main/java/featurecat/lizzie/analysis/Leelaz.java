@@ -679,7 +679,7 @@ public class Leelaz {
 	        {
 	        	df=Lizzie.frame.toolbar.EnginePkBatchNumberNow+"_";
 	        }
-	        df=df+"黑_"+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+"_白_"+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename;
+	        df=df+"黑"+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+"_白"+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename;
 	       
 	        if(currentEngineN==Lizzie.frame.toolbar.engineBlack)
 	        {df=df+"_白("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename+")胜";}	        
@@ -689,8 +689,10 @@ public class Leelaz {
 	        df=df+"_"+sf;
 	        //增加如果已命名,则保存在命名的文件夹下
 	        File autoSaveFile;
+	        File autoSaveFile2 = null;
 	        if(Lizzie.frame.toolbar.isEnginePkBatch) {
 	        	autoSaveFile=new File(courseFile+ "\\" + "PkAutoSave"+"\\"+Lizzie.frame.toolbar.batchPkName+"\\"+df+".sgf");
+	        	autoSaveFile2=new File(courseFile+ "\\" + "PkAutoSave"+"\\"+Lizzie.frame.toolbar.SF+"\\"+df+".sgf");
 	        }else {
 	        	autoSaveFile=new File(courseFile+ "\\" + "PkAutoSave"+"\\"+df+".sgf");
 	        }
@@ -704,11 +706,22 @@ public class Leelaz {
 	       	  SGFParser.save(Lizzie.board, autoSaveFile.getPath());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				if(Lizzie.frame.toolbar.isEnginePkBatch){
+					try {
+						  File fileParent2 = autoSaveFile2.getParentFile();
+					        if (!fileParent2.exists()) {
+					        fileParent2.mkdirs();
+					        }
+					SGFParser.save(Lizzie.board, autoSaveFile2.getPath());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}}
 				e.printStackTrace();
 			}   
   }
   private void loadAutoBatchFile() {
-
+	  //sendCommand("clear_board");
 	  Lizzie.frame.BatchAnaNum=Lizzie.frame.BatchAnaNum+1;		
 	  LizzieFrame.loadFile(Lizzie.frame.Batchfiles[Lizzie.frame.BatchAnaNum]);
 	  try {
@@ -734,6 +747,7 @@ public class Leelaz {
     	{
     		if(Lizzie.frame.toolbar.firstMove!=-1)
         	{
+    			 while (Lizzie.board.previousMove()) ;
         		Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove-1);        		
         	}
     		if(!Lizzie.board.getHistory().getNext().isPresent())
@@ -856,7 +870,7 @@ public class Leelaz {
     		  }
     	  }
 	 
-	  if(Lizzie.frame.toolbar.chkenginePkAutosave.isSelected())
+	  if(Lizzie.frame.toolbar.AutosavePk||Lizzie.frame.toolbar.isEnginePkBatch)
 	  {savePkFile();	  
 	  }
 	  
@@ -953,6 +967,7 @@ public class Leelaz {
 	          Lizzie.frame.toolbar.enginePkBlack.setEnabled(true);
 	          Lizzie.frame.toolbar.enginePkWhite.setEnabled(true);
 	          Lizzie.frame.toolbar.txtenginePkBatch.setEnabled(true);
+	          Lizzie.frame.toolbar.btnEnginePkConfig.setEnabled(true);
 	          Lizzie.frame.toolbar.isEnginePk=false;
 	          Lizzie.frame.toolbar.btnStartPk.setText("开始对战");
 	          Lizzie.frame.toolbar.chkenginePkBatch.setEnabled(true);
@@ -967,39 +982,23 @@ public class Leelaz {
 	          onTop = true;
 	        }
 	        
-	        if(Lizzie.frame.toolbar.isEnginePkBatch)
+	       
 	        JOptionPane.showMessageDialog(Lizzie.frame,"批量对战已结束,比分为"+Lizzie.frame.toolbar.pkBlackWins+":"+Lizzie.frame.toolbar.pkWhiteWins+"棋谱保存在PkAutoSave文件夹下" );
-	        else
-	        {
-	        	String jg="对战已结束，";
-	        	if(currentEngineN==Lizzie.frame.toolbar.engineBlack)
-	            {
-	      		  //df=df+"_白胜";
-	        		jg=jg+"白胜";
-	            }
-	        	else {
-	        		jg=jg+"黑胜";
-	        	}
-	        	if(Lizzie.frame.toolbar.chkenginePkAutosave.isSelected())
-	        	{jg=jg+"，棋谱保存在PkAutoSave文件夹下";}
-	        	 JOptionPane.showMessageDialog(Lizzie.frame,jg );
-	        }	
+	       
 	        if (onTop) Lizzie.frame.setAlwaysOnTop(true);
 	        Lizzie.engineManager.changeEngIcoForEndPk();
 		  }
   }
 	  else {
 		  //结束PKLizzie.engineManager.engineList.get(engineBlack).notPondering();
-		  if(Lizzie.frame.toolbar.EnginePkBatchNumberNow%2==0) {		
-		  Lizzie.frame.toolbar.lblenginePkResult.setText(Lizzie.frame.toolbar.pkWhiteWins+":"+Lizzie.frame.toolbar.pkBlackWins);		
-		  }
-		  else {
+		  
 			  Lizzie.frame.toolbar.lblenginePkResult.setText(Lizzie.frame.toolbar.pkBlackWins+":"+Lizzie.frame.toolbar.pkWhiteWins);
-		  }
+		
           Lizzie.frame.addInput();
           Lizzie.frame.toolbar.enginePkBlack.setEnabled(true);
           Lizzie.frame.toolbar.enginePkWhite.setEnabled(true);
           Lizzie.frame.toolbar.txtenginePkBatch.setEnabled(true);
+          Lizzie.frame.toolbar.btnEnginePkConfig.setEnabled(true);
           Lizzie.frame.toolbar.isEnginePk=false;
           Lizzie.frame.toolbar.btnStartPk.setText("开始对战");
           Lizzie.frame.toolbar.chkenginePkBatch.setEnabled(true);
@@ -1014,10 +1013,7 @@ public class Leelaz {
           onTop = true;
         }
         
-        if(Lizzie.frame.toolbar.isEnginePkBatch)
-        JOptionPane.showMessageDialog(Lizzie.frame,"批量对战已结束,比分为"+Lizzie.frame.toolbar.pkBlackWins+":"+Lizzie.frame.toolbar.pkWhiteWins+"棋谱保存在PkAutoSave文件夹下" );
-        else
-        {
+      
         	String jg="对战已结束，";
         	if(currentEngineN==Lizzie.frame.toolbar.engineBlack)
             {
@@ -1027,10 +1023,10 @@ public class Leelaz {
         	else {
         		jg=jg+"黑胜";
         	}
-        	if(Lizzie.frame.toolbar.chkenginePkAutosave.isSelected())
+        	if(Lizzie.frame.toolbar.AutosavePk)
         	{jg=jg+"，棋谱保存在PkAutoSave文件夹下";}
         	 JOptionPane.showMessageDialog(Lizzie.frame,jg );
-        }	
+       
         if (onTop) Lizzie.frame.setAlwaysOnTop(true);
         Lizzie.engineManager.changeEngIcoForEndPk();
 	  }

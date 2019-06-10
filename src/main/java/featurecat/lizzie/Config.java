@@ -805,6 +805,62 @@ public class Config {
     } catch (NumberFormatException err) {
       toolbarParameter.put(-1);
     }
+
+    try {
+      toolbarParameter.put(
+          Integer.parseInt(Lizzie.frame.toolbar.txtenginePkFirstPlayputs.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+
+    try {
+      toolbarParameter.put(
+          Integer.parseInt(Lizzie.frame.toolbar.txtenginePkFirstPlayputsWhite.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+
+    try {
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTime.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+
+    try {
+      toolbarParameter.put(
+          Integer.parseInt(Lizzie.frame.toolbar.txtenginePkPlayputs.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+    try {
+      toolbarParameter.put(
+          Integer.parseInt(Lizzie.frame.toolbar.txtenginePkPlayputsWhite.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+    try {
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtenginePkBatch.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+    if (Lizzie.frame.toolbar.chkenginePkBatch.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    if (Lizzie.frame.toolbar.chkenginePkContinue.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    if (Lizzie.frame.toolbar.chkenginePkFirstPlayputs.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    if (Lizzie.frame.toolbar.chkenginePkPlayouts.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    if (Lizzie.frame.toolbar.chkenginePkTime.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    toolbarParameter.put(Lizzie.frame.toolbar.pkResginWinrate);
+    toolbarParameter.put(Lizzie.frame.toolbar.pkResignMoveCounts);
+    toolbarParameter.put(Lizzie.frame.toolbar.AutosavePk);
+    toolbarParameter.put(Lizzie.frame.toolbar.isGenmove);
+    toolbarParameter.put(Lizzie.frame.toolbar.anaPanelOrder);
+    toolbarParameter.put(Lizzie.frame.toolbar.enginePkOrder);
+    toolbarParameter.put(Lizzie.frame.toolbar.autoPlayOrder);
+
     persistedUi.put("toolbar-parameter", toolbarParameter);
 
     JSONArray movecountPos = new JSONArray();

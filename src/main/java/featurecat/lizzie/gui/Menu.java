@@ -191,9 +191,13 @@ public class Menu extends MenuBar {
     viewMenu.add(toolMenu); // 添加到“编辑”菜单
     toolMenu.addActionListener(new ItemListener()); // 添加动作监听器
 
-    final JMenuItem bigtoolMenu = new JMenuItem("详细工具栏"); // 创建“字体”子菜单
-    viewMenu.add(bigtoolMenu); // 添加到“编辑”菜单
-    bigtoolMenu.addActionListener(new ItemListener()); // 添加动作监听器     viewMenu.addSeparator();
+    final JMenuItem bigtoolMenu = new JMenuItem("详细工具栏");
+    viewMenu.add(bigtoolMenu);
+    bigtoolMenu.addActionListener(new ItemListener());
+
+    final JMenuItem bigtoolConf = new JMenuItem("设置详细工具栏顺序");
+    viewMenu.add(bigtoolConf);
+    bigtoolConf.addActionListener(new ItemListener());
 
     final JMenuItem closeTool = new JMenuItem("关闭工具栏"); // 创建“字体”子菜单
     viewMenu.add(closeTool); // 添加到“编辑”菜单
@@ -570,7 +574,7 @@ public class Menu extends MenuBar {
   class ItemListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       JMenuItem menuItem = (JMenuItem) e.getSource();
-      //    System.out.println("您单击的是菜单项：" + menuItem.getText());
+      System.out.println("您单击的是菜单项：" + menuItem.getText());
       Lizzie.frame.setVisible(true);
       if (menuItem.getText().startsWith("打开棋谱")) {
         Lizzie.frame.openFile();
@@ -1092,6 +1096,11 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("设置棋局信")) {
         Lizzie.frame.editGameInfo();
+        return;
+      }
+      if (menuItem.getText().startsWith("设置详细")) {
+        ToolbarPositionConfig tbc = new ToolbarPositionConfig();
+        tbc.setVisible(true);
         return;
       }
       if (menuItem.getText().startsWith("总是显示黑")) {

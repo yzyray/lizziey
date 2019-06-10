@@ -157,8 +157,12 @@ public class EngineManager {
         e.printStackTrace();
       }
     }
+    try {
     timer2.stop();
-    timer2 = null;
+    timer2 = null;}
+    catch (Exception ex) {
+    	
+    }
   }
 
   public void updateEngines() {
