@@ -8,7 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -296,7 +298,7 @@ public class EngineManager {
     }
     File autoSaveFile;
     File autoSaveFile2 = null;
-
+    String sf = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
     autoSaveFile =
         new File(
             courseFile
@@ -306,6 +308,7 @@ public class EngineManager {
                 + Lizzie.frame.toolbar.batchPkName
                 + "\\"
                 + "超时对局"
+                + sf
                 + ".sgf");
     autoSaveFile2 =
         new File(
@@ -316,6 +319,7 @@ public class EngineManager {
                 + Lizzie.frame.toolbar.SF
                 + "\\"
                 + "超时对局"
+                + sf
                 + ".sgf");
 
     File fileParent = autoSaveFile.getParentFile();

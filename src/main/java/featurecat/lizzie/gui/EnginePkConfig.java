@@ -80,8 +80,8 @@ public class EnginePkConfig extends JDialog {
 
     chkAutosave.setBounds(152, 45, 20, 20);
     lblAutosave.setBounds(172, 45, 100, 18);
-    JLabel lblHints = new JLabel("注:设置单局超时后,超过时间的对局将被放弃,勾选genmove命令时只能按时间");
-    JLabel lblHints2 = new JLabel("落子,认输阈值和计算量只受引擎参数限制(-r,-p,-v),界面上的设置无效");
+    JLabel lblHints = new JLabel("注:设置单局超时后,超时的对局将被中止并保存,不记入比分,勾选genmove命令时");
+    JLabel lblHints2 = new JLabel("只能按时间落子,认输阈值和计算量只受引擎参数限制(-r,-p,-v),界面上的设置无效");
     add(lblHints);
     add(lblHints2);
     lblHints.setBounds(5, 90, 450, 20);
