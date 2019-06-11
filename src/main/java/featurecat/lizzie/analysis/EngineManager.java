@@ -3,8 +3,10 @@ package featurecat.lizzie.analysis;
 import featurecat.lizzie.Config;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.rules.Movelist;
+import featurecat.lizzie.rules.SGFParser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,6 +118,7 @@ public class EngineManager {
   private void checkEngineAlive() {
     if (Lizzie.frame.toolbar.checkGameTime && Lizzie.frame.toolbar.isEnginePk) {
       if (System.currentTimeMillis() - gameTime > Lizzie.frame.toolbar.maxGanmeTime * 60 * 1000) {
+        saveTimeoutFile();
         Lizzie.board.clear();
         forcekillAllEngines();
         gameTime = System.currentTimeMillis();
@@ -279,6 +282,63 @@ public class EngineManager {
       if (engineList.get(i).isStarted()) {
         if (i != currentEngineNo) engineList.get(i).normalQuit();
       }
+    }
+  }
+
+  private void saveTimeoutFile() {
+    File file = new File("");
+    String courseFile = "";
+    try {
+      courseFile = file.getCanonicalPath();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    File autoSaveFile;
+    File autoSaveFile2 = null;
+
+    autoSaveFile =
+        new File(
+            courseFile
+                + "\\"
+                + "PkAutoSave"
+                + "\\"
+                + Lizzie.frame.toolbar.batchPkName
+                + "\\"
+                + "超时对局"
+                + ".sgf");
+    autoSaveFile2 =
+        new File(
+            courseFile
+                + "\\"
+                + "PkAutoSave"
+                + "\\"
+                + Lizzie.frame.toolbar.SF
+                + "\\"
+                + "超时对局"
+                + ".sgf");
+
+    File fileParent = autoSaveFile.getParentFile();
+    if (!fileParent.exists()) {
+      fileParent.mkdirs();
+    }
+    try {
+      SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      if (Lizzie.frame.toolbar.isEnginePkBatch) {
+        try {
+          File fileParent2 = autoSaveFile2.getParentFile();
+          if (!fileParent2.exists()) {
+            fileParent2.mkdirs();
+          }
+          SGFParser.save(Lizzie.board, autoSaveFile2.getPath());
+        } catch (IOException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+      }
+      e.printStackTrace();
     }
   }
 
