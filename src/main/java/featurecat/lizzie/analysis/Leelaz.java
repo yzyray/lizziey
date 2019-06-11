@@ -102,7 +102,7 @@ public class Leelaz {
   public String currentEnginename = "";
   boolean analysed=false;
   private boolean isSaving=false;
-  //private boolean isResigning=false;
+  private boolean isResigning=false;
   private boolean isClosing=false;
   public boolean isColorEngine=false;
   public int stage=-1;
@@ -841,9 +841,9 @@ public class Leelaz {
   }
   
   public void pkResign() {
-	if(!resigned)
+	if(!resigned||isResigning)
 		return;
-	  //isResigning=true;
+	  isResigning=true;
 	
 	  //System.out.println("结束一盘"+currentEngineN);
 	 
@@ -1124,14 +1124,14 @@ public class Leelaz {
 		    		  {
 		        		  
 		        		  resigned=true;
-		        		  
+		        		  isResigning=false;  
 		        		  //pkResign();
 		        		  //System.out.println("认输1"+this.currentEngineN);
 		        		  nameCmd();		        		  
 		    			  return;
 		    		  }
 		        	  
-		        	//  isResigning=false;  
+		        	
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);		
 		          Lizzie.leelaz.playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 		          //nameCmd();
@@ -1176,6 +1176,7 @@ public class Leelaz {
 		        	  if(blackResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts||whiteResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
 		    		  {
 		        		  resigned=true;
+		        		  isResigning=false;
 		        		  //pkResign();
 		        		  //System.out.println("认输2"+this.currentEngineN);
 		        		  nameCmd();
@@ -1184,7 +1185,7 @@ public class Leelaz {
 				           
 		    			  return;
 		    		  }
-		        	//  isResigning=false;
+		        	//  
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
 			          Lizzie.leelaz.playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 			          //nameCmd();
@@ -1229,12 +1230,13 @@ public class Leelaz {
 		        	  if(blackResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts||whiteResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
 		    		  {
 		        		  resigned=true;
+		        		  isResigning=false;
 		        		  //pkResign();
 		        		  //System.out.println("认输3"+this.currentEngineN);
 		        		  nameCmd();	
 		    			  return;
 		    		  }
-		        	 // isResigning=false;
+		        	 // 
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
 			          Lizzie.leelaz.playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 			          //nameCmd();
