@@ -104,6 +104,7 @@ public class BottomToolbar extends JPanel {
   public int anaPanelOrder = 0;
   public int enginePkOrder = 1;
   public int autoPlayOrder = 2;
+  public boolean isPkStop = false;
   // JButton cancelAutoAna;
 
   JLabel lblchkShowBlack;
@@ -893,8 +894,15 @@ public class BottomToolbar extends JPanel {
             // TBD未完成
             setTxtUnfocuse();
             Lizzie.leelaz.togglePonder();
-            if (Lizzie.leelaz.isPondering()) btnEnginePkStop.setText("暂停");
-            else btnEnginePkStop.setText("继续");
+            if (Lizzie.leelaz.isPondering()) {
+              btnEnginePkStop.setText("暂停");
+              isPkStop = false;
+            } else {
+              btnEnginePkStop.setText("继续");
+              isPkStop = true;
+            }
+            Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
+            Lizzie.engineManager.gameTime = System.currentTimeMillis();
           }
         });
 

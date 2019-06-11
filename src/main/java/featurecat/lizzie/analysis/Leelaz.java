@@ -964,7 +964,7 @@ public class Leelaz {
 		              this.cancel();
 		            }
 		          },
-		          500);
+		          700);
             Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
             Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).played=false;
             Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).played=false;
@@ -1057,7 +1057,7 @@ public class Leelaz {
         if (onTop) Lizzie.frame.setAlwaysOnTop(true);
         Lizzie.engineManager.changeEngIcoForEndPk();
 	  }
-	  resigned=false; 
+	
   }
   
   private void notifyAutoPK() {	
@@ -1105,6 +1105,7 @@ public class Leelaz {
 		        if (firstPlayouts > 0) {
 		          if (bestMoves.get(0).playouts >= firstPlayouts) {
 		        	  played=true;
+		        	  resigned=false; 
 		        	  if(curWR<Lizzie.frame.toolbar.pkResginWinrate)
 		    		  { if(Lizzie.board.getHistory().isBlacksTurn())
 		    			  blackResignMoveCounts=blackResignMoveCounts+1;
@@ -1157,6 +1158,7 @@ public class Leelaz {
 		          }
 		          if (sum >= playouts) {
 		        	  played=true;
+		        	  resigned=false; 
 		        	  if(curWR<Lizzie.frame.toolbar.pkResginWinrate)
 		    		  { if(Lizzie.board.getHistory().isBlacksTurn())
 		    			  blackResignMoveCounts=blackResignMoveCounts+1;
@@ -1208,7 +1210,8 @@ public class Leelaz {
 		        
 		        if (time > 0) {
 		          if (System.currentTimeMillis() - startPonderTime > time) {
-		        	  played=true;		        	  
+		        	  played=true;	
+		        	  resigned=false; 
 		        	  if(curWR<Lizzie.frame.toolbar.pkResginWinrate)
 		    		  { if(Lizzie.board.getHistory().isBlacksTurn())
 		    			  blackResignMoveCounts=blackResignMoveCounts+1;

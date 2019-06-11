@@ -118,7 +118,9 @@ public class EngineManager {
   }
 
   private void checkEngineAlive() {
-    if (Lizzie.frame.toolbar.checkGameTime && Lizzie.frame.toolbar.isEnginePk) {
+    if (Lizzie.frame.toolbar.checkGameTime
+        && Lizzie.frame.toolbar.isEnginePk
+        && !Lizzie.frame.toolbar.isPkStop) {
       if (System.currentTimeMillis() - gameTime > Lizzie.frame.toolbar.maxGanmeTime * 60 * 1000) {
         saveTimeoutFile();
         Lizzie.board.clear();
@@ -164,9 +166,7 @@ public class EngineManager {
           && engineList.get(currentEngineNo).process.isAlive()) {
       } else {
         try {
-          if (Lizzie.frame.toolbar.isEnginePk) {
-            restartEngineForPk(currentEngineNo);
-          } else engineList.get(currentEngineNo).restartClosedEngine(currentEngineNo);
+          engineList.get(currentEngineNo).restartClosedEngine(currentEngineNo);
         } catch (IOException e) {
           // TODO Auto-generated catch block
           e.printStackTrace();
@@ -180,10 +180,8 @@ public class EngineManager {
         && engineList.get(Lizzie.frame.toolbar.engineBlack).process.isAlive()) {
     } else {
       try {
-        engineList
-            .get(Lizzie.frame.toolbar.engineBlack)
-            .restartClosedEngine(Lizzie.frame.toolbar.engineBlack);
-      } catch (IOException e) {
+        restartEngineForPk(Lizzie.frame.toolbar.engineBlack);
+      } catch (Exception e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
@@ -192,10 +190,8 @@ public class EngineManager {
         && engineList.get(Lizzie.frame.toolbar.engineWhite).process.isAlive()) {
     } else {
       try {
-        engineList
-            .get(Lizzie.frame.toolbar.engineWhite)
-            .restartClosedEngine(Lizzie.frame.toolbar.engineWhite);
-      } catch (IOException e) {
+        restartEngineForPk(Lizzie.frame.toolbar.engineWhite);
+      } catch (Exception e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
