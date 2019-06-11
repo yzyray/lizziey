@@ -1124,7 +1124,7 @@ public class Leelaz {
 		        		  
 		        		  resigned=true;
 		        		  
-		        		  pkResign();
+		        		  //pkResign();
 		        		  //System.out.println("认输1"+this.currentEngineN);
 		        		  nameCmd();		        		  
 		    			  return;
@@ -1174,7 +1174,7 @@ public class Leelaz {
 		        	  if(blackResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts||whiteResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
 		    		  {
 		        		  resigned=true;
-		        		  pkResign();
+		        		  //pkResign();
 		        		  //System.out.println("认输2"+this.currentEngineN);
 		        		  nameCmd();
 		        		  
@@ -1226,7 +1226,7 @@ public class Leelaz {
 		        	  if(blackResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts||whiteResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
 		    		  {
 		        		  resigned=true;
-		        		  pkResign();
+		        		  //pkResign();
 		        		  //System.out.println("认输3"+this.currentEngineN);
 		        		  nameCmd();	
 		    			  return;

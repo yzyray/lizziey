@@ -92,7 +92,7 @@ public class EngineManager {
 
     timer =
         new Timer(
-            5000,
+            1000,
             new ActionListener() {
               public void actionPerformed(ActionEvent evt) {
                 checkEngineAlive();
@@ -123,7 +123,7 @@ public class EngineManager {
     }
     if (Lizzie.frame.toolbar.isEnginePk) {
       {
-        // if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
+        if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
         if (Lizzie.leelaz.isPondering()) {
           timer3 =
               new Timer(
@@ -142,7 +142,7 @@ public class EngineManager {
       }
       timer2 =
           new Timer(
-              5000,
+              1000,
               new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                   checkEnginePK();
