@@ -2279,7 +2279,9 @@ public class Board implements LeelazListener {
   }
 
   public void updateComment() {
-    if (Lizzie.config.appendWinrateToComment && !Lizzie.frame.urlSgf) {
+    if (Lizzie.frame.toolbar.isEnginePk) {
+      SGFParser.appendCommentForPk();
+    } else if (Lizzie.config.appendWinrateToComment && !Lizzie.frame.urlSgf) {
       // Append the winrate to the comment
       {
         SGFParser.appendComment();

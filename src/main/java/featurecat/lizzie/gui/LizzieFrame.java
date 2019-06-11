@@ -2053,7 +2053,13 @@ public class LizzieFrame extends JFrame {
           // if (MoveData.getPlayouts(Lizzie.board.getHistory().getData().bestMoves) >
           // Lizzie.board.getHistory().getData().getPlayouts())
           // 重要!做保存文件时不更新的判断
-          SGFParser.appendComment();
+
+          if (toolbar.isEnginePk) {
+            if (Lizzie.board.getHistory().getData().comment.isEmpty())
+              SGFParser.appendCommentForPk();
+          } else {
+            SGFParser.appendComment();
+          }
         }
       }
     }

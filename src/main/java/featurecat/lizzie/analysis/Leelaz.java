@@ -275,6 +275,7 @@ public class Leelaz {
 	      return;
 	    }
 	    switching = true;
+	    
 	    this.engineCommand = engineCommand;
 	    // stop the ponder
 //	    if (Lizzie.leelaz.isPondering()) {

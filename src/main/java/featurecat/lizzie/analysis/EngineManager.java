@@ -159,7 +159,9 @@ public class EngineManager {
           && engineList.get(currentEngineNo).process.isAlive()) {
       } else {
         try {
-          engineList.get(currentEngineNo).restartClosedEngine(currentEngineNo);
+          if (Lizzie.frame.toolbar.isEnginePk) {
+            restartEngineForPk(currentEngineNo);
+          } else engineList.get(currentEngineNo).restartClosedEngine(currentEngineNo);
         } catch (IOException e) {
           // TODO Auto-generated catch block
           e.printStackTrace();
@@ -289,7 +291,7 @@ public class EngineManager {
     if (index > this.engineList.size()) return;
     // Lizzie.board.saveMoveNumber();
     Leelaz newEng = engineList.get(index);
-
+    newEng.played = false;
     ArrayList<Movelist> mv = Lizzie.board.getmovelist();
     if (!newEng.isStarted()) {
       try {
@@ -302,6 +304,29 @@ public class EngineManager {
     // else {newEng.initializeStreams();}
     Lizzie.leelaz = newEng;
     Lizzie.leelaz.clear();
+    this.currentEngineNo = index;
+    // Lizzie.leelaz.notPondering();
+    Lizzie.board.restoreMoveNumber(index, mv);
+    // Lizzie.leelaz.Pondering();
+  }
+
+  public void restartEngineForPk(int index) {
+    if (index > this.engineList.size()) return;
+    // Lizzie.board.saveMoveNumber();
+    Leelaz newEng = engineList.get(index);
+    newEng.played = false;
+    ArrayList<Movelist> mv = Lizzie.board.getmovelist();
+    // if (!newEng.isStarted()) {
+    try {
+      newEng.startEngine(index);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    // }
+    // else {newEng.initializeStreams();}
+    // Lizzie.leelaz = newEng;
+    // Lizzie.leelaz.clear();
     this.currentEngineNo = index;
     // Lizzie.leelaz.notPondering();
     Lizzie.board.restoreMoveNumber(index, mv);
