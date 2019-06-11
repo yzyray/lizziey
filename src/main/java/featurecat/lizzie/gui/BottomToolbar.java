@@ -67,7 +67,7 @@ public class BottomToolbar extends JPanel {
   public int engineBlack = -1;
   public int engineWhite = -1;
   public int pkResignMoveCounts = 2;
-  public double pkResginWinrate = 10;
+  public double pkResginWinrate = 15;
   public boolean isEnginePkBatch = false;
   // public int EnginePkBatchNumber = 1;
   public int EnginePkBatchNumberNow = 1;
