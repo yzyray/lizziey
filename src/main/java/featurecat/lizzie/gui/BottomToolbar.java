@@ -60,6 +60,9 @@ public class BottomToolbar extends JPanel {
   public int pkBlackWins = 0;
   public int pkWhiteWins = 0;
 
+  public int maxGanmeTime = 60;
+  public boolean checkGameTime = true;
+
   public boolean isEnginePk = false;
   public int engineBlack = -1;
   public int engineWhite = -1;
@@ -938,6 +941,9 @@ public class BottomToolbar extends JPanel {
             if (!isEnginePk) {
               isAutoAna = false;
               isAutoPlay = false;
+              if (checkGameTime) {
+                Lizzie.engineManager.gameTime = System.currentTimeMillis();
+              }
               isEnginePk = true;
               btnStartPk.setText("停止对战");
               Lizzie.frame.removeInput();
@@ -968,6 +974,7 @@ public class BottomToolbar extends JPanel {
               pkWhiteWins = 0;
               featurecat.lizzie.gui.Menu.engineMenu.setText("对战中");
               featurecat.lizzie.gui.Menu.engineMenu.setEnabled(false);
+
               if (!isGenmove) {
                 // 分析模式对战
                 Lizzie.engineManager.engineList.get(engineBlack).blackResignMoveCounts = 0;
@@ -997,9 +1004,9 @@ public class BottomToolbar extends JPanel {
                   Lizzie.engineManager.startEngineForPk(engineWhite);
                 }
                 Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
-                Lizzie.engineManager.engineList.get(engineBlack).played=false;
-                Lizzie.engineManager.engineList.get(engineWhite).played=false;
-                Lizzie.leelaz.ponder();                
+                Lizzie.engineManager.engineList.get(engineBlack).played = false;
+                Lizzie.engineManager.engineList.get(engineWhite).played = false;
+                Lizzie.leelaz.ponder();
                 Lizzie.frame.setPlayers(
                     Lizzie.engineManager.engineList.get(engineWhite).currentEnginename,
                     Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
@@ -1196,7 +1203,7 @@ public class BottomToolbar extends JPanel {
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter") != null
-        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 36) {
+        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 38) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("toolbar-parameter");
       if (pos.getInt(0) > 0) {
         this.txtFirstAnaMove.setText(pos.getInt(0) + "");
@@ -1296,6 +1303,8 @@ public class BottomToolbar extends JPanel {
       enginePkOrder = pos.getInt(33);
       autoPlayOrder = pos.getInt(34);
       exChange = pos.getBoolean(35);
+      maxGanmeTime = pos.getInt(36);
+      checkGameTime = pos.getBoolean(37);
     }
 
     //    JPanel anaPanel;

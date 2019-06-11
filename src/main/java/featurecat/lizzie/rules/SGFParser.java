@@ -127,7 +127,6 @@ public class SGFParser {
 
     String blackPlayer = "", whitePlayer = "";
     String result = "";
-
     // Support unicode characters (UTF-8)
     for (int i = 0; i < value.length(); i++) {
       char c = value.charAt(i);

@@ -889,6 +889,10 @@ public class Leelaz {
 		  if(Lizzie.frame.toolbar.EnginePkBatchNumberNow<EnginePkBatchNumber) {
 		  Lizzie.frame.toolbar.EnginePkBatchNumberNow=Lizzie.frame.toolbar.EnginePkBatchNumberNow+1;
 		  //下一盘PK
+		  if(Lizzie.frame.toolbar.checkGameTime)
+    	  {
+        	  Lizzie.engineManager.gameTime=System.currentTimeMillis();
+    	  }
 		  Lizzie.frame.setResult("");
 		  if(Lizzie.frame.toolbar.exChange)
 		 // if(false)

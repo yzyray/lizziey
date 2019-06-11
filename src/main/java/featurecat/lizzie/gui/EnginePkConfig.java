@@ -14,14 +14,17 @@ public class EnginePkConfig extends JDialog {
   JTextField txtresignSetting;
   JTextField txtresignSetting2;
   JTextField txtnameSetting;
+  JTextField txtGameTime;
+
   JCheckBox chkGenmove;
   JCheckBox chkAutosave;
   JCheckBox chkExchange;
+  JCheckBox chkGameTime;
 
   public EnginePkConfig() {
     setType(Type.POPUP);
     setTitle("引擎对战设置");
-    setBounds(0, 0, 340, 200);
+    setBounds(0, 0, 450, 220);
     setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     setLayout(null);
     setLocationRelativeTo(getOwner());
@@ -64,14 +67,25 @@ public class EnginePkConfig extends JDialog {
     JLabel lblAutosave = new JLabel("自动保存棋谱");
     add(chkAutosave);
     add(lblAutosave);
+
+    chkGameTime = new JCheckBox();
+    JLabel lblGameTime = new JLabel("单局超时(分)");
+    txtGameTime = new JTextField();
+    add(chkGameTime);
+    add(lblGameTime);
+    add(txtGameTime);
+    chkGameTime.setBounds(2, 65, 20, 20);
+    lblGameTime.setBounds(22, 65, 70, 18);
+    txtGameTime.setBounds(92, 65, 40, 18);
+
     chkAutosave.setBounds(152, 45, 20, 20);
     lblAutosave.setBounds(172, 45, 100, 18);
-    JLabel lblHints = new JLabel("注:genmove命令下只能按时间落子,计算量和认输阈值只受");
-    JLabel lblHints2 = new JLabel("引擎参数限制(-r,-p,-v),界面上的设置无效");
+    JLabel lblHints = new JLabel("注:设置单局超时后,超过时间的对局将被放弃,勾选genmove命令时只能按时间");
+    JLabel lblHints2 = new JLabel("落子计算量和认输阈值只受引擎参数限制(-r,-p,-v),界面上的设置无效");
     add(lblHints);
     add(lblHints2);
-    lblHints.setBounds(5, 70, 350, 20);
-    lblHints2.setBounds(5, 90, 300, 20);
+    lblHints.setBounds(5, 90, 450, 20);
+    lblHints2.setBounds(5, 110, 450, 20);
 
     JButton okButton = new JButton("确认");
     JButton cancelButton = new JButton("取消");
@@ -79,8 +93,8 @@ public class EnginePkConfig extends JDialog {
     add(cancelButton);
     okButton.setMargin(new Insets(0, 0, 0, 0));
     cancelButton.setMargin(new Insets(0, 0, 0, 0));
-    okButton.setBounds(100, 120, 50, 30);
-    cancelButton.setBounds(170, 120, 50, 30);
+    okButton.setBounds(100, 140, 50, 30);
+    cancelButton.setBounds(170, 140, 50, 30);
 
     okButton.addActionListener(
         new ActionListener() {
@@ -107,6 +121,10 @@ public class EnginePkConfig extends JDialog {
     if (Lizzie.frame.toolbar.exChange) {
       chkExchange.setSelected(true);
     }
+    if (Lizzie.frame.toolbar.checkGameTime) {
+      chkGameTime.setSelected(true);
+    }
+    txtGameTime.setText(Lizzie.frame.toolbar.maxGanmeTime + "");
   }
 
   private void applyChange() {
@@ -123,6 +141,12 @@ public class EnginePkConfig extends JDialog {
     Lizzie.frame.toolbar.isGenmove = chkGenmove.isSelected();
     Lizzie.frame.toolbar.batchPkName = txtnameSetting.getText();
     Lizzie.frame.toolbar.exChange = chkExchange.isSelected();
+
+    Lizzie.frame.toolbar.checkGameTime = chkGameTime.isSelected();
+    try {
+      Lizzie.frame.toolbar.maxGanmeTime = Integer.parseInt(txtGameTime.getText());
+    } catch (NumberFormatException err) {
+    }
     setVisible(false);
   }
 }

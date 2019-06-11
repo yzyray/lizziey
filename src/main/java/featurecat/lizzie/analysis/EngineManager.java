@@ -20,7 +20,8 @@ public class EngineManager {
   public List<Leelaz> engineList;
   public static int currentEngineNo;
   public long startInfoTime = System.currentTimeMillis();
-  //  public boolean firstTime =true;
+  public long gameTime = System.currentTimeMillis();
+
   Timer timer;
   Timer timer2;
   Timer timer3;
@@ -91,7 +92,7 @@ public class EngineManager {
 
     timer =
         new Timer(
-            1000,
+            5000,
             new ActionListener() {
               public void actionPerformed(ActionEvent evt) {
                 checkEngineAlive();
@@ -108,20 +109,28 @@ public class EngineManager {
         && Lizzie.leelaz.isPondering()
         && System.currentTimeMillis() - startInfoTime > 1000 * 20) {
       Lizzie.leelaz.process.destroy();
+      startInfoTime = System.currentTimeMillis();
     }
   }
 
   private void checkEngineAlive() {
+    if (Lizzie.frame.toolbar.checkGameTime && Lizzie.frame.toolbar.isEnginePk) {
+      if (System.currentTimeMillis() - gameTime > Lizzie.frame.toolbar.maxGanmeTime * 60 * 1000) {
+        Lizzie.board.clear();
+        forcekillAllEngines();
+        gameTime = System.currentTimeMillis();
+      }
+    }
     if (Lizzie.frame.toolbar.isEnginePk) {
       {
-        if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
+        // if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
         if (Lizzie.leelaz.isPondering()) {
           timer3 =
               new Timer(
                   5000,
                   new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                      checkEnginePK();
+                      checkEngineNotHang();
 
                       try {
                       } catch (Exception e) {
@@ -133,7 +142,7 @@ public class EngineManager {
       }
       timer2 =
           new Timer(
-              1000,
+              5000,
               new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                   checkEnginePK();
@@ -253,7 +262,7 @@ public class EngineManager {
   }
 
   public void forcekillAllEngines() {
-    currentEngineNo = -1;
+    // currentEngineNo = -1;
     for (int i = 0; i < engineList.size(); i++) {
       try {
         engineList.get(i).started = false;
@@ -300,7 +309,7 @@ public class EngineManager {
   }
 
   public void switchEngine(int index) {
-    if (index == this.currentEngineNo || index > this.engineList.size()) return;
+    if (index > this.engineList.size()) return;
     Leelaz newEng = engineList.get(index);
     if (newEng == null) return;
     Lizzie.board.saveMoveNumber();
@@ -353,6 +362,7 @@ public class EngineManager {
   public void changeEngIcoForEndPk() {
     this.currentEngineNo = -1;
     switchEngine(Lizzie.leelaz.currentEngineN());
+    featurecat.lizzie.gui.Menu.engineMenu.setEnabled(true);
   }
 
   private void changeEngIco() {
