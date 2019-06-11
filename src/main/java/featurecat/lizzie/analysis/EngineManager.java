@@ -19,9 +19,11 @@ public class EngineManager {
 
   public List<Leelaz> engineList;
   public static int currentEngineNo;
+  public long startInfoTime = System.currentTimeMillis();
   //  public boolean firstTime =true;
   Timer timer;
   Timer timer2;
+  Timer timer3;
 
   public EngineManager(Config config) throws JSONException, IOException {
 
@@ -101,9 +103,34 @@ public class EngineManager {
     timer.start();
   }
 
+  private void checkEngineNotHang() {
+    if (Lizzie.frame.toolbar.isEnginePk
+        && Lizzie.leelaz.isPondering()
+        && System.currentTimeMillis() - startInfoTime > 1000 * 20) {
+      Lizzie.leelaz.process.destroy();
+    }
+  }
+
   private void checkEngineAlive() {
     if (Lizzie.frame.toolbar.isEnginePk) {
-      if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
+      {
+        if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
+        if (Lizzie.leelaz.isPondering()) {
+          timer3 =
+              new Timer(
+                  5000,
+                  new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                      checkEnginePK();
+
+                      try {
+                      } catch (Exception e) {
+                      }
+                    }
+                  });
+          timer3.start();
+        }
+      }
       timer2 =
           new Timer(
               1000,
@@ -253,6 +280,7 @@ public class EngineManager {
     if (index > this.engineList.size()) return;
     // Lizzie.board.saveMoveNumber();
     Leelaz newEng = engineList.get(index);
+
     ArrayList<Movelist> mv = Lizzie.board.getmovelist();
     if (!newEng.isStarted()) {
       try {
@@ -262,6 +290,7 @@ public class EngineManager {
         e.printStackTrace();
       }
     }
+    // else {newEng.initializeStreams();}
     Lizzie.leelaz = newEng;
     Lizzie.leelaz.clear();
     this.currentEngineNo = index;
@@ -322,24 +351,8 @@ public class EngineManager {
   }
 
   public void changeEngIcoForEndPk() {
-    for (int i = 0; i < Lizzie.frame.menu.engine.length; i++) {
-      if (featurecat.lizzie.gui.Menu.engine[i].getIcon() != null
-          && featurecat.lizzie.gui.Menu.engine[i].getIcon() != featurecat.lizzie.gui.Menu.stop) {
-        featurecat.lizzie.gui.Menu.engine[i].setIcon(featurecat.lizzie.gui.Menu.ready);
-      }
-    }
-    if (featurecat.lizzie.gui.Menu.engine[Lizzie.leelaz.currentEngineN()].getIcon() == null) {
-    } else {
-      featurecat.lizzie.gui.Menu.engine[Lizzie.leelaz.currentEngineN()].setIcon(
-          featurecat.lizzie.gui.Menu.icon);
-    }
-    featurecat.lizzie.gui.Menu.engineMenu.setText(
-        "引擎"
-            + (currentEngineNo + 1)
-            + ": "
-            + engineList.get(Lizzie.leelaz.currentEngineN()).currentEnginename);
-    featurecat.lizzie.gui.Menu.engineMenu.setEnabled(true);
-    this.currentEngineNo = Lizzie.leelaz.currentEngineN();
+    this.currentEngineNo = -1;
+    switchEngine(Lizzie.leelaz.currentEngineN());
   }
 
   private void changeEngIco() {

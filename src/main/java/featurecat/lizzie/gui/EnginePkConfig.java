@@ -16,6 +16,7 @@ public class EnginePkConfig extends JDialog {
   JTextField txtnameSetting;
   JCheckBox chkGenmove;
   JCheckBox chkAutosave;
+  JCheckBox chkExchange;
 
   public EnginePkConfig() {
     setType(Type.POPUP);
@@ -39,6 +40,14 @@ public class EnginePkConfig extends JDialog {
     lblresignSetting2.setBounds(100, 2, 60, 25);
     txtresignSetting2.setBounds(160, 7, 35, 18);
     lblresignSetting3.setBounds(195, 2, 15, 25);
+
+    JLabel lblExchange = new JLabel("交换黑白");
+    chkExchange = new JCheckBox();
+    add(lblExchange);
+    add(chkExchange);
+    chkExchange.setBounds(220, 6, 20, 18);
+    lblExchange.setBounds(240, 2, 50, 25);
+
     JLabel lblnameSetting = new JLabel("多盘对战棋谱保存文件夹名(一次有效):");
     txtnameSetting = new JTextField();
     add(lblnameSetting);
@@ -95,6 +104,9 @@ public class EnginePkConfig extends JDialog {
     if (Lizzie.frame.toolbar.isGenmove) {
       chkGenmove.setSelected(true);
     }
+    if (Lizzie.frame.toolbar.exChange) {
+      chkExchange.setSelected(true);
+    }
   }
 
   private void applyChange() {
@@ -110,6 +122,7 @@ public class EnginePkConfig extends JDialog {
     Lizzie.frame.toolbar.AutosavePk = chkAutosave.isSelected();
     Lizzie.frame.toolbar.isGenmove = chkGenmove.isSelected();
     Lizzie.frame.toolbar.batchPkName = txtnameSetting.getText();
+    Lizzie.frame.toolbar.exChange = chkExchange.isSelected();
     setVisible(false);
   }
 }

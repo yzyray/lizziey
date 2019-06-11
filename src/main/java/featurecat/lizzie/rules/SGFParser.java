@@ -343,6 +343,10 @@ public class SGFParser {
 
     Lizzie.frame.setPlayers(whitePlayer, blackPlayer);
     Lizzie.frame.setResult(result);
+    GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
+    gameInfo.setPlayerBlack(blackPlayer);
+    gameInfo.setPlayerWhite(whitePlayer);
+    gameInfo.setResult(result);
     // Rewind to game start
     while (Lizzie.board.previousMove()) ;
 

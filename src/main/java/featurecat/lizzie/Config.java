@@ -859,7 +859,7 @@ public class Config {
     toolbarParameter.put(Lizzie.frame.toolbar.anaPanelOrder);
     toolbarParameter.put(Lizzie.frame.toolbar.enginePkOrder);
     toolbarParameter.put(Lizzie.frame.toolbar.autoPlayOrder);
-
+    toolbarParameter.put(Lizzie.frame.toolbar.exChange);
     persistedUi.put("toolbar-parameter", toolbarParameter);
 
     JSONArray movecountPos = new JSONArray();

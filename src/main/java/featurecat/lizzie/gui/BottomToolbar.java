@@ -978,7 +978,10 @@ public class BottomToolbar extends JPanel {
 
                 Lizzie.leelaz.nameCmd();
                 Lizzie.leelaz.notPondering();
-                Lizzie.board.clear();
+                try {
+                  Lizzie.board.clear();
+                } catch (Exception ex) {
+                }
                 if (chkenginePkContinue.isSelected()) {
                   Lizzie.board.setlist(startGame);
                 }
@@ -994,7 +997,9 @@ public class BottomToolbar extends JPanel {
                   Lizzie.engineManager.startEngineForPk(engineWhite);
                 }
                 Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
-                Lizzie.leelaz.ponder();
+                Lizzie.engineManager.engineList.get(engineBlack).played=false;
+                Lizzie.engineManager.engineList.get(engineWhite).played=false;
+                Lizzie.leelaz.ponder();                
                 Lizzie.frame.setPlayers(
                     Lizzie.engineManager.engineList.get(engineWhite).currentEnginename,
                     Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
@@ -1191,7 +1196,7 @@ public class BottomToolbar extends JPanel {
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter") != null
-        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 35) {
+        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 36) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("toolbar-parameter");
       if (pos.getInt(0) > 0) {
         this.txtFirstAnaMove.setText(pos.getInt(0) + "");
@@ -1290,6 +1295,7 @@ public class BottomToolbar extends JPanel {
       anaPanelOrder = pos.getInt(32);
       enginePkOrder = pos.getInt(33);
       autoPlayOrder = pos.getInt(34);
+      exChange = pos.getBoolean(35);
     }
 
     //    JPanel anaPanel;

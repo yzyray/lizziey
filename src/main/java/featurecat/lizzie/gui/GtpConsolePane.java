@@ -36,7 +36,7 @@ public class GtpConsolePane extends JDialog {
   private JScrollPane scrollPane;
   private JTextPane console;
   private String command;
-  private boolean isAnalyzeCommand = false;
+  // private boolean isAnalyzeCommand = false;
   private final JTextField txtCommand = new JTextField();
   private JLabel lblCommand = new JLabel();
   private JPanel pnlCommand = new JPanel();
@@ -97,8 +97,8 @@ public class GtpConsolePane extends JDialog {
     }
     lblCommand.setText(Lizzie.leelaz == null ? "GTP>" : Lizzie.leelaz.currentEnginename + ">");
     this.command = command;
-    this.isAnalyzeCommand =
-        command.startsWith("lz-analyze") || command.startsWith("lz-genmove_analyze");
+    // this.isAnalyzeCommand =
+    //    command.startsWith("lz-analyze") || command.startsWith("lz-genmove_analyze");
     addText(formatCommand(command, commandNumber));
   }
 
@@ -110,7 +110,7 @@ public class GtpConsolePane extends JDialog {
   }
 
   public void addLine(String line) {
-    if (line == null || line.trim().length() == 0 || isAnalyzeCommand) {
+    if (line == null || line.trim().length() == 0) {
       return;
     }
     addText(format(line));
