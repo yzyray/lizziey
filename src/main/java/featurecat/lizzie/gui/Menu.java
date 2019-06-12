@@ -567,8 +567,9 @@ public class Menu extends MenuBar {
               .forEach(
                   i -> {
                     String name = a.getString(i);
-                    engine[i].setText(engine[i].getText() + name);
 
+                    if (i == 9) engine[i].setText(engine[i].getText().substring(0, 5) + name);
+                    else engine[i].setText(engine[i].getText().substring(0, 4) + name);
                     if (!name.equals("")) engine[i].setVisible(true);
                     else {
                       engine[i].setVisible(false);

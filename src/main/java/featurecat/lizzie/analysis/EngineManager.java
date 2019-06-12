@@ -94,18 +94,18 @@ public class EngineManager {
             })
         .start();
 
-    timer =
-        new Timer(
-            1000,
-            new ActionListener() {
-              public void actionPerformed(ActionEvent evt) {
-                checkEngineAlive();
-                try {
-                } catch (Exception e) {
-                }
-              }
-            });
-    timer.start();
+    //        timer =
+    //            new Timer(
+    //                5000,
+    //                new ActionListener() {
+    //                  public void actionPerformed(ActionEvent evt) {
+    //                    checkEngineAlive();
+    //                    try {
+    //                    } catch (Exception e) {
+    //                    }
+    //                  }
+    //                });
+    //        timer.start();
   }
 
   private void checkEngineNotHang() {
@@ -136,7 +136,7 @@ public class EngineManager {
     }
     if (Lizzie.frame.toolbar.isEnginePk) {
       {
-        if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
+        // if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
         if (Lizzie.leelaz.isPondering()) {
           timer3 =
               new Timer(
@@ -155,7 +155,7 @@ public class EngineManager {
       }
       timer2 =
           new Timer(
-              1000,
+              5000,
               new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                   checkEnginePK();
@@ -262,7 +262,7 @@ public class EngineManager {
   }
 
   public void killAllEngines() {
-    currentEngineNo = -1;
+    // currentEngineNo = -1;
     for (int i = 0; i < engineList.size(); i++) {
       if (engineList.get(i).isStarted()) {
         engineList.get(i).normalQuit();
@@ -368,9 +368,9 @@ public class EngineManager {
       }
     }
     // else {newEng.initializeStreams();}
-    Lizzie.leelaz = newEng;
-    Lizzie.leelaz.clear();
-    this.currentEngineNo = index;
+    // Lizzie.leelaz = newEng;
+    Lizzie.engineManager.engineList.get(index).clear();
+    // this.currentEngineNo = index;
     // Lizzie.leelaz.notPondering();
     Lizzie.board.restoreMoveNumber(index, mv);
     // Lizzie.leelaz.Pondering();

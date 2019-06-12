@@ -85,6 +85,7 @@ public class GtpConsolePane extends JDialog {
 
     pnlCommand.add(txtCommand);
     JButton clear = new JButton("清除");
+    clear.setFocusable(false);
     clear.setMargin(new Insets(0, 5, 0, 5));
     clear.addActionListener(
         new ActionListener() {
@@ -104,15 +105,15 @@ public class GtpConsolePane extends JDialog {
     txtCommand.addActionListener(e -> postCommand(e));
   }
 
-  public void addCommand(String command, int commandNumber) {
+  public void addCommand(String command, int commandNumber, String engineName) {
     if (command == null || command.trim().length() == 0) {
       return;
     }
-    lblCommand.setText(Lizzie.leelaz == null ? "GTP>" : Lizzie.leelaz.currentEnginename + ">");
+    lblCommand.setText(engineName + ">");
     this.command = command;
     // this.isAnalyzeCommand =
     //    command.startsWith("lz-analyze") || command.startsWith("lz-genmove_analyze");
-    addText(formatCommand(command, commandNumber));
+    addText(formatCommand(command, commandNumber, engineName));
   }
 
   public void addZenCommand(String command, int commandNumber) {
@@ -145,13 +146,9 @@ public class GtpConsolePane extends JDialog {
     }
   }
 
-  public String formatCommand(String command, int commandNumber) {
+  public String formatCommand(String command, int commandNumber, String engineName) {
     return String.format(
-        "<span class=\"command\">"
-            + (Lizzie.leelaz == null ? "GTP" : Lizzie.leelaz.currentEnginename)
-            + "> %d %s </span><br />",
-        commandNumber,
-        command);
+        "<span class=\"command\">" + engineName + "> %d %s </span><br />", commandNumber, command);
   }
 
   public String formatZenCommand(String command, int commandNumber) {

@@ -991,8 +991,13 @@ public class BottomToolbar extends JPanel {
                 Lizzie.engineManager.engineList.get(engineBlack).whiteResignMoveCounts = 0;
                 Lizzie.frame.setResult("");
 
-                Lizzie.leelaz.nameCmd();
-                Lizzie.leelaz.notPondering();
+                if (Lizzie.engineManager.currentEngineNo == engineWhite
+                    || Lizzie.engineManager.currentEngineNo == engineBlack) {
+                  Lizzie.leelaz.nameCmd();
+                  Lizzie.leelaz.notPondering();
+                } else {
+                  Lizzie.leelaz.normalQuit();
+                }
                 try {
                   Lizzie.board.clear();
                 } catch (Exception ex) {
@@ -1001,20 +1006,22 @@ public class BottomToolbar extends JPanel {
                   Lizzie.board.setlist(startGame);
                 }
                 if (Lizzie.board.getHistory().isBlacksTurn()) {
-                  Lizzie.engineManager.engineList.get(engineWhite).notPondering();
+                  // Lizzie.engineManager.engineList.get(engineWhite).notPondering();
                   Lizzie.engineManager.startEngineForPk(engineWhite);
-                  Lizzie.engineManager.engineList.get(engineWhite).Pondering();
+                  // Lizzie.engineManager.engineList.get(engineWhite).Pondering();
                   Lizzie.engineManager.startEngineForPk(engineBlack);
+                  Lizzie.engineManager.engineList.get(engineBlack).ponder();
                 } else {
-                  Lizzie.engineManager.engineList.get(engineBlack).notPondering();
+                  // Lizzie.engineManager.engineList.get(engineBlack).notPondering();
                   Lizzie.engineManager.startEngineForPk(engineBlack);
-                  Lizzie.engineManager.engineList.get(engineBlack).Pondering();
+                  // Lizzie.engineManager.engineList.get(engineBlack).Pondering();
                   Lizzie.engineManager.startEngineForPk(engineWhite);
+                  Lizzie.engineManager.engineList.get(engineWhite).ponder();
                 }
                 Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
-                Lizzie.engineManager.engineList.get(engineBlack).played = false;
-                Lizzie.engineManager.engineList.get(engineWhite).played = false;
-                Lizzie.leelaz.ponder();
+                // Lizzie.engineManager.engineList.get(engineBlack).played = false;
+                //  Lizzie.engineManager.engineList.get(engineWhite).played = false;
+                // Lizzie.leelaz.ponder();
                 Lizzie.frame.setPlayers(
                     Lizzie.engineManager.engineList.get(engineWhite).currentEnginename,
                     Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
