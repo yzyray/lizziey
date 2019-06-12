@@ -115,6 +115,12 @@ public class EngineManager {
       Lizzie.leelaz.process.destroy();
       startInfoTime = System.currentTimeMillis();
     }
+    try {
+      timer3.stop();
+      timer3 = null;
+    } catch (Exception ex) {
+
+    }
   }
 
   private void checkEngineAlive() {
@@ -124,7 +130,7 @@ public class EngineManager {
       if (System.currentTimeMillis() - gameTime > Lizzie.frame.toolbar.maxGanmeTime * 60 * 1000) {
         saveTimeoutFile();
         Lizzie.board.clear();
-        forcekillAllEngines();
+        // forcekillAllEngines();
         gameTime = System.currentTimeMillis();
       }
     }

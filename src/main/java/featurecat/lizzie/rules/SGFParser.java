@@ -21,6 +21,11 @@ public class SGFParser {
   private static final String[] listProps =
       new String[] {"LB", "CR", "SQ", "MA", "TR", "AB", "AW", "AE"};
   private static final String[] markupProps = new String[] {"LB", "CR", "SQ", "MA", "TR"};
+  private static String[] lines;
+  private static String[] line1;
+  private static boolean islzFirst = false;
+  private static boolean islzFirst2 = true;
+  private static boolean islzloaded = false;
 
   public static boolean load(String filename) throws IOException {
     // Clear the board
@@ -75,6 +80,29 @@ public class SGFParser {
     ret[0] = (int) pos.charAt(0) - 'a';
     ret[1] = (int) pos.charAt(1) - 'a';
     return ret;
+  }
+
+  private static void saveLz(String[] liness, String[] line1s) {
+    lines = liness;
+    line1 = line1s;
+    islzloaded = true;
+  }
+
+  private static void loadLz() {
+    String line2 = "";
+    if (lines.length > 1) {
+      line2 = lines[1];
+    }
+    String versionNumber = line1[0];
+    Lizzie.board.getData().winrate = 100 - Double.parseDouble(line1[1]);
+    int numPlayouts =
+        Integer.parseInt(
+            line1[2].replaceAll("k", "00").replaceAll("m", "00000").replaceAll("[^0-9]", ""));
+    Lizzie.board.getData().setPlayouts(numPlayouts);
+    if (numPlayouts > 0 && !line2.isEmpty()) {
+      Lizzie.board.getData().bestMoves = Leelaz.parseInfofromfile(line2);
+    }
+    islzloaded = false;
   }
 
   private static boolean parse(String value) {
@@ -212,6 +240,11 @@ public class SGFParser {
             if (newBranch) {
               processPendingPros(Lizzie.board.getHistory(), pendingProps);
             }
+            if (islzFirst) {
+              if (islzloaded) {
+                loadLz();
+              }
+            }
           } else if (tag.equals("C")) {
             // Support comment
             if (!moveStart) {
@@ -221,23 +254,36 @@ public class SGFParser {
             }
           } else if (tag.equals("LZ")) {
             // Content contains data for Lizzie to read
-            String[] lines = tagContent.split("\n");
-            String[] line1 = lines[0].split(" ");
-            String line2 = "";
-            if (lines.length > 1) {
-              line2 = lines[1];
+
+            if (islzFirst2) {
+              if (Lizzie.board.getData().moveNumber < 1) {
+                islzFirst = true;
+              }
+              islzFirst2 = false;
             }
-            String versionNumber = line1[0];
-            Lizzie.board.getData().winrate = 100 - Double.parseDouble(line1[1]);
-            int numPlayouts =
-                Integer.parseInt(
-                    line1[2]
-                        .replaceAll("k", "00")
-                        .replaceAll("m", "00000")
-                        .replaceAll("[^0-9]", ""));
-            Lizzie.board.getData().setPlayouts(numPlayouts);
-            if (numPlayouts > 0 && !line2.isEmpty()) {
-              Lizzie.board.getData().bestMoves = Leelaz.parseInfofromfile(line2);
+            if (islzFirst) {
+              String[] lines = tagContent.split("\n");
+              String[] line1 = lines[0].split(" ");
+              saveLz(lines, line1);
+            } else {
+              String[] lines = tagContent.split("\n");
+              String[] line1 = lines[0].split(" ");
+              String line2 = "";
+              if (lines.length > 1) {
+                line2 = lines[1];
+              }
+              String versionNumber = line1[0];
+              Lizzie.board.getData().winrate = 100 - Double.parseDouble(line1[1]);
+              int numPlayouts =
+                  Integer.parseInt(
+                      line1[2]
+                          .replaceAll("k", "00")
+                          .replaceAll("m", "00000")
+                          .replaceAll("[^0-9]", ""));
+              Lizzie.board.getData().setPlayouts(numPlayouts);
+              if (numPlayouts > 0 && !line2.isEmpty()) {
+                Lizzie.board.getData().bestMoves = Leelaz.parseInfofromfile(line2);
+              }
             }
           } else if (tag.equals("AB") || tag.equals("AW")) {
             int[] move = convertSgfPosToCoord(tagContent);

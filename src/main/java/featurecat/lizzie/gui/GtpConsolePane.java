@@ -9,9 +9,11 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -80,7 +82,18 @@ public class GtpConsolePane extends JDialog {
     lblCommand.setText(Lizzie.leelaz == null ? "GTP>" : Lizzie.leelaz.currentEnginename + ">");
     pnlCommand.setLayout(new BorderLayout(0, 0));
     pnlCommand.add(lblCommand, BorderLayout.WEST);
+
     pnlCommand.add(txtCommand);
+    JButton clear = new JButton("清除");
+    clear.setMargin(new Insets(0, 5, 0, 5));
+    clear.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            console.setText("");
+          }
+        });
+    pnlCommand.add(clear, BorderLayout.EAST);
     getContentPane().add(scrollPane, BorderLayout.CENTER);
     getContentPane().add(pnlCommand, BorderLayout.SOUTH);
     scrollPane.setViewportView(console);
