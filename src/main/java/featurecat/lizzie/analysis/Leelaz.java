@@ -392,11 +392,11 @@ public class Leelaz {
           this.bestMoves = parseInfo(line.substring(5));
           //notifyBestMoveListeners();
           //  if() {
-         
+          notifyAutoPK();  
           //  }
           Lizzie.frame.refresh();
           // don't follow the maxAnalyzeTime rule if we are in analysis mode
-          if (System.currentTimeMillis() - startPonderTime > Lizzie.config.maxAnalyzeTimeMillis
+          if ((!Lizzie.frame.toolbar.isEnginePk||!Lizzie.frame.toolbar.isAutoAna)&&(System.currentTimeMillis() - startPonderTime) > Lizzie.config.maxAnalyzeTimeMillis
               && !Lizzie.frame.toolbar.isAutoAna) {
             togglePonder();
           }
@@ -1122,7 +1122,7 @@ public class Leelaz {
 		        		  
 		        		  resigned=true;
 		        		  
-		        		  pkResign();
+		        		  //pkResign();
 		        		  //System.out.println("认输1"+this.currentEngineN);
 		        		  nameCmd();		        		  
 		    			  return;
@@ -1135,9 +1135,9 @@ public class Leelaz {
 				          
 		        		  if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
 				          {
-		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, "pass");
-		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, "pass");
-		        			//  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( "B", "pass");
+		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", "pass");
+		        			  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 				          //Lizzie.leelaz.isPondering=true;		         
 				          Lizzie.board.pass();				          
 				         // Lizzie.leelaz.played=false;
@@ -1145,9 +1145,9 @@ public class Leelaz {
 				          
 				          else
 				          {  
-				   			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, "pass");
-				        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, "pass");				        	  
-				        	 // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+				   			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W", "pass");
+				        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W", "pass");				        	  
+				        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 				          //Lizzie.leelaz.isPondering=true;		          
 				          Lizzie.board.pass();
 				          //Lizzie.leelaz.played=false;
@@ -1160,21 +1160,22 @@ public class Leelaz {
 		          //nameCmd();
 		          if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
 		          {
-		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
-		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 				      
-		        	 // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+		        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 		          //Lizzie.leelaz.isPondering=true;		         
 		          Lizzie.board.place(coords[0],coords[1]);	
 		          //Lizzie.leelaz.played=false;
 		          }
 		          
 		          else
-		          { // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+		          { // 
 		          //Lizzie.leelaz.isPondering=true;		       
-		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
-		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
-			        Lizzie.board.place(coords[0],coords[1]);	
+		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+		        	  Lizzie.board.place(coords[0],coords[1]);	
 		         // Lizzie.leelaz.played=false;
 		          }
 		          return;
@@ -1206,7 +1207,7 @@ public class Leelaz {
 		        	  if(blackResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts||whiteResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
 		    		  {
 		        		  resigned=true;
-		        		  pkResign();
+		        		  //pkResign();
 		        		  //System.out.println("认输2"+this.currentEngineN);
 		        		  nameCmd();
 		        		  
@@ -1222,9 +1223,9 @@ public class Leelaz {
 				          
 		        		  if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
 				          {
-		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playPassNoPonder(Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
-		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playPassPonder(Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
-		        			 // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( "B", "pass");
+		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", "pass");
+		        			  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 				          //Lizzie.leelaz.isPondering=true;		         
 				          Lizzie.board.pass();				          
 				         // Lizzie.leelaz.played=false;
@@ -1232,9 +1233,9 @@ public class Leelaz {
 				          
 				          else
 				          {  
-				        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playPassPonder(Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
-		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playPassNoPonder(Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
-		        			  // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+				   			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W", "pass");
+				        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W", "pass");				        	  
+				        	 Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 				          //Lizzie.leelaz.isPondering=true;		          
 				          Lizzie.board.pass();
 				          //Lizzie.leelaz.played=false;
@@ -1247,21 +1248,24 @@ public class Leelaz {
 		          //nameCmd();
 		          if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
 		          {
-		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
-		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 				      
-		        	 // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+		        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 		          //Lizzie.leelaz.isPondering=true;		         
 		          Lizzie.board.place(coords[0],coords[1]);	
+		          
 		          //Lizzie.leelaz.played=false;
 		          }
 		          
 		          else
-		          { // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+		          { 
 		          //Lizzie.leelaz.isPondering=true;		       
-		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
-		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
-			        Lizzie.board.place(coords[0],coords[1]);	
+		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+		        	  Lizzie.board.place(coords[0],coords[1]);	
+		        	  
 		         // Lizzie.leelaz.played=false;
 		          }
 			          return;
@@ -1291,7 +1295,7 @@ public class Leelaz {
 		        	  if(blackResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts||whiteResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
 		    		  {
 		        		  resigned=true;
-		        		  pkResign();
+		        		 // pkResign();
 		        		  //System.out.println("认输3"+this.currentEngineN);
 		        		  nameCmd();	
 		    			  return;
@@ -1304,9 +1308,9 @@ public class Leelaz {
 				          
 		        		  if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
 				          {
-		        			 // Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, "pass");
-		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, "pass");
-		        			//  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( "B", "pass");
+		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", "pass");
+		        			  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 				          //Lizzie.leelaz.isPondering=true;		         
 				          Lizzie.board.pass();				          
 				         // Lizzie.leelaz.played=false;
@@ -1314,9 +1318,9 @@ public class Leelaz {
 				          
 				          else
 				          {  
-				   			  //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, "pass");
-				        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, "pass");				        	  
-				        	 // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+				   			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W", "pass");
+				        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W", "pass");				        	  
+				        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 				          //Lizzie.leelaz.isPondering=true;		          
 				          Lizzie.board.pass();
 				          //Lizzie.leelaz.played=false;
@@ -1329,21 +1333,22 @@ public class Leelaz {
 		          //nameCmd();
 		          if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
 		          {
-		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
-		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 				      
-		        	 // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+		        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 		          //Lizzie.leelaz.isPondering=true;		         
 		          Lizzie.board.place(coords[0],coords[1]);	
 		          //Lizzie.leelaz.played=false;
 		          }
 		          
 		          else
-		          { // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+		          { 
 		          //Lizzie.leelaz.isPondering=true;		       
-		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
-		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder( Lizzie.board.getHistory().isBlacksTurn() ? Stone.BLACK : Stone.WHITE, Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
-			        Lizzie.board.place(coords[0],coords[1]);	
+		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+		        	  Lizzie.board.place(coords[0],coords[1]);	
 		         // Lizzie.leelaz.played=false;
 		          }
 			          return;
@@ -1391,7 +1396,8 @@ public class Leelaz {
         	if(!this.bestMoves.isEmpty())
       	  { notifyAutoAna();
             notifyAutoPlay();
-            notifyAutoPK();         
+          //  notifyAutoPK();    
+            pkResign();
             }
         	//if(!played)
           parseLine(line.toString());
@@ -1482,7 +1488,7 @@ public class Leelaz {
   private void sendCommandToLeelaz(String command) {
     if (command.startsWith("fixed_handicap")) isSettingHandicap = true;
     if (printCommunication) {
-      System.out.printf("> %d %s\n", cmdNumber, command);
+      System.out.println(currentEnginename+" "+ cmdNumber+" "+ command);
     }
     if(Lizzie.gtpConsole.isVisible())
     Lizzie.gtpConsole.addCommand(command, cmdNumber,currentEnginename);
@@ -1528,86 +1534,86 @@ public class Leelaz {
     }
   }
   
-  public void playMoveNoPonder(Stone color, String move) {
+  public void playMoveNoPonder( String colorString,String move) {
 	    synchronized (this) {
-	      String colorString;
-	      switch (color) {
-	        case BLACK:
-	          colorString = "B";
-	          break;
-	        case WHITE:
-	          colorString = "W";
-	          break;
-	        default:
-	          throw new IllegalArgumentException(
-	              "The stone color must be B or W, but was " + color.toString());
-	      }
+	      //String colorString;
+//	      switch (color) {
+//	        case BLACK:
+//	          colorString = "B";
+//	          break;
+//	        case WHITE:
+//	          colorString = "W";
+//	          break;
+//	        default:
+//	          throw new IllegalArgumentException(
+//	              "The stone color must be B or W, but was " + color.toString());
+//	      }
 
 	      sendCommand("play " + colorString + " " + move);
-	     // bestMoves = new ArrayList<>();
+	    //  bestMoves = new ArrayList<>();
 	     
 	    }
 	  }
   
-  public void playPassNoPonder(Stone color) {
-	  synchronized (this) {
-	  String colorString;
-	  switch (color) {
-      case BLACK:
-        colorString = "B";
-        break;
-      case WHITE:
-        colorString = "W";
-        break;
-      default:
-        throw new IllegalArgumentException(
-            "The stone color must be B or W, but was " + color.toString());
-    }
-	      sendCommand("play " + colorString +" pass");
-	      played=false;
-	      //bestMoves = new ArrayList<>();
-	     
-	  }
-	  }
+//  public void playPassNoPonder(Stone color) {
+//	  synchronized (this) {
+//	  String colorString;
+//	  switch (color) {
+//      case BLACK:
+//        colorString = "B";
+//        break;
+//      case WHITE:
+//        colorString = "W";
+//        break;
+//      default:
+//        throw new IllegalArgumentException(
+//            "The stone color must be B or W, but was " + color.toString());
+//    }
+//	      sendCommand("play " + colorString +" pass");
+//	      played=false;
+//	      //bestMoves = new ArrayList<>();
+//	     
+//	  }
+//	  }
+//  
+//  public void playPassPonder(Stone color) {
+//	  synchronized (this) {
+//	  String colorString;
+//	  switch (color) {
+//      case BLACK:
+//        colorString = "B";
+//        break;
+//      case WHITE:
+//        colorString = "W";
+//        break;
+//      default:
+//        throw new IllegalArgumentException(
+//            "The stone color must be B or W, but was " + color.toString());
+//    }
+//	      sendCommand("play " + colorString +" pass");
+//	      played=false;
+//	   //   bestMoves = new ArrayList<>();
+//	      ponder();	     
+//	  }
+//	  }
   
-  public void playPassPonder(Stone color) {
-	  synchronized (this) {
-	  String colorString;
-	  switch (color) {
-      case BLACK:
-        colorString = "B";
-        break;
-      case WHITE:
-        colorString = "W";
-        break;
-      default:
-        throw new IllegalArgumentException(
-            "The stone color must be B or W, but was " + color.toString());
-    }
-	      sendCommand("play " + colorString +" pass");
-	      played=false;
-	   //   bestMoves = new ArrayList<>();
-	      ponder();	     
-	  }
-	  }
-  
-  public void playMovePonder(Stone color, String move) {
+  public void playMovePonder(String colorString, String move) {
 	    synchronized (this) {
-	      String colorString;
-	      switch (color) {
-	        case BLACK:
-	          colorString = "B";
-	          break;
-	        case WHITE:
-	          colorString = "W";
-	          break;
-	        default:
-	          throw new IllegalArgumentException(
-	              "The stone color must be B or W, but was " + color.toString());
-	      }
+//	      String colorString;
+//	      switch (color) {
+//	        case BLACK:
+//	          colorString = "B";
+//	          break;
+//	        case WHITE:
+//	          colorString = "W";
+//	          break;
+//	        default:
+//	          throw new IllegalArgumentException(
+//	              "The stone color must be B or W, but was " + color.toString());
+//	      }
 	      played=false;
 	      sendCommand("play " + colorString + " " + move);
-	    //  bestMoves = new ArrayList<>();
+	      bestMoves = new ArrayList<>();
 	      ponder();
 	    }
 	  }
