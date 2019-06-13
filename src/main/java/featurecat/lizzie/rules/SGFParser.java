@@ -686,7 +686,6 @@ public class SGFParser {
   }
 
   private static String formatCommentPk(BoardHistoryNode node) {
-    
 
     if (node.getData().moveNumber < 1) {
       return "";
@@ -705,12 +704,11 @@ public class SGFParser {
 
     // Current winrate
 
-    double curWR=0;
+    double curWR = 0;
     try {
-    curWR= node.previous().get().getData().bestMoves.get(0).winrate;}
-    catch (Exception es)
-    {
-    	return "";
+      curWR = node.previous().get().getData().bestMoves.get(0).winrate;
+    } catch (Exception es) {
+      return "";
     }
 
     String curWinrate = curWinrate = String.format("%.1f%%", curWR);

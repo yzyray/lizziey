@@ -403,6 +403,7 @@ public class Leelaz {
         }
       } else if(Lizzie.gtpConsole.isVisible())
           Lizzie.gtpConsole.addLine(line);
+    	  System.out.println(line);
     	  if(line.startsWith("| ST")) {       
         String[] params = line.trim().split(" ");
         if(params.length==13)        	
@@ -1227,7 +1228,7 @@ public class Leelaz {
 		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", "pass");
 		        			  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 				          //Lizzie.leelaz.isPondering=true;		         
-				          Lizzie.board.pass();				          
+				        Lizzie.board.pass();				          
 				         // Lizzie.leelaz.played=false;
 				          }
 				          
@@ -1237,7 +1238,7 @@ public class Leelaz {
 				        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W", "pass");				        	  
 				        	 Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 				          //Lizzie.leelaz.isPondering=true;		          
-				          Lizzie.board.pass();
+				         Lizzie.board.pass();
 				          //Lizzie.leelaz.played=false;
 				          }
 		        	  }
@@ -1390,7 +1391,7 @@ public class Leelaz {
     try {
       int c;
       StringBuilder line = new StringBuilder();
-      while ((c = inputStream.read()) != -1) {
+      while ((c = process.getInputStream().read()) != -1) {
         line.append((char) c);
         if ((c == '\n')) {
         	if(!this.bestMoves.isEmpty())
@@ -1399,7 +1400,7 @@ public class Leelaz {
           //  notifyAutoPK();    
             pkResign();
             }
-        	//if(!played)
+        	if(!played)
           parseLine(line.toString());
           
          
@@ -1413,8 +1414,10 @@ public class Leelaz {
       // Do no exit for switching weights
       // System.exit(-1);
     } catch (IOException e) {
-      e.printStackTrace();
-      System.exit(-1);
+      //e.printStackTrace();
+    	System.out.println("读出错");
+      //System.exit(-1);
+    	read();
     }
   }
   
@@ -1472,7 +1475,7 @@ public class Leelaz {
     // but it is kept for future change of our mind.
     synchronized (cmdQueue) {
       if (cmdQueue.isEmpty()
-          || cmdQueue.peekFirst().startsWith("lz-analyze") && !isResponseUpToDate()) {
+          || cmdQueue.peekFirst().startsWith("lz-analyze")&&!Lizzie.frame.toolbar.isEnginePk&& !isResponseUpToDate()) {
         return;
       }
       String command = cmdQueue.removeFirst();
@@ -1495,8 +1498,10 @@ public class Leelaz {
     command = cmdNumber + " " + command;
     cmdNumber++;
     try {
-      outputStream.write((command + "\n").getBytes());
-      outputStream.flush();
+     outputStream.write((command + "\n").getBytes());      
+     outputStream.flush();
+    	 //  process.getOutputStream().write((command + "\n").getBytes());
+    	//   process.getOutputStream().flush();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -1513,6 +1518,8 @@ public class Leelaz {
    * @param move coordinate of the coordinate
    */
   public void playMove(Stone color, String move) {
+	  if(Lizzie.frame.toolbar.isEnginePk)
+		  return;
     synchronized (this) {
       String colorString;
       switch (color) {
@@ -1619,6 +1626,9 @@ public class Leelaz {
 	  }
 
   public void playMovewithavoid(Stone color, String move) {
+	  if(Lizzie.frame.toolbar.isEnginePk)
+	  {return;
+	  }
     synchronized (this) {
       String colorString;
       switch (color) {

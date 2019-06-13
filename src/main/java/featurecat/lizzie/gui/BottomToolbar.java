@@ -991,13 +991,13 @@ public class BottomToolbar extends JPanel {
                 Lizzie.engineManager.engineList.get(engineBlack).whiteResignMoveCounts = 0;
                 Lizzie.frame.setResult("");
 
-                if (Lizzie.engineManager.currentEngineNo == engineWhite
-                    || Lizzie.engineManager.currentEngineNo == engineBlack) {
+              //  if (Lizzie.engineManager.currentEngineNo == engineWhite
+                //    || Lizzie.engineManager.currentEngineNo == engineBlack) {
                   Lizzie.leelaz.nameCmd();
                   Lizzie.leelaz.notPondering();
-                } else {
-                  Lizzie.leelaz.normalQuit();
-                }
+                //} else {
+              //    Lizzie.leelaz.normalQuit();
+              //  }
                 try {
                   Lizzie.board.clear();
                 } catch (Exception ex) {

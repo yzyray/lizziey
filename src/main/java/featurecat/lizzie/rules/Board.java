@@ -686,7 +686,9 @@ public class Board implements LeelazListener {
         // erase the
         // redo's
         history.next();
+		if(!Lizzie.frame.toolbar.isEnginePk)
         Lizzie.leelaz.playMove(color, "pass");
+		
         if (Lizzie.frame.isPlayingAgainstLeelaz)
           Lizzie.leelaz.genmove((history.isBlacksTurn() ? "B" : "W"));
 
@@ -990,7 +992,7 @@ public class Board implements LeelazListener {
       if (!isValid(x, y) || (history.getStones()[getIndex(x, y)] != Stone.EMPTY && !newBranch))
         return;
       mvnumber[getIndex(x, y)] = history.getCurrentHistoryNode().getData().moveNumber + 1;
-      updateWinrate();
+      //updateWinrate();
       double nextWinrate = -100;
       if (history.getData().winrate >= 0) nextWinrate = 100 - history.getData().winrate;
 
