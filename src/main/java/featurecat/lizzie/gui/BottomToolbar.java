@@ -991,17 +991,16 @@ public class BottomToolbar extends JPanel {
                 Lizzie.engineManager.engineList.get(engineBlack).whiteResignMoveCounts = 0;
                 Lizzie.frame.setResult("");
 
-              //  if (Lizzie.engineManager.currentEngineNo == engineWhite
-                //    || Lizzie.engineManager.currentEngineNo == engineBlack) {
+                if (Lizzie.engineManager.currentEngineNo == engineWhite
+                    || Lizzie.engineManager.currentEngineNo == engineBlack) {
                   Lizzie.leelaz.nameCmd();
-                  Lizzie.leelaz.notPondering();
-                //} else {
-              //    Lizzie.leelaz.normalQuit();
-              //  }
-                try {
-                  Lizzie.board.clear();
-                } catch (Exception ex) {
+                  Lizzie.leelaz.Pondering();
+                } else {
+                  Lizzie.leelaz.normalQuit();
                 }
+
+                Lizzie.board.clearforpk();
+
                 if (chkenginePkContinue.isSelected()) {
                   Lizzie.board.setlist(startGame);
                 }
@@ -1009,19 +1008,30 @@ public class BottomToolbar extends JPanel {
                   // Lizzie.engineManager.engineList.get(engineWhite).notPondering();
                   Lizzie.engineManager.startEngineForPk(engineWhite);
                   // Lizzie.engineManager.engineList.get(engineWhite).Pondering();
-                  Lizzie.engineManager.startEngineForPk(engineBlack);
-                  Lizzie.engineManager.engineList.get(engineBlack).ponder();
+                  Lizzie.engineManager.startEngineForPkPonder(engineBlack);
+
                 } else {
                   // Lizzie.engineManager.engineList.get(engineBlack).notPondering();
                   Lizzie.engineManager.startEngineForPk(engineBlack);
                   // Lizzie.engineManager.engineList.get(engineBlack).Pondering();
-                  Lizzie.engineManager.startEngineForPk(engineWhite);
-                  Lizzie.engineManager.engineList.get(engineWhite).ponder();
+                  Lizzie.engineManager.startEngineForPkPonder(engineWhite);
+                  // Lizzie.leelaz=Lizzie.engineManager.engineList.get(engineWhite);
                 }
                 Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
+                // Lizzie.leelaz.ponder();
                 // Lizzie.engineManager.engineList.get(engineBlack).played = false;
                 //  Lizzie.engineManager.engineList.get(engineWhite).played = false;
-                // Lizzie.leelaz.ponder();
+                //                Timer timer = new Timer();
+                //                timer.schedule(
+                //                    new TimerTask() {
+                //                      public void run() {
+                //                    	  Lizzie.leelaz.ponder();
+                //                    	//  Lizzie.leelaz.playanyway=true;
+                //                        this.cancel();
+                //                      }
+                //                    },
+                //                   1000);
+                //
                 Lizzie.frame.setPlayers(
                     Lizzie.engineManager.engineList.get(engineWhite).currentEnginename,
                     Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);

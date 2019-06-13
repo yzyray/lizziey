@@ -201,6 +201,8 @@ public class Board implements LeelazListener {
     // if (node.getData().moveNumber <= movenumber) {
     //  if (node.getData().getPlayouts() > 0) node.getData().isChanged = true;
     // }
+    //    node.getData().winrate = 50;
+    //    node.getData().bestMoves.clear();
     node.getData().setPlayouts(0);
     if (node.numberOfChildren() > 1) {
       // Variation
@@ -686,9 +688,8 @@ public class Board implements LeelazListener {
         // erase the
         // redo's
         history.next();
-		if(!Lizzie.frame.toolbar.isEnginePk)
-        Lizzie.leelaz.playMove(color, "pass");
-		
+        if (!Lizzie.frame.toolbar.isEnginePk) Lizzie.leelaz.playMove(color, "pass");
+
         if (Lizzie.frame.isPlayingAgainstLeelaz)
           Lizzie.leelaz.genmove((history.isBlacksTurn() ? "B" : "W"));
 
@@ -992,7 +993,7 @@ public class Board implements LeelazListener {
       if (!isValid(x, y) || (history.getStones()[getIndex(x, y)] != Stone.EMPTY && !newBranch))
         return;
       mvnumber[getIndex(x, y)] = history.getCurrentHistoryNode().getData().moveNumber + 1;
-      //updateWinrate();
+      updateWinrate();
       double nextWinrate = -100;
       if (history.getData().winrate >= 0) nextWinrate = 100 - history.getData().winrate;
 
@@ -1377,6 +1378,7 @@ public class Board implements LeelazListener {
   public void restoreMoveNumber(int index, ArrayList<Movelist> mv) {
     // while (previousMove()) ;
     int lenth = mv.size();
+
     for (int i = 0; i < lenth; i++) {
       Movelist move = mv.get(lenth - 1 - i);
       if (!move.ispass) {
@@ -1392,6 +1394,30 @@ public class Board implements LeelazListener {
       }
     }
   }
+
+  public void restoreMoveNumberPonder(int index, ArrayList<Movelist> mv) {
+    // while (previousMove()) ;
+    int lenth = mv.size();
+    for (int i = 0; i < lenth; i++) {
+      Movelist move = mv.get(lenth - 1 - i);
+      if (!move.ispass) {
+        //	        placeinsert(move.x, move.y, move.isblack ? Stone.BLACK : Stone.WHITE);
+        //	        mvnumber[getIndex(move.x, move.y)] = i + 1;
+        //	      } else {
+        //	        passinsert(move.isblack ? Stone.BLACK : Stone.WHITE, false);
+        String color = move.isblack ? "b" : "w";
+        Lizzie.engineManager
+            .engineList
+            .get(index)
+            .sendCommand("play " + color + " " + convertCoordinatesToName(move.x, move.y));
+      }
+    }
+    Lizzie.engineManager
+        .engineList
+        .get(index)
+        .sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+  }
+
   //    Stone[] stones = history.getStones();
   //    for (int i = 0; i < stones.length; i++) {
   //      Stone stone = stones[i];
@@ -2277,7 +2303,7 @@ public class Board implements LeelazListener {
       // that we are
       // computing. i think its fine.
     }
-    if (Lizzie.leelaz.isPondering() && !isLoadingFile) {
+    if (Lizzie.leelaz.isPondering() && !isLoadingFile || Lizzie.frame.toolbar.isEnginePk) {
       // if (MoveData.getPlayouts(history.getData().bestMoves) > history.getData().getPlayouts())
       updateComment();
     }

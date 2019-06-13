@@ -94,24 +94,24 @@ public class EngineManager {
             })
         .start();
 
-    //        timer =
-    //            new Timer(
-    //                5000,
-    //                new ActionListener() {
-    //                  public void actionPerformed(ActionEvent evt) {
-    //                    checkEngineAlive();
-    //                    try {
-    //                    } catch (Exception e) {
-    //                    }
-    //                  }
-    //                });
-    //        timer.start();
+    timer =
+        new Timer(
+            5000,
+            new ActionListener() {
+              public void actionPerformed(ActionEvent evt) {
+                checkEngineAlive();
+                try {
+                } catch (Exception e) {
+                }
+              }
+            });
+    timer.start();
   }
 
   private void checkEngineNotHang() {
     if (Lizzie.frame.toolbar.isEnginePk
         && Lizzie.leelaz.isPondering()
-        && System.currentTimeMillis() - startInfoTime > 1000 * 20) {
+        && System.currentTimeMillis() - startInfoTime > 1000 * 240) {
       Lizzie.leelaz.process.destroy();
       startInfoTime = System.currentTimeMillis();
     }
@@ -130,6 +130,9 @@ public class EngineManager {
       if (System.currentTimeMillis() - gameTime > Lizzie.frame.toolbar.maxGanmeTime * 60 * 1000) {
         saveTimeoutFile();
         Lizzie.board.clear();
+        this.engineList.get(Lizzie.frame.toolbar.engineBlack).clearWithoutPonder();
+        this.engineList.get(Lizzie.frame.toolbar.engineWhite).clearWithoutPonder();
+        this.engineList.get(Lizzie.frame.toolbar.engineBlack).ponder();
         // forcekillAllEngines();
         gameTime = System.currentTimeMillis();
       }
@@ -353,6 +356,29 @@ public class EngineManager {
    *
    * @param index engine index
    */
+  public void startEngineForPkPonder(int index) {
+    if (index > this.engineList.size()) return;
+    // Lizzie.board.saveMoveNumber();
+    Leelaz newEng = engineList.get(index);
+    newEng.played = false;
+    ArrayList<Movelist> mv = Lizzie.board.getmovelist();
+    if (!newEng.isStarted()) {
+      try {
+        newEng.startEngine(index);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+    // else {newEng.initializeStreams();}
+    // Lizzie.leelaz = newEng;
+    Lizzie.engineManager.engineList.get(index).clearWithoutPonder();
+    // this.currentEngineNo = index;
+    // Lizzie.leelaz.notPondering();
+    Lizzie.board.restoreMoveNumberPonder(index, mv);
+    // Lizzie.leelaz.Pondering();
+  }
+
   public void startEngineForPk(int index) {
     if (index > this.engineList.size()) return;
     // Lizzie.board.saveMoveNumber();
@@ -369,7 +395,7 @@ public class EngineManager {
     }
     // else {newEng.initializeStreams();}
     // Lizzie.leelaz = newEng;
-    Lizzie.engineManager.engineList.get(index).clear();
+    Lizzie.engineManager.engineList.get(index).clearWithoutPonder();
     // this.currentEngineNo = index;
     // Lizzie.leelaz.notPondering();
     Lizzie.board.restoreMoveNumber(index, mv);

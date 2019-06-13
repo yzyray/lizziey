@@ -113,7 +113,10 @@ public class GtpConsolePane extends JDialog {
     this.command = command;
     // this.isAnalyzeCommand =
     //    command.startsWith("lz-analyze") || command.startsWith("lz-genmove_analyze");
-    addText(formatCommand(command, commandNumber, engineName));
+    try {
+      addText(formatCommand(command, commandNumber, engineName));
+    } catch (Exception ex) {
+    }
   }
 
   public void addZenCommand(String command, int commandNumber) {

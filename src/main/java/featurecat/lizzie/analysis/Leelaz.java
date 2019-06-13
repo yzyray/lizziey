@@ -110,7 +110,10 @@ public class Leelaz {
   public int blackResignMoveCounts=0;
   public int  whiteResignMoveCounts=0;
   public boolean resigned=false;
+  public boolean doublePass=false;
   public boolean played=false;
+  //private boolean pkBlackWins=true;
+  //public boolean playanyway=false;
   // public double heatwinrate;
   /**
    * Initializes the leelaz process and starts reading output
@@ -391,9 +394,9 @@ public class Leelaz {
           // This should not be stale data when the command number match
           this.bestMoves = parseInfo(line.substring(5));
           //notifyBestMoveListeners();
-          //  if() {
+            if(!bestMoves.isEmpty()) {
           notifyAutoPK();  
-          //  }
+            }
           Lizzie.frame.refresh();
           // don't follow the maxAnalyzeTime rule if we are in analysis mode
           if ((!Lizzie.frame.toolbar.isEnginePk||!Lizzie.frame.toolbar.isAutoAna)&&(System.currentTimeMillis() - startPonderTime) > Lizzie.config.maxAnalyzeTimeMillis
@@ -403,7 +406,7 @@ public class Leelaz {
         }
       } else if(Lizzie.gtpConsole.isVisible())
           Lizzie.gtpConsole.addLine(line);
-    	  System.out.println(line);
+    	  //System.out.println(line);
     	  if(line.startsWith("| ST")) {       
         String[] params = line.trim().split(" ");
         if(params.length==13)        	
@@ -694,7 +697,7 @@ public class Leelaz {
 	        }
 	        df=df+"黑"+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+"_白"+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename;
 	       
-	        if(currentEngineN==Lizzie.frame.toolbar.engineBlack)
+	        if(blackResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
 	        {df=df+"_白("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename+")胜";}	        
 	        else
 	        {df=df+"_黑("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+")胜";}
@@ -851,7 +854,7 @@ public class Leelaz {
 		return;
 	  isResigning=true;
 	
-	  System.out.println(this.currentEnginename+"认输");
+	 // System.out.println(this.currentEnginename+"认输");
 	  Lizzie.gtpConsole.addLine(currentEnginename+"认输");
 	 
 	  //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).notPondering();
@@ -860,31 +863,41 @@ public class Leelaz {
 	  if(blackResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
       {
 		  //df=df+"_白胜";
-		  if(Lizzie.frame.toolbar.EnginePkBatchNumberNow%2==1)
-		  Lizzie.frame.toolbar.pkWhiteWins=Lizzie.frame.toolbar.pkWhiteWins+1;
-		  else {
-			  Lizzie.frame.toolbar.pkBlackWins=Lizzie.frame.toolbar.pkBlackWins+1;
-		  }
-		  GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
+		  
+		if(Lizzie.frame.toolbar.EnginePkBatchNumberNow%2==0)
+			Lizzie.frame.toolbar.pkBlackWins=Lizzie.frame.toolbar.pkBlackWins+1;
+		  
+		else
+			 Lizzie.frame.toolbar.pkWhiteWins=Lizzie.frame.toolbar.pkWhiteWins+1;GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 		  gameInfo.setResult("白("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename+")胜");
 		  Lizzie.frame.setResult("白("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename+")胜");
 		  }
       else
       {
     	  //df=df+"_黑胜";
+    	  
     	  GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 		  gameInfo.setResult("黑("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+")胜");
 		  Lizzie.frame.setResult("黑("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+")胜");
     	
-    	  if(Lizzie.frame.toolbar.EnginePkBatchNumberNow%2==1)
-    	  Lizzie.frame.toolbar.pkBlackWins=Lizzie.frame.toolbar.pkBlackWins+1;
-    		  else {
-    			  Lizzie.frame.toolbar.pkWhiteWins=Lizzie.frame.toolbar.pkWhiteWins+1;
-    		  }
+    	
+			if(Lizzie.frame.toolbar.EnginePkBatchNumberNow%2==0)
+				  Lizzie.frame.toolbar.pkWhiteWins=Lizzie.frame.toolbar.pkWhiteWins+1;
+				else
+					Lizzie.frame.toolbar.pkBlackWins=Lizzie.frame.toolbar.pkBlackWins+1;
+    		
     	  }
 	 
 	  if(Lizzie.frame.toolbar.AutosavePk||Lizzie.frame.toolbar.isEnginePkBatch)
-	  {savePkFile();	  
+	  {
+		  if(doublePass)
+		  {
+			  savePassFile();
+			  doublePass=false;
+		  }
+		  else {
+		  savePkFile();
+		  }
 	  }
 	  
 	  if(Lizzie.frame.toolbar.isEnginePkBatch)
@@ -955,17 +968,29 @@ public class Leelaz {
             	//Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).notPondering();
               Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineWhite);
               //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).Pondering();
-              Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineBlack);
-              Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).ponder();
+              Lizzie.engineManager.startEngineForPkPonder(Lizzie.frame.toolbar.engineBlack);
+              
+              
             } else {
             	//Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).notPondering();
               Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineBlack);
               //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).Pondering();
-              Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineWhite);
-              Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).ponder();
+              Lizzie.engineManager.startEngineForPkPonder(Lizzie.frame.toolbar.engineWhite);
+             
             }
             
             Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
+          //  Lizzie.leelaz.ponder();
+//            Timer timer = new Timer();
+//            timer.schedule(
+//                new TimerTask() {
+//                  public void run() {
+//                	  Lizzie.leelaz.ponder();
+//                	 // Lizzie.leelaz.playanyway=true;
+//                    this.cancel();
+//                  }
+//                },
+//               1000);
             
         Lizzie.frame.setPlayers(
             Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename,
@@ -1057,6 +1082,65 @@ public class Leelaz {
 	
   }
   
+  private void savePassFile() {
+	    File file = new File("");
+	    String courseFile = "";
+	    try {
+	      courseFile = file.getCanonicalPath();
+	    } catch (IOException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+	    }
+	    File autoSaveFile;
+	    File autoSaveFile2 = null;
+	    String sf = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+	    autoSaveFile =
+	        new File(
+	            courseFile
+	                + "\\"
+	                + "PkAutoSave"
+	                + "\\"
+	                + Lizzie.frame.toolbar.batchPkName
+	                + "\\"
+	                + "双Pass对局"
+	                + sf
+	                + ".sgf");
+	    autoSaveFile2 =
+	        new File(
+	            courseFile
+	                + "\\"
+	                + "PkAutoSave"
+	                + "\\"
+	                + Lizzie.frame.toolbar.SF
+	                + "\\"
+	                + "双Pass对局"
+	                + sf
+	                + ".sgf");
+
+	    File fileParent = autoSaveFile.getParentFile();
+	    if (!fileParent.exists()) {
+	      fileParent.mkdirs();
+	    }
+	    try {
+	      SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+	    } catch (IOException e) {
+	      // TODO Auto-generated catch block
+	      if (Lizzie.frame.toolbar.isEnginePkBatch) {
+	        try {
+	          File fileParent2 = autoSaveFile2.getParentFile();
+	          if (!fileParent2.exists()) {
+	            fileParent2.mkdirs();
+	          }
+	          SGFParser.save(Lizzie.board, autoSaveFile2.getPath());
+	        } catch (IOException e1) {
+	          // TODO Auto-generated catch block
+	          e1.printStackTrace();
+	        }
+	      }
+	      e.printStackTrace();
+	    }
+	  }
+  
   private void notifyAutoPK() {	
 	  if (Lizzie.frame.toolbar.isEnginePk&&!played) {
 		  double curWR=this.bestMoves.get(0).winrate;
@@ -1102,6 +1186,8 @@ public class Leelaz {
 		        if (firstPlayouts > 0) {
 		          if (bestMoves.get(0).playouts >= firstPlayouts) {
 		        	  played=true;
+		        	 // if(playanyway)
+		        	//	  playanyway=false;
 		        	  if(resigned)
 		        	  resigned=false; 
 		        	  if(curWR<Lizzie.frame.toolbar.pkResginWinrate)
@@ -1132,7 +1218,16 @@ public class Leelaz {
 		        	  isResigning=false;  
 		        	  if(bestMoves.get(0).coordinate.equals("pass"))
 		        	  {
-		        		  
+		        		  Optional<int[]> passStep = Optional.empty();
+		        		  Optional<int[]> lastMove=Lizzie.board.getLastMove();
+				          if(lastMove==passStep)
+				          {
+				        	  Lizzie.board.pass();
+				        	  doublePass=true;
+				        	  resigned=true;
+				        	  nameCmd();		        		  
+			    			  return;
+				          }
 				          
 		        		  if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
 				          {
@@ -1153,6 +1248,7 @@ public class Leelaz {
 				          Lizzie.board.pass();
 				          //Lizzie.leelaz.played=false;
 				          }
+		        		  return;
 		        	  }
 		        	  
 		        	  
@@ -1189,6 +1285,8 @@ public class Leelaz {
 		          }
 		          if (sum >= playouts) {
 		        	  played=true;
+		        	 // if(playanyway)
+		        	//	  playanyway=false;
 		        	  if(resigned)
 		        	  resigned=false; 
 		        	  if(curWR<Lizzie.frame.toolbar.pkResginWinrate)
@@ -1220,8 +1318,16 @@ public class Leelaz {
 		        	  isResigning=false;
 		        	  if(bestMoves.get(0).coordinate.equals("pass"))
 		        	  {
-		        		  
-				          
+		        		  Optional<int[]> passStep = Optional.empty();
+		        		  Optional<int[]> lastMove=Lizzie.board.getLastMove();
+				          if(lastMove==passStep)
+				          {
+				        	  Lizzie.board.pass();	
+				        	  doublePass=true;
+				        	  resigned=true;
+				        	  nameCmd();		        		  
+			    			  return;
+				          }
 		        		  if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
 				          {
 		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( "B", "pass");
@@ -1241,6 +1347,7 @@ public class Leelaz {
 				         Lizzie.board.pass();
 				          //Lizzie.leelaz.played=false;
 				          }
+		        		  return;
 		        	  }
 		        	  
 		        	  
@@ -1251,7 +1358,7 @@ public class Leelaz {
 		          {
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
-				      
+		        	 // Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).bestMoves = new ArrayList<>();
 		        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 		          //Lizzie.leelaz.isPondering=true;		         
 		          Lizzie.board.place(coords[0],coords[1]);	
@@ -1264,6 +1371,7 @@ public class Leelaz {
 		          //Lizzie.leelaz.isPondering=true;		       
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
+		        	  //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).bestMoves = new ArrayList<>();
 		        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 		        	  Lizzie.board.place(coords[0],coords[1]);	
 		        	  
@@ -1277,6 +1385,8 @@ public class Leelaz {
 		        if (time > 0) {
 		          if (System.currentTimeMillis() - startPonderTime > time) {
 		        	  played=true;	
+		        	//  if(playanyway)
+		        	//	  playanyway=false;
 		        	  if(resigned)
 		        	  resigned=false; 
 		        	  if(curWR<Lizzie.frame.toolbar.pkResginWinrate)
@@ -1306,7 +1416,16 @@ public class Leelaz {
 		        	  if(bestMoves.get(0).coordinate.equals("pass"))
 		        	  {
 		        		  
-				          
+		        		  Optional<int[]> passStep = Optional.empty();
+		        		  Optional<int[]> lastMove=Lizzie.board.getLastMove();
+				          if(lastMove==passStep)
+				          {
+				        	  Lizzie.board.pass();	
+				        	  doublePass=true;
+				        	  resigned=true;
+				        	  nameCmd();		        		  
+			    			  return;
+				          }
 		        		  if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
 				          {
 		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( "B", "pass");
@@ -1326,6 +1445,7 @@ public class Leelaz {
 				          Lizzie.board.pass();
 				          //Lizzie.leelaz.played=false;
 				          }
+		        		  return;
 		        	  }
 		        	  
 		        	  
@@ -1392,6 +1512,8 @@ public class Leelaz {
       int c;
       StringBuilder line = new StringBuilder();
       while ((c = process.getInputStream().read()) != -1) {
+   //   while (true) {
+    	 // c = process.getInputStream().read();
         line.append((char) c);
         if ((c == '\n')) {
         	if(!this.bestMoves.isEmpty())
@@ -1402,7 +1524,6 @@ public class Leelaz {
             }
         	if(!played)
           parseLine(line.toString());
-          
          
           line = new StringBuilder();
         }
@@ -1411,11 +1532,11 @@ public class Leelaz {
       System.out.println("Leelaz process ended.");
       process.destroy();
       shutdown();
-      // Do no exit for switching weights
+    //   Do no exit for switching weights
       // System.exit(-1);
     } catch (IOException e) {
       //e.printStackTrace();
-    	System.out.println("读出错");
+    //	System.out.println("读出错");
       //System.exit(-1);
     	read();
     }
@@ -1475,7 +1596,7 @@ public class Leelaz {
     // but it is kept for future change of our mind.
     synchronized (cmdQueue) {
       if (cmdQueue.isEmpty()
-          || cmdQueue.peekFirst().startsWith("lz-analyze")&&!Lizzie.frame.toolbar.isEnginePk&& !isResponseUpToDate()) {
+          || cmdQueue.peekFirst().startsWith("lz-analyze")&& !isResponseUpToDate()) {
         return;
       }
       String command = cmdQueue.removeFirst();
@@ -1505,6 +1626,9 @@ public class Leelaz {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    if(executor!=null&&executor.isTerminated())
+    {	executor = Executors.newSingleThreadScheduledExecutor();
+    executor.execute(this::read);}
   }
 
   /** Check whether leelaz is responding to the last command */
@@ -1513,6 +1637,7 @@ public class Leelaz {
     return currentCmdNum >= cmdNumber - 1;
   }
 
+  
   /**
    * @param color color of stone to play
    * @param move coordinate of the coordinate
@@ -1619,8 +1744,8 @@ public class Leelaz {
 //	              "The stone color must be B or W, but was " + color.toString());
 //	      }
 	      played=false;
-	      sendCommand("play " + colorString + " " + move);
-	      bestMoves = new ArrayList<>();
+	    //  bestMoves = new ArrayList<>();
+	      sendCommand("play " + colorString + " " + move);	    
 	      ponder();
 	    }
 	  }
@@ -1684,6 +1809,14 @@ public class Leelaz {
       if (isPondering) ponder();
     }
   }
+  
+  public void clearWithoutPonder() {
+	    synchronized (this) {
+	      sendCommand("clear_board");
+	      bestMoves = new ArrayList<>();
+	   //   if (isPondering) ponder();
+	    }
+	  }
 
   public void undo() {
     synchronized (this) {
