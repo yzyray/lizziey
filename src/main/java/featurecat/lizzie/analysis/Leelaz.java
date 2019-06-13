@@ -393,6 +393,8 @@ public class Leelaz {
         if (isResponseUpToDate()) {
           // This should not be stale data when the command number match
           this.bestMoves = parseInfo(line.substring(5));
+          if(Lizzie.frame.toolbar.isEnginePk)
+          Lizzie.leelaz=this;
           //notifyBestMoveListeners();
             if(!bestMoves.isEmpty()) {
           notifyAutoPK();  
@@ -1023,6 +1025,8 @@ public class Leelaz {
 	         // chkenginePkgenmove.setEnabled(true);
 	          Lizzie.frame.toolbar.chkenginePk.setEnabled(true);
 	          Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
+	          Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).played=false;
+              Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).played=false;
 	         // Lizzie.engineManager.switchEngineForEndPk(Lizzie.engineManager.currentEngineNo);          
 	          Lizzie.frame.toolbar.batchPkName="";
 	        boolean onTop = false;
@@ -1054,6 +1058,8 @@ public class Leelaz {
          // chkenginePkgenmove.setEnabled(true);
           Lizzie.frame.toolbar.chkenginePk.setEnabled(true);
           Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
+          Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).played=false;
+          Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).played=false;
          // Lizzie.engineManager.switchEngineForEndPk(Lizzie.engineManager.currentEngineNo);          
           Lizzie.frame.toolbar.batchPkName="";
         boolean onTop = false;
@@ -1332,7 +1338,7 @@ public class Leelaz {
 				          {
 		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( "B", "pass");
 		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", "pass");
-		        			  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+		        			//  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 				          //Lizzie.leelaz.isPondering=true;		         
 				        Lizzie.board.pass();				          
 				         // Lizzie.leelaz.played=false;
@@ -1342,7 +1348,7 @@ public class Leelaz {
 				          {  
 				   			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W", "pass");
 				        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W", "pass");				        	  
-				        	 Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+				        	// Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 				          //Lizzie.leelaz.isPondering=true;		          
 				         Lizzie.board.pass();
 				          //Lizzie.leelaz.played=false;
@@ -1359,7 +1365,7 @@ public class Leelaz {
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 		        	 // Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).bestMoves = new ArrayList<>();
-		        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+		        	 // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 		          //Lizzie.leelaz.isPondering=true;		         
 		          Lizzie.board.place(coords[0],coords[1]);	
 		          
@@ -1372,7 +1378,7 @@ public class Leelaz {
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 		        	  //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).bestMoves = new ArrayList<>();
-		        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+		        	 // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 		        	  Lizzie.board.place(coords[0],coords[1]);	
 		        	  
 		         // Lizzie.leelaz.played=false;
@@ -1536,9 +1542,9 @@ public class Leelaz {
       // System.exit(-1);
     } catch (IOException e) {
       //e.printStackTrace();
-    //	System.out.println("读出错");
+    	System.out.println("读出错");
       //System.exit(-1);
-    	read();
+    //	read();
     }
   }
   
@@ -1626,11 +1632,12 @@ public class Leelaz {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    if(executor!=null&&executor.isTerminated())
-    {	executor = Executors.newSingleThreadScheduledExecutor();
-    executor.execute(this::read);}
+//    if(executor!=null&&executor.isShutdown())
+//    {	executor = Executors.newSingleThreadScheduledExecutor();
+//    executor.execute(this::read);}
   }
 
+ 
   /** Check whether leelaz is responding to the last command */
   private boolean isResponseUpToDate() {
     // Use >= instead of == for avoiding hang-up, though it cannot happen
@@ -1744,7 +1751,7 @@ public class Leelaz {
 //	              "The stone color must be B or W, but was " + color.toString());
 //	      }
 	      played=false;
-	    //  bestMoves = new ArrayList<>();
+	      bestMoves = new ArrayList<>();
 	      sendCommand("play " + colorString + " " + move);	    
 	      ponder();
 	    }

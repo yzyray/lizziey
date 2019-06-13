@@ -29,6 +29,7 @@ public class EngineManager {
   Timer timer;
   Timer timer2;
   Timer timer3;
+  Timer timer4;
 
   public EngineManager(Config config) throws JSONException, IOException {
 
@@ -110,7 +111,7 @@ public class EngineManager {
 
   private void checkEngineNotHang() {
     if (Lizzie.frame.toolbar.isEnginePk
-        && Lizzie.leelaz.isPondering()
+        && !Lizzie.frame.toolbar.isPkStop
         && System.currentTimeMillis() - startInfoTime > 1000 * 240) {
       Lizzie.leelaz.process.destroy();
       startInfoTime = System.currentTimeMillis();
@@ -185,6 +186,9 @@ public class EngineManager {
   }
 
   private void checkEnginePK() {
+    if (!Lizzie.frame.toolbar.isEnginePk) {
+      return;
+    }
     if (engineList.get(Lizzie.frame.toolbar.engineBlack).process != null
         && engineList.get(Lizzie.frame.toolbar.engineBlack).process.isAlive()) {
     } else {
@@ -477,9 +481,37 @@ public class EngineManager {
   }
 
   public void changeEngIcoForEndPk() {
-    this.currentEngineNo = -1;
-    switchEngine(Lizzie.leelaz.currentEngineN());
     featurecat.lizzie.gui.Menu.engineMenu.setEnabled(true);
+    if (Lizzie.board.getData().blackToPlay) {
+      switchEngine(Lizzie.frame.toolbar.engineWhite);
+      switchEngine(Lizzie.frame.toolbar.engineBlack);
+    } else {
+      switchEngine(Lizzie.frame.toolbar.engineBlack);
+      switchEngine(Lizzie.frame.toolbar.engineWhite);
+    }
+    timer4 =
+        new Timer(
+            500,
+            new ActionListener() {
+              public void actionPerformed(ActionEvent evt) {
+                ponderForEndpk();
+                try {
+                } catch (Exception e) {
+                }
+              }
+            });
+    timer4.start();
+  }
+
+  private void ponderForEndpk() {
+    Lizzie.leelaz.togglePonder();
+    Lizzie.leelaz.togglePonder();
+    try {
+      timer4.stop();
+      timer4 = null;
+    } catch (Exception ex) {
+
+    }
   }
 
   private void changeEngIco() {

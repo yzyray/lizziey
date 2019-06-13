@@ -1186,16 +1186,6 @@ public class LizzieFrame extends JFrame {
         //  }
 
         // Todo: Make board move over when there is no space beside the board
-        if (Lizzie.config.showWinrate) {
-          // if (backgroundG.isPresent()) {
-          // if (isSmallCap) {
-          //   contw = contw + contw;
-          // }
-          // drawContainer(backgroundG.get(), contx, conty, contw, conth);
-          //  }
-          drawMoveStatistics(g, statx, staty, statw, stath);
-          winrateGraph.draw(g, grx, gry, grw, grh);
-        }
 
         if (Lizzie.config.showVariationGraph || Lizzie.config.showComment) {
           //  if (backgroundG.isPresent()) {
@@ -1227,6 +1217,16 @@ public class LizzieFrame extends JFrame {
       }
 
       if (Lizzie.config.showCaptured) drawCaptured(g, capx, capy, capw, caph, isSmallCap);
+      if (Lizzie.config.showWinrate) {
+        // if (backgroundG.isPresent()) {
+        // if (isSmallCap) {
+        //   contw = contw + contw;
+        // }
+        // drawContainer(backgroundG.get(), contx, conty, contw, conth);
+        //  }
+        drawMoveStatistics(g, statx, staty, statw, stath);
+        winrateGraph.draw(g, grx, gry, grw, grh);
+      }
 
       // cleanup
       g.dispose();

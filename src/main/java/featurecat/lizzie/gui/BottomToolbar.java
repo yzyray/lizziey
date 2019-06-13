@@ -893,8 +893,7 @@ public class BottomToolbar extends JPanel {
           public void actionPerformed(ActionEvent e) {
             // TBD未完成
             setTxtUnfocuse();
-            Lizzie.leelaz.togglePonder();
-            if (Lizzie.leelaz.isPondering()) {
+            if (isPkStop) {
               btnEnginePkStop.setText("暂停");
               isPkStop = false;
             } else {
@@ -982,7 +981,7 @@ public class BottomToolbar extends JPanel {
               pkWhiteWins = 0;
               featurecat.lizzie.gui.Menu.engineMenu.setText("对战中");
               featurecat.lizzie.gui.Menu.engineMenu.setEnabled(false);
-
+              analyse.setEnabled(false);
               if (!isGenmove) {
                 // 分析模式对战
                 Lizzie.engineManager.engineList.get(engineBlack).blackResignMoveCounts = 0;
@@ -1047,11 +1046,14 @@ public class BottomToolbar extends JPanel {
             } else {
               isEnginePk = false;
               btnStartPk.setText("开始对战");
-              Lizzie.engineManager.engineList.get(engineBlack).notPondering();
-              Lizzie.engineManager.engineList.get(engineBlack).nameCmd();
-              Lizzie.engineManager.engineList.get(engineWhite).notPondering();
-              Lizzie.engineManager.engineList.get(engineWhite).nameCmd();
+              // Lizzie.engineManager.engineList.get(engineBlack).notPondering();
+              // Lizzie.engineManager.engineList.get(engineBlack).nameCmd();
+              // Lizzie.engineManager.engineList.get(engineWhite).notPondering();
+              // Lizzie.engineManager.engineList.get(engineWhite).nameCmd();
+              Lizzie.engineManager.engineList.get(engineBlack).played = false;
+              Lizzie.engineManager.engineList.get(engineWhite).played = false;
               Lizzie.frame.addInput();
+              analyse.setEnabled(true);
               enginePkBlack.setEnabled(true);
               enginePkWhite.setEnabled(true);
               // txtenginePkBatch.setEnabled(true);
