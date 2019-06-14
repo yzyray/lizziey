@@ -1162,6 +1162,12 @@ public class LizzieFrame extends JFrame {
           drawContainer(backgroundG.get(), vx, vy, vw, vh);
         }
       }
+      if (Lizzie.config.showStatus) {
+        String loadingText = resourceBundle.getString("LizzieFrame.display.loading");
+        drawPonderingState(g, loadingText, loadingX, loadingY, loadingSize);
+      }
+
+      if (Lizzie.config.showCaptured) drawCaptured(g, capx, capy, capw, caph, isSmallCap);
       if (Lizzie.leelaz != null && Lizzie.leelaz.isLoaded()) {
         if (Lizzie.config.showStatus) {
           String statusKey = "LizzieFrame.display." + (Lizzie.leelaz.isPondering() ? "on" : "off");
@@ -1211,21 +1217,16 @@ public class LizzieFrame extends JFrame {
             // This can happen when no space is left for subboard.
           }
         }
-      } else if (Lizzie.config.showStatus) {
-        String loadingText = resourceBundle.getString("LizzieFrame.display.loading");
-        drawPonderingState(g, loadingText, loadingX, loadingY, loadingSize);
-      }
-
-      if (Lizzie.config.showCaptured) drawCaptured(g, capx, capy, capw, caph, isSmallCap);
-      if (Lizzie.config.showWinrate) {
-        // if (backgroundG.isPresent()) {
-        // if (isSmallCap) {
-        //   contw = contw + contw;
-        // }
-        // drawContainer(backgroundG.get(), contx, conty, contw, conth);
-        //  }
-        drawMoveStatistics(g, statx, staty, statw, stath);
-        winrateGraph.draw(g, grx, gry, grw, grh);
+        if (Lizzie.config.showWinrate) {
+          // if (backgroundG.isPresent()) {
+          // if (isSmallCap) {
+          //   contw = contw + contw;
+          // }
+          // drawContainer(backgroundG.get(), contx, conty, contw, conth);
+          //  }
+          drawMoveStatistics(g, statx, staty, statw, stath);
+          winrateGraph.draw(g, grx, gry, grw, grh);
+        }
       }
 
       // cleanup

@@ -903,7 +903,7 @@ public class Leelaz {
 	  }
 	  
 	  if(Lizzie.frame.toolbar.isEnginePkBatch)
-	  {
+	  {		  
 		  int EnginePkBatchNumber=1;
 		  try {
 	          EnginePkBatchNumber = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkBatch.getText());
@@ -1148,6 +1148,13 @@ public class Leelaz {
 	  }
   
   private void notifyAutoPK() {	
+	  
+		  if(Lizzie.frame.toolbar.isPkStop)
+		  {
+			 nameCmd();
+			 return;
+		  }
+	 
 	  if (Lizzie.frame.toolbar.isEnginePk&&!played) {
 		  double curWR=this.bestMoves.get(0).winrate;
 		  

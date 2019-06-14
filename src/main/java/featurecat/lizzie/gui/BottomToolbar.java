@@ -893,9 +893,15 @@ public class BottomToolbar extends JPanel {
           public void actionPerformed(ActionEvent e) {
             // TBD未完成
             setTxtUnfocuse();
+
             if (isPkStop) {
               btnEnginePkStop.setText("暂停");
               isPkStop = false;
+              if (Lizzie.board.getData().blackToPlay) {
+                Lizzie.engineManager.engineList.get(engineBlack).ponder();
+              } else {
+                Lizzie.engineManager.engineList.get(engineWhite).ponder();
+              }
             } else {
               btnEnginePkStop.setText("继续");
               isPkStop = true;

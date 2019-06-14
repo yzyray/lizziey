@@ -13,7 +13,7 @@ public class WinrateGraph {
   private int[] origParams = {0, 0, 0, 0};
   private int[] params = {0, 0, 0, 0, 0};
   private int numMovesOfPlayed = 0;
-  public int mode = 1;
+  public int mode = 0;
 
   public void draw(Graphics2D g, int posx, int posy, int width, int height) {
     BoardHistoryNode curMove = Lizzie.board.getHistory().getCurrentHistoryNode();
@@ -127,371 +127,320 @@ public class WinrateGraph {
       numMoves = this.numMovesOfPlayed;
     }
 
-    if (mode == 0) {
-      while (node.previous().isPresent()) {
-        double wr = node.getData().winrate;
-        int playouts = node.getData().getPlayouts();
-        if (node == curMove) {
-          if (Lizzie.config.dynamicWinrateGraphWidth
-              && node.getData().moveNumber - 1 > this.numMovesOfPlayed) {
-            this.numMovesOfPlayed = node.getData().moveNumber - 1;
-            numMoves = this.numMovesOfPlayed;
-          }
-          Leelaz.WinrateStats stats = Lizzie.leelaz.getWinrateStats();
-          double bwr = stats.maxWinrate;
-          if (bwr >= 0 && stats.totalPlayouts > playouts) {
-            wr = bwr;
-            playouts = stats.totalPlayouts;
-          }
-          // Draw a vertical line at the current move
-          Stroke previousStroke = g.getStroke();
-          int x = posx + (movenum * width / numMoves);
-          g.setStroke(dashed);
-          g.setColor(Color.white);
-          g.drawLine(x, posy, x, posy + height);
-          // Show move number
-          String moveNumString = "" + node.getData().moveNumber;
-          int mw = g.getFontMetrics().stringWidth(moveNumString);
-          int margin = strokeRadius;
-          int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
-          g.drawString(moveNumString, mx, posy + height - margin);
-          g.setStroke(previousStroke);
+    if (Lizzie.frame.toolbar.isEnginePk) {
+      if (numMoves < 2) return;
+
+      while (node.previous().isPresent() && node.previous().get().previous().isPresent()) {
+        double wr = node.previous().get().previous().get().getData().bestMoves.get(0).winrate;
+        try {
+          wr = node.getData().bestMoves.get(0).winrate;
+        } catch (Exception ex) {
+
         }
-        if (playouts > 0) {
-          if (wr < 0) {
-            wr = 100 - lastWr;
-          } else if (!node.getData().blackToPlay) {
-            wr = 100 - wr;
-          }
-          if (Lizzie.frame.isPlayingAgainstLeelaz
-              && Lizzie.frame.playerIsBlack == !node.getData().blackToPlay) {
-            wr = lastWr;
-          }
+        int playouts = node.getData().getPlayouts();
 
-          if (lastNodeOk) g.setColor(Lizzie.config.winrateLineColor);
-          else g.setColor(Lizzie.config.winrateMissLineColor);
+        lastWr = node.previous().get().previous().get().getData().bestMoves.get(0).winrate;
+        if (node.getData().blackToPlay) {
+          g.setColor(Color.BLACK);
+          g.drawLine(
+              posx + ((movenum - 2) * width / numMoves),
+              posy + height - (int) (convertWinrate(lastWr) * height / 100),
+              posx + (movenum * width / numMoves),
+              posy + height - (int) (convertWinrate(wr) * height / 100));
 
-          if (lastOkMove > 0) {
-            if (Lizzie.config.showBlunderBar) {
-              Color lineColor = g.getColor();
-              g.setColor(Lizzie.config.blunderBarColor);
-              double lastMoveRate = convertWinrate(lastWr) - convertWinrate(wr);
-              int lastHeight = 0;
-              if (Lizzie.config.weightedBlunderBarHeight) {
-                // Weighted display: <= 50% will use 75% of height, >= 50% will use 25% of height
-                if (Math.abs(lastMoveRate) <= 50) {
-                  lastHeight = Math.abs((int) (lastMoveRate) * height * 3 / 400);
-                } else {
-                  lastHeight = height / 4 + Math.abs((int) (Math.abs(lastMoveRate)) * height / 400);
-                }
-              } else {
-                lastHeight = Math.abs((int) (lastMoveRate) * height / 200);
-              }
-              int lastWidth = Math.abs((movenum - lastOkMove) * width / numMoves);
-              int rectWidth = Math.max(lastWidth / 10, Lizzie.config.minimumBlunderBarWidth);
-              g.fillRect(
-                  posx + (movenum * width / numMoves) + (lastWidth - rectWidth) / 2,
-                  midy + (!node.getData().blackToPlay && lastMoveRate > 0 ? lastHeight * -1 : 0),
-                  rectWidth,
-                  lastHeight);
-              g.setColor(lineColor);
+        } else {
+          g.setColor(Color.WHITE);
+          g.drawLine(
+              posx + ((movenum - 2) * width / numMoves),
+              posy + height - (int) (convertWinrate(lastWr) * height / 100),
+              posx + (movenum * width / numMoves),
+              posy + height - (int) (convertWinrate(wr) * height / 100));
+        }
+
+        lastOkMove = movenum - 2;
+
+        if (Lizzie.config.showBlunderBar) {
+          g.setColor(Lizzie.config.blunderBarColor);
+          double lastMoveRate = convertWinrate(lastWr) - convertWinrate(wr);
+          int lastHeight = 0;
+          if (Lizzie.config.weightedBlunderBarHeight) {
+            // Weighted display: <= 50% will use 75% of height, >= 50% will use 25% of height
+            if (Math.abs(lastMoveRate) <= 50) {
+              lastHeight = Math.abs((int) (lastMoveRate) * height * 3 / 400);
+            } else {
+              lastHeight = height / 4 + Math.abs((int) (Math.abs(lastMoveRate)) * height / 400);
             }
-            g.drawLine(
-                posx + (lastOkMove * width / numMoves),
-                posy + height - (int) (convertWinrate(lastWr) * height / 100),
-                posx + (movenum * width / numMoves),
-                posy + height - (int) (convertWinrate(wr) * height / 100));
+          } else {
+            lastHeight = Math.abs((int) (lastMoveRate) * height / 200);
           }
+          int lastWidth = Math.abs(2 * width / numMoves);
+          int rectWidth = Math.max(lastWidth / 10, Lizzie.config.minimumBlunderBarWidth);
+          g.fillRect(
+              posx + ((movenum - 1) * width / numMoves) + (lastWidth - rectWidth) / 2,
+              midy + (node.getData().blackToPlay ? 0 : lastHeight * -1),
+              rectWidth,
+              lastHeight);
+        }
 
-          if (node == curMove) {
-            g.setColor(Lizzie.config.winrateLineColor);
+        if (node == curMove || node == curMove.previous().get()) {
+          if (node.getData().blackToPlay) {
+            g.setColor(Color.BLACK);
             g.fillOval(
                 posx + (movenum * width / numMoves) - DOT_RADIUS,
                 posy + height - (int) (convertWinrate(wr) * height / 100) - DOT_RADIUS,
                 DOT_RADIUS * 2,
                 DOT_RADIUS * 2);
-            if (node.getData().blackToPlay) g.setColor(Color.WHITE);
-            else g.setColor(Color.GREEN);
             Font f = new Font("", Font.BOLD, 17);
-
             g.setFont(f);
             g.drawString(
                 String.format("%.1f", wr),
                 posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
                 posy + (height - (int) (convertWinrate(wr) * height / 100)) - 2 * DOT_RADIUS);
-          }
-          lastWr = wr;
-          lastNodeOk = true;
-          // Check if we were in a variation and has reached the main trunk
-          if (topOfVariation.isPresent() && topOfVariation.get() == node) {
-            // Reached top of variation, go to end of main trunk before continuing
-            while (node.next().isPresent()) {
-              node = node.next().get();
-            }
-            movenum = node.getData().moveNumber - 1;
-            lastWr = node.getData().winrate;
-            if (!node.getData().blackToPlay) lastWr = 100 - lastWr;
-            g.setStroke(new BasicStroke(3));
-            topOfVariation = Optional.empty();
-            if (node.getData().getPlayouts() == 0) {
-              lastNodeOk = false;
-            }
-            inFirstPath = false;
-          }
-          lastOkMove = lastNodeOk ? movenum : -1;
-        } else {
-          lastNodeOk = false;
-        }
-
-        node = node.previous().get();
-        movenum--;
-      }
-    } else if (mode == 1) {
-      while (node.previous().isPresent()) {
-        double wr = node.getData().winrate;
-        int playouts = node.getData().getPlayouts();
-        if (node == curMove) {
-          if (Lizzie.config.dynamicWinrateGraphWidth
-              && node.getData().moveNumber - 1 > this.numMovesOfPlayed) {
-            this.numMovesOfPlayed = node.getData().moveNumber - 1;
-            numMoves = this.numMovesOfPlayed;
-          }
-          Leelaz.WinrateStats stats = Lizzie.leelaz.getWinrateStats();
-          double bwr = stats.maxWinrate;
-          if (bwr >= 0 && stats.totalPlayouts > playouts) {
-            wr = bwr;
-            playouts = stats.totalPlayouts;
-          }
-          // Draw a vertical line at the current move
-          Stroke previousStroke = g.getStroke();
-          int x = posx + (movenum * width / numMoves);
-          g.setStroke(dashed);
-          g.setColor(Color.white);
-          g.drawLine(x, posy, x, posy + height);
-          // Show move number
-          String moveNumString = "" + node.getData().moveNumber;
-          int mw = g.getFontMetrics().stringWidth(moveNumString);
-          int margin = strokeRadius;
-          int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
-          g.drawString(moveNumString, mx, posy + height - margin);
-          g.setStroke(previousStroke);
-        }
-        if (playouts > 0) {
-          if (wr < 0) {
-            wr = 100 - lastWr;
-          } else if (!node.getData().blackToPlay) {
-            wr = 100 - wr;
-          }
-          if (Lizzie.frame.isPlayingAgainstLeelaz
-              && Lizzie.frame.playerIsBlack == !node.getData().blackToPlay) {
-            wr = lastWr;
-          }
-
-          if (lastNodeOk) g.setColor(Lizzie.config.winrateLineColor);
-          else g.setColor(Lizzie.config.winrateMissLineColor);
-
-          if (lastOkMove > 0) {
-            if (Lizzie.config.showBlunderBar) {
-              Color lineColor = g.getColor();
-              g.setColor(Lizzie.config.blunderBarColor);
-              double lastMoveRate = convertWinrate(lastWr) - convertWinrate(wr);
-              int lastHeight = 0;
-              if (Lizzie.config.weightedBlunderBarHeight) {
-                // Weighted display: <= 50% will use 75% of height, >= 50% will use 25% of height
-                if (Math.abs(lastMoveRate) <= 50) {
-                  lastHeight = Math.abs((int) (lastMoveRate) * height * 3 / 400);
-                } else {
-                  lastHeight = height / 4 + Math.abs((int) (Math.abs(lastMoveRate)) * height / 400);
-                }
-              } else {
-                lastHeight = Math.abs((int) (lastMoveRate) * height / 200);
-              }
-              int lastWidth = Math.abs((movenum - lastOkMove) * width / numMoves);
-              int rectWidth = Math.max(lastWidth / 10, Lizzie.config.minimumBlunderBarWidth);
-              g.fillRect(
-                  posx + (movenum * width / numMoves) + (lastWidth - rectWidth) / 2,
-                  midy + (!node.getData().blackToPlay && lastMoveRate > 0 ? lastHeight * -1 : 0),
-                  rectWidth,
-                  lastHeight);
-            }
-            g.setColor(Color.BLACK);
-            g.drawLine(
-                posx + (lastOkMove * width / numMoves),
-                posy + height - (int) (convertWinrate(lastWr) * height / 100),
-                posx + (movenum * width / numMoves),
-                posy + height - (int) (convertWinrate(wr) * height / 100));
-
+          } else {
             g.setColor(Color.WHITE);
-            g.drawLine(
-                posx + (lastOkMove * width / numMoves),
-                posy + height - (int) (convertWinrate(100 - lastWr) * height / 100),
-                posx + (movenum * width / numMoves),
-                posy + height - (int) (convertWinrate(100 - wr) * height / 100));
-          }
-
-          if (node == curMove) {
-            g.setColor(Color.BLACK);
             g.fillOval(
                 posx + (movenum * width / numMoves) - DOT_RADIUS,
                 posy + height - (int) (convertWinrate(wr) * height / 100) - DOT_RADIUS,
                 DOT_RADIUS * 2,
                 DOT_RADIUS * 2);
-
-            g.setColor(Color.WHITE);
-            g.fillOval(
-                posx + (movenum * width / numMoves) - DOT_RADIUS,
-                posy + height - (int) (convertWinrate(100 - wr) * height / 100) - DOT_RADIUS,
-                DOT_RADIUS * 2,
-                DOT_RADIUS * 2);
-            g.setColor(Color.BLACK);
             Font f = new Font("", Font.BOLD, 17);
-
             g.setFont(f);
             g.drawString(
                 String.format("%.1f", wr),
                 posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
                 posy + (height - (int) (convertWinrate(wr) * height / 100)) + 6 * DOT_RADIUS);
-
-            g.setColor(Color.WHITE);
-            g.drawString(
-                String.format("%.1f", 100 - wr),
-                posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
-                posy + (height - (int) (convertWinrate(100 - wr) * height / 100)) - 2 * DOT_RADIUS);
           }
-          lastWr = wr;
-          lastNodeOk = true;
-          // Check if we were in a variation and has reached the main trunk
-          if (topOfVariation.isPresent() && topOfVariation.get() == node) {
-            // Reached top of variation, go to end of main trunk before continuing
-            while (node.next().isPresent()) {
-              node = node.next().get();
-            }
-            movenum = node.getData().moveNumber - 1;
-            lastWr = node.getData().winrate;
-            if (!node.getData().blackToPlay) lastWr = 100 - lastWr;
-            g.setStroke(new BasicStroke(3));
-            topOfVariation = Optional.empty();
-            if (node.getData().getPlayouts() == 0) {
-              lastNodeOk = false;
-            }
-            inFirstPath = false;
-          }
-          lastOkMove = lastNodeOk ? movenum : -1;
-        } else {
-          lastNodeOk = false;
         }
-
         node = node.previous().get();
-        movenum--;
+        movenum = movenum - 1;
       }
-    } else if (mode == 2) {
-      if (numMoves < 2) return;
+    } else {
+      if (mode == 0) {
+        while (node.previous().isPresent()) {
+          double wr = node.getData().winrate;
+          int playouts = node.getData().getPlayouts();
+          if (node == curMove) {
+            if (Lizzie.config.dynamicWinrateGraphWidth
+                && node.getData().moveNumber - 1 > this.numMovesOfPlayed) {
+              this.numMovesOfPlayed = node.getData().moveNumber - 1;
+              numMoves = this.numMovesOfPlayed;
+            }
+            Leelaz.WinrateStats stats = Lizzie.leelaz.getWinrateStats();
+            double bwr = stats.maxWinrate;
+            if (bwr >= 0 && stats.totalPlayouts > playouts) {
+              wr = bwr;
+              playouts = stats.totalPlayouts;
+            }
+            // Draw a vertical line at the current move
+            Stroke previousStroke = g.getStroke();
+            int x = posx + (movenum * width / numMoves);
+            g.setStroke(dashed);
+            g.setColor(Color.white);
+            g.drawLine(x, posy, x, posy + height);
+            // Show move number
+            String moveNumString = "" + node.getData().moveNumber;
+            int mw = g.getFontMetrics().stringWidth(moveNumString);
+            int margin = strokeRadius;
+            int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
+            g.drawString(moveNumString, mx, posy + height - margin);
+            g.setStroke(previousStroke);
+          }
+          if (playouts > 0) {
+            if (wr < 0) {
+              wr = 100 - lastWr;
+            } else if (!node.getData().blackToPlay) {
+              wr = 100 - wr;
+            }
+            if (Lizzie.frame.isPlayingAgainstLeelaz
+                && Lizzie.frame.playerIsBlack == !node.getData().blackToPlay) {
+              wr = lastWr;
+            }
 
-      while (node.previous().isPresent() && node.previous().get().previous().isPresent()) {
+            if (lastNodeOk) g.setColor(Lizzie.config.winrateLineColor);
+            else g.setColor(Lizzie.config.winrateMissLineColor);
 
-        double wr = node.getData().winrate;
-        int playouts = node.getData().getPlayouts();
-        //	      if (node == curMove) {
-        //	        if (Lizzie.config.dynamicWinrateGraphWidth
-        //	            && node.getData().moveNumber - 1 > this.numMovesOfPlayed) {
-        //	          this.numMovesOfPlayed = node.getData().moveNumber - 1;
-        //	          numMoves = this.numMovesOfPlayed;
-        //	        }
-        //	        Leelaz.WinrateStats stats = Lizzie.leelaz.getWinrateStats();
-        //	        double bwr = stats.maxWinrate;
-        //	        if (bwr >= 0 && stats.totalPlayouts > playouts) {
-        //	          wr = bwr;
-        //	          playouts = stats.totalPlayouts;
-        //	        }
-        //	        // Draw a vertical line at the current move
-        //	        Stroke previousStroke = g.getStroke();
-        //	        int x = posx + (movenum * width / numMoves);
-        //	        g.setStroke(dashed);
-        //	        g.setColor(Color.white);
-        //	        g.drawLine(x, posy, x, posy + height);
-        //	        // Show move number
-        //	        String moveNumString = "" + node.getData().moveNumber;
-        //	        int mw = g.getFontMetrics().stringWidth(moveNumString);
-        //	        int margin = strokeRadius;
-        //	        int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
-        //	        g.drawString(moveNumString, mx, posy + height - margin);
-        //	        g.setStroke(previousStroke);
-        //	      }
-        if (playouts > 0) {
-          //	        if (wr < 0) {
-          //	          wr = 100 - lastWr;
-          //	        } else if (!node.getData().blackToPlay) {
-          //	          wr = 100 - wr;
-          //	      	        }
+            if (lastOkMove > 0) {
+              if (Lizzie.config.showBlunderBar) {
+                Color lineColor = g.getColor();
+                g.setColor(Lizzie.config.blunderBarColor);
+                double lastMoveRate = convertWinrate(lastWr) - convertWinrate(wr);
+                int lastHeight = 0;
+                if (Lizzie.config.weightedBlunderBarHeight) {
+                  // Weighted display: <= 50% will use 75% of height, >= 50% will use 25% of height
+                  if (Math.abs(lastMoveRate) <= 50) {
+                    lastHeight = Math.abs((int) (lastMoveRate) * height * 3 / 400);
+                  } else {
+                    lastHeight =
+                        height / 4 + Math.abs((int) (Math.abs(lastMoveRate)) * height / 400);
+                  }
+                } else {
+                  lastHeight = Math.abs((int) (lastMoveRate) * height / 200);
+                }
+                int lastWidth = Math.abs((movenum - lastOkMove) * width / numMoves);
+                int rectWidth = Math.max(lastWidth / 10, Lizzie.config.minimumBlunderBarWidth);
+                g.fillRect(
+                    posx + (movenum * width / numMoves) + (lastWidth - rectWidth) / 2,
+                    midy + (!node.getData().blackToPlay && lastMoveRate > 0 ? lastHeight * -1 : 0),
+                    rectWidth,
+                    lastHeight);
+                g.setColor(lineColor);
+              }
+              g.drawLine(
+                  posx + (lastOkMove * width / numMoves),
+                  posy + height - (int) (convertWinrate(lastWr) * height / 100),
+                  posx + (movenum * width / numMoves),
+                  posy + height - (int) (convertWinrate(wr) * height / 100));
+            }
 
-          //	        if (lastNodeOk) g.setColor(Lizzie.config.winrateLineColor);
-          //	        else g.setColor(Lizzie.config.winrateMissLineColor);
+            if (node == curMove) {
+              g.setColor(Lizzie.config.winrateLineColor);
+              g.fillOval(
+                  posx + (movenum * width / numMoves) - DOT_RADIUS,
+                  posy + height - (int) (convertWinrate(wr) * height / 100) - DOT_RADIUS,
+                  DOT_RADIUS * 2,
+                  DOT_RADIUS * 2);
+//              if (node.getData().blackToPlay) g.setColor(Color.WHITE);
+//              else g.setColor(Color.BLACK);
+              Font f = new Font("", Font.BOLD, 17);
 
-          if (lastOkMove > 0) {
-            //	          if (Lizzie.config.showBlunderBar) {
-            //	            Color lineColor = g.getColor();
-            //	            g.setColor(Lizzie.config.blunderBarColor);
-            //	            double lastMoveRate = convertWinrate(lastWr) - convertWinrate(wr);
-            //	            int lastHeight = 0;
-            //	            if (Lizzie.config.weightedBlunderBarHeight) {
-            //	              // Weighted display: <= 50% will use 75% of height, >= 50% will use 25%
-            // of height
-            //	              if (Math.abs(lastMoveRate) <= 50) {
-            //	                lastHeight = Math.abs((int) (lastMoveRate) * height * 3 / 400);
-            //	              } else {
-            //	                lastHeight = height / 4 + Math.abs((int) (Math.abs(lastMoveRate)) *
-            // height / 400);
-            //	              }
-            //	            } else {
-            //	              lastHeight = Math.abs((int) (lastMoveRate) * height / 200);
-            //	            }
-            //	            int lastWidth = Math.abs((movenum - lastOkMove) * width / numMoves);
-            //	            int rectWidth = Math.max(lastWidth / 10,
-            // Lizzie.config.minimumBlunderBarWidth);
-            //	            g.fillRect(
-            //	                posx + (movenum * width / numMoves) + (lastWidth - rectWidth) / 2,
-            //	                midy + (!node.getData().blackToPlay && lastMoveRate > 0 ? lastHeight
-            // * -1 : 0),
-            //	                rectWidth,
-            //	                lastHeight);
-            //
-            //	          }
-            if (node.getData().blackToPlay) {
+              g.setFont(f);
+              g.drawString(
+                  String.format("%.1f", wr),
+                  posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
+                  posy + (height - (int) (convertWinrate(wr) * height / 100)) - 2 * DOT_RADIUS);
+            }
+            lastWr = wr;
+            lastNodeOk = true;
+            // Check if we were in a variation and has reached the main trunk
+            if (topOfVariation.isPresent() && topOfVariation.get() == node) {
+              // Reached top of variation, go to end of main trunk before continuing
+              while (node.next().isPresent()) {
+                node = node.next().get();
+              }
+              movenum = node.getData().moveNumber - 1;
+              lastWr = node.getData().winrate;
+              if (!node.getData().blackToPlay) lastWr = 100 - lastWr;
+              g.setStroke(new BasicStroke(3));
+              topOfVariation = Optional.empty();
+              if (node.getData().getPlayouts() == 0) {
+                lastNodeOk = false;
+              }
+              inFirstPath = false;
+            }
+            lastOkMove = lastNodeOk ? movenum : -1;
+          } else {
+            lastNodeOk = false;
+          }
 
+          node = node.previous().get();
+          movenum--;
+        }
+      } else if (mode == 1) {
+        while (node.previous().isPresent()) {
+          double wr = node.getData().winrate;
+          int playouts = node.getData().getPlayouts();
+          if (node == curMove) {
+            if (Lizzie.config.dynamicWinrateGraphWidth
+                && node.getData().moveNumber - 1 > this.numMovesOfPlayed) {
+              this.numMovesOfPlayed = node.getData().moveNumber - 1;
+              numMoves = this.numMovesOfPlayed;
+            }
+            Leelaz.WinrateStats stats = Lizzie.leelaz.getWinrateStats();
+            double bwr = stats.maxWinrate;
+            if (bwr >= 0 && stats.totalPlayouts > playouts) {
+              wr = bwr;
+              playouts = stats.totalPlayouts;
+            }
+            // Draw a vertical line at the current move
+            Stroke previousStroke = g.getStroke();
+            int x = posx + (movenum * width / numMoves);
+            g.setStroke(dashed);
+            g.setColor(Color.white);
+            g.drawLine(x, posy, x, posy + height);
+            // Show move number
+            String moveNumString = "" + node.getData().moveNumber;
+            int mw = g.getFontMetrics().stringWidth(moveNumString);
+            int margin = strokeRadius;
+            int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
+            g.drawString(moveNumString, mx, posy + height - margin);
+            g.setStroke(previousStroke);
+          }
+          if (playouts > 0) {
+            if (wr < 0) {
+              wr = 100 - lastWr;
+            } else if (!node.getData().blackToPlay) {
+              wr = 100 - wr;
+            }
+            if (Lizzie.frame.isPlayingAgainstLeelaz
+                && Lizzie.frame.playerIsBlack == !node.getData().blackToPlay) {
+              wr = lastWr;
+            }
+
+            if (lastNodeOk) g.setColor(Lizzie.config.winrateLineColor);
+            else g.setColor(Lizzie.config.winrateMissLineColor);
+
+            if (lastOkMove > 0) {
+              if (Lizzie.config.showBlunderBar) {
+                Color lineColor = g.getColor();
+                g.setColor(Lizzie.config.blunderBarColor);
+                double lastMoveRate = convertWinrate(lastWr) - convertWinrate(wr);
+                int lastHeight = 0;
+                if (Lizzie.config.weightedBlunderBarHeight) {
+                  // Weighted display: <= 50% will use 75% of height, >= 50% will use 25% of height
+                  if (Math.abs(lastMoveRate) <= 50) {
+                    lastHeight = Math.abs((int) (lastMoveRate) * height * 3 / 400);
+                  } else {
+                    lastHeight =
+                        height / 4 + Math.abs((int) (Math.abs(lastMoveRate)) * height / 400);
+                  }
+                } else {
+                  lastHeight = Math.abs((int) (lastMoveRate) * height / 200);
+                }
+                int lastWidth = Math.abs((movenum - lastOkMove) * width / numMoves);
+                int rectWidth = Math.max(lastWidth / 10, Lizzie.config.minimumBlunderBarWidth);
+                g.fillRect(
+                    posx + (movenum * width / numMoves) + (lastWidth - rectWidth) / 2,
+                    midy + (!node.getData().blackToPlay && lastMoveRate > 0 ? lastHeight * -1 : 0),
+                    rectWidth,
+                    lastHeight);
+              }
               g.setColor(Color.BLACK);
               g.drawLine(
-                  posx + ((lastOkMove + 1) * width / (numMoves + 1)),
+                  posx + (lastOkMove * width / numMoves),
                   posy + height - (int) (convertWinrate(lastWr) * height / 100),
-                  posx + (movenum * width / (numMoves + 1)),
+                  posx + (movenum * width / numMoves),
                   posy + height - (int) (convertWinrate(wr) * height / 100));
-            } else {
+
               g.setColor(Color.WHITE);
               g.drawLine(
-                  posx + ((lastOkMove + 1) * width / (numMoves + 1)),
-                  posy + height - (int) (convertWinrate(lastWr2) * height / 100),
-                  posx + (movenum * width / (numMoves + 1)),
-                  posy + height - (int) (convertWinrate(wr) * height / 100));
+                  posx + (lastOkMove * width / numMoves),
+                  posy + height - (int) (convertWinrate(100 - lastWr) * height / 100),
+                  posx + (movenum * width / numMoves),
+                  posy + height - (int) (convertWinrate(100 - wr) * height / 100));
             }
-          }
 
-          if (node == curMove) {
+            if (node == curMove) {
+              g.setColor(Color.BLACK);
+              g.fillOval(
+                  posx + (movenum * width / numMoves) - DOT_RADIUS,
+                  posy + height - (int) (convertWinrate(wr) * height / 100) - DOT_RADIUS,
+                  DOT_RADIUS * 2,
+                  DOT_RADIUS * 2);
 
-            g.setColor(Color.BLACK);
-            g.fillOval(
-                posx + (movenum * width / numMoves) - DOT_RADIUS,
-                posy + height - (int) (convertWinrate(wr) * height / 100) - DOT_RADIUS,
-                DOT_RADIUS * 2,
-                DOT_RADIUS * 2);
+              g.setColor(Color.WHITE);
+              g.fillOval(
+                  posx + (movenum * width / numMoves) - DOT_RADIUS,
+                  posy + height - (int) (convertWinrate(100 - wr) * height / 100) - DOT_RADIUS,
+                  DOT_RADIUS * 2,
+                  DOT_RADIUS * 2);
+              g.setColor(Color.BLACK);
+              Font f = new Font("", Font.BOLD, 17);
 
-            g.setColor(Color.WHITE);
-            g.fillOval(
-                posx + (movenum * width / numMoves) - DOT_RADIUS,
-                posy + height - (int) (convertWinrate(100 - wr) * height / 100) - DOT_RADIUS,
-                DOT_RADIUS * 2,
-                DOT_RADIUS * 2);
-            g.setColor(Color.BLACK);
-            Font f = new Font("", Font.BOLD, 17);
-            if (node.getData().blackToPlay) {
+              g.setFont(f);
+              g.drawString(
+                  String.format("%.1f", wr),
+                  posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
+                  posy + (height - (int) (convertWinrate(wr) * height / 100)) + 6 * DOT_RADIUS);
 
               g.setColor(Color.WHITE);
               g.drawString(
@@ -500,41 +449,33 @@ public class WinrateGraph {
                   posy
                       + (height - (int) (convertWinrate(100 - wr) * height / 100))
                       - 2 * DOT_RADIUS);
+            }
+            lastWr = wr;
+            lastNodeOk = true;
+            // Check if we were in a variation and has reached the main trunk
+            if (topOfVariation.isPresent() && topOfVariation.get() == node) {
+              // Reached top of variation, go to end of main trunk before continuing
+              while (node.next().isPresent()) {
+                node = node.next().get();
+              }
+              movenum = node.getData().moveNumber - 1;
+              lastWr = node.getData().winrate;
+              if (!node.getData().blackToPlay) lastWr = 100 - lastWr;
+              g.setStroke(new BasicStroke(3));
+              topOfVariation = Optional.empty();
+              if (node.getData().getPlayouts() == 0) {
+                lastNodeOk = false;
+              }
+              inFirstPath = false;
+            }
+            lastOkMove = lastNodeOk ? movenum : -1;
+          } else {
+            lastNodeOk = false;
+          }
 
-            } else {
-              g.setFont(f);
-              g.drawString(
-                  String.format("%.1f", wr),
-                  posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
-                  posy + (height - (int) (convertWinrate(wr) * height / 100)) + 6 * DOT_RADIUS);
-            }
-          }
-          if (node.getData().blackToPlay) lastWr = wr;
-          else lastWr2 = wr;
-          lastNodeOk = true;
-          // Check if we were in a variation and has reached the main trunk
-          if (topOfVariation.isPresent() && topOfVariation.get() == node) {
-            // Reached top of variation, go to end of main trunk before continuing
-            while (node.next().isPresent()) {
-              node = node.next().get();
-            }
-            movenum = node.getData().moveNumber - 1;
-            lastWr = node.getData().winrate;
-            if (!node.getData().blackToPlay) lastWr = 100 - lastWr;
-            g.setStroke(new BasicStroke(3));
-            topOfVariation = Optional.empty();
-            if (node.getData().getPlayouts() == 0) {
-              lastNodeOk = false;
-            }
-            inFirstPath = false;
-          }
-          lastOkMove = lastNodeOk ? movenum : -1;
-        } else {
-          lastNodeOk = false;
+          node = node.previous().get();
+          movenum--;
         }
-
-        node = node.previous().get();
-        movenum = movenum - 1;
       }
     }
     g.setStroke(new BasicStroke(1));
