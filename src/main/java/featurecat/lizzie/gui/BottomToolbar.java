@@ -28,6 +28,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.json.JSONArray;
@@ -941,16 +942,16 @@ public class BottomToolbar extends JPanel {
             if (!chkenginePk.isSelected()) {
               return;
             }
-            //            if (engineWhite == engineBlack) {
-            //              boolean onTop = false;
-            //              if (Lizzie.frame.isAlwaysOnTop()) {
-            //                Lizzie.frame.setAlwaysOnTop(false);
-            //                onTop = true;
-            //              }
-            //              JOptionPane.showMessageDialog(Lizzie.frame, "黑白棋不可选择相同引擎");
-            //              if (onTop) Lizzie.frame.setAlwaysOnTop(true);
-            //              return;
-            //            }
+            if (engineWhite == engineBlack) {
+              boolean onTop = false;
+              if (Lizzie.frame.isAlwaysOnTop()) {
+                Lizzie.frame.setAlwaysOnTop(false);
+                onTop = true;
+              }
+              JOptionPane.showMessageDialog(Lizzie.frame, "黑白棋不可选择相同引擎");
+              if (onTop) Lizzie.frame.setAlwaysOnTop(true);
+              return;
+            }
             if (!isEnginePk) {
               isAutoAna = false;
               isAutoPlay = false;

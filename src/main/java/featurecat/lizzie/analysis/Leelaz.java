@@ -379,9 +379,10 @@ public class Leelaz {
         // End of response
     //  } else 
     	if( Lizzie.frame.isPlayingAgainstLeelaz||Lizzie.frame.toolbar.isGenmove)
-    	if (line.contains(" ->   ")) {
+    	{if (line.contains(" ->   ")) {
     		 bestMoves.add(MoveData.fromSummary(line));      
     		 Lizzie.board.getData().tryToSetBestMoves(bestMoves);
+    	}
     	}
     	  if (line.startsWith("info")) {
         
