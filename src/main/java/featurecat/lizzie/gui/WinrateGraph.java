@@ -116,7 +116,7 @@ public class WinrateGraph {
     if (numMoves < 1) return;
 
     // Plot
-    width = (int) (width * 0.95); // Leave some space after last move
+    width = (int) (width * 0.97); // Leave some space after last move
     double lastWr = 50;
     double lastWr2 = 50;
     boolean lastNodeOk = false;
@@ -129,7 +129,17 @@ public class WinrateGraph {
 
     if (Lizzie.frame.toolbar.isEnginePk) {
       if (numMoves < 2) return;
-
+      int x = posx + (movenum * width / numMoves);
+      String moveNumString = "" + node.getData().moveNumber;
+      int mw = g.getFontMetrics().stringWidth(moveNumString);
+      int margin = strokeRadius;
+      int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
+      if (node.getData().blackToPlay) {
+        g.setColor(Color.WHITE);
+      } else {
+        g.setColor(Color.BLACK);
+      }
+      g.drawString(moveNumString, mx, posy + height - margin);
       while (node.previous().isPresent() && node.previous().get().previous().isPresent()) {
         double wr = node.previous().get().previous().get().getData().bestMoves.get(0).winrate;
         try {
@@ -137,6 +147,7 @@ public class WinrateGraph {
         } catch (Exception ex) {
 
         }
+        
         int playouts = node.getData().getPlayouts();
 
         lastWr = node.previous().get().previous().get().getData().bestMoves.get(0).winrate;
@@ -199,10 +210,18 @@ public class WinrateGraph {
                   posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
                   posy + (height - (int) (convertWinrate(wr) * height / 100)) - 2 * DOT_RADIUS);
             } else {
+            	if(wr<10) {
+            		 g.drawString(
+                             String.format("%.1f", wr),
+                             posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
+                             posy + (height - (int) (convertWinrate(wr) * height / 100)) - 2 * DOT_RADIUS);
+            	}
+            	else {
               g.drawString(
                   String.format("%.1f", wr),
                   posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
                   posy + (height - (int) (convertWinrate(wr) * height / 100)) + 6 * DOT_RADIUS);
+            	}
             }
           } else {
             g.setColor(Color.WHITE);
@@ -375,17 +394,18 @@ public class WinrateGraph {
             }
             // Draw a vertical line at the current move
             // Stroke previousStroke = g.getStroke();
-            int x = posx + (movenum * width / numMoves);
-            // g.setStroke(dashed);
-            // g.setColor(Color.white);
-            // g.drawLine(x, posy, x, posy + height);
+            int x = posx + (movenum * width / numMoves);            
             // Show move number
             String moveNumString = "" + node.getData().moveNumber;
             int mw = g.getFontMetrics().stringWidth(moveNumString);
             int margin = strokeRadius;
             int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
+            if (node.getData().blackToPlay) {
+              g.setColor(Color.WHITE);
+            } else {
+              g.setColor(Color.BLACK);
+            }
             g.drawString(moveNumString, mx, posy + height - margin);
-            // g.setStroke(previousStroke);
           }
           if (playouts > 0) {
             if (wr < 0) {
@@ -458,10 +478,18 @@ public class WinrateGraph {
                     posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
                     posy + (height - (int) (convertWinrate(wr) * height / 100)) - 2 * DOT_RADIUS);
               } else {
+            	  if(wr<10) {
+             		 g.drawString(
+                              String.format("%.1f", wr),
+                              posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
+                              posy + (height - (int) (convertWinrate(wr) * height / 100)) - 2 * DOT_RADIUS);
+             	}
+             	else {
                 g.drawString(
                     String.format("%.1f", wr),
                     posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
                     posy + (height - (int) (convertWinrate(wr) * height / 100)) + 6 * DOT_RADIUS);
+             	}
               }
               g.setColor(Color.WHITE);
               Font fw = new Font("", Font.PLAIN, 17);

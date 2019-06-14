@@ -299,7 +299,7 @@ public class LizzieFrame extends JFrame {
     htmlDoc = (HTMLDocument) htmlKit.createDefaultDocument();
     htmlStyle = htmlKit.getStyleSheet();
     String style =
-        "body {background:#"
+        "body {background:"
             + String.format(
                 "%02x%02x%02x",
                 Lizzie.config.commentBackgroundColor.getRed(),
@@ -2181,7 +2181,7 @@ public class LizzieFrame extends JFrame {
   private void drawComment(Graphics2D g, int x, int y, int w, int h) {
 
     String comment = Lizzie.board.getHistory().getData().comment;
-    int fontSize = (int) (min(getWidth(), getHeight()) * 0.0225);
+    int fontSize = (int) (min(getWidth()*0.6, getHeight()) * 0.0225);
     //	    if (Lizzie.config.commentFontSize > 0) {
     //	      fontSize = Lizzie.config.commentFontSize;
     //	    } else if (fontSize < 12) {
@@ -2191,7 +2191,7 @@ public class LizzieFrame extends JFrame {
     if (Lizzie.config.commentFontSize != fontSize) {
       Lizzie.config.commentFontSize = fontSize;
       String style =
-          "body {background:#"
+          "body {background:"
               + String.format(
                   "%02x%02x%02x",
                   Lizzie.config.commentBackgroundColor.getRed(),
@@ -2218,6 +2218,7 @@ public class LizzieFrame extends JFrame {
     commentPane.setSize(w, h);
     createCommentImage(!comment.equals(this.cachedComment), w, h);
     commentRect = new Rectangle(x, y, scrollPane.getWidth(), scrollPane.getHeight());
+
     g.drawImage(
         cachedCommentImage,
         commentRect.x,
