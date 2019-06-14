@@ -130,10 +130,23 @@ public class Menu extends MenuBar {
     rightItem.addActionListener(new ItemListener());
     viewMenu.add(rightItem);
 
+    final JMenu winrate = new JMenu("胜率");
+    viewMenu.add(winrate);
+
     final JMenuItem alwaysBlack = new JMenuItem();
-    alwaysBlack.setText("总是显示黑胜率");
+    alwaysBlack.setText("切换总是显示黑胜率");
     alwaysBlack.addActionListener(new ItemListener());
-    viewMenu.add(alwaysBlack);
+    winrate.add(alwaysBlack);
+
+    final JMenuItem winratemode1 = new JMenuItem();
+    winratemode1.setText("显示双方胜率图");
+    winratemode1.addActionListener(new ItemListener());
+    winrate.add(winratemode1);
+
+    final JMenuItem winratemode0 = new JMenuItem();
+    winratemode0.setText("显示黑方胜率图");
+    winratemode0.addActionListener(new ItemListener());
+    winrate.add(winratemode0);
 
     final JMenuItem coordsItem = new JMenuItem();
     coordsItem.setText("坐标（C）");
@@ -1132,7 +1145,7 @@ public class Menu extends MenuBar {
         tbc.setVisible(true);
         return;
       }
-      if (menuItem.getText().startsWith("总是显示黑")) {
+      if (menuItem.getText().startsWith("切换总是显示黑")) {
         if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black")) {
           Lizzie.config.uiConfig.put("win-rate-always-black", false);
           try {
@@ -1148,6 +1161,14 @@ public class Menu extends MenuBar {
             // TODO Auto-generated catch block
           }
         }
+        return;
+      }
+      if (menuItem.getText().startsWith("显示双方")) {
+        Lizzie.frame.winrateGraph.mode = 1;
+        return;
+      }
+      if (menuItem.getText().startsWith("显示黑方")) {
+        Lizzie.frame.winrateGraph.mode = 0;
         return;
       }
     }

@@ -96,7 +96,7 @@ public class LizzieFrame extends JFrame {
   public static BoardRenderer boardRenderer;
   public static SubBoardRenderer subBoardRenderer;
   private static VariationTree variationTree;
-  private static WinrateGraph winrateGraph;
+  public static WinrateGraph winrateGraph;
   public static Menu menu;
   public static BottomToolbar toolbar;
 
@@ -206,6 +206,12 @@ public class LizzieFrame extends JFrame {
     this.setAlwaysOnTop(Lizzie.config.mainsalwaysontop);
     setMinimumSize(new Dimension(640, 400));
     boolean persisted = Lizzie.config.persistedUi != null;
+    if (persisted
+        && Lizzie.config.persistedUi.optJSONArray("winrate-graph") != null
+        && Lizzie.config.persistedUi.optJSONArray("winrate-graph").length() == 1) {
+      JSONArray winrateG = Lizzie.config.persistedUi.getJSONArray("winrate-graph");
+      winrateGraph.mode = winrateG.getInt(0);
+    }
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("main-window-position") != null
         && Lizzie.config.persistedUi.optJSONArray("main-window-position").length() >= 4) {
@@ -1162,10 +1168,6 @@ public class LizzieFrame extends JFrame {
           drawContainer(backgroundG.get(), vx, vy, vw, vh);
         }
       }
-      if (Lizzie.config.showStatus) {
-        String loadingText = resourceBundle.getString("LizzieFrame.display.loading");
-        drawPonderingState(g, loadingText, loadingX, loadingY, loadingSize);
-      }
 
       if (Lizzie.config.showCaptured) drawCaptured(g, capx, capy, capw, caph, isSmallCap);
       if (Lizzie.leelaz != null && Lizzie.leelaz.isLoaded()) {
@@ -1226,6 +1228,11 @@ public class LizzieFrame extends JFrame {
           //  }
           drawMoveStatistics(g, statx, staty, statw, stath);
           winrateGraph.draw(g, grx, gry, grw, grh);
+        }
+      } else {
+        if (Lizzie.config.showStatus) {
+          String loadingText = resourceBundle.getString("LizzieFrame.display.loading");
+          drawPonderingState(g, loadingText, loadingX, loadingY, loadingSize);
         }
       }
 

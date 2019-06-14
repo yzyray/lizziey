@@ -871,6 +871,10 @@ public class Config {
     movecountPos.put(Lizzie.countResults.getHeight());
     persistedUi.put("movecount-position", movecountPos);
 
+    JSONArray winrateGraph = new JSONArray();
+    winrateGraph.put(Lizzie.frame.winrateGraph.mode);
+    persistedUi.put("winrate-graph", winrateGraph);
+
     writeConfig(this.persisted, new File(persistFilename));
   }
 

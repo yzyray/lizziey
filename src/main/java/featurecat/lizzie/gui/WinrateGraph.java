@@ -299,8 +299,8 @@ public class WinrateGraph {
                   posy + height - (int) (convertWinrate(wr) * height / 100) - DOT_RADIUS,
                   DOT_RADIUS * 2,
                   DOT_RADIUS * 2);
-//              if (node.getData().blackToPlay) g.setColor(Color.WHITE);
-//              else g.setColor(Color.BLACK);
+              //              if (node.getData().blackToPlay) g.setColor(Color.WHITE);
+              //              else g.setColor(Color.BLACK);
               Font f = new Font("", Font.BOLD, 17);
 
               g.setFont(f);
