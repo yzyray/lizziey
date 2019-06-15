@@ -32,11 +32,13 @@ import org.json.JSONArray;
 @SuppressWarnings("serial")
 public class MovelistFrame extends JPanel {
   public static Config config;
-  TableModel dataModel;
+  public TableModel dataModel;
   JPanel tablepanel;
   JPanel selectpanel = new JPanel();
   JScrollPane scrollpane;
   public static JTable table;
+  public static JLabel checkBlacktxt;
+  public static JLabel checkWhitetxt;
   Font headFont;
   Font winrateFont;
   static JDialog jf;
@@ -116,8 +118,8 @@ public class MovelistFrame extends JPanel {
     checkBlack.setSelected(true);
     checkWhite.setSelected(true);
 
-    JLabel checkBlacktxt = new JLabel("黑:");
-    JLabel checkWhitetxt = new JLabel("白:");
+    checkBlacktxt = new JLabel("黑:");
+    checkWhitetxt = new JLabel("白:");
     JLabel dropwinratechoosertxt = new JLabel("胜率波动筛选:");
     JLabel playoutschoosertxt = new JLabel("前后计算量筛选:");
     selectpanel.add(checkBlacktxt);
@@ -350,14 +352,25 @@ public class MovelistFrame extends JPanel {
       }
 
       public String getColumnName(int column) {
-        if (column == 0) return "黑白";
-        if (column == 1) return "手数";
-        if (column == 2) return "坐标";
-        if (column == 3) return "胜率波动";
-        if (column == 4) return "此手胜率";
-        if (column == 5) return "AI胜率";
-        if (column == 6) return "前一步计算量";
-        if (column == 7) return "计算量";
+        if (Lizzie.board.isPkBoard) {
+          if (column == 0) return "黑白";
+          if (column == 1) return "手数";
+          if (column == 2) return "坐标";
+          if (column == 3) return "胜率波动";
+          if (column == 4) return "此手胜率";
+          if (column == 5) return "2手前胜率";
+          if (column == 6) return "2手前计算量";
+          if (column == 7) return "计算量";
+        } else {
+          if (column == 0) return "黑白";
+          if (column == 1) return "手数";
+          if (column == 2) return "坐标";
+          if (column == 3) return "胜率波动";
+          if (column == 4) return "此手胜率";
+          if (column == 5) return "AI胜率";
+          if (column == 6) return "前一步计算量";
+          if (column == 7) return "计算量";
+        }
         return "无";
       }
 
@@ -456,30 +469,58 @@ public class MovelistFrame extends JPanel {
         // ArrayList sortedMoveData = MoveDataSorter.getSortedMoveDataByPolicy();
 
         Movelistwr data = data2.get(row);
-        switch (col) {
-          case 0:
-            if (data.isblack) return "黑";
-            return "白";
-          case 1:
-            return data.movenum;
-          case 2:
-            return Board.convertCoordinatesToName(data.coords[0], data.coords[1]);
-          case 3:
-            return String.format("%.2f", data.diffwinrate);
-          case 4:
-            return String.format("%.2f", data.winrate);
-          case 5:
-            if (data.previousplayouts > 0) {
-              return String.format("%.2f", data.winrate - data.diffwinrate);
-            } else {
-              return "无";
-            }
-          case 6:
-            return data.previousplayouts;
-          case 7:
-            return data.playouts;
-          default:
-            return "";
+        if (Lizzie.board.isPkBoard) {
+          switch (col) {
+            case 0:
+              if (data.isblack) return "白";
+              return "黑";
+            case 1:
+              return data.movenum + 1;
+            case 2:
+              return Board.convertCoordinatesToName(data.coords[0], data.coords[1]);
+            case 3:
+              return String.format("%.2f", -data.diffwinrate);
+            case 4:
+              return String.format("%.2f", 100 - data.winrate);
+            case 5:
+              if (data.previousplayouts > 0) {
+                return String.format("%.2f", 100 - (data.winrate - data.diffwinrate));
+              } else {
+                return "无";
+              }
+            case 6:
+              return data.previousplayouts;
+            case 7:
+              return data.playouts;
+            default:
+              return "";
+          }
+        } else {
+          switch (col) {
+            case 0:
+              if (data.isblack) return "黑";
+              return "白";
+            case 1:
+              return data.movenum;
+            case 2:
+              return Board.convertCoordinatesToName(data.coords[0], data.coords[1]);
+            case 3:
+              return String.format("%.2f", data.diffwinrate);
+            case 4:
+              return String.format("%.2f", data.winrate);
+            case 5:
+              if (data.previousplayouts > 0) {
+                return String.format("%.2f", data.winrate - data.diffwinrate);
+              } else {
+                return "无";
+              }
+            case 6:
+              return data.previousplayouts;
+            case 7:
+              return data.playouts;
+            default:
+              return "";
+          }
         }
       }
     };

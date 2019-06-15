@@ -319,6 +319,20 @@ public class SGFParser {
             whitePlayer = tagContent;
           } else if (tag.equals("RE")) {
             result = tagContent;
+          } else if (tag.equals("DZ")) {
+            if (tagContent.equals("Y")) {
+              Lizzie.board.isPkBoard = true;
+              featurecat.lizzie.gui.MovelistFrame.table
+                  .getColumnModel()
+                  .getColumn(5)
+                  .setHeaderValue("2手前胜率");
+              featurecat.lizzie.gui.MovelistFrame.table
+                  .getColumnModel()
+                  .getColumn(6)
+                  .setHeaderValue("2手前计算量");
+              featurecat.lizzie.gui.MovelistFrame.checkBlacktxt.setText("白:");
+              featurecat.lizzie.gui.MovelistFrame.checkWhitetxt.setText("黑:");
+            }
           } else if (tag.equals("KM")) {
             try {
               if (tagContent.trim().isEmpty()) {
@@ -435,11 +449,17 @@ public class SGFParser {
     StringBuilder builder = new StringBuilder("(;");
     StringBuilder generalProps = new StringBuilder("");
     if (handicap != 0) generalProps.append(String.format("HA[%s]", handicap));
-    generalProps.append(
-        String.format(
-            "KM[%s]PW[%s]PB[%s]DT[%s]AP[Lizzie: %s]RE[%s]SZ[%d]",
-            komi, playerW, playerB, date, Lizzie.lizzieVersion, result, Board.boardSize));
-
+    if (Lizzie.frame.toolbar.isEnginePk) {
+      generalProps.append(
+          String.format(
+              "KM[%s]PW[%s]PB[%s]DT[%s]DZ[Y]AP[Lizzie: %s]RE[%s]SZ[%d]",
+              komi, playerW, playerB, date, Lizzie.lizzieVersion, result, Board.boardSize));
+    } else {
+      generalProps.append(
+          String.format(
+              "KM[%s]PW[%s]PB[%s]DT[%s]AP[Lizzie: %s]RE[%s]SZ[%d]",
+              komi, playerW, playerB, date, Lizzie.lizzieVersion, result, Board.boardSize));
+    }
     // To append the winrate to the comment of sgf we might need to update the Winrate
     // if (Lizzie.config.appendWinrateToComment) {
     //  Lizzie.board.updateWinrate();
@@ -1065,7 +1085,6 @@ public class SGFParser {
     }
 
     String blackPlayer = "", whitePlayer = "";
-
     for (int i = 0; i < value.length(); i++) {
       char c = value.charAt(i);
       if (escaping) {

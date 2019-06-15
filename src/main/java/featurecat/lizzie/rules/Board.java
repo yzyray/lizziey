@@ -46,6 +46,8 @@ public class Board implements LeelazListener {
   public String boardstatbeforeedit = "";
   public String boardstatafteredit = "";
   public boolean isLoadingFile = false;
+  public boolean isPkBoard = false;
+
   // Save the node for restore move when in the branch
   private Optional<BoardHistoryNode> saveNode;
 
@@ -1741,6 +1743,14 @@ public class Board implements LeelazListener {
     movelistwr.clear();
     cleanedittemp();
     initialize();
+    isPkBoard = false;
+    featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(5).setHeaderValue("AI胜率");
+    featurecat.lizzie.gui.MovelistFrame.table
+        .getColumnModel()
+        .getColumn(6)
+        .setHeaderValue("前一步计算量");
+    featurecat.lizzie.gui.MovelistFrame.checkBlacktxt.setText("黑:");
+    featurecat.lizzie.gui.MovelistFrame.checkWhitetxt.setText("白:");
   }
 
   public void clearforpk() {
@@ -2120,44 +2130,62 @@ public class Board implements LeelazListener {
   }
 
   public double lastWinrateDiff2(BoardHistoryNode node) {
-
-    // Last winrate
-    Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
-    boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
-    while (!validLastWinrate && node.previous().isPresent()) {
-      node = node.previous().get();
-      lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
-      validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
-    }
-    if (!node.previous().isPresent()) {
-      return 0;
-    }
-    double lastWR = lastNode.get().bestMoves.get(0).winrate;
-    if (lastNode.get().blackToPlay == node.getData().blackToPlay) {
-      return lastWR - Lizzie.board.getData().bestMoves.get(0).winrate;
+    if (Lizzie.board.isPkBoard) {
+      if (node.previous().isPresent()
+          && node.previous().get().previous().isPresent()
+          && !node.previous().get().previous().get().getData().bestMoves.isEmpty()) {
+        return (node.previous().get().previous().get().getData().bestMoves.get(0).winrate
+            - Lizzie.board.getData().bestMoves.get(0).winrate);
+      }
     } else {
-      return (100 - lastWR) - Lizzie.board.getData().bestMoves.get(0).winrate;
+      // Last winrate
+      Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
+      boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
+      while (!validLastWinrate && node.previous().isPresent()) {
+        node = node.previous().get();
+        lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
+        validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
+      }
+      if (!node.previous().isPresent()) {
+        return 0;
+      }
+      double lastWR = lastNode.get().bestMoves.get(0).winrate;
+      if (lastNode.get().blackToPlay == node.getData().blackToPlay) {
+        return lastWR - Lizzie.board.getData().bestMoves.get(0).winrate;
+      } else {
+        return (100 - lastWR) - Lizzie.board.getData().bestMoves.get(0).winrate;
+      }
     }
+    return 0;
   }
 
   public double lastWinrateDiff(BoardHistoryNode node) {
-
-    Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
-    boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
-    while (!validLastWinrate && node.previous().isPresent()) {
-      node = node.previous().get();
-      lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
-      validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
-    }
-    if (!node.previous().isPresent()) {
-      return 0;
-    }
-    double lastWR = lastNode.get().bestMoves.get(0).winrate;
-    if (lastNode.get().blackToPlay == node.getData().blackToPlay) {
-      return lastWR - node.getData().winrate;
+    if (Lizzie.board.isPkBoard) {
+      if (node.previous().isPresent()
+          && node.previous().get().previous().isPresent()
+          && !node.previous().get().previous().get().getData().bestMoves.isEmpty()) {
+        return (node.previous().get().previous().get().getData().bestMoves.get(0).winrate
+            - node.getData().winrate);
+      }
     } else {
-      return (100 - lastWR) - node.getData().winrate;
+      Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
+      boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
+      while (!validLastWinrate && node.previous().isPresent()) {
+        node = node.previous().get();
+        lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
+        validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
+      }
+      if (!node.previous().isPresent()) {
+        return 0;
+      }
+      double lastWR = lastNode.get().bestMoves.get(0).winrate;
+      if (lastNode.get().blackToPlay == node.getData().blackToPlay) {
+        return lastWR - node.getData().winrate;
+      } else {
+        return (100 - lastWR) - node.getData().winrate;
+      }
     }
+    return 0;
   }
 
   public void setMovelistAll() {
@@ -2195,33 +2223,67 @@ public class Board implements LeelazListener {
     if (node.getData().winrate >= 0 && isLarger) {
       double winrateDiff = lastWinrateDiff(node);
       Optional<int[]> passstep = Optional.empty();
-      if (node.previous().isPresent() && !(node.getData().lastMove == passstep)) {
-        int[] coords = node.getData().lastMove.get();
+      if (Lizzie.board.isPkBoard) {
+        if (node.previous().isPresent()
+            && node.previous().get().previous().isPresent()
+            && !(node.previous().get().getData().lastMove == passstep)) {
+          int[] coords = node.previous().get().getData().lastMove.get();
 
-        boolean isblack = !node.getData().blackToPlay;
-        int previousplayouts = 0;
-        previousplayouts = node.previous().get().getData().getPlayouts();
+          boolean isblack = !node.getData().blackToPlay;
+          int previousplayouts = 0;
+          previousplayouts = node.previous().get().previous().get().getData().getPlayouts();
 
-        if (isupdate) {
-          Lizzie.board.movelistwr.get(i).diffwinrate = winrateDiff;
-          Lizzie.board.movelistwr.get(i).winrate = 100 - node.getData().winrate;
-          Lizzie.board.movelistwr.get(i).coords = coords;
-          Lizzie.board.movelistwr.get(i).isblack = isblack;
-          Lizzie.board.movelistwr.get(i).playouts = playouts;
-          Lizzie.board.movelistwr.get(i).movenum = movenumer;
-          Lizzie.board.movelistwr.get(i).previousplayouts = previousplayouts;
-          Lizzie.board.movelistwr.get(i).isdelete = false;
-        } else {
-          Movelistwr mv = new Movelistwr();
-          mv.diffwinrate = winrateDiff;
-          mv.winrate = 100 - node.getData().winrate;
-          mv.coords = coords;
-          mv.isblack = isblack;
-          mv.playouts = playouts;
-          mv.movenum = movenumer;
-          mv.previousplayouts = previousplayouts;
-          mv.isdelete = false;
-          Lizzie.board.movelistwr.add(mv);
+          if (isupdate) {
+            Lizzie.board.movelistwr.get(i).diffwinrate = winrateDiff;
+            Lizzie.board.movelistwr.get(i).winrate = 100 - node.getData().winrate;
+            Lizzie.board.movelistwr.get(i).coords = coords;
+            Lizzie.board.movelistwr.get(i).isblack = isblack;
+            Lizzie.board.movelistwr.get(i).playouts = playouts;
+            Lizzie.board.movelistwr.get(i).movenum = movenumer;
+            Lizzie.board.movelistwr.get(i).previousplayouts = previousplayouts;
+            Lizzie.board.movelistwr.get(i).isdelete = false;
+          } else {
+            Movelistwr mv = new Movelistwr();
+            mv.diffwinrate = winrateDiff;
+            mv.winrate = 100 - node.getData().winrate;
+            mv.coords = coords;
+            mv.isblack = isblack;
+            mv.playouts = playouts;
+            mv.movenum = movenumer;
+            mv.previousplayouts = previousplayouts;
+            mv.isdelete = false;
+            Lizzie.board.movelistwr.add(mv);
+          }
+        }
+      } else {
+        if (node.previous().isPresent() && !(node.getData().lastMove == passstep)) {
+          int[] coords = node.getData().lastMove.get();
+
+          boolean isblack = !node.getData().blackToPlay;
+          int previousplayouts = 0;
+          previousplayouts = node.previous().get().getData().getPlayouts();
+
+          if (isupdate) {
+            Lizzie.board.movelistwr.get(i).diffwinrate = winrateDiff;
+            Lizzie.board.movelistwr.get(i).winrate = 100 - node.getData().winrate;
+            Lizzie.board.movelistwr.get(i).coords = coords;
+            Lizzie.board.movelistwr.get(i).isblack = isblack;
+            Lizzie.board.movelistwr.get(i).playouts = playouts;
+            Lizzie.board.movelistwr.get(i).movenum = movenumer;
+            Lizzie.board.movelistwr.get(i).previousplayouts = previousplayouts;
+            Lizzie.board.movelistwr.get(i).isdelete = false;
+          } else {
+            Movelistwr mv = new Movelistwr();
+            mv.diffwinrate = winrateDiff;
+            mv.winrate = 100 - node.getData().winrate;
+            mv.coords = coords;
+            mv.isblack = isblack;
+            mv.playouts = playouts;
+            mv.movenum = movenumer;
+            mv.previousplayouts = previousplayouts;
+            mv.isdelete = false;
+            Lizzie.board.movelistwr.add(mv);
+          }
         }
       }
     }
@@ -2252,43 +2314,85 @@ public class Board implements LeelazListener {
     }
     if (stats.maxWinrate >= 0 && isLarger) {
       double winrateDiff = lastWinrateDiff2(history.getCurrentHistoryNode());
-
       Optional<int[]> passstep = Optional.empty();
-      if (history.getCurrentHistoryNode().previous().isPresent()
-          && !(history.getCurrentHistoryNode().getData().lastMove == passstep)) {
-        int[] coords = history.getCurrentHistoryNode().getData().lastMove.get();
+      if (Lizzie.board.isPkBoard) {
+        if (history.getCurrentHistoryNode().previous().isPresent()
+            && history.getCurrentHistoryNode().previous().get().previous().isPresent()
+            && !(history.getCurrentHistoryNode().previous().get().getData().lastMove == passstep)) {
+          int[] coords = history.getCurrentHistoryNode().previous().get().getData().lastMove.get();
 
-        boolean isblack = !history.getCurrentHistoryNode().getData().blackToPlay;
-        int previousplayouts = 0;
-        previousplayouts =
-            Lizzie.board
-                .getHistory()
-                .getCurrentHistoryNode()
-                .previous()
-                .get()
-                .getData()
-                .getPlayouts();
+          boolean isblack = !history.getCurrentHistoryNode().getData().blackToPlay;
+          int previousplayouts = 0;
+          previousplayouts =
+              history
+                  .getCurrentHistoryNode()
+                  .previous()
+                  .get()
+                  .previous()
+                  .get()
+                  .getData()
+                  .getPlayouts();
 
-        if (isupdate) {
-          Lizzie.board.movelistwr.get(i).diffwinrate = winrateDiff;
-          Lizzie.board.movelistwr.get(i).winrate = 100 - stats.maxWinrate;
-          Lizzie.board.movelistwr.get(i).coords = coords;
-          Lizzie.board.movelistwr.get(i).isblack = isblack;
-          Lizzie.board.movelistwr.get(i).playouts = playouts;
-          Lizzie.board.movelistwr.get(i).movenum = movenumer;
-          Lizzie.board.movelistwr.get(i).previousplayouts = previousplayouts;
-          Lizzie.board.movelistwr.get(i).isdelete = false;
-        } else {
-          Movelistwr mv = new Movelistwr();
-          mv.diffwinrate = winrateDiff;
-          mv.winrate = 100 - stats.maxWinrate;
-          mv.coords = coords;
-          mv.isblack = isblack;
-          mv.playouts = playouts;
-          mv.movenum = movenumer;
-          mv.previousplayouts = previousplayouts;
-          mv.isdelete = false;
-          Lizzie.board.movelistwr.add(mv);
+          if (isupdate) {
+            Lizzie.board.movelistwr.get(i).diffwinrate = winrateDiff;
+            Lizzie.board.movelistwr.get(i).winrate = 100 - stats.maxWinrate;
+            Lizzie.board.movelistwr.get(i).coords = coords;
+            Lizzie.board.movelistwr.get(i).isblack = isblack;
+            Lizzie.board.movelistwr.get(i).playouts = playouts;
+            Lizzie.board.movelistwr.get(i).movenum = movenumer;
+            Lizzie.board.movelistwr.get(i).previousplayouts = previousplayouts;
+            Lizzie.board.movelistwr.get(i).isdelete = false;
+          } else {
+            Movelistwr mv = new Movelistwr();
+            mv.diffwinrate = winrateDiff;
+            mv.winrate = 100 - stats.maxWinrate;
+            mv.coords = coords;
+            mv.isblack = isblack;
+            mv.playouts = playouts;
+            mv.movenum = movenumer;
+            mv.previousplayouts = previousplayouts;
+            mv.isdelete = false;
+            Lizzie.board.movelistwr.add(mv);
+          }
+        }
+      } else {
+
+        if (history.getCurrentHistoryNode().previous().isPresent()
+            && !(history.getCurrentHistoryNode().getData().lastMove == passstep)) {
+          int[] coords = history.getCurrentHistoryNode().getData().lastMove.get();
+
+          boolean isblack = !history.getCurrentHistoryNode().getData().blackToPlay;
+          int previousplayouts = 0;
+          previousplayouts =
+              Lizzie.board
+                  .getHistory()
+                  .getCurrentHistoryNode()
+                  .previous()
+                  .get()
+                  .getData()
+                  .getPlayouts();
+
+          if (isupdate) {
+            Lizzie.board.movelistwr.get(i).diffwinrate = winrateDiff;
+            Lizzie.board.movelistwr.get(i).winrate = 100 - stats.maxWinrate;
+            Lizzie.board.movelistwr.get(i).coords = coords;
+            Lizzie.board.movelistwr.get(i).isblack = isblack;
+            Lizzie.board.movelistwr.get(i).playouts = playouts;
+            Lizzie.board.movelistwr.get(i).movenum = movenumer;
+            Lizzie.board.movelistwr.get(i).previousplayouts = previousplayouts;
+            Lizzie.board.movelistwr.get(i).isdelete = false;
+          } else {
+            Movelistwr mv = new Movelistwr();
+            mv.diffwinrate = winrateDiff;
+            mv.winrate = 100 - stats.maxWinrate;
+            mv.coords = coords;
+            mv.isblack = isblack;
+            mv.playouts = playouts;
+            mv.movenum = movenumer;
+            mv.previousplayouts = previousplayouts;
+            mv.isdelete = false;
+            Lizzie.board.movelistwr.add(mv);
+          }
         }
       }
     }

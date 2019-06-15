@@ -545,19 +545,19 @@ public class Leelaz {
 		        int firstPlayouts = 0;
 		        if (Lizzie.frame.toolbar.chkAutoPlayTime.isSelected()) {
 		          try {
-		            time = 1000 * Integer.parseInt(Lizzie.frame.toolbar.txtAutoPlayTime.getText());
+		            time = 1000 * Integer.parseInt(Lizzie.frame.toolbar.txtAutoPlayTime.getText().replace(" ",""));
 		          } catch (NumberFormatException err) {
 		          }
 		        }
 		        if (Lizzie.frame.toolbar.chkAutoPlayPlayouts.isSelected()) {
 		          try {
-		            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtAutoPlayPlayouts.getText());
+		            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtAutoPlayPlayouts.getText().replace(" ",""));
 		          } catch (NumberFormatException err) {
 		          }
 		        }
 		        if (Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.isSelected()) {
 		          try {
-		            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtAutoPlayFirstPlayouts.getText());
+		            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtAutoPlayFirstPlayouts.getText().replace(" ",""));
 		          } catch (NumberFormatException err) {
 		          }
 		        }
@@ -802,19 +802,19 @@ public class Leelaz {
         int firstPlayouts = 0;
         if (Lizzie.frame.toolbar.chkAnaTime.isSelected()) {
           try {
-            time = 1000 * Integer.parseInt(Lizzie.frame.toolbar.txtAnaTime.getText());
+            time = 1000 * Integer.parseInt(Lizzie.frame.toolbar.txtAnaTime.getText().replace(" ",""));
           } catch (NumberFormatException err) {
           }
         }
         if (Lizzie.frame.toolbar.chkAnaPlayouts.isSelected()) {
           try {
-            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtAnaPlayouts.getText());
+            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtAnaPlayouts.getText().replace(" ",""));
           } catch (NumberFormatException err) {
           }
         }
         if (Lizzie.frame.toolbar.chkAnaFirstPlayouts.isSelected()) {
           try {
-            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtAnaFirstPlayouts.getText());
+            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtAnaFirstPlayouts.getText().replace(" ",""));
           } catch (NumberFormatException err) {
           }
         }
@@ -1163,35 +1163,44 @@ public class Leelaz {
 		        int playouts = 0;
 		        int firstPlayouts = 0;
 		        if (Lizzie.frame.toolbar.chkenginePkTime.isSelected()) {
+		        	if(!Lizzie.frame.toolbar.isSameEngine&&this.currentEngineN==Lizzie.frame.toolbar.engineBlack||Lizzie.frame.toolbar.isSameEngine&&Lizzie.board.getData().blackToPlay) {
 		          try {
-		            time = 1000 * Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTime.getText());
+		            time = 1000 * Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTime.getText().replace(" ",""));
 		          } catch (NumberFormatException err) {
 		          }
+		        	}
+		        	else
+		        	{
+		        		try {
+				            time = 1000 * Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTimeWhite.getText().replace(" ",""));
+				          } catch (NumberFormatException err) {
+		        	}
+		        }
 		        }
 		        if (Lizzie.frame.toolbar.chkenginePkPlayouts.isSelected()) {
-		        	if(Lizzie.board.getData().blackToPlay) {
+		        	if(!Lizzie.frame.toolbar.isSameEngine&&this.currentEngineN==Lizzie.frame.toolbar.engineBlack||Lizzie.frame.toolbar.isSameEngine&&Lizzie.board.getData().blackToPlay) {
 		          try {
-		            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkPlayputs.getText());
+		            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkPlayputs.getText().replace(" ",""));
 		          } catch (NumberFormatException err) {
 		          }
 		        	}
 		        	else {
 		        		 try {
-		 		            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkPlayputsWhite.getText());
+		 		            playouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkPlayputsWhite.getText().replace(" ",""));
 		 		          } catch (NumberFormatException err) {
 		 		          }
 		        	}
 		        }
 		        if (Lizzie.frame.toolbar.chkenginePkFirstPlayputs.isSelected()) {
-		        	if(Lizzie.board.getData().blackToPlay) {
+		        	if(!Lizzie.frame.toolbar.isSameEngine&&this.currentEngineN==Lizzie.frame.toolbar.engineBlack||Lizzie.frame.toolbar.isSameEngine&&Lizzie.board.getData().blackToPlay) {
 		          try {
-		            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkFirstPlayputs.getText());
+		            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkFirstPlayputs.getText().replace(" ",""));
 		          } catch (NumberFormatException err) {
 		          }
 		        	}
 		        	else {
 		        		 try {
-		 		            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkFirstPlayputsWhite.getText());
+		 		            firstPlayouts = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkFirstPlayputsWhite.getText().replace(" ",""));
 		 		          } catch (NumberFormatException err) {
 		 		          }
 		        	}
@@ -1243,7 +1252,7 @@ public class Leelaz {
 			    			  return;
 				          }
 				          
-		        		  if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
+		        		  if(!Lizzie.frame.toolbar.isSameEngine&&this.currentEngineN==Lizzie.frame.toolbar.engineBlack||Lizzie.frame.toolbar.isSameEngine&&Lizzie.board.getData().blackToPlay)
 				          {
 		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( "B", "pass");
 		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", "pass");
@@ -1269,7 +1278,7 @@ public class Leelaz {
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);		
 		        	  
 		          //nameCmd();
-		          if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
+		          if(!Lizzie.frame.toolbar.isSameEngine&&this.currentEngineN==Lizzie.frame.toolbar.engineBlack||Lizzie.frame.toolbar.isSameEngine&&Lizzie.board.getData().blackToPlay)
 		          {
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
@@ -1342,7 +1351,7 @@ public class Leelaz {
 				        	  nameCmd();		        		  
 			    			  return;
 				          }
-		        		  if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
+		        		  if(!Lizzie.frame.toolbar.isSameEngine&&this.currentEngineN==Lizzie.frame.toolbar.engineBlack||Lizzie.frame.toolbar.isSameEngine&&Lizzie.board.getData().blackToPlay)
 				          {
 		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( "B", "pass");
 		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", "pass");
@@ -1368,7 +1377,7 @@ public class Leelaz {
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);		
 		        	  
 		          //nameCmd();
-		          if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
+		          if(!Lizzie.frame.toolbar.isSameEngine&&this.currentEngineN==Lizzie.frame.toolbar.engineBlack||Lizzie.frame.toolbar.isSameEngine&&Lizzie.board.getData().blackToPlay)
 		          {
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
@@ -1440,7 +1449,7 @@ public class Leelaz {
 				        	  nameCmd();		        		  
 			    			  return;
 				          }
-		        		  if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
+		        		  if(!Lizzie.frame.toolbar.isSameEngine&&this.currentEngineN==Lizzie.frame.toolbar.engineBlack||Lizzie.frame.toolbar.isSameEngine&&Lizzie.board.getData().blackToPlay)
 				          {
 		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder( "B", "pass");
 		        			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", "pass");
@@ -1466,7 +1475,7 @@ public class Leelaz {
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);		
 		        	  
 		          //nameCmd();
-		          if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
+		          if(!Lizzie.frame.toolbar.isSameEngine&&this.currentEngineN==Lizzie.frame.toolbar.engineBlack||Lizzie.frame.toolbar.isSameEngine&&Lizzie.board.getData().blackToPlay)
 		          {
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));
 		        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B", Lizzie.board.convertCoordinatesToName(coords[0],coords[1]));

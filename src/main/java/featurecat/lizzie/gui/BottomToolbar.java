@@ -67,6 +67,7 @@ public class BottomToolbar extends JPanel {
   public boolean isEnginePk = false;
   public int engineBlack = -1;
   public int engineWhite = -1;
+  public boolean isSameEngine = false;
   public int pkResignMoveCounts = 2;
   public double pkResginWinrate = 15;
   public boolean isEnginePkBatch = false;
@@ -148,6 +149,7 @@ public class BottomToolbar extends JPanel {
   JLabel lblenginePk;
   // JLabel lblgenmove;
   JLabel lblenginePkTime;
+  JLabel lblenginePkTimeWhite;
   public JLabel lblengineBlack;
   public JLabel lblengineWhite;
   public JLabel lblenginePkPlayputs;
@@ -162,6 +164,7 @@ public class BottomToolbar extends JPanel {
   public JLabel lblenginePkResult;
 
   public JTextField txtenginePkTime;
+  public JTextField txtenginePkTimeWhite;
   public JTextField txtenginePkPlayputs;
   public JTextField txtenginePkFirstPlayputs;
   public JTextField txtenginePkPlayputsWhite;
@@ -535,12 +538,12 @@ public class BottomToolbar extends JPanel {
           @Override
           public void actionPerformed(ActionEvent e) {
             try {
-              firstMove = Integer.parseInt(txtFirstAnaMove.getText());
+              firstMove = Integer.parseInt(txtFirstAnaMove.getText().replace(" ", ""));
             } catch (Exception ex) {
               firstMove = -1;
             }
             try {
-              lastMove = Integer.parseInt(txtLastAnaMove.getText());
+              lastMove = Integer.parseInt(txtLastAnaMove.getText().replace(" ", ""));
             } catch (Exception ex) {
               lastMove = -1;
             }
@@ -587,7 +590,7 @@ public class BottomToolbar extends JPanel {
           public void focusLost(FocusEvent e) {
             // 失去焦点执行的代码
             try {
-              firstMove = Integer.parseInt(txtFirstAnaMove.getText());
+              firstMove = Integer.parseInt(txtFirstAnaMove.getText().replace(" ", ""));
             } catch (Exception ex) {
             }
           }
@@ -612,7 +615,7 @@ public class BottomToolbar extends JPanel {
           public void focusLost(FocusEvent e) {
             // 失去焦点执行的代码
             try {
-              lastMove = Integer.parseInt(txtLastAnaMove.getText());
+              lastMove = Integer.parseInt(txtLastAnaMove.getText().replace(" ", ""));
             } catch (Exception ex) {
             }
           }
@@ -872,7 +875,7 @@ public class BottomToolbar extends JPanel {
 
     btnEnginePkConfig = new JButton("设置");
     enginePkPanel.add(btnEnginePkConfig);
-    btnEnginePkConfig.setBounds(67, 22, 35, 20);
+    btnEnginePkConfig.setBounds(42, 22, 35, 20);
     btnEnginePkConfig.setMargin(new Insets(0, 0, 0, 0));
     btnEnginePkConfig.addActionListener(
         new ActionListener() {
@@ -886,7 +889,7 @@ public class BottomToolbar extends JPanel {
         });
     btnEnginePkStop = new JButton("暂停");
     enginePkPanel.add(btnEnginePkStop);
-    btnEnginePkStop.setBounds(101, 22, 35, 20);
+    btnEnginePkStop.setBounds(76, 22, 35, 20);
     btnEnginePkStop.setMargin(new Insets(0, 0, 0, 0));
     btnEnginePkStop.addActionListener(
         new ActionListener() {
@@ -913,14 +916,20 @@ public class BottomToolbar extends JPanel {
         });
 
     chkenginePkTime = new JCheckBox();
-    lblenginePkTime = new JLabel("按时间(秒):");
+    lblenginePkTime = new JLabel("时间(秒) 黑");
+    lblenginePkTimeWhite = new JLabel("白");
     txtenginePkTime = new JTextField();
+    txtenginePkTimeWhite = new JTextField();
     enginePkPanel.add(chkenginePkTime);
     enginePkPanel.add(lblenginePkTime);
     enginePkPanel.add(txtenginePkTime);
-    chkenginePkTime.setBounds(135, 23, 20, 18);
-    lblenginePkTime.setBounds(155, 22, 60, 18);
-    txtenginePkTime.setBounds(218, 24, 30, 18);
+    enginePkPanel.add(lblenginePkTimeWhite);
+    enginePkPanel.add(txtenginePkTimeWhite);
+    chkenginePkTime.setBounds(110, 23, 20, 18);
+    lblenginePkTime.setBounds(130, 22, 70, 18);
+    txtenginePkTime.setBounds(190, 24, 23, 18);
+    lblenginePkTimeWhite.setBounds(215, 22, 15, 18);
+    txtenginePkTimeWhite.setBounds(227, 24, 23, 18);
     chkenginePkTime.addActionListener(
         new ActionListener() {
           @Override
@@ -929,9 +938,9 @@ public class BottomToolbar extends JPanel {
           }
         });
 
-    btnStartPk = new JButton("开始对战");
+    btnStartPk = new JButton("开始");
     enginePkPanel.add(btnStartPk);
-    btnStartPk.setBounds(8, 22, 60, 20);
+    btnStartPk.setBounds(8, 22, 35, 20);
     btnStartPk.setMargin(new Insets(0, 0, 0, 0));
 
     btnStartPk.addActionListener(
@@ -940,26 +949,39 @@ public class BottomToolbar extends JPanel {
           public void actionPerformed(ActionEvent e) {
             // TBD未完成
             if (!chkenginePk.isSelected()) {
-              return;
-            }
-            if (engineWhite == engineBlack) {
               boolean onTop = false;
               if (Lizzie.frame.isAlwaysOnTop()) {
                 Lizzie.frame.setAlwaysOnTop(false);
                 onTop = true;
               }
-              JOptionPane.showMessageDialog(Lizzie.frame, "黑白棋不可选择相同引擎");
+              JOptionPane.showMessageDialog(Lizzie.frame, "请先勾选[引擎对战],并选择黑白引擎后再开始");
               if (onTop) Lizzie.frame.setAlwaysOnTop(true);
               return;
+            }
+            if (engineWhite == engineBlack) {
+              isSameEngine = true;
+            } else {
+              isSameEngine = false;
             }
             if (!isEnginePk) {
               isAutoAna = false;
               isAutoPlay = false;
+              Lizzie.board.isPkBoard = true;
+              featurecat.lizzie.gui.MovelistFrame.table
+                  .getColumnModel()
+                  .getColumn(5)
+                  .setHeaderValue("2手前胜率");
+              featurecat.lizzie.gui.MovelistFrame.table
+                  .getColumnModel()
+                  .getColumn(6)
+                  .setHeaderValue("2手前计算量");
+              featurecat.lizzie.gui.MovelistFrame.checkBlacktxt.setText("白:");
+              featurecat.lizzie.gui.MovelistFrame.checkWhitetxt.setText("黑:");
               if (checkGameTime) {
                 Lizzie.engineManager.gameTime = System.currentTimeMillis();
               }
               isEnginePk = true;
-              btnStartPk.setText("停止对战");
+              btnStartPk.setText("终止");
               Lizzie.frame.removeInput();
               EnginePkBatchNumberNow = 1;
               isEnginePkBatch = chkenginePkBatch.isSelected();
@@ -1052,7 +1074,7 @@ public class BottomToolbar extends JPanel {
               }
             } else {
               isEnginePk = false;
-              btnStartPk.setText("开始对战");
+              btnStartPk.setText("开始");
               // Lizzie.engineManager.engineList.get(engineBlack).notPondering();
               // Lizzie.engineManager.engineList.get(engineBlack).nameCmd();
               // Lizzie.engineManager.engineList.get(engineWhite).notPondering();
@@ -1397,6 +1419,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayFirstPlayouts.setFocusable(false);
       txtAnaTime.setFocusable(false);
       txtenginePkTime.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
       txtenginePkPlayputsWhite.setFocusable(false);
       txtenginePkFirstPlayputsWhite.setFocusable(false);
       txtenginePkBatch.setFocusable(false);
@@ -1410,6 +1433,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayTime.setFocusable(true);
       txtAutoPlayPlayouts.setFocusable(true);
       txtAutoPlayFirstPlayouts.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
       txtenginePkTime.setFocusable(true);
       txtenginePkPlayputs.setFocusable(true);
       txtenginePkFirstPlayputs.setFocusable(true);
@@ -1426,6 +1450,7 @@ public class BottomToolbar extends JPanel {
     if (txtAnaTime.isFocusOwner()) {
       txtAutoPlayTime.setFocusable(false);
       txtAutoPlayPlayouts.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
       txtAutoPlayFirstPlayouts.setFocusable(false);
       txtAnaPlayouts.setFocusable(false);
       txtenginePkPlayputs.setFocusable(false);
@@ -1453,6 +1478,7 @@ public class BottomToolbar extends JPanel {
       txtLastAnaMove.setFocusable(true);
       txtFirstAnaMove.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
       txtenginePkPlayputsWhite.setFocusable(true);
       txtenginePkFirstPlayputsWhite.setFocusable(true);
       txtenginePkBatch.setFocusable(true);
@@ -1464,6 +1490,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayPlayouts.setFocusable(false);
       txtenginePkPlayputs.setFocusable(false);
       txtenginePkFirstPlayputs.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
       txtAutoPlayFirstPlayouts.setFocusable(false);
       txtAnaTime.setFocusable(false);
       txtenginePkPlayputsWhite.setFocusable(false);
@@ -1485,6 +1512,7 @@ public class BottomToolbar extends JPanel {
       txtenginePkPlayputs.setFocusable(true);
       txtenginePkPlayputsWhite.setFocusable(true);
       txtenginePkFirstPlayputsWhite.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
       txtenginePkBatch.setFocusable(true);
       txtenginePkFirstPlayputs.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
@@ -1495,6 +1523,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayTime.setFocusable(false);
       txtAutoPlayPlayouts.setFocusable(false);
       txtenginePkPlayputs.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
       txtenginePkFirstPlayputs.setFocusable(false);
       txtAutoPlayFirstPlayouts.setFocusable(false);
       txtAnaTime.setFocusable(false);
@@ -1517,6 +1546,7 @@ public class BottomToolbar extends JPanel {
       txtenginePkPlayputs.setFocusable(true);
       txtenginePkFirstPlayputs.setFocusable(true);
       txtenginePkPlayputsWhite.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
       txtenginePkFirstPlayputsWhite.setFocusable(true);
       txtenginePkBatch.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
@@ -1527,6 +1557,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayTime.setFocusable(false);
       txtAutoPlayPlayouts.setFocusable(false);
       txtenginePkPlayputs.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
       txtenginePkFirstPlayputs.setFocusable(false);
       txtAutoPlayFirstPlayouts.setFocusable(false);
       txtenginePkTime.setFocusable(false);
@@ -1546,6 +1577,7 @@ public class BottomToolbar extends JPanel {
       txtAnaTime.setFocusable(true);
       txtenginePkPlayputs.setFocusable(true);
       txtenginePkFirstPlayputs.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
       txtFirstAnaMove.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
       txtMoveNumber.setFocusable(true);
@@ -1560,6 +1592,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayTime.setFocusable(false);
       txtAutoPlayPlayouts.setFocusable(false);
       txtenginePkPlayputs.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
       txtenginePkFirstPlayputs.setFocusable(false);
       txtAutoPlayFirstPlayouts.setFocusable(false);
       txtenginePkPlayputsWhite.setFocusable(false);
@@ -1582,6 +1615,7 @@ public class BottomToolbar extends JPanel {
       txtAnaPlayouts.setFocusable(true);
       txtenginePkTime.setFocusable(true);
       txtenginePkPlayputs.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
       txtenginePkFirstPlayputs.setFocusable(true);
       txtMoveNumber.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
@@ -1595,6 +1629,7 @@ public class BottomToolbar extends JPanel {
       txtenginePkBatch.setFocusable(false);
       txtAutoPlayPlayouts.setFocusable(false);
       txtAutoPlayFirstPlayouts.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
       txtenginePkPlayputs.setFocusable(false);
       txtenginePkFirstPlayputs.setFocusable(false);
       txtLastAnaMove.setFocusable(false);
@@ -1616,6 +1651,7 @@ public class BottomToolbar extends JPanel {
       txtenginePkFirstPlayputsWhite.setFocusable(true);
       txtenginePkBatch.setFocusable(true);
       txtenginePkTime.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
       txtFirstAnaMove.setFocusable(true);
       txtAutoPlayTime.setFocusable(true);
@@ -1630,6 +1666,7 @@ public class BottomToolbar extends JPanel {
       txtenginePkPlayputs.setFocusable(false);
       txtenginePkPlayputsWhite.setFocusable(false);
       txtenginePkFirstPlayputsWhite.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
       txtenginePkBatch.setFocusable(false);
       txtenginePkFirstPlayputs.setFocusable(false);
       txtAnaPlayouts.setFocusable(false);
@@ -1647,6 +1684,7 @@ public class BottomToolbar extends JPanel {
       txtenginePkFirstPlayputs.setFocusable(true);
       txtenginePkPlayputsWhite.setFocusable(true);
       txtenginePkFirstPlayputsWhite.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
       txtenginePkBatch.setFocusable(true);
       txtMoveNumber.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
@@ -1662,6 +1700,7 @@ public class BottomToolbar extends JPanel {
       txtLastAnaMove.setFocusable(false);
       txtenginePkPlayputs.setFocusable(false);
       txtenginePkFirstPlayputs.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
       txtenginePkPlayputsWhite.setFocusable(false);
       txtenginePkFirstPlayputsWhite.setFocusable(false);
       txtenginePkBatch.setFocusable(false);
@@ -1680,6 +1719,7 @@ public class BottomToolbar extends JPanel {
       txtenginePkPlayputs.setFocusable(true);
       txtenginePkFirstPlayputs.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
       txtenginePkPlayputsWhite.setFocusable(true);
       txtenginePkFirstPlayputsWhite.setFocusable(true);
       txtenginePkBatch.setFocusable(true);
@@ -1695,6 +1735,7 @@ public class BottomToolbar extends JPanel {
       txtenginePkFirstPlayputs.setFocusable(false);
       txtenginePkPlayputsWhite.setFocusable(false);
       txtenginePkFirstPlayputsWhite.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
       txtenginePkBatch.setFocusable(false);
       txtLastAnaMove.setFocusable(false);
       txtAnaPlayouts.setFocusable(false);
@@ -1712,6 +1753,7 @@ public class BottomToolbar extends JPanel {
       txtenginePkFirstPlayputs.setFocusable(true);
       txtenginePkPlayputsWhite.setFocusable(true);
       txtenginePkFirstPlayputsWhite.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
       txtenginePkBatch.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
       txtMoveNumber.setFocusable(true);
@@ -1725,6 +1767,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayTime.setFocusable(false);
       txtAutoPlayPlayouts.setFocusable(false);
       txtenginePkPlayputsWhite.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
       txtenginePkFirstPlayputsWhite.setFocusable(false);
       txtenginePkBatch.setFocusable(false);
       txtenginePkFirstPlayputs.setFocusable(false);
@@ -1746,6 +1789,7 @@ public class BottomToolbar extends JPanel {
       txtenginePkFirstPlayputsWhite.setFocusable(true);
       txtenginePkBatch.setFocusable(true);
       txtenginePkFirstPlayputs.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
       txtMoveNumber.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
@@ -1759,6 +1803,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayPlayouts.setFocusable(false);
       txtenginePkPlayputs.setFocusable(false);
       txtenginePkPlayputsWhite.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
       txtenginePkFirstPlayputsWhite.setFocusable(false);
       txtenginePkBatch.setFocusable(false);
       txtLastAnaMove.setFocusable(false);
@@ -1779,6 +1824,7 @@ public class BottomToolbar extends JPanel {
       txtenginePkPlayputsWhite.setFocusable(true);
       txtenginePkFirstPlayputsWhite.setFocusable(true);
       txtenginePkBatch.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
       txtMoveNumber.setFocusable(true);
       txtAnaFirstPlayouts.setFocusable(true);
@@ -1791,7 +1837,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayTime.setFocusable(false);
       txtAutoPlayPlayouts.setFocusable(false);
       txtenginePkPlayputs.setFocusable(false);
-
+      txtenginePkTimeWhite.setFocusable(false);
       txtenginePkFirstPlayputsWhite.setFocusable(false);
       txtenginePkBatch.setFocusable(false);
       txtLastAnaMove.setFocusable(false);
@@ -1811,7 +1857,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayTime.setFocusable(true);
       txtAutoPlayPlayouts.setFocusable(true);
       txtenginePkPlayputs.setFocusable(true);
-
+      txtenginePkTimeWhite.setFocusable(true);
       txtenginePkFirstPlayputsWhite.setFocusable(true);
       txtenginePkBatch.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
@@ -1827,7 +1873,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayPlayouts.setFocusable(false);
       txtenginePkPlayputs.setFocusable(false);
       txtenginePkPlayputsWhite.setFocusable(false);
-
+      txtenginePkTimeWhite.setFocusable(false);
       txtenginePkBatch.setFocusable(false);
       txtLastAnaMove.setFocusable(false);
       txtAnaPlayouts.setFocusable(false);
@@ -1847,7 +1893,7 @@ public class BottomToolbar extends JPanel {
       txtAutoPlayPlayouts.setFocusable(true);
       txtenginePkPlayputs.setFocusable(true);
       txtenginePkPlayputsWhite.setFocusable(true);
-
+      txtenginePkTimeWhite.setFocusable(true);
       txtenginePkBatch.setFocusable(true);
       txtAnaPlayouts.setFocusable(true);
       txtMoveNumber.setFocusable(true);
@@ -1857,6 +1903,40 @@ public class BottomToolbar extends JPanel {
     }
 
     if (txtenginePkBatch.isFocusOwner()) {
+      txtAnaTime.setFocusable(false);
+      txtAutoPlayTime.setFocusable(false);
+      txtAutoPlayPlayouts.setFocusable(false);
+      txtenginePkPlayputs.setFocusable(false);
+      txtenginePkPlayputsWhite.setFocusable(false);
+      txtenginePkFirstPlayputsWhite.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
+      txtLastAnaMove.setFocusable(false);
+      txtAnaPlayouts.setFocusable(false);
+      txtMoveNumber.setFocusable(false);
+      txtAnaFirstPlayouts.setFocusable(false);
+      txtFirstAnaMove.setFocusable(false);
+      txtAutoPlayFirstPlayouts.setFocusable(false);
+      txtenginePkTime.setFocusable(false);
+      txtenginePkFirstPlayputs.setFocusable(false);
+      txtenginePkBatch.setFocusable(false);
+      txtenginePkBatch.setFocusable(true);
+      txtenginePkFirstPlayputs.setFocusable(true);
+      txtenginePkTime.setFocusable(true);
+      txtAnaTime.setFocusable(true);
+      txtLastAnaMove.setFocusable(true);
+      txtAutoPlayTime.setFocusable(true);
+      txtAutoPlayPlayouts.setFocusable(true);
+      txtenginePkPlayputs.setFocusable(true);
+      txtenginePkPlayputsWhite.setFocusable(true);
+      txtenginePkFirstPlayputsWhite.setFocusable(true);
+      txtenginePkTimeWhite.setFocusable(true);
+      txtAnaPlayouts.setFocusable(true);
+      txtMoveNumber.setFocusable(true);
+      txtAnaFirstPlayouts.setFocusable(true);
+      txtFirstAnaMove.setFocusable(true);
+      txtAutoPlayFirstPlayouts.setFocusable(true);
+    }
+    if (txtenginePkTimeWhite.isFocusOwner()) {
       txtAnaTime.setFocusable(false);
       txtAutoPlayTime.setFocusable(false);
       txtAutoPlayPlayouts.setFocusable(false);
@@ -1873,6 +1953,8 @@ public class BottomToolbar extends JPanel {
       txtenginePkTime.setFocusable(false);
       txtenginePkFirstPlayputs.setFocusable(false);
       txtenginePkBatch.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(false);
+      txtenginePkTimeWhite.setFocusable(true);
       txtenginePkBatch.setFocusable(true);
       txtenginePkFirstPlayputs.setFocusable(true);
       txtenginePkTime.setFocusable(true);

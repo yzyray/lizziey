@@ -2181,7 +2181,7 @@ public class LizzieFrame extends JFrame {
   private void drawComment(Graphics2D g, int x, int y, int w, int h) {
 
     String comment = Lizzie.board.getHistory().getData().comment;
-    int fontSize = (int) (min(getWidth()*0.6, getHeight()) * 0.0225);
+    int fontSize = (int) (min(getWidth() * 0.6, getHeight()) * 0.0225);
     //	    if (Lizzie.config.commentFontSize > 0) {
     //	      fontSize = Lizzie.config.commentFontSize;
     //	    } else if (fontSize < 12) {
