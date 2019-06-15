@@ -748,7 +748,7 @@ public class LizzieFrame extends JFrame {
       toolbar.chkAnaAutoSave.setEnabled(false);
 
       Lizzie.frame.toolbarHeight = 70;
-      toolbar.detail.setIcon(toolbar.iconUp);
+      toolbar.detail.setIcon(toolbar.iconDown);
       Lizzie.frame.toolbar.setVisible(true);
       Lizzie.frame.mainPanel.setBounds(
           0,
