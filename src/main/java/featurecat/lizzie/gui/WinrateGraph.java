@@ -129,8 +129,17 @@ public class WinrateGraph {
 
     if (Lizzie.frame.toolbar.isEnginePk || Lizzie.board.isPkBoard) {
       if (numMoves < 2) return;
-
-      int x = posx + (movenum * width / numMoves);
+      Stroke previousStroke = g.getStroke();
+      int x =
+          posx
+              + ((Lizzie.board.getHistory().getCurrentHistoryNode().getData().moveNumber - 1)
+                  * width
+                  / numMoves);
+      g.setStroke(dashed);
+      g.setColor(Color.white);
+      if (Lizzie.board.getHistory().getCurrentHistoryNode() != Lizzie.board.getHistory().getEnd())
+        g.drawLine(x, posy, x, posy + height);
+      g.setStroke(previousStroke);
       String moveNumString = "" + node.getData().moveNumber;
       int mw = g.getFontMetrics().stringWidth(moveNumString);
       int margin = strokeRadius;
@@ -142,7 +151,11 @@ public class WinrateGraph {
       }
       g.drawString(moveNumString, mx, posy + height - margin);
       while (node.previous().isPresent() && node.previous().get().previous().isPresent()) {
-        double wr = node.previous().get().previous().get().getData().bestMoves.get(0).winrate;
+        double wr = 50;
+        try {
+          wr = node.previous().get().previous().get().getData().bestMoves.get(0).winrate;
+        } catch (Exception ex) {
+        }
         try {
           wr = node.getData().bestMoves.get(0).winrate;
         } catch (Exception ex) {
@@ -150,8 +163,10 @@ public class WinrateGraph {
         }
 
         int playouts = node.getData().getPlayouts();
-
-        lastWr = node.previous().get().previous().get().getData().bestMoves.get(0).winrate;
+        try {
+          lastWr = node.previous().get().previous().get().getData().bestMoves.get(0).winrate;
+        } catch (Exception ex) {
+        }
         if (node.getData().blackToPlay) {
           g.setColor(Color.BLACK);
           g.drawLine(
@@ -269,18 +284,18 @@ public class WinrateGraph {
               playouts = stats.totalPlayouts;
             }
             // Draw a vertical line at the current move
-            // Stroke previousStroke = g.getStroke();
+            Stroke previousStroke = g.getStroke();
             int x = posx + (movenum * width / numMoves);
-            // g.setStroke(dashed);
-            // g.setColor(Color.white);
-            // g.drawLine(x, posy, x, posy + height);
+            g.setStroke(dashed);
+            g.setColor(Color.white);
+            g.drawLine(x, posy, x, posy + height);
             // Show move number
             String moveNumString = "" + node.getData().moveNumber;
             int mw = g.getFontMetrics().stringWidth(moveNumString);
             int margin = strokeRadius;
             int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
             g.drawString(moveNumString, mx, posy + height - margin);
-            // g.setStroke(previousStroke);
+            g.setStroke(previousStroke);
           }
           if (playouts > 0) {
             if (wr < 0) {
@@ -395,7 +410,13 @@ public class WinrateGraph {
             }
             // Draw a vertical line at the current move
             // Stroke previousStroke = g.getStroke();
+            Stroke previousStroke = g.getStroke();
             int x = posx + (movenum * width / numMoves);
+            g.setStroke(dashed);
+            g.setColor(Color.white);
+            if (curMove != Lizzie.board.getHistory().getEnd())
+              g.drawLine(x, posy, x, posy + height);
+
             // Show move number
             String moveNumString = "" + node.getData().moveNumber;
             int mw = g.getFontMetrics().stringWidth(moveNumString);
@@ -407,6 +428,7 @@ public class WinrateGraph {
               g.setColor(Color.BLACK);
             }
             g.drawString(moveNumString, mx, posy + height - margin);
+            g.setStroke(previousStroke);
           }
           if (playouts > 0) {
             if (wr < 0) {

@@ -1543,6 +1543,7 @@ public class Leelaz {
       	  { notifyAutoAna();
             notifyAutoPlay();
           //  notifyAutoPK();    
+            if(Lizzie.frame.toolbar.isEnginePk)
             pkResign();
             }
         	if(!played)
