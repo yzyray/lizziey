@@ -234,8 +234,8 @@ public class LizzieFrame extends JFrame {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("main-window-position");
       this.toolbarHeight = pos.getInt(0);
     }
-    if (toolbarHeight == 26) toolbar.detail.setIcon(toolbar.iconDown);
-    if (toolbarHeight == 70) toolbar.detail.setIcon(toolbar.iconUp);
+    if (toolbarHeight == 26) toolbar.detail.setIcon(toolbar.iconUp);
+    if (toolbarHeight == 70) toolbar.detail.setIcon(toolbar.iconDown);
     mainPanel =
         new JPanel(true) {
           @Override
@@ -1117,7 +1117,7 @@ public class LizzieFrame extends JFrame {
       }
 
       // variation tree
-      if (!Lizzie.config.showWinrate&&(Lizzie.config.showLargeSubBoard())) {
+      if (!Lizzie.config.showWinrate && (Lizzie.config.showLargeSubBoard())) {
 
         vh = vh + grh;
       }

@@ -337,12 +337,12 @@ public class BottomToolbar extends JPanel {
           public void actionPerformed(ActionEvent e) {
             if (Lizzie.frame.toolbarHeight == 26) {
               Lizzie.frame.toolbarHeight = 70;
-              detail.setIcon(iconUp);
-              Lizzie.frame.setBounds(
-                  Lizzie.frame.getX(),
-                  Lizzie.frame.getY(),
-                  Lizzie.frame.getWidth(),
-                  Lizzie.frame.getHeight() + 44);
+              detail.setIcon(iconDown);
+              Lizzie.frame.mainPanel.setBounds(
+                  Lizzie.frame.mainPanel.getX(),
+                  Lizzie.frame.mainPanel.getY(),
+                  Lizzie.frame.mainPanel.getWidth(),
+                  Lizzie.frame.mainPanel.getHeight() - 44);
               Lizzie.frame.toolbar.setBounds(
                   0,
                   Lizzie.frame.getHeight()
@@ -357,12 +357,12 @@ public class BottomToolbar extends JPanel {
 
             } else {
               Lizzie.frame.toolbarHeight = 26;
-              detail.setIcon(iconDown);
-              Lizzie.frame.setBounds(
-                  Lizzie.frame.getX(),
-                  Lizzie.frame.getY(),
-                  Lizzie.frame.getWidth(),
-                  Lizzie.frame.getHeight() - 44);
+              detail.setIcon(iconUp);
+              Lizzie.frame.mainPanel.setBounds(
+                  Lizzie.frame.mainPanel.getX(),
+                  Lizzie.frame.mainPanel.getY(),
+                  Lizzie.frame.mainPanel.getWidth(),
+                  Lizzie.frame.mainPanel.getHeight() + 44);
               Lizzie.frame.toolbar.setBounds(
                   0,
                   Lizzie.frame.getHeight()
