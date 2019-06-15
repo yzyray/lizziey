@@ -1117,6 +1117,10 @@ public class LizzieFrame extends JFrame {
       }
 
       // variation tree
+      if (!Lizzie.config.showWinrate&&(Lizzie.config.showLargeSubBoard())) {
+
+        vh = vh + grh;
+      }
       int treex = vx;
       int treey = vy;
       int treew = vw;
