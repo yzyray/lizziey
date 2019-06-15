@@ -1230,8 +1230,15 @@ public class Leelaz {
 		        	  if(blackResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts||whiteResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
 		    		  {
 		        		  
-		        		  resigned=true;
 		        		  
+		        		  if(bestMoves.get(0).coordinate.equals("pass"))
+			        	  {  Lizzie.board.pass();	}
+		        		  else
+		        		  {
+		        			  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);		
+		        			  Lizzie.board.place(coords[0],coords[1]);	
+		        		  }
+		        		  resigned=true;
 		        		  //pkResign();
 		        		  //System.out.println("认输1"+this.currentEngineN);
 		        		  nameCmd();		        		  
@@ -1328,6 +1335,13 @@ public class Leelaz {
 		        	  }
 		        	  if(blackResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts||whiteResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
 		    		  {
+		        		  if(bestMoves.get(0).coordinate.equals("pass"))
+			        	  {  Lizzie.board.pass();	}
+		        		  else
+		        		  {
+		        			  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);		
+		        			  Lizzie.board.place(coords[0],coords[1]);	
+		        		  }
 		        		  resigned=true;
 		        		  //pkResign();
 		        		  //System.out.println("认输2"+this.currentEngineN);
@@ -1428,6 +1442,13 @@ public class Leelaz {
 		        	  }
 		        	  if(blackResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts||whiteResignMoveCounts>=Lizzie.frame.toolbar.pkResignMoveCounts)
 		    		  {
+		        		  if(bestMoves.get(0).coordinate.equals("pass"))
+			        	  {  Lizzie.board.pass();	}
+		        		  else
+		        		  {
+		        			  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);		
+		        			  Lizzie.board.place(coords[0],coords[1]);	
+		        		  }
 		        		  resigned=true;
 		        		 // pkResign();
 		        		  //System.out.println("认输3"+this.currentEngineN);

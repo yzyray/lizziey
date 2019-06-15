@@ -15,8 +15,14 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   @Override
   public void mouseClicked(MouseEvent e) {
     if (SwingUtilities.isMiddleMouseButton(e)) {
-
-      Lizzie.frame.playCurrentVariation();
+      int moveNumber = Lizzie.board.getcurrentmovenumber();
+      if (Lizzie.frame.playCurrentVariation()) {
+        if (Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk())
+          Lizzie.board.goToMoveNumber(moveNumber + 1);
+        else {
+          Lizzie.board.goToMoveNumberWithinBranch(1);
+        }
+      }
     }
   }
 
