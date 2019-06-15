@@ -1332,11 +1332,11 @@ public class LizzieFrame extends JFrame {
       return;
     }
 
-    // BufferedImage result = new BufferedImage(vw, vh, TYPE_INT_ARGB);
-    // filter20.filter(cachedBackground.getSubimage(vx, vy, vw, vh), result);
-    // g.drawImage(result, vx, vy, null);
-    g.setColor(Color.LIGHT_GRAY);
-    g.fillRect(vx, vy, vw, vh);
+    BufferedImage result = new BufferedImage(vw, vh, TYPE_INT_ARGB);
+    filter20.filter(cachedBackground.getSubimage(vx, vy, vw, vh), result);
+    g.drawImage(result, vx, vy, null);
+    // g.setColor(Color.LIGHT_GRAY);
+    // g.fillRect(vx, vy, vw, vh);
   }
 
   private void drawPonderingState(
