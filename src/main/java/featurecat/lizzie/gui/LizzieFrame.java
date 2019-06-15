@@ -937,6 +937,17 @@ public class LizzieFrame extends JFrame {
           subBoardWidth = spaceW;
           subBoardHeight = ponderingY - subBoardY;
           subBoardLength = Math.min(subBoardWidth, subBoardHeight);
+          if (subBoardHeight > subBoardWidth) {
+            subBoardY = subBoardY + subBoardHeight - subBoardWidth;
+            panelH = spaceH * 2 / 7 + (subBoardHeight - subBoardWidth);
+            caph = (int) (panelH * 0.2);
+            staty = capy + caph;
+            stath = (int) (panelH * 0.33);
+            gry = staty + stath;
+            // staty=staty+(subBoardHeight-subBoardWidth);
+            grh = panelH - caph - stath;
+            vh = stath + caph;
+          }
           subBoardX = statx + (spaceW - subBoardLength) / 2;
           isSmallCap = true;
 
@@ -1002,7 +1013,18 @@ public class LizzieFrame extends JFrame {
           subBoardWidth = panelW;
           subBoardHeight = boardY - topInset;
           subBoardLength = Math.min(subBoardWidth, subBoardHeight);
-          subBoardY = capy + (gry + grh - capy - subBoardLength) / 2;
+          if (subBoardHeight > subBoardWidth) {
+            subBoardY = subBoardY + subBoardHeight - subBoardWidth;
+            panelH = spaceH / 2 + subBoardHeight - subBoardWidth;
+            caph = panelH / 2;
+            stath = caph / 3;
+            staty = capy + caph / 3;
+            gry = staty + stath;
+            grh = spaceH - caph - stath;
+            vh = spaceH;
+          }
+
+          subBoardX = statx + (spaceW - subBoardLength) / 2;
           // pondering message
           ponderingY = height;
         } else if (Lizzie.config.showLargeWinrate() && !noWinrate) {
@@ -1597,7 +1619,7 @@ public class LizzieFrame extends JFrame {
     strokeRadius = 2;
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g.setColor(Color.WHITE);
-    setPanelFont(g, (int) (min(width, height) * 0.2));
+    setPanelFont(g, (int) (min(width, height * 0.6) * 0.2));
 
     // Last move
     // validLastWinrate && validWinrate
@@ -1616,7 +1638,7 @@ public class LizzieFrame extends JFrame {
       if (Lizzie.leelaz.isColorEngine) {
         text = text + "阶段:" + Lizzie.leelaz.stage + " 贴目:" + Lizzie.leelaz.komi;
       } else {
-        text = text + "贴目:" + komi;
+        if (!komi.equals("7.5")) text = text + "贴目:" + komi;
       }
       if (toolbar.isEnginePk) {
         text =
@@ -1634,6 +1656,7 @@ public class LizzieFrame extends JFrame {
               + resourceBundle.getString("LizzieFrame.display.lastMove")
               + String.format(": %.1f%%", 100 - lastWR - curWR);
       int textlength = (int) (width / (min(width, height) * 0.12));
+      if (width / 2 < height) textlength = (int) (width / (min(width, height) * 0.07));
       text = text.substring(0, min(textlength, text.length()));
       g.drawString(
           text, posX + 2 * strokeRadius, posY + height - 2 * strokeRadius); // - font.getSize());
@@ -1774,7 +1797,7 @@ public class LizzieFrame extends JFrame {
     }
     // Draw captures
     String bval = "", wval = "";
-    if (isSmallCap) setPanelFont(g, (float) (height * 0.40));
+    if (isSmallCap) setPanelFont(g, (float) (min(width * 0.3, height) * 0.40));
     else setPanelFont(g, (float) (height * 0.18));
     if (Lizzie.board.inScoreMode()) {
       double score[] = Lizzie.board.getScore(Lizzie.board.scoreStones());
