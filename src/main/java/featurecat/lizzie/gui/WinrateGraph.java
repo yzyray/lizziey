@@ -303,10 +303,10 @@ public class WinrateGraph {
             } else if (!node.getData().blackToPlay) {
               wr = 100 - wr;
             }
-            if (Lizzie.frame.isPlayingAgainstLeelaz
-                && Lizzie.frame.playerIsBlack == !node.getData().blackToPlay) {
-              wr = lastWr;
-            }
+            //            if (Lizzie.frame.isPlayingAgainstLeelaz
+            //                && Lizzie.frame.playerIsBlack == !node.getData().blackToPlay) {
+            //              wr = lastWr;
+            //            }
 
             if (lastNodeOk) g.setColor(Lizzie.config.winrateLineColor);
             else g.setColor(Lizzie.config.winrateMissLineColor);
@@ -436,10 +436,10 @@ public class WinrateGraph {
             } else if (!node.getData().blackToPlay) {
               wr = 100 - wr;
             }
-            if (Lizzie.frame.isPlayingAgainstLeelaz
-                && Lizzie.frame.playerIsBlack == !node.getData().blackToPlay) {
-              wr = lastWr;
-            }
+            //            if (Lizzie.frame.isPlayingAgainstLeelaz
+            //                && Lizzie.frame.playerIsBlack == !node.getData().blackToPlay) {
+            //              wr = lastWr;
+            //            }
 
             if (lastOkMove > 0) {
               if (Lizzie.config.showBlunderBar) {

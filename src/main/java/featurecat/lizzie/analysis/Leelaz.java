@@ -65,6 +65,7 @@ public class Leelaz {
  // public Board board;
   private List<MoveData> bestMoves;
   private List<MoveData> bestMovesTemp;
+  private boolean canGetGenmoveInfo=false;
 
   private List<LeelazListener> listeners;
 
@@ -379,9 +380,24 @@ public class Leelaz {
         // End of response
     //  } else 
     	if( (Lizzie.frame.isPlayingAgainstLeelaz&&!genmovenoponder)||(Lizzie.frame.toolbar.isGenmove&&!genmovenoponder))
-    	{if (line.contains(" ->   ")) {
+    	{
+    	if(isThinking&&!canGetGenmoveInfo)		
+    	{
+    			if(Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()) {
+    		if (line.contains(" ->   ")) {
+    			Lizzie.board.getHistory().getCurrentHistoryNode().previous().get().getData().bestMoves.add(MoveData.fromSummary(line));      
+       		 //Lizzie.board.getHistory().getCurrentHistoryNode().previous().get().getData().tryToSetBestMoves(bestMoves);
+       		//bestMoves.clear();
+       		 Lizzie.gtpConsole.addLine(line);    
+    		}
+       		 }}
+    	     if (canGetGenmoveInfo||!Lizzie.config.playponder)
+    	     {
+    		if (line.contains(" ->   ")) {
     		 bestMoves.add(MoveData.fromSummary(line));      
     		 Lizzie.board.getData().tryToSetBestMoves(bestMoves);
+    		 Lizzie.gtpConsole.addLine(line);
+    		}
     	}
     	}
     	  if (line.startsWith("info")) {
@@ -408,8 +424,8 @@ public class Leelaz {
           }
         }
       } 
-    	  else if(Lizzie.gtpConsole.isVisible())
-          Lizzie.gtpConsole.addLine(line);
+    	 // else if(Lizzie.gtpConsole.isVisible())
+          //Lizzie.gtpConsole.addLine(line);
     	  //System.out.println(line);
     	  if(line.startsWith("| ST")) {       
         String[] params = line.trim().split(" ");
@@ -443,6 +459,10 @@ public class Leelaz {
         isThinking = false;
 
       } else if (line.startsWith("=") || line.startsWith("?")) {
+    	  if(isThinking)
+    	  {
+    		  canGetGenmoveInfo=true;
+    	  }
         if (Lizzie.gtpConsole.isVisible()) {
          
           Lizzie.gtpConsole.addLine(line);
@@ -1769,8 +1789,7 @@ public class Leelaz {
       }
 
       sendCommand("play " + colorString + " " + move);
-      bestMoves = new ArrayList<>();
-
+      bestMoves = new ArrayList<>();      
       if (isPondering && !Lizzie.frame.isPlayingAgainstLeelaz) ponder();
     }
   }
@@ -1893,6 +1912,7 @@ public class Leelaz {
     }*/
     sendCommand(command);
     isThinking = true;
+    canGetGenmoveInfo=false;
     isPondering = false;
     genmovenoponder =false;
   }
