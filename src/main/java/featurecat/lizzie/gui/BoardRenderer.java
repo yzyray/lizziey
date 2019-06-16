@@ -591,6 +591,26 @@ public class BoardRenderer {
     g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
     Board board = Lizzie.board;
     Optional<int[]> lastMoveOpt = branchOpt.map(b -> b.data.lastMove).orElse(board.getLastMove());
+
+    if (!lastMoveOpt.isPresent() && board.getData().moveNumber != 0 && !board.inScoreMode()) {
+      g.setColor(
+          board.getData().blackToPlay ? new Color(255, 255, 255, 150) : new Color(0, 0, 0, 150));
+      g.fillOval(
+          x + boardLength / 2 - 4 * stoneRadius,
+          y + boardLength / 2 - 4 * stoneRadius,
+          stoneRadius * 8,
+          stoneRadius * 8);
+      g.setColor(
+          board.getData().blackToPlay ? new Color(0, 0, 0, 255) : new Color(255, 255, 255, 255));
+      drawString(
+          g,
+          x + boardLength / 2,
+          y + boardLength / 2,
+          LizzieFrame.winrateFont,
+          "pass",
+          stoneRadius * 4,
+          stoneRadius * 6);
+    }
     if (Lizzie.config.allowMoveNumber == 0 && !branchOpt.isPresent()) {
       if (lastMoveOpt.isPresent()) {
         int[] lastMove = lastMoveOpt.get();
@@ -613,24 +633,6 @@ public class BoardRenderer {
           drawCircle2(g, stoneX, stoneY, lastMoveMarkerRadius);
           // 需要恢复的
         }
-      } else if (board.getData().moveNumber != 0 && !board.inScoreMode()) {
-        g.setColor(
-            board.getData().blackToPlay ? new Color(255, 255, 255, 150) : new Color(0, 0, 0, 150));
-        g.fillOval(
-            x + boardLength / 2 - 4 * stoneRadius,
-            y + boardLength / 2 - 4 * stoneRadius,
-            stoneRadius * 8,
-            stoneRadius * 8);
-        g.setColor(
-            board.getData().blackToPlay ? new Color(0, 0, 0, 255) : new Color(255, 255, 255, 255));
-        drawString(
-            g,
-            x + boardLength / 2,
-            y + boardLength / 2,
-            LizzieFrame.uiFont,
-            "pass",
-            stoneRadius * 4,
-            stoneRadius * 6);
       }
 
       return;

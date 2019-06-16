@@ -475,7 +475,7 @@ public class Leelaz {
             }
           }
           if (Lizzie.frame.isPlayingAgainstLeelaz) {
-        	  if(params.equals("resign")) {
+        	  if(params[1].startsWith("resign")) {
         		  if(Lizzie.frame.playerIsBlack)
                   {
         	  
@@ -509,8 +509,12 @@ public class Leelaz {
         		  togglePonder();
         		  }
         
+        	  if(params[1].startsWith("pass")) {
+        		  Lizzie.board.pass();
+        	  } 
+        	  else {
             Lizzie.board.place(params[1]);
-        
+        	  }
             if (Lizzie.frame.isAutocounting) {
               if (Lizzie.board.getHistory().isBlacksTurn())
                 Lizzie.frame.zen.sendCommand("play " + "w " + params[1]);
@@ -601,12 +605,11 @@ public class Leelaz {
 		        if (firstPlayouts > 0) {
 		          if (bestMoves.get(0).playouts >= firstPlayouts) {
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
-		            Lizzie.board.place(coords[0],coords[1]);
-		            if((Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
-		            {
-		            	 return;
-		            }
-		          nameCmd();
+		        	  if((Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
+			            {
+			            	Lizzie.board.place(coords[0],coords[1]);
+			            	return;
+			            }
 		          }
 		        }
 		        if (playouts > 0) {
@@ -616,12 +619,13 @@ public class Leelaz {
 		          }
 		          if (sum >= playouts) {
 		        	  int coords[]=Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
-			            Lizzie.board.place(coords[0],coords[1]);
+			            
 			            if((Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
 			            {
-			            	 return;
+			            	Lizzie.board.place(coords[0],coords[1]);
+			            	return;
 			            }
-			            nameCmd();
+			           // nameCmd();
 		            
 		          }
 		        }
@@ -632,9 +636,9 @@ public class Leelaz {
 			            Lizzie.board.place(coords[0],coords[1]);
 			            if((Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
 			            {
-			            	 return;
+			            	Lizzie.board.place(coords[0],coords[1]);
+			            	return;
 			            }
-			            nameCmd();
 		          
 		          }
 		        }
