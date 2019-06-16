@@ -61,7 +61,7 @@ public class Leelaz {
 
   private boolean printCommunication;
   public boolean gtpConsole;
-
+  public boolean genmovenoponder=false;
  // public Board board;
   private List<MoveData> bestMoves;
   private List<MoveData> bestMovesTemp;
@@ -360,7 +360,7 @@ public class Leelaz {
     		Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
     	}
       // if (printCommunication || gtpConsole) {
-      // Lizzie.gtpConsole.addLineforce(line);
+    //   Lizzie.gtpConsole.addLineforce(line);
       // }
 //      if (line.startsWith("komi=")) {
 //        try {
@@ -378,7 +378,7 @@ public class Leelaz {
     	// if (line.equals("\n")) {
         // End of response
     //  } else 
-    	if( Lizzie.frame.isPlayingAgainstLeelaz||Lizzie.frame.toolbar.isGenmove)
+    	if( (Lizzie.frame.isPlayingAgainstLeelaz&&!genmovenoponder)||(Lizzie.frame.toolbar.isGenmove&&!genmovenoponder))
     	{if (line.contains(" ->   ")) {
     		 bestMoves.add(MoveData.fromSummary(line));      
     		 Lizzie.board.getData().tryToSetBestMoves(bestMoves);
@@ -407,7 +407,8 @@ public class Leelaz {
             togglePonder();
           }
         }
-      } else if(Lizzie.gtpConsole.isVisible())
+      } 
+    	  else if(Lizzie.gtpConsole.isVisible())
           Lizzie.gtpConsole.addLine(line);
     	  //System.out.println(line);
     	  if(line.startsWith("| ST")) {       
@@ -474,7 +475,42 @@ public class Leelaz {
             }
           }
           if (Lizzie.frame.isPlayingAgainstLeelaz) {
+        	  if(params.equals("resign")) {
+        		  if(Lizzie.frame.playerIsBlack)
+                  {
+        	  
+        		  boolean onTop=false;
+                  if (Lizzie.frame.isAlwaysOnTop()) {
+                	  Lizzie.frame.setAlwaysOnTop(false);          
+                      onTop = true;
+                    }              
+                JOptionPane.showMessageDialog(
+                    Lizzie.frame, "黑胜,LeelaZero 认输!");
+                if(onTop)Lizzie.frame.setAlwaysOnTop(true);
+                GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
+                gameInfo.setResult("黑胜");
+      		  Lizzie.frame.setResult("黑胜");
+              
+                  }
+        		  else {
+        			  boolean onTop=false;
+                      if (Lizzie.frame.isAlwaysOnTop()) {
+                    	  Lizzie.frame.setAlwaysOnTop(false);          
+                          onTop = true;
+                        }              
+                    JOptionPane.showMessageDialog(
+                        Lizzie.frame, "白胜,LeelaZero 认输!");
+                    if(onTop)Lizzie.frame.setAlwaysOnTop(true);
+                    GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
+                    gameInfo.setResult("白胜");
+          		  Lizzie.frame.setResult("白胜");
+                  
+        		  }
+        		  togglePonder();
+        		  }
+        
             Lizzie.board.place(params[1]);
+        
             if (Lizzie.frame.isAutocounting) {
               if (Lizzie.board.getHistory().isBlacksTurn())
                 Lizzie.frame.zen.sendCommand("play " + "w " + params[1]);
@@ -482,7 +518,7 @@ public class Leelaz {
 
               Lizzie.frame.zen.countStones();
             }
-            if (!Lizzie.config.playponder) Lizzie.leelaz.nameCmd();
+            if (!Lizzie.config.playponder) Lizzie.leelaz.nameCmdfornoponder();
           }
           if (!isInputCommand) {
             isPondering = false;
@@ -1530,6 +1566,15 @@ public class Leelaz {
 		  
 	  }
   }
+  
+  public void nameCmdfornoponder() {
+	  genmovenoponder=true;
+	  try{sendCommand("name");}
+	  catch (Exception es)
+	  {
+		  
+	  }
+  }
   /**
    * Parse a move-data line of Leelaz output
    *
@@ -1831,6 +1876,7 @@ public class Leelaz {
     sendCommand(command);
     isThinking = true;
     isPondering = false;
+    genmovenoponder =false;
   }
 
   public void genmove_analyze(String color) {
