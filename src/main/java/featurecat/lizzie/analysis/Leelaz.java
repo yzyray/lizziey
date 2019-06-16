@@ -608,8 +608,14 @@ public class Leelaz {
 		        	  if((Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
 			            {
 			            	Lizzie.board.place(coords[0],coords[1]);
-			            	return;
+			            	
 			            }
+		        	  if(!Lizzie.config.playponder)
+		        	  { if(!(Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())) {
+		        		  nameCmd();
+		        	  }
+		        	  }
+		        	  return;
 		          }
 		        }
 		        if (playouts > 0) {
@@ -623,9 +629,13 @@ public class Leelaz {
 			            if((Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
 			            {
 			            	Lizzie.board.place(coords[0],coords[1]);
-			            	return;
+			            	
 			            }
-			           // nameCmd();
+			            if(!Lizzie.config.playponder)
+			        	  { if(!(Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())) {
+			        		  nameCmd();
+			        	  }
+			        	  }
 		            
 		          }
 		        }
@@ -637,9 +647,13 @@ public class Leelaz {
 			            if((Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())||(!Lizzie.board.getData().blackToPlay&&Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()))
 			            {
 			            	Lizzie.board.place(coords[0],coords[1]);
-			            	return;
+			            
 			            }
-		          
+			            if(!Lizzie.config.playponder)
+			        	  { if(!(Lizzie.frame.toolbar.chkAutoPlayWhite.isSelected()&&Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())) {
+			        		  nameCmd();
+			        	  }
+			        	  }
 		          }
 		        }
 		     

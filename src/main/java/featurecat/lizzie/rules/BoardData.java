@@ -226,4 +226,12 @@ public boolean isChanged=false;
 	    data.sync(this);
 	    return data;
 	  }
+	  
+
+	  public boolean isSameCoord(int[] coord) {
+	    if (coord == null || coord.length < 2 || !this.lastMove.isPresent()) {
+	      return false;
+	    }
+	    return this.lastMove.map(m -> (m[0] == coord[0] && m[1] == coord[1])).orElse(false);
+	  }
 }
