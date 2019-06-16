@@ -158,7 +158,7 @@ public class LizzieFrame extends JFrame {
   public JPanel mainPanel;
   public int mainPanleX;
   public int mainPanleY;
-  public int toolbarHeight = 26;
+  public int toolbarHeight = 70;
   boolean isSmallCap = false;
   boolean firstTime = true;
   private HTMLDocument htmlDoc;
@@ -223,7 +223,7 @@ public class LizzieFrame extends JFrame {
         this.toolbarHeight = pos.getInt(4);
       }
     } else {
-      setSize(960, 650);
+      setSize(1360, 850);
       setLocationRelativeTo(null); // Start centered, needs to be called *after* setSize...
     }
     if (Lizzie.config.startMaximized && !persisted) {
