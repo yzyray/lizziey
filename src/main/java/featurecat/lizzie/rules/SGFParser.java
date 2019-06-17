@@ -107,7 +107,7 @@ public class SGFParser {
 
   private static boolean parse(String value) {
     // Drop anything outside "(;...)"
-    final Pattern SGF_PATTERN = Pattern.compile("(?s).*?(\\(\\s*;.*\\)).*?");
+    final Pattern SGF_PATTERN = Pattern.compile("(?s).*?(\\(\\s*;.*\\))(?s).*?");
     Matcher sgfMatcher = SGF_PATTERN.matcher(value);
     if (sgfMatcher.matches()) {
       value = sgfMatcher.group(1);
