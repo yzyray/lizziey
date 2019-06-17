@@ -25,6 +25,7 @@ public class EngineManager {
   public static int currentEngineNo;
   public long startInfoTime = System.currentTimeMillis();
   public long gameTime = System.currentTimeMillis();
+  public boolean isEmpty = false;
 
   Timer timer;
   Timer timer2;

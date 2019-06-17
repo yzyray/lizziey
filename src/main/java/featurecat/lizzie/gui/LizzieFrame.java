@@ -699,6 +699,11 @@ public class LizzieFrame extends JFrame {
   }
 
   public static void openFile() {
+    boolean ponder = false;
+    if (Lizzie.leelaz.isPondering()) {
+      ponder = true;
+      Lizzie.leelaz.togglePonder();
+    }
     FileNameExtensionFilter filter = new FileNameExtensionFilter("*.sgf or *.gib", "SGF", "GIB");
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
@@ -716,9 +721,17 @@ public class LizzieFrame extends JFrame {
 
     // chooser.showOpenDialog(null);
     if (result == JFileChooser.APPROVE_OPTION) loadFile(chooser.getSelectedFile());
+    if (ponder) {
+      Lizzie.leelaz.ponder();
+    }
   }
 
   public void openFileAll() {
+    boolean ponder = false;
+    if (Lizzie.leelaz.isPondering()) {
+      ponder = true;
+      Lizzie.leelaz.togglePonder();
+    }
     boolean onTop = false;
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     JFrame frame = new JFrame();
@@ -768,6 +781,9 @@ public class LizzieFrame extends JFrame {
               - Lizzie.frame.toolbarHeight,
           Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
           Lizzie.frame.toolbarHeight);
+    }
+    if (ponder) {
+      Lizzie.leelaz.ponder();
     }
   }
 

@@ -1780,6 +1780,8 @@ public class Leelaz {
    * @param move coordinate of the coordinate
    */
   public void playMove(Stone color, String move) {
+	  if(Lizzie.engineManager.isEmpty)
+	  {return;}
 	  if(Lizzie.frame.toolbar.isEnginePk)
 		  return;
     synchronized (this) {
@@ -1959,6 +1961,8 @@ public class Leelaz {
 	  }
 
   public void undo() {
+	  if(Lizzie.engineManager.isEmpty)
+	  {return;}
     synchronized (this) {
       sendCommand("undo");
       bestMoves = new ArrayList<>();

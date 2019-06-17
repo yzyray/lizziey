@@ -32,8 +32,10 @@ public class SGFParser {
     //  Lizzie.board.getHistory().getCurrentHistoryNode().getData().setPlayouts(0);
     //  Lizzie.board.getHistory().getCurrentHistoryNode().getData().bestMoves.clear();
     // Lizzie.board=new Board();
+
     Lizzie.board.isLoadingFile = true;
     Lizzie.board.clear();
+    Lizzie.engineManager.isEmpty = true;
     File file = new File(filename);
     if (!file.exists() || !file.canRead()) {
       return false;
@@ -52,11 +54,13 @@ public class SGFParser {
     String value = builder.toString();
     if (value.isEmpty()) {
       Lizzie.board.isLoadingFile = false;
+      Lizzie.engineManager.isEmpty = false;
       return false;
     }
 
     boolean returnValue = parse(value);
     Lizzie.board.isLoadingFile = false;
+    Lizzie.engineManager.isEmpty = false;
     return returnValue;
   }
 
