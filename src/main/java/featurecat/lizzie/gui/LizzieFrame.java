@@ -1196,6 +1196,9 @@ public class LizzieFrame extends JFrame {
         boardPos = boardX + maxSize / 2;
         toolbar.setButtonLocation((int) (boardPos - 22));
       }
+      if (Lizzie.config.showWinrate) {
+        drawMoveStatistics(g, statx, staty, statw, stath);
+      }
       boardRenderer.setLocation(boardX, boardY);
       boardRenderer.setBoardLength(maxSize);
       boardRenderer.draw(g);
@@ -1262,13 +1265,13 @@ public class LizzieFrame extends JFrame {
           }
         }
         if (Lizzie.config.showWinrate) {
+          //	  drawMoveStatistics(g, statx, staty, statw, stath);
           // if (backgroundG.isPresent()) {
           // if (isSmallCap) {
           //   contw = contw + contw;
           // }
           // drawContainer(backgroundG.get(), contx, conty, contw, conth);
           //  }
-          drawMoveStatistics(g, statx, staty, statw, stath);
           winrateGraph.draw(g, grx, gry, grw, grh);
         }
       } else {
@@ -1676,9 +1679,6 @@ public class LizzieFrame extends JFrame {
               + " "
               + resourceBundle.getString("LizzieFrame.display.lastMove")
               + String.format(": %.1f%%", 100 - lastWR - curWR);
-      int textlength = (int) (width / (min(width, height) * 0.12));
-      if (width / 2 < height) textlength = (int) (width / (min(width, height) * 0.07));
-      text = text.substring(0, min(textlength, text.length()));
       g.drawString(
           text, posX + 2 * strokeRadius, posY + height - 2 * strokeRadius); // - font.getSize());
     } else {
@@ -2120,7 +2120,7 @@ public class LizzieFrame extends JFrame {
   }
 
   public void setPlayers(String whitePlayer, String blackPlayer) {
-    playerTitle = String.format("(%s [黑] vs %s [白])", blackPlayer, whitePlayer);
+    playerTitle = String.format("([黑]%svs[白]%s)", blackPlayer, whitePlayer);
     updateTitle();
   }
 

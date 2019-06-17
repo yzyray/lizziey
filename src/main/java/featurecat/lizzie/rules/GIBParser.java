@@ -14,8 +14,9 @@ public class GIBParser {
 
   public static boolean load(String filename) throws IOException {
     // Clear the board
-    Lizzie.board.clear();
 
+    Lizzie.board.clear();
+    Lizzie.engineManager.isEmpty = true;
     File file = new File(filename);
     if (!file.exists() || !file.canRead()) {
       return false;
@@ -32,10 +33,12 @@ public class GIBParser {
     fp.close();
     String value = builder.toString();
     if (value.isEmpty()) {
+      Lizzie.engineManager.isEmpty = false;
       return false;
     }
 
     boolean returnValue = parse(value);
+    Lizzie.engineManager.isEmpty = false;
     return returnValue;
   }
 
