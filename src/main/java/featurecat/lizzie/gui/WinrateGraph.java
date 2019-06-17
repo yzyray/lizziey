@@ -149,7 +149,8 @@ public class WinrateGraph {
       } else {
         g.setColor(Color.BLACK);
       }
-      g.drawString(moveNumString, mx, posy + height - margin);
+      if (Lizzie.board.getHistory().getCurrentHistoryNode() != Lizzie.board.getHistory().getEnd())
+        g.drawString(moveNumString, mx, posy + height - margin);
       while (node.previous().isPresent() && node.previous().get().previous().isPresent()) {
         double wr = 50;
         try {
@@ -427,7 +428,9 @@ public class WinrateGraph {
             } else {
               g.setColor(Color.BLACK);
             }
-            g.drawString(moveNumString, mx, posy + height - margin);
+            if (Lizzie.board.getHistory().getCurrentHistoryNode()
+                != Lizzie.board.getHistory().getEnd())
+              g.drawString(moveNumString, mx, posy + height - margin);
             g.setStroke(previousStroke);
           }
           if (playouts > 0) {
