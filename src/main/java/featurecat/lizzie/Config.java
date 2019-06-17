@@ -258,7 +258,7 @@ public class Config {
     showVariationGraph = uiConfig.getBoolean("show-variation-graph");
     showComment = uiConfig.optBoolean("show-comment", true);
     showCaptured = uiConfig.getBoolean("show-captured");
-    showBestMoves = uiConfig.getBoolean("show-best-moves");
+    // showBestMoves = uiConfig.getBoolean("show-best-moves");
     showNextMoves = uiConfig.getBoolean("show-next-moves");
     showSubBoard = uiConfig.getBoolean("show-subboard");
     largeSubBoard = uiConfig.getBoolean("large-subboard");
@@ -467,9 +467,9 @@ public class Config {
     this.showCommentNodeColor = !this.showCommentNodeColor;
   }
 
-  public void toggleShowBestMoves() {
-    this.showBestMoves = !this.showBestMoves;
-  }
+  // public void toggleShowBestMoves() {
+  //   this.showBestMoves = !this.showBestMoves;
+  // }
 
   public void toggleShowNextMoves() {
     this.showNextMoves = !this.showNextMoves;
