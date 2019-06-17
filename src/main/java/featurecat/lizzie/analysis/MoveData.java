@@ -150,7 +150,9 @@ public class MoveData {
       //        }
       Matcher matchold = summaryPatternold.matcher(summary.trim());
       if (!matchold.matches()) {
-        throw new IllegalArgumentException("Unexpected summary format: " + summary);
+        Lizzie.gtpConsole.addLine("读取总结信息出错");
+        return null;
+        // throw new IllegalArgumentException("Unexpected summary format: " + summary);
       } else {
         MoveData result = new MoveData();
         result.coordinate = matchold.group(1);

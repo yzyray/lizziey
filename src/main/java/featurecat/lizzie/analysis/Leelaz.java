@@ -64,6 +64,7 @@ public class Leelaz {
   public boolean genmovenoponder=false;
  // public Board board;
   private List<MoveData> bestMoves;
+  private List<MoveData> bestMovesPrevious;
   private List<MoveData> bestMovesTemp;
   private boolean canGetGenmoveInfo=false;
 
@@ -124,6 +125,7 @@ public class Leelaz {
   public Leelaz(String engineCommand) throws IOException, JSONException {
    // board = new Board();
     bestMoves = new ArrayList<>();
+    bestMovesPrevious = new ArrayList<>();
     bestMovesTemp = new ArrayList<>();
     listeners = new CopyOnWriteArrayList<>();
 
@@ -381,24 +383,30 @@ public class Leelaz {
     //  } else 
     	if( (Lizzie.frame.isPlayingAgainstLeelaz&&!genmovenoponder)||(Lizzie.frame.toolbar.isGenmove&&!genmovenoponder))
     	{
-    	if(isThinking&&!canGetGenmoveInfo)		
-    	{
-    			if(Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()) {
-    		if (line.contains(" ->   ")) {
-    			Lizzie.board.getHistory().getCurrentHistoryNode().previous().get().getData().bestMoves.add(MoveData.fromSummary(line));      
-       		 //Lizzie.board.getHistory().getCurrentHistoryNode().previous().get().getData().tryToSetBestMoves(bestMoves);
-       		//bestMoves.clear();
-       		 Lizzie.gtpConsole.addLine(line);    
-    		}
-       		 }}
+    		if(isThinking&&!canGetGenmoveInfo)		
+	    	{
+ 			if(Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()) {
+ 		if (line.contains(" ->   ")) {
+ 			//Lizzie.board.getHistory().getCurrentHistoryNode().previous().get().getData().bestMoves.add(MoveData.fromSummary(line));
+ 			MoveData mv=MoveData.fromSummary(line);
+ 			if(mv!=null)
+ 			bestMovesPrevious.add(mv); 
+    		 Lizzie.board.getHistory().getCurrentHistoryNode().previous().get().getData().tryToSetBestMoves(bestMovesPrevious);
+    		
+    		 Lizzie.gtpConsole.addLine(line);    
+ 		}
+    		 }}
     	     if (canGetGenmoveInfo||!Lizzie.config.playponder)
     	     {
     		if (line.contains(" ->   ")) {
-    		 bestMoves.add(MoveData.fromSummary(line));      
+    			MoveData mv=MoveData.fromSummary(line);
+     			if(mv!=null)
+     				bestMoves.add(mv);    
     		 Lizzie.board.getData().tryToSetBestMoves(bestMoves);
     		 Lizzie.gtpConsole.addLine(line);
     		}
     	}
+    	    
     	}
     	  if (line.startsWith("info")) {
         
@@ -1790,6 +1798,8 @@ public class Leelaz {
 
       sendCommand("play " + colorString + " " + move);
       bestMoves = new ArrayList<>();      
+      if(Lizzie.frame.isPlayingAgainstLeelaz)
+    	  bestMovesPrevious=new ArrayList<>();      
       if (isPondering && !Lizzie.frame.isPlayingAgainstLeelaz) ponder();
     }
   }
