@@ -332,7 +332,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_COMMA:
-        Lizzie.frame.playBestMove();
+        if (!Lizzie.frame.playCurrentVariation()) Lizzie.frame.playBestMove();
         break;
 
       case VK_M:

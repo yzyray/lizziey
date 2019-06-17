@@ -980,8 +980,7 @@ public class BottomToolbar extends JPanel {
               if (checkGameTime) {
                 Lizzie.engineManager.gameTime = System.currentTimeMillis();
               }
-              if (!isGenmove) 
-              isEnginePk = true;
+              if (!isGenmove) isEnginePk = true;
               btnStartPk.setText("终止");
               Lizzie.frame.removeInput();
               EnginePkBatchNumberNow = 1;
