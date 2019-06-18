@@ -364,7 +364,7 @@ public class Leelaz {
       currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
 	  if(!isCheckingVersion&&Lizzie.frame.toolbar.isEnginePk&&params.length == 2)
       {
-		 
+		  
     	  if(Lizzie.board.getHistory().isBlacksTurn()&&(this.currentEngineN==Lizzie.frame.toolbar.engineWhite)) {
     		  return;
     	  }
@@ -393,16 +393,16 @@ public class Leelaz {
     			  
     			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveGenmove("B", "pass");
     			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).genmoveForPk("W");        			  
-    			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).nameCmdfornoponder();
-	        
+    			  //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).nameCmdfornoponder();
+    			  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 	          }
 	          
 	          else
 	          {  
 	        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveGenmove("W", "pass"); 			
 	        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).genmoveForPk("B");
-	        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).nameCmdfornoponder();
-	     
+	        	  //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).nameCmdfornoponder();
+	        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 	          }
     		  Lizzie.board.pass();
     		 return;
@@ -416,8 +416,8 @@ public class Leelaz {
     			
     			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveGenmove("B", params[1]);
     			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).genmoveForPk("W");        			  
-    			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).nameCmdfornoponder();
-    			 // Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+    			  //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).nameCmdfornoponder();
+    			  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 	        
 	          }
 	          
@@ -425,8 +425,8 @@ public class Leelaz {
 	          {  
 	   			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveGenmove("W", params[1]);		   			
 	        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).genmoveForPk("B");
-	        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).nameCmdfornoponder();
-	     
+	        	  //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).nameCmdfornoponder();
+	        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 	          }        		  
         Lizzie.board.place(coords.get()[0],coords.get()[1]);
         return;
@@ -435,11 +435,12 @@ public class Leelaz {
       }
 	  if (canGetGenmoveInfo)
 	     {
-		  if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
-		  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
-		  if(this.currentEngineN==Lizzie.frame.toolbar.engineWhite)
-			  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);  
+//		  if(this.currentEngineN==Lizzie.frame.toolbar.engineBlack)
+//		  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+//		  if(this.currentEngineN==Lizzie.frame.toolbar.engineWhite)
+//			  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);  
 		if (line.contains(" ->   ")) {
+			
 			MoveData mv=MoveData.fromSummary(line);
 			if(mv!=null)
 				bestMoves.add(mv);   
@@ -1965,11 +1966,12 @@ public class Leelaz {
   
   public void nameCmdfornoponder() {
 	  canGetGenmoveInfo=false;
-	  try{sendCommand("name");}
+	  try{sendCommand("name");}	  
 	  catch (Exception es)
 	  {
 		  
 	  }
+	  
   }
   /**
    * Parse a move-data line of Leelaz output
@@ -2249,7 +2251,7 @@ public class Leelaz {
   public void playMoveGenmove(String colorString, String move) {
 	    synchronized (this) {
 	      played=false;
-	      bestMoves = new ArrayList<>();
+	      
 	      sendCommand("play " + colorString + " " + move);	    
 	      
 	    }
@@ -2301,9 +2303,12 @@ public class Leelaz {
 	    if (isPondering) {
 	        command = "lz-genmove_analyze " + color + " 10";
 	    }*/
+	    
 	    sendCommand(command);
 	    //isThinking = true;
+	    bestMoves = new ArrayList<>();
 	    canGetGenmoveInfo=true;
+	    
 	    //isPondering = false;
 	   // genmovenoponder =false;
 	  }

@@ -1200,7 +1200,7 @@ public class LizzieFrame extends JFrame {
         boardPos = boardX + maxSize / 2;
         toolbar.setButtonLocation((int) (boardPos - 22));
       }
-      if (Lizzie.config.showWinrate) {
+      if (Lizzie.config.showWinrate && Lizzie.leelaz != null && Lizzie.leelaz.isLoaded()) {
         drawMoveStatistics(g, statx, staty, statw, stath);
       }
       boardRenderer.setLocation(boardX, boardY);

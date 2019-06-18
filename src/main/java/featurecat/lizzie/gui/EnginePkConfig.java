@@ -1,6 +1,7 @@
 package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
+import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +29,7 @@ public class EnginePkConfig extends JDialog {
   public EnginePkConfig() {
     setType(Type.POPUP);
     setTitle("引擎对战设置");
-    setBounds(0, 0, 450, 285);
+    setBounds(0, 0, 480, 300);
     setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     setLayout(null);
     setLocationRelativeTo(getOwner());
@@ -94,19 +95,23 @@ public class EnginePkConfig extends JDialog {
     lblAutosave.setBounds(172, 65, 100, 18);
     JLabel lblHints = new JLabel("注:  设置单局超时后,超时的对局将被中止并保存,不记入比分");
     JLabel lblHints2 = new JLabel("       如出现双方pass则不计入比分,但会记录棋谱");
-    JLabel lblHints3 = new JLabel("       在genmove模式下,使用 genmove命令落子,只能按时间落子,认输阈值和计算");
-    JLabel lblHints4 = new JLabel("       量只受引擎参数限制(-r,-p,-v),界面上的设置无效,且92手前不会认输");
-    JLabel lblHints5 = new JLabel("       在分析模式下,使用lz-analyze命令获取分析信息,结合界面上设置的条件落子");
+    JLabel lblHints3 = new JLabel("       genmove模式下,引擎必须添加 --noponder参数,否则会争用资源并且显示混乱");
+    JLabel lblHints4 = new JLabel("       在genmove模式下,使用 genmove命令落子,只能按时间落子,认输阈值和计算量");
+    JLabel lblHints5 = new JLabel("       只受引擎参数限制(-r,-p,-v),界面上的设置无效,且92手前不会认输");
+    JLabel lblHints6 = new JLabel("       建议使用分析模式对战,熟悉引擎参数的用户并希望低V测试可以考虑genmove模式");
+    lblHints3.setForeground(Color.RED);
     add(lblHints);
     add(lblHints2);
     add(lblHints3);
     add(lblHints4);
     add(lblHints5);
+    add(lblHints6);
     lblHints.setBounds(5, 90, 450, 20);
     lblHints2.setBounds(5, 110, 450, 20);
     lblHints3.setBounds(5, 130, 450, 20);
     lblHints4.setBounds(5, 150, 450, 20);
     lblHints5.setBounds(5, 170, 450, 20);
+    lblHints6.setBounds(5, 190, 470, 20);
 
     JButton okButton = new JButton("确认");
     JButton cancelButton = new JButton("取消");
@@ -114,8 +119,8 @@ public class EnginePkConfig extends JDialog {
     add(cancelButton);
     okButton.setMargin(new Insets(0, 0, 0, 0));
     cancelButton.setMargin(new Insets(0, 0, 0, 0));
-    okButton.setBounds(100, 200, 50, 30);
-    cancelButton.setBounds(170, 200, 50, 30);
+    okButton.setBounds(100, 220, 50, 30);
+    cancelButton.setBounds(170, 220, 50, 30);
 
     okButton.addActionListener(
         new ActionListener() {

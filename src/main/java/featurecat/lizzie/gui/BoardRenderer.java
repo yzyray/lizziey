@@ -1552,7 +1552,6 @@ public class BoardRenderer {
     boardLengthWithoutMargins = calculatedPixelMargins[2];
 
     int squareSize = calculateSquareLength(boardLengthWithoutMargins);
-
     // transform the pixel coordinates to board coordinates
     x = Math.floorDiv(x - this.x - marginLength + squareSize / 2, squareSize);
     y = Math.floorDiv(y - this.y - marginLength + squareSize / 2, squareSize);
