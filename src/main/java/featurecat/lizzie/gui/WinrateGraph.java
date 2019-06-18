@@ -13,7 +13,7 @@ public class WinrateGraph {
   private int[] origParams = {0, 0, 0, 0};
   private int[] params = {0, 0, 0, 0, 0};
   private int numMovesOfPlayed = 0;
-  public int mode = 0;
+  public int mode = 1;
 
   public void draw(Graphics2D g, int posx, int posy, int width, int height) {
     BoardHistoryNode curMove = Lizzie.board.getHistory().getCurrentHistoryNode();
@@ -298,6 +298,8 @@ public class WinrateGraph {
             int mw = g.getFontMetrics().stringWidth(moveNumString);
             int margin = strokeRadius;
             int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
+            Font f = new Font("", Font.BOLD, 12);
+            g.setFont(f);
             g.drawString(moveNumString, mx, posy + height - margin);
             g.setStroke(previousStroke);
           }
