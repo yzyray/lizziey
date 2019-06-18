@@ -974,18 +974,29 @@ public class BottomToolbar extends JPanel {
                   timew = Integer.parseInt(txtenginePkTimeWhite.getText().replace(" ", ""));
                 } catch (NumberFormatException err) {
                 }
-                if (timeb <= 0 || timew <= 0) {
+                //                if (timeb <= 0 || timew <= 0) {
+                //                  boolean onTop = false;
+                //                  if (Lizzie.frame.isAlwaysOnTop()) {
+                //                    Lizzie.frame.setAlwaysOnTop(false);
+                //                    onTop = true;
+                //                  }
+                //                  JOptionPane.showMessageDialog(Lizzie.frame,
+                // "genmove模式下必须设置黑白双方用时");
+                //                  if (onTop) Lizzie.frame.setAlwaysOnTop(true);
+                //                  return;
+                //                }
+              }
+              if (engineWhite == engineBlack) {
+                if (isGenmove) {
                   boolean onTop = false;
                   if (Lizzie.frame.isAlwaysOnTop()) {
                     Lizzie.frame.setAlwaysOnTop(false);
                     onTop = true;
                   }
-                  JOptionPane.showMessageDialog(Lizzie.frame, "genmove模式下必须设置黑白双方用时");
+                  JOptionPane.showMessageDialog(Lizzie.frame, "genmove模式下黑白必须为不同引擎");
                   if (onTop) Lizzie.frame.setAlwaysOnTop(true);
                   return;
                 }
-              }
-              if (engineWhite == engineBlack) {
                 isSameEngine = true;
               } else {
                 isSameEngine = false;
@@ -1077,7 +1088,9 @@ public class BottomToolbar extends JPanel {
                     Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
               } else {
                 // genmove对战
-
+                chkenginePkTime.setEnabled(false);
+                txtenginePkTime.setEnabled(false);
+                txtenginePkTimeWhite.setEnabled(false);
                 Lizzie.board.clearforpk();
                 if (chkenginePkContinue.isSelected()) {
                   Lizzie.board.setlist(startGame);
@@ -1086,14 +1099,16 @@ public class BottomToolbar extends JPanel {
                 if (Lizzie.board.getHistory().isBlacksTurn()) {
                   Lizzie.engineManager.startEngineForPk(engineWhite);
                   Lizzie.engineManager.startEngineForPk(engineBlack);
-                  Lizzie.engineManager
-                      .engineList
-                      .get(engineWhite)
-                      .sendCommand("time_settings 0 " + timew + " 1");
-                  Lizzie.engineManager
-                      .engineList
-                      .get(engineBlack)
-                      .sendCommand("time_settings 0 " + timeb + " 1");
+                  if (timew > 0)
+                    Lizzie.engineManager
+                        .engineList
+                        .get(engineWhite)
+                        .sendCommand("time_settings 0 " + timew + " 1");
+                  if (timeb > 0)
+                    Lizzie.engineManager
+                        .engineList
+                        .get(engineBlack)
+                        .sendCommand("time_settings 0 " + timeb + " 1");
                   Lizzie.engineManager.engineList.get(engineBlack).genmoveForPk("B");
 
                 } else {
@@ -1140,6 +1155,9 @@ public class BottomToolbar extends JPanel {
               // AutosavePk=true;
               btnEnginePkConfig.setEnabled(true);
               chkenginePkBatch.setEnabled(true);
+              chkenginePkTime.setEnabled(true);
+              txtenginePkTime.setEnabled(true);
+              txtenginePkTimeWhite.setEnabled(true);
               batchPkName = "";
               // chkenginePkgenmove.setEnabled(true);
               chkenginePk.setEnabled(true);

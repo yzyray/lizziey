@@ -400,6 +400,7 @@ public class EngineManager {
     }
     // else {newEng.initializeStreams();}
     // Lizzie.leelaz = newEng;
+    newEng.isResigning = false;
     Lizzie.engineManager.engineList.get(index).clearWithoutPonder();
     // this.currentEngineNo = index;
     // Lizzie.leelaz.notPondering();
