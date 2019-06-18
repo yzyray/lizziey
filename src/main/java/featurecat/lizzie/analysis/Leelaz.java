@@ -393,7 +393,7 @@ public class Leelaz {
     			  
     			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveGenmove("B", "pass");
     			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).genmoveForPk("W");        			  
-    			  //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).nameCmdfornoponder();
+    			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).nameCmdfornoponder();
     			  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 	          }
 	          
@@ -401,7 +401,7 @@ public class Leelaz {
 	          {  
 	        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveGenmove("W", "pass"); 			
 	        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).genmoveForPk("B");
-	        	  //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).nameCmdfornoponder();
+	        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).nameCmdfornoponder();
 	        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 	          }
     		  Lizzie.board.pass();
@@ -416,7 +416,7 @@ public class Leelaz {
     			
     			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveGenmove("B", params[1]);
     			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).genmoveForPk("W");        			  
-    			  //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).nameCmdfornoponder();
+    			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).nameCmdfornoponder();
     			  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 	        
 	          }
@@ -425,7 +425,7 @@ public class Leelaz {
 	          {  
 	   			  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveGenmove("W", params[1]);		   			
 	        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).genmoveForPk("B");
-	        	  //Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).nameCmdfornoponder();
+	        	  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).nameCmdfornoponder();
 	        	  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 	          }        		  
         Lizzie.board.place(coords.get()[0],coords.get()[1]);
@@ -447,7 +447,7 @@ public class Leelaz {
 			
 		 Lizzie.board.getData().tryToSetBestMoves(bestMoves);    		
 		 if(Lizzie.gtpConsole.isVisible())
-		 Lizzie.gtpConsole.addLine(currentEnginename+": "+line);
+		 Lizzie.gtpConsole.addLine(line);
 		 
 		 return;
 		}
@@ -489,7 +489,7 @@ public class Leelaz {
  			bestMovesPrevious.add(mv); 
     		 Lizzie.board.getHistory().getCurrentHistoryNode().previous().get().getData().tryToSetBestMoves(bestMovesPrevious);
     		 if(Lizzie.gtpConsole.isVisible())
-    	 Lizzie.gtpConsole.addLine(currentEnginename+": "+line);    
+    	 Lizzie.gtpConsole.addLine(line);    
     	 return;
  			
  		}
@@ -505,7 +505,7 @@ public class Leelaz {
      			
     		 Lizzie.board.getData().tryToSetBestMoves(bestMoves);    		
     		 if(Lizzie.gtpConsole.isVisible())
-    		 Lizzie.gtpConsole.addLine(currentEnginename+": "+line);
+    		 Lizzie.gtpConsole.addLine(line);
     		 
     		 return;
     		}
@@ -537,7 +537,7 @@ public class Leelaz {
         }
       } 
     	  else if(Lizzie.gtpConsole.isVisible())
-          Lizzie.gtpConsole.addLine(currentEnginename+": "+line);
+          Lizzie.gtpConsole.addLine(line);
     	  //System.out.println(line);
     	  if(line.startsWith("| ST")) {       
         String[] params = line.trim().split(" ");
@@ -2303,11 +2303,11 @@ public class Leelaz {
 	    if (isPondering) {
 	        command = "lz-genmove_analyze " + color + " 10";
 	    }*/
-	    
-	    sendCommand(command);
-	    //isThinking = true;
 	    bestMoves = new ArrayList<>();
 	    canGetGenmoveInfo=true;
+	    sendCommand(command);
+	    //isThinking = true;
+	    
 	    
 	    //isPondering = false;
 	   // genmovenoponder =false;

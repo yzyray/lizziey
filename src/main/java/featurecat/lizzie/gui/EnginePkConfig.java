@@ -31,7 +31,7 @@ public class EnginePkConfig extends JDialog {
   public EnginePkConfig() {
     setType(Type.POPUP);
     setTitle("引擎对战设置");
-    setBounds(0, 0, 480, 300);
+    setBounds(0, 0, 490, 300);
     setResizable(false);
     setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     setLayout(null);
@@ -115,7 +115,7 @@ public class EnginePkConfig extends JDialog {
     lblAutosave.setBounds(172, 65, 100, 18);
     JLabel lblHints = new JLabel("注:  设置单局超时后,超时的对局将被中止并保存,不记入比分");
     JLabel lblHints2 = new JLabel("       如出现双方pass则不计入比分,但会记录棋谱");
-    JLabel lblHints3 = new JLabel("       genmove模式下,引擎必须添加 --noponder参数,否则会争用资源并且显示混乱");
+    JLabel lblHints3 = new JLabel("       genmove模式下,引擎强烈建议添加 --noponder参数,否则可能争用资源并且显示混乱");
     JLabel lblHints4 = new JLabel("       在genmove模式下,使用 genmove命令落子,只能按时间落子,认输阈值和计算量");
     JLabel lblHints5 = new JLabel("       只受引擎参数限制(-r,-p,-v),界面上的设置无效,且92手前不会认输");
     JLabel lblHints6 = new JLabel("       建议使用分析模式对战,熟悉引擎参数的用户并希望低V测试可以考虑genmove模式");
@@ -128,7 +128,7 @@ public class EnginePkConfig extends JDialog {
     add(lblHints6);
     lblHints.setBounds(5, 90, 450, 20);
     lblHints2.setBounds(5, 110, 450, 20);
-    lblHints3.setBounds(5, 130, 450, 20);
+    lblHints3.setBounds(5, 130, 470, 20);
     lblHints4.setBounds(5, 150, 450, 20);
     lblHints5.setBounds(5, 170, 450, 20);
     lblHints6.setBounds(5, 190, 470, 20);
