@@ -2106,9 +2106,9 @@ public class Leelaz {
    */
   private void sendCommandToLeelaz(String command) {
     if (command.startsWith("fixed_handicap")) isSettingHandicap = true;
-    if (printCommunication) {
-      System.out.println(currentEnginename+" "+ cmdNumber+" "+ command);
-    }
+//    if (printCommunication) {
+//      System.out.println(currentEnginename+" "+ cmdNumber+" "+ command);
+//    }
     if(Lizzie.gtpConsole.isVisible())
     Lizzie.gtpConsole.addCommand(command, cmdNumber,currentEnginename);
     command = cmdNumber + " " + command;

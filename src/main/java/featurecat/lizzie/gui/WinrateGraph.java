@@ -226,10 +226,17 @@ public class WinrateGraph {
             Font f = new Font("", Font.BOLD, 17);
             g.setFont(f);
             if (wr > 50) {
-              g.drawString(
-                  String.format("%.1f", wr),
-                  posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
-                  posy + (height - (int) (convertWinrate(wr) * height / 100)) - 2 * DOT_RADIUS);
+              if (wr > 90) {
+                g.drawString(
+                    String.format("%.1f", wr),
+                    posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
+                    posy + (height - (int) (convertWinrate(wr) * height / 100)) + 6 * DOT_RADIUS);
+              } else {
+                g.drawString(
+                    String.format("%.1f", wr),
+                    posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
+                    posy + (height - (int) (convertWinrate(wr) * height / 100)) - 2 * DOT_RADIUS);
+              }
             } else {
               if (wr < 10) {
                 g.drawString(
@@ -509,10 +516,17 @@ public class WinrateGraph {
 
               g.setFont(f);
               if (wr > 50) {
-                g.drawString(
-                    String.format("%.1f", wr),
-                    posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
-                    posy + (height - (int) (convertWinrate(wr) * height / 100)) - 2 * DOT_RADIUS);
+                if (wr > 90) {
+                  g.drawString(
+                      String.format("%.1f", wr),
+                      posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
+                      posy + (height - (int) (convertWinrate(wr) * height / 100)) + 6 * DOT_RADIUS);
+                } else {
+                  g.drawString(
+                      String.format("%.1f", wr),
+                      posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
+                      posy + (height - (int) (convertWinrate(wr) * height / 100)) - 2 * DOT_RADIUS);
+                }
               } else {
                 if (wr < 10) {
                   g.drawString(
