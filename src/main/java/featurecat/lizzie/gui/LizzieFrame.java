@@ -59,10 +59,14 @@ public class LizzieFrame extends JFrame {
     resourceBundle.getString("LizzieFrame.commands.keyN"),
     resourceBundle.getString("LizzieFrame.commands.keyEnter"),
     resourceBundle.getString("LizzieFrame.commands.keySpace"),
-    resourceBundle.getString("LizzieFrame.commands.keyUpArrow"),
-    resourceBundle.getString("LizzieFrame.commands.keyDownArrow"),
     resourceBundle.getString("LizzieFrame.commands.rightClick"),
     resourceBundle.getString("LizzieFrame.commands.mouseWheelScroll"),
+    "滚轮按下|落鼠标指向变化图的第一步,后续步可滚动滚轮继续查看",
+    "逗号|落最佳一手,如果鼠标指向变化图则落子到变化图结束",
+    "B|显示恶手列表",
+    "U|显示AI选点列表",
+    resourceBundle.getString("LizzieFrame.commands.keyUpArrow"),
+    resourceBundle.getString("LizzieFrame.commands.keyDownArrow"),
     resourceBundle.getString("LizzieFrame.commands.keyC"),
     resourceBundle.getString("LizzieFrame.commands.keyP"),
     resourceBundle.getString("LizzieFrame.commands.keyPeriod"),
@@ -74,7 +78,7 @@ public class LizzieFrame extends JFrame {
     resourceBundle.getString("LizzieFrame.commands.keyAltC"),
     resourceBundle.getString("LizzieFrame.commands.keyAltV"),
     resourceBundle.getString("LizzieFrame.commands.keyF"),
-    resourceBundle.getString("LizzieFrame.commands.keyV"),
+    // resourceBundle.getString("LizzieFrame.commands.keyV"),
     resourceBundle.getString("LizzieFrame.commands.keyW"),
     resourceBundle.getString("LizzieFrame.commands.keyCtrlW"),
     resourceBundle.getString("LizzieFrame.commands.keyG"),
@@ -83,8 +87,8 @@ public class LizzieFrame extends JFrame {
     resourceBundle.getString("LizzieFrame.commands.keyT"),
     resourceBundle.getString("LizzieFrame.commands.keyCtrlT"),
     resourceBundle.getString("LizzieFrame.commands.keyY"),
-    resourceBundle.getString("LizzieFrame.commands.keyZ"),
-    resourceBundle.getString("LizzieFrame.commands.keyShiftZ"),
+    // resourceBundle.getString("LizzieFrame.commands.keyZ"),
+    // resourceBundle.getString("LizzieFrame.commands.keyShiftZ"),
     resourceBundle.getString("LizzieFrame.commands.keyHome"),
     resourceBundle.getString("LizzieFrame.commands.keyEnd"),
     resourceBundle.getString("LizzieFrame.commands.keyControl"),
@@ -1481,11 +1485,10 @@ public class LizzieFrame extends JFrame {
 
     FontMetrics metrics = g.getFontMetrics(font);
     int maxCmdWidth = commandsToShow.stream().mapToInt(c -> metrics.stringWidth(c)).max().orElse(0);
-    int lineHeight = (int) (font.getSize() * 1.15);
+    int lineHeight = (int) (font.getSize() * 1.31);
 
     int boxWidth = min((int) (maxCmdWidth * 1.4), mainPanel.getWidth());
-    int boxHeight =
-        min(commandsToShow.size() * lineHeight, getHeight() - getInsets().top - getInsets().bottom);
+    int boxHeight = min(commandsToShow.size() * lineHeight, mainPanel.getHeight());
 
     int commandsX = min(mainPanel.getWidth() / 2 - boxWidth / 2, mainPanel.getWidth());
     int top = mainPanel.getInsets().top;

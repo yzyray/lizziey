@@ -352,16 +352,16 @@ public class MovelistFrame extends JPanel {
       }
 
       public String getColumnName(int column) {
-       
-          if (column == 0) return "黑白";
-          if (column == 1) return "手数";
-          if (column == 2) return "坐标";
-          if (column == 3) return "胜率波动";
-          if (column == 4) return "此手胜率";
-          if (column == 5) return "AI胜率";
-          if (column == 6) return "计算量";
-          if (column == 7) return "前一手计算量";
-       
+
+        if (column == 0) return "黑白";
+        if (column == 1) return "手数";
+        if (column == 2) return "坐标";
+        if (column == 3) return "胜率波动";
+        if (column == 4) return "此手胜率";
+        if (column == 5) return "AI胜率";
+        if (column == 6) return "计算量";
+        if (column == 7) return "前一手计算量";
+
         return "无";
       }
 

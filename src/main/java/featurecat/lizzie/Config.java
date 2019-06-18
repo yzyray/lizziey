@@ -862,6 +862,11 @@ public class Config {
     toolbarParameter.put(Lizzie.frame.toolbar.exChange);
     toolbarParameter.put(Lizzie.frame.toolbar.maxGanmeTime);
     toolbarParameter.put(Lizzie.frame.toolbar.checkGameTime);
+    try {
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTimeWhite.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
     persistedUi.put("toolbar-parameter", toolbarParameter);
 
     JSONArray movecountPos = new JSONArray();

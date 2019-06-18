@@ -482,6 +482,7 @@ public class EngineManager {
   }
 
   public void changeEngIcoForEndPk() {
+    Lizzie.frame.toolbar.isEnginePk = false;
     featurecat.lizzie.gui.Menu.engineMenu.setEnabled(true);
     if (Lizzie.board.getData().blackToPlay) {
       switchEngine(Lizzie.frame.toolbar.engineWhite);
