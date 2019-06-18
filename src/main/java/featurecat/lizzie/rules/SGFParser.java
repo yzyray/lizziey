@@ -329,11 +329,7 @@ public class SGFParser {
               featurecat.lizzie.gui.MovelistFrame.table
                   .getColumnModel()
                   .getColumn(5)
-                  .setHeaderValue("2手前胜率");
-              featurecat.lizzie.gui.MovelistFrame.table
-                  .getColumnModel()
-                  .getColumn(6)
-                  .setHeaderValue("2手前计算量");
+                  .setHeaderValue("前一手胜率");
               featurecat.lizzie.gui.MovelistFrame.checkBlacktxt.setText("白:");
               featurecat.lizzie.gui.MovelistFrame.checkWhitetxt.setText("黑:");
             }

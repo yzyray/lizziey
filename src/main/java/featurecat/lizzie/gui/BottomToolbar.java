@@ -958,29 +958,52 @@ public class BottomToolbar extends JPanel {
               if (onTop) Lizzie.frame.setAlwaysOnTop(true);
               return;
             }
-            if (engineWhite == engineBlack) {
-              isSameEngine = true;
-            } else {
-              isSameEngine = false;
-            }
+           
+            
             if (!isEnginePk) {
+            	int timeb=-1;
+        		int timew=-1;
+            	if(isGenmove)
+            	{
+            		
+            				try{timeb= Integer.parseInt(txtenginePkTime.getText().replace(" ",""));}
+            		catch (NumberFormatException err)
+            				{          			
+            				}
+            				try{timew= Integer.parseInt(txtenginePkTimeWhite.getText().replace(" ",""));}
+                    		catch (NumberFormatException err)
+                    				{          			
+                    				}
+            				if(timeb<=0||timew<=0)
+            					{
+            				    boolean onTop = false;
+            		              if (Lizzie.frame.isAlwaysOnTop()) {
+            		                Lizzie.frame.setAlwaysOnTop(false);
+            		                onTop = true;
+            		              }
+            		              JOptionPane.showMessageDialog(Lizzie.frame, "genmove模式下必须设置黑白双方用时");
+            		              if (onTop) Lizzie.frame.setAlwaysOnTop(true);
+            					return;}
+            	}
+            	 if (engineWhite == engineBlack) {
+                     isSameEngine = true;
+                   } else {
+                     isSameEngine = false;
+                   }
               isAutoAna = false;
               isAutoPlay = false;
               Lizzie.board.isPkBoard = true;
               featurecat.lizzie.gui.MovelistFrame.table
                   .getColumnModel()
                   .getColumn(5)
-                  .setHeaderValue("2手前胜率");
-              featurecat.lizzie.gui.MovelistFrame.table
-                  .getColumnModel()
-                  .getColumn(6)
-                  .setHeaderValue("2手前计算量");
+                  .setHeaderValue("前一手胜率");
               featurecat.lizzie.gui.MovelistFrame.checkBlacktxt.setText("白:");
               featurecat.lizzie.gui.MovelistFrame.checkWhitetxt.setText("黑:");
               if (checkGameTime) {
                 Lizzie.engineManager.gameTime = System.currentTimeMillis();
               }
-              if (!isGenmove) isEnginePk = true;
+             isEnginePk = true;
+             Lizzie.frame.isPlayingAgainstLeelaz=false;
               btnStartPk.setText("终止");
               Lizzie.frame.removeInput();
               EnginePkBatchNumberNow = 1;
@@ -1011,21 +1034,23 @@ public class BottomToolbar extends JPanel {
               featurecat.lizzie.gui.Menu.engineMenu.setText("对战中");
               featurecat.lizzie.gui.Menu.engineMenu.setEnabled(false);
               analyse.setEnabled(false);
+              Lizzie.frame.setResult("");
+              if (Lizzie.engineManager.currentEngineNo == engineWhite
+                      || Lizzie.engineManager.currentEngineNo == engineBlack) {
+                    Lizzie.leelaz.nameCmd();
+                    
+                  } else {
+                    Lizzie.leelaz.normalQuit();
+                  }
+              
               if (!isGenmove) {
                 // 分析模式对战
                 Lizzie.engineManager.engineList.get(engineBlack).blackResignMoveCounts = 0;
                 Lizzie.engineManager.engineList.get(engineBlack).whiteResignMoveCounts = 0;
                 Lizzie.engineManager.engineList.get(engineWhite).blackResignMoveCounts = 0;
                 Lizzie.engineManager.engineList.get(engineBlack).whiteResignMoveCounts = 0;
-                Lizzie.frame.setResult("");
-
-                if (Lizzie.engineManager.currentEngineNo == engineWhite
-                    || Lizzie.engineManager.currentEngineNo == engineBlack) {
-                  Lizzie.leelaz.nameCmd();
-                  Lizzie.leelaz.Pondering();
-                } else {
-                  Lizzie.leelaz.normalQuit();
-                }
+               
+                Lizzie.leelaz.Pondering();
 
                 Lizzie.board.clearforpk();
 
@@ -1033,33 +1058,16 @@ public class BottomToolbar extends JPanel {
                   Lizzie.board.setlist(startGame);
                 }
                 if (Lizzie.board.getHistory().isBlacksTurn()) {
-                  // Lizzie.engineManager.engineList.get(engineWhite).notPondering();
-                  Lizzie.engineManager.startEngineForPk(engineWhite);
-                  // Lizzie.engineManager.engineList.get(engineWhite).Pondering();
+                   Lizzie.engineManager.startEngineForPk(engineWhite);
                   Lizzie.engineManager.startEngineForPkPonder(engineBlack);
 
                 } else {
-                  // Lizzie.engineManager.engineList.get(engineBlack).notPondering();
-                  Lizzie.engineManager.startEngineForPk(engineBlack);
-                  // Lizzie.engineManager.engineList.get(engineBlack).Pondering();
+                 Lizzie.engineManager.startEngineForPk(engineBlack);
                   Lizzie.engineManager.startEngineForPkPonder(engineWhite);
-                  // Lizzie.leelaz=Lizzie.engineManager.engineList.get(engineWhite);
-                }
+                   }
                 Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
-                // Lizzie.leelaz.ponder();
-                // Lizzie.engineManager.engineList.get(engineBlack).played = false;
-                //  Lizzie.engineManager.engineList.get(engineWhite).played = false;
-                //                Timer timer = new Timer();
-                //                timer.schedule(
-                //                    new TimerTask() {
-                //                      public void run() {
-                //                    	  Lizzie.leelaz.ponder();
-                //                    	//  Lizzie.leelaz.playanyway=true;
-                //                        this.cancel();
-                //                      }
-                //                    },
-                //                   1000);
-                //
+            
+                
                 Lizzie.frame.setPlayers(
                     Lizzie.engineManager.engineList.get(engineWhite).currentEnginename,
                     Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
@@ -1068,9 +1076,43 @@ public class BottomToolbar extends JPanel {
                     Lizzie.engineManager.engineList.get(engineWhite).currentEnginename);
                 gameInfo.setPlayerBlack(
                     Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
-                // Lizzie.board.getHistory().setGameInfo(gameinfo);
               } else {
                 // genmove对战
+            	  
+            	  Lizzie.board.clearforpk();
+            	  if (chkenginePkContinue.isSelected()) {
+                      Lizzie.board.setlist(startGame);
+                    }
+            	  
+            	  
+            	  
+            	  if (Lizzie.board.getHistory().isBlacksTurn()) {
+                      Lizzie.engineManager.startEngineForPk(engineWhite);
+                     Lizzie.engineManager.startEngineForPk(engineBlack);
+                     Lizzie.engineManager.engineList.get(engineWhite).sendCommand("time_settings 0 "+timew+" 1");
+                      Lizzie.engineManager.engineList.get(engineBlack).sendCommand("time_settings 0 "+timeb+" 1"); 
+                      Lizzie.engineManager.engineList.get(engineBlack).genmoveForPk("B");
+
+                   } else {
+                    Lizzie.engineManager.startEngineForPk(engineBlack);
+                     Lizzie.engineManager.startEngineForPk(engineWhite);
+                     Lizzie.engineManager.engineList.get(engineWhite).sendCommand("time_settings 0 "+timew+" 1");
+                     Lizzie.engineManager.engineList.get(engineBlack).sendCommand("time_settings 0 "+timeb+" 1"); 
+                     Lizzie.engineManager.engineList.get(engineWhite).genmoveForPk("W");
+                      }
+            	  Lizzie.engineManager.engineList.get(engineWhite).notPondering();
+            	  Lizzie.engineManager.engineList.get(engineBlack).notPondering();            	   
+            	  
+            	  
+            	  Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
+            	     Lizzie.frame.setPlayers(
+                             Lizzie.engineManager.engineList.get(engineWhite).currentEnginename,
+                             Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
+                         GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
+                         gameInfo.setPlayerWhite(
+                             Lizzie.engineManager.engineList.get(engineWhite).currentEnginename);
+                         gameInfo.setPlayerBlack(
+                             Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
               }
             } else {
               isEnginePk = false;

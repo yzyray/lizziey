@@ -352,25 +352,16 @@ public class MovelistFrame extends JPanel {
       }
 
       public String getColumnName(int column) {
-        if (Lizzie.board.isPkBoard) {
-          if (column == 0) return "黑白";
-          if (column == 1) return "手数";
-          if (column == 2) return "坐标";
-          if (column == 3) return "胜率波动";
-          if (column == 4) return "此手胜率";
-          if (column == 5) return "2手前胜率";
-          if (column == 6) return "2手前计算量";
-          if (column == 7) return "计算量";
-        } else {
+       
           if (column == 0) return "黑白";
           if (column == 1) return "手数";
           if (column == 2) return "坐标";
           if (column == 3) return "胜率波动";
           if (column == 4) return "此手胜率";
           if (column == 5) return "AI胜率";
-          if (column == 6) return "前一步计算量";
-          if (column == 7) return "计算量";
-        }
+          if (column == 6) return "计算量";
+          if (column == 7) return "前一手计算量";
+       
         return "无";
       }
 
@@ -419,11 +410,11 @@ public class MovelistFrame extends JPanel {
                     if (s1.winrate - s1.diffwinrate < s2.winrate - s2.diffwinrate) return 1;
                     if (s1.winrate - s1.diffwinrate > s2.winrate - s2.diffwinrate) return -1;
                   }
-                  if (sortnum == 6) {
+                  if (sortnum == 7) {
                     if (s1.previousplayouts < s2.previousplayouts) return 1;
                     if (s1.previousplayouts > s2.previousplayouts) return -1;
                   }
-                  if (sortnum == 7) {
+                  if (sortnum == 6) {
                     if (s1.playouts < s2.playouts) return 1;
                     if (s1.playouts > s2.playouts) return -1;
                   }
@@ -452,11 +443,11 @@ public class MovelistFrame extends JPanel {
                     if (s1.winrate - s1.diffwinrate > s2.winrate - s2.diffwinrate) return 1;
                     if (s1.winrate - s1.diffwinrate < s2.winrate - s2.diffwinrate) return -1;
                   }
-                  if (sortnum == 6) {
+                  if (sortnum == 7) {
                     if (s1.previousplayouts > s2.previousplayouts) return 1;
                     if (s1.previousplayouts < s2.previousplayouts) return -1;
                   }
-                  if (sortnum == 7) {
+                  if (sortnum == 6) {
                     if (s1.playouts > s2.playouts) return 1;
                     if (s1.playouts < s2.playouts) return -1;
                   }
@@ -489,9 +480,9 @@ public class MovelistFrame extends JPanel {
                 return "无";
               }
             case 6:
-              return data.previousplayouts;
-            case 7:
               return data.playouts;
+            case 7:
+              return data.previousplayouts;
             default:
               return "";
           }
@@ -515,9 +506,9 @@ public class MovelistFrame extends JPanel {
                 return "无";
               }
             case 6:
-              return data.previousplayouts;
-            case 7:
               return data.playouts;
+            case 7:
+              return data.previousplayouts;
             default:
               return "";
           }

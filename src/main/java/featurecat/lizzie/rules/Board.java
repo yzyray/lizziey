@@ -1746,10 +1746,6 @@ public class Board implements LeelazListener {
     initialize();
     isPkBoard = false;
     featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(5).setHeaderValue("AI胜率");
-    featurecat.lizzie.gui.MovelistFrame.table
-        .getColumnModel()
-        .getColumn(6)
-        .setHeaderValue("前一步计算量");
     featurecat.lizzie.gui.MovelistFrame.checkBlacktxt.setText("黑:");
     featurecat.lizzie.gui.MovelistFrame.checkWhitetxt.setText("白:");
   }

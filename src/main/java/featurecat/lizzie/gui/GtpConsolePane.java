@@ -75,7 +75,7 @@ public class GtpConsolePane extends JDialog {
     scrollPane.setBorder(BorderFactory.createEmptyBorder());
     txtCommand.setBackground(Color.DARK_GRAY);
     txtCommand.setForeground(Color.WHITE);
-    lblCommand.setFont(new Font("Tahoma", Font.BOLD, 11));
+    lblCommand.setFont(new Font("", Font.BOLD, 11));
     lblCommand.setOpaque(true);
     lblCommand.setBackground(Color.DARK_GRAY);
     lblCommand.setForeground(Color.WHITE);
