@@ -565,8 +565,13 @@ public class Leelaz {
     		  canGetGenmoveInfo=true;
     	  }        
         String[] params = line.trim().split(" ");
+        try {
         currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
-
+        }
+        catch (Exception ex)
+        {
+        	currentCmdNum=currentCmdNum+1;
+        }
         trySendCommandFromQueue();
 
         if (line.startsWith("?") || params.length == 1) return;
@@ -2438,7 +2443,7 @@ public class Leelaz {
     if (isPondering) {
       ponder();
     } else {
-      sendCommand("name"); // ends pondering
+      sendCommand("version"); // ends pondering
     }
   }
 
