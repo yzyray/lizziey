@@ -567,6 +567,8 @@ public class Leelaz {
         String[] params = line.trim().split(" ");
         try {
         currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
+        if(!isLoaded)
+        	isLoaded = true;
         }
         catch (Exception ex)
         {
@@ -2443,7 +2445,7 @@ public class Leelaz {
     if (isPondering) {
       ponder();
     } else {
-      sendCommand("version"); // ends pondering
+      sendCommand("name"); // ends pondering
     }
   }
 

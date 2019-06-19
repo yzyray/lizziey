@@ -301,7 +301,7 @@ public class Menu extends MenuBar {
     gameMenu.add(settime);
 
     final JMenuItem setinfo = new JMenuItem();
-    setinfo.setText("设置棋局信息");
+    setinfo.setText("设置棋局信息(修改贴目)");
     setinfo.addActionListener(new ItemListener());
     gameMenu.add(setinfo);
     gameMenu.addSeparator();
