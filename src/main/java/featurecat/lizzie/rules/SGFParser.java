@@ -788,7 +788,7 @@ public class SGFParser {
     BoardData data = node.getData();
     String engine = "";
 
-    engine = Lizzie.leelaz.currentEnginename;
+    engine = Lizzie.leelaz.currentEnginename.replaceAll("\\(|\\)|\\[|\\]", "");
 
     // Playouts
     String playouts = "";

@@ -186,22 +186,23 @@ public class Leelaz {
     // Get weight name
     Pattern wPattern = Pattern.compile("(?s).*?(--weights |-w )([^'\" ]+)(?s).*");
     Matcher wMatcher = wPattern.matcher(engineCommand);
+    Optional<JSONArray> enginesNameOpt =
+            Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+        enginesNameOpt.ifPresent(
+            a -> {
+              IntStream.range(0, a.length())
+                  .forEach(
+                      i -> {
+                    	  if(i==index)
+                    		  currentEnginename=  a.getString(i);
+                      });
+            });
     if (wMatcher.matches() && wMatcher.groupCount() == 2) {
       currentWeightFile = wMatcher.group(2);
       String[] names = currentWeightFile.split("[\\\\|/]");
       currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
       currentEngineN = index;
-      Optional<JSONArray> enginesNameOpt =
-              Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
-          enginesNameOpt.ifPresent(
-              a -> {
-                IntStream.range(0, a.length())
-                    .forEach(
-                        i -> {
-                      	  if(i==index)
-                      		  currentEnginename=  a.getString(i);
-                        });
-              });
+      
       if (currentEnginename.equals("")) currentEnginename = currentWeight;
     }
 
