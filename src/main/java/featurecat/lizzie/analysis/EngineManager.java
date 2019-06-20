@@ -494,18 +494,6 @@ public class EngineManager {
       Lizzie.leelaz = engineList.get(Lizzie.frame.toolbar.engineBlack);
       switchEngine(Lizzie.frame.toolbar.engineWhite);
     }
-    timer4 =
-        new Timer(
-            500,
-            new ActionListener() {
-              public void actionPerformed(ActionEvent evt) {
-                ponderForEndpk();
-                try {
-                } catch (Exception e) {
-                }
-              }
-            });
-    timer4.start();
   }
 
   private void ponderForEndpk() {
