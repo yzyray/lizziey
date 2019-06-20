@@ -2345,14 +2345,16 @@ public class Leelaz {
   public void clear() {
     synchronized (this) {
       sendCommand("clear_board");
+      sendCommand("clear_cache");
       bestMoves = new ArrayList<>();
       if (isPondering) ponder();
     }
   }
   
   public void clearWithoutPonder() {
-	    synchronized (this) {
+	    synchronized (this) {	    	
 	      sendCommand("clear_board");
+	      sendCommand("clear_cache");
 	      bestMoves = new ArrayList<>();
 	   //   if (isPondering) ponder();
 	    }
