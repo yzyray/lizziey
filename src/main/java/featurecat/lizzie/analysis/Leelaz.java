@@ -500,7 +500,7 @@ public class Leelaz {
     	     if (canGetGenmoveInfo||!Lizzie.config.playponder)
     	     {
     	    	 if(Lizzie.frame.toolbar.isGenmove)
-     	    		 Lizzie.leelaz=this;
+     	    		 Lizzie.leelaz=this;    	    	 
     		if (line.contains(" ->   ")) {
     			MoveData mv=MoveData.fromSummary(line);
      			if(mv!=null)
@@ -526,7 +526,9 @@ public class Leelaz {
           // This should not be stale data when the command number match
           this.bestMoves = parseInfo(line.substring(5));
           if(Lizzie.frame.toolbar.isEnginePk)
-          Lizzie.leelaz=this;
+          {	 Lizzie.frame.subBoardRenderer.reverseBestmoves=false;
+	    	 Lizzie.frame.boardRenderer.reverseBestmoves=false;
+          Lizzie.leelaz=this;}
           //notifyBestMoveListeners();
             if(!bestMoves.isEmpty()) {
           notifyAutoPK();  
@@ -1232,7 +1234,6 @@ public class Leelaz {
 	  else {
 		  clear();
 		  //结束PKLizzie.engineManager.engineList.get(engineBlack).notPondering();
-		  
 			  Lizzie.frame.toolbar.lblenginePkResult.setText(Lizzie.frame.toolbar.pkBlackWins+":"+Lizzie.frame.toolbar.pkWhiteWins);
 		
           Lizzie.frame.addInput();
@@ -1449,6 +1450,8 @@ public class Leelaz {
 		  else {
 
 			  //结束PK
+			  Lizzie.frame.subBoardRenderer.reverseBestmoves=false;
+		    	 Lizzie.frame.boardRenderer.reverseBestmoves=false;
 			  if(Lizzie.frame.toolbar.exChange&&Lizzie.frame.toolbar.EnginePkBatchNumberNow%2==0) {		
 			  Lizzie.frame.toolbar.lblenginePkResult.setText(Lizzie.frame.toolbar.pkWhiteWins+":"+Lizzie.frame.toolbar.pkBlackWins);		
 			  }
@@ -1486,7 +1489,8 @@ public class Leelaz {
   }
 	  else {
 		  //结束PKLizzie.engineManager.engineList.get(engineBlack).notPondering();
-		  
+		  Lizzie.frame.subBoardRenderer.reverseBestmoves=false;
+	    	 Lizzie.frame.boardRenderer.reverseBestmoves=false;
 			  Lizzie.frame.toolbar.lblenginePkResult.setText(Lizzie.frame.toolbar.pkBlackWins+":"+Lizzie.frame.toolbar.pkWhiteWins);
 		
           Lizzie.frame.addInput();
@@ -2187,8 +2191,10 @@ public class Leelaz {
 //	          throw new IllegalArgumentException(
 //	              "The stone color must be B or W, but was " + color.toString());
 //	      }
-
+	    	
 	      sendCommand("play " + colorString + " " + move);
+	      Lizzie.frame.subBoardRenderer.reverseBestmoves=true;
+	      Lizzie.frame.boardRenderer.reverseBestmoves=true;
 	    //  bestMoves = new ArrayList<>();
 	     
 	    }
