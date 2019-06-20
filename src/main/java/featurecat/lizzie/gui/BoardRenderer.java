@@ -81,7 +81,7 @@ public class BoardRenderer {
   private int cachedDisplayedBranchLength = SHOW_RAW_BOARD;
   private boolean showingBranch = false;
   private boolean isMainBoard = false;
-  public boolean reverseBestmoves= false;
+  public boolean reverseBestmoves = false;
   private int maxAlpha = 240;
 
   public BoardRenderer(boolean isMainBoard) {
@@ -517,11 +517,10 @@ public class BoardRenderer {
       return;
     }
     List<String> variation = suggestedMove.get().variation;
-    Branch branch=null;
-   if(Lizzie.frame.toolbar.isEnginePk&&Lizzie.frame.toolbar.isGenmove)
-  	 branch = new Branch(Lizzie.board, variation,true);
-   else
-  	  branch = new Branch(Lizzie.board, variation,reverseBestmoves);
+    Branch branch = null;
+    if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove)
+      branch = new Branch(Lizzie.board, variation, true);
+    else branch = new Branch(Lizzie.board, variation, reverseBestmoves);
     branchOpt = Optional.of(branch);
     variationOpt = Optional.of(variation);
     showingBranch = true;
