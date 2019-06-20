@@ -9,42 +9,40 @@ import java.util.Optional;
 public class Branch {
   public BoardData data;
 
-  public Branch(Board board, List<String> variation,boolean reverseBestmoves) {
+  public Branch(Board board, List<String> variation, boolean reverseBestmoves) {
     int[] moveNumberList = new int[Board.boardSize * Board.boardSize];
     int moveNumber = 0;
     double winrate = 0.0;
     int playouts = 0;
-if(reverseBestmoves)
-{
-	 this.data =
-		        new BoardData(
-		            board.getStones().clone(),
-		            board.getLastMove(),
-		            board.getData().lastMoveColor,
-		            !board.getData().blackToPlay,
-		            board.getData().zobrist.clone(),
-		            moveNumber,
-		            moveNumberList,
-		            board.getData().blackCaptures,
-		            board.getData().whiteCaptures,
-		            winrate,
-		            playouts);
-	}
-else {
-    this.data =
-        new BoardData(
-            board.getStones().clone(),
-            board.getLastMove(),
-            board.getData().lastMoveColor,
-            board.getData().blackToPlay,
-            board.getData().zobrist.clone(),
-            moveNumber,
-            moveNumberList,
-            board.getData().blackCaptures,
-            board.getData().whiteCaptures,
-            winrate,
-            playouts);
-}
+    if (reverseBestmoves) {
+      this.data =
+          new BoardData(
+              board.getStones().clone(),
+              board.getLastMove(),
+              board.getData().lastMoveColor,
+              !board.getData().blackToPlay,
+              board.getData().zobrist.clone(),
+              moveNumber,
+              moveNumberList,
+              board.getData().blackCaptures,
+              board.getData().whiteCaptures,
+              winrate,
+              playouts);
+    } else {
+      this.data =
+          new BoardData(
+              board.getStones().clone(),
+              board.getLastMove(),
+              board.getData().lastMoveColor,
+              board.getData().blackToPlay,
+              board.getData().zobrist.clone(),
+              moveNumber,
+              moveNumberList,
+              board.getData().blackCaptures,
+              board.getData().whiteCaptures,
+              winrate,
+              playouts);
+    }
 
     for (int i = 0; i < variation.size(); i++) {
       Optional<int[]> coordOpt = Board.asCoordinates(variation.get(i));
@@ -60,6 +58,4 @@ else {
       data.blackToPlay = !data.blackToPlay;
     }
   }
-  
-  
 }

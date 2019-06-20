@@ -1140,8 +1140,8 @@ public class BottomToolbar extends JPanel {
             } else {
               isEnginePk = false;
               btnStartPk.setText("开始");
-              Lizzie.frame.subBoardRenderer.reverseBestmoves=false;
- 	    	 Lizzie.frame.boardRenderer.reverseBestmoves=false;
+              Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
+              Lizzie.frame.boardRenderer.reverseBestmoves = false;
               Lizzie.engineManager.engineList.get(engineBlack).played = false;
               Lizzie.engineManager.engineList.get(engineWhite).played = false;
               Lizzie.frame.addInput();
