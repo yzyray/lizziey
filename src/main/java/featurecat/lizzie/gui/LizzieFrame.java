@@ -237,10 +237,8 @@ public class LizzieFrame extends JFrame {
     } else if (persisted && Lizzie.config.persistedUi.getBoolean("window-maximized")) {
       setExtendedState(Frame.MAXIMIZED_BOTH);
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("main-window-position");
-      this.toolbarHeight = pos.getInt(0);
     }
-    if (toolbarHeight == 26) toolbar.detail.setIcon(toolbar.iconUp);
-    if (toolbarHeight == 70) toolbar.detail.setIcon(toolbar.iconDown);
+
     mainPanel =
         new JPanel(true) {
           @Override

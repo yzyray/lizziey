@@ -29,7 +29,7 @@ public class Board implements LeelazListener {
   public int insertoricurrentMoveNumber = 0;
   public ArrayList<Integer> insertorimove = new ArrayList<Integer>();
   public ArrayList<Boolean> insertoriisblack = new ArrayList<Boolean>();
-  public int[] mvnumber = new int[361];
+  public int[] mvnumber = new int[boardSize * boardSize];
   public ArrayList<Movelist> tempmovelist;
   public ArrayList<Movelist> tempmovelist2;
   public ArrayList<Movelist> tempallmovelist;
@@ -360,6 +360,7 @@ public class Board implements LeelazListener {
     size = (size >= 2) ? size : 19;
     if (size != boardSize) {
       boardSize = size;
+      mvnumber = new int[boardSize * boardSize];
       Zobrist.init();
       clear();
       Lizzie.leelaz.sendCommand("boardsize " + boardSize);
@@ -541,7 +542,10 @@ public class Board implements LeelazListener {
       Movelist move = movelist.get(lenth - 1 - i);
       if (!move.ispass) {
         placeinsert(move.x, move.y, move.isblack ? Stone.BLACK : Stone.WHITE);
-        mvnumber[getIndex(move.x, move.y)] = i + 1;
+        try {
+          mvnumber[getIndex(move.x, move.y)] = i + 1;
+        } catch (Exception ex) {
+        }
       } else {
         passinsert(move.isblack ? Stone.BLACK : Stone.WHITE, false);
       }
@@ -625,7 +629,12 @@ public class Board implements LeelazListener {
         && !stones[getIndex(coords[0], coords[1])].isWhite()) {
       return -1;
     }
-    return mvnumber[getIndex(coords[0], coords[1])];
+    int mvnumbers = -1;
+    try {
+      mvnumbers = mvnumber[getIndex(coords[0], coords[1])];
+    } catch (Exception ex) {
+    }
+    return mvnumbers;
   }
 
   public void passinsert(Stone color, boolean newBranch) {
@@ -879,7 +888,10 @@ public class Board implements LeelazListener {
   public void placeinsert(int x, int y, Stone color) {
     synchronized (this) {
       if (!isValid(x, y) || (history.getStones()[getIndex(x, y)] != Stone.EMPTY)) return;
-      mvnumber[getIndex(x, y)] = history.getCurrentHistoryNode().getData().moveNumber + 1;
+      try {
+        mvnumber[getIndex(x, y)] = history.getCurrentHistoryNode().getData().moveNumber + 1;
+      } catch (Exception ex) {
+      }
       updateWinrate();
       double nextWinrate = -100;
       if (history.getData().winrate >= 0) nextWinrate = 100 - history.getData().winrate;
@@ -994,7 +1006,10 @@ public class Board implements LeelazListener {
 
       if (!isValid(x, y) || (history.getStones()[getIndex(x, y)] != Stone.EMPTY && !newBranch))
         return;
-      mvnumber[getIndex(x, y)] = history.getCurrentHistoryNode().getData().moveNumber + 1;
+      try {
+        mvnumber[getIndex(x, y)] = history.getCurrentHistoryNode().getData().moveNumber + 1;
+      } catch (Exception ex) {
+      }
       updateWinrate();
       double nextWinrate = -100;
       if (history.getData().winrate >= 0) nextWinrate = 100 - history.getData().winrate;
@@ -1325,8 +1340,11 @@ public class Board implements LeelazListener {
           int[] lastMove = lastMoveOpt.get();
           String name = convertCoordinatesToName(lastMove[0], lastMove[1]);
           Lizzie.leelaz.playMovewithavoid(history.getLastMoveColor(), name);
-          mvnumber[getIndex(lastMove[0], lastMove[1])] =
-              history.getCurrentHistoryNode().getData().moveNumber;
+          try {
+            mvnumber[getIndex(lastMove[0], lastMove[1])] =
+                history.getCurrentHistoryNode().getData().moveNumber;
+          } catch (Exception ex) {
+          }
         } else {
           Lizzie.leelaz.playMovewithavoid(history.getLastMoveColor(), "pass");
         }
@@ -2853,7 +2871,11 @@ public class Board implements LeelazListener {
       placeinsert(coords[0], coords[1], isblack ? Stone.BLACK : Stone.WHITE);
     }
     insertoricurrentMoveNumber = insertoricurrentMoveNumber + 1;
-    mvnumber[getIndex(coords[0], coords[1])] = history.getCurrentHistoryNode().getData().moveNumber;
+    try {
+      mvnumber[getIndex(coords[0], coords[1])] =
+          history.getCurrentHistoryNode().getData().moveNumber;
+    } catch (Exception ex) {
+    }
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.ponder();
     }
