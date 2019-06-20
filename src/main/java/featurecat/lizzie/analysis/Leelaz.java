@@ -197,11 +197,12 @@ public class Leelaz {
                     		  currentEnginename=  a.getString(i);
                       });
             });
+        currentEngineN = index;
     if (wMatcher.matches() && wMatcher.groupCount() == 2) {
       currentWeightFile = wMatcher.group(2);
       String[] names = currentWeightFile.split("[\\\\|/]");
       currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
-      currentEngineN = index;
+
       
       if (currentEnginename.equals("")) currentEnginename = currentWeight;
     }

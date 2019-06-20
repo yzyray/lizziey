@@ -295,6 +295,11 @@ public class Menu extends MenuBar {
     gameMenu.add(breakplay);
     gameMenu.addSeparator();
 
+    final JMenuItem setBoard = new JMenuItem();
+    setBoard.setText("设置棋盘大小");
+    setBoard.addActionListener(new ItemListener());
+    gameMenu.add(setBoard);
+
     final JMenuItem settime = new JMenuItem();
     settime.setText("设置AI用时");
     settime.addActionListener(new ItemListener());
@@ -837,6 +842,12 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("跳转到最后")) {
         while (Lizzie.board.nextMove()) ;
+        return;
+      }
+
+      if (menuItem.getText().startsWith("设置棋盘")) {
+        SetBoardSize st = new SetBoardSize();
+        st.setVisible(true);
         return;
       }
       if (menuItem.getText().startsWith("设置AI用时")) {
