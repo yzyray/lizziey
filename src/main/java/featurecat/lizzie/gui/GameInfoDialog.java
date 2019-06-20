@@ -130,7 +130,7 @@ public class GameInfoDialog extends JDialog {
     // validate data
     String playerBlack = textFieldBlack.getText();
     String playerWhite = textFieldWhite.getText();
-
+    Lizzie.frame.setPlayers(playerWhite, playerBlack);
     // apply new values
     gameInfo.setPlayerBlack(playerBlack);
     gameInfo.setPlayerWhite(playerWhite);

@@ -202,8 +202,6 @@ public class Leelaz {
       currentWeightFile = wMatcher.group(2);
       String[] names = currentWeightFile.split("[\\\\|/]");
       currentWeight = names.length > 1 ? names[names.length - 1] : currentWeightFile;
-     
-      
       if (currentEnginename.equals("")) currentEnginename = currentWeight;
     }
 
@@ -613,7 +611,7 @@ public class Leelaz {
                       onTop = true;
                     }              
                 JOptionPane.showMessageDialog(
-                    Lizzie.frame, "黑胜,LeelaZero 认输!");
+                    null, "黑胜,LeelaZero 认输!");
                 if(onTop)Lizzie.frame.setAlwaysOnTop(true);
                 GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
                 gameInfo.setResult("黑胜");
@@ -627,7 +625,7 @@ public class Leelaz {
                           onTop = true;
                         }              
                     JOptionPane.showMessageDialog(
-                        Lizzie.frame, "白胜,LeelaZero 认输!");
+                        null, "白胜,LeelaZero 认输!");
                     if(onTop)Lizzie.frame.setAlwaysOnTop(true);
                     GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
                     gameInfo.setResult("白胜");
@@ -1224,7 +1222,7 @@ public class Leelaz {
 	        }
 	        
 	       
-	        JOptionPane.showMessageDialog(Lizzie.frame,"批量对战已结束,比分为"+Lizzie.frame.toolbar.pkBlackWins+":"+Lizzie.frame.toolbar.pkWhiteWins+"棋谱保存在PkAutoSave文件夹下" );
+	        JOptionPane.showMessageDialog(null,"批量对战已结束,比分为"+Lizzie.frame.toolbar.pkBlackWins+":"+Lizzie.frame.toolbar.pkWhiteWins+"棋谱保存在PkAutoSave文件夹下" );
 	       
 	        if (onTop) Lizzie.frame.setAlwaysOnTop(true);
 	        Lizzie.frame.toolbar.analyse.setEnabled(true);
@@ -1273,7 +1271,7 @@ public class Leelaz {
         	}
         	if(Lizzie.frame.toolbar.AutosavePk)
         	{jg=jg+"，棋谱保存在PkAutoSave文件夹下";}
-        	 JOptionPane.showMessageDialog(Lizzie.frame,jg );
+        	 JOptionPane.showMessageDialog(null,jg );
        
         if (onTop) Lizzie.frame.setAlwaysOnTop(true);
         Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
@@ -1482,7 +1480,7 @@ public class Leelaz {
 	        }
 	        
 	       
-	        JOptionPane.showMessageDialog(Lizzie.frame,"批量对战已结束,比分为"+Lizzie.frame.toolbar.pkBlackWins+":"+Lizzie.frame.toolbar.pkWhiteWins+"棋谱保存在PkAutoSave文件夹下" );
+	        JOptionPane.showMessageDialog(null,"批量对战已结束,比分为"+Lizzie.frame.toolbar.pkBlackWins+":"+Lizzie.frame.toolbar.pkWhiteWins+"棋谱保存在PkAutoSave文件夹下" );
 	       
 	        if (onTop) Lizzie.frame.setAlwaysOnTop(true);
 	        Lizzie.engineManager.changeEngIcoForEndPk();
@@ -1528,7 +1526,7 @@ public class Leelaz {
         	}
         	if(Lizzie.frame.toolbar.AutosavePk)
         	{jg=jg+"，棋谱保存在PkAutoSave文件夹下";}
-        	 JOptionPane.showMessageDialog(Lizzie.frame,jg );
+        	 JOptionPane.showMessageDialog(null,jg );
        
         if (onTop) Lizzie.frame.setAlwaysOnTop(true);
         Lizzie.engineManager.changeEngIcoForEndPk();

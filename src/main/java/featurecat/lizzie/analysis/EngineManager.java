@@ -486,10 +486,12 @@ public class EngineManager {
     Lizzie.frame.toolbar.isEnginePk = false;
     featurecat.lizzie.gui.Menu.engineMenu.setEnabled(true);
     if (Lizzie.board.getData().blackToPlay) {
-      switchEngine(Lizzie.frame.toolbar.engineWhite);
+      //  switchEngine(Lizzie.frame.toolbar.engineWhite);
+      Lizzie.leelaz = engineList.get(Lizzie.frame.toolbar.engineWhite);
       switchEngine(Lizzie.frame.toolbar.engineBlack);
     } else {
-      switchEngine(Lizzie.frame.toolbar.engineBlack);
+      // switchEngine(Lizzie.frame.toolbar.engineBlack);
+      Lizzie.leelaz = engineList.get(Lizzie.frame.toolbar.engineBlack);
       switchEngine(Lizzie.frame.toolbar.engineWhite);
     }
     timer4 =
