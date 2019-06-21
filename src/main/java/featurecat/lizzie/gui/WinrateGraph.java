@@ -278,6 +278,8 @@ public class WinrateGraph {
     } else {
       if (mode == 0) {
         double cwr = -1;
+        double lastscoreMean = -500;
+        double maxcoreMean = 10;
         int cmovenum = -1;
         while (node.previous().isPresent()) {
           double wr = node.getData().winrate;
@@ -355,6 +357,28 @@ public class WinrateGraph {
                   posy + height - (int) (convertWinrate(lastWr) * height / 100),
                   posx + (movenum * width / numMoves),
                   posy + height - (int) (convertWinrate(wr) * height / 100));
+              if (Lizzie.leelaz.isKatago) {
+                if (!node.getData().bestMoves.isEmpty()) {
+                  double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
+                  if (!node.getData().blackToPlay) {
+                    curscoreMean = -curscoreMean;
+                  }
+
+                  if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
+                  if (lastscoreMean > -500) {
+                    Color lineColor = g.getColor();
+                    Stroke previousStroke = g.getStroke();
+                    g.setColor(Color.RED);
+                    g.setStroke(new BasicStroke(1));
+                    g.drawLine(
+                        posx + (lastOkMove * width / numMoves),
+                        posy + height - (int) (curscoreMean * height / maxcoreMean),
+                        posx + (movenum * width / numMoves),
+                        posy + height - (int) (lastscoreMean * height / maxcoreMean));
+                  }
+                  lastscoreMean = curscoreMean;
+                }
+              }
             }
 
             if (node == curMove) {
