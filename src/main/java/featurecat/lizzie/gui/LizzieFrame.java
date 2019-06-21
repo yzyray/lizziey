@@ -285,6 +285,12 @@ public class LizzieFrame extends JFrame {
                       - Lizzie.frame.getInsets().left
                       - Lizzie.frame.getInsets().right,
                   toolbarHeight);
+              if (toolbarHeight == 26) {
+                toolbar.detail.setIcon(toolbar.iconUp);
+              }
+              if (toolbarHeight == 70) {
+                toolbar.detail.setIcon(toolbar.iconDown);
+              }
             } catch (Exception es) {
             }
           }
@@ -1663,16 +1669,8 @@ public class LizzieFrame extends JFrame {
       }
       if (Lizzie.leelaz.isKatago) {
         if (!Lizzie.board.getHistory().getData().bestMoves.isEmpty()) {
-          text =
-              text
-                  + "子差:"
-                  + String.format(
-                      "%.2f", Lizzie.board.getHistory().getData().bestMoves.get(0).scoreMean);
-          text =
-              text
-                  + "局面复杂度:"
-                  + String.format(
-                      "%.1f", Lizzie.board.getHistory().getData().bestMoves.get(0).scoreStdev);
+          text = text + "目差:" + String.format("%.2f", Lizzie.leelaz.scoreMean);
+          text = text + " 局面复杂度:" + String.format("%.1f", Lizzie.leelaz.scoreStdev) + " ";
         }
       }
       if (Lizzie.leelaz.isColorEngine) {

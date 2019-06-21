@@ -114,7 +114,8 @@ public class Leelaz {
 	public boolean doublePass = false;
 	public boolean played = false;
 	public boolean isKatago = false;
-
+	public double scoreMean=0;
+	public double scoreStdev=0;
 	/**
 	 * Initializes the leelaz process and starts reading output
 	 *

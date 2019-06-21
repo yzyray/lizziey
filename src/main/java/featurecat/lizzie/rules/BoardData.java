@@ -163,7 +163,11 @@ public boolean isChanged=false;
       if(isChanged)
 		{isChanged=false;
 		}
-    		  
+    	if(Lizzie.leelaz.isKatago)
+    	{
+    		Lizzie.leelaz.scoreMean=moves.get(0).scoreMean;
+    		Lizzie.leelaz.scoreStdev=moves.get(0).scoreStdev;
+    	}
     }
   }
 
