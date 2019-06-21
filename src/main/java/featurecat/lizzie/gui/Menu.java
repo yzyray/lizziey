@@ -148,6 +148,11 @@ public class Menu extends MenuBar {
     winratemode0.addActionListener(new ItemListener());
     winrate.add(winratemode0);
 
+    final JMenuItem blunder = new JMenuItem();
+    blunder.setText("显示/关闭柱状失误条");
+    blunder.addActionListener(new ItemListener());
+    winrate.add(blunder);
+
     final JMenuItem coordsItem = new JMenuItem();
     coordsItem.setText("坐标（C）");
     coordsItem.addActionListener(new ItemListener());
@@ -1180,6 +1185,16 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("显示黑方")) {
         Lizzie.frame.winrateGraph.mode = 0;
+        return;
+      }
+      if (menuItem.getText().startsWith("显示/关闭柱状")) {
+        Lizzie.config.showBlunderBar = !Lizzie.config.showBlunderBar;
+        Lizzie.config.uiConfig.put("show-blunder-bar", Lizzie.config.showBlunderBar);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
         return;
       }
     }
