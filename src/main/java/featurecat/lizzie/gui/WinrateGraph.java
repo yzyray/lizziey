@@ -618,8 +618,8 @@ public class WinrateGraph {
                   
                   if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
                   
-                  if(node==curMove||node==curMove.previous().get())
-        		  {   
+                  if(node==curMove)
+        		  {                  	  
                     g.setColor(Color.CYAN);
                     Font f = new Font("", Font.BOLD, 13);
                     g.setFont(f);
@@ -652,16 +652,17 @@ public class WinrateGraph {
                   lastOkMove=movenum;
                 }
     		  else {
-    			  node=node.previous().get();
-    			  double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
-                  g.setColor(Color.CYAN);
+    			 
+    			  double curscoreMean = node.previous().get().getData().bestMoves.get(0).scoreMean;
+    			  if(curscoreMean!=0)
+    			  { g.setColor(Color.CYAN);
                   Font f = new Font("", Font.BOLD, 13);
                   g.setFont(f);
                 	  g.drawString(
                               String.format("%.1f", curscoreMean),
                               posx + (movenum * width*95/100 / numMoves) - 5 * DOT_RADIUS,
                               posy + height/2 - (int) (convertcoreMean(curscoreMean) * height/2 / maxcoreMean) + 5 * DOT_RADIUS);
-            
+    			  }  node=node.previous().get();
     		  }
     		 
     		  node=node.previous().get().previous().get();
@@ -680,7 +681,7 @@ public class WinrateGraph {
          
          if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
          
-         if(node==curMove||node==curMove.previous().get())
+         if(node==curMove)
 		  {   
            g.setColor(Color.CYAN);
            Font f = new Font("", Font.BOLD, 13);
@@ -714,16 +715,17 @@ public class WinrateGraph {
          lastOkMove=movenum;
        }
 	  else {
-		  node=node.previous().get();
-		  
-		  double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
-         g.setColor(Color.CYAN);
-         Font f = new Font("", Font.BOLD, 13);
-         g.setFont(f);
-       	  g.drawString(
-                     String.format("%.1f", curscoreMean),
-                     posx + (movenum * width*95/100 / numMoves) - 5 * DOT_RADIUS,
-                     posy + height/2 - (int) (convertcoreMean(curscoreMean) * height/2 / maxcoreMean) + 5 * DOT_RADIUS);
+		  double curscoreMean = node.previous().get().getData().bestMoves.get(0).scoreMean;
+		  if(curscoreMean!=0)
+		  {
+          g.setColor(Color.CYAN);
+          Font f = new Font("", Font.BOLD, 13);
+          g.setFont(f);
+        	  g.drawString(
+                      String.format("%.1f", curscoreMean),
+                      posx + (movenum * width*95/100 / numMoves) - 5 * DOT_RADIUS,
+                      posy + height/2 - (int) (convertcoreMean(curscoreMean) * height/2 / maxcoreMean) + 5 * DOT_RADIUS);
+		  } node=node.previous().get();
    
 	  }
 	 
