@@ -283,7 +283,8 @@ public class EngineManager {
     for (int i = 0; i < engineList.size(); i++) {
       try {
         engineList.get(i).started = false;
-        engineList.get(i).process.destroy();
+        engineList.get(i).normalQuit();
+        engineList.get(i).process.destroyForcibly();
       } catch (Exception e) {
       }
     }

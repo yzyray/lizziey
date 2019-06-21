@@ -462,7 +462,7 @@ public class Leelaz {
     		Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
     	}
       // if (printCommunication || gtpConsole) {
-    //   Lizzie.gtpConsole.addLineforce(line);
+       Lizzie.gtpConsole.addLineforce(line);
       // }
 //      if (line.startsWith("komi=")) {
 //        try {
