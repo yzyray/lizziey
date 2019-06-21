@@ -18,6 +18,8 @@ public class MoveData {
   public double oriwinrate;
   public double policy;
   public int equalplayouts;
+  public double scoreMean;
+  public double scoreStdev;
 
   private MoveData() {}
 
@@ -80,6 +82,65 @@ public class MoveData {
           if (!islcb) {
             result.winrate = Integer.parseInt(value) / 100.0;
           }
+        }
+      }
+    }
+    return result;
+  }
+
+  public static MoveData fromInfoKatago(String line) throws ArrayIndexOutOfBoundsException {
+    MoveData result = new MoveData();
+    String[] data = line.trim().split(" ");
+    // int k = Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
+    boolean islcb = (Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbwinrate);
+    // Todo: Proper tag parsing in case gtp protocol is extended(?)/changed
+    for (int i = 0; i < data.length; i++) {
+      String key = data[i];
+      if (key.equals("pv")) {
+        // Read variation to the end of line
+        result.variation = new ArrayList<>(Arrays.asList(data));
+        result.variation =
+            result.variation.subList(
+                i + 1,
+                (Lizzie.config.limitBranchLength > 0
+                        && data.length - i - 1 > Lizzie.config.limitBranchLength)
+                    ? i + 1 + Lizzie.config.limitBranchLength
+                    : data.length);
+        // result.variation = result.variation.subList(i + 1, data.length);
+        break;
+      } else {
+        String value = data[++i];
+        if (key.equals("move")) {
+          result.coordinate = value;
+        }
+        if (key.equals("visits")) {
+          result.playouts = Integer.parseInt(value);
+        }
+        if (key.equals("lcb")) {
+          // LCB support
+          result.lcb = Integer.parseInt(value) / 100.0;
+          if (islcb) {
+            result.winrate = Integer.parseInt(value) / 100.0;
+          }
+        }
+        if (key.equals("prior")) {
+          result.policy = Integer.parseInt(value) / 100.0;
+          ;
+        }
+        if (key.equals("winrate")) {
+          // support 0.16 0.15
+          result.oriwinrate = Integer.parseInt(value) / 100.0;
+          if (!islcb) {
+            result.winrate = Integer.parseInt(value) / 100.0;
+          }
+        }
+        if (key.equals("scoreMean")) {
+          result.scoreMean = Double.parseDouble(value);
+          ;
+        }
+        if (key.equals("scoreStdev")) {
+          result.scoreStdev = Double.parseDouble(value);
+          ;
         }
       }
     }

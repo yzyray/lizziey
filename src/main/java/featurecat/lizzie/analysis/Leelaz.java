@@ -114,9 +114,7 @@ public class Leelaz {
   public boolean resigned=false;
   public boolean doublePass=false;
   public boolean played=false;
-  //private boolean pkBlackWins=true;
-  //public boolean playanyway=false;
-  // public double heatwinrate;
+  public boolean isKatago=false;
   /**
    * Initializes the leelaz process and starts reading output
    *
@@ -140,6 +138,10 @@ public class Leelaz {
 
     printCommunication = config.getBoolean("print-comms");
     gtpConsole = printCommunication;
+    if(engineCommand.contains("main"))
+    {
+    	this.isKatago=true;
+    }
     // maxAnalyzeTimeMillis = MINUTE * config.getInt("max-analyze-time-minutes");
 
     // command string for starting the engine
@@ -157,6 +159,10 @@ public class Leelaz {
 
   public void updateCommand(String engineCommand) {
     this.engineCommand = engineCommand;
+    if(engineCommand.contains("main"))
+    {
+    	this.isKatago=true;
+    }
   }
 
   public void getEngineName(int index) {
@@ -335,6 +341,21 @@ public class Leelaz {
     Lizzie.board.getData().tryToSetBestMoves(bestMoves);
     return bestMoves;
   }
+  
+  public  List<MoveData> parseInfoKatago(String line) {
+	    List<MoveData> bestMoves = new ArrayList<>();
+	    String[] variations = line.split(" info ");
+	    int k = (Lizzie.config.limitMaxSuggestion > 0 ? Lizzie.config.limitMaxSuggestion : 361);
+	    for (String var : variations) {
+	      if (!var.trim().isEmpty()) {
+	        bestMoves.add(MoveData.fromInfoKatago(var));
+	        k = k - 1;
+	        if (k < 1) break;
+	      }
+	    }
+	    Lizzie.board.getData().tryToSetBestMoves(bestMoves);
+	    return bestMoves;
+	  }
 
   public static List<MoveData> parseInfofromfile(String line) {
     List<MoveData> bestMoves = new ArrayList<>();
@@ -441,8 +462,7 @@ public class Leelaz {
 //		  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 //		  if(this.currentEngineN==Lizzie.frame.toolbar.engineWhite)
 //			  Lizzie.leelaz=Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);  
-		if (line.contains(" ->   ")) {
-			
+		if (line.contains(" ->   ")) {			
 			MoveData mv=MoveData.fromSummary(line);
 			if(mv!=null)
 				bestMoves.add(mv);   
@@ -523,7 +543,11 @@ public class Leelaz {
         Lizzie.frame.updateTitle();
         if (isResponseUpToDate()) {
           // This should not be stale data when the command number match
-          this.bestMoves = parseInfo(line.substring(5));
+        	if(isKatago)
+        	{ this.bestMoves = parseInfoKatago(line.substring(5));
+        	}
+        	else {
+          this.bestMoves = parseInfo(line.substring(5));}
           if(Lizzie.frame.toolbar.isEnginePk)
           {	 Lizzie.frame.subBoardRenderer.reverseBestmoves=false;
 	    	 Lizzie.frame.boardRenderer.reverseBestmoves=false;
@@ -2084,7 +2108,7 @@ public class Leelaz {
   public void sendCommand(String command) {
     synchronized (cmdQueue) {
       // For efficiency, delete unnecessary "lz-analyze" that will be stopped immediately
-      if (!cmdQueue.isEmpty() && cmdQueue.peekLast().startsWith("lz-analyze")) {
+      if (!cmdQueue.isEmpty() && (cmdQueue.peekLast().startsWith("lz-analyze")||cmdQueue.peekLast().startsWith("kata-analyze"))) {
         cmdQueue.removeLast();
       }
       cmdQueue.addLast(command);
@@ -2102,7 +2126,7 @@ public class Leelaz {
     // but it is kept for future change of our mind.
     synchronized (cmdQueue) {
       if (cmdQueue.isEmpty()
-          || cmdQueue.peekFirst().startsWith("lz-analyze")&& !isResponseUpToDate()) {
+          || (cmdQueue.peekFirst().startsWith("lz-analyze")||cmdQueue.peekFirst().startsWith("kata-analyze"))&& !isResponseUpToDate()) {
         return;
       }
       String command = cmdQueue.removeFirst();
@@ -2380,7 +2404,8 @@ public class Leelaz {
   }
 
   public void analyzeAvoid(String parameters) {
-
+	  if(this.isKatago)
+	    {return;}
     // added for change bestmoves immediatly not wait until totalplayouts is bigger than previous
     // analyze result
     bestMoves = new ArrayList<>();
@@ -2388,8 +2413,9 @@ public class Leelaz {
       isPondering = true;
       startPonderTime = System.currentTimeMillis();
     }
-    sendCommand(
+   sendCommand(
         String.format("lz-analyze %d %s", Lizzie.config.analyzeUpdateIntervalCentisec, parameters));
+   
     Lizzie.board.clearbestmoves();
   }
 
@@ -2414,9 +2440,16 @@ public class Leelaz {
       featurecat.lizzie.gui.RightClickMenu.avoidcoords = "";
       featurecat.lizzie.gui.RightClickMenu.move = 0;
       featurecat.lizzie.gui.RightClickMenu.isforcing = false;
-      sendCommand(
+      if(this.isKatago)
+      {
+    	  sendCommand(
+    	          "kata-analyze "
+    	              + Lizzie.config.analyzeUpdateIntervalCentisec);
+      }
+      else
+      { sendCommand(
           "lz-analyze "
-              + Lizzie.config.analyzeUpdateIntervalCentisec); // until it responds to this, incoming
+              + Lizzie.config.analyzeUpdateIntervalCentisec);} // until it responds to this, incoming
       // ponder results are obsolete
     }
   }
@@ -2441,9 +2474,14 @@ public class Leelaz {
       featurecat.lizzie.gui.RightClickMenu.avoidcoords = "";
       featurecat.lizzie.gui.RightClickMenu.move = 0;
       featurecat.lizzie.gui.RightClickMenu.isforcing = false;
+      if(this.isKatago)
+      {sendCommand(
+              "kata-analyze "
+                      + Lizzie.config.analyzeUpdateIntervalCentisec);}
+      else {
       sendCommand(
           "lz-analyze "
-              + Lizzie.config.analyzeUpdateIntervalCentisec); // until it responds to this, incoming
+              + Lizzie.config.analyzeUpdateIntervalCentisec);} // until it responds to this, incoming
       // ponder results are obsolete
     }
   }

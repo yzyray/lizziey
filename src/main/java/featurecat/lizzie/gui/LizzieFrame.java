@@ -1661,6 +1661,12 @@ public class LizzieFrame extends JFrame {
       if (toolbar.isEnginePk && Lizzie.board.getHistory().getMoveNumber() <= 3) {
         text = "";
       }
+      if (Lizzie.leelaz.isKatago) {
+        if (!Lizzie.board.getHistory().getData().bestMoves.isEmpty()) {
+          text = text + "子差:" + Lizzie.board.getHistory().getData().bestMoves.get(0).scoreMean;
+          text = text + "局面复杂度:" + Lizzie.board.getHistory().getData().bestMoves.get(0).scoreStdev;
+        }
+      }
       if (Lizzie.leelaz.isColorEngine) {
         text = text + "阶段:" + Lizzie.leelaz.stage + " 贴目:" + Lizzie.leelaz.komi;
       } else {

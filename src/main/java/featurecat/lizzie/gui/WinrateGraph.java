@@ -116,7 +116,7 @@ public class WinrateGraph {
     if (numMoves < 1) return;
 
     // Plot
-    width = (int) (width * 0.97); // Leave some space after last move
+    width = (int) (width * 0.95); // Leave some space after last move
     double lastWr = 50;
     double lastWr2 = 50;
     boolean lastNodeOk = false;

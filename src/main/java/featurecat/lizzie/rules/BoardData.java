@@ -205,6 +205,7 @@ public boolean isChanged=false;
   public int getPlayouts() {
     return playouts;
   }
+ 
   public void sync(BoardData data) {
 	    this.moveMNNumber = data.moveMNNumber;
 	    this.moveNumber = data.moveNumber;
