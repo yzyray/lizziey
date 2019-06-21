@@ -14,10 +14,12 @@ public class WinrateGraph {
   private int[] params = {0, 0, 0, 0, 0};
   private int numMovesOfPlayed = 0;
   public int mode = 1;
+  double maxcoreMean = 30.0;
 
   public void draw(Graphics2D g, int posx, int posy, int width, int height) {
     BoardHistoryNode curMove = Lizzie.board.getHistory().getCurrentHistoryNode();
     BoardHistoryNode node = curMove;
+    maxcoreMean = 30.0;
 
     // draw background rectangle
     final Paint gradient =
@@ -116,7 +118,7 @@ public class WinrateGraph {
     if (numMoves < 1) return;
 
     // Plot
-    width = (int) (width * 0.95); // Leave some space after last move
+    width = (int) (width * 0.98); // Leave some space after last move
     double lastWr = 50;
     double lastWr2 = 50;
     boolean lastNodeOk = false;
@@ -126,7 +128,8 @@ public class WinrateGraph {
     if (Lizzie.config.dynamicWinrateGraphWidth && this.numMovesOfPlayed > 0) {
       numMoves = this.numMovesOfPlayed;
     }
-
+    
+   
     if (Lizzie.frame.toolbar.isEnginePk || Lizzie.board.isPkBoard) {
       if (numMoves < 2) return;
       Stroke previousStroke = g.getStroke();
@@ -278,8 +281,7 @@ public class WinrateGraph {
     } else {
       if (mode == 0) {
         double cwr = -1;
-        double lastscoreMean = -500;
-        double maxcoreMean = 10;
+      
         int cmovenum = -1;
         while (node.previous().isPresent()) {
           double wr = node.getData().winrate;
@@ -357,30 +359,7 @@ public class WinrateGraph {
                   posy + height - (int) (convertWinrate(lastWr) * height / 100),
                   posx + (movenum * width / numMoves),
                   posy + height - (int) (convertWinrate(wr) * height / 100));
-              if (Lizzie.leelaz.isKatago) {
-            	  
-            	   if (!node.getData().bestMoves.isEmpty()) {
-                  double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
-                  if (!node.getData().blackToPlay) {
-                    curscoreMean = -curscoreMean;
-                  }
-
-                  if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
-                  if (lastscoreMean > -500) {
-                    //Color lineColor = g.getColor();
-                   // Stroke previousStroke = g.getStroke();
-                    g.setColor(Color.RED);
-                    g.setStroke(new BasicStroke(1));
-                    g.drawLine(
-                        posx + (lastOkMove * width / numMoves),
-                        posy + height/2 - (int) (lastscoreMean * height/2 / maxcoreMean),
-                        posx + (movenum * width / numMoves),
-                        posy + height/2 - (int) (curscoreMean * height/2 / maxcoreMean));
-                  }
-                  lastscoreMean = curscoreMean;
-                  
-                }
-              }
+              
             }
 
             if (node == curMove) {
@@ -395,35 +374,7 @@ public class WinrateGraph {
               cwr = wr;
               cmovenum = movenum;
               
-              if(Lizzie.leelaz.isKatago)
-        	  {
-        		  if(!Lizzie.board.getHistory().getData().bestMoves.isEmpty())
-        		  {
-        			  double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
-                      if (!node.getData().blackToPlay) {
-                        curscoreMean = -curscoreMean;
-                      }
-
-                      if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
-                      if (lastscoreMean > -500) {
-                        //Color lineColor = g.getColor();
-                       // Stroke previousStroke = g.getStroke();
-                        g.setColor(Color.RED);
-                        g.setStroke(new BasicStroke(1));
-                        g.drawLine(
-                            posx + (lastOkMove * width / numMoves),
-                            posy + height/2 - (int) (lastscoreMean * height/2 / maxcoreMean),
-                            posx + (movenum * width / numMoves),
-                            posy + height/2 - (int) (curscoreMean * height/2 / maxcoreMean));
-                      }
-                      lastscoreMean = curscoreMean;
-                    	  g.drawString(
-                                  String.format("%.1f", curscoreMean),
-                                  posx + (movenum * width / numMoves) - 3 * DOT_RADIUS,
-                                  posy + height/2 - (int) (curscoreMean * height/2 / maxcoreMean));
-                     
-        		  }
-        	  }
+              
             }
             lastWr = wr;
             lastNodeOk = true;
@@ -649,6 +600,128 @@ public class WinrateGraph {
         }
       }
     }
+    
+    node = curMove;
+    lastOkMove=-1;
+    movenum = node.getData().moveNumber - 1;
+    if(Lizzie.frame.toolbar.isEnginePk&&!Lizzie.frame.toolbar.isGenmove)
+    {    	
+//    	if(Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago)
+//    	{
+//    		  double lastscoreMean = -500;
+//    	         
+//    	         
+//              while (node.previous().isPresent()&&node.previous().get().previous().isPresent()) {
+//    		  if (node.getData().blackToPlay&&!node.getData().bestMoves.isEmpty()) {
+//    			
+//                  double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
+//                  
+//                  if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
+//                  
+//                  if(node==curMove||node==curMove.previous().get())
+//        		  {        			  
+//                	 
+//                    g.setColor(Color.CYAN);
+//                    Font f = new Font("", Font.BOLD, 13);
+//                    g.setFont(f);
+//                  	  g.drawString(
+//                                String.format("%.1f", curscoreMean),
+//                                posx + (movenum * width*95/100 / numMoves) - 5 * DOT_RADIUS,
+//                                posy + height/2 - (int) (convertcoreMean(curscoreMean) * height/2 / maxcoreMean) + 5 * DOT_RADIUS);
+//                   
+//        		  }
+//                  if (lastOkMove > 0) {   
+//                	 
+//
+//                  
+//                  if (lastscoreMean > -500) {
+//                    //Color lineColor = g.getColor();
+//                    Stroke previousStroke = g.getStroke();
+//                    g.setColor(Color.RED);
+//                    g.setStroke(new BasicStroke(1));
+//                    g.drawLine(
+//                        posx + (lastOkMove * width*95/100 / numMoves),
+//                        posy + height/2 - (int) (convertcoreMean(lastscoreMean) * height/2 / maxcoreMean),
+//                        posx + (movenum * width*95/100 / numMoves),
+//                        posy + height/2 - (int) (convertcoreMean(curscoreMean) * height/2 / maxcoreMean));
+//                    g.setStroke(previousStroke);
+//                  }
+//                  
+//    			  }
+//                  
+//                  lastscoreMean = curscoreMean;
+//                  lastOkMove=movenum;
+//                }
+//    		  
+//    		 
+//    		  node=node.previous().get().previous().get();
+//    		  movenum=movenum-2;
+//              }
+//              
+//    	}
+//    	else if(Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago)
+//    	{
+//    		
+//    	}
+    }
+    else  if(Lizzie.leelaz.isKatago)
+	  {
+    	  double lastscoreMean = -500;
+         
+         
+          while (node.previous().isPresent()) {
+		  if (!node.getData().bestMoves.isEmpty()) {
+			
+              double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
+              if (!node.getData().blackToPlay) {
+                  curscoreMean = -curscoreMean;
+                  
+                }
+              if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
+              
+              if(node==curMove)
+    		  {        			  
+            	 
+                g.setColor(Color.CYAN);
+                Font f = new Font("", Font.BOLD, 13);
+                g.setFont(f);
+              	  g.drawString(
+                            String.format("%.1f", curscoreMean),
+                            posx + (movenum * width*95/100 / numMoves) - 5 * DOT_RADIUS,
+                            posy + height/2 - (int) (convertcoreMean(curscoreMean) * height/2 / maxcoreMean) + 5 * DOT_RADIUS);
+               
+    		  }
+              if (lastOkMove > 0) {   
+            	 
+
+              
+              if (lastscoreMean > -500) {
+                //Color lineColor = g.getColor();
+                Stroke previousStroke = g.getStroke();
+                g.setColor(Color.RED);
+                g.setStroke(new BasicStroke(1));
+                g.drawLine(
+                    posx + (lastOkMove * width*95/100 / numMoves),
+                    posy + height/2 - (int) (convertcoreMean(lastscoreMean) * height/2 / maxcoreMean),
+                    posx + (movenum * width*95/100 / numMoves),
+                    posy + height/2 - (int) (convertcoreMean(curscoreMean) * height/2 / maxcoreMean));
+                g.setStroke(previousStroke);
+              }
+              
+			  }
+              
+              lastscoreMean = curscoreMean;
+              lastOkMove=movenum;
+            }
+		  
+		 
+		  node=node.previous().get();
+		  movenum--;
+          }
+          
+	 
+   
+	  }
     g.setStroke(new BasicStroke(1));
 
     // record parameters for calculating moveNumber
@@ -657,6 +730,15 @@ public class WinrateGraph {
     params[2] = width;
     params[3] = height;
     params[4] = numMoves;
+  }
+  
+  private double convertcoreMean(double coreMean) {
+	  
+	 if(coreMean>maxcoreMean)
+		 return maxcoreMean;
+	 if(coreMean<0&&Math.abs(coreMean)>maxcoreMean)
+		 return -maxcoreMean;
+	 return coreMean;
   }
 
   private double convertWinrate(double winrate) {

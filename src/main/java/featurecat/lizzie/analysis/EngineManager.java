@@ -30,7 +30,7 @@ public class EngineManager {
   Timer timer;
   Timer timer2;
   Timer timer3;
-  Timer timer4;
+  //Timer timer4;
 
   public EngineManager(Config config) throws JSONException, IOException {
 
@@ -488,25 +488,33 @@ public class EngineManager {
     featurecat.lizzie.gui.Menu.engineMenu.setEnabled(true);
     if (Lizzie.board.getData().blackToPlay) {
       //  switchEngine(Lizzie.frame.toolbar.engineWhite);
-      Lizzie.leelaz = engineList.get(Lizzie.frame.toolbar.engineWhite);
-      switchEngine(Lizzie.frame.toolbar.engineBlack);
+      Lizzie.leelaz = engineList.get(Lizzie.frame.toolbar.engineBlack);
+     engineList.get(Lizzie.frame.toolbar.engineWhite).nameCmd();
+    	
+     // switchEngine(Lizzie.frame.toolbar.engineBlack);
     } else {
       // switchEngine(Lizzie.frame.toolbar.engineBlack);
-      Lizzie.leelaz = engineList.get(Lizzie.frame.toolbar.engineBlack);
-      switchEngine(Lizzie.frame.toolbar.engineWhite);
+      Lizzie.leelaz = engineList.get(Lizzie.frame.toolbar.engineWhite);
+     engineList.get(Lizzie.frame.toolbar.engineBlack).nameCmd();
+    //	engineList.get(Lizzie.frame.toolbar.engineWhite).clear();
+     // switchEngine(Lizzie.frame.toolbar.engineWhite);
     }
+    this.currentEngineNo = Lizzie.leelaz.currentEngineN();
+    featurecat.lizzie.gui.Menu.engineMenu.setText(
+        "引擎" + (currentEngineNo + 1) + ": " + engineList.get(currentEngineNo).currentEnginename);
+    changeEngIco();
   }
-
-  private void ponderForEndpk() {
-    Lizzie.leelaz.togglePonder();
-    Lizzie.leelaz.togglePonder();
-    try {
-      timer4.stop();
-      timer4 = null;
-    } catch (Exception ex) {
-
-    }
-  }
+//
+//  private void ponderForEndpk() {
+//    Lizzie.leelaz.togglePonder();
+//    Lizzie.leelaz.togglePonder();
+//    try {
+//      timer4.stop();
+//      timer4 = null;
+//    } catch (Exception ex) {
+//
+//    }
+//  }
 
   private void changeEngIco() {
     for (int i = 0; i < Lizzie.frame.menu.engine.length; i++) {

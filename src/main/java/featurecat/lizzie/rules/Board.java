@@ -1433,10 +1433,18 @@ public class Board implements LeelazListener {
             .sendCommand("play " + color + " " + convertCoordinatesToName(move.x, move.y));
       }
     }
+    if(Lizzie.engineManager
+            .engineList
+            .get(index).isKatago)
     Lizzie.engineManager
         .engineList
         .get(index)
-        .sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+        .sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+    else
+    	 Lizzie.engineManager
+         .engineList
+         .get(index)
+         .sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
   }
 
   //    Stone[] stones = history.getStones();
