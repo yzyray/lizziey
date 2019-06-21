@@ -1673,7 +1673,7 @@ public class LizzieFrame extends JFrame {
               text
                   + "目差:"
                   + String.format(
-                      "%.2f",
+                      "%.1f",
                       Lizzie.board.getHistory().isBlacksTurn()
                           ? Lizzie.leelaz.scoreMean
                           : -Lizzie.leelaz.scoreMean);
