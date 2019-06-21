@@ -118,20 +118,20 @@ public class MoveData {
         }
         if (key.equals("lcb")) {
           // LCB support
-          result.lcb = Integer.parseInt(value) / 100.0;
+          result.lcb = Double.parseDouble(value)*100;
           if (islcb) {
-            result.winrate = Integer.parseInt(value) / 100.0;
+            result.winrate = Double.parseDouble(value)*100;
           }
         }
         if (key.equals("prior")) {
-          result.policy = Integer.parseInt(value) / 100.0;
+          result.policy = Double.parseDouble(value)*100;
           ;
         }
         if (key.equals("winrate")) {
           // support 0.16 0.15
-          result.oriwinrate = Integer.parseInt(value) / 100.0;
+          result.oriwinrate = Double.parseDouble(value)*100;
           if (!islcb) {
-            result.winrate = Integer.parseInt(value) / 100.0;
+            result.winrate = Double.parseDouble(value)*100;
           }
         }
         if (key.equals("scoreMean")) {
