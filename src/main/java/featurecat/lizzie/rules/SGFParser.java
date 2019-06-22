@@ -290,6 +290,7 @@ public class SGFParser {
               }
             }
           } else if (tag.equals("AB") || tag.equals("AW")) {
+            Lizzie.engineManager.isEmpty = false;
             int[] move = convertSgfPosToCoord(tagContent);
             Stone color = tag.equals("AB") ? Stone.BLACK : Stone.WHITE;
             if (moveStart) {
@@ -317,6 +318,7 @@ public class SGFParser {
               }
               Lizzie.board.flatten();
             }
+            Lizzie.engineManager.isEmpty = true;
           } else if (tag.equals("PB")) {
             blackPlayer = tagContent;
           } else if (tag.equals("PW")) {
