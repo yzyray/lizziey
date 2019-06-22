@@ -2118,7 +2118,7 @@ public class Leelaz {
 	 * @param command a GTP command containing no newline characters
 	 */
 	private void sendCommandToLeelaz(String command) {
-		if (command.startsWith("fixed_handicap"))
+		if (command.startsWith("fixed_handicap")||(isKatago&&command.startsWith("place_free_handicap")))
 			isSettingHandicap = true;
 //    if (printCommunication) {
 //      System.out.println(currentEnginename+" "+ cmdNumber+" "+ command);

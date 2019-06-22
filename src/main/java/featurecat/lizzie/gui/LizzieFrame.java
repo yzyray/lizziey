@@ -651,7 +651,9 @@ public class LizzieFrame extends JFrame {
     boolean isHandicapGame = gameInfo.getHandicap() != 0;
     if (isHandicapGame) {
       Lizzie.board.getHistory().getData().blackToPlay = false;
-      Lizzie.leelaz.sendCommand("fixed_handicap " + gameInfo.getHandicap());
+      if (Lizzie.leelaz.isKatago)
+        Lizzie.leelaz.sendCommand("place_free_handicap " + gameInfo.getHandicap());
+      else Lizzie.leelaz.sendCommand("fixed_handicap " + gameInfo.getHandicap());
       if (playerIsBlack) Lizzie.leelaz.genmove("W");
     } else if (!playerIsBlack) {
       Lizzie.leelaz.genmove("B");
