@@ -2156,7 +2156,9 @@ public class LizzieFrame extends JFrame {
     StringBuilder sb = new StringBuilder(DEFAULT_TITLE);
     sb.append(playerTitle);
     sb.append(resultTitle);
-    sb.append(" [" + Lizzie.leelaz.engineCommand() + "]");
+    if (Lizzie.leelaz.engineCommand().length() < 100)
+      sb.append(" [" + Lizzie.leelaz.engineCommand() + "]");
+    else sb.append(" [" + Lizzie.leelaz.engineCommand().substring(0, 100) + "...]");
     sb.append(visitsString);
     setTitle(sb.toString());
   }
