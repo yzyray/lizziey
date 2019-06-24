@@ -2155,6 +2155,16 @@ public class LizzieFrame extends JFrame {
   public void updateTitle() {
     StringBuilder sb = new StringBuilder(DEFAULT_TITLE);
     sb.append(playerTitle);
+    if (Lizzie.leelaz.isKatago) {
+
+      sb.append(
+          " 目差: "
+              + String.format(
+                  "%.1f",
+                  Lizzie.board.getHistory().isBlacksTurn()
+                      ? Lizzie.leelaz.scoreMean
+                      : -Lizzie.leelaz.scoreMean));
+    }
     sb.append(resultTitle);
     if (Lizzie.leelaz.engineCommand().length() < 100)
       sb.append(" [" + Lizzie.leelaz.engineCommand() + "]");

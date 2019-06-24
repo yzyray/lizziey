@@ -601,6 +601,14 @@ public class WinrateGraph {
     }
 
     node = curMove;
+    while (node.next().isPresent()) {
+      node = node.next().get();
+    }
+    if (numMoves < node.getData().moveNumber - 1) {
+      numMoves = node.getData().moveNumber - 1;
+    }
+
+    if (numMoves < 1) return;
     lastOkMove = -1;
     movenum = node.getData().moveNumber - 1;
     if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove) {
