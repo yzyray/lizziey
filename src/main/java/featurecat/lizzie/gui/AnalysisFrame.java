@@ -346,7 +346,20 @@ public class AnalysisFrame extends JPanel {
           case 4:
             return String.format("%.2f", data.policy);
           case 5:
-            return String.format("%.2f", data.scoreMean);
+            double score = data.scoreMean;
+            if (Lizzie.board.getHistory().isBlacksTurn()) {
+              if (Lizzie.config.showKataGoBoardScoreMean) {
+                score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
+              }
+            } else {
+              if (Lizzie.config.showKataGoBoardScoreMean) {
+                score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
+              }
+              if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
+                score = -score;
+              }
+            }
+            return String.format("%.2f", score);
           case 6:
             return String.format("%.2f", data.scoreStdev);
           default:

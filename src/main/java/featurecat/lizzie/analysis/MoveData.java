@@ -135,16 +135,33 @@ public class MoveData {
           }
         }
         if (key.equals("scoreMean")) {
-          if (Lizzie.config.showKataGoBoardScoreMean) {
-            result.scoreMean =
-                Double.parseDouble(value)
-                    + (Lizzie.board.getHistory().isBlacksTurn()
-                        ? Lizzie.board.getHistory().getGameInfo().getKomi()
-                        : -Lizzie.board.getHistory().getGameInfo().getKomi());
-
-          } else {
-            result.scoreMean = Double.parseDouble(value);
-          }
+          //          if (Lizzie.config.showKataGoBoardScoreMean) {
+          //        	  if(Lizzie.config.kataGoScoreMeanAlwaysBlack) {
+          //        		  result.scoreMean =
+          //
+          //                          + (Lizzie.board.getHistory().isBlacksTurn()
+          //                              ?
+          // Double.parseDouble(value)+Lizzie.board.getHistory().getGameInfo().getKomi()
+          //                              :
+          // -Double.parseDouble(value)+Lizzie.board.getHistory().getGameInfo().getKomi());
+          //
+          //        	  }
+          //        	  else {
+          //            result.scoreMean =
+          //            		Double.parseDouble(value)
+          //                    + (Lizzie.board.getHistory().isBlacksTurn()
+          //                        ?  Lizzie.board.getHistory().getGameInfo().getKomi()
+          //                        : -Lizzie.board.getHistory().getGameInfo().getKomi());
+          //        	  }
+          //
+          //          } else {
+          //        	  if(Lizzie.config.kataGoScoreMeanAlwaysBlack)
+          //            result.scoreMean = Lizzie.board.getHistory().isBlacksTurn()?
+          // Double.parseDouble(value):-Double.parseDouble(value);
+          //            else
+          //            	result.scoreMean = Double.parseDouble(value);
+          //          }
+          result.scoreMean = Double.parseDouble(value);
         }
         if (key.equals("scoreStdev")) {
           result.scoreStdev = Double.parseDouble(value);

@@ -1773,6 +1773,9 @@ public class Board implements LeelazListener {
     cleanedittemp();
     initialize();
     isPkBoard = false;
+    Lizzie.leelaz.sendCommand("komi 7.5");
+    Lizzie.board.getHistory().getGameInfo().resetAll();
+    Lizzie.frame.komi = "7.5";
     featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(5).setHeaderValue("AI胜率");
     featurecat.lizzie.gui.MovelistFrame.checkBlacktxt.setText("黑:");
     featurecat.lizzie.gui.MovelistFrame.checkWhitetxt.setText("白:");

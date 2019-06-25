@@ -17,10 +17,35 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     if (SwingUtilities.isMiddleMouseButton(e)) {
       int moveNumber = Lizzie.board.getcurrentmovenumber();
       if (Lizzie.frame.playCurrentVariation()) {
-        if (Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk())
-          Lizzie.board.goToMoveNumber(moveNumber + 1);
-        else {
-          Lizzie.board.goToMoveNumberWithinBranch(1);
+
+        Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
+        if (Lizzie.board.getHistory().getCurrentHistoryNode().hasVariations()) {
+          try {
+            Lizzie.board.place(
+                Lizzie.board
+                    .getHistory()
+                    .getCurrentHistoryNode()
+                    .getVariation(
+                        Lizzie.board.getHistory().getCurrentHistoryNode().getVariations().size()
+                            - 1)
+                    .get()
+                    .getData()
+                    .lastMove
+                    .get()[0],
+                Lizzie.board
+                    .getHistory()
+                    .getCurrentHistoryNode()
+                    .getVariation(
+                        Lizzie.board.getHistory().getCurrentHistoryNode().getVariations().size()
+                            - 1)
+                    .get()
+                    .getData()
+                    .lastMove
+                    .get()[1]);
+          } catch (Exception ex) {
+          }
+        } else {
+          Lizzie.board.nextMove();
         }
       }
     }

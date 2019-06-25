@@ -994,12 +994,25 @@ public class BoardRenderer {
                     Lizzie.frame.getPlayoutsString(move.playouts),
                     (float) (stoneRadius * 0.8),
                     stoneRadius * 1.4);
+                double score = move.scoreMean;
+                if (Lizzie.board.getHistory().isBlacksTurn()) {
+                  if (Lizzie.config.showKataGoBoardScoreMean) {
+                    score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
+                  }
+                } else {
+                  if (Lizzie.config.showKataGoBoardScoreMean) {
+                    score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
+                  }
+                  if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
+                    score = -score;
+                  }
+                }
                 drawString(
                     g,
                     suggestionX,
                     suggestionY + stoneRadius * 12 / 16,
                     LizzieFrame.uiFont,
-                    String.format("%.1f", move.scoreMean),
+                    String.format("%.1f", score),
                     (float) (stoneRadius * 0.75),
                     stoneRadius * 1.3);
               } else {

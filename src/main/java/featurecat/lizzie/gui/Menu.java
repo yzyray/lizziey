@@ -274,9 +274,27 @@ public class Menu extends MenuBar {
     viewMenu.add(katamean);
     katamean.addActionListener(new ItemListener());
 
-    final JMenuItem kataboardmean = new JMenuItem("KataGo目差显示为盘面差");
-    viewMenu.add(kataboardmean);
+    final JMenu kataboard = new JMenu("KataGo目差显示为");
+    viewMenu.add(kataboard);
+
+    final JMenuItem kataboardmean = new JMenuItem("目差");
+    kataboard.add(kataboardmean);
     kataboardmean.addActionListener(new ItemListener());
+
+    final JMenuItem kataboardboard = new JMenuItem("盘面差");
+    kataboard.add(kataboardboard);
+    kataboardboard.addActionListener(new ItemListener());
+
+    final JMenu katameanalways = new JMenu("KataGo目差视角");
+    viewMenu.add(katameanalways);
+
+    final JMenuItem katameanblack = new JMenuItem("永远为黑视角");
+    katameanalways.add(katameanblack);
+    katameanblack.addActionListener(new ItemListener());
+
+    final JMenuItem katameanblackwhite = new JMenuItem("黑白交替视角");
+    katameanalways.add(katameanblackwhite);
+    katameanblackwhite.addActionListener(new ItemListener());
 
     final JMenu gameMenu = new JMenu("棋局 ", false);
     gameMenu.setText(" 棋局  ");
@@ -1216,10 +1234,43 @@ public class Menu extends MenuBar {
         }
         return;
       }
-      if (menuItem.getText().startsWith("KataGo目")) {
-        Lizzie.config.showKataGoBoardScoreMean = !Lizzie.config.showKataGoBoardScoreMean;
+      if (menuItem.getText().startsWith("目差")) {
+        Lizzie.config.showKataGoBoardScoreMean = false;
         Lizzie.config.uiConfig.put(
             "show-katago-boardscoremean", Lizzie.config.showKataGoBoardScoreMean);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
+      if (menuItem.getText().startsWith("盘面差")) {
+        Lizzie.config.showKataGoBoardScoreMean = true;
+        Lizzie.config.uiConfig.put(
+            "show-katago-boardscoremean", Lizzie.config.showKataGoBoardScoreMean);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
+      if (menuItem.getText().startsWith("永远为黑")) {
+        Lizzie.config.kataGoScoreMeanAlwaysBlack = true;
+        Lizzie.config.uiConfig.put(
+            "katago-scoremean-alwaysblack", Lizzie.config.kataGoScoreMeanAlwaysBlack);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
+      if (menuItem.getText().startsWith("黑白交替")) {
+        Lizzie.config.kataGoScoreMeanAlwaysBlack = false;
+        Lizzie.config.uiConfig.put(
+            "katago-scoremean-alwaysblack", Lizzie.config.kataGoScoreMeanAlwaysBlack);
         try {
           Lizzie.config.save();
         } catch (IOException es) {

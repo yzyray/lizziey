@@ -854,19 +854,41 @@ public class SGFParser {
             lastMoveDiff,
             engine,
             playouts);
-
+    if (Lizzie.leelaz.isKatago) {
+      double score = Lizzie.leelaz.scoreMean;
+      if (Lizzie.board.getHistory().isBlacksTurn()) {
+        if (Lizzie.config.showKataGoBoardScoreMean) {
+          score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
+        }
+      } else {
+        if (Lizzie.config.showKataGoBoardScoreMean) {
+          score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
+        }
+        if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
+          score = -score;
+        }
+      }
+      nc =
+          nc
+              + "\n目差: "
+              + String.format("%.1f", score)
+              + " 局面复杂度: "
+              + String.format("%.1f", Lizzie.leelaz.scoreStdev);
+    }
     if (!data.comment.isEmpty()) {
       // [^\\(\\)/]*
       String wp =
           "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\("
               + engine
               + " / [0-9\\.]*[kmKM]* 计算量\\)";
+      if (Lizzie.leelaz.isKatago) wp = wp + "\n.*";
       if (data.comment.matches("(?s).*" + wp + "(?s).*")) {
         nc = data.comment.replaceAll(wp, nc);
       } else {
         nc = String.format("%s\n\n%s", nc, data.comment);
       }
     }
+
     return nc;
   }
 

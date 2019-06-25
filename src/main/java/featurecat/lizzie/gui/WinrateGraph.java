@@ -25,9 +25,9 @@ public class WinrateGraph {
     final Paint gradient =
         new GradientPaint(
             new Point2D.Float(posx, posy),
-            new Color(50, 50, 50, 120),
+            new Color(70, 70, 70, 140),
             new Point2D.Float(posx, posy + height),
-            new Color(155, 155, 155, 145));
+            new Color(205, 205, 205, 185));
     final Paint borderGradient =
         new GradientPaint(
             new Point2D.Float(posx, posy),
@@ -620,7 +620,9 @@ public class WinrateGraph {
           if (node.getData().blackToPlay && !node.getData().bestMoves.isEmpty()) {
 
             double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
-
+            if (Lizzie.config.showKataGoBoardScoreMean) {
+              curscoreMean = curscoreMean + Lizzie.board.getHistory().getGameInfo().getKomi();
+            }
             if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
 
             if (node == curMove) {
@@ -651,6 +653,9 @@ public class WinrateGraph {
             lastOkMove = movenum;
           } else {
             double curscoreMean = node.previous().get().getData().bestMoves.get(0).scoreMean;
+            if (Lizzie.config.showKataGoBoardScoreMean) {
+              curscoreMean = curscoreMean + Lizzie.board.getHistory().getGameInfo().getKomi();
+            }
             if (curscoreMean != 0) {
               curmovenum = movenum;
               drawcurscoreMean = curscoreMean;
@@ -681,7 +686,9 @@ public class WinrateGraph {
           if (!node.getData().blackToPlay && !node.getData().bestMoves.isEmpty()) {
 
             double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
-
+            if (Lizzie.config.showKataGoBoardScoreMean) {
+              curscoreMean = curscoreMean - Lizzie.board.getHistory().getGameInfo().getKomi();
+            }
             if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
 
             if (node == curMove) {
@@ -712,6 +719,9 @@ public class WinrateGraph {
             lastOkMove = movenum;
           } else {
             double curscoreMean = node.previous().get().getData().bestMoves.get(0).scoreMean;
+            if (Lizzie.config.showKataGoBoardScoreMean) {
+              curscoreMean = curscoreMean - Lizzie.board.getHistory().getGameInfo().getKomi();
+            }
             if (curscoreMean != 0) {
               curmovenum = movenum;
               drawcurscoreMean = curscoreMean;
@@ -724,7 +734,7 @@ public class WinrateGraph {
         }
         if (curmovenum > 0) {
           g.setColor(Color.CYAN);
-          Font f = new Font("", Font.BOLD, 15);
+          Font f = new Font("", Font.BOLD, 14);
           g.setFont(f);
           g.drawString(
               String.format("%.1f", drawcurscoreMean),
@@ -745,6 +755,9 @@ public class WinrateGraph {
           double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
           if (!node.getData().blackToPlay) {
             curscoreMean = -curscoreMean;
+          }
+          if (Lizzie.config.showKataGoBoardScoreMean) {
+            curscoreMean = curscoreMean + Lizzie.board.getHistory().getGameInfo().getKomi();
           }
           if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
 
@@ -780,10 +793,9 @@ public class WinrateGraph {
         movenum--;
       }
       if (curmovenum > 0) {
-        if (mode == 0) g.setColor(Color.WHITE);
-        else g.setColor(Color.CYAN);
+        g.setColor(Color.CYAN);
 
-        Font f = new Font("", Font.BOLD, 15);
+        Font f = new Font("", Font.BOLD, 14);
         g.setFont(f);
         g.drawString(
             String.format("%.1f", drawcurscoreMean),

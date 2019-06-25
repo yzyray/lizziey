@@ -1676,14 +1676,20 @@ public class LizzieFrame extends JFrame {
       }
       if (Lizzie.leelaz.isKatago) {
         if (!Lizzie.board.getHistory().getData().bestMoves.isEmpty()) {
-          text =
-              text
-                  + "目差:"
-                  + String.format(
-                      "%.1f",
-                      Lizzie.board.getHistory().isBlacksTurn()
-                          ? Lizzie.leelaz.scoreMean
-                          : -Lizzie.leelaz.scoreMean);
+          double score = Lizzie.leelaz.scoreMean;
+          if (Lizzie.board.getHistory().isBlacksTurn()) {
+            if (Lizzie.config.showKataGoBoardScoreMean) {
+              score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
+            }
+          } else {
+            if (Lizzie.config.showKataGoBoardScoreMean) {
+              score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
+            }
+            if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
+              score = -score;
+            }
+          }
+          text = text + "目差:" + String.format("%.1f", score);
           text = text + " 局面复杂度:" + String.format("%.1f", Lizzie.leelaz.scoreStdev) + " ";
         }
       }
@@ -1818,7 +1824,9 @@ public class LizzieFrame extends JFrame {
           wdiam,
           wdiam);
       // Status Indicator
-      int statusDiam = height / 4;
+      int statusDiam = 10;
+      if ((height / 4) < 10) statusDiam = height / 4;
+
       g.setColor((Lizzie.leelaz != null && Lizzie.leelaz.isPondering()) ? Color.GREEN : Color.RED);
       g.fillOval(
           posX - strokeRadius + width / 2 - statusDiam / 2,
@@ -2162,13 +2170,20 @@ public class LizzieFrame extends JFrame {
     sb.append(playerTitle);
     if (Lizzie.leelaz.isKatago) {
 
-      sb.append(
-          " 目差: "
-              + String.format(
-                  "%.1f",
-                  Lizzie.board.getHistory().isBlacksTurn()
-                      ? Lizzie.leelaz.scoreMean
-                      : -Lizzie.leelaz.scoreMean));
+      double score = Lizzie.leelaz.scoreMean;
+      if (Lizzie.board.getHistory().isBlacksTurn()) {
+        if (Lizzie.config.showKataGoBoardScoreMean) {
+          score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
+        }
+      } else {
+        if (Lizzie.config.showKataGoBoardScoreMean) {
+          score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
+        }
+        if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
+          score = -score;
+        }
+      }
+      sb.append(" 目差: " + String.format("%.1f", score));
     }
     sb.append(resultTitle);
     if (Lizzie.leelaz.engineCommand().length() < 100)
@@ -2266,6 +2281,9 @@ public class LizzieFrame extends JFrame {
 
     String comment = Lizzie.board.getHistory().getData().comment;
     int fontSize = (int) (min(getWidth() * 0.6, getHeight()) * 0.0225);
+    if (Lizzie.config.showLargeSubBoard() || Lizzie.config.showLargeWinrate()) {
+      fontSize = (int) (min(getWidth() * 0.4, getHeight()) * 0.0225);
+    }
     //	    if (Lizzie.config.commentFontSize > 0) {
     //	      fontSize = Lizzie.config.commentFontSize;
     //	    } else if (fontSize < 12) {

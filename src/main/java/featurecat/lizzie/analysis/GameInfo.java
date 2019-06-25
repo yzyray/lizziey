@@ -61,4 +61,13 @@ public class GameInfo {
   public void setHandicap(int handicap) {
     this.handicap = handicap;
   }
+
+  public void resetAll() {
+    this.komi = DEFAULT_KOMI;
+    this.handicap = 0;
+    this.playerBlack = "";
+    this.playerWhite = "";
+    this.date = new Date();
+    this.result = "";
+  }
 }
