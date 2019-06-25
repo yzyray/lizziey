@@ -248,6 +248,7 @@ public class Leelaz {
 		// Send a version request to check that we have a supported version
 		// Response handled in parseLine
 		isCheckingVersion = true;
+		//sendCommand("turnon");
 		sendCommand("version");
 		sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
 

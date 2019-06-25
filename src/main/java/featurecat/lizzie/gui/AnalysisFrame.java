@@ -81,14 +81,26 @@ public class AnalysisFrame extends JPanel {
     table.getColumnModel().getColumn(3).setPreferredWidth(89);
     table.getColumnModel().getColumn(4).setPreferredWidth(72);
     boolean persisted = Lizzie.config.persistedUi != null;
-    if (persisted
-        && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null
-        && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length() == 8) {
-      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
-      table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
-      table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
-      table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
-      table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
+    JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
+    if (persisted && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null) {
+      if (table.getColumnCount() == 7
+          && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length() == 11) {
+        table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
+        table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
+        table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
+        table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
+        table.getColumnModel().getColumn(4).setPreferredWidth(pos.getInt(8));
+        table.getColumnModel().getColumn(5).setPreferredWidth(pos.getInt(9));
+        table.getColumnModel().getColumn(6).setPreferredWidth(pos.getInt(10));
+      } else if (Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length()
+          >= 9) {
+
+        table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
+        table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
+        table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
+        table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
+        table.getColumnModel().getColumn(4).setPreferredWidth(pos.getInt(8));
+      }
     }
 
     JTableHeader header = table.getTableHeader();
@@ -241,8 +253,11 @@ public class AnalysisFrame extends JPanel {
 
     return new AbstractTableModel() {
       public int getColumnCount() {
-
-        return 5;
+        if (Lizzie.leelaz.isKatago) {
+          return 7;
+        } else {
+          return 5;
+        }
       }
 
       public int getRowCount() {
@@ -259,6 +274,8 @@ public class AnalysisFrame extends JPanel {
         if (column == 2) return "胜率(%)";
         if (column == 3) return "计算量";
         if (column == 4) return "策略网络(%)";
+        if (column == 5) return "目差";
+        if (column == 6) return "局面复杂度";
         return "无";
       }
 
@@ -294,6 +311,14 @@ public class AnalysisFrame extends JPanel {
                   if (s1.policy < s2.policy) return 1;
                   if (s1.policy > s2.policy) return -1;
                 }
+                if (sortnum == 5) {
+                  if (s1.scoreMean < s2.scoreMean) return 1;
+                  if (s1.scoreMean > s2.scoreMean) return -1;
+                }
+                if (sortnum == 6) {
+                  if (s1.scoreStdev < s2.scoreStdev) return 1;
+                  if (s1.scoreStdev > s2.scoreStdev) return -1;
+                }
                 return 0;
               }
             });
@@ -320,6 +345,10 @@ public class AnalysisFrame extends JPanel {
             return data.playouts;
           case 4:
             return String.format("%.2f", data.policy);
+          case 5:
+            return String.format("%.2f", data.scoreMean);
+          case 6:
+            return String.format("%.2f", data.scoreStdev);
           default:
             return "";
         }

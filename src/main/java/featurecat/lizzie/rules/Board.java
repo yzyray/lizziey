@@ -774,6 +774,7 @@ public class Board implements LeelazListener {
    * @param newBranch add a new branch
    */
   public void insert(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
+    Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
     synchronized (this) {
       if (scoreMode) {
         return;
@@ -886,6 +887,7 @@ public class Board implements LeelazListener {
   }
 
   public void placeinsert(int x, int y, Stone color) {
+    Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
     synchronized (this) {
       if (!isValid(x, y) || (history.getStones()[getIndex(x, y)] != Stone.EMPTY)) return;
       try {
@@ -989,6 +991,7 @@ public class Board implements LeelazListener {
 
   public void place(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
     Lizzie.frame.boardRenderer.removedrawmovestone();
+    Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
     if (Lizzie.frame.isheatmap) Lizzie.frame.toggleheatmap();
     if (Lizzie.frame.iscounting) {
       Lizzie.frame.boardRenderer.removecountblock();
@@ -1323,6 +1326,7 @@ public class Board implements LeelazListener {
   /** Goes to the next coordinate, thread safe */
   public boolean nextMove() {
     Lizzie.frame.boardRenderer.removedrawmovestone();
+    Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
     if (Lizzie.frame.isheatmap) Lizzie.frame.toggleheatmap();
     if (Lizzie.frame.iscounting) {
       Lizzie.frame.boardRenderer.removecountblock();
@@ -1792,6 +1796,7 @@ public class Board implements LeelazListener {
   /** Goes to the previous coordinate, thread safe */
   public boolean previousMove() {
     Lizzie.frame.boardRenderer.removedrawmovestone();
+    Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
     if (Lizzie.frame.isheatmap) Lizzie.frame.toggleheatmap();
     if (Lizzie.frame.iscounting) {
       Lizzie.frame.boardRenderer.removecountblock();

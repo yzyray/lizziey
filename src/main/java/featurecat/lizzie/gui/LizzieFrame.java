@@ -540,6 +540,11 @@ public class LizzieFrame extends JFrame {
       featurecat.lizzie.gui.AnalysisFrame.selectedorder = -1;
 
     } else {
+      Lizzie.analysisframe.setVisible(false);
+      Lizzie.analysisframe = AnalysisFrame.createAnalysisDialog();
+      Lizzie.analysisframe.setVisible(
+          Lizzie.config.uiConfig.optBoolean("show-suggestions-frame", true));
+      Lizzie.analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
       Lizzie.analysisframe.setVisible(true);
       Lizzie.config.uiConfig.put("show-suggestions-frame", true);
     }

@@ -38,7 +38,8 @@ public class Config {
   public boolean showrect = true;
   public boolean showlcbcolor = true;
   public boolean fastChange = true;
-
+  public boolean showKataGoScoreMean = true;
+  public boolean showKataGoBoardScoreMean = false;
   public boolean showStatus = true;
   public boolean showBranch = true;
   public boolean showBestMoves = true;
@@ -258,6 +259,8 @@ public class Config {
     showVariationGraph = uiConfig.getBoolean("show-variation-graph");
     showComment = uiConfig.optBoolean("show-comment", true);
     showCaptured = uiConfig.getBoolean("show-captured");
+    showKataGoScoreMean = uiConfig.optBoolean("show-katago-scoremean", true);
+    showKataGoBoardScoreMean = uiConfig.optBoolean("show-katago-boardscoremean", false);
     // showBestMoves = uiConfig.getBoolean("show-best-moves");
     showNextMoves = uiConfig.getBoolean("show-next-moves");
     showSubBoard = uiConfig.getBoolean("show-subboard");
@@ -719,6 +722,12 @@ public class Config {
         featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(3).getWidth());
     suggestionlistPos.put(
         featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(4).getWidth());
+    if (featurecat.lizzie.gui.AnalysisFrame.table.getColumnCount() == 7) {
+      suggestionlistPos.put(
+          featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(5).getWidth());
+      suggestionlistPos.put(
+          featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(6).getWidth());
+    }
     persistedUi.put("suggestions-list-position", suggestionlistPos);
 
     JSONArray badmoveslistPos = new JSONArray();

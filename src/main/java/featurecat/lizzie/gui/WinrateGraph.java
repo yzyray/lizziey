@@ -780,7 +780,9 @@ public class WinrateGraph {
         movenum--;
       }
       if (curmovenum > 0) {
-        g.setColor(Color.WHITE);
+        if (mode == 0) g.setColor(Color.WHITE);
+        else g.setColor(Color.CYAN);
+
         Font f = new Font("", Font.BOLD, 15);
         g.setFont(f);
         g.drawString(

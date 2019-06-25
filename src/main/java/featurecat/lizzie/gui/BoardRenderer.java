@@ -951,7 +951,7 @@ public class BoardRenderer {
                 g.setColor(color.magenta);
                 drawCircle3(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
               } else {
-                drawCircle4(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
+                // drawCircle4(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
               }
               g.setStroke(new BasicStroke(1));
             }
@@ -974,25 +974,55 @@ public class BoardRenderer {
               } else {
                 text = String.format("%.1f", roundedWinrate);
               }
-              drawString(
-                  g,
-                  suggestionX,
-                  suggestionY,
-                  LizzieFrame.winrateFont,
-                  Font.PLAIN,
-                  text,
-                  stoneRadius,
-                  stoneRadius * 1.5,
-                  1);
+              if (Lizzie.leelaz.isKatago && Lizzie.config.showKataGoScoreMean) {
+                drawString(
+                    g,
+                    suggestionX,
+                    suggestionY - stoneRadius * 6 / 16,
+                    LizzieFrame.winrateFont,
+                    Font.PLAIN,
+                    text,
+                    stoneRadius,
+                    stoneRadius * 1.45,
+                    1);
 
-              drawString(
-                  g,
-                  suggestionX,
-                  suggestionY + stoneRadius * 2 / 5,
-                  LizzieFrame.uiFont,
-                  Lizzie.frame.getPlayoutsString(move.playouts),
-                  (float) (stoneRadius * 0.8),
-                  stoneRadius * 1.4);
+                drawString(
+                    g,
+                    suggestionX,
+                    suggestionY + stoneRadius * 1 / 16,
+                    LizzieFrame.uiFont,
+                    Lizzie.frame.getPlayoutsString(move.playouts),
+                    (float) (stoneRadius * 0.8),
+                    stoneRadius * 1.4);
+                drawString(
+                    g,
+                    suggestionX,
+                    suggestionY + stoneRadius * 12 / 16,
+                    LizzieFrame.uiFont,
+                    String.format("%.1f", move.scoreMean),
+                    (float) (stoneRadius * 0.75),
+                    stoneRadius * 1.3);
+              } else {
+                drawString(
+                    g,
+                    suggestionX,
+                    suggestionY - stoneRadius * 1 / 9,
+                    LizzieFrame.winrateFont,
+                    Font.PLAIN,
+                    text,
+                    stoneRadius,
+                    stoneRadius * 1.6,
+                    1);
+
+                drawString(
+                    g,
+                    suggestionX,
+                    suggestionY + stoneRadius * 4 / 9,
+                    LizzieFrame.uiFont,
+                    Lizzie.frame.getPlayoutsString(move.playouts),
+                    (float) (stoneRadius * 0.9),
+                    stoneRadius * 1.5);
+              }
             }
           }
         }
@@ -1419,7 +1449,7 @@ public class BoardRenderer {
   }
 
   private void drawCircle4(Graphics2D g, int centerX, int centerY, int radius) {
-    //  g.setStroke(new BasicStroke(radius / 11.5f));
+    g.setStroke(new BasicStroke(1f));
     g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
   }
 

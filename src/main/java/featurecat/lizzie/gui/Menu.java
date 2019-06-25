@@ -265,9 +265,18 @@ public class Menu extends MenuBar {
     viewMenu.add(claview); // 添加到“编辑”菜单
     claview.addActionListener(new ItemListener()); // 添加动作监听器
 
-    final JMenuItem allview = new JMenuItem("精简模式"); // 创建“字体”子菜单
-    viewMenu.add(allview); // 添加到“编辑”菜单
-    allview.addActionListener(new ItemListener()); // 添加动作监听器
+    final JMenuItem allview = new JMenuItem("精简模式");
+    viewMenu.add(allview);
+    allview.addActionListener(new ItemListener());
+    viewMenu.addSeparator();
+
+    final JMenuItem katamean = new JMenuItem("推荐点上显示KataGo目差");
+    viewMenu.add(katamean);
+    katamean.addActionListener(new ItemListener());
+
+    final JMenuItem kataboardmean = new JMenuItem("KataGo目差显示为盘面差");
+    viewMenu.add(kataboardmean);
+    kataboardmean.addActionListener(new ItemListener());
 
     final JMenu gameMenu = new JMenu("棋局 ", false);
     gameMenu.setText(" 棋局  ");
@@ -1190,6 +1199,27 @@ public class Menu extends MenuBar {
       if (menuItem.getText().startsWith("显示/关闭柱状")) {
         Lizzie.config.showBlunderBar = !Lizzie.config.showBlunderBar;
         Lizzie.config.uiConfig.put("show-blunder-bar", Lizzie.config.showBlunderBar);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
+      if (menuItem.getText().startsWith("推荐点上")) {
+        Lizzie.config.showKataGoScoreMean = !Lizzie.config.showKataGoScoreMean;
+        Lizzie.config.uiConfig.put("show-katago-scoremean", Lizzie.config.showKataGoScoreMean);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
+      if (menuItem.getText().startsWith("KataGo目")) {
+        Lizzie.config.showKataGoBoardScoreMean = !Lizzie.config.showKataGoBoardScoreMean;
+        Lizzie.config.uiConfig.put(
+            "show-katago-boardscoremean", Lizzie.config.showKataGoBoardScoreMean);
         try {
           Lizzie.config.save();
         } catch (IOException es) {

@@ -211,12 +211,19 @@ public class GtpConsolePane extends JDialog {
         }
       } else if ("clear_board".equals(command)) {
         Lizzie.board.clear();
-      } else if (command.startsWith("boardsize")) {
+      } else if (command.toLowerCase().startsWith("boardsize")) {
         String cmdParams[] = command.split(" ");
         if (cmdParams.length == 2) {
           Lizzie.board.reopen(Integer.parseInt(cmdParams[1]));
         }
 
+      } else if (command.toLowerCase().startsWith("komi")) {
+        String cmdParams[] = command.split(" ");
+        if (cmdParams.length == 2) {
+          Lizzie.board.getHistory().getGameInfo().setKomi(Double.parseDouble(cmdParams[1]));
+          Lizzie.frame.komi = cmdParams[1];
+        }
+        Lizzie.leelaz.sendCommand(command);
       } else if ("undo".equals(command)) {
         Input.undo();
       } else {

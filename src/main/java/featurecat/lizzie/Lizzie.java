@@ -40,11 +40,6 @@ public class Lizzie {
     config = new Config();
     board = new Board();
 
-    analysisframe = AnalysisFrame.createAnalysisDialog();
-    //  analysisframe.setLocation(-7, 0);
-    analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", true));
-    analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
-
     movelistframe = MovelistFrame.createBadmovesDialog();
     //   movelistframe.setLocation(-7, 302);
     movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", true));
@@ -83,6 +78,10 @@ public class Lizzie {
       frame.openConfigDialog();
       System.exit(1);
     }
+
+    analysisframe = AnalysisFrame.createAnalysisDialog();
+    analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", true));
+    analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
   }
 
   public static void setLookAndFeel() {

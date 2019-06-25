@@ -134,11 +134,14 @@ public class GameInfoDialog extends JDialog {
     // apply new values
     gameInfo.setPlayerBlack(playerBlack);
     gameInfo.setPlayerWhite(playerWhite);
+
     if (!Lizzie.frame.komi.equals(textFieldKomi.getText())) {
       Lizzie.leelaz.sendCommand("komi " + textFieldKomi.getText());
       Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
       Lizzie.frame.komi = textFieldKomi.getText();
+      gameInfo.setKomi(Double.parseDouble(textFieldKomi.getText()));
     }
+    Lizzie.board.getHistory().setGameInfo(gameInfo);
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.ponder();
     }

@@ -135,8 +135,16 @@ public class MoveData {
           }
         }
         if (key.equals("scoreMean")) {
-          result.scoreMean = Double.parseDouble(value);
-          ;
+          if (Lizzie.config.showKataGoBoardScoreMean) {
+            result.scoreMean =
+                Double.parseDouble(value)
+                    + (Lizzie.board.getHistory().isBlacksTurn()
+                        ? Lizzie.board.getHistory().getGameInfo().getKomi()
+                        : -Lizzie.board.getHistory().getGameInfo().getKomi());
+
+          } else {
+            result.scoreMean = Double.parseDouble(value);
+          }
         }
         if (key.equals("scoreStdev")) {
           result.scoreStdev = Double.parseDouble(value);

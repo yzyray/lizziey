@@ -2,6 +2,7 @@ package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Config;
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.rules.Movelist;
 import featurecat.lizzie.rules.SGFParser;
 import java.awt.event.ActionEvent;
@@ -465,6 +466,9 @@ public class EngineManager {
       }
       // if (!newEng.isPondering()) {
       try {
+        if (Lizzie.board.getHistory().getGameInfo().getKomi() != 7.5) {
+          newEng.sendCommand("komi " + Lizzie.board.getHistory().getGameInfo().getKomi());
+        }
         newEng.ponder();
       } catch (Exception e) {
         e.printStackTrace();
@@ -481,6 +485,14 @@ public class EngineManager {
     }
 
     changeEngIco();
+    if (Lizzie.analysisframe.isVisible()) {
+      Lizzie.analysisframe.setVisible(false);
+      Lizzie.analysisframe = AnalysisFrame.createAnalysisDialog();
+      Lizzie.analysisframe.setVisible(
+          Lizzie.config.uiConfig.optBoolean("show-suggestions-frame", true));
+      Lizzie.analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
+      Lizzie.analysisframe.setVisible(true);
+    }
   }
 
   public void changeEngIcoForEndPk() {
