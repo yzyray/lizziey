@@ -758,7 +758,9 @@ public class WinrateGraph {
               // Color lineColor = g.getColor();
               Stroke previousStroke = g.getStroke();
               g.setColor(Color.GREEN);
-              g.setStroke(new BasicStroke(1));
+              if (!node.isMainTrunk()) {
+                g.setStroke(dashed);
+              } else g.setStroke(new BasicStroke(1));
               g.drawLine(
                   posx + (lastOkMove * width * 95 / 100 / numMoves),
                   posy
