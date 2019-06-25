@@ -121,6 +121,9 @@ public class BoardRenderer {
 
     if (!isShowingRawBoard()) {
       drawMoveNumbers(g);
+      if (Lizzie.config.showNextMoves) {
+          drawNextMoves(g);
+        }
       //        timer.lap("movenumbers");
       if (!Lizzie.frame.isPlayingAgainstLeelaz && Lizzie.config.showBestMovesNow()) {
         if ((Lizzie.board.getHistory().isBlacksTurn()
@@ -130,9 +133,7 @@ public class BoardRenderer {
           drawLeelazSuggestions(g);
         }
       }
-      if (Lizzie.config.showNextMoves) {
-        drawNextMoves(g);
-      }
+      
 
       drawStoneMarkup(g);
     }
@@ -1044,6 +1045,7 @@ public class BoardRenderer {
   }
 
   private void drawNextMoves(Graphics2D g) {
+	  
     g.setColor(Lizzie.board.getData().blackToPlay ? Color.BLACK : Color.WHITE);
 
     List<BoardHistoryNode> nexts = Lizzie.board.getHistory().getNexts();
@@ -1058,9 +1060,9 @@ public class BoardRenderer {
               nextMove -> {
                 int moveX = x + scaledMargin + squareLength * nextMove[0];
                 int moveY = y + scaledMargin + squareLength * nextMove[1];
-                if (first) g.setStroke(new BasicStroke(3.0f));
-                drawCircle(g, moveX, moveY, stoneRadius + 1); // Slightly outside best move circle
-                if (first) g.setStroke(new BasicStroke(1.0f));
+                if (first) g.setStroke(new BasicStroke(3.0f));  
+                	drawCircle(g, moveX, moveY,  stoneRadius + 2); // Slightly outside best move circle                
+                if (first) g.setStroke(new BasicStroke(1.8f));
               });
     }
   }
@@ -1457,14 +1459,15 @@ public class BoardRenderer {
 
   /** Draws the outline of a circle centered at (centerX, centerY) with radius $radius$ */
   private void drawCircle(Graphics2D g, int centerX, int centerY, int radius) {
-    g.setStroke(new BasicStroke(radius / 11.5f));
+    //g.setStroke(new BasicStroke(radius / 11.5f));
     g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
   }
+ 
 
-  private void drawCircle4(Graphics2D g, int centerX, int centerY, int radius) {
-    g.setStroke(new BasicStroke(1f));
-    g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
-  }
+//  private void drawCircle4(Graphics2D g, int centerX, int centerY, int radius) {
+//    g.setStroke(new BasicStroke(1f));
+//    g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+//  }
 
   private void drawCircle3(Graphics2D g, int centerX, int centerY, int radius) {
     g.setStroke(new BasicStroke(radius / 5f));
