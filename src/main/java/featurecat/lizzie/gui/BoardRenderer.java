@@ -349,6 +349,7 @@ public class BoardRenderer {
     countblockimage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
     Graphics2D g = countblockimage.createGraphics();
     for (int i = 0; i < tempcount.size(); i++) {
+    	 
       if ((tempcount.get(i) > 0 && Lizzie.board.getHistory().isBlacksTurn())
           || (tempcount.get(i) < 0 && !Lizzie.board.getHistory().isBlacksTurn())) {
         int y = i / 19;
@@ -356,10 +357,12 @@ public class BoardRenderer {
         int stoneX = scaledMargin + squareLength * x;
         int stoneY = scaledMargin + squareLength * y;
         // g.setColor(Color.BLACK);
+            	
         int alpha = (int) (tempcount.get(i) * 255);
         Color cl = new Color(0, 0, 0, Math.abs(alpha));
         g.setColor(cl);
         g.fillRect(stoneX - stoneRadius / 2, stoneY - stoneRadius / 2, stoneRadius, stoneRadius);
+        
       }
       if ((tempcount.get(i) < 0 && Lizzie.board.getHistory().isBlacksTurn())
           || (tempcount.get(i) > 0 && !Lizzie.board.getHistory().isBlacksTurn())) {
@@ -1103,8 +1106,8 @@ public class BoardRenderer {
                     suggestionY + stoneRadius * 4 / 9,
                     LizzieFrame.uiFont,
                     Lizzie.frame.getPlayoutsString(move.playouts),
-                    (float) (stoneRadius * 0.9),
-                    stoneRadius * 1.5);
+                    (float) (stoneRadius * 1.0),
+                    stoneRadius * 1.6);
               }
             }
           }

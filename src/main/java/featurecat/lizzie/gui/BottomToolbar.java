@@ -2128,7 +2128,8 @@ public class BottomToolbar extends JPanel {
   public void setButtonLocation(int boardmid) {
     savedbroadmid = boardmid;
     int w = Lizzie.frame.getWidth();
-    if (Lizzie.leelaz.isKatago) {
+   
+    if (Lizzie.leelaz!=null&&Lizzie.leelaz.isKatago) {
       if (boardmid + 364 > w) boardmid = w - 364;
       if (boardmid - 454 < 0) boardmid = 454;
       detail.setBounds(0, 0, 20, 26);

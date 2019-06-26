@@ -44,13 +44,13 @@ public class Menu extends MenuBar {
     JPanel bar = new JPanel(new BorderLayout());
     bar.setBorder(new EmptyBorder(0, 0, -1, -1));
     final MenuBar menuBar = new MenuBar();
-    bar.setBounds(0, 0, 450, 25);
+    bar.setBounds(0, 0, 450, 15);
 
     menuBar.setColor(hsbColor);
     this.add(bar);
     bar.add(menuBar);
 
-    headFont = new Font("幼圆", Font.BOLD, 17);
+    headFont = new Font("幼圆", Font.BOLD, 15);
     //  onlyboard = Lizzie.config.uiConfig.optBoolean("only-board", false);
 
     final JMenu fileMenu = new JMenu(" 文件  "); // 创建“文件”菜单
