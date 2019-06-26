@@ -203,7 +203,7 @@ public class BottomToolbar extends JPanel {
     backward1 = new JButton("<");
     forward1 = new JButton(">");
     openfile = new JButton("打开");
-    kataEstimate = new JButton("Kata占地");
+    kataEstimate = new JButton("Kata评估");
     analyse = new JButton("分析|暂停");
     heatMap = new JButton("策略网络");
     backMain = new JButton("返回主分支");

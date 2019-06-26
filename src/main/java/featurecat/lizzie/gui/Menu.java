@@ -296,10 +296,10 @@ public class Menu extends MenuBar {
     katameanalways.add(katameanblackwhite);
     katameanblackwhite.addActionListener(new ItemListener());
 
-    final JMenu kataEstimate = new JMenu("KataGo占地显示");
+    final JMenu kataEstimate = new JMenu("KataGo评估显示");
     viewMenu.add(kataEstimate);
 
-    final JMenuItem kataEstimate1 = new JMenuItem("不显示占地");
+    final JMenuItem kataEstimate1 = new JMenuItem("不显示评估");
     kataEstimate.add(kataEstimate1);
     kataEstimate1.addActionListener(new ItemListener());
 
@@ -1297,7 +1297,7 @@ public class Menu extends MenuBar {
         }
         return;
       }
-      if (menuItem.getText().startsWith("不显示占地")) {
+      if (menuItem.getText().startsWith("不显示评估")) {
         Lizzie.config.showKataGoEstimate = false;
         Lizzie.frame.boardRenderer.removecountblock();
         if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
