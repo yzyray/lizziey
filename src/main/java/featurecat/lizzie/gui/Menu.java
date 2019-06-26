@@ -269,12 +269,23 @@ public class Menu extends MenuBar {
     viewMenu.add(allview);
     allview.addActionListener(new ItemListener());
     viewMenu.addSeparator();
+    
+    final JMenu katasugg = new JMenu("KataGo推荐点显示");
+    viewMenu.add(katasugg);
 
-    final JMenuItem katamean = new JMenuItem("推荐点上显示KataGo目差");
-    viewMenu.add(katamean);
-    katamean.addActionListener(new ItemListener());
+    final JMenuItem katasugg1 = new JMenuItem("胜率+计算量");
+    katasugg.add(katasugg1);
+    katasugg1.addActionListener(new ItemListener());
+    
+    final JMenuItem katasugg2 = new JMenuItem("目差+计算量");
+    katasugg.add(katasugg2);
+    katasugg2.addActionListener(new ItemListener());
+    
+    final JMenuItem katasugg3 = new JMenuItem("胜率+计算量+目差");
+    katasugg.add(katasugg3);
+    katasugg3.addActionListener(new ItemListener());
 
-    final JMenu kataboard = new JMenu("KataGo目差显示为");
+    final JMenu kataboard = new JMenu("KataGo目差显示");
     viewMenu.add(kataboard);
 
     final JMenuItem kataboardmean = new JMenuItem("目差");
@@ -659,7 +670,7 @@ public class Menu extends MenuBar {
   class ItemListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       JMenuItem menuItem = (JMenuItem) e.getSource();
-      // System.out.println("您单击的是菜单项：" + menuItem.getText());
+       //System.out.println("您单击的是菜单项：" + menuItem.getText());
       Lizzie.frame.setVisible(true);
       if (menuItem.getText().startsWith("打开棋谱")) {
         Lizzie.frame.openFile();
@@ -718,7 +729,7 @@ public class Menu extends MenuBar {
         Lizzie.frame.toggleheatmap();
         return;
       }
-      if (menuItem.getText().startsWith("胜率")) {
+      if (menuItem.getText().startsWith("胜率面板")) {
         Lizzie.config.toggleShowWinrate();
         return;
       }
@@ -1251,8 +1262,20 @@ public class Menu extends MenuBar {
         }
         return;
       }
-      if (menuItem.getText().startsWith("推荐点上")) {
-        Lizzie.config.showKataGoScoreMean = !Lizzie.config.showKataGoScoreMean;
+      if (menuItem.getText().startsWith("胜率+计算量+")) {
+          Lizzie.config.showKataGoScoreMean = true;
+          Lizzie.config.kataGoNotShowWinrate=false;
+          Lizzie.config.uiConfig.put("show-katago-scoremean", Lizzie.config.showKataGoScoreMean);
+          Lizzie.config.uiConfig.put("katago-notshow-winrate", Lizzie.config.kataGoNotShowWinrate);
+          try {
+            Lizzie.config.save();
+          } catch (IOException es) {
+            // TODO Auto-generated catch block
+          }
+          return;
+        }
+      if (menuItem.getText().startsWith("胜率+计")) {
+        Lizzie.config.showKataGoScoreMean = false;
         Lizzie.config.uiConfig.put("show-katago-scoremean", Lizzie.config.showKataGoScoreMean);
         try {
           Lizzie.config.save();
@@ -1261,6 +1284,18 @@ public class Menu extends MenuBar {
         }
         return;
       }
+      if (menuItem.getText().startsWith("目差+计")) {
+          Lizzie.config.showKataGoScoreMean = true;
+          Lizzie.config.kataGoNotShowWinrate=true;
+          Lizzie.config.uiConfig.put("show-katago-scoremean", Lizzie.config.showKataGoScoreMean);
+          Lizzie.config.uiConfig.put("katago-notshow-winrate", Lizzie.config.kataGoNotShowWinrate);
+          try {
+            Lizzie.config.save();
+          } catch (IOException es) {
+            // TODO Auto-generated catch block
+          }
+          return;
+        }     
       if (menuItem.getText().startsWith("目差")) {
         Lizzie.config.showKataGoBoardScoreMean = false;
         Lizzie.config.uiConfig.put(

@@ -1048,6 +1048,42 @@ public class BoardRenderer {
                 text = String.format("%.1f", roundedWinrate);
               }
               if (Lizzie.leelaz.isKatago && Lizzie.config.showKataGoScoreMean) {
+            	  if(Lizzie.config.kataGoNotShowWinrate)
+            	  {
+            		     double score = move.scoreMean;
+                         if (Lizzie.board.getHistory().isBlacksTurn()) {
+                           if (Lizzie.config.showKataGoBoardScoreMean) {
+                             score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
+                           }
+                         } else {
+                           if (Lizzie.config.showKataGoBoardScoreMean) {
+                             score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
+                           }
+                           if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
+                             score = -score;
+                           }
+                         }
+            		  drawString(
+                              g,
+                              suggestionX,
+                              suggestionY - stoneRadius * 1 / 9,
+                              LizzieFrame.winrateFont,
+                              Font.PLAIN,
+                              String.format("%.1f", score),
+                              stoneRadius,
+                              stoneRadius * 1.6,
+                              1);
+
+                          drawString(
+                              g,
+                              suggestionX,
+                              suggestionY + stoneRadius * 4 / 9,
+                              LizzieFrame.uiFont,
+                              Lizzie.frame.getPlayoutsString(move.playouts),
+                              (float) (stoneRadius * 1.0),
+                              stoneRadius * 1.6);
+            	  }
+            	  else {
                 drawString(
                     g,
                     suggestionX,
@@ -1088,6 +1124,7 @@ public class BoardRenderer {
                     String.format("%.1f", score),
                     (float) (stoneRadius * 0.75),
                     stoneRadius * 1.3);
+            	  }
               } else {
                 drawString(
                     g,
@@ -1132,7 +1169,7 @@ public class BoardRenderer {
               nextMove -> {
                 int moveX = x + scaledMargin + squareLength * nextMove[0];
                 int moveY = y + scaledMargin + squareLength * nextMove[1];
-                if (first) g.setStroke(new BasicStroke(3.0f));
+                if (first) g.setStroke(Lizzie.board.getData().blackToPlay ?new BasicStroke(2.5f):new BasicStroke(3.0f));
                 drawCircle(g, moveX, moveY, stoneRadius + 2); // Slightly outside best move circle
                 if (first) g.setStroke(new BasicStroke(1.8f));
               });
