@@ -494,6 +494,9 @@ public class EngineManager {
       Lizzie.analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
       Lizzie.analysisframe.setVisible(true);
     }
+
+    Lizzie.frame.boardRenderer.removecountblock();
+    if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
   }
 
   public void changeEngIcoForEndPk() {
