@@ -550,11 +550,19 @@ public class Leelaz {
 								String[] params = line.trim().split("ownership");							
 								String[] params2=params[1].trim().split(" ");
 								for (int i = 0; i < params2.length; i++) tempcount.add(Double.parseDouble(params2[i]));
+								if(Lizzie.config.showKataGoEstimateBySize)
+								{
+									if(Lizzie.config.showSubBoard&&Lizzie.config.showKataGoEstimateOnSubbord)
+										Lizzie.frame.subBoardRenderer.drawcountblockkata2(tempcount);	
+									if(Lizzie.config.showKataGoEstimateOnMainbord)
+									Lizzie.frame.boardRenderer.drawcountblockkata2(tempcount);
+								}
+								else {
 								if(Lizzie.config.showSubBoard&&Lizzie.config.showKataGoEstimateOnSubbord)
 									Lizzie.frame.subBoardRenderer.drawcountblockkata(tempcount);	
 								if(Lizzie.config.showKataGoEstimateOnMainbord)
 								Lizzie.frame.boardRenderer.drawcountblockkata(tempcount);
-								
+								}
 							}
 						}
 					} else {

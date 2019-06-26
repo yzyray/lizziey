@@ -375,6 +375,46 @@ public class BoardRenderer {
     }
   }
 
+  private double convertLength(double length) {
+    double lengthab = Math.abs(length);
+    if (lengthab > 0.2) {
+      lengthab = lengthab * 6 / 10;
+      return lengthab;
+    } else {
+      return 0;
+    }
+  }
+
+  public void drawcountblockkata2(ArrayList<Double> tempcount) {
+    countblockimage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
+    Graphics2D g = countblockimage.createGraphics();
+    for (int i = 0; i < tempcount.size(); i++) {
+      if ((tempcount.get(i) > 0 && Lizzie.board.getHistory().isBlacksTurn())
+          || (tempcount.get(i) < 0 && !Lizzie.board.getHistory().isBlacksTurn())) {
+        int y = i / 19;
+        int x = i % 19;
+        int stoneX = scaledMargin + squareLength * x;
+        int stoneY = scaledMargin + squareLength * y;
+        Color cl = new Color(0, 0, 0, 180);
+        g.setColor(cl);
+        int length = (int) (convertLength(tempcount.get(i)) * 2 * stoneRadius);
+        if (length > 0) g.fillRect(stoneX - length / 2, stoneY - length / 2, length, length);
+      }
+      if ((tempcount.get(i) < 0 && Lizzie.board.getHistory().isBlacksTurn())
+          || (tempcount.get(i) > 0 && !Lizzie.board.getHistory().isBlacksTurn())) {
+        int y = i / 19;
+        int x = i % 19;
+        int stoneX = scaledMargin + squareLength * x;
+        int stoneY = scaledMargin + squareLength * y;
+        int length = (int) (convertLength(tempcount.get(i)) * 2 * stoneRadius);
+
+        Color cl = new Color(255, 255, 255, 180);
+        g.setColor(cl);
+        if (length > 0) g.fillRect(stoneX - length / 2, stoneY - length / 2, length, length);
+      }
+    }
+  }
+
   public void drawcountblock(ArrayList<Integer> tempcount) {
     countblockimage = new BufferedImage(boardLength, boardLength, TYPE_INT_ARGB);
     Graphics2D g = countblockimage.createGraphics();
@@ -1090,11 +1130,7 @@ public class BoardRenderer {
                 int moveX = x + scaledMargin + squareLength * nextMove[0];
                 int moveY = y + scaledMargin + squareLength * nextMove[1];
                 if (first) g.setStroke(new BasicStroke(3.0f));
-                drawCircle(
-                    g,
-                    moveX,
-                    moveY,
-                    stoneRadius + 2); // Slightly outside best move circle
+                drawCircle(g, moveX, moveY, stoneRadius + 2); // Slightly outside best move circle
                 if (first) g.setStroke(new BasicStroke(1.8f));
               });
     }

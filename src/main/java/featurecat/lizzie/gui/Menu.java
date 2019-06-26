@@ -315,6 +315,14 @@ public class Menu extends MenuBar {
     kataEstimate.add(kataEstimate4);
     kataEstimate4.addActionListener(new ItemListener());
 
+    final JMenuItem kataEstimate5 = new JMenuItem("以方块大小表示占有率");
+    kataEstimate.add(kataEstimate5);
+    kataEstimate5.addActionListener(new ItemListener());
+
+    final JMenuItem kataEstimate6 = new JMenuItem("以方块透明度表示占有率");
+    kataEstimate.add(kataEstimate6);
+    kataEstimate6.addActionListener(new ItemListener());
+
     final JMenu gameMenu = new JMenu("棋局 ", false);
     gameMenu.setText(" 棋局  ");
     // helpMenu.setMnemonic('H');
@@ -1356,6 +1364,28 @@ public class Menu extends MenuBar {
             "show-katago-estimate-onsubbord", Lizzie.config.showKataGoEstimateOnSubbord);
         Lizzie.config.uiConfig.put(
             "show-katago-estimate-onmainboard", Lizzie.config.showKataGoEstimateOnMainbord);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
+      if (menuItem.getText().startsWith("以方块大")) {
+        Lizzie.config.showKataGoEstimateBySize = true;
+        Lizzie.config.uiConfig.put(
+            "show-katago-estimate-bysize", Lizzie.config.showKataGoEstimateBySize);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
+      if (menuItem.getText().startsWith("以方块透")) {
+        Lizzie.config.showKataGoEstimateBySize = false;
+        Lizzie.config.uiConfig.put(
+            "show-katago-estimate-bysize", Lizzie.config.showKataGoEstimateBySize);
         try {
           Lizzie.config.save();
         } catch (IOException es) {
