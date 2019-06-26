@@ -296,6 +296,25 @@ public class Menu extends MenuBar {
     katameanalways.add(katameanblackwhite);
     katameanblackwhite.addActionListener(new ItemListener());
 
+    final JMenu kataEstimate = new JMenu("KataGo占地显示");
+    viewMenu.add(kataEstimate);
+
+    final JMenuItem kataEstimate1 = new JMenuItem("不显示占地");
+    kataEstimate.add(kataEstimate1);
+    kataEstimate1.addActionListener(new ItemListener());
+
+    final JMenuItem kataEstimate2 = new JMenuItem("显示在大棋盘上");
+    kataEstimate.add(kataEstimate2);
+    kataEstimate2.addActionListener(new ItemListener());
+
+    final JMenuItem kataEstimate3 = new JMenuItem("显示在小棋盘上");
+    kataEstimate.add(kataEstimate3);
+    kataEstimate3.addActionListener(new ItemListener());
+
+    final JMenuItem kataEstimate4 = new JMenuItem("显示在大小棋盘上");
+    kataEstimate.add(kataEstimate4);
+    kataEstimate4.addActionListener(new ItemListener());
+
     final JMenu gameMenu = new JMenu("棋局 ", false);
     gameMenu.setText(" 棋局  ");
     // helpMenu.setMnemonic('H');
@@ -1271,6 +1290,72 @@ public class Menu extends MenuBar {
         Lizzie.config.kataGoScoreMeanAlwaysBlack = false;
         Lizzie.config.uiConfig.put(
             "katago-scoremean-alwaysblack", Lizzie.config.kataGoScoreMeanAlwaysBlack);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
+      if (menuItem.getText().startsWith("不显示占地")) {
+        Lizzie.config.showKataGoEstimate = false;
+        Lizzie.frame.boardRenderer.removecountblock();
+        if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
+        Lizzie.leelaz.ponder();
+        Lizzie.config.uiConfig.put("show-katago-estimate", Lizzie.config.showKataGoEstimate);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
+      if (menuItem.getText().startsWith("显示在大棋")) {
+        Lizzie.config.showKataGoEstimate = true;
+        Lizzie.config.showKataGoEstimateOnMainbord = true;
+        Lizzie.config.showKataGoEstimateOnSubbord = false;
+        if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
+        Lizzie.leelaz.ponder();
+        Lizzie.config.uiConfig.put("show-katago-estimate", Lizzie.config.showKataGoEstimate);
+        Lizzie.config.uiConfig.put(
+            "show-katago-estimate-onsubbord", Lizzie.config.showKataGoEstimateOnSubbord);
+        Lizzie.config.uiConfig.put(
+            "show-katago-estimate-onmainboard", Lizzie.config.showKataGoEstimateOnMainbord);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
+      if (menuItem.getText().startsWith("显示在小")) {
+        Lizzie.config.showKataGoEstimate = true;
+        Lizzie.config.showKataGoEstimateOnMainbord = false;
+        Lizzie.config.showKataGoEstimateOnSubbord = true;
+        Lizzie.frame.boardRenderer.removecountblock();
+        Lizzie.leelaz.ponder();
+        Lizzie.config.uiConfig.put("show-katago-estimate", Lizzie.config.showKataGoEstimate);
+        Lizzie.config.uiConfig.put(
+            "show-katago-estimate-onsubbord", Lizzie.config.showKataGoEstimateOnSubbord);
+        Lizzie.config.uiConfig.put(
+            "show-katago-estimate-onmainboard", Lizzie.config.showKataGoEstimateOnMainbord);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+        return;
+      }
+      if (menuItem.getText().startsWith("显示在大小")) {
+        Lizzie.config.showKataGoEstimate = true;
+        Lizzie.config.showKataGoEstimateOnMainbord = true;
+        Lizzie.config.showKataGoEstimateOnSubbord = true;
+        Lizzie.leelaz.ponder();
+        Lizzie.config.uiConfig.put("show-katago-estimate", Lizzie.config.showKataGoEstimate);
+        Lizzie.config.uiConfig.put(
+            "show-katago-estimate-onsubbord", Lizzie.config.showKataGoEstimateOnSubbord);
+        Lizzie.config.uiConfig.put(
+            "show-katago-estimate-onmainboard", Lizzie.config.showKataGoEstimateOnMainbord);
         try {
           Lizzie.config.save();
         } catch (IOException es) {

@@ -485,6 +485,7 @@ public class EngineManager {
     }
 
     changeEngIco();
+    Lizzie.frame.toolbar.reSetButtonLocation();
     if (Lizzie.analysisframe.isVisible()) {
       Lizzie.analysisframe.setVisible(false);
       Lizzie.analysisframe = AnalysisFrame.createAnalysisDialog();

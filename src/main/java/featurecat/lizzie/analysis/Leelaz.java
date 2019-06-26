@@ -93,6 +93,7 @@ public class Leelaz {
 	public boolean switching = false;
 	private int currentEngineN = -1;
 	private ScheduledExecutorService executor;
+	 ArrayList<Double> tempcount = new ArrayList<Double>();
 
 	// dynamic komi and opponent komi as reported by dynamic-komi version of leelaz
 	private float dynamicKomi = Float.NaN;
@@ -116,6 +117,7 @@ public class Leelaz {
 	public boolean isKatago = false;
 	public double scoreMean=0;
 	public double scoreStdev=0;
+	//private boolean isEstimating=true;
 	/**
 	 * Initializes the leelaz process and starts reading output
 	 *
@@ -478,7 +480,7 @@ public class Leelaz {
 				Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
 			}
 			// if (printCommunication || gtpConsole) {
-			//Lizzie.gtpConsole.addLineforce(line);
+			Lizzie.gtpConsole.addLineforce(line);
 			// }
 //      if (line.startsWith("komi=")) {
 //        try {
@@ -540,6 +542,21 @@ public class Leelaz {
 					// This should not be stale data when the command number match
 					if (isKatago) {
 						this.bestMoves = parseInfoKatago(line.substring(5));
+						if(Lizzie.config.showKataGoEstimate)
+						{
+							if(line.contains("ownership"))
+							{
+								tempcount = new ArrayList<Double>();
+								String[] params = line.trim().split("ownership");							
+								String[] params2=params[1].trim().split(" ");
+								for (int i = 0; i < params2.length; i++) tempcount.add(Double.parseDouble(params2[i]));
+								if(Lizzie.config.showSubBoard&&Lizzie.config.showKataGoEstimateOnSubbord)
+									Lizzie.frame.subBoardRenderer.drawcountblockkata(tempcount);	
+								if(Lizzie.config.showKataGoEstimateOnMainbord)
+								Lizzie.frame.boardRenderer.drawcountblockkata(tempcount);
+								
+							}
+						}
 					} else {
 						this.bestMoves = parseInfo(line.substring(5));
 					}
@@ -2421,7 +2438,10 @@ public class Leelaz {
 			featurecat.lizzie.gui.RightClickMenu.move = 0;
 			featurecat.lizzie.gui.RightClickMenu.isforcing = false;
 			if (this.isKatago) {
-				sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+				if(Lizzie.config.showKataGoEstimate)
+				sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec+" ownership true");
+				else
+					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
 			} else {
 				sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
 			} // until it responds to this, incoming
@@ -2462,7 +2482,7 @@ public class Leelaz {
 		if (isPondering) {
 			ponder();
 		} else {
-			sendCommand("name"); // ends pondering
+			sendCommand("version"); // ends pondering
 		}
 	}
 

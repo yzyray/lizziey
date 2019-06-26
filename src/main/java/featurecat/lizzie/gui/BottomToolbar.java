@@ -47,10 +47,12 @@ public class BottomToolbar extends JPanel {
   JButton savefile;
   public JButton analyse;
   JButton detail;
+  JButton kataEstimate;
   JButton heatMap;
   JButton backMain;
   JButton batchOpen;
   JButton refresh;
+  int savedbroadmid;
   JTextField txtMoveNumber;
   private int changeMoveNumber = 0;
   public boolean isAutoAna = false;
@@ -201,6 +203,7 @@ public class BottomToolbar extends JPanel {
     backward1 = new JButton("<");
     forward1 = new JButton(">");
     openfile = new JButton("打开");
+    kataEstimate = new JButton("Kata占地");
     analyse = new JButton("分析|暂停");
     heatMap = new JButton("策略网络");
     backMain = new JButton("返回主分支");
@@ -233,6 +236,7 @@ public class BottomToolbar extends JPanel {
     add(backward1);
     add(forward1);
     add(openfile);
+    add(kataEstimate);
     add(analyse);
     add(detail);
     add(heatMap);
@@ -247,6 +251,7 @@ public class BottomToolbar extends JPanel {
     backward10.setFocusable(false);
     gotomove.setFocusable(false);
     openfile.setFocusable(false);
+    kataEstimate.setFocusable(false);
     analyse.setFocusable(false);
     forward1.setFocusable(false);
     backward1.setFocusable(false);
@@ -265,6 +270,7 @@ public class BottomToolbar extends JPanel {
     backward10.setMargin(new Insets(0, 0, 0, 0));
     gotomove.setMargin(new Insets(0, 0, 0, 0));
     openfile.setMargin(new Insets(0, 0, 0, 0));
+    kataEstimate.setMargin(new Insets(0, 0, 0, 0));
     analyse.setMargin(new Insets(0, 0, 0, 0));
     forward1.setMargin(new Insets(0, 0, 0, 0));
     backward1.setMargin(new Insets(0, 0, 0, 0));
@@ -383,35 +389,35 @@ public class BottomToolbar extends JPanel {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.leelaz.togglePonder();
-            // setAllUnfocuse();
+            setTxtUnfocuse();
           }
         });
     forward10.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Input.redo(10);
-            //  setAllUnfocuse();
+            setTxtUnfocuse();
           }
         });
     backward10.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Input.undo(10);
-            //  setAllUnfocuse();
+            setTxtUnfocuse();
           }
         });
     forward1.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Input.redo(1);
-            // setAllUnfocuse();
+            setTxtUnfocuse();
           }
         });
     backward1.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Input.undo(1);
-            //  setAllUnfocuse();
+            setTxtUnfocuse();
           }
         });
     gotomove.addActionListener(
@@ -439,35 +445,35 @@ public class BottomToolbar extends JPanel {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.openFile();
-            // setAllUnfocuse();
+            setTxtUnfocuse();
           }
         });
     savefile.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.saveFile();
-            //  setAllUnfocuse();
+            setTxtUnfocuse();
           }
         });
     clearButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.board.clear();
-            //  setAllUnfocuse();
+            setTxtUnfocuse();
           }
         });
     lastButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             while (Lizzie.board.nextMove()) ;
-            //   setAllUnfocuse();
+            setTxtUnfocuse();
           }
         });
     firstButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             while (Lizzie.board.previousMove()) ;
-            //   setAllUnfocuse();
+            setTxtUnfocuse();
           }
         });
     countButton.addActionListener(
@@ -481,7 +487,27 @@ public class BottomToolbar extends JPanel {
             } else {
               Lizzie.frame.countstones();
             }
-            //    setAllUnfocuse();
+            setTxtUnfocuse();
+          }
+        });
+    kataEstimate.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+
+            Lizzie.config.showKataGoEstimate = !Lizzie.config.showKataGoEstimate;
+            if (!Lizzie.config.showKataGoEstimate) {
+              Lizzie.frame.boardRenderer.removecountblock();
+              if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
+            }
+
+            Lizzie.leelaz.ponder();
+            Lizzie.config.uiConfig.put("show-katago-estimate", Lizzie.config.showKataGoEstimate);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            setTxtUnfocuse();
           }
         });
 
@@ -2100,27 +2126,104 @@ public class BottomToolbar extends JPanel {
   }
 
   public void setButtonLocation(int boardmid) {
+    savedbroadmid = boardmid;
     int w = Lizzie.frame.getWidth();
+    if (Lizzie.leelaz.isKatago) {
+      if (boardmid + 364 > w) boardmid = w - 364;
+      if (boardmid - 454 < 0) boardmid = 454;
+      detail.setBounds(0, 0, 20, 26);
+      kataEstimate.setVisible(true);
+      kataEstimate.setBounds(boardmid - 435, 0, 60, 26);
+      batchOpen.setBounds(boardmid - 376, 0, 60, 26);
+      openfile.setBounds(boardmid - 317, 0, 40, 26);
+      savefile.setBounds(boardmid - 278, 0, 40, 26);
+      refresh.setBounds(boardmid - 239, 0, 40, 26);
+      analyse.setBounds(boardmid - 200, 0, 65, 26);
+      backMain.setBounds(boardmid - 136, 0, 70, 26);
+      firstButton.setBounds(boardmid - 67, 0, 30, 26);
+      backward10.setBounds(boardmid - 38, 0, 30, 26);
+      backward1.setBounds(boardmid - 9, 0, 30, 26);
+      forward1.setBounds(boardmid + 20, 0, 30, 26);
+      forward10.setBounds(boardmid + 49, 0, 30, 26);
+      lastButton.setBounds(boardmid + 78, 0, 30, 26);
+      clearButton.setBounds(boardmid + 107, 0, 60, 26);
+      countButton.setBounds(boardmid + 166, 0, 60, 26);
+      heatMap.setBounds(boardmid + 225, 0, 60, 26);
+      txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
+      gotomove.setBounds(boardmid + 313, 0, 35, 26);
+    } else {
+      if (boardmid + 364 > w) boardmid = w - 364;
+      if (boardmid - 395 < 0) boardmid = 395;
+      detail.setBounds(0, 0, 20, 26);
+      kataEstimate.setVisible(false);
+      batchOpen.setBounds(boardmid - 376, 0, 60, 26);
+      openfile.setBounds(boardmid - 317, 0, 40, 26);
+      savefile.setBounds(boardmid - 278, 0, 40, 26);
+      refresh.setBounds(boardmid - 239, 0, 40, 26);
+      analyse.setBounds(boardmid - 200, 0, 65, 26);
+      backMain.setBounds(boardmid - 136, 0, 70, 26);
+      firstButton.setBounds(boardmid - 67, 0, 30, 26);
+      backward10.setBounds(boardmid - 38, 0, 30, 26);
+      backward1.setBounds(boardmid - 9, 0, 30, 26);
+      forward1.setBounds(boardmid + 20, 0, 30, 26);
+      forward10.setBounds(boardmid + 49, 0, 30, 26);
+      lastButton.setBounds(boardmid + 78, 0, 30, 26);
+      clearButton.setBounds(boardmid + 107, 0, 60, 26);
+      countButton.setBounds(boardmid + 166, 0, 60, 26);
+      heatMap.setBounds(boardmid + 225, 0, 60, 26);
+      txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
+      gotomove.setBounds(boardmid + 313, 0, 35, 26);
+    }
+  }
 
-    if (boardmid + 364 > w) boardmid = w - 364;
-    if (boardmid - 395 < 0) boardmid = 395;
-    detail.setBounds(0, 0, 20, 26);
-    batchOpen.setBounds(boardmid - 376, 0, 60, 26);
-    openfile.setBounds(boardmid - 317, 0, 40, 26);
-    savefile.setBounds(boardmid - 278, 0, 40, 26);
-    refresh.setBounds(boardmid - 239, 0, 40, 26);
-    analyse.setBounds(boardmid - 200, 0, 65, 26);
-    backMain.setBounds(boardmid - 136, 0, 70, 26);
-    firstButton.setBounds(boardmid - 67, 0, 30, 26);
-    backward10.setBounds(boardmid - 38, 0, 30, 26);
-    backward1.setBounds(boardmid - 9, 0, 30, 26);
-    forward1.setBounds(boardmid + 20, 0, 30, 26);
-    forward10.setBounds(boardmid + 49, 0, 30, 26);
-    lastButton.setBounds(boardmid + 78, 0, 30, 26);
-    clearButton.setBounds(boardmid + 107, 0, 60, 26);
-    countButton.setBounds(boardmid + 166, 0, 60, 26);
-    heatMap.setBounds(boardmid + 225, 0, 60, 26);
-    txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
-    gotomove.setBounds(boardmid + 313, 0, 35, 26);
+  public void reSetButtonLocation() {
+    int boardmid = savedbroadmid;
+    int w = Lizzie.frame.getWidth();
+    if (Lizzie.leelaz.isKatago) {
+      if (boardmid + 364 > w) boardmid = w - 364;
+      if (boardmid - 454 < 0) boardmid = 454;
+      detail.setBounds(0, 0, 20, 26);
+      kataEstimate.setVisible(true);
+      kataEstimate.setBounds(boardmid - 435, 0, 60, 26);
+      batchOpen.setBounds(boardmid - 376, 0, 60, 26);
+      openfile.setBounds(boardmid - 317, 0, 40, 26);
+      savefile.setBounds(boardmid - 278, 0, 40, 26);
+      refresh.setBounds(boardmid - 239, 0, 40, 26);
+      analyse.setBounds(boardmid - 200, 0, 65, 26);
+      backMain.setBounds(boardmid - 136, 0, 70, 26);
+      firstButton.setBounds(boardmid - 67, 0, 30, 26);
+      backward10.setBounds(boardmid - 38, 0, 30, 26);
+      backward1.setBounds(boardmid - 9, 0, 30, 26);
+      forward1.setBounds(boardmid + 20, 0, 30, 26);
+      forward10.setBounds(boardmid + 49, 0, 30, 26);
+      lastButton.setBounds(boardmid + 78, 0, 30, 26);
+      clearButton.setBounds(boardmid + 107, 0, 60, 26);
+      countButton.setBounds(boardmid + 166, 0, 60, 26);
+      heatMap.setBounds(boardmid + 225, 0, 60, 26);
+      txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
+      gotomove.setBounds(boardmid + 313, 0, 35, 26);
+    } else {
+      if (boardmid + 364 > w) boardmid = w - 364;
+      if (boardmid - 395 < 0) boardmid = 395;
+      detail.setBounds(0, 0, 20, 26);
+      kataEstimate.setVisible(false);
+      batchOpen.setBounds(boardmid - 376, 0, 60, 26);
+      openfile.setBounds(boardmid - 317, 0, 40, 26);
+      savefile.setBounds(boardmid - 278, 0, 40, 26);
+      refresh.setBounds(boardmid - 239, 0, 40, 26);
+      analyse.setBounds(boardmid - 200, 0, 65, 26);
+      backMain.setBounds(boardmid - 136, 0, 70, 26);
+      firstButton.setBounds(boardmid - 67, 0, 30, 26);
+      backward10.setBounds(boardmid - 38, 0, 30, 26);
+      backward1.setBounds(boardmid - 9, 0, 30, 26);
+      forward1.setBounds(boardmid + 20, 0, 30, 26);
+      forward10.setBounds(boardmid + 49, 0, 30, 26);
+      lastButton.setBounds(boardmid + 78, 0, 30, 26);
+      clearButton.setBounds(boardmid + 107, 0, 60, 26);
+      countButton.setBounds(boardmid + 166, 0, 60, 26);
+      heatMap.setBounds(boardmid + 225, 0, 60, 26);
+      txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
+      gotomove.setBounds(boardmid + 313, 0, 35, 26);
+    }
   }
 }

@@ -41,6 +41,9 @@ public class Config {
   public boolean showKataGoScoreMean = true;
   public boolean showKataGoBoardScoreMean = false;
   public boolean kataGoScoreMeanAlwaysBlack = false;
+  public boolean showKataGoEstimate = false;
+  public boolean showKataGoEstimateOnSubbord = true;
+  public boolean showKataGoEstimateOnMainbord = true;
   public boolean showStatus = true;
   public boolean showBranch = true;
   public boolean showBestMoves = true;
@@ -263,6 +266,9 @@ public class Config {
     showKataGoScoreMean = uiConfig.optBoolean("show-katago-scoremean", true);
     showKataGoBoardScoreMean = uiConfig.optBoolean("show-katago-boardscoremean", false);
     kataGoScoreMeanAlwaysBlack = uiConfig.optBoolean("katago-scoremean-alwaysblack", false);
+    showKataGoEstimate = uiConfig.optBoolean("show-katago-estimate", false);
+    showKataGoEstimateOnSubbord = uiConfig.optBoolean("show-katago-estimate-onsubbord", false);
+    showKataGoEstimateOnMainbord = uiConfig.optBoolean("show-katago-estimate-onmainboard", false);
     // showBestMoves = uiConfig.getBoolean("show-best-moves");
     showNextMoves = uiConfig.getBoolean("show-next-moves");
     showSubBoard = uiConfig.getBoolean("show-subboard");
