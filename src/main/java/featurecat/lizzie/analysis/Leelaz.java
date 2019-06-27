@@ -480,7 +480,7 @@ public class Leelaz {
 				Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
 			}
 			// if (printCommunication || gtpConsole) {
-			//Lizzie.gtpConsole.addLineforce(line);
+			Lizzie.gtpConsole.addLineforce(line);
 			// }
 //      if (line.startsWith("komi=")) {
 //        try {
@@ -587,8 +587,8 @@ public class Leelaz {
 						togglePonder();
 					}
 				}
-			} else if (Lizzie.gtpConsole.isVisible())
-				Lizzie.gtpConsole.addLine(line);
+			}// else if (Lizzie.gtpConsole.isVisible())
+			//	Lizzie.gtpConsole.addLine(line);
 			// System.out.println(line);
 			if (line.startsWith("| ST")) {
 				String[] params = line.trim().split(" ");
@@ -2152,9 +2152,11 @@ public class Leelaz {
 		// cmdQueue can be replaced with a mere String variable in this case,
 		// but it is kept for future change of our mind.
 		synchronized (cmdQueue) {
-			if (cmdQueue.isEmpty() || (cmdQueue.peekFirst().startsWith("lz-analyze")
-					|| cmdQueue.peekFirst().startsWith("kata-analyze")) && !isResponseUpToDate()) {
-				return;
+			if (cmdQueue.isEmpty()
+					|| (cmdQueue.peekFirst().startsWith("lz-analyze")
+					|| cmdQueue.peekFirst().startsWith("kata-analyze")) && !isResponseUpToDate()
+					) {
+				 return;
 			}
 			String command = cmdQueue.removeFirst();
 			sendCommandToLeelaz(command);
@@ -2178,9 +2180,7 @@ public class Leelaz {
 		cmdNumber++;
 		try {
 			outputStream.write((command + "\n").getBytes());
-			outputStream.flush();
-			// process.getOutputStream().write((command + "\n").getBytes());
-			// process.getOutputStream().flush();
+			outputStream.flush();		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
