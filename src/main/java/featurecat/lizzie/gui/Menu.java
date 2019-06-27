@@ -44,7 +44,7 @@ public class Menu extends MenuBar {
     JPanel bar = new JPanel(new BorderLayout());
     bar.setBorder(new EmptyBorder(0, 0, -1, -1));
     final MenuBar menuBar = new MenuBar();
-    bar.setBounds(0, 0, 450, 15);
+    bar.setBounds(0, 0, 450, 12);
 
     menuBar.setColor(hsbColor);
     this.add(bar);

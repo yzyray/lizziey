@@ -499,7 +499,7 @@ public class Leelaz {
 			// End of response
 			// } else
 			if ((Lizzie.frame.isPlayingAgainstLeelaz && !genmovenoponder)) {
-				if (isThinking && !canGetGenmoveInfo) {
+				if (isThinking && !canGetGenmoveInfo&&Lizzie.config.playponder) {
 					if (Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()) {
 						if (line.contains(" ->   ")) {
 							MoveData mv = MoveData.fromSummary(line);
@@ -515,6 +515,8 @@ public class Leelaz {
 					}
 				}
 				if (canGetGenmoveInfo || !Lizzie.config.playponder) {
+					if(Lizzie.board.getHistory().isBlacksTurn()==Lizzie.frame.playerIsBlack)
+					{return;}
 					if (Lizzie.frame.toolbar.isGenmove)
 						Lizzie.leelaz = this;
 					if (line.contains(" ->   ")) {
