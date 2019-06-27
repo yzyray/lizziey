@@ -632,7 +632,7 @@ public class WinrateGraph {
               if (lastscoreMean > -500) {
                 // Color lineColor = g.getColor();
                 Stroke previousStroke = g.getStroke();
-                g.setColor(Color.GREEN);
+                g.setColor(Color.magenta.brighter());
                 g.setStroke(new BasicStroke(1));
                 g.drawLine(
                     posx + (lastOkMove * width * 95 / 100 / numMoves),
@@ -693,7 +693,7 @@ public class WinrateGraph {
               if (lastscoreMean > -500) {
                 // Color lineColor = g.getColor();
                 Stroke previousStroke = g.getStroke();
-                g.setColor(Color.GREEN);
+                g.setColor(Color.magenta.brighter());
                 g.setStroke(new BasicStroke(1));
                 g.drawLine(
                     posx + (lastOkMove * width * 95 / 100 / numMoves),
@@ -757,7 +757,7 @@ public class WinrateGraph {
             if (lastscoreMean > -500) {
               // Color lineColor = g.getColor();
               Stroke previousStroke = g.getStroke();
-              g.setColor(Color.GREEN);
+              g.setColor(Color.magenta.brighter());
               if (!node.isMainTrunk()) {
                 g.setStroke(dashed);
               } else g.setStroke(new BasicStroke(1));

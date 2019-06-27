@@ -713,8 +713,8 @@ public class Leelaz {
 							Lizzie.frame.setAlwaysOnTop(false);
 							onTop = true;
 						}
-						JOptionPane.showMessageDialog(Lizzie.frame,
-								"Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本是: " + params[1] + ")");
+						JOptionPane.showMessageDialog(null,
+								"Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本是: " + params[1]);
 						if (onTop)
 							Lizzie.frame.setAlwaysOnTop(true);
 					}
