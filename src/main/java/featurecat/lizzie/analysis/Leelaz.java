@@ -1434,10 +1434,7 @@ public class Leelaz {
 					Lizzie.frame.toolbar.lblenginePkResult
 							.setText(Lizzie.frame.toolbar.pkBlackWins + ":" + Lizzie.frame.toolbar.pkWhiteWins);
 				}
-				Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
-				Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
-				Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
-				Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
+			
 				Lizzie.board.clearforpk();
 				if (Lizzie.frame.toolbar.chkenginePkContinue.isSelected()) {
 					Lizzie.board.setlist(Lizzie.frame.toolbar.startGame);
@@ -1677,7 +1674,7 @@ public class Leelaz {
 					// playanyway=false;
 					if (resigned)
 						resigned = false;
-					if (curWR < Lizzie.frame.toolbar.pkResginWinrate) {
+					if ((curWR < Lizzie.frame.toolbar.pkResginWinrate)&&Lizzie.board.getHistory().getMoveNumber()>30) {
 						if (Lizzie.board.getHistory().isBlacksTurn())
 							blackResignMoveCounts = blackResignMoveCounts + 1;
 						else
@@ -1701,6 +1698,10 @@ public class Leelaz {
 							Lizzie.board.place(coords[0], coords[1]);
 						}
 						resigned = true;
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
 						// pkResign();
 						// System.out.println("认输1"+this.currentEngineN);
 						nameCmd();
@@ -1715,6 +1716,10 @@ public class Leelaz {
 							Lizzie.board.pass();
 							doublePass = true;
 							resigned = true;
+							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
+							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
+							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
+							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
 							nameCmd();
 							return;
 						}
@@ -1785,7 +1790,7 @@ public class Leelaz {
 					// playanyway=false;
 					if (resigned)
 						resigned = false;
-					if (curWR < Lizzie.frame.toolbar.pkResginWinrate) {
+					if (curWR < Lizzie.frame.toolbar.pkResginWinrate&&Lizzie.board.getHistory().getMoveNumber()>30) {
 						if (Lizzie.board.getHistory().isBlacksTurn())
 							blackResignMoveCounts = blackResignMoveCounts + 1;
 						else
@@ -1808,6 +1813,10 @@ public class Leelaz {
 							Lizzie.board.place(coords[0], coords[1]);
 						}
 						resigned = true;
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
 						// pkResign();
 						// System.out.println("认输2"+this.currentEngineN);
 						nameCmd();
@@ -1823,6 +1832,10 @@ public class Leelaz {
 							Lizzie.board.pass();
 							doublePass = true;
 							resigned = true;
+							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
+							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
+							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
+							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
 							nameCmd();
 							return;
 						}
@@ -1895,7 +1908,7 @@ public class Leelaz {
 					// playanyway=false;
 					if (resigned)
 						resigned = false;
-					if (curWR < Lizzie.frame.toolbar.pkResginWinrate) {
+					if (curWR < Lizzie.frame.toolbar.pkResginWinrate&&Lizzie.board.getHistory().getMoveNumber()>30) {
 						if (Lizzie.board.getHistory().isBlacksTurn())
 							blackResignMoveCounts = blackResignMoveCounts + 1;
 						else
@@ -1918,6 +1931,10 @@ public class Leelaz {
 							Lizzie.board.place(coords[0], coords[1]);
 						}
 						resigned = true;
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
 						// pkResign();
 						// System.out.println("认输3"+this.currentEngineN);
 						nameCmd();
@@ -1933,6 +1950,10 @@ public class Leelaz {
 							Lizzie.board.pass();
 							doublePass = true;
 							resigned = true;
+							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
+							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
+							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
+							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
 							nameCmd();
 							return;
 						}

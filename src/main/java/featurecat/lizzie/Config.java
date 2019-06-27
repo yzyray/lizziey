@@ -41,7 +41,7 @@ public class Config {
   public boolean showKataGoScoreMean = true;
   public boolean showKataGoBoardScoreMean = false;
   public boolean kataGoScoreMeanAlwaysBlack = false;
-  public boolean kataGoNotShowWinrate=true;
+  public boolean kataGoNotShowWinrate = true;
   public boolean showKataGoEstimate = false;
   public boolean showKataGoEstimateBySize = false;
   public boolean showKataGoEstimateOnSubbord = true;

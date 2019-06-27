@@ -91,7 +91,6 @@ public class MoveData {
   public static MoveData fromInfoKatago(String line) throws ArrayIndexOutOfBoundsException {
     MoveData result = new MoveData();
     String[] data = line.trim().split(" ");
-    // int k = Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
     boolean islcb = (Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbwinrate);
     // Todo: Proper tag parsing in case gtp protocol is extended(?)/changed
     for (int i = 0; i < data.length; i++) {
@@ -135,32 +134,6 @@ public class MoveData {
           }
         }
         if (key.equals("scoreMean")) {
-          //          if (Lizzie.config.showKataGoBoardScoreMean) {
-          //        	  if(Lizzie.config.kataGoScoreMeanAlwaysBlack) {
-          //        		  result.scoreMean =
-          //
-          //                          + (Lizzie.board.getHistory().isBlacksTurn()
-          //                              ?
-          // Double.parseDouble(value)+Lizzie.board.getHistory().getGameInfo().getKomi()
-          //                              :
-          // -Double.parseDouble(value)+Lizzie.board.getHistory().getGameInfo().getKomi());
-          //
-          //        	  }
-          //        	  else {
-          //            result.scoreMean =
-          //            		Double.parseDouble(value)
-          //                    + (Lizzie.board.getHistory().isBlacksTurn()
-          //                        ?  Lizzie.board.getHistory().getGameInfo().getKomi()
-          //                        : -Lizzie.board.getHistory().getGameInfo().getKomi());
-          //        	  }
-          //
-          //          } else {
-          //        	  if(Lizzie.config.kataGoScoreMeanAlwaysBlack)
-          //            result.scoreMean = Lizzie.board.getHistory().isBlacksTurn()?
-          // Double.parseDouble(value):-Double.parseDouble(value);
-          //            else
-          //            	result.scoreMean = Double.parseDouble(value);
-          //          }
           result.scoreMean = Double.parseDouble(value);
         }
         if (key.equals("scoreStdev")) {
