@@ -9,7 +9,7 @@ import java.util.Optional;
 /** Node structure for the board history / sgf tree */
 public class BoardHistoryNode {
   private Optional<BoardHistoryNode> previous;
-  private ArrayList<BoardHistoryNode> variations;
+  public ArrayList<BoardHistoryNode> variations;
 
   private BoardData data;
 
@@ -241,6 +241,24 @@ public class BoardHistoryNode {
     return top;
   }
 
+  public BoardHistoryNode topOfFatherBranch() {
+	    BoardHistoryNode top = this;
+	    while (top.previous.isPresent() && !top.previous.get().isMainTrunk()) {
+	      top = top.previous.get();
+	    }
+	    return top;
+	  }
+  
+  public BoardHistoryNode topOfFatherBranch2() {
+	    BoardHistoryNode top = this;
+	    while (top.previous.isPresent() && !top.previous.get().isMainTrunk()) {
+	      top = top.previous.get();
+	    }
+	    top=top.previous.get();
+	    return top;
+	  }
+
+  
   public int numberOfChildren() {
     return variations.size();
   }
