@@ -910,6 +910,24 @@ public class SGFParser {
     String curWinrate = "";
     curWinrate = String.format("%.1f", 100 - curWR);
 
+    if (Lizzie.leelaz.isKatago) {
+      String scoreMean = "";
+      try {
+        scoreMean = String.format("%.1f", data.scoreMean);
+      } catch (Exception ex) {
+      }
+
+      String wf = "%s %s %s %s\n%s";
+
+      return String.format(
+          wf,
+          Lizzie.lizzieVersion,
+          curWinrate,
+          playouts,
+          scoreMean,
+          node.getData().bestMovesToString());
+    }
+
     String wf = "%s %s %s\n%s";
 
     return String.format(

@@ -21,6 +21,7 @@ public class BoardData {
 
   public double winrate;
   private int playouts;
+  public double scoreMean;
   public List<MoveData> bestMoves;
   public int blackCaptures;
   public int whiteCaptures;
@@ -165,8 +166,9 @@ public boolean isChanged=false;
 		}
     	if(Lizzie.leelaz.isKatago)
     	{
+    		scoreMean=moves.get(0).scoreMean;
     		Lizzie.leelaz.scoreMean=moves.get(0).scoreMean;
-    		Lizzie.leelaz.scoreStdev=moves.get(0).scoreStdev;
+    		Lizzie.leelaz.scoreStdev=moves.get(0).scoreStdev;    		
     	}
     }
   }
@@ -191,7 +193,9 @@ public boolean isChanged=false;
       sb.append("move ").append(move.coordinate);
       sb.append(" visits ").append(move.playouts);
       sb.append(" winrate ").append((int) (move.winrate * 100));
-      sb.append(" pv ").append(move.variation.stream().reduce((a, b) -> a + " " + b).get());
+      if(Lizzie.leelaz.isKatago||(Lizzie.frame.toolbar.isEnginePk&&(Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago||Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago)))
+    	  sb.append(" scoreMean ").append(move.scoreMean);
+      sb.append(" pv ").append(move.variation.stream().reduce((a, b) -> a + " " + b).get());      
       sb.append(" info "); // this order is just because of how the MoveData info parser works
     }
     return sb.toString();
