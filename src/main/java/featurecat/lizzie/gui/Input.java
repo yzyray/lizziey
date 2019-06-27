@@ -349,9 +349,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       case VK_L:
         if (e.isAltDown()) {
           Lizzie.config.toggleShowLcbWinrate();
-        }
-        else
-        	while(Lizzie.board.setAsMainBranch());
+        } else while (Lizzie.board.setAsMainBranch()) ;
         break;
 
       case VK_P:
@@ -369,7 +367,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           //          }
           Lizzie.frame.openChangeMoveDialog();
         } else {
-          Lizzie.config.toggleShowMoveNumber();        	
+          Lizzie.config.toggleShowMoveNumber();
         }
         break;
 

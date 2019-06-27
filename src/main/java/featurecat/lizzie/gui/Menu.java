@@ -605,8 +605,8 @@ public class Menu extends MenuBar {
                     String name = a.getString(i);
                     engine[i].setText(engine[i].getText() + name);
                     if (!name.equals("")) {
-                      Lizzie.frame.toolbar.enginePkBlack.addItem("[" + (i + 1) + "]" + name);
-                      Lizzie.frame.toolbar.enginePkWhite.addItem("[" + (i + 1) + "]" + name);
+                      Lizzie.frame.toolbar.enginePkBlack.addItem("[" + i + "]" + name);
+                      Lizzie.frame.toolbar.enginePkWhite.addItem("[" + i + "]" + name);
                     }
                     if (!name.equals("")) {
                       engine[i].setVisible(true);

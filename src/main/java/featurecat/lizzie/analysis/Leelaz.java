@@ -480,7 +480,7 @@ public class Leelaz {
 				Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
 			}
 			// if (printCommunication || gtpConsole) {
-			Lizzie.gtpConsole.addLineforce(line);
+			//Lizzie.gtpConsole.addLineforce(line);
 			// }
 //      if (line.startsWith("komi=")) {
 //        try {
@@ -587,8 +587,8 @@ public class Leelaz {
 						togglePonder();
 					}
 				}
-			}// else if (Lizzie.gtpConsole.isVisible())
-			//	Lizzie.gtpConsole.addLine(line);
+			} else if (Lizzie.gtpConsole.isVisible())
+				Lizzie.gtpConsole.addLine(line);
 			// System.out.println(line);
 			if (line.startsWith("| ST")) {
 				String[] params = line.trim().split(" ");
@@ -2077,7 +2077,11 @@ public class Leelaz {
 						parseLineForGenmovePk(line.toString());
 
 					} else if (!played) {
+						try {
 						parseLine(line.toString());
+						}
+						catch (Exception e)
+						{}
 					}
 
 					line = new StringBuilder();

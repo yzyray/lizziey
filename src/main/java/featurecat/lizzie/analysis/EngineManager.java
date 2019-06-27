@@ -141,24 +141,24 @@ public class EngineManager {
       }
     }
     if (Lizzie.frame.toolbar.isEnginePk) {
-      {
-        // if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
-        if (Lizzie.leelaz.isPondering()) {
-          timer3 =
-              new Timer(
-                  5000,
-                  new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                      checkEngineNotHang();
-
-                      try {
-                      } catch (Exception e) {
-                      }
-                    }
-                  });
-          timer3.start();
-        }
-      }
+      //      {
+      //        // if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
+      //        if (Lizzie.leelaz.isPondering()) {
+      //          timer3 =
+      //              new Timer(
+      //                  5000,
+      //                  new ActionListener() {
+      //                    public void actionPerformed(ActionEvent evt) {
+      //                      checkEngineNotHang();
+      //
+      //                      try {
+      //                      } catch (Exception e) {
+      //                      }
+      //                    }
+      //                  });
+      //          timer3.start();
+      //        }
+      //      }
       timer2 =
           new Timer(
               5000,
@@ -262,8 +262,8 @@ public class EngineManager {
                   i -> {
                     String name = a.getString(i);
                     if (!name.equals("")) {
-                      Lizzie.frame.toolbar.enginePkBlack.addItem("[" + (i + 1) + "]" + name);
-                      Lizzie.frame.toolbar.enginePkWhite.addItem("[" + (i + 1) + "]" + name);
+                      Lizzie.frame.toolbar.enginePkBlack.addItem("[" + i + "]" + name);
+                      Lizzie.frame.toolbar.enginePkWhite.addItem("[" + i + "]" + name);
                     }
                   });
         });

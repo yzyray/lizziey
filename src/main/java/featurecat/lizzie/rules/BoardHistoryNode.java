@@ -242,23 +242,22 @@ public class BoardHistoryNode {
   }
 
   public BoardHistoryNode topOfFatherBranch() {
-	    BoardHistoryNode top = this;
-	    while (top.previous.isPresent() && !top.previous.get().isMainTrunk()) {
-	      top = top.previous.get();
-	    }
-	    return top;
-	  }
-  
-  public BoardHistoryNode topOfFatherBranch2() {
-	    BoardHistoryNode top = this;
-	    while (top.previous.isPresent() && !top.previous.get().isMainTrunk()) {
-	      top = top.previous.get();
-	    }
-	    top=top.previous.get();
-	    return top;
-	  }
+    BoardHistoryNode top = this;
+    while (top.previous.isPresent() && !top.previous.get().isMainTrunk()) {
+      top = top.previous.get();
+    }
+    return top;
+  }
 
-  
+  public BoardHistoryNode topOfFatherBranch2() {
+    BoardHistoryNode top = this;
+    while (top.previous.isPresent() && !top.previous.get().isMainTrunk()) {
+      top = top.previous.get();
+    }
+    top = top.previous.get();
+    return top;
+  }
+
   public int numberOfChildren() {
     return variations.size();
   }
