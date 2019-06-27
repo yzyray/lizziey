@@ -81,8 +81,9 @@ public class AnalysisFrame extends JPanel {
     table.getColumnModel().getColumn(3).setPreferredWidth(89);
     table.getColumnModel().getColumn(4).setPreferredWidth(72);
     boolean persisted = Lizzie.config.persistedUi != null;
-    JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
+
     if (persisted && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null) {
+      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
       if (table.getColumnCount() == 7
           && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length() == 11) {
         table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));

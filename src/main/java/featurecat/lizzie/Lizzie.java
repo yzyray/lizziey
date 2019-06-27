@@ -124,8 +124,7 @@ public class Lizzie {
       e.printStackTrace(); // Failed to save config
     }
 
-    // if (leelaz != null)
-    engineManager.forcekillAllEngines();
+    if (leelaz != null) engineManager.forcekillAllEngines();
     if (Lizzie.frame.zen != null
         && Lizzie.frame.zen.process != null
         && Lizzie.frame.zen.process.isAlive()) {
