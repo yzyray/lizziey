@@ -41,7 +41,7 @@ public class Config {
   public boolean showKataGoScoreMean = true;
   public boolean showKataGoBoardScoreMean = false;
   public boolean kataGoScoreMeanAlwaysBlack = false;
-  public boolean kataGoNotShowWinrate = true;
+  public boolean kataGoNotShowWinrate = false;
   public boolean showKataGoEstimate = false;
   public boolean showKataGoEstimateBySize = false;
   public boolean showKataGoEstimateOnSubbord = true;
@@ -268,7 +268,7 @@ public class Config {
     showKataGoScoreMean = uiConfig.optBoolean("show-katago-scoremean", true);
     showKataGoBoardScoreMean = uiConfig.optBoolean("show-katago-boardscoremean", false);
     kataGoScoreMeanAlwaysBlack = uiConfig.optBoolean("katago-scoremean-alwaysblack", false);
-    kataGoNotShowWinrate = uiConfig.optBoolean("katago-notshow-winrate", true);
+    kataGoNotShowWinrate = uiConfig.optBoolean("katago-notshow-winrate", false);
     showKataGoEstimate = uiConfig.optBoolean("show-katago-estimate", false);
     showKataGoEstimateBySize = uiConfig.optBoolean("show-katago-estimate-bysize", false);
     showKataGoEstimateOnSubbord = uiConfig.optBoolean("show-katago-estimate-onsubbord", true);
