@@ -447,7 +447,7 @@ public class EngineManager {
           if (!Lizzie.config.fastChange) {
             curEng.normalQuit();
           } else {
-            curEng.sendCommand("name");
+            curEng.sendCommand("version");
           }
         } catch (Exception e) {
           e.printStackTrace();

@@ -2018,7 +2018,7 @@ public class Leelaz {
 
 	public void nameCmd() {
 		try {
-			sendCommand("name");
+			sendCommand("version");
 		} catch (Exception es) {
 
 		}
@@ -2027,7 +2027,7 @@ public class Leelaz {
 	public void nameCmdfornoponder() {
 		canGetGenmoveInfo = false;
 		try {
-			sendCommand("name");
+			sendCommand("version");
 		} catch (Exception es) {
 
 		}
