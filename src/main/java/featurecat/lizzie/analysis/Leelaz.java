@@ -484,7 +484,7 @@ public class Leelaz {
 				Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
 			}
 			// if (printCommunication || gtpConsole) {
-			Lizzie.gtpConsole.addLineforce(line);
+			//Lizzie.gtpConsole.addLineforce(line);
 			// }
 //      if (line.startsWith("komi=")) {
 //        try {
@@ -619,8 +619,8 @@ public class Leelaz {
 //				}
 				//临时添加为了解决SSH时的卡顿
 			//	}
-			} else //if (Lizzie.gtpConsole.isVisible())
-				//Lizzie.gtpConsole.addLine(line);
+			} else if (Lizzie.gtpConsole.isVisible())
+				Lizzie.gtpConsole.addLine(line);
 			// System.out.println(line);
 			if (line.startsWith("| ST")) {
 				String[] params = line.trim().split(" ");

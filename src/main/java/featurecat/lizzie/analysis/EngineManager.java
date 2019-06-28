@@ -439,7 +439,7 @@ public class EngineManager {
     if (index > this.engineList.size()) return;
     Leelaz newEng = engineList.get(index);
     if (newEng == null) return;
-    
+
     ArrayList<Movelist> mv = Lizzie.board.getmovelist();
 
     try {
@@ -472,7 +472,7 @@ public class EngineManager {
         if (Lizzie.board.getHistory().getGameInfo().getKomi() != 7.5) {
           newEng.sendCommand("komi " + Lizzie.board.getHistory().getGameInfo().getKomi());
         }
-        
+
       } catch (Exception e) {
         e.printStackTrace();
       }
