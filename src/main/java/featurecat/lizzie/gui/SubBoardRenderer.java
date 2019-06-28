@@ -801,16 +801,16 @@ public class SubBoardRenderer {
     Graphics2D g = countblockimage.createGraphics();
     for (int i = 0; i < tempcount.size(); i++) {
       if (tempcount.get(i) > 0) {
-        int y = i / 19;
-        int x = i % 19;
+        int y = i / Lizzie.board.boardSize;
+        int x = i % Lizzie.board.boardSize;
         int stoneX = scaledMargin + squareLength * x;
         int stoneY = scaledMargin + squareLength * y;
         g.setColor(Color.BLACK);
         g.fillRect(stoneX - stoneRadius / 2, stoneY - stoneRadius / 2, stoneRadius, stoneRadius);
       }
       if (tempcount.get(i) < 0) {
-        int y = i / 19;
-        int x = i % 19;
+        int y = i / Lizzie.board.boardSize;
+        int x = i % Lizzie.board.boardSize;
         int stoneX = scaledMargin + squareLength * x;
         int stoneY = scaledMargin + squareLength * y;
         g.setColor(Color.WHITE);
@@ -825,8 +825,8 @@ public class SubBoardRenderer {
     for (int i = 0; i < tempcount.size(); i++) {
       if ((tempcount.get(i) > 0 && Lizzie.board.getHistory().isBlacksTurn())
           || (tempcount.get(i) < 0 && !Lizzie.board.getHistory().isBlacksTurn())) {
-        int y = i / 19;
-        int x = i % 19;
+        int y = i / Lizzie.board.boardSize;
+        int x = i % Lizzie.board.boardSize;
         int stoneX = scaledMargin + squareLength * x;
         int stoneY = scaledMargin + squareLength * y;
         // g.setColor(Color.BLACK);
@@ -837,8 +837,8 @@ public class SubBoardRenderer {
       }
       if ((tempcount.get(i) < 0 && Lizzie.board.getHistory().isBlacksTurn())
           || (tempcount.get(i) > 0 && !Lizzie.board.getHistory().isBlacksTurn())) {
-        int y = i / 19;
-        int x = i % 19;
+        int y = i / Lizzie.board.boardSize;
+        int x = i % Lizzie.board.boardSize;
         int stoneX = scaledMargin + squareLength * x;
         int stoneY = scaledMargin + squareLength * y;
         int alpha = (int) (tempcount.get(i) * 255);
@@ -865,8 +865,8 @@ public class SubBoardRenderer {
     for (int i = 0; i < tempcount.size(); i++) {
       if ((tempcount.get(i) > 0 && Lizzie.board.getHistory().isBlacksTurn())
           || (tempcount.get(i) < 0 && !Lizzie.board.getHistory().isBlacksTurn())) {
-        int y = i / 19;
-        int x = i % 19;
+        int y = i / Lizzie.board.boardSize;
+        int x = i % Lizzie.board.boardSize;
         int stoneX = scaledMargin + squareLength * x;
         int stoneY = scaledMargin + squareLength * y;
         Color cl = new Color(0, 0, 0, 180);
@@ -876,8 +876,8 @@ public class SubBoardRenderer {
       }
       if ((tempcount.get(i) < 0 && Lizzie.board.getHistory().isBlacksTurn())
           || (tempcount.get(i) > 0 && !Lizzie.board.getHistory().isBlacksTurn())) {
-        int y = i / 19;
-        int x = i % 19;
+        int y = i / Lizzie.board.boardSize;
+        int x = i % Lizzie.board.boardSize;
         int stoneX = scaledMargin + squareLength * x;
         int stoneY = scaledMargin + squareLength * y;
         int length = (int) (convertLength(tempcount.get(i)) * 2 * stoneRadius);
