@@ -332,7 +332,7 @@ public class LizzieFrame extends JFrame {
     commentPane.setBorder(BorderFactory.createEmptyBorder());
     commentPane.setEditorKit(htmlKit);
     commentPane.setDocument(htmlDoc);
-    commentPane.setEditable(false);
+    commentPane.setEditable(true);
 
     // commentPane.setMargin(new Insets(5, 5, 5, 5));
     commentPane.setBackground(Lizzie.config.commentBackgroundColor);

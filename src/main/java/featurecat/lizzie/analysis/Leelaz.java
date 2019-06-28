@@ -265,6 +265,7 @@ public class Leelaz {
 		executor.execute(this::read);
 		started = true;
 		featurecat.lizzie.gui.Menu.engine[index].setIcon(featurecat.lizzie.gui.Menu.stop);
+		 Lizzie.frame.toolbar.reSetButtonLocation();
 
 	}
 
