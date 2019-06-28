@@ -71,6 +71,9 @@ public class Leelaz {
 
 	private boolean isPondering;
 	private long startPonderTime;
+	private long commandTime;
+	private boolean firstNoRespond=true;
+	private boolean firstNoRespond2=true;
 
 	// fixed_handicap
 	public boolean isSettingHandicap = false;
@@ -542,6 +545,7 @@ public class Leelaz {
 				Lizzie.frame.updateTitle();
 				if (isResponseUpToDate()) {
 					// This should not be stale data when the command number match
+					
 					if (isKatago) {
 						this.bestMoves = parseInfoKatago(line.substring(5));
 						if(Lizzie.config.showKataGoEstimate)
@@ -586,6 +590,20 @@ public class Leelaz {
 							&& !Lizzie.frame.toolbar.isAutoAna) {
 						togglePonder();
 					}
+				}
+				//临时添加为了解决SSH时的卡顿
+				else { if(firstNoRespond)
+				{
+					commandTime= System.currentTimeMillis();
+					firstNoRespond=false;
+				}
+				if(commandTime-System.currentTimeMillis()>200)
+				{
+					setResponseUpToDate();
+					commandTime=System.currentTimeMillis();
+					firstNoRespond=true;
+				}
+				//临时添加为了解决SSH时的卡顿
 				}
 			} else if (Lizzie.gtpConsole.isVisible())
 				Lizzie.gtpConsole.addLine(line);
@@ -2160,6 +2178,25 @@ public class Leelaz {
 					|| (cmdQueue.peekFirst().startsWith("lz-analyze")
 					|| cmdQueue.peekFirst().startsWith("kata-analyze")) && !isResponseUpToDate()
 					) {
+				//临时添加为了解决SSH时的卡顿
+				if(!isResponseUpToDate())
+				{
+					if(firstNoRespond2)
+					{
+						this.commandTime= System.currentTimeMillis();
+						firstNoRespond2=false;
+					}
+					if(System.currentTimeMillis()-commandTime>200)
+					{
+					if(cmdQueue.peekFirst().startsWith("lz-analyze")
+							|| cmdQueue.peekFirst().startsWith("kata-analyze"))
+							{	String command = cmdQueue.removeFirst();
+					sendCommandToLeelaz(command);}
+						commandTime=System.currentTimeMillis();
+						firstNoRespond2=true;
+					}
+					//临时添加为了解决SSH时的卡顿
+				}
 				 return;
 			}
 			String command = cmdQueue.removeFirst();
@@ -2197,6 +2234,11 @@ public class Leelaz {
 	private boolean isResponseUpToDate() {
 		// Use >= instead of == for avoiding hang-up, though it cannot happen
 		return currentCmdNum >= cmdNumber - 1;
+	}
+	
+	private void setResponseUpToDate() {
+		// Use >= instead of == for avoiding hang-up, though it cannot happen
+		 currentCmdNum = cmdNumber - 1;
 	}
 
 	/**
