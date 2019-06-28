@@ -407,6 +407,8 @@ public class EngineManager {
     // this.currentEngineNo = index;
     // Lizzie.leelaz.notPondering();
     Lizzie.board.restoreMoveNumber(index, mv);
+    Lizzie.frame.boardRenderer.removecountblock();
+    if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
     // Lizzie.leelaz.Pondering();
   }
 
