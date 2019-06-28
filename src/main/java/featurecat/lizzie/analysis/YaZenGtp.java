@@ -117,7 +117,7 @@ public class YaZenGtp {
       if (line.startsWith(" ")) {
 
         String[] params = line.trim().split(" ");
-        if (params.length == 19) {
+        if (params.length == Lizzie.board.boardSize) {
           for (int i = 0; i < params.length; i++) tempcount.add(Integer.parseInt(params[i]));
           // Lizzie.gtpConsole.addLineforce("这是详细点目");
         }
@@ -223,6 +223,7 @@ public class YaZenGtp {
 
   public void syncboradstat() {
     sendCommand("clear_board");
+    sendCommand("boardsize " + Lizzie.board.boardSize);
     cmdNumber = 1;
     ArrayList<Movelist> movelist = Lizzie.board.getmovelist();
     int lenth = movelist.size();
