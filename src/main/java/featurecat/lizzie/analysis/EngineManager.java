@@ -439,7 +439,8 @@ public class EngineManager {
     if (index > this.engineList.size()) return;
     Leelaz newEng = engineList.get(index);
     if (newEng == null) return;
-    Lizzie.board.saveMoveNumber();
+    
+    ArrayList<Movelist> mv = Lizzie.board.getmovelist();
 
     try {
       if (currentEngineNo != -1) {
@@ -471,12 +472,13 @@ public class EngineManager {
         if (Lizzie.board.getHistory().getGameInfo().getKomi() != 7.5) {
           newEng.sendCommand("komi " + Lizzie.board.getHistory().getGameInfo().getKomi());
         }
-        newEng.ponder();
+        
       } catch (Exception e) {
         e.printStackTrace();
       }
-
-      Lizzie.board.restoreMoveNumber();
+      newEng.sendCommand("clear_board");
+      Lizzie.board.restoreMoveNumber(index, mv);
+      newEng.ponder();
       Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
       this.currentEngineNo = index;
       featurecat.lizzie.gui.Menu.engineMenu.setText(
