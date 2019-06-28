@@ -72,7 +72,7 @@ public class Leelaz {
 	private boolean isPondering;
 	private long startPonderTime;
 	private long commandTime;
-	private boolean firstNoRespond=true;
+//	private boolean firstNoRespond=true;
 	private boolean firstNoRespond2=true;
 
 	// fixed_handicap
@@ -120,6 +120,7 @@ public class Leelaz {
 	public boolean isKatago = false;
 	public double scoreMean=0;
 	public double scoreStdev=0;
+	private boolean isCommandLine=false;
 	//private boolean isEstimating=true;
 	/**
 	 * Initializes the leelaz process and starts reading output
@@ -483,7 +484,7 @@ public class Leelaz {
 				Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
 			}
 			// if (printCommunication || gtpConsole) {
-			//Lizzie.gtpConsole.addLineforce(line);
+			Lizzie.gtpConsole.addLineforce(line);
 			// }
 //      if (line.startsWith("komi=")) {
 //        try {
@@ -501,6 +502,19 @@ public class Leelaz {
 			// if (line.equals("\n")) {
 			// End of response
 			// } else
+			if(isCommandLine)
+			{
+				String[] params = line.trim().split("=");				
+				try {
+					currentCmdNum = Integer.parseInt(params[1].split(" ")[0].trim());
+					if (!isLoaded)
+						isLoaded = true;
+				} catch (Exception ex) {
+				//	currentCmdNum = currentCmdNum + 1;
+				}
+				trySendCommandFromQueue();
+
+			}
 			if ((Lizzie.frame.isPlayingAgainstLeelaz && !genmovenoponder)) {
 				if (isThinking && !canGetGenmoveInfo&&Lizzie.config.playponder) {
 					if (Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()) {
@@ -592,21 +606,21 @@ public class Leelaz {
 					}
 				}
 				//临时添加为了解决SSH时的卡顿
-				else { if(firstNoRespond)
-				{
-					commandTime= System.currentTimeMillis();
-					firstNoRespond=false;
-				}
-				if(commandTime-System.currentTimeMillis()>200)
-				{
-					setResponseUpToDate();
-					commandTime=System.currentTimeMillis();
-					firstNoRespond=true;
-				}
+//				else { if(firstNoRespond)
+//				{
+//					commandTime= System.currentTimeMillis();
+//					firstNoRespond=false;
+//				}
+//				if(System.currentTimeMillis()-commandTime>200)
+//				{
+//					setResponseUpToDate();
+//					commandTime=System.currentTimeMillis();
+//					firstNoRespond=true;
+//				}
 				//临时添加为了解决SSH时的卡顿
-				}
-			} else if (Lizzie.gtpConsole.isVisible())
-				Lizzie.gtpConsole.addLine(line);
+			//	}
+			} else //if (Lizzie.gtpConsole.isVisible())
+				//Lizzie.gtpConsole.addLine(line);
 			// System.out.println(line);
 			if (line.startsWith("| ST")) {
 				String[] params = line.trim().split(" ");
@@ -629,15 +643,7 @@ public class Leelaz {
 					canGetGenmoveInfo = true;
 				}
 				String[] params = line.trim().split(" ");
-				try {
-					currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
-					if (!isLoaded)
-						isLoaded = true;
-				} catch (Exception ex) {
-					currentCmdNum = currentCmdNum + 1;
-				}
-				trySendCommandFromQueue();
-
+			
 				if (line.startsWith("?") || params.length == 1)
 					return;
 
@@ -2103,6 +2109,11 @@ public class Leelaz {
 					}
 
 					line = new StringBuilder();
+					isCommandLine=false;
+				}
+				else if(c=='=')
+				{					
+						isCommandLine=true;					
 				}
 			}
 			// this line will be reached when Leelaz shuts down
