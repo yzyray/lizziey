@@ -107,7 +107,7 @@ public class Menu extends MenuBar {
     fileMenu.addSeparator();
 
     final JMenuItem exitItem = new JMenuItem();
-    exitItem.setText("退出");
+    exitItem.setText("强制退出");
     // exitItem.setMnemonic('E');
     // exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK));
     exitItem.addActionListener(new ItemListener());
@@ -681,7 +681,7 @@ public class Menu extends MenuBar {
         Lizzie.frame.saveFile();
         return;
       }
-      if (menuItem.getText().startsWith("退出")) {
+      if (menuItem.getText().startsWith("强制退出")) {
         System.exit(0);
         return;
       }
