@@ -513,8 +513,9 @@ public class Leelaz {
 				} catch (Exception ex) {
 				//	currentCmdNum = currentCmdNum + 1;
 				}
-				trySendCommandFromQueue();
-
+				try {
+				trySendCommandFromQueue();}
+				catch (Exception ex) {}
 			}
 			if ((Lizzie.frame.isPlayingAgainstLeelaz && !genmovenoponder)) {
 				if (isThinking && !canGetGenmoveInfo&&Lizzie.config.playponder) {
@@ -2457,6 +2458,10 @@ public class Leelaz {
 		synchronized (this) {
 			sendCommand("clear_board");
 			// sendCommand("clear_cache");
+			if(isKatago)
+			{scoreMean=0;
+			scoreStdev=0;
+			}
 			bestMoves = new ArrayList<>();
 			if (isPondering)
 				ponder();
