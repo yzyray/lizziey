@@ -2100,7 +2100,11 @@ public class Leelaz {
 							pkResign();
 					}
 					if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove && isLoaded) {
+						try {
 						parseLineForGenmovePk(line.toString());
+						}
+						catch (Exception e)
+						{}
 
 					} else if (!played) {
 						try {
