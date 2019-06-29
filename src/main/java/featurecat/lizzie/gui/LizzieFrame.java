@@ -63,9 +63,10 @@ public class LizzieFrame extends JFrame {
     resourceBundle.getString("LizzieFrame.commands.mouseWheelScroll"),
     "滚轮按下|落鼠标指向变化图的第一步,后续步可滚动滚轮继续查看",
     "逗号|落最佳一手,如果鼠标指向变化图则落子到变化图结束",
-    "B|显示恶手列表",
-    "U|显示AI选点列表",
+    "b|显示恶手列表",
+    "u|显示AI选点列表",
     "i|编辑棋局信息(修改贴目并告知引擎)",
+    resourceBundle.getString("LizzieFrame.commands.keyR"),
     // resourceBundle.getString("LizzieFrame.commands.keyI"),
     resourceBundle.getString("LizzieFrame.commands.keyUpArrow"),
     resourceBundle.getString("LizzieFrame.commands.keyDownArrow"),
@@ -83,7 +84,6 @@ public class LizzieFrame extends JFrame {
     resourceBundle.getString("LizzieFrame.commands.keyW"),
     resourceBundle.getString("LizzieFrame.commands.keyCtrlW"),
     resourceBundle.getString("LizzieFrame.commands.keyG"),
-    resourceBundle.getString("LizzieFrame.commands.keyR"),
     resourceBundle.getString("LizzieFrame.commands.keyBracket"),
     resourceBundle.getString("LizzieFrame.commands.keyT"),
     resourceBundle.getString("LizzieFrame.commands.keyCtrlT"),
@@ -1497,7 +1497,7 @@ public class LizzieFrame extends JFrame {
 
     FontMetrics metrics = g.getFontMetrics(font);
     int maxCmdWidth = commandsToShow.stream().mapToInt(c -> metrics.stringWidth(c)).max().orElse(0);
-    int lineHeight = (int) (font.getSize() * 1.31);
+    int lineHeight = (int) (font.getSize() * 1.28);
 
     int boxWidth = min((int) (maxCmdWidth * 1.4), mainPanel.getWidth());
     int boxHeight = min(commandsToShow.size() * lineHeight, mainPanel.getHeight());
