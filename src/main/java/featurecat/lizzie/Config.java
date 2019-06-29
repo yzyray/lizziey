@@ -30,7 +30,7 @@ public class Config {
   public boolean showCaptured = true;
   public boolean handicapInsteadOfWinrate = false;
   public boolean showDynamicKomi = false;
-  public double replayBranchIntervalSeconds = 1.0;
+  public double replayBranchIntervalSeconds = 0.3;
   public boolean showCoordinates = true;
   public boolean colorByWinrateInsteadOfVisits = false;
   public boolean showlcbwinrate = true;
@@ -284,7 +284,7 @@ public class Config {
     suggestionsalwaysontop = uiConfig.optBoolean("suggestions-always-ontop", false);
     appendWinrateToComment = uiConfig.optBoolean("append-winrate-to-comment");
     showCoordinates = uiConfig.optBoolean("show-coordinates");
-    replayBranchIntervalSeconds = uiConfig.optDouble("replay-branch-interval-seconds", 1.0);
+    replayBranchIntervalSeconds = uiConfig.optDouble("replay-branch-interval-seconds", 0.3);
     colorByWinrateInsteadOfVisits = uiConfig.optBoolean("color-by-winrate-instead-of-visits");
     boardPositionProportion = uiConfig.optInt("board-postion-proportion", 4);
     limitBranchLength = leelazConfig.optInt("limit-branch-length", 0);
@@ -644,7 +644,7 @@ public class Config {
     ui.put("only-last-move-number", 1);
     ui.put("new-move-number-in-branch", true);
     ui.put("append-winrate-to-comment", true);
-    ui.put("replay-branch-interval-seconds", 1.0);
+    ui.put("replay-branch-interval-seconds", 0.3);
     ui.put("gtp-console-style", defaultGtpConsoleStyle);
     config.put("ui", ui);
     return config;

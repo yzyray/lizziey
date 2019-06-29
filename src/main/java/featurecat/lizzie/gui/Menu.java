@@ -348,13 +348,13 @@ public class Menu extends MenuBar {
     gameMenu.add(newGameItem);
 
     final JMenuItem continueGameBlackItem = new JMenuItem();
-    continueGameBlackItem.setText("续弈(我执黑)(ALT+回车)");
+    continueGameBlackItem.setText("续弈(我执黑)(回车)");
     // aboutItem.setMnemonic('A');
     continueGameBlackItem.addActionListener(new ItemListener());
     gameMenu.add(continueGameBlackItem);
 
     final JMenuItem continueGameWhiteItem = new JMenuItem();
-    continueGameWhiteItem.setText("续弈(我执白)(ALT+回车)");
+    continueGameWhiteItem.setText("续弈(我执白)(回车)");
     // aboutItem.setMnemonic('A');
     continueGameWhiteItem.addActionListener(new ItemListener());
     gameMenu.add(continueGameWhiteItem);
