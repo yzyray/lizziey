@@ -11,6 +11,9 @@ import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 import org.json.JSONArray;
 
 public class Menu extends MenuBar {
@@ -60,48 +63,48 @@ public class Menu extends MenuBar {
 
     menuBar.add(fileMenu);
     final JMenuItem openItem = new JMenuItem("打开棋谱（O）");
-    openItem.addActionListener(new ItemListener());
+    openItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openItem);
 
     menuBar.add(fileMenu);
     final JMenuItem batchfile = new JMenuItem("批量分析棋谱（ALT+O）");
-    batchfile.addActionListener(new ItemListener());
+    batchfile.addActionListener(new ItemListeneryzy());
     fileMenu.add(batchfile);
 
     final JMenuItem openUrlItem = new JMenuItem("打开在线棋谱（Q）");
-    openUrlItem.addActionListener(new ItemListener());
+    openUrlItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openUrlItem);
 
     final JMenuItem saveItem = new JMenuItem();
     saveItem.setText("保存棋谱（S）");
-    saveItem.addActionListener(new ItemListener());
+    saveItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(saveItem);
 
     fileMenu.addSeparator();
     final JMenuItem copyItem = new JMenuItem();
     copyItem.setText("复制到剪贴板（CTRL+C）");
-    copyItem.addActionListener(new ItemListener());
+    copyItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(copyItem);
 
     final JMenuItem pasteItem = new JMenuItem();
     pasteItem.setText("从剪贴板粘贴（CTRL+V）");
-    pasteItem.addActionListener(new ItemListener());
+    pasteItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(pasteItem);
     fileMenu.addSeparator();
 
     final JMenuItem resume = new JMenuItem();
     resume.setText("打开关闭前的棋谱或自动保存的棋谱");
-    resume.addActionListener(new ItemListener());
+    resume.addActionListener(new ItemListeneryzy());
     fileMenu.add(resume);
 
     final JMenuItem resumeItem = new JMenuItem();
     resumeItem.setText("打开自动保存棋谱(10秒一次)");
-    resumeItem.addActionListener(new ItemListener());
+    resumeItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(resumeItem);
 
     final JMenuItem resumeItem2 = new JMenuItem();
     resumeItem2.setText("关闭自动保存棋谱");
-    resumeItem2.addActionListener(new ItemListener());
+    resumeItem2.addActionListener(new ItemListeneryzy());
     fileMenu.add(resumeItem2);
 
     fileMenu.addSeparator();
@@ -110,7 +113,7 @@ public class Menu extends MenuBar {
     exitItem.setText("强制退出");
     // exitItem.setMnemonic('E');
     // exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK));
-    exitItem.addActionListener(new ItemListener());
+    exitItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(exitItem);
 
     final JMenu viewMenu = new JMenu();
@@ -122,40 +125,45 @@ public class Menu extends MenuBar {
 
     final JMenuItem leftItem = new JMenuItem();
     leftItem.setText("棋盘左移（[）");
-    leftItem.addActionListener(new ItemListener());
+    leftItem.addActionListener(new ItemListeneryzy());
     viewMenu.add(leftItem);
 
     final JMenuItem rightItem = new JMenuItem();
     rightItem.setText("棋盘右移（]）");
-    rightItem.addActionListener(new ItemListener());
+    rightItem.addActionListener(new ItemListeneryzy());
     viewMenu.add(rightItem);
 
-    final JMenu winrate = new JMenu("胜率");
+    final JMenu winrate = new JMenu("胜率图和推荐点");
     viewMenu.add(winrate);
 
     final JMenuItem alwaysBlack = new JMenuItem();
-    alwaysBlack.setText("切换总是显示黑胜率");
-    alwaysBlack.addActionListener(new ItemListener());
+    alwaysBlack.setText("切换推荐点总是显示黑胜率");
+    alwaysBlack.addActionListener(new ItemListeneryzy());
     winrate.add(alwaysBlack);
+    
+    final JMenuItem isOnmouse = new JMenuItem();
+    isOnmouse.setText("切换鼠标移到推荐点上是否显示变化");
+    isOnmouse.addActionListener(new ItemListeneryzy());
+    winrate.add(isOnmouse);
 
     final JMenuItem winratemode1 = new JMenuItem();
     winratemode1.setText("显示双方胜率图");
-    winratemode1.addActionListener(new ItemListener());
+    winratemode1.addActionListener(new ItemListeneryzy());
     winrate.add(winratemode1);
 
     final JMenuItem winratemode0 = new JMenuItem();
     winratemode0.setText("显示黑方胜率图");
-    winratemode0.addActionListener(new ItemListener());
+    winratemode0.addActionListener(new ItemListeneryzy());
     winrate.add(winratemode0);
 
     final JMenuItem blunder = new JMenuItem();
     blunder.setText("显示/关闭柱状失误条");
-    blunder.addActionListener(new ItemListener());
+    blunder.addActionListener(new ItemListeneryzy());
     winrate.add(blunder);
 
     final JMenuItem coordsItem = new JMenuItem();
     coordsItem.setText("坐标（C）");
-    coordsItem.addActionListener(new ItemListener());
+    coordsItem.addActionListener(new ItemListeneryzy());
     viewMenu.add(coordsItem);
 
     final JMenu moveMenu = new JMenu("手数(M)");
@@ -163,176 +171,232 @@ public class Menu extends MenuBar {
 
     final JMenuItem noItem = new JMenuItem();
     noItem.setText("不显示");
-    noItem.addActionListener(new ItemListener());
+    noItem.addActionListener(new ItemListeneryzy());
     moveMenu.add(noItem);
 
     final JMenuItem oneItem = new JMenuItem();
     oneItem.setText("最近1手");
-    oneItem.addActionListener(new ItemListener());
+    oneItem.addActionListener(new ItemListeneryzy());
     moveMenu.add(oneItem);
 
     final JMenuItem fiveItem = new JMenuItem();
     fiveItem.setText("最近5手");
-    fiveItem.addActionListener(new ItemListener());
+    fiveItem.addActionListener(new ItemListeneryzy());
     moveMenu.add(fiveItem);
 
     final JMenuItem tenItem = new JMenuItem();
     tenItem.setText("最近10手");
-    tenItem.addActionListener(new ItemListener());
+    tenItem.addActionListener(new ItemListeneryzy());
     moveMenu.add(tenItem);
 
     final JMenuItem allItem = new JMenuItem();
     allItem.setText("全部");
-    allItem.addActionListener(new ItemListener());
+    allItem.addActionListener(new ItemListeneryzy());
     moveMenu.add(allItem);
 
     final JMenuItem anymove = new JMenuItem();
     anymove.setText("自定义");
-    anymove.addActionListener(new ItemListener());
+    anymove.addActionListener(new ItemListeneryzy());
     moveMenu.add(anymove);
 
     final JMenuItem subItem = new JMenuItem();
     subItem.setText("放大小棋盘（ALT+V）");
-    subItem.addActionListener(new ItemListener());
+    subItem.addActionListener(new ItemListeneryzy());
     viewMenu.add(subItem);
 
     final JMenuItem largewin = new JMenuItem();
     largewin.setText("放大胜率图(Ctrl+W)");
-    largewin.addActionListener(new ItemListener());
+    largewin.addActionListener(new ItemListeneryzy());
     viewMenu.add(largewin);
 
     final JMenuItem appentComment = new JMenuItem();
     appentComment.setText("记录胜率到评论中");
-    appentComment.addActionListener(new ItemListener());
+    appentComment.addActionListener(new ItemListeneryzy());
     viewMenu.add(appentComment);
 
     final JMenuItem alwaysontop = new JMenuItem();
     alwaysontop.setText("总在最前(Q)");
-    alwaysontop.addActionListener(new ItemListener());
+    alwaysontop.addActionListener(new ItemListeneryzy());
     viewMenu.add(alwaysontop);
     viewMenu.addSeparator();
     final JMenuItem toolMenu = new JMenuItem("底部工具栏"); // 创建“字体”子菜单
     viewMenu.add(toolMenu); // 添加到“编辑”菜单
-    toolMenu.addActionListener(new ItemListener()); // 添加动作监听器
+    toolMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JMenuItem bigtoolMenu = new JMenuItem("详细工具栏");
     viewMenu.add(bigtoolMenu);
-    bigtoolMenu.addActionListener(new ItemListener());
+    bigtoolMenu.addActionListener(new ItemListeneryzy());
 
     final JMenuItem bigtoolConf = new JMenuItem("设置详细工具栏顺序");
     viewMenu.add(bigtoolConf);
-    bigtoolConf.addActionListener(new ItemListener());
+    bigtoolConf.addActionListener(new ItemListeneryzy());
 
     final JMenuItem closeTool = new JMenuItem("关闭工具栏"); // 创建“字体”子菜单
     viewMenu.add(closeTool); // 添加到“编辑”菜单
-    closeTool.addActionListener(new ItemListener()); // 添加动作监听器     viewMenu.addSeparator();
+    closeTool.addActionListener(new ItemListeneryzy()); // 添加动作监听器     viewMenu.addSeparator();
     viewMenu.addSeparator();
 
     final JMenuItem subboard = new JMenuItem("小棋盘"); // 创建“字体”子菜单
     viewMenu.add(subboard); // 添加到“编辑”菜单
-    subboard.addActionListener(new ItemListener()); // 添加动作监听器
+    subboard.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JMenuItem winratetMenu = new JMenuItem("胜率面板(W)"); // 创建“字体”子菜单
     viewMenu.add(winratetMenu); // 添加到“编辑”菜单
-    winratetMenu.addActionListener(new ItemListener()); // 添加动作监听器
+    winratetMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JMenuItem commitMenu = new JMenuItem("评论面板(T)"); // 创建“字体”子菜单
     viewMenu.add(commitMenu); // 添加到“编辑”菜单
-    commitMenu.addActionListener(new ItemListener()); // 添加动作监听器
+    commitMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JMenuItem branch = new JMenuItem("分支面板(G)"); // 创建“字体”子菜单
     viewMenu.add(branch); // 添加到“编辑”菜单
-    branch.addActionListener(new ItemListener()); // 添加动作监听器
+    branch.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JMenuItem topleft = new JMenuItem("左上角面板"); // 创建“字体”子菜单
     viewMenu.add(topleft); // 添加到“编辑”菜单
-    topleft.addActionListener(new ItemListener()); // 添加动作监听器
+    topleft.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JMenuItem bottomleft = new JMenuItem("左下角状态"); // 创建“字体”子菜单
     viewMenu.add(bottomleft); // 添加到“编辑”菜单
-    bottomleft.addActionListener(new ItemListener()); // 添加动作监听器
+    bottomleft.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JMenuItem gtpMenu = new JMenuItem("命令窗口(E)"); // 创建“字体”子菜单
     viewMenu.add(gtpMenu); // 添加到“编辑”菜单
-    gtpMenu.addActionListener(new ItemListener()); // 添加动作监听器
+    gtpMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
     viewMenu.addSeparator();
 
     final JMenuItem defview = new JMenuItem("默认模式"); // 创建“字体”子菜单
     viewMenu.add(defview); // 添加到“编辑”菜单
-    defview.addActionListener(new ItemListener()); // 添加动作监听器
+    defview.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JMenuItem claview = new JMenuItem("经典模式"); // 创建“字体”子菜单
     viewMenu.add(claview); // 添加到“编辑”菜单
-    claview.addActionListener(new ItemListener()); // 添加动作监听器
+    claview.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JMenuItem allview = new JMenuItem("精简模式");
     viewMenu.add(allview);
-    allview.addActionListener(new ItemListener());
+    allview.addActionListener(new ItemListeneryzy());
     viewMenu.addSeparator();
 
     final JMenu katasugg = new JMenu("KataGo推荐点显示");
     viewMenu.add(katasugg);
+   
 
-    final JMenuItem katasugg1 = new JMenuItem("胜率+计算量");
+    final JCheckBoxMenuItem katasugg1 = new JCheckBoxMenuItem("胜率+计算量", false);
+    katasugg.addMenuListener(new MenuListener() {
+   	 
+	      public void menuSelected(MenuEvent e) {
+	        if(!Lizzie.config.showKataGoScoreMean)
+	        	katasugg1.setState(true);
+	        else
+	        	katasugg1.setState(false);
+	      }
+
+		@Override
+		public void menuDeselected(MenuEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void menuCanceled(MenuEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+	    });
+//    ItemListener itn=   new ItemListeneryzy() {
+//        public void itemStateChanged(ItemEvent e) {
+//
+//            if(katasugg1.getState()){
+//          	  katasugg.add(katasugg1);
+//            } else {
+//          	  katasugg.remove(katasugg1);
+//            }
+//         }
+//      };
+//      
+//    katasugg1.addItemListener(itn);
+   
+    	
+//    final JMenuItem katasugg1 = new JMenuItem("胜率+计算量");
     katasugg.add(katasugg1);
-    katasugg1.addActionListener(new ItemListener());
+    katasugg1.addActionListener(new ItemListeneryzy());
+    
+    
 
     final JMenuItem katasugg2 = new JMenuItem("目差+计算量");
     katasugg.add(katasugg2);
-    katasugg2.addActionListener(new ItemListener());
+  //  katasugg2.addActionListener(new ItemListeneryzy());
+  
+    katasugg2.addActionListener(new ActionListener() {
+         
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			 Lizzie.config.showKataGoScoreMean = true;
+		        Lizzie.config.kataGoNotShowWinrate = true;
+		        Lizzie.config.uiConfig.put("show-katago-scoremean", Lizzie.config.showKataGoScoreMean);
+		        Lizzie.config.uiConfig.put("katago-notshow-winrate", Lizzie.config.kataGoNotShowWinrate);
+		        try {
+		          Lizzie.config.save();
+		        } catch (IOException es) {
+		          // TODO Auto-generated catch block
+		        }
+		}
+      });
 
     final JMenuItem katasugg3 = new JMenuItem("胜率+计算量+目差");
     katasugg.add(katasugg3);
-    katasugg3.addActionListener(new ItemListener());
+    katasugg3.addActionListener(new ItemListeneryzy());
 
     final JMenu kataboard = new JMenu("KataGo目差显示");
     viewMenu.add(kataboard);
 
     final JMenuItem kataboardmean = new JMenuItem("目差");
     kataboard.add(kataboardmean);
-    kataboardmean.addActionListener(new ItemListener());
+    kataboardmean.addActionListener(new ItemListeneryzy());
 
     final JMenuItem kataboardboard = new JMenuItem("盘面差");
     kataboard.add(kataboardboard);
-    kataboardboard.addActionListener(new ItemListener());
+    kataboardboard.addActionListener(new ItemListeneryzy());
 
     final JMenu katameanalways = new JMenu("KataGo目差视角");
     viewMenu.add(katameanalways);
 
     final JMenuItem katameanblack = new JMenuItem("永远为黑视角");
     katameanalways.add(katameanblack);
-    katameanblack.addActionListener(new ItemListener());
+    katameanblack.addActionListener(new ItemListeneryzy());
 
     final JMenuItem katameanblackwhite = new JMenuItem("黑白交替视角");
     katameanalways.add(katameanblackwhite);
-    katameanblackwhite.addActionListener(new ItemListener());
+    katameanblackwhite.addActionListener(new ItemListeneryzy());
 
     final JMenu kataEstimate = new JMenu("KataGo评估显示");
     viewMenu.add(kataEstimate);
 
     final JMenuItem kataEstimate1 = new JMenuItem("关闭评估");
     kataEstimate.add(kataEstimate1);
-    kataEstimate1.addActionListener(new ItemListener());
+    kataEstimate1.addActionListener(new ItemListeneryzy());
 
     final JMenuItem kataEstimate2 = new JMenuItem("显示在大棋盘上");
     kataEstimate.add(kataEstimate2);
-    kataEstimate2.addActionListener(new ItemListener());
+    kataEstimate2.addActionListener(new ItemListeneryzy());
 
     final JMenuItem kataEstimate3 = new JMenuItem("显示在小棋盘上");
     kataEstimate.add(kataEstimate3);
-    kataEstimate3.addActionListener(new ItemListener());
+    kataEstimate3.addActionListener(new ItemListeneryzy());
 
     final JMenuItem kataEstimate4 = new JMenuItem("显示在大小棋盘上");
     kataEstimate.add(kataEstimate4);
-    kataEstimate4.addActionListener(new ItemListener());
+    kataEstimate4.addActionListener(new ItemListeneryzy());
 
     final JMenuItem kataEstimate5 = new JMenuItem("以方块大小表示占有率");
     kataEstimate.add(kataEstimate5);
-    kataEstimate5.addActionListener(new ItemListener());
+    kataEstimate5.addActionListener(new ItemListeneryzy());
 
     final JMenuItem kataEstimate6 = new JMenuItem("以方块透明度表示占有率");
     kataEstimate.add(kataEstimate6);
-    kataEstimate6.addActionListener(new ItemListener());
+    kataEstimate6.addActionListener(new ItemListeneryzy());
 
     final JMenu gameMenu = new JMenu("棋局 ", false);
     gameMenu.setText(" 棋局  ");
@@ -344,88 +408,88 @@ public class Menu extends MenuBar {
     final JMenuItem newGameItem = new JMenuItem();
     newGameItem.setText("新的一局（N）");
     // aboutItem.setMnemonic('A');
-    newGameItem.addActionListener(new ItemListener());
+    newGameItem.addActionListener(new ItemListeneryzy());
     gameMenu.add(newGameItem);
 
     final JMenuItem continueGameBlackItem = new JMenuItem();
     continueGameBlackItem.setText("续弈(我执黑)(回车)");
     // aboutItem.setMnemonic('A');
-    continueGameBlackItem.addActionListener(new ItemListener());
+    continueGameBlackItem.addActionListener(new ItemListeneryzy());
     gameMenu.add(continueGameBlackItem);
 
     final JMenuItem continueGameWhiteItem = new JMenuItem();
     continueGameWhiteItem.setText("续弈(我执白)(回车)");
     // aboutItem.setMnemonic('A');
-    continueGameWhiteItem.addActionListener(new ItemListener());
+    continueGameWhiteItem.addActionListener(new ItemListeneryzy());
     gameMenu.add(continueGameWhiteItem);
 
     final JMenuItem breakplay = new JMenuItem();
     breakplay.setText("中断对局");
-    breakplay.addActionListener(new ItemListener());
+    breakplay.addActionListener(new ItemListeneryzy());
     gameMenu.add(breakplay);
     gameMenu.addSeparator();
 
     final JMenuItem setBoard = new JMenuItem();
     setBoard.setText("设置棋盘大小");
-    setBoard.addActionListener(new ItemListener());
+    setBoard.addActionListener(new ItemListeneryzy());
     gameMenu.add(setBoard);
 
     final JMenuItem settime = new JMenuItem();
     settime.setText("设置AI用时");
-    settime.addActionListener(new ItemListener());
+    settime.addActionListener(new ItemListeneryzy());
     gameMenu.add(settime);
 
     final JMenuItem setinfo = new JMenuItem();
     setinfo.setText("设置棋局信息(修改贴目)");
-    setinfo.addActionListener(new ItemListener());
+    setinfo.addActionListener(new ItemListeneryzy());
     gameMenu.add(setinfo);
     gameMenu.addSeparator();
 
     final JMenuItem bestone = new JMenuItem();
     bestone.setText("落最佳一手(逗号)");
-    bestone.addActionListener(new ItemListener());
+    bestone.addActionListener(new ItemListeneryzy());
     gameMenu.add(bestone);
 
     final JMenuItem pass = new JMenuItem();
     pass.setText("停一手(P)");
-    pass.addActionListener(new ItemListener());
+    pass.addActionListener(new ItemListeneryzy());
     gameMenu.add(pass);
     gameMenu.addSeparator();
 
     final JMenuItem empty = new JMenuItem();
     empty.setText("清空棋盘（Ctrl+Home）");
     // aboutItem.setMnemonic('A');
-    empty.addActionListener(new ItemListener());
+    empty.addActionListener(new ItemListeneryzy());
     gameMenu.add(empty);
 
     final JMenuItem firstItem = new JMenuItem();
     firstItem.setText("跳转到最前（Home）");
     // aboutItem.setMnemonic('A');
-    firstItem.addActionListener(new ItemListener());
+    firstItem.addActionListener(new ItemListeneryzy());
     gameMenu.add(firstItem);
 
     final JMenuItem lastItem = new JMenuItem();
     lastItem.setText("跳转到最后（End）");
     // aboutItem.setMnemonic('A');
-    lastItem.addActionListener(new ItemListener());
+    lastItem.addActionListener(new ItemListeneryzy());
     gameMenu.add(lastItem);
 
     final JMenuItem commetup = new JMenuItem();
     commetup.setText("跳转到左分支(左)");
     // aboutItem.setMnemonic('A');
-    commetup.addActionListener(new ItemListener());
+    commetup.addActionListener(new ItemListeneryzy());
     gameMenu.add(commetup);
 
     final JMenuItem commetdown = new JMenuItem();
     commetdown.setText("跳转到右分支(右)");
     // aboutItem.setMnemonic('A');
-    commetdown.addActionListener(new ItemListener());
+    commetdown.addActionListener(new ItemListeneryzy());
     gameMenu.add(commetdown);
 
     final JMenuItem branchStart = new JMenuItem();
     branchStart.setText("返回主分支(CTRL+左)");
     // aboutItem.setMnemonic('A');
-    branchStart.addActionListener(new ItemListener());
+    branchStart.addActionListener(new ItemListeneryzy());
     gameMenu.add(branchStart);
 
     final JMenu analyMenu = new JMenu("分析 ", false);
@@ -437,33 +501,33 @@ public class Menu extends MenuBar {
     final JMenuItem anaItem = new JMenuItem();
     anaItem.setText("分析/停止（空格）");
     // aboutItem.setMnemonic('A');
-    anaItem.addActionListener(new ItemListener());
+    anaItem.addActionListener(new ItemListeneryzy());
     analyMenu.add(anaItem);
 
     final JMenuItem autoanItem = new JMenuItem();
     autoanItem.setText("自动分析（A）");
     // aboutItem.setMnemonic('A');
-    autoanItem.addActionListener(new ItemListener());
+    autoanItem.addActionListener(new ItemListeneryzy());
     analyMenu.add(autoanItem);
 
     final JMenuItem heatItem = new JMenuItem();
     heatItem.setText("策略网络（H）");
-    heatItem.addActionListener(new ItemListener());
+    heatItem.addActionListener(new ItemListeneryzy());
     analyMenu.add(heatItem);
 
     final JMenuItem countsItem = new JMenuItem();
     countsItem.setText("形势判断（点）");
     // aboutItem.setMnemonic('A');
-    countsItem.addActionListener(new ItemListener());
+    countsItem.addActionListener(new ItemListeneryzy());
     analyMenu.add(countsItem);
     analyMenu.addSeparator();
 
     final JMenuItem badmovesItem = new JMenuItem("恶手列表(B)");
-    badmovesItem.addActionListener(new ItemListener()); // 添加动作监听器
+    badmovesItem.addActionListener(new ItemListeneryzy()); // 添加动作监听器
     analyMenu.add(badmovesItem); // 添加到“属性”子菜单
 
     final JMenuItem leelasu = new JMenuItem("AI选点列表(U)");
-    leelasu.addActionListener(new ItemListener()); // 添加动作监听器
+    leelasu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
     analyMenu.add(leelasu); // 添加到“属性”子菜单
 
     final JMenu editMenu = new JMenu("编辑 ", false);
@@ -505,21 +569,21 @@ public class Menu extends MenuBar {
     final JMenuItem blackItem = new JMenuItem();
     blackItem.setText("落黑子");
     // aboutItem.setMnemonic('A');
-    blackItem.addActionListener(new ItemListener());
+    blackItem.addActionListener(new ItemListeneryzy());
     editMenu.add(blackItem);
     blackItem.setIcon(iconblack);
 
     final JMenuItem whiteItem = new JMenuItem();
     whiteItem.setText("落白子");
     // aboutItem.setMnemonic('A');
-    whiteItem.addActionListener(new ItemListener());
+    whiteItem.addActionListener(new ItemListeneryzy());
     editMenu.add(whiteItem);
     whiteItem.setIcon(iconwhite);
 
     final JMenuItem bhItem = new JMenuItem();
     bhItem.setText("交替落子");
     // aboutItem.setMnemonic('A');
-    bhItem.addActionListener(new ItemListener());
+    bhItem.addActionListener(new ItemListeneryzy());
     editMenu.add(bhItem);
     bhItem.setIcon(iconbh);
     editMenu.addSeparator();
@@ -527,32 +591,32 @@ public class Menu extends MenuBar {
     final JMenuItem insertbItem = new JMenuItem();
     insertbItem.setText("插入黑子");
     // aboutItem.setMnemonic('A');
-    insertbItem.addActionListener(new ItemListener());
+    insertbItem.addActionListener(new ItemListeneryzy());
     editMenu.add(insertbItem);
 
     final JMenuItem insertwItem = new JMenuItem();
     insertwItem.setText("插入白子");
     // aboutItem.setMnemonic('A');
-    insertwItem.addActionListener(new ItemListener());
+    insertwItem.addActionListener(new ItemListeneryzy());
     editMenu.add(insertwItem);
 
     final JMenuItem bhisItem = new JMenuItem();
     bhisItem.setText("交替插入棋子");
     // aboutItem.setMnemonic('A');
-    bhisItem.addActionListener(new ItemListener());
+    bhisItem.addActionListener(new ItemListeneryzy());
     editMenu.add(bhisItem);
 
     editMenu.addSeparator();
     final JMenuItem clearsave = new JMenuItem();
     clearsave.setText("清除Lizzie所有选点缓存");
     // aboutItem.setMnemonic('A');
-    clearsave.addActionListener(new ItemListener());
+    clearsave.addActionListener(new ItemListeneryzy());
     editMenu.add(clearsave);
 
     final JMenuItem clearthis = new JMenuItem();
     clearthis.setText("清除当前选点缓存");
     // aboutItem.setMnemonic('A');
-    clearthis.addActionListener(new ItemListener());
+    clearthis.addActionListener(new ItemListeneryzy());
     editMenu.add(clearthis);
 
     engineMenu = new JMenu("引擎 ", false);
@@ -589,7 +653,7 @@ public class Menu extends MenuBar {
 
     for (int i = 0; i < engine.length; i++) {
       engine[i] = new JMenuItem();
-      engine[i].addActionListener(new ItemListener());
+      engine[i].addActionListener(new ItemListeneryzy());
       engineMenu.add(engine[i]);
       engine[i].setText("引擎" + (i + 1) + ":");
       engine[i].setVisible(false);
@@ -618,32 +682,32 @@ public class Menu extends MenuBar {
     final JMenuItem closeall = new JMenuItem();
     closeall.setText("关闭所有引擎");
     // aboutItem.setMnemonic('A');
-    closeall.addActionListener(new ItemListener());
+    closeall.addActionListener(new ItemListeneryzy());
     engineMenu.add(closeall);
 
     final JMenuItem forcecloseall = new JMenuItem();
     forcecloseall.setText("强制关闭所有引擎");
     // aboutItem.setMnemonic('A');
-    forcecloseall.addActionListener(new ItemListener());
+    forcecloseall.addActionListener(new ItemListeneryzy());
     engineMenu.add(forcecloseall);
 
     final JMenuItem closeother = new JMenuItem();
     closeother.setText("关闭当前以外引擎");
     // aboutItem.setMnemonic('A');
-    closeother.addActionListener(new ItemListener());
+    closeother.addActionListener(new ItemListeneryzy());
     engineMenu.add(closeother);
 
     final JMenuItem restartZen = new JMenuItem();
     restartZen.setText("重启Zen(形势判断用)");
     // aboutItem.setMnemonic('A');
-    restartZen.addActionListener(new ItemListener());
+    restartZen.addActionListener(new ItemListeneryzy());
     engineMenu.add(restartZen);
     engineMenu.addSeparator();
 
     final JMenuItem config = new JMenuItem();
     config.setText("设置");
     // aboutItem.setMnemonic('A');
-    config.addActionListener(new ItemListener());
+    config.addActionListener(new ItemListeneryzy());
     engineMenu.add(config);
   }
 
@@ -666,8 +730,10 @@ public class Menu extends MenuBar {
                   });
         });
   }
+  
 
-  class ItemListener implements ActionListener {
+
+  class ItemListeneryzy implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       JMenuItem menuItem = (JMenuItem) e.getSource();
       // System.out.println("您单击的是菜单项：" + menuItem.getText());
@@ -1226,7 +1292,7 @@ public class Menu extends MenuBar {
         tbc.setVisible(true);
         return;
       }
-      if (menuItem.getText().startsWith("切换总是显示黑")) {
+      if (menuItem.getText().startsWith("切换推荐点总")) {
         if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black")) {
           Lizzie.config.uiConfig.put("win-rate-always-black", false);
           try {
@@ -1244,6 +1310,16 @@ public class Menu extends MenuBar {
         }
         return;
       }
+      if (menuItem.getText().startsWith("切换鼠标移到")) {
+    	  Lizzie.config.showSuggestionVaritions = !Lizzie.config.showSuggestionVaritions;
+          Lizzie.config.uiConfig.put("show-suggestion-varitions", Lizzie.config.showSuggestionVaritions);
+          try {
+            Lizzie.config.save();
+          } catch (IOException es) {
+            // TODO Auto-generated catch block
+          }
+          return;
+        }
       if (menuItem.getText().startsWith("显示双方")) {
         Lizzie.frame.winrateGraph.mode = 1;
         return;

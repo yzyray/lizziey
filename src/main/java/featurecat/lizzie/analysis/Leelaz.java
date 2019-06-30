@@ -71,9 +71,9 @@ public class Leelaz {
 
 	private boolean isPondering;
 	private long startPonderTime;
-	private long commandTime;
+	//private long commandTime;
 //	private boolean firstNoRespond=true;
-	private boolean firstNoRespond2=true;
+//	private boolean firstNoRespond2=true;
 
 	// fixed_handicap
 	public boolean isSettingHandicap = false;
@@ -2202,24 +2202,24 @@ public class Leelaz {
 					|| cmdQueue.peekFirst().startsWith("kata-analyze")) && !isResponseUpToDate()
 					) {
 				//临时添加为了解决SSH时的卡顿
-				if(!isResponseUpToDate())
-				{
-					if(firstNoRespond2)
-					{
-						this.commandTime= System.currentTimeMillis();
-						firstNoRespond2=false;
-					}
-					if(System.currentTimeMillis()-commandTime>200)
-					{
-					if(cmdQueue.peekFirst().startsWith("lz-analyze")
-							|| cmdQueue.peekFirst().startsWith("kata-analyze"))
-							{	String command = cmdQueue.removeFirst();
-					sendCommandToLeelaz(command);}
-						commandTime=System.currentTimeMillis();
-						firstNoRespond2=true;
-					}
+//				if(!isResponseUpToDate())
+//				{
+//					if(firstNoRespond2)
+//					{
+//						this.commandTime= System.currentTimeMillis();
+//						firstNoRespond2=false;
+//					}
+//					if(System.currentTimeMillis()-commandTime>200)
+//					{
+//					if(cmdQueue.peekFirst().startsWith("lz-analyze")
+//							|| cmdQueue.peekFirst().startsWith("kata-analyze"))
+//							{	String command = cmdQueue.removeFirst();
+//					sendCommandToLeelaz(command);}
+//						commandTime=System.currentTimeMillis();
+//						firstNoRespond2=true;
+//					}
 					//临时添加为了解决SSH时的卡顿
-				}
+			//	}
 				 return;
 			}
 			String command = cmdQueue.removeFirst();
