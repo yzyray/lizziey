@@ -13,9 +13,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   public static boolean shouldDisableAnalysis = true;
 
   @Override
-  public void mouseClicked(MouseEvent e) {	 
+  public void mouseClicked(MouseEvent e) {
     if (SwingUtilities.isMiddleMouseButton(e)) {
-    	
+
       int moveNumber = Lizzie.board.getcurrentmovenumber();
       if (Lizzie.frame.playCurrentVariation()) {
 
@@ -56,8 +56,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   public void mousePressed(MouseEvent e) {
 
     if (e.getButton() == MouseEvent.BUTTON1) // left click
-    {    	 
-      if (e.getClickCount() == 2) { // TODO: Maybe need to delay check    	 
+    {
+      if (e.getClickCount() == 2) { // TODO: Maybe need to delay check    	
         Lizzie.frame.onDoubleClicked(e.getX(), e.getY());
       } else {
         if (insert == 0) {
@@ -79,7 +79,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
         }
       }
-    
+
     } else if (e.getButton() == MouseEvent.BUTTON3) // right click
     // undo();
 
@@ -118,7 +118,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     if (Draggedmode) {
       Lizzie.frame.DraggedMoved(e.getX(), e.getY());
       return;
-    }    
+    }
     Lizzie.frame.onMouseMoved(e.getX(), e.getY());
   }
 
@@ -358,16 +358,12 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_COMMA:
-    	  if(!Lizzie.config.showSuggestionVaritions)
-    	  {
-    		  if(Lizzie.frame.isMouseOverSuggestions())
-    			  Lizzie.frame.playCurrentVariation();
-    			  else
-    				  Lizzie.frame.playBestMove();  
-    	  }
-    	  else {
-        if (!Lizzie.frame.playCurrentVariation()) Lizzie.frame.playBestMove();
-    	  }
+        if (!Lizzie.config.showSuggestionVaritions) {
+          if (Lizzie.frame.isMouseOverSuggestions()) Lizzie.frame.playCurrentVariation();
+          else Lizzie.frame.playBestMove();
+        } else {
+          if (!Lizzie.frame.playCurrentVariation()) Lizzie.frame.playBestMove();
+        }
         break;
 
       case VK_M:
@@ -440,9 +436,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         //        }
         if (controlIsPressed(e)) {
           Lizzie.board.clear();
-          if(Lizzie.leelaz.isPondering())
-          {
-        	  Lizzie.leelaz.ponder();
+          if (Lizzie.leelaz.isPondering()) {
+            Lizzie.leelaz.ponder();
           }
         } else {
           while (Lizzie.board.previousMove()) ;
@@ -512,34 +507,33 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         //          return;
         //        }
         if (e.isAltDown()) {
-        	  if (!Lizzie.frame.toolbar.isAutoPlay) {
-                  Lizzie.frame.toolbar.isAutoPlay = true;
-                  Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
+          if (!Lizzie.frame.toolbar.isAutoPlay) {
+            Lizzie.frame.toolbar.isAutoPlay = true;
+            Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
 
-                  Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(true);
-                  Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
-                  Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
-                  Lizzie.frame.toolbar.chkAutoPlayPlayouts.setSelected(false);
-                  Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.setSelected(false);
-                  Lizzie.frame.toolbar.txtAutoPlayTime.setText("1");
-                } else {
-                  Lizzie.frame.toolbar.isAutoPlay = false;
-                  Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
-                }
+            Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlayPlayouts.setSelected(false);
+            Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.setSelected(false);
+            Lizzie.frame.toolbar.txtAutoPlayTime.setText("1");
+          } else {
+            Lizzie.frame.toolbar.isAutoPlay = false;
+            Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
+          }
         } else {
-        	 if (!Lizzie.leelaz.isThinking) {
-                 Lizzie.leelaz.sendCommand(
-                     "time_settings 0 "
-                         + Lizzie.config
-                             .config
-                             .getJSONObject("leelaz")
-                             .getInt("max-game-thinking-time-seconds")
-                         + " 1");
-                 Lizzie.frame.playerIsBlack = !Lizzie.board.getData().blackToPlay;
-                 Lizzie.frame.isPlayingAgainstLeelaz = true;
-                 Lizzie.leelaz.genmove((Lizzie.board.getData().blackToPlay ? "B" : "W"));
-               }
-        
+          if (!Lizzie.leelaz.isThinking) {
+            Lizzie.leelaz.sendCommand(
+                "time_settings 0 "
+                    + Lizzie.config
+                        .config
+                        .getJSONObject("leelaz")
+                        .getInt("max-game-thinking-time-seconds")
+                    + " 1");
+            Lizzie.frame.playerIsBlack = !Lizzie.board.getData().blackToPlay;
+            Lizzie.frame.isPlayingAgainstLeelaz = true;
+            Lizzie.leelaz.genmove((Lizzie.board.getData().blackToPlay ? "B" : "W"));
+          }
         }
         break;
 

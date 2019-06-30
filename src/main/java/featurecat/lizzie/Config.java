@@ -271,7 +271,7 @@ public class Config {
     kataGoScoreMeanAlwaysBlack = uiConfig.optBoolean("katago-scoremean-alwaysblack", false);
     kataGoNotShowWinrate = uiConfig.optBoolean("katago-notshow-winrate", false);
     showKataGoEstimate = uiConfig.optBoolean("show-katago-estimate", false);
-    showSuggestionVaritions= uiConfig.optBoolean("show-suggestion-varitions", true);
+    showSuggestionVaritions = uiConfig.optBoolean("show-suggestion-varitions", true);
     showKataGoEstimateBySize = uiConfig.optBoolean("show-katago-estimate-bysize", false);
     showKataGoEstimateOnSubbord = uiConfig.optBoolean("show-katago-estimate-onsubbord", true);
     showKataGoEstimateOnMainbord = uiConfig.optBoolean("show-katago-estimate-onmainboard", true);

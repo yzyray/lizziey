@@ -104,7 +104,7 @@ public class LizzieFrame extends JFrame {
   public static WinrateGraph winrateGraph;
   public static Menu menu;
   public static BottomToolbar toolbar;
-  
+
   public Optional<List<String>> variationOpt;
 
   public static boolean urlSgf = false;
@@ -2026,40 +2026,38 @@ public class LizzieFrame extends JFrame {
       v -> Board.asCoordinates(v).ifPresent(c -> Lizzie.board.place(c[0], c[1]));
 
   public boolean playCurrentVariation() {
-	  if(Lizzie.config.showSuggestionVaritions) {
-    boardRenderer.variationOpt.ifPresent(vs -> vs.forEach(placeVariation));
-    return boardRenderer.variationOpt.isPresent();}
-	  else {
-		    variationOpt.ifPresent(vs -> vs.forEach(placeVariation));
-		    return variationOpt.isPresent();  
-	  }
+    if (Lizzie.config.showSuggestionVaritions) {
+      boardRenderer.variationOpt.ifPresent(vs -> vs.forEach(placeVariation));
+      return boardRenderer.variationOpt.isPresent();
+    } else {
+      variationOpt.ifPresent(vs -> vs.forEach(placeVariation));
+      return variationOpt.isPresent();
+    }
   }
-  
+
   public boolean isMouseOverSuggestions() {
-//	    return bestMoves
-//	        .stream()
-//	        .filter(
-//	            move ->
-//	                Board.asCoordinates(move.coordinate)
-//	                    .map(c -> Lizzie.frame.isMouseOver(c[0], c[1]))
-//	                    .orElse(false))
-//	        .findFirst();
-	
-	    List<MoveData> bestMoves=   Lizzie.board.getHistory().getData().bestMoves;
-	    for(int i=0;i<bestMoves.size();i++)
-	    {
-	    	 Optional<int[]>c=	Lizzie.board.asCoordinates(bestMoves.get(i).coordinate);
-	    if(c.isPresent())
-	    {
-	    	if( Lizzie.frame.isMouseOver2(c.get()[0], c.get()[1]))
-	    	{
-	    		  List<String> variation = bestMoves.get(i).variation;
-	    		  variationOpt = Optional.of(variation);
-	    		return true;}
-	    }
-	    }
-	    return false;
-	  }
+    //	    return bestMoves
+    //	        .stream()
+    //	        .filter(
+    //	            move ->
+    //	                Board.asCoordinates(move.coordinate)
+    //	                    .map(c -> Lizzie.frame.isMouseOver(c[0], c[1]))
+    //	                    .orElse(false))
+    //	        .findFirst();
+
+    List<MoveData> bestMoves = Lizzie.board.getHistory().getData().bestMoves;
+    for (int i = 0; i < bestMoves.size(); i++) {
+      Optional<int[]> c = Lizzie.board.asCoordinates(bestMoves.get(i).coordinate);
+      if (c.isPresent()) {
+        if (Lizzie.frame.isMouseOver2(c.get()[0], c.get()[1])) {
+          List<String> variation = bestMoves.get(i).variation;
+          variationOpt = Optional.of(variation);
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
   public void playBestMove() {
     boardRenderer.bestMoveCoordinateName().ifPresent(placeVariation);
@@ -2093,16 +2091,14 @@ public class LizzieFrame extends JFrame {
   }
 
   public boolean isMouseOver(int x, int y) {
-	  if(Lizzie.config.showSuggestionVaritions)
-    return mouseOverCoordinate[0] == x && mouseOverCoordinate[1] == y;
-	  else
-		  return false;
+    if (Lizzie.config.showSuggestionVaritions)
+      return mouseOverCoordinate[0] == x && mouseOverCoordinate[1] == y;
+    else return false;
   }
-  
+
   public boolean isMouseOver2(int x, int y) {
-	 
+
     return mouseOverCoordinate[0] == x && mouseOverCoordinate[1] == y;
-	  
   }
 
   public boolean isMouseOversub(int x, int y) {
@@ -2425,34 +2421,34 @@ public class LizzieFrame extends JFrame {
   }
 
   public void replayBranch() {
-	    if (isReplayVariation) return;
-	    int replaySteps = boardRenderer.getReplayBranch();
-	    if (replaySteps <= 0) return; // Bad steps or no branch
-	    int oriBranchLength = boardRenderer.getDisplayedBranchLength();
-	    isReplayVariation = true;
-	    if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
-	    Runnable runnable =
-	        new Runnable() {
-	          public void run() {
-	            int secs = (int) (Lizzie.config.replayBranchIntervalSeconds * 1000);
-	            for (int i = 1; i < replaySteps + 1; i++) {
-	              if (!isReplayVariation) break;
-	              setDisplayedBranchLength(i);
-	              repaint();
-	              try {
-	                Thread.sleep(secs);
-	              } catch (InterruptedException e) {
-	                e.printStackTrace();
-	              }
-	            }
-	            boardRenderer.setDisplayedBranchLength(oriBranchLength);
-	            isReplayVariation = false;
-	            if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
-	          }
-	        };
-	    Thread thread = new Thread(runnable);
-	    thread.start();
-	  }
+    if (isReplayVariation) return;
+    int replaySteps = boardRenderer.getReplayBranch();
+    if (replaySteps <= 0) return; // Bad steps or no branch
+    int oriBranchLength = boardRenderer.getDisplayedBranchLength();
+    isReplayVariation = true;
+    if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+    Runnable runnable =
+        new Runnable() {
+          public void run() {
+            int secs = (int) (Lizzie.config.replayBranchIntervalSeconds * 1000);
+            for (int i = 1; i < replaySteps + 1; i++) {
+              if (!isReplayVariation) break;
+              setDisplayedBranchLength(i);
+              repaint();
+              try {
+                Thread.sleep(secs);
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+            }
+            boardRenderer.setDisplayedBranchLength(oriBranchLength);
+            isReplayVariation = false;
+            if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+          }
+        };
+    Thread thread = new Thread(runnable);
+    thread.start();
+  }
 
   public void DraggedMoved(int x, int y) {
     if (RightClickMenu.isVisible() || RightClickMenu2.isVisible()) {

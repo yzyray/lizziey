@@ -13,7 +13,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-
 import org.json.JSONArray;
 
 public class Menu extends MenuBar {
@@ -140,7 +139,7 @@ public class Menu extends MenuBar {
     alwaysBlack.setText("切换推荐点总是显示黑胜率");
     alwaysBlack.addActionListener(new ItemListeneryzy());
     winrate.add(alwaysBlack);
-    
+
     final JMenuItem isOnmouse = new JMenuItem();
     isOnmouse.setText("切换鼠标移到推荐点上是否显示变化");
     isOnmouse.addActionListener(new ItemListeneryzy());
@@ -280,70 +279,67 @@ public class Menu extends MenuBar {
 
     final JMenu katasugg = new JMenu("KataGo推荐点显示");
     viewMenu.add(katasugg);
-   
 
     final JCheckBoxMenuItem katasugg1 = new JCheckBoxMenuItem("胜率+计算量", false);
-    katasugg.addMenuListener(new MenuListener() {
-   	 
-	      public void menuSelected(MenuEvent e) {
-	        if(!Lizzie.config.showKataGoScoreMean)
-	        	katasugg1.setState(true);
-	        else
-	        	katasugg1.setState(false);
-	      }
+    katasugg.addMenuListener(
+        new MenuListener() {
 
-		@Override
-		public void menuDeselected(MenuEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+          public void menuSelected(MenuEvent e) {
+            if (!Lizzie.config.showKataGoScoreMean) katasugg1.setState(true);
+            else katasugg1.setState(false);
+          }
 
-		@Override
-		public void menuCanceled(MenuEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-	    });
-//    ItemListener itn=   new ItemListeneryzy() {
-//        public void itemStateChanged(ItemEvent e) {
-//
-//            if(katasugg1.getState()){
-//          	  katasugg.add(katasugg1);
-//            } else {
-//          	  katasugg.remove(katasugg1);
-//            }
-//         }
-//      };
-//      
-//    katasugg1.addItemListener(itn);
-   
-    	
-//    final JMenuItem katasugg1 = new JMenuItem("胜率+计算量");
+          @Override
+          public void menuDeselected(MenuEvent e) {
+            // TODO Auto-generated method stub
+
+          }
+
+          @Override
+          public void menuCanceled(MenuEvent e) {
+            // TODO Auto-generated method stub
+
+          }
+        });
+    //    ItemListener itn=   new ItemListeneryzy() {
+    //        public void itemStateChanged(ItemEvent e) {
+    //
+    //            if(katasugg1.getState()){
+    //          	  katasugg.add(katasugg1);
+    //            } else {
+    //          	  katasugg.remove(katasugg1);
+    //            }
+    //         }
+    //      };
+    //
+    //    katasugg1.addItemListener(itn);
+
+    //    final JMenuItem katasugg1 = new JMenuItem("胜率+计算量");
     katasugg.add(katasugg1);
     katasugg1.addActionListener(new ItemListeneryzy());
-    
-    
 
     final JMenuItem katasugg2 = new JMenuItem("目差+计算量");
     katasugg.add(katasugg2);
-  //  katasugg2.addActionListener(new ItemListeneryzy());
-  
-    katasugg2.addActionListener(new ActionListener() {
-         
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			 Lizzie.config.showKataGoScoreMean = true;
-		        Lizzie.config.kataGoNotShowWinrate = true;
-		        Lizzie.config.uiConfig.put("show-katago-scoremean", Lizzie.config.showKataGoScoreMean);
-		        Lizzie.config.uiConfig.put("katago-notshow-winrate", Lizzie.config.kataGoNotShowWinrate);
-		        try {
-		          Lizzie.config.save();
-		        } catch (IOException es) {
-		          // TODO Auto-generated catch block
-		        }
-		}
-      });
+    //  katasugg2.addActionListener(new ItemListeneryzy());
+
+    katasugg2.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.config.showKataGoScoreMean = true;
+            Lizzie.config.kataGoNotShowWinrate = true;
+            Lizzie.config.uiConfig.put("show-katago-scoremean", Lizzie.config.showKataGoScoreMean);
+            Lizzie.config.uiConfig.put(
+                "katago-notshow-winrate", Lizzie.config.kataGoNotShowWinrate);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
 
     final JMenuItem katasugg3 = new JMenuItem("胜率+计算量+目差");
     katasugg.add(katasugg3);
@@ -730,8 +726,6 @@ public class Menu extends MenuBar {
                   });
         });
   }
-  
-
 
   class ItemListeneryzy implements ActionListener {
     public void actionPerformed(ActionEvent e) {
@@ -1311,15 +1305,16 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("切换鼠标移到")) {
-    	  Lizzie.config.showSuggestionVaritions = !Lizzie.config.showSuggestionVaritions;
-          Lizzie.config.uiConfig.put("show-suggestion-varitions", Lizzie.config.showSuggestionVaritions);
-          try {
-            Lizzie.config.save();
-          } catch (IOException es) {
-            // TODO Auto-generated catch block
-          }
-          return;
+        Lizzie.config.showSuggestionVaritions = !Lizzie.config.showSuggestionVaritions;
+        Lizzie.config.uiConfig.put(
+            "show-suggestion-varitions", Lizzie.config.showSuggestionVaritions);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
         }
+        return;
+      }
       if (menuItem.getText().startsWith("显示双方")) {
         Lizzie.frame.winrateGraph.mode = 1;
         return;

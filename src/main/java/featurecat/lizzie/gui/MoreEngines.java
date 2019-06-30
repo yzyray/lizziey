@@ -6,8 +6,6 @@ import featurecat.lizzie.rules.Board;
 import featurecat.lizzie.rules.Movelistwr;
 import featurecat.lizzie.rules.Stone;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -52,7 +50,7 @@ public class MoreEngines extends JPanel {
   JCheckBox checkWhite = new JCheckBox();
 
   public MoreEngines() {
-   // super(new BorderLayout());
+    // super(new BorderLayout());
     this.setLayout(null);
     dataModel = getTableModel();
     table = new JTable(dataModel);
@@ -65,31 +63,32 @@ public class MoreEngines extends JPanel {
     TableCellRenderer tcr = new ColorTableCellRenderer();
     table.setDefaultRenderer(Object.class, tcr);
     table.setRowHeight(20);
-   
+
     tablepanel = new JPanel(new BorderLayout());
     tablepanel.setBounds(0, 0, 500, 100);
     this.add(tablepanel, BorderLayout.SOUTH);
     selectpanel.setBounds(0, 100, 500, 300);
-    //测试到这
+    // 测试到这
     this.add(selectpanel, BorderLayout.NORTH);
     scrollpane = new JScrollPane(table);
 
-//    timer =
-//        new Timer(
-//            Lizzie.config.config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec")
-//                * 30,
-//            new ActionListener() {
-//              public void actionPerformed(ActionEvent evt) {
-//                dataModel.getColumnCount();
-//                table.validate();
-//                table.updateUI();
-//                try {
-//                  Lizzie.board.updateMovelist();
-//                } catch (Exception e) {
-//                }
-//              }
-//            });
-//    timer.start();
+    //    timer =
+    //        new Timer(
+    //
+    // Lizzie.config.config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec")
+    //                * 30,
+    //            new ActionListener() {
+    //              public void actionPerformed(ActionEvent evt) {
+    //                dataModel.getColumnCount();
+    //                table.validate();
+    //                table.updateUI();
+    //                try {
+    //                  Lizzie.board.updateMovelist();
+    //                } catch (Exception e) {
+    //                }
+    //              }
+    //            });
+    //    timer.start();
     tablepanel.add(scrollpane);
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setFillsViewportHeight(true);
