@@ -86,6 +86,7 @@ public class Leelaz {
 	public boolean started = false;
 	private boolean isLoaded = false;
 	private boolean isCheckingVersion;
+	  private boolean isCheckingName;
 
 	// for Multiple Engine
 	public String engineCommand;
@@ -145,9 +146,9 @@ public class Leelaz {
 
 		printCommunication = config.getBoolean("print-comms");
 		gtpConsole = printCommunication;
-		if (engineCommand.contains("main")) {
-			this.isKatago = true;
-		}
+		if (engineCommand.toLowerCase().contains("override-version")) {
+		      this.isKatago = true;
+		    }
 		// maxAnalyzeTimeMillis = MINUTE * config.getInt("max-analyze-time-minutes");
 
 		// command string for starting the engine
@@ -254,6 +255,7 @@ public class Leelaz {
 		// Send a version request to check that we have a supported version
 		// Response handled in parseLine
 		isCheckingVersion = true;
+		isCheckingName = true;
 		//sendCommand("turnon");
 		sendCommand("version");
 		sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
@@ -725,7 +727,12 @@ public class Leelaz {
 					if (isInputCommand) {
 						isInputCommand = false;
 					}
-				} else if (isCheckingVersion) {
+				}else if (isCheckingName) {
+			          if (params[1].startsWith("KataGo")) {
+			              this.isKatago = true;
+			            }
+				}
+				else if (isCheckingVersion && !isKatago) {
 					String[] ver = params[1].split("\\.");
 					int minor = Integer.parseInt(ver[1]);
 					// Gtp support added in version 15
