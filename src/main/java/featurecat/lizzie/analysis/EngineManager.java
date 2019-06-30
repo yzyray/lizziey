@@ -368,6 +368,10 @@ public class EngineManager {
     // Lizzie.board.saveMoveNumber();
     Leelaz newEng = engineList.get(index);
     newEng.played = false;
+    newEng.blackResignMoveCounts = 0;
+    newEng.whiteResignMoveCounts = 0;
+    newEng.resigned = false;
+    newEng.isResigning = false;
     ArrayList<Movelist> mv = Lizzie.board.getmovelist();
     if (!newEng.isStarted()) {
       try {
@@ -391,6 +395,10 @@ public class EngineManager {
     // Lizzie.board.saveMoveNumber();
     Leelaz newEng = engineList.get(index);
     newEng.played = false;
+    newEng.blackResignMoveCounts = 0;
+    newEng.whiteResignMoveCounts = 0;
+    newEng.resigned = false;
+    newEng.isResigning = false;
     ArrayList<Movelist> mv = Lizzie.board.getmovelist();
     if (!newEng.isStarted()) {
       try {

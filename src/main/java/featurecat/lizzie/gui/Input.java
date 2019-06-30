@@ -57,7 +57,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
     if (e.getButton() == MouseEvent.BUTTON1) // left click
     {
-      if (e.getClickCount() == 2) { // TODO: Maybe need to delay check    	
+      if (e.getClickCount() == 2) { // TODO: Maybe need to delay check
         Lizzie.frame.onDoubleClicked(e.getX(), e.getY());
       } else {
         if (insert == 0) {

@@ -1137,9 +1137,9 @@ public class Leelaz {
 		if (isResigning) {
 			return;
 		}
-		if (this.resigned) {
+		if (resigned) {
 			isResigning = true;
-			resigned = true;
+			resigned = false;
 		}
 		Lizzie.gtpConsole.addLine(currentEnginename + " 认输");
 		Lizzie.board.updateComment();
@@ -1366,6 +1366,7 @@ public class Leelaz {
 		if (!resigned || isResigning)
 			return;
 		isResigning = true;
+		resigned=false;
 		Lizzie.gtpConsole.addLine(currentEnginename + " 认输");
 
 		Lizzie.board.updateComment();
@@ -1642,7 +1643,8 @@ public class Leelaz {
 	}
 
 	private void notifyAutoPK() {
-
+if(resigned)
+{return;}
 		if (Lizzie.frame.toolbar.isPkStop) {
 			nameCmd();
 			return;
@@ -1707,8 +1709,6 @@ public class Leelaz {
 					played = true;
 					// if(playanyway)
 					// playanyway=false;
-					if (resigned)
-						resigned = false;
 					if ((curWR < Lizzie.frame.toolbar.pkResginWinrate)&&Lizzie.board.getHistory().getMoveNumber()>30) {
 						if (Lizzie.board.getHistory().isBlacksTurn())
 							blackResignMoveCounts = blackResignMoveCounts + 1;
@@ -1733,17 +1733,13 @@ public class Leelaz {
 							Lizzie.board.place(coords[0], coords[1]);
 						}
 						resigned = true;
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
-						// pkResign();
+						
+						 pkResign();
 						// System.out.println("认输1"+this.currentEngineN);
 						nameCmd();
 						return;
 					}
-					if (isResigning)
-						isResigning = false;
+					
 					if (bestMoves.get(0).coordinate.equals("pass")) {
 						Optional<int[]> passStep = Optional.empty();
 						Optional<int[]> lastMove = Lizzie.board.getLastMove();
@@ -1751,10 +1747,6 @@ public class Leelaz {
 							Lizzie.board.pass();
 							doublePass = true;
 							resigned = true;
-							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
-							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
-							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
-							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
 							nameCmd();
 							return;
 						}
@@ -1823,8 +1815,6 @@ public class Leelaz {
 					played = true;
 					// if(playanyway)
 					// playanyway=false;
-					if (resigned)
-						resigned = false;
 					if (curWR < Lizzie.frame.toolbar.pkResginWinrate&&Lizzie.board.getHistory().getMoveNumber()>30) {
 						if (Lizzie.board.getHistory().isBlacksTurn())
 							blackResignMoveCounts = blackResignMoveCounts + 1;
@@ -1848,18 +1838,13 @@ public class Leelaz {
 							Lizzie.board.place(coords[0], coords[1]);
 						}
 						resigned = true;
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
 						// pkResign();
 						// System.out.println("认输2"+this.currentEngineN);
 						nameCmd();
 
 						return;
 					}
-					if (isResigning)
-						isResigning = false;
+					
 					if (bestMoves.get(0).coordinate.equals("pass")) {
 						Optional<int[]> passStep = Optional.empty();
 						Optional<int[]> lastMove = Lizzie.board.getLastMove();
@@ -1867,10 +1852,6 @@ public class Leelaz {
 							Lizzie.board.pass();
 							doublePass = true;
 							resigned = true;
-							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
-							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
-							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
-							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
 							nameCmd();
 							return;
 						}
@@ -1941,8 +1922,6 @@ public class Leelaz {
 					played = true;
 					// if(playanyway)
 					// playanyway=false;
-					if (resigned)
-						resigned = false;
 					if (curWR < Lizzie.frame.toolbar.pkResginWinrate&&Lizzie.board.getHistory().getMoveNumber()>30) {
 						if (Lizzie.board.getHistory().isBlacksTurn())
 							blackResignMoveCounts = blackResignMoveCounts + 1;
@@ -1966,17 +1945,12 @@ public class Leelaz {
 							Lizzie.board.place(coords[0], coords[1]);
 						}
 						resigned = true;
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
 						// pkResign();
 						// System.out.println("认输3"+this.currentEngineN);
 						nameCmd();
 						return;
 					}
-					if (isResigning)
-						isResigning = false;
+				
 					if (bestMoves.get(0).coordinate.equals("pass")) {
 
 						Optional<int[]> passStep = Optional.empty();
@@ -1985,10 +1959,6 @@ public class Leelaz {
 							Lizzie.board.pass();
 							doublePass = true;
 							resigned = true;
-							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).blackResignMoveCounts = 0;
-							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).whiteResignMoveCounts = 0;
-							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).whiteResignMoveCounts = 0;
-							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).blackResignMoveCounts = 0;
 							nameCmd();
 							return;
 						}
