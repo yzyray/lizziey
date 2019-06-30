@@ -86,6 +86,7 @@ public class Lizzie {
     analysisframe = AnalysisFrame.createAnalysisDialog();
     analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", true));
     analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
+    frame.refresh();
   }
 
   public static void setLookAndFeel() {

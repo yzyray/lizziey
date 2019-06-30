@@ -46,7 +46,7 @@ public class Menu extends MenuBar {
     JPanel bar = new JPanel(new BorderLayout());
     bar.setBorder(new EmptyBorder(0, 0, -1, -1));
     final MenuBar menuBar = new MenuBar();
-    bar.setBounds(0, 0, 450, 12);
+    //bar.setBounds(0, 0, 450, 12);
 
     menuBar.setColor(hsbColor);
     this.add(bar);
@@ -481,12 +481,26 @@ public class Menu extends MenuBar {
     // aboutItem.setMnemonic('A');
     commetdown.addActionListener(new ItemListeneryzy());
     gameMenu.add(commetdown);
+    
+    final JMenuItem setMain = new JMenuItem();
+    setMain.setText("设为主分支");
+    setMain.addActionListener(new ItemListeneryzy());
+    gameMenu.add(setMain);
+    
+    setMain.addActionListener(
+            new ActionListener() {
+              public void actionPerformed(ActionEvent e) {
+                while (Lizzie.board.setAsMainBranch()) ;
+              }
+            });
 
     final JMenuItem branchStart = new JMenuItem();
     branchStart.setText("返回主分支(CTRL+左)");
     // aboutItem.setMnemonic('A');
     branchStart.addActionListener(new ItemListeneryzy());
     gameMenu.add(branchStart);
+    
+   
 
     final JMenu analyMenu = new JMenu("分析 ", false);
     analyMenu.setText(" 分析  ");

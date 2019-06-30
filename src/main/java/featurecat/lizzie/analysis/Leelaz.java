@@ -730,6 +730,7 @@ public class Leelaz {
 				}else if (isCheckingName) {
 			          if (params[1].startsWith("KataGo")) {
 			              this.isKatago = true;
+			              this.version=17;
 			            }
 				}
 				else if (isCheckingVersion && !isKatago) {
@@ -1754,6 +1755,7 @@ if(resigned)
 						if (!Lizzie.frame.toolbar.isSameEngine
 								&& this.currentEngineN == Lizzie.frame.toolbar.engineBlack
 								|| Lizzie.frame.toolbar.isSameEngine && Lizzie.board.getData().blackToPlay) {
+							if(!Lizzie.frame.toolbar.isSameEngine)
 							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B",
 									"pass");
 							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B",
@@ -1765,6 +1767,7 @@ if(resigned)
 						}
 
 						else {
+							if(!Lizzie.frame.toolbar.isSameEngine)
 							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W",
 									"pass");
 							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W",
@@ -1782,6 +1785,7 @@ if(resigned)
 					// nameCmd();
 					if (!Lizzie.frame.toolbar.isSameEngine && this.currentEngineN == Lizzie.frame.toolbar.engineBlack
 							|| Lizzie.frame.toolbar.isSameEngine && Lizzie.board.getData().blackToPlay) {
+						if(!Lizzie.frame.toolbar.isSameEngine)
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B",
 								Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B",
@@ -1795,6 +1799,7 @@ if(resigned)
 
 					else { //
 							// Lizzie.leelaz.isPondering=true;
+						if(!Lizzie.frame.toolbar.isSameEngine)
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W",
 								Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W",
@@ -1858,6 +1863,7 @@ if(resigned)
 						if (!Lizzie.frame.toolbar.isSameEngine
 								&& this.currentEngineN == Lizzie.frame.toolbar.engineBlack
 								|| Lizzie.frame.toolbar.isSameEngine && Lizzie.board.getData().blackToPlay) {
+							if(!Lizzie.frame.toolbar.isSameEngine)
 							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B",
 									"pass");
 							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B",
@@ -1869,6 +1875,7 @@ if(resigned)
 						}
 
 						else {
+							if(!Lizzie.frame.toolbar.isSameEngine)
 							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W",
 									"pass");
 							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W",
@@ -1886,6 +1893,7 @@ if(resigned)
 					// nameCmd();
 					if (!Lizzie.frame.toolbar.isSameEngine && this.currentEngineN == Lizzie.frame.toolbar.engineBlack
 							|| Lizzie.frame.toolbar.isSameEngine && Lizzie.board.getData().blackToPlay) {
+						if(!Lizzie.frame.toolbar.isSameEngine)
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B",
 								Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B",
@@ -1901,6 +1909,7 @@ if(resigned)
 
 					else {
 						// Lizzie.leelaz.isPondering=true;
+						if(!Lizzie.frame.toolbar.isSameEngine)
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W",
 								Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W",
@@ -1965,6 +1974,7 @@ if(resigned)
 						if (!Lizzie.frame.toolbar.isSameEngine
 								&& this.currentEngineN == Lizzie.frame.toolbar.engineBlack
 								|| Lizzie.frame.toolbar.isSameEngine && Lizzie.board.getData().blackToPlay) {
+							if(!Lizzie.frame.toolbar.isSameEngine)
 							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B",
 									"pass");
 							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B",
@@ -1976,6 +1986,7 @@ if(resigned)
 						}
 
 						else {
+							if(!Lizzie.frame.toolbar.isSameEngine)
 							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W",
 									"pass");
 							Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W",
@@ -1993,6 +2004,7 @@ if(resigned)
 					// nameCmd();
 					if (!Lizzie.frame.toolbar.isSameEngine && this.currentEngineN == Lizzie.frame.toolbar.engineBlack
 							|| Lizzie.frame.toolbar.isSameEngine && Lizzie.board.getData().blackToPlay) {
+						if(!Lizzie.frame.toolbar.isSameEngine)
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B",
 								Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B",
@@ -2006,6 +2018,7 @@ if(resigned)
 
 					else {
 						// Lizzie.leelaz.isPondering=true;
+						if(!Lizzie.frame.toolbar.isSameEngine)
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W",
 								Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W",
