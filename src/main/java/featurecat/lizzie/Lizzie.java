@@ -6,6 +6,7 @@ import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.gui.CountResults;
 import featurecat.lizzie.gui.GtpConsolePane;
 import featurecat.lizzie.gui.LizzieFrame;
+import featurecat.lizzie.gui.MoreEngines;
 import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Board;
 import java.awt.Font;
@@ -23,6 +24,7 @@ public class Lizzie {
   public static JDialog analysisframe;
   public static AnalysisFrame analysisFrame;
   public static JDialog movelistframe;
+  public static JDialog moreEngines;
   public static MovelistFrame movelistFrame;
   public static CountResults countResults;
   public static Board board;
@@ -41,6 +43,8 @@ public class Lizzie {
     board = new Board();
 
     movelistframe = MovelistFrame.createBadmovesDialog();
+    moreEngines=MoreEngines.createBadmovesDialog();
+    moreEngines.setVisible(true);
     //   movelistframe.setLocation(-7, 302);
     movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", true));
     movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
