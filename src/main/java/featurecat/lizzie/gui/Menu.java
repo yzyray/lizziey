@@ -46,7 +46,7 @@ public class Menu extends MenuBar {
     JPanel bar = new JPanel(new BorderLayout());
     bar.setBorder(new EmptyBorder(0, 0, -1, -1));
     final MenuBar menuBar = new MenuBar();
-    //bar.setBounds(0, 0, 450, 12);
+    // bar.setBounds(0, 0, 450, 12);
 
     menuBar.setColor(hsbColor);
     this.add(bar);
@@ -110,10 +110,21 @@ public class Menu extends MenuBar {
 
     final JMenuItem exitItem = new JMenuItem();
     exitItem.setText("强制退出");
-    // exitItem.setMnemonic('E');
-    // exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK));
     exitItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(exitItem);
+
+    final JMenuItem exit = new JMenuItem();
+    exit.setText("退出");
+    exit.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.shutdown();
+          }
+        });
+    fileMenu.add(exit);
 
     final JMenu viewMenu = new JMenu();
     viewMenu.setText(" 显示  ");
@@ -135,32 +146,32 @@ public class Menu extends MenuBar {
     final JMenu winrate = new JMenu("胜率图和推荐点");
     viewMenu.add(winrate);
 
-    final JMenuItem alwaysBlack = new JMenuItem();
-    alwaysBlack.setText("切换推荐点总是显示黑胜率");
+    final JCheckBoxMenuItem alwaysBlack = new JCheckBoxMenuItem();
+    alwaysBlack.setText("总是显示黑胜率");
     alwaysBlack.addActionListener(new ItemListeneryzy());
     winrate.add(alwaysBlack);
 
-    final JMenuItem isOnmouse = new JMenuItem();
-    isOnmouse.setText("切换鼠标移到推荐点上是否显示变化");
+    final JCheckBoxMenuItem isOnmouse = new JCheckBoxMenuItem();
+    isOnmouse.setText("鼠标所指推荐点显示变化图");
     isOnmouse.addActionListener(new ItemListeneryzy());
     winrate.add(isOnmouse);
 
-    final JMenuItem winratemode1 = new JMenuItem();
+    final JCheckBoxMenuItem winratemode1 = new JCheckBoxMenuItem();
     winratemode1.setText("显示双方胜率图");
     winratemode1.addActionListener(new ItemListeneryzy());
     winrate.add(winratemode1);
 
-    final JMenuItem winratemode0 = new JMenuItem();
+    final JCheckBoxMenuItem winratemode0 = new JCheckBoxMenuItem();
     winratemode0.setText("显示黑方胜率图");
     winratemode0.addActionListener(new ItemListeneryzy());
     winrate.add(winratemode0);
 
-    final JMenuItem blunder = new JMenuItem();
-    blunder.setText("显示/关闭柱状失误条");
+    final JCheckBoxMenuItem blunder = new JCheckBoxMenuItem();
+    blunder.setText("显示柱状失误条");
     blunder.addActionListener(new ItemListeneryzy());
     winrate.add(blunder);
 
-    final JMenuItem coordsItem = new JMenuItem();
+    final JCheckBoxMenuItem coordsItem = new JCheckBoxMenuItem();
     coordsItem.setText("坐标（C）");
     coordsItem.addActionListener(new ItemListeneryzy());
     viewMenu.add(coordsItem);
@@ -168,98 +179,117 @@ public class Menu extends MenuBar {
     final JMenu moveMenu = new JMenu("手数(M)");
     viewMenu.add(moveMenu);
 
-    final JMenuItem noItem = new JMenuItem();
+    final JCheckBoxMenuItem noItem = new JCheckBoxMenuItem();
     noItem.setText("不显示");
     noItem.addActionListener(new ItemListeneryzy());
     moveMenu.add(noItem);
 
-    final JMenuItem oneItem = new JMenuItem();
+    final JCheckBoxMenuItem oneItem = new JCheckBoxMenuItem();
     oneItem.setText("最近1手");
     oneItem.addActionListener(new ItemListeneryzy());
     moveMenu.add(oneItem);
 
-    final JMenuItem fiveItem = new JMenuItem();
+    final JCheckBoxMenuItem fiveItem = new JCheckBoxMenuItem();
     fiveItem.setText("最近5手");
     fiveItem.addActionListener(new ItemListeneryzy());
     moveMenu.add(fiveItem);
 
-    final JMenuItem tenItem = new JMenuItem();
+    final JCheckBoxMenuItem tenItem = new JCheckBoxMenuItem();
     tenItem.setText("最近10手");
     tenItem.addActionListener(new ItemListeneryzy());
     moveMenu.add(tenItem);
 
-    final JMenuItem allItem = new JMenuItem();
+    final JCheckBoxMenuItem allItem = new JCheckBoxMenuItem();
     allItem.setText("全部");
     allItem.addActionListener(new ItemListeneryzy());
     moveMenu.add(allItem);
 
-    final JMenuItem anymove = new JMenuItem();
+    final JCheckBoxMenuItem anymove = new JCheckBoxMenuItem();
     anymove.setText("自定义");
     anymove.addActionListener(new ItemListeneryzy());
     moveMenu.add(anymove);
 
-    final JMenuItem subItem = new JMenuItem();
+    final JCheckBoxMenuItem alwaysone = new JCheckBoxMenuItem();
+    alwaysone.setText("总是从1开始显示");
+    alwaysone.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.config.showMoveNumberFromOne = !Lizzie.config.showMoveNumberFromOne;
+            Lizzie.config.uiConfig.put("movenumber-from-one", Lizzie.config.showMoveNumberFromOne);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    moveMenu.add(alwaysone);
+
+    final JCheckBoxMenuItem subItem = new JCheckBoxMenuItem();
     subItem.setText("放大小棋盘（ALT+V）");
     subItem.addActionListener(new ItemListeneryzy());
     viewMenu.add(subItem);
 
-    final JMenuItem largewin = new JMenuItem();
+    final JCheckBoxMenuItem largewin = new JCheckBoxMenuItem();
     largewin.setText("放大胜率图(Ctrl+W)");
     largewin.addActionListener(new ItemListeneryzy());
     viewMenu.add(largewin);
 
-    final JMenuItem appentComment = new JMenuItem();
+    final JCheckBoxMenuItem appentComment = new JCheckBoxMenuItem();
     appentComment.setText("记录胜率到评论中");
     appentComment.addActionListener(new ItemListeneryzy());
     viewMenu.add(appentComment);
 
-    final JMenuItem alwaysontop = new JMenuItem();
-    alwaysontop.setText("总在最前(Q)");
+    final JCheckBoxMenuItem alwaysontop = new JCheckBoxMenuItem();
+    alwaysontop.setText("总在最前");
     alwaysontop.addActionListener(new ItemListeneryzy());
     viewMenu.add(alwaysontop);
     viewMenu.addSeparator();
-    final JMenuItem toolMenu = new JMenuItem("底部工具栏"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem toolMenu = new JCheckBoxMenuItem("底部工具栏"); // 创建“字体”子菜单
     viewMenu.add(toolMenu); // 添加到“编辑”菜单
     toolMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
-    final JMenuItem bigtoolMenu = new JMenuItem("详细工具栏");
+    final JCheckBoxMenuItem bigtoolMenu = new JCheckBoxMenuItem("详细工具栏");
     viewMenu.add(bigtoolMenu);
     bigtoolMenu.addActionListener(new ItemListeneryzy());
+
+    final JCheckBoxMenuItem closeTool = new JCheckBoxMenuItem("关闭工具栏"); // 创建“字体”子菜单
+    viewMenu.add(closeTool); // 添加到“编辑”菜单
+    closeTool.addActionListener(new ItemListeneryzy()); // 添加动作监听器     viewMenu.addSeparator();
 
     final JMenuItem bigtoolConf = new JMenuItem("设置详细工具栏顺序");
     viewMenu.add(bigtoolConf);
     bigtoolConf.addActionListener(new ItemListeneryzy());
-
-    final JMenuItem closeTool = new JMenuItem("关闭工具栏"); // 创建“字体”子菜单
-    viewMenu.add(closeTool); // 添加到“编辑”菜单
-    closeTool.addActionListener(new ItemListeneryzy()); // 添加动作监听器     viewMenu.addSeparator();
     viewMenu.addSeparator();
 
-    final JMenuItem subboard = new JMenuItem("小棋盘"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem subboard = new JCheckBoxMenuItem("小棋盘"); // 创建“字体”子菜单
     viewMenu.add(subboard); // 添加到“编辑”菜单
     subboard.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
-    final JMenuItem winratetMenu = new JMenuItem("胜率面板(W)"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem winratetMenu = new JCheckBoxMenuItem("胜率面板(W)"); // 创建“字体”子菜单
     viewMenu.add(winratetMenu); // 添加到“编辑”菜单
     winratetMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
-    final JMenuItem commitMenu = new JMenuItem("评论面板(T)"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem commitMenu = new JCheckBoxMenuItem("评论面板(T)"); // 创建“字体”子菜单
     viewMenu.add(commitMenu); // 添加到“编辑”菜单
     commitMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
-    final JMenuItem branch = new JMenuItem("分支面板(G)"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem branch = new JCheckBoxMenuItem("分支面板(G)"); // 创建“字体”子菜单
     viewMenu.add(branch); // 添加到“编辑”菜单
     branch.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
-    final JMenuItem topleft = new JMenuItem("左上角面板"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem topleft = new JCheckBoxMenuItem("左上角面板"); // 创建“字体”子菜单
     viewMenu.add(topleft); // 添加到“编辑”菜单
     topleft.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
-    final JMenuItem bottomleft = new JMenuItem("左下角状态"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem bottomleft = new JCheckBoxMenuItem("左下角状态"); // 创建“字体”子菜单
     viewMenu.add(bottomleft); // 添加到“编辑”菜单
     bottomleft.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
-    final JMenuItem gtpMenu = new JMenuItem("命令窗口(E)"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem gtpMenu = new JCheckBoxMenuItem("命令窗口(E)"); // 创建“字体”子菜单
     viewMenu.add(gtpMenu); // 添加到“编辑”菜单
     gtpMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
     viewMenu.addSeparator();
@@ -281,26 +311,7 @@ public class Menu extends MenuBar {
     viewMenu.add(katasugg);
 
     final JCheckBoxMenuItem katasugg1 = new JCheckBoxMenuItem("胜率+计算量", false);
-    katasugg.addMenuListener(
-        new MenuListener() {
 
-          public void menuSelected(MenuEvent e) {
-            if (!Lizzie.config.showKataGoScoreMean) katasugg1.setState(true);
-            else katasugg1.setState(false);
-          }
-
-          @Override
-          public void menuDeselected(MenuEvent e) {
-            // TODO Auto-generated method stub
-
-          }
-
-          @Override
-          public void menuCanceled(MenuEvent e) {
-            // TODO Auto-generated method stub
-
-          }
-        });
     //    ItemListener itn=   new ItemListeneryzy() {
     //        public void itemStateChanged(ItemEvent e) {
     //
@@ -318,7 +329,7 @@ public class Menu extends MenuBar {
     katasugg.add(katasugg1);
     katasugg1.addActionListener(new ItemListeneryzy());
 
-    final JMenuItem katasugg2 = new JMenuItem("目差+计算量");
+    final JCheckBoxMenuItem katasugg2 = new JCheckBoxMenuItem("目差+计算量");
     katasugg.add(katasugg2);
     //  katasugg2.addActionListener(new ItemListeneryzy());
 
@@ -341,58 +352,233 @@ public class Menu extends MenuBar {
           }
         });
 
-    final JMenuItem katasugg3 = new JMenuItem("胜率+计算量+目差");
+    final JCheckBoxMenuItem katasugg3 = new JCheckBoxMenuItem("胜率+计算量+目差");
     katasugg.add(katasugg3);
     katasugg3.addActionListener(new ItemListeneryzy());
 
     final JMenu kataboard = new JMenu("KataGo目差显示");
     viewMenu.add(kataboard);
 
-    final JMenuItem kataboardmean = new JMenuItem("目差");
+    final JCheckBoxMenuItem kataboardmean = new JCheckBoxMenuItem("目差");
     kataboard.add(kataboardmean);
     kataboardmean.addActionListener(new ItemListeneryzy());
 
-    final JMenuItem kataboardboard = new JMenuItem("盘面差");
+    final JCheckBoxMenuItem kataboardboard = new JCheckBoxMenuItem("盘面差");
     kataboard.add(kataboardboard);
     kataboardboard.addActionListener(new ItemListeneryzy());
 
     final JMenu katameanalways = new JMenu("KataGo目差视角");
     viewMenu.add(katameanalways);
 
-    final JMenuItem katameanblack = new JMenuItem("永远为黑视角");
+    final JCheckBoxMenuItem katameanblack = new JCheckBoxMenuItem("永远为黑视角");
     katameanalways.add(katameanblack);
     katameanblack.addActionListener(new ItemListeneryzy());
 
-    final JMenuItem katameanblackwhite = new JMenuItem("黑白交替视角");
+    final JCheckBoxMenuItem katameanblackwhite = new JCheckBoxMenuItem("黑白交替视角");
     katameanalways.add(katameanblackwhite);
     katameanblackwhite.addActionListener(new ItemListeneryzy());
 
     final JMenu kataEstimate = new JMenu("KataGo评估显示");
     viewMenu.add(kataEstimate);
 
-    final JMenuItem kataEstimate1 = new JMenuItem("关闭评估");
+    final JCheckBoxMenuItem kataEstimate1 = new JCheckBoxMenuItem("关闭评估");
     kataEstimate.add(kataEstimate1);
     kataEstimate1.addActionListener(new ItemListeneryzy());
 
-    final JMenuItem kataEstimate2 = new JMenuItem("显示在大棋盘上");
+    final JCheckBoxMenuItem kataEstimate2 = new JCheckBoxMenuItem("显示在大棋盘上");
     kataEstimate.add(kataEstimate2);
     kataEstimate2.addActionListener(new ItemListeneryzy());
 
-    final JMenuItem kataEstimate3 = new JMenuItem("显示在小棋盘上");
+    final JCheckBoxMenuItem kataEstimate3 = new JCheckBoxMenuItem("显示在小棋盘上");
     kataEstimate.add(kataEstimate3);
     kataEstimate3.addActionListener(new ItemListeneryzy());
 
-    final JMenuItem kataEstimate4 = new JMenuItem("显示在大小棋盘上");
+    final JCheckBoxMenuItem kataEstimate4 = new JCheckBoxMenuItem("显示在大小棋盘上");
     kataEstimate.add(kataEstimate4);
     kataEstimate4.addActionListener(new ItemListeneryzy());
 
-    final JMenuItem kataEstimate5 = new JMenuItem("以方块大小表示占有率");
+    kataEstimate.addSeparator();
+
+    final JCheckBoxMenuItem kataEstimate5 = new JCheckBoxMenuItem("以方块大小表示占有率");
     kataEstimate.add(kataEstimate5);
     kataEstimate5.addActionListener(new ItemListeneryzy());
 
-    final JMenuItem kataEstimate6 = new JMenuItem("以方块透明度表示占有率");
+    final JCheckBoxMenuItem kataEstimate6 = new JCheckBoxMenuItem("以方块透明度表示占有率");
     kataEstimate.add(kataEstimate6);
     kataEstimate6.addActionListener(new ItemListeneryzy());
+
+    viewMenu.addMenuListener(
+        new MenuListener() {
+
+          public void menuSelected(MenuEvent e) {
+            if (!Lizzie.config.showKataGoScoreMean) katasugg1.setState(true);
+            else katasugg1.setState(false);
+            if (Lizzie.config.showKataGoScoreMean && Lizzie.config.kataGoNotShowWinrate)
+              katasugg2.setState(true);
+            else katasugg2.setState(false);
+            if (Lizzie.config.showKataGoScoreMean && !Lizzie.config.kataGoNotShowWinrate)
+              katasugg3.setState(true);
+            else katasugg3.setState(false);
+            if (Lizzie.config.showKataGoBoardScoreMean) {
+              kataboardmean.setState(false);
+              kataboardboard.setState(true);
+            } else {
+              kataboardmean.setState(true);
+              kataboardboard.setState(false);
+            }
+
+            if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
+              katameanblack.setState(true);
+              katameanblackwhite.setState(false);
+            } else {
+              katameanblack.setState(false);
+              katameanblackwhite.setState(true);
+            }
+            if (Lizzie.config.showKataGoEstimate) {
+              kataEstimate1.setState(false);
+              if (Lizzie.config.showKataGoEstimateOnMainbord
+                  && Lizzie.config.showKataGoEstimateOnSubbord) {
+                kataEstimate4.setState(true);
+                kataEstimate2.setState(false);
+                kataEstimate3.setState(false);
+              } else if (Lizzie.config.showKataGoEstimateOnMainbord) {
+                kataEstimate2.setState(true);
+                kataEstimate4.setState(false);
+                kataEstimate3.setState(false);
+              } else if (Lizzie.config.showKataGoEstimateOnSubbord) {
+                kataEstimate3.setState(true);
+                kataEstimate2.setState(false);
+                kataEstimate4.setState(false);
+              }
+
+            } else {
+              kataEstimate1.setState(true);
+              kataEstimate2.setState(false);
+              kataEstimate3.setState(false);
+              kataEstimate4.setState(false);
+            }
+
+            if (Lizzie.config.showKataGoEstimateBySize) {
+              kataEstimate5.setState(true);
+              kataEstimate6.setState(false);
+            } else {
+              kataEstimate6.setState(true);
+              kataEstimate5.setState(false);
+            }
+            if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black"))
+              alwaysBlack.setState(true);
+            else alwaysBlack.setState(false);
+            if (Lizzie.config.showSuggestionVaritions) isOnmouse.setState(true);
+            else isOnmouse.setState(false);
+            if (Lizzie.frame.winrateGraph.mode == 1) {
+              winratemode1.setState(true);
+              winratemode0.setState(false);
+            } else {
+              winratemode1.setState(false);
+              winratemode0.setState(true);
+            }
+            if (Lizzie.config.showBlunderBar) blunder.setState(true);
+            else blunder.setState(false);
+
+            if (Lizzie.config.showWinrate && Lizzie.config.showLargeWinrate())
+              largewin.setState(true);
+            else largewin.setState(false);
+            if (Lizzie.config.showSubBoard && Lizzie.config.showLargeSubBoard())
+              subItem.setState(true);
+            else subItem.setState(false);
+            if (Lizzie.config.appendWinrateToComment) appentComment.setState(true);
+            else appentComment.setState(false);
+
+            if (Lizzie.config.uiConfig.optBoolean("mains-always-ontop", false))
+              alwaysontop.setState(true);
+            else alwaysontop.setState(false);
+            if (Lizzie.frame.toolbarHeight == 26) toolMenu.setState(true);
+            else toolMenu.setState(false);
+            if (Lizzie.frame.toolbarHeight == 70) bigtoolMenu.setState(true);
+            else bigtoolMenu.setState(false);
+            if (Lizzie.frame.toolbarHeight == 0) closeTool.setState(true);
+            else closeTool.setState(false);
+
+            if (Lizzie.config.showSubBoard) subboard.setState(true);
+            else subboard.setState(false);
+            if (Lizzie.config.showWinrate) winratetMenu.setState(true);
+            else winratetMenu.setState(false);
+            if (Lizzie.config.showComment) commitMenu.setState(true);
+            else commitMenu.setState(false);
+            if (Lizzie.config.showVariationGraph) branch.setState(true);
+            else branch.setState(false);
+            if (Lizzie.config.showCaptured) topleft.setState(true);
+            else topleft.setState(false);
+            if (Lizzie.config.showStatus) bottomleft.setState(true);
+            else bottomleft.setState(false);
+            if (Lizzie.gtpConsole.isVisible()) gtpMenu.setState(true);
+            else gtpMenu.setState(false);
+            if (Lizzie.config.showCoordinates) coordsItem.setState(true);
+            else coordsItem.setState(false);
+            switch (Lizzie.config.allowMoveNumber) {
+              case 0:
+                noItem.setState(true);
+                oneItem.setState(false);
+                fiveItem.setState(false);
+                tenItem.setState(false);
+                allItem.setState(false);
+                anymove.setState(false);
+                break;
+              case 1:
+                noItem.setState(false);
+                oneItem.setState(true);
+                fiveItem.setState(false);
+                tenItem.setState(false);
+                allItem.setState(false);
+                anymove.setState(false);
+                break;
+              case 5:
+                noItem.setState(false);
+                oneItem.setState(false);
+                fiveItem.setState(true);
+                tenItem.setState(false);
+                allItem.setState(false);
+                anymove.setState(false);
+                break;
+              case 10:
+                noItem.setState(false);
+                oneItem.setState(false);
+                fiveItem.setState(false);
+                tenItem.setState(true);
+                allItem.setState(false);
+                anymove.setState(false);
+                break;
+              case -1:
+                noItem.setState(false);
+                oneItem.setState(false);
+                fiveItem.setState(false);
+                tenItem.setState(false);
+                allItem.setState(true);
+                anymove.setState(false);
+                break;
+              default:
+                noItem.setState(false);
+                oneItem.setState(false);
+                fiveItem.setState(false);
+                tenItem.setState(false);
+                allItem.setState(false);
+                anymove.setState(true);
+            }
+            if (Lizzie.config.showMoveNumberFromOne) alwaysone.setState(true);
+            else alwaysone.setState(false);
+          }
+
+          @Override
+          public void menuDeselected(MenuEvent e) {
+            // TODO Auto-generated method stub
+          }
+
+          @Override
+          public void menuCanceled(MenuEvent e) {
+            // TODO Auto-generated method stub
+
+          }
+        });
 
     final JMenu gameMenu = new JMenu("棋局 ", false);
     gameMenu.setText(" 棋局  ");
@@ -481,26 +667,24 @@ public class Menu extends MenuBar {
     // aboutItem.setMnemonic('A');
     commetdown.addActionListener(new ItemListeneryzy());
     gameMenu.add(commetdown);
-    
+
     final JMenuItem setMain = new JMenuItem();
     setMain.setText("设为主分支");
     setMain.addActionListener(new ItemListeneryzy());
     gameMenu.add(setMain);
-    
+
     setMain.addActionListener(
-            new ActionListener() {
-              public void actionPerformed(ActionEvent e) {
-                while (Lizzie.board.setAsMainBranch()) ;
-              }
-            });
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            while (Lizzie.board.setAsMainBranch()) ;
+          }
+        });
 
     final JMenuItem branchStart = new JMenuItem();
     branchStart.setText("返回主分支(CTRL+左)");
     // aboutItem.setMnemonic('A');
     branchStart.addActionListener(new ItemListeneryzy());
     gameMenu.add(branchStart);
-    
-   
 
     final JMenu analyMenu = new JMenu("分析 ", false);
     analyMenu.setText(" 分析  ");
@@ -1300,7 +1484,7 @@ public class Menu extends MenuBar {
         tbc.setVisible(true);
         return;
       }
-      if (menuItem.getText().startsWith("切换推荐点总")) {
+      if (menuItem.getText().startsWith("总是显示黑")) {
         if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black")) {
           Lizzie.config.uiConfig.put("win-rate-always-black", false);
           try {
@@ -1318,7 +1502,7 @@ public class Menu extends MenuBar {
         }
         return;
       }
-      if (menuItem.getText().startsWith("切换鼠标移到")) {
+      if (menuItem.getText().startsWith("鼠标所指")) {
         Lizzie.config.showSuggestionVaritions = !Lizzie.config.showSuggestionVaritions;
         Lizzie.config.uiConfig.put(
             "show-suggestion-varitions", Lizzie.config.showSuggestionVaritions);
@@ -1337,7 +1521,7 @@ public class Menu extends MenuBar {
         Lizzie.frame.winrateGraph.mode = 0;
         return;
       }
-      if (menuItem.getText().startsWith("显示/关闭柱状")) {
+      if (menuItem.getText().startsWith("显示柱状失")) {
         Lizzie.config.showBlunderBar = !Lizzie.config.showBlunderBar;
         Lizzie.config.uiConfig.put("show-blunder-bar", Lizzie.config.showBlunderBar);
         try {

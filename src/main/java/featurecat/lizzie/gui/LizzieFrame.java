@@ -171,7 +171,7 @@ public class LizzieFrame extends JFrame {
   private HTMLDocument htmlDoc;
   private HtmlKit htmlKit;
   private StyleSheet htmlStyle;
-  Input input = new Input();
+  public Input input = new Input();
   boolean noInput = true;
   // boolean lastponder = true;
 
@@ -399,24 +399,9 @@ public class LizzieFrame extends JFrame {
         1,
         1,
         TimeUnit.SECONDS);
-    Timer timer = new Timer();
-    timer.schedule(
-        new TimerTask() {
-          public void run() {
-            addInput();
-            mainPanel.addMouseMotionListener(input);
-            toolbar.addMouseWheelListener(input);
-            if (Lizzie.config.loadZen) {
-              try {
-                zen = new YaZenGtp();
-              } catch (IOException e1) {
-                e1.printStackTrace();
-              }
-            }
-            this.cancel();
-          }
-        },
-        1000);
+    addInput();
+    mainPanel.addMouseMotionListener(input);
+    toolbar.addMouseWheelListener(input);
   }
 
   public void addInput() {

@@ -1029,7 +1029,7 @@ public class BottomToolbar extends JPanel {
                     Lizzie.frame.setAlwaysOnTop(false);
                     onTop = true;
                   }
-                  JOptionPane.showMessageDialog( null,"黑白必须为不同引擎");
+                  JOptionPane.showMessageDialog(null, "黑白必须为不同引擎");
                   if (onTop) Lizzie.frame.setAlwaysOnTop(true);
                   return;
                 }

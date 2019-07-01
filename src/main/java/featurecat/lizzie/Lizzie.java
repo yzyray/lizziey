@@ -2,6 +2,7 @@ package featurecat.lizzie;
 
 import featurecat.lizzie.analysis.EngineManager;
 import featurecat.lizzie.analysis.Leelaz;
+import featurecat.lizzie.analysis.YaZenGtp;
 import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.gui.CountResults;
 import featurecat.lizzie.gui.GtpConsolePane;
@@ -12,8 +13,6 @@ import featurecat.lizzie.rules.Board;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 import javax.swing.*;
 
 /** Main class. */
@@ -59,25 +58,6 @@ public class Lizzie {
     try {
       engineManager = new EngineManager(config);
 
-      if (config.handicapInsteadOfWinrate) {
-        leelaz.estimatePassWinrate();
-      }
-      if (mainArgs.length == 1) {
-        Timer timer = new Timer();
-        timer.schedule(
-            new TimerTask() {
-              public void run() {
-                frame.loadFile(new File(mainArgs[0]));
-                this.cancel();
-              }
-            },
-            500);
-        // frame.loadFile(new File(mainArgs[0]));
-      } else if (config.config.getJSONObject("ui").getBoolean("resume-previous-game")) {
-        board.resumePreviousGame();
-      }
-      // frame.loadFile(new File("C:\\Users\\Administrator\\Desktop\\lizzie\\1.sgf"));
-      leelaz.togglePonder();
     } catch (IOException e) {
       frame.openConfigDialog();
       System.exit(1);
@@ -109,6 +89,26 @@ public class Lizzie {
       Object key = keys.nextElement();
       Object value = UIManager.get(key);
       if (value instanceof javax.swing.plaf.FontUIResource) UIManager.put(key, f);
+    }
+  }
+
+  public static void initializeAfterVersionCheck() {
+    if (config.handicapInsteadOfWinrate) {
+      leelaz.estimatePassWinrate();
+    }
+    if (mainArgs.length == 1) {
+      frame.loadFile(new File(mainArgs[0]));
+    } else if (config.config.getJSONObject("ui").getBoolean("resume-previous-game")) {
+      board.resumePreviousGame();
+    }
+    leelaz.togglePonder();
+
+    if (Lizzie.config.loadZen) {
+      try {
+        frame.zen = new YaZenGtp();
+      } catch (IOException e1) {
+        e1.printStackTrace();
+      }
     }
   }
 

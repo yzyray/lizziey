@@ -17,6 +17,7 @@ public class Config {
   public int onlyLastMoveNumber = 10;
   // 0: Do not show; -1: Show all move number; other: Show last move number
   public int allowMoveNumber = -1;
+  public boolean showMoveNumberFromOne = false;
   public boolean newMoveNumberInBranch = true;
   public boolean showWinrate = true;
   public boolean largeWinrate = false;
@@ -53,7 +54,7 @@ public class Config {
   public boolean showSubBoard = true;
   public boolean largeSubBoard = false;
   public boolean startMaximized = true;
-  public boolean loadZen = true;
+  public boolean loadZen = false;
   public boolean showSuggestionVaritions = true;
 
   public JSONObject config;
@@ -269,6 +270,7 @@ public class Config {
     showKataGoScoreMean = uiConfig.optBoolean("show-katago-scoremean", true);
     showKataGoBoardScoreMean = uiConfig.optBoolean("show-katago-boardscoremean", false);
     kataGoScoreMeanAlwaysBlack = uiConfig.optBoolean("katago-scoremean-alwaysblack", false);
+    showMoveNumberFromOne = uiConfig.optBoolean("movenumber-from-one", false);
     kataGoNotShowWinrate = uiConfig.optBoolean("katago-notshow-winrate", false);
     showKataGoEstimate = uiConfig.optBoolean("show-katago-estimate", false);
     showSuggestionVaritions = uiConfig.optBoolean("show-suggestion-varitions", true);
@@ -299,7 +301,7 @@ public class Config {
     showlcbwinrate = config.getJSONObject("leelaz").optBoolean("show-lcb-winrate", true);
     playponder = config.getJSONObject("leelaz").optBoolean("play-ponder", true);
     showrect = config.getJSONObject("leelaz").optBoolean("show-rect", true);
-    loadZen = config.getJSONObject("leelaz").optBoolean("load-zen", true);
+    loadZen = config.getJSONObject("leelaz").optBoolean("load-zen", false);
     showlcbcolor = config.getJSONObject("leelaz").optBoolean("show-lcb-color", true);
     fastChange = config.getJSONObject("leelaz").optBoolean("fast-engine-change", true);
     maxAnalyzeTimeMillis =

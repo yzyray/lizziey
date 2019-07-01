@@ -760,6 +760,12 @@ public class BoardRenderer {
             g.setColor(stoneHere.isBlack() ^ reverse ? Color.WHITE : Color.BLACK);
           }
           String moveNumberString = moveNumberList[Board.getIndex(i, j)] + "";
+          if (Lizzie.config.showMoveNumberFromOne && Lizzie.config.allowMoveNumber > 0) {
+            moveNumberString =
+                moveNumberList[Board.getIndex(i, j)]
+                    - (lastMoveNumber - Lizzie.config.allowMoveNumber)
+                    + "";
+          }
           if (moveNumberList[Board.getIndex(i, j)] >= 100) {
             drawString(
                 g,

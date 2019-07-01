@@ -256,8 +256,9 @@ public class Leelaz {
 		// Response handled in parseLine
 		isCheckingVersion = true;
 		isCheckingName = true;
-		//sendCommand("turnon");
+		//sendCommand("turnon");		
 		sendCommand("version");
+		sendCommand("name");
 		sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
 
 		// start a thread to continuously read Leelaz output
@@ -731,6 +732,7 @@ public class Leelaz {
 			          if (params[1].startsWith("KataGo")) {
 			              this.isKatago = true;
 			              this.version=17;
+			              Lizzie.initializeAfterVersionCheck();
 			            }
 				}
 				else if (isCheckingVersion && !isKatago) {
@@ -753,6 +755,7 @@ public class Leelaz {
 							Lizzie.frame.setAlwaysOnTop(true);
 					}
 					isCheckingVersion = false;
+					Lizzie.initializeAfterVersionCheck();
 					isLoaded = true;
 					featurecat.lizzie.gui.Menu.engine[currentEngineN].setIcon(featurecat.lizzie.gui.Menu.ready);
 					featurecat.lizzie.gui.Menu.engine[Lizzie.engineManager.currentEngineNo]
