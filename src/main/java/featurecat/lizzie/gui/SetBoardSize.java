@@ -7,7 +7,6 @@ import java.awt.EventQueue;
 import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ResourceBundle;
 import javax.swing.Action;
@@ -25,9 +24,11 @@ import javax.swing.text.DocumentFilter.FilterBypass;
 import javax.swing.text.InternationalFormatter;
 
 public class SetBoardSize extends JDialog {
-  private JFormattedTextField txtMoveNumber;
+  private JFormattedTextField width;
+  private JFormattedTextField height;
   public final ResourceBundle resourceBundle = ResourceBundle.getBundle("l10n.DisplayStrings");
-  private int changeMoveNumber;
+  private int widthNumber;
+  private int heightNumber;
   private static JTextField defaultText = new JTextField();
 
   public SetBoardSize() {
@@ -39,7 +40,7 @@ public class SetBoardSize extends JDialog {
     JPanel buttonPane = new JPanel();
     getContentPane().add(buttonPane, BorderLayout.CENTER);
     JButton okButton = new JButton("确定");
-    okButton.setBounds(120, 50, 74, 29);
+    okButton.setBounds(120, 55, 74, 29);
 
     okButton.addActionListener(
         new ActionListener() {
@@ -57,12 +58,12 @@ public class SetBoardSize extends JDialog {
     NumberFormat nf = NumberFormat.getIntegerInstance();
     nf.setGroupingUsed(false);
 
-    JLabel lblChangeTo = new JLabel("设置棋盘大小(2-25)：");
-    lblChangeTo.setBounds(45, 24, 180, 20);
+    JLabel lblChangeTo = new JLabel("设置棋盘大小    宽：");
+    lblChangeTo.setBounds(45, 24, 120, 20);
     buttonPane.add(lblChangeTo);
     lblChangeTo.setHorizontalAlignment(SwingConstants.LEFT);
 
-    txtMoveNumber =
+    width =
         new JFormattedTextField(
             new InternationalFormatter(nf) {
               protected DocumentFilter getDocumentFilter() {
@@ -71,11 +72,31 @@ public class SetBoardSize extends JDialog {
 
               private DocumentFilter filter = new DigitOnlyFilter();
             });
-    txtMoveNumber.setBounds(210, 24, 60, 20);
-    buttonPane.add(txtMoveNumber);
-    txtMoveNumber.setColumns(10);
+    width.setBounds(210, 26, 30, 20);
+    buttonPane.add(width);
+    width.setColumns(3);
 
-    txtMoveNumber.setText(Lizzie.config.config.getJSONObject("ui").optInt("board-size", 19) + "");
+    width.setText(Lizzie.board.boardWidth + "");
+
+    JLabel lblheight = new JLabel("高：");
+    lblheight.setBounds(185, 24, 30, 20);
+    buttonPane.add(lblheight);
+    lblheight.setHorizontalAlignment(SwingConstants.LEFT);
+
+    height =
+        new JFormattedTextField(
+            new InternationalFormatter(nf) {
+              protected DocumentFilter getDocumentFilter() {
+                return filter;
+              }
+
+              private DocumentFilter filter = new DigitOnlyFilter();
+            });
+    height.setBounds(150, 26, 30, 20);
+    buttonPane.add(height);
+    height.setColumns(3);
+
+    height.setText(Lizzie.board.boardHeight + "");
 
     setLocationRelativeTo(getOwner());
   }
@@ -92,13 +113,8 @@ public class SetBoardSize extends JDialog {
   }
 
   private void applyChange() {
-    Lizzie.config.uiConfig.putOpt("board-size", changeMoveNumber);
-    Lizzie.board.reopen(changeMoveNumber, changeMoveNumber);
-    try {
-      Lizzie.config.save();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+
+    Lizzie.board.reopen(widthNumber, heightNumber);
   }
 
   private Integer txtFieldValue(JTextField txt) {
@@ -112,24 +128,35 @@ public class SetBoardSize extends JDialog {
 
   private boolean checkMove() {
 
-    changeMoveNumber = txtFieldValue(txtMoveNumber);
+    widthNumber = txtFieldValue(width);
+    heightNumber = txtFieldValue(height);
     //  changePosition = getChangeToType();
     Color c = defaultText.getBackground();
-    if (changeMoveNumber < 2 || changeMoveNumber > 25) {
-      txtMoveNumber.setToolTipText(
-          resourceBundle.getString("LizzieChangeMove.txtMoveNumber.error"));
-      Action action = txtMoveNumber.getActionMap().get("postTip");
+    if (widthNumber < 2 || heightNumber < 2) {
+      width.setToolTipText(resourceBundle.getString("LizzieChangeMove.txtMoveNumber.error"));
+      height.setToolTipText(resourceBundle.getString("LizzieChangeMove.txtMoveNumber.error"));
+      Action action = width.getActionMap().get("postTip");
+      Action action2 = height.getActionMap().get("postTip");
       if (action != null) {
         ActionEvent ae =
             new ActionEvent(
-                txtMoveNumber,
+                height,
                 ActionEvent.ACTION_PERFORMED,
                 "postTip",
                 EventQueue.getMostRecentEventTime(),
                 0);
         action.actionPerformed(ae);
+        ActionEvent ae2 =
+            new ActionEvent(
+                width,
+                ActionEvent.ACTION_PERFORMED,
+                "postTip",
+                EventQueue.getMostRecentEventTime(),
+                0);
+        action2.actionPerformed(ae2);
       }
-      txtMoveNumber.setBackground(Color.red);
+      width.setBackground(Color.red);
+      height.setBackground(Color.red);
       return false;
     }
     return true;

@@ -63,9 +63,11 @@ public class LizzieFrame extends JFrame {
     resourceBundle.getString("LizzieFrame.commands.mouseWheelScroll"),
     "滚轮按下|落鼠标指向变化图的第一步,后续步可滚动滚轮继续查看",
     "逗号|落最佳一手,如果鼠标指向变化图则落子到变化图结束",
-    "b|显示恶手列表",
-    "u|显示AI选点列表",
-    "i|编辑棋局信息(修改贴目并告知引擎)",
+    "B|显示恶手列表",
+    "U|显示AI选点列表",
+    "I|编辑棋局信息(修改贴目并告知引擎)",
+    "V|试下",
+    "F|关闭/显示AI推荐点",
     resourceBundle.getString("LizzieFrame.commands.keyR"),
     // resourceBundle.getString("LizzieFrame.commands.keyI"),
     resourceBundle.getString("LizzieFrame.commands.keyUpArrow"),
@@ -173,6 +175,12 @@ public class LizzieFrame extends JFrame {
   private StyleSheet htmlStyle;
   public Input input = new Input();
   boolean noInput = true;
+
+  public boolean isTrying = false;
+  ArrayList<Movelist> tryMoveList;
+  String tryString;
+  String titleBeforeTrying;
+
   // boolean lastponder = true;
 
   static {
@@ -517,6 +525,29 @@ public class LizzieFrame extends JFrame {
       Lizzie.gtpConsole = new GtpConsolePane(this);
       Lizzie.gtpConsole.setVisible(true);
     }
+  }
+
+  public void tryPlay() {
+	  if(!isTrying)
+	  { isTrying=true;
+	  
+	  try {
+		tryString= SGFParser.saveToString();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	  titleBeforeTrying=this.getTitle();
+	  this.setTitle("试下中...");
+	  tryMoveList= Lizzie.board.getmovelist();
+	  Lizzie.board.getHistory().getCurrentHistoryNode().getData().moveNumber=0;
+	  }
+	  else {
+		  isTrying=false;
+		  SGFParser.loadFromString(tryString);
+		  Lizzie.board.setmovelist(tryMoveList);
+		  this.setTitle(titleBeforeTrying);
+	  }
   }
 
   public void toggleBestMoves() {
@@ -2186,6 +2217,8 @@ public class LizzieFrame extends JFrame {
   }
 
   public void updateTitle() {
+	  if(isTrying)
+	  {return;}
     StringBuilder sb = new StringBuilder(DEFAULT_TITLE);
     sb.append(playerTitle);
     if (Lizzie.leelaz.isKatago) {

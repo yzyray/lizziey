@@ -378,7 +378,19 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_F:
-        Lizzie.config.toggleShowNextMoves();
+        if (e.isAltDown()) Lizzie.config.toggleShowNextMoves();
+        else {
+
+          if (e.isAltDown()) Lizzie.config.toggleLargeSubBoard();
+          else if (Lizzie.frame.toolbar.chkShowBlack.isSelected()
+              || Lizzie.frame.toolbar.chkShowBlack.isSelected()) {
+            Lizzie.frame.toolbar.chkShowBlack.setSelected(false);
+            Lizzie.frame.toolbar.chkShowWhite.setSelected(false);
+          } else {
+            Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
+            Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
+          }
+        }
         break;
 
       case VK_H:
@@ -424,15 +436,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           //          }
           Lizzie.frame.pasteSgf();
         } else {
-          if (e.isAltDown()) Lizzie.config.toggleLargeSubBoard();
-          else if (Lizzie.frame.toolbar.chkShowBlack.isSelected()
-              || Lizzie.frame.toolbar.chkShowBlack.isSelected()) {
-            Lizzie.frame.toolbar.chkShowBlack.setSelected(false);
-            Lizzie.frame.toolbar.chkShowWhite.setSelected(false);
-          } else {
-            Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
-            Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
-          }
+          Lizzie.frame.tryPlay();
         }
         break;
 

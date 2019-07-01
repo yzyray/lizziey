@@ -53,6 +53,7 @@ public class BottomToolbar extends JPanel {
   JButton setMain;
   JButton batchOpen;
   JButton refresh;
+  JButton tryPlay;
   int savedbroadmid;
   JTextField txtMoveNumber;
   private int changeMoveNumber = 0;
@@ -211,6 +212,7 @@ public class BottomToolbar extends JPanel {
     setMain = new JButton("设为主分支");
     batchOpen = new JButton("批量打开");
     refresh = new JButton("刷新");
+    tryPlay= new JButton("试下");
     iconUp = new ImageIcon();
     try {
       iconUp.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/up.png")));
@@ -246,6 +248,7 @@ public class BottomToolbar extends JPanel {
     add(setMain);
     add(batchOpen);
     add(refresh);
+    add(tryPlay);
     firstButton.setFocusable(false);
     lastButton.setFocusable(false);
     clearButton.setFocusable(false);
@@ -265,6 +268,7 @@ public class BottomToolbar extends JPanel {
     setMain.setFocusable(false);
     batchOpen.setFocusable(false);
     refresh.setFocusable(false);
+    tryPlay.setFocusable(false);
 
     firstButton.setMargin(new Insets(0, 0, 0, 0));
     lastButton.setMargin(new Insets(0, 0, 0, 0));
@@ -285,6 +289,7 @@ public class BottomToolbar extends JPanel {
     setMain.setMargin(new Insets(0, 0, 0, 0));
     batchOpen.setMargin(new Insets(0, 0, 0, 0));
     refresh.setMargin(new Insets(0, 0, 0, 0));
+    tryPlay.setMargin(new Insets(0, 0, 0, 0));
 
     // NumberFormat nf = NumberFormat.getNumberInstance();
 
@@ -322,7 +327,12 @@ public class BottomToolbar extends JPanel {
             Lizzie.board.clearbestmoves();
           }
         });
-
+    tryPlay.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                  Lizzie.frame.tryPlay();
+                }
+              });
     batchOpen.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -2141,15 +2151,16 @@ public class BottomToolbar extends JPanel {
 
     if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
       if (boardmid + 364 > w) boardmid = w - 364;
-      if (boardmid - 523 < 0) boardmid = 523;
+      if (boardmid - 562 < 0) boardmid = 562;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(true);
-      kataEstimate.setBounds(boardmid - 504, 0, 60, 26);
-      batchOpen.setBounds(boardmid - 445, 0, 60, 26);
-      openfile.setBounds(boardmid - 386, 0, 40, 26);
-      savefile.setBounds(boardmid - 347, 0, 40, 26);
-      refresh.setBounds(boardmid - 308, 0, 40, 26);
-      analyse.setBounds(boardmid - 269, 0, 65, 26);
+      kataEstimate.setBounds(boardmid - 543, 0, 60, 26);
+      batchOpen.setBounds(boardmid - 484, 0, 60, 26);
+      openfile.setBounds(boardmid - 425, 0, 40, 26);
+      savefile.setBounds(boardmid - 386, 0, 40, 26);
+      refresh.setBounds(boardmid - 347, 0, 40, 26);
+      analyse.setBounds(boardmid - 308, 0, 65, 26);
+      tryPlay.setBounds(boardmid - 244, 0, 40, 26);
       setMain.setBounds(boardmid - 205, 0, 70, 26);
       backMain.setBounds(boardmid - 136, 0, 70, 26);
       firstButton.setBounds(boardmid - 67, 0, 30, 26);
@@ -2165,14 +2176,15 @@ public class BottomToolbar extends JPanel {
       gotomove.setBounds(boardmid + 313, 0, 35, 26);
     } else {
       if (boardmid + 364 > w) boardmid = w - 364;
-      if (boardmid - 464 < 0) boardmid = 464;
+      if (boardmid - 503 < 0) boardmid = 503;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(false);
-      batchOpen.setBounds(boardmid - 445, 0, 60, 26);
-      openfile.setBounds(boardmid - 386, 0, 40, 26);
-      savefile.setBounds(boardmid - 347, 0, 40, 26);
-      refresh.setBounds(boardmid - 308, 0, 40, 26);
-      analyse.setBounds(boardmid - 269, 0, 65, 26);
+      batchOpen.setBounds(boardmid - 484, 0, 60, 26);
+      openfile.setBounds(boardmid - 425, 0, 40, 26);
+      savefile.setBounds(boardmid - 386, 0, 40, 26);
+      refresh.setBounds(boardmid - 347, 0, 40, 26);
+      analyse.setBounds(boardmid - 308, 0, 65, 26);
+      tryPlay.setBounds(boardmid - 244, 0, 40, 26);
       setMain.setBounds(boardmid - 205, 0, 70, 26);
       backMain.setBounds(boardmid - 136, 0, 70, 26);
       firstButton.setBounds(boardmid - 67, 0, 30, 26);
@@ -2194,15 +2206,16 @@ public class BottomToolbar extends JPanel {
     int w = Lizzie.frame.getWidth();
     if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
       if (boardmid + 364 > w) boardmid = w - 364;
-      if (boardmid - 523 < 0) boardmid = 523;
+      if (boardmid - 562 < 0) boardmid = 562;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(true);
-      kataEstimate.setBounds(boardmid - 504, 0, 60, 26);
-      batchOpen.setBounds(boardmid - 445, 0, 60, 26);
-      openfile.setBounds(boardmid - 386, 0, 40, 26);
-      savefile.setBounds(boardmid - 347, 0, 40, 26);
-      refresh.setBounds(boardmid - 308, 0, 40, 26);
-      analyse.setBounds(boardmid - 269, 0, 65, 26);
+      kataEstimate.setBounds(boardmid - 543, 0, 60, 26);
+      batchOpen.setBounds(boardmid - 484, 0, 60, 26);
+      openfile.setBounds(boardmid - 425, 0, 40, 26);
+      savefile.setBounds(boardmid - 386, 0, 40, 26);
+      refresh.setBounds(boardmid - 347, 0, 40, 26);
+      analyse.setBounds(boardmid - 308, 0, 65, 26);
+      tryPlay.setBounds(boardmid - 244, 0, 40, 26);
       setMain.setBounds(boardmid - 205, 0, 70, 26);
       backMain.setBounds(boardmid - 136, 0, 70, 26);
       firstButton.setBounds(boardmid - 67, 0, 30, 26);
@@ -2218,14 +2231,15 @@ public class BottomToolbar extends JPanel {
       gotomove.setBounds(boardmid + 313, 0, 35, 26);
     } else {
       if (boardmid + 364 > w) boardmid = w - 364;
-      if (boardmid - 464 < 0) boardmid = 464;
+      if (boardmid - 503 < 0) boardmid = 503;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(false);
-      batchOpen.setBounds(boardmid - 445, 0, 60, 26);
-      openfile.setBounds(boardmid - 386, 0, 40, 26);
-      savefile.setBounds(boardmid - 347, 0, 40, 26);
-      refresh.setBounds(boardmid - 308, 0, 40, 26);
-      analyse.setBounds(boardmid - 269, 0, 65, 26);
+      batchOpen.setBounds(boardmid - 484, 0, 60, 26);
+      openfile.setBounds(boardmid - 425, 0, 40, 26);
+      savefile.setBounds(boardmid - 386, 0, 40, 26);
+      refresh.setBounds(boardmid - 347, 0, 40, 26);
+      analyse.setBounds(boardmid - 308, 0, 65, 26);
+      tryPlay.setBounds(boardmid - 244, 0, 40, 26);
       setMain.setBounds(boardmid - 205, 0, 70, 26);
       backMain.setBounds(boardmid - 136, 0, 70, 26);
       firstButton.setBounds(boardmid - 67, 0, 30, 26);

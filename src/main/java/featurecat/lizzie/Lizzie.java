@@ -45,7 +45,7 @@ public class Lizzie {
     moreEngines = MoreEngines.createBadmovesDialog();
     moreEngines.setVisible(false);
     //   movelistframe.setLocation(-7, 302);
-    movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", true));
+    movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", false));
     movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
 
     frame = new LizzieFrame();
@@ -64,7 +64,7 @@ public class Lizzie {
     }
 
     analysisframe = AnalysisFrame.createAnalysisDialog();
-    analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", true));
+    analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", false));
     analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
     frame.refresh();
   }

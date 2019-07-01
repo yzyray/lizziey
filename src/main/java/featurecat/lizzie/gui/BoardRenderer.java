@@ -727,7 +727,7 @@ public class BoardRenderer {
           stoneRadius * 4,
           stoneRadius * 6);
     }
-    if (Lizzie.config.allowMoveNumber == 0 && !branchOpt.isPresent()) {
+    if (Lizzie.config.allowMoveNumber == 0 && !branchOpt.isPresent()&&!Lizzie.frame.isTrying) {
       if (lastMoveOpt.isPresent()) {
         int[] lastMove = lastMoveOpt.get();
 
@@ -770,16 +770,17 @@ public class BoardRenderer {
         int here = Board.getIndex(i, j);
 
         // Allow to display only last move number
-        if (Lizzie.config.allowMoveNumber > -1
-            && lastMoveNumber - moveNumberList[here] >= Lizzie.config.allowMoveNumber) {
+        if(!Lizzie.frame.isTrying)
+        {  if ((Lizzie.config.allowMoveNumber > -1
+            && lastMoveNumber - moveNumberList[here] >= Lizzie.config.allowMoveNumber)) {
           continue;
         }
-
+        }
         Stone stoneHere = branchOpt.map(b -> b.data.stones[here]).orElse(board.getStones()[here]);
-
+        int mvNum =moveNumberList[Board.getIndex(i, j)];
         // don't write the move number if either: the move number is 0, or there will already be
         // playout information written
-        if (moveNumberList[Board.getIndex(i, j)] > 0
+        if ((mvNum > 0||Lizzie.frame.isTrying&&mvNum<0)
             && (!branchOpt.isPresent() || !Lizzie.frame.isMouseOver(i, j))) {
           boolean reverse = (moveNumberList[Board.getIndex(i, j)] > maxBranchMoves());
           if ((lastMoveOpt.isPresent() && lastMoveOpt.get()[0] == i && lastMoveOpt.get()[1] == j)) {
@@ -792,15 +793,33 @@ public class BoardRenderer {
             if (reverse) continue;
             g.setColor(stoneHere.isBlack() ^ reverse ? Color.WHITE : Color.BLACK);
           }
-          String moveNumberString = moveNumberList[Board.getIndex(i, j)] + "";
+          
+          String moveNumberString = mvNum + "";
           if (Lizzie.config.showMoveNumberFromOne && Lizzie.config.allowMoveNumber > 0) {
             if (lastMoveNumber > Lizzie.config.allowMoveNumber)
               moveNumberString =
-                  moveNumberList[Board.getIndex(i, j)]
+            		  mvNum
                       - (lastMoveNumber - Lizzie.config.allowMoveNumber)
                       + "";
           }
-          if (moveNumberList[Board.getIndex(i, j)] >= 100) {
+          if(Lizzie.frame.isTrying)
+          {
+        	  if(mvNum<0)
+        	  {
+        		  moveNumberString=-mvNum + "";
+        		  drawString(
+        	                g,
+        	                stoneX,
+        	                stoneY,
+        	                LizzieFrame.uiFont,
+        	                moveNumberString,
+        	                (float) (stoneRadius * 1.4),
+        	                (int) (stoneRadius * 1.4));
+        	  }
+        	  
+          }
+          else
+          if (mvNum >= 100) {
             drawString(
                 g,
                 stoneX,
