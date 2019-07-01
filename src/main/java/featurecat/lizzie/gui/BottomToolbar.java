@@ -212,7 +212,7 @@ public class BottomToolbar extends JPanel {
     setMain = new JButton("设为主分支");
     batchOpen = new JButton("批量打开");
     refresh = new JButton("刷新");
-    tryPlay= new JButton("试下");
+    tryPlay = new JButton("试下");
     iconUp = new ImageIcon();
     try {
       iconUp.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/up.png")));
@@ -328,11 +328,11 @@ public class BottomToolbar extends JPanel {
           }
         });
     tryPlay.addActionListener(
-            new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                  Lizzie.frame.tryPlay();
-                }
-              });
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.tryPlay();
+          }
+        });
     batchOpen.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {

@@ -1034,7 +1034,7 @@ public class Board implements LeelazListener {
       Lizzie.countResults.iscounted = false;
       Lizzie.frame.iscounting = false;
     }
-  
+
     synchronized (this) {
       if (scoreMode) {
         // Mark clicked stone as dead
@@ -1087,10 +1087,8 @@ public class Board implements LeelazListener {
           newBranch && history.getNext(true).isPresent()
               ? new int[Board.boardWidth * Board.boardHeight]
               : history.getMoveNumberList().clone();
-              if (Lizzie.frame.isTrying)
-            	  moveNumberList[Board.getIndex(x, y)] = -moveNumber;
-              else 
-            	  moveNumberList[Board.getIndex(x, y)] = moveMNNumber > -1 ? moveMNNumber : moveNumber;
+      if (Lizzie.frame.isTrying) moveNumberList[Board.getIndex(x, y)] = -moveNumber;
+      else moveNumberList[Board.getIndex(x, y)] = moveMNNumber > -1 ? moveMNNumber : moveNumber;
 
       // set the stone at (x, y) to color
       stones[getIndex(x, y)] = color;

@@ -256,9 +256,10 @@ public class Leelaz {
 		// Response handled in parseLine
 		isCheckingVersion = true;
 		isCheckingName = true;
-		//sendCommand("turnon");		
-		sendCommand("version");
+		//sendCommand("turnon");	
 		sendCommand("name");
+		sendCommand("version");
+		
 		 boardSize(Lizzie.board.boardWidth, Lizzie.board.boardHeight);
 	   
 		// start a thread to continuously read Leelaz output
@@ -728,15 +729,23 @@ public class Leelaz {
 					if (isInputCommand) {
 						isInputCommand = false;
 					}
-				}else if (isCheckingName) {
-			          if (params[1].startsWith("KataGo")) {
+				}
+				else {if (isCheckingName) {
+			          if (params[1].startsWith("KataGo")||isKatago) {
 			              this.isKatago = true;
 			              this.version=17;
 			              Lizzie.initializeAfterVersionCheck();
+			              isCheckingVersion=false;
+			              if (this.currentEngineN == EngineManager.currentEngineNo) {
+								Lizzie.config.leelaversion = version;
+							}
+			              isLoaded = true;
+							featurecat.lizzie.gui.Menu.engine[currentEngineN].setIcon(featurecat.lizzie.gui.Menu.ready);
+							featurecat.lizzie.gui.Menu.engine[Lizzie.engineManager.currentEngineNo]
+									.setIcon(featurecat.lizzie.gui.Menu.icon);
 			            }
-			          
-			          else
-			        	  if (isCheckingVersion && !isKatago) {
+				}
+			           if (isCheckingVersion && !isKatago) {
 								String[] ver = params[1].split("\\.");
 								int minor = Integer.parseInt(ver[1]);
 								// Gtp support added in version 15

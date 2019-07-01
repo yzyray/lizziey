@@ -528,26 +528,25 @@ public class LizzieFrame extends JFrame {
   }
 
   public void tryPlay() {
-	  if(!isTrying)
-	  { isTrying=true;
-	  
-	  try {
-		tryString= SGFParser.saveToString();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	  titleBeforeTrying=this.getTitle();
-	  this.setTitle("试下中...");
-	  tryMoveList= Lizzie.board.getmovelist();
-	  Lizzie.board.getHistory().getCurrentHistoryNode().getData().moveNumber=0;
-	  }
-	  else {
-		  isTrying=false;
-		  SGFParser.loadFromString(tryString);
-		  Lizzie.board.setmovelist(tryMoveList);
-		  this.setTitle(titleBeforeTrying);
-	  }
+    if (!isTrying) {
+      isTrying = true;
+
+      try {
+        tryString = SGFParser.saveToString();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      titleBeforeTrying = this.getTitle();
+      this.setTitle("试下中...");
+      tryMoveList = Lizzie.board.getmovelist();
+      Lizzie.board.getHistory().getCurrentHistoryNode().getData().moveNumber = 0;
+    } else {
+      isTrying = false;
+      SGFParser.loadFromString(tryString);
+      Lizzie.board.setmovelist(tryMoveList);
+      this.setTitle(titleBeforeTrying);
+    }
   }
 
   public void toggleBestMoves() {
@@ -2217,8 +2216,9 @@ public class LizzieFrame extends JFrame {
   }
 
   public void updateTitle() {
-	  if(isTrying)
-	  {return;}
+    if (isTrying) {
+      return;
+    }
     StringBuilder sb = new StringBuilder(DEFAULT_TITLE);
     sb.append(playerTitle);
     if (Lizzie.leelaz.isKatago) {
