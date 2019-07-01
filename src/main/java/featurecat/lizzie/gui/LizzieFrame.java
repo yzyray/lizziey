@@ -863,10 +863,7 @@ public class LizzieFrame extends JFrame {
       boolean noComment = !Lizzie.config.showComment;
       // board
       int maxSize = (int) (min(width - leftInset - rightInset, height - topInset - bottomInset));
-      maxSize =
-              max(
-                  maxSize,
-                  max(Board.boardWidth, Board.boardHeight) + 5);
+      maxSize = max(maxSize, max(Board.boardWidth, Board.boardHeight) + 5);
       int boardX = (width - maxSize) / 8 * BoardPositionProportion;
       int boardY = topInset + (height - topInset - bottomInset - maxSize) / 2;
 

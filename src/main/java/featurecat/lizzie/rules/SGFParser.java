@@ -77,28 +77,28 @@ public class SGFParser {
 
     return parse(sgfString);
   }
-  
+
   public static String passPos() {
-	    return (Lizzie.board.boardWidth <= 51 && Lizzie.board.boardHeight <= 51)
-	        ? String.format(
-	            "%c%c",
-	            alphabet.charAt(Lizzie.board.boardWidth), alphabet.charAt(Lizzie.board.boardHeight))
-	        : "";
-	  }
-  
+    return (Lizzie.board.boardWidth <= 51 && Lizzie.board.boardHeight <= 51)
+        ? String.format(
+            "%c%c",
+            alphabet.charAt(Lizzie.board.boardWidth), alphabet.charAt(Lizzie.board.boardHeight))
+        : "";
+  }
+
   public static boolean isPassPos(String pos) {
-	    // TODO
-	    String passPos = passPos();
-	    return pos.isEmpty() || passPos.equals(pos);
-	  }
+    // TODO
+    String passPos = passPos();
+    return pos.isEmpty() || passPos.equals(pos);
+  }
 
   public static int[] convertSgfPosToCoord(String pos) {
-	    if (isPassPos(pos)) return null;
-	    int[] ret = new int[2];
-	    ret[0] = alphabet.indexOf(pos.charAt(0));
-	    ret[1] = alphabet.indexOf(pos.charAt(1));
-	    return ret;
-	  }
+    if (isPassPos(pos)) return null;
+    int[] ret = new int[2];
+    ret[0] = alphabet.indexOf(pos.charAt(0));
+    ret[1] = alphabet.indexOf(pos.charAt(1));
+    return ret;
+  }
 
   private static void saveLz(String[] liness, String[] line1s) {
     lines = liness;
@@ -188,8 +188,8 @@ public class SGFParser {
       if (escaping) {
         // Any char following "\" is inserted verbatim
         // (ref) "3.2. Text" in https://www.red-bean.com/sgf/sgf4.html
-    	  tagContentBuilder.append(c == 'n' ? "\n" : c);
-             escaping = false;
+        tagContentBuilder.append(c == 'n' ? "\n" : c);
+        escaping = false;
         continue;
       }
       switch (c) {
@@ -478,14 +478,26 @@ public class SGFParser {
       generalProps.append(
           String.format(
               "KM[%s]PW[%s]PB[%s]DT[%s]DZ[Y]AP[Lizzie: %s]RE[%s]SZ[%s]",
-              komi, playerW, playerB, date, Lizzie.lizzieVersion, result,  Board.boardWidth
-              + (Board.boardWidth != Board.boardHeight ? ":" + Board.boardHeight : "")));
+              komi,
+              playerW,
+              playerB,
+              date,
+              Lizzie.lizzieVersion,
+              result,
+              Board.boardWidth
+                  + (Board.boardWidth != Board.boardHeight ? ":" + Board.boardHeight : "")));
     } else {
       generalProps.append(
           String.format(
               "KM[%s]PW[%s]PB[%s]DT[%s]AP[Lizzie: %s]RE[%s]SZ[%s]",
-              komi, playerW, playerB, date, Lizzie.lizzieVersion, result,  Board.boardWidth
-              + (Board.boardWidth != Board.boardHeight ? ":" + Board.boardHeight : "")));
+              komi,
+              playerW,
+              playerB,
+              date,
+              Lizzie.lizzieVersion,
+              result,
+              Board.boardWidth
+                  + (Board.boardWidth != Board.boardHeight ? ":" + Board.boardHeight : "")));
     }
     // To append the winrate to the comment of sgf we might need to update the Winrate
     // if (Lizzie.config.appendWinrateToComment) {
@@ -507,7 +519,7 @@ public class SGFParser {
         Stone stone = stones[i];
         if (stone.isBlack()) {
           // i = x * Board.BOARD_SIZE + y;
-        	   builder.append(String.format("[%s]", asCoord(i)));
+          builder.append(String.format("[%s]", asCoord(i)));
         }
       }
     } else {
@@ -518,13 +530,13 @@ public class SGFParser {
       for (int i = 0; i < stones.length; i++) {
         Stone stone = stones[i];
         if (stone.isBlack() || stone.isWhite()) {
-            if (stone.isBlack()) {
-              abStone.append(String.format("[%s]", asCoord(i)));
-            } else {
-              awStone.append(String.format("[%s]", asCoord(i)));
-            }
+          if (stone.isBlack()) {
+            abStone.append(String.format("[%s]", asCoord(i)));
+          } else {
+            awStone.append(String.format("[%s]", asCoord(i)));
           }
         }
+      }
       if (abStone.length() > 0) {
         builder.append("AB").append(abStone);
       }
@@ -579,13 +591,13 @@ public class SGFParser {
         else if (Stone.WHITE.equals(data.lastMoveColor)) stone = "W";
 
         builder.append(";");
-        
+
         if (!data.dummy) {
-            builder.append(
-                String.format(
-                    "%s[%s]",
-                    stone, data.lastMove.isPresent() ? asCoord(data.lastMove.get()) : passPos()));
-          }
+          builder.append(
+              String.format(
+                  "%s[%s]",
+                  stone, data.lastMove.isPresent() ? asCoord(data.lastMove.get()) : passPos()));
+        }
 
         // Node properties
         builder.append(data.propertiesString());
@@ -1116,7 +1128,7 @@ public class SGFParser {
     if (szMatcher.matches()) {
       boardSize = Integer.parseInt(szMatcher.group(1));
     }
-    history = new BoardHistoryList(BoardData.empty(boardSize,boardSize));
+    history = new BoardHistoryList(BoardData.empty(boardSize, boardSize));
 
     int subTreeDepth = 0;
     // Save the variation step count
@@ -1565,17 +1577,17 @@ public class SGFParser {
     Matcher sgfMatcher = SGF_PATTERN.matcher(value);
     return sgfMatcher.matches();
   }
-  
+
   private static String asCoord(int i) {
-	    int[] cor = Lizzie.board.getCoord(i);
+    int[] cor = Lizzie.board.getCoord(i);
 
-	    return asCoord(cor);
-	  }
+    return asCoord(cor);
+  }
 
-	  private static String asCoord(int[] c) {
-	    char x = alphabet.charAt(c[0]);
-	    char y = alphabet.charAt(c[1]);
+  private static String asCoord(int[] c) {
+    char x = alphabet.charAt(c[0]);
+    char y = alphabet.charAt(c[1]);
 
-	    return String.format("%c%c", x, y);
-	  }
+    return String.format("%c%c", x, y);
+  }
 }

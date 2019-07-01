@@ -172,7 +172,7 @@ public class BoardHistoryNode {
     }
     if (Lizzie.config.newMoveNumberInBranch && !variations.isEmpty() && !changeMove) {
       if (!newBranch) {
-    	  data.moveNumberList = new int[Board.boardWidth * Board.boardHeight];
+        data.moveNumberList = new int[Board.boardWidth * Board.boardHeight];
         data.moveMNNumber = -1;
       }
       if (data.moveMNNumber == -1) {

@@ -67,7 +67,7 @@ public class Board implements LeelazListener {
     playoutsAnalysis = 100;
     saveNode = Optional.empty();
     forceRefresh = false;
-    history = new BoardHistoryList(BoardData.empty(boardWidth,boardHeight));
+    history = new BoardHistoryList(BoardData.empty(boardWidth, boardHeight));
   }
 
   /**
@@ -82,10 +82,10 @@ public class Board implements LeelazListener {
   }
 
   public static int[] getCoord(int index) {
-	    int y = index / Board.boardWidth;
-	    int x = index  % Board.boardWidth;
-	    return new int[] {x, y};
-	  }
+    int y = index / Board.boardWidth;
+    int x = index % Board.boardWidth;
+    return new int[] {x, y};
+  }
   /**
    * Converts a named coordinate eg C16, T5, K10, etc to an x and y coordinate
    *
@@ -94,31 +94,31 @@ public class Board implements LeelazListener {
    * @return an optional array of coordinates, empty for pass and resign
    */
   public static Optional<int[]> asCoordinates(String namedCoordinate) {
-	    namedCoordinate = namedCoordinate.trim();
-	    if (namedCoordinate.equalsIgnoreCase("pass") || namedCoordinate.equalsIgnoreCase("resign")) {
-	      return Optional.empty();
-	    }
-	    // coordinates take the form C16 A19 Q5 K10 etc. I is not used.
-	    String reg = "([A-HJ-Z]+)(\\d+)";
-	    Pattern p = Pattern.compile(reg);
-	    Matcher m = p.matcher(namedCoordinate);
-	    if (m.find() && m.groupCount() == 2) {
-	      int x = asDigit(m.group(1));
-	      int y = boardHeight - Integer.parseInt(m.group(2));
-	      return Optional.of(new int[] {x, y});
-	    } else {
-	      reg = "\\(([\\d]+),([\\d]+)\\)";
-	      p = Pattern.compile(reg);
-	      m = p.matcher(namedCoordinate);
-	      if (m.find() && m.groupCount() == 2) {
-	        int x = Integer.parseInt(m.group(1));
-	        int y = Integer.parseInt(m.group(2)); // boardHeight - Integer.parseInt(m.group(2)) - 1;
-	        return Optional.of(new int[] {x, y});
-	      } else {
-	        return Optional.empty();
-	      }
-	    }
-	  }
+    namedCoordinate = namedCoordinate.trim();
+    if (namedCoordinate.equalsIgnoreCase("pass") || namedCoordinate.equalsIgnoreCase("resign")) {
+      return Optional.empty();
+    }
+    // coordinates take the form C16 A19 Q5 K10 etc. I is not used.
+    String reg = "([A-HJ-Z]+)(\\d+)";
+    Pattern p = Pattern.compile(reg);
+    Matcher m = p.matcher(namedCoordinate);
+    if (m.find() && m.groupCount() == 2) {
+      int x = asDigit(m.group(1));
+      int y = boardHeight - Integer.parseInt(m.group(2));
+      return Optional.of(new int[] {x, y});
+    } else {
+      reg = "\\(([\\d]+),([\\d]+)\\)";
+      p = Pattern.compile(reg);
+      m = p.matcher(namedCoordinate);
+      if (m.find() && m.groupCount() == 2) {
+        int x = Integer.parseInt(m.group(1));
+        int y = Integer.parseInt(m.group(2)); // boardHeight - Integer.parseInt(m.group(2)) - 1;
+        return Optional.of(new int[] {x, y});
+      } else {
+        return Optional.empty();
+      }
+    }
+  }
 
   public static int asDigit(String name) {
     // coordinates take the form C16 A19 Q5 K10 etc. I is not used.
@@ -139,31 +139,30 @@ public class Board implements LeelazListener {
       return -1;
     }
   }
-  
-  public static String asName(int c) {
-	    return asName(c, true);
-	  }
 
+  public static String asName(int c) {
+    return asName(c, true);
+  }
 
   public static String asName(int c, boolean isName) {
-	    if (boardWidth > 25 && isName) {
-	      return String.valueOf(c + 1);
-	    }
-	    StringBuilder name = new StringBuilder();
-	    int base = alphabet.length();
-	    int n = c;
-	    ArrayDeque<Integer> ad = new ArrayDeque<Integer>();
-	    if (n > 0) {
-	      while (n > 0) {
-	        ad.addFirst(n < 25 && c >= 25 ? n % base - 1 : n % base);
-	        n /= base;
-	      }
-	    } else {
-	      ad.addFirst(n);
-	    }
-	    ad.forEach(i -> name.append(alphabet.charAt(i)));
-	    return name.toString();
-	  }
+    if (boardWidth > 25 && isName) {
+      return String.valueOf(c + 1);
+    }
+    StringBuilder name = new StringBuilder();
+    int base = alphabet.length();
+    int n = c;
+    ArrayDeque<Integer> ad = new ArrayDeque<Integer>();
+    if (n > 0) {
+      while (n > 0) {
+        ad.addFirst(n < 25 && c >= 25 ? n % base - 1 : n % base);
+        n /= base;
+      }
+    } else {
+      ad.addFirst(n);
+    }
+    ad.forEach(i -> name.append(alphabet.charAt(i)));
+    return name.toString();
+  }
 
   /**
    * Converts a x and y coordinate to a named coordinate eg C16, T5, K10, etc
@@ -173,36 +172,35 @@ public class Board implements LeelazListener {
    * @return a string representing the coordinate
    */
   public static String convertCoordinatesToName(int x, int y) {
-	    // coordinates take the form C16 A19 Q5 K10 etc. I is not used.
-	    if (boardWidth > 25 || boardHeight > 25) {
-	      return String.format("(%d,%d)", x, y); // boardHeight - y - 1);
-	    } else {
-	      return asName(x, false) + (boardHeight - y);
-	    }
-	  }
+    // coordinates take the form C16 A19 Q5 K10 etc. I is not used.
+    if (boardWidth > 25 || boardHeight > 25) {
+      return String.format("(%d,%d)", x, y); // boardHeight - y - 1);
+    } else {
+      return asName(x, false) + (boardHeight - y);
+    }
+  }
 
   public static int[] convertNameToCoordinates(String name) {
     // coordinates take the form C16 A19 Q5 K10 etc. I is not used.
-	  if (boardWidth > 25 || boardHeight > 25) {
-		  int coords[] = new int[2];
-		 
-		  int x = Integer.parseInt(name.split("\\d+")[0]);
-		  int y =  Integer.parseInt(name.split("\\d+")[1]);
-  	    coords[0] = x;
-  	    coords[1] = y;
-	      return coords; // boardHeight - y - 1);
-	    } else {
-	    	  char i = name.charAt(0);
-	    	    int x;
-	    	    if (i > 73) x = i - 66;
-	    	    else x = i - 65;
-	    	    int y = boardHeight - Integer.parseInt(name.substring(1));
-	    	    int coords[] = new int[2];
-	    	    coords[0] = x;
-	    	    coords[1] = y;
-	    	    return coords;
-	    }
-  
+    if (boardWidth > 25 || boardHeight > 25) {
+      int coords[] = new int[2];
+
+      int x = Integer.parseInt(name.replaceAll("\\(|\\)", "").split(",")[0]);
+      int y = Integer.parseInt(name.replaceAll("\\(|\\)", "").split(",")[1]);
+      coords[0] = x;
+      coords[1] = y;
+      return coords; // boardHeight - y - 1);
+    } else {
+      char i = name.charAt(0);
+      int x;
+      if (i > 73) x = i - 66;
+      else x = i - 65;
+      int y = boardHeight - Integer.parseInt(name.substring(1));
+      int coords[] = new int[2];
+      coords[0] = x;
+      coords[1] = y;
+      return coords;
+    }
   }
 
   /**
@@ -213,13 +211,12 @@ public class Board implements LeelazListener {
    * @return whether or not this coordinate is part of the board
    */
   public static boolean isValid(int x, int y) {
-	    return x >= 0 && x < boardWidth && y >= 0 && y < boardHeight;
-	  }
+    return x >= 0 && x < boardWidth && y >= 0 && y < boardHeight;
+  }
 
-	  public static boolean isValid(int[] c) {
-	    return c != null && c.length == 2 && isValid(c[0], c[1]);
-	  }
-
+  public static boolean isValid(int[] c) {
+    return c != null && c.length == 2 && isValid(c[0], c[1]);
+  }
 
   public void clearbestmovesafter(BoardHistoryNode node) {
     // if (node.getData().moveNumber <= movenumber) {
@@ -393,17 +390,18 @@ public class Board implements LeelazListener {
    * @param size
    */
   public void reopen(int width, int height) {
-	    width = (width >= 2) ? width : 19;
-	    height = (height >= 2) ? height : 19;
-	    if (width != boardWidth || height != boardHeight) {
-	      boardWidth = width;
-	      boardHeight = height;
-	      Zobrist.init();
-	      clear();
-	      Lizzie.leelaz.boardSize(boardWidth, boardHeight);
-	      forceRefresh = true;
-	    }
-	  }
+    width = (width >= 2) ? width : 19;
+    height = (height >= 2) ? height : 19;
+
+    if (width != boardWidth || height != boardHeight) {
+      boardWidth = width;
+      boardHeight = height;
+      Zobrist.init();
+      clear();
+      Lizzie.leelaz.boardSize(boardWidth, boardHeight);
+      forceRefresh = true;
+    }
+  }
 
   public boolean isForceRefresh() {
     return forceRefresh;
@@ -1516,8 +1514,8 @@ public class Board implements LeelazListener {
     for (int i = 0; i < stones.length; i++) {
       Stone stone = stones[i];
       if (stone.isBlack() || stone.isWhite()) {
-    	   int y = i % Board.boardWidth;
-           int x = (i - y) / Board.boardHeight;
+        int y = i % Board.boardWidth;
+        int x = (i - y) / Board.boardHeight;
         Lizzie.leelaz.playMove(stone, convertCoordinatesToName(x, y));
       }
     }
@@ -1823,6 +1821,7 @@ public class Board implements LeelazListener {
     Lizzie.leelaz.clear();
     Lizzie.frame.resetTitle();
     Lizzie.frame.clear();
+    mvnumber = new int[boardHeight * boardWidth];
     movelistwr.clear();
     cleanedittemp();
     initialize();
@@ -1839,6 +1838,7 @@ public class Board implements LeelazListener {
     // Lizzie.leelaz.clear();
     Lizzie.frame.resetTitle();
     Lizzie.frame.clear();
+    mvnumber = new int[boardHeight * boardWidth];
     movelistwr.clear();
     // cleanedittemp();
     initialize();
@@ -2077,7 +2077,7 @@ public class Board implements LeelazListener {
     Stone[] scoreStones = capturedStones.clone();
 
     for (int i = 0; i < boardWidth; i++) {
-        for (int j = 0; j < boardHeight; j++) {
+      for (int j = 0; j < boardHeight; j++) {
         if (scoreStones[getIndex(i, j)] == Stone.EMPTY) {
           markEmptyArea(scoreStones, i, j);
         }
@@ -2095,7 +2095,7 @@ public class Board implements LeelazListener {
           getData().blackCaptures, getData().whiteCaptures + getHistory().getGameInfo().getKomi()
         };
     for (int i = 0; i < boardWidth; i++) {
-        for (int j = 0; j < boardHeight; j++) {
+      for (int j = 0; j < boardHeight; j++) {
         switch (scoreStones[getIndex(i, j)]) {
           case BLACK_POINT:
             score[0]++;

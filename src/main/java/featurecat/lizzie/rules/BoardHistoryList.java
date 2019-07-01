@@ -328,7 +328,7 @@ public class BoardHistoryList {
       int moveNumber = this.getMoveNumber() + 1;
       int[] moveNumberList =
           newBranch && this.getNext(true).isPresent()
-          ? new int[Board.boardWidth * Board.boardHeight]
+              ? new int[Board.boardWidth * Board.boardHeight]
               : this.getMoveNumberList().clone();
 
       // build the new game state
@@ -390,7 +390,7 @@ public class BoardHistoryList {
           this.getMoveMNNumber() > -1 && !newBranch ? this.getMoveMNNumber() + 1 : -1;
       int[] moveNumberList =
           newBranch && this.getNext(true).isPresent()
-          ? new int[Board.boardWidth * Board.boardHeight]
+              ? new int[Board.boardWidth * Board.boardHeight]
               : this.getMoveNumberList().clone();
 
       moveNumberList[Board.getIndex(x, y)] = moveMNNumber > -1 ? moveMNNumber : moveNumber;
