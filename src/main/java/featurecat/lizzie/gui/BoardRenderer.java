@@ -228,7 +228,7 @@ public class BoardRenderer {
       g.setColor(Color.BLACK);
       for (int i = 0; i < Board.boardHeight; i++) {
         //  g.setStroke(new BasicStroke(stoneRadius / 15f));
-        if (i == 0 || i == Board.boardWidth - 1) {
+        if (i == 0 || i == Board.boardHeight - 1) {
           g.setStroke(new BasicStroke(stoneRadius / 10f));
           g.drawLine(
         		    x + scaledMarginWidth,
@@ -243,22 +243,22 @@ public class BoardRenderer {
                 x + scaledMarginWidth + availableWidth - 1,
                 y + scaledMarginHeight + squareHeight * i);
       }
-      for (int i = 0; i < Board.boardHeight; i++) {
+      for (int i = 0; i < Board.boardWidth; i++) {
         //  g.setStroke(new BasicStroke(stoneRadius / 15f));
         if (i == 0 || i == Board.boardWidth - 1) {
           g.setStroke(new BasicStroke(stoneRadius / 10f));
           g.drawLine(
-        		  x + scaledMarginWidth,
-                  y + scaledMarginHeight + squareHeight * i,
-                  x + scaledMarginWidth + availableWidth - 1,
-                  y + scaledMarginHeight + squareHeight * i);
+        		  x + scaledMarginWidth + squareWidth * i,
+                  y + scaledMarginHeight,
+                  x + scaledMarginWidth + squareWidth * i,
+                  y + scaledMarginHeight + availableHeight - 1);
         }
         g.setStroke(new BasicStroke(1f));
         g.drawLine(
-        		x + scaledMarginWidth,
-                y + scaledMarginHeight + squareHeight * i,
-                x + scaledMarginWidth + availableWidth - 1,
-                y + scaledMarginHeight + squareHeight * i);
+        		x + scaledMarginWidth + squareWidth * i,
+                y + scaledMarginHeight,
+                x + scaledMarginWidth + squareWidth * i,
+                y + scaledMarginHeight + availableHeight - 1);
       }
 
       // Draw the star points

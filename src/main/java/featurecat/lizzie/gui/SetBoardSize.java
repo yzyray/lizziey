@@ -93,7 +93,7 @@ public class SetBoardSize extends JDialog {
 
   private void applyChange() {
     Lizzie.config.uiConfig.putOpt("board-size", changeMoveNumber);
-    Lizzie.board.reopen(changeMoveNumber);
+    Lizzie.board.reopen(changeMoveNumber,changeMoveNumber);
     try {
       Lizzie.config.save();
     } catch (IOException e) {

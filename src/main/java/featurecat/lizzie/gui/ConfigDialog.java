@@ -1190,7 +1190,7 @@ public class ConfigDialog extends JDialog {
   }
 
   private void applyChange() {
-    Lizzie.board.reopen(getBoardSize());
+    Lizzie.board.reopen(getBoardSize(),getBoardSize());
   }
 
   private Integer txtFieldValue(JTextField txt) {

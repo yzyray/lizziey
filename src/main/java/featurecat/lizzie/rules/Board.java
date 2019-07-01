@@ -81,6 +81,11 @@ public class Board implements LeelazListener {
     return x * Board.boardHeight + y;
   }
 
+  public static int[] getCoord(int index) {
+	    int y = index / Board.boardWidth;
+	    int x = index  % Board.boardWidth;
+	    return new int[] {x, y};
+	  }
   /**
    * Converts a named coordinate eg C16, T5, K10, etc to an x and y coordinate
    *

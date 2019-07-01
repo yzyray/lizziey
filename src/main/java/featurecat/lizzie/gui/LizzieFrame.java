@@ -863,7 +863,10 @@ public class LizzieFrame extends JFrame {
       boolean noComment = !Lizzie.config.showComment;
       // board
       int maxSize = (int) (min(width - leftInset - rightInset, height - topInset - bottomInset));
-      maxSize = max(maxSize, Board.boardSize + 5); // don't let maxWidth become too small
+      maxSize =
+              max(
+                  maxSize,
+                  max(Board.boardWidth, Board.boardHeight) + 5);
       int boardX = (width - maxSize) / 8 * BoardPositionProportion;
       int boardY = topInset + (height - topInset - bottomInset - maxSize) / 2;
 
@@ -1203,7 +1206,8 @@ public class LizzieFrame extends JFrame {
         drawMoveStatistics(g, statx, staty, statw, stath);
       }
       boardRenderer.setLocation(boardX, boardY);
-      boardRenderer.setBoardLength(maxSize);
+      boardRenderer.setBoardLength(maxSize, maxSize);
+      boardRenderer.setupSizeParameters();
       boardRenderer.draw(g);
       if (backgroundG.isPresent()) {
         if (Lizzie.config.showWinrate) {
@@ -1261,7 +1265,8 @@ public class LizzieFrame extends JFrame {
           try {
             subBoardRenderer.setLocation(subBoardX, subBoardY);
             //	  subBoardRenderer.setLocation( cx,cy);
-            subBoardRenderer.setBoardLength(subBoardLength);
+            subBoardRenderer.setBoardLength(subBoardLength, subBoardLength);
+            subBoardRenderer.setupSizeParameters();
             subBoardRenderer.draw(g);
           } catch (Exception e) {
             // This can happen when no space is left for subboard.

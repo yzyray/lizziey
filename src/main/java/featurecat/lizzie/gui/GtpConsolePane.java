@@ -212,10 +212,15 @@ public class GtpConsolePane extends JDialog {
       } else if ("clear_board".equals(command)) {
         Lizzie.board.clear();
       } else if (command.toLowerCase().startsWith("boardsize")) {
-        String cmdParams[] = command.split(" ");
-        if (cmdParams.length == 2) {
-          Lizzie.board.reopen(Integer.parseInt(cmdParams[1]));
-        }
+          String cmdParams[] = command.split(" ");
+          if (cmdParams.length >= 2) {
+            int width = Integer.parseInt(cmdParams[1]);
+            int height = width;
+            if (cmdParams.length >= 3) {
+              height = Integer.parseInt(cmdParams[2]);
+            }
+            Lizzie.board.reopen(width, height);
+          }
 
       } else if (command.toLowerCase().startsWith("komi")) {
         String cmdParams[] = command.split(" ");

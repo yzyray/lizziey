@@ -233,7 +233,7 @@ public boolean isChanged=false;
 	  }
 
 	  public BoardData clone() {
-	    BoardData data = BoardData.empty(19);
+	    BoardData data = BoardData.empty(19,19);
 	    data.sync(this);
 	    return data;
 	  }
