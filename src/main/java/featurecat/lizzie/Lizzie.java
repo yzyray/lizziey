@@ -81,6 +81,9 @@ public class Lizzie {
     } catch (UnsupportedLookAndFeelException e) {
       e.printStackTrace();
     }
+    if (System.getProperty("os.name").contains("Mac")) {
+      System.setProperty("apple.laf.useScreenMenuBar", "true");
+    }
   }
 
   public static void setUIFont(javax.swing.plaf.FontUIResource f) {

@@ -2021,15 +2021,6 @@ public class LizzieFrame extends JFrame {
   }
 
   public boolean isMouseOverSuggestions() {
-    //	    return bestMoves
-    //	        .stream()
-    //	        .filter(
-    //	            move ->
-    //	                Board.asCoordinates(move.coordinate)
-    //	                    .map(c -> Lizzie.frame.isMouseOver(c[0], c[1]))
-    //	                    .orElse(false))
-    //	        .findFirst();
-
     List<MoveData> bestMoves = Lizzie.board.getHistory().getData().bestMoves;
     for (int i = 0; i < bestMoves.size(); i++) {
       Optional<int[]> c = Lizzie.board.asCoordinates(bestMoves.get(i).coordinate);
@@ -2076,6 +2067,10 @@ public class LizzieFrame extends JFrame {
   }
 
   public boolean isMouseOver(int x, int y) {
+    if (!Lizzie.frame.toolbar.chkShowBlack.isSelected()
+        && !Lizzie.frame.toolbar.chkShowBlack.isSelected()) {
+      return false;
+    }
     if (Lizzie.config.showSuggestionVaritions)
       return mouseOverCoordinate[0] == x && mouseOverCoordinate[1] == y;
     else return false;

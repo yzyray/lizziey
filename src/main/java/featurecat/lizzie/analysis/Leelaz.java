@@ -734,34 +734,37 @@ public class Leelaz {
 			              this.version=17;
 			              Lizzie.initializeAfterVersionCheck();
 			            }
-				}
-				else if (isCheckingVersion && !isKatago) {
-					String[] ver = params[1].split("\\.");
-					int minor = Integer.parseInt(ver[1]);
-					// Gtp support added in version 15
-					version = minor;
-					if (this.currentEngineN == EngineManager.currentEngineNo) {
-						Lizzie.config.leelaversion = minor;
-					}
-					if (minor < 15) {
-						boolean onTop = false;
-						if (Lizzie.frame.isAlwaysOnTop()) {
-							Lizzie.frame.setAlwaysOnTop(false);
-							onTop = true;
-						}
-						JOptionPane.showMessageDialog(null,
-								"Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本是: " + params[1]);
-						if (onTop)
-							Lizzie.frame.setAlwaysOnTop(true);
-					}
-					isCheckingVersion = false;
-					Lizzie.initializeAfterVersionCheck();
-					isLoaded = true;
-					featurecat.lizzie.gui.Menu.engine[currentEngineN].setIcon(featurecat.lizzie.gui.Menu.ready);
-					featurecat.lizzie.gui.Menu.engine[Lizzie.engineManager.currentEngineNo]
-							.setIcon(featurecat.lizzie.gui.Menu.icon);
+			          
+			          else
+			        	  if (isCheckingVersion && !isKatago) {
+								String[] ver = params[1].split("\\.");
+								int minor = Integer.parseInt(ver[1]);
+								// Gtp support added in version 15
+								version = minor;
+								if (this.currentEngineN == EngineManager.currentEngineNo) {
+									Lizzie.config.leelaversion = minor;
+								}
+								if (minor < 15) {
+									boolean onTop = false;
+									if (Lizzie.frame.isAlwaysOnTop()) {
+										Lizzie.frame.setAlwaysOnTop(false);
+										onTop = true;
+									}
+									JOptionPane.showMessageDialog(null,
+											"Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本是: " + params[1]);
+									if (onTop)
+										Lizzie.frame.setAlwaysOnTop(true);
+								}
+								isCheckingVersion = false;
+								Lizzie.initializeAfterVersionCheck();
+								isLoaded = true;
+								featurecat.lizzie.gui.Menu.engine[currentEngineN].setIcon(featurecat.lizzie.gui.Menu.ready);
+								featurecat.lizzie.gui.Menu.engine[Lizzie.engineManager.currentEngineNo]
+										.setIcon(featurecat.lizzie.gui.Menu.icon);
 
+							}
 				}
+				
 			}
 			if (isheatmap) {
 				if (line.startsWith(" ") || Character.isDigit(line.charAt(0))) {
@@ -1052,11 +1055,25 @@ public class Leelaz {
 		if (Lizzie.frame.toolbar.isAutoAna) {
 
 			if (Lizzie.frame.toolbar.startAutoAna) {
+				Lizzie.frame.toolbar.startAutoAna = false;
 				if (Lizzie.frame.toolbar.firstMove != -1) {
-					while (Lizzie.board.previousMove())
-						;
-					Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);
-				}
+					
+				//	while (Lizzie.board.previousMove());
+					   Timer timer = new Timer();
+					      timer.schedule(
+					          new TimerTask() {
+					            public void run() {
+					            	Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);
+					            	ponder();
+					            	Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);
+					            	Lizzie.frame.toolbar.isAutoAna=true;
+					              this.cancel();
+					            }
+					          },
+					          50);
+					
+					
+				}				
 				if (!Lizzie.board.getHistory().getNext().isPresent()) {
 					Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
 					togglePonder();
@@ -1068,8 +1085,7 @@ public class Leelaz {
 					return;
 				} else {
 					analysed = false;
-					isClosing = false;
-					Lizzie.frame.toolbar.startAutoAna = false;
+					isClosing = false;					
 				}
 			}
 			if (isClosing)
