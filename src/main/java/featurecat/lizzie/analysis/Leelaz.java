@@ -259,8 +259,8 @@ public class Leelaz {
 		//sendCommand("turnon");		
 		sendCommand("version");
 		sendCommand("name");
-		sendCommand("boardsize " + Lizzie.config.uiConfig.optInt("board-size", 19));
-
+		 boardSize(Lizzie.board.boardWidth, Lizzie.board.boardHeight);
+	   
 		// start a thread to continuously read Leelaz output
 		// new Thread(this::read).start();
 		// can stop engine for switching weights
@@ -770,7 +770,7 @@ public class Leelaz {
 				if (line.startsWith(" ") || Character.isDigit(line.charAt(0))) {
 					try {
 						String[] params = line.trim().split("\\s+");
-						if (params.length == 19) {
+						if (params.length == Lizzie.board.boardWidth) {
 							for (int i = 0; i < params.length; i++)
 								heatcount.add(Integer.parseInt(params[i]));
 						}
@@ -1620,6 +1620,8 @@ public class Leelaz {
 		}
 
 	}
+	
+	
 
 	private void savePassFile() {
 		File file = new File("");
@@ -2060,6 +2062,10 @@ if(resigned)
 
 		}
 	}
+	
+	  public void boardSize(int width, int height) {
+		    sendCommand("boardsize " + width + (width != height ? " " + height : ""));
+		  }
 
 	public void nameCmdfornoponder() {
 		canGetGenmoveInfo = false;
