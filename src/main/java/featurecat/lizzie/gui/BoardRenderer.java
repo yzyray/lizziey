@@ -1141,30 +1141,29 @@ public class BoardRenderer {
                       (float) (stoneRadius * 1.0),
                       stoneRadius * 1.6);
                 } else {
-                	if(roundedWinrate<10)
-                	{
-                		  drawString(
-                                  g,
-                                  suggestionX,
-                                  suggestionY - stoneRadius * 6 / 16,
-                                  LizzieFrame.winrateFont,
-                                  Font.PLAIN,
-                                  text,
-                                  (float)(stoneRadius*0.8),
-                                  stoneRadius * 1.15,
-                                  1);
-                	}else {
-                  drawString(
-                      g,
-                      suggestionX,
-                      suggestionY - stoneRadius * 6 / 16,
-                      LizzieFrame.winrateFont,
-                      Font.PLAIN,
-                      text,
-                      stoneRadius,
-                      stoneRadius * 1.45,
-                      1);
-                	}
+                  if (roundedWinrate < 10) {
+                    drawString(
+                        g,
+                        suggestionX,
+                        suggestionY - stoneRadius * 6 / 16,
+                        LizzieFrame.winrateFont,
+                        Font.PLAIN,
+                        text,
+                        (float) (stoneRadius * 0.8),
+                        stoneRadius * 1.15,
+                        1);
+                  } else {
+                    drawString(
+                        g,
+                        suggestionX,
+                        suggestionY - stoneRadius * 6 / 16,
+                        LizzieFrame.winrateFont,
+                        Font.PLAIN,
+                        text,
+                        stoneRadius,
+                        stoneRadius * 1.45,
+                        1);
+                  }
                   drawString(
                       g,
                       suggestionX,
