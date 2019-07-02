@@ -146,7 +146,10 @@ public class OnlineDialog extends JDialog {
     quitButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.frame.urlSgf = false;
+            Lizzie.frame.urlSgf = false;   
+            if (client != null && client.isOpen()) {
+                client.close();
+              }
             setVisible(false);
           }
         });
@@ -253,6 +256,7 @@ public class OnlineDialog extends JDialog {
 
   private void applyChange() {
     //
+   
     type = checkUrl();
     Lizzie.frame.urlSgf = true;
     if (type > 0) {
@@ -532,9 +536,10 @@ public class OnlineDialog extends JDialog {
                   @Override
                   public void run() {
                     if (!Lizzie.frame.urlSgf) {
-                      online.shutdown();
-                      return;
-                    }
+                      ajax.abort();
+//                      
+                     return;
+                     }
                     try {
                       ajax.open("GET", ajaxUrl, true);
                       ajax.send(params);
@@ -794,7 +799,9 @@ public class OnlineDialog extends JDialog {
                   @Override
                   public void run() {
                     if (!Lizzie.frame.urlSgf) {
-                      online.shutdown();
+                    	if (client != null && client.isOpen()) {
+                            client.close();
+                          }
                       return;
                     }
                     if (client.isOpen()) {
@@ -2307,8 +2314,8 @@ public class OnlineDialog extends JDialog {
 
       if (c == null || !Lizzie.board.isValid(c)) {
         history.pass(color, false, false);
-      } else {
-        history.getEnd();
+      } else {    	 
+        
         history.place(c[0], c[1], color, false, changeMove);
       }
 
