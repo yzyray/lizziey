@@ -2,6 +2,7 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Config;
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.rules.Board;
 import featurecat.lizzie.rules.Movelistwr;
 import featurecat.lizzie.rules.Stone;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Optional;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -26,6 +29,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 @SuppressWarnings("serial")
 public class MoreEngines extends JPanel {
@@ -96,10 +100,6 @@ public class MoreEngines extends JPanel {
     table.getColumnModel().getColumn(1).setPreferredWidth(50);
     table.getColumnModel().getColumn(2).setPreferredWidth(57);
     table.getColumnModel().getColumn(3).setPreferredWidth(72);
-    table.getColumnModel().getColumn(4).setPreferredWidth(77);
-    table.getColumnModel().getColumn(5).setPreferredWidth(74);
-    table.getColumnModel().getColumn(6).setPreferredWidth(76);
-    table.getColumnModel().getColumn(7).setPreferredWidth(71);
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
@@ -109,10 +109,6 @@ public class MoreEngines extends JPanel {
       table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
       table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
       table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
-      table.getColumnModel().getColumn(4).setPreferredWidth(pos.getInt(8));
-      table.getColumnModel().getColumn(5).setPreferredWidth(pos.getInt(9));
-      table.getColumnModel().getColumn(6).setPreferredWidth(pos.getInt(10));
-      table.getColumnModel().getColumn(7).setPreferredWidth(pos.getInt(11));
     }
 
     JTableHeader header = table.getTableHeader();
@@ -234,55 +230,52 @@ public class MoreEngines extends JPanel {
 
     public Component getTableCellRendererComponent(
         JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-      // if(row%2 == 0){
-      // if(row%2 == 0){
+   
 
-      if (Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[0]
-              == Lizzie.frame.clickbadmove[0]
-          && Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[1]
-              == Lizzie.frame.clickbadmove[1]) {
+//      if (Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[0]
+//              == Lizzie.frame.clickbadmove[0]
+//          && Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[1]
+//              == Lizzie.frame.clickbadmove[1]) {
 
-        //        if (selectedorder != row) {
-        //          selectedorder = -1;
-        //          setForeground(Color.RED);
-        //        }
-        Color hsbColor =
-            Color.getHSBColor(
-                Color.RGBtoHSB(238, 221, 130, null)[0],
-                Color.RGBtoHSB(238, 221, 130, null)[1],
-                Color.RGBtoHSB(238, 221, 130, null)[2]);
-        setBackground(hsbColor);
-        if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
-            && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
-          Color hsbColor2 =
-              Color.getHSBColor(
-                  Color.RGBtoHSB(255, 153, 18, null)[0],
-                  Color.RGBtoHSB(255, 153, 18, null)[1],
-                  Color.RGBtoHSB(255, 153, 18, null)[2]);
-          setForeground(hsbColor2);
-        } else if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
-          setForeground(Color.RED);
-        } else {
-          setForeground(Color.BLACK);
-        }
-        return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-      }
-      if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
-          && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
-        Color hsbColor =
-            Color.getHSBColor(
-                Color.RGBtoHSB(255, 153, 18, null)[0],
-                Color.RGBtoHSB(255, 153, 18, null)[1],
-                Color.RGBtoHSB(255, 153, 18, null)[2]);
-        setBackground(Color.WHITE);
-        setForeground(hsbColor);
-        return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-      }
-      if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
-        setBackground(Color.WHITE);
-        setForeground(Color.RED);
-        return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-      } else {
+        
+//        Color hsbColor =
+//            Color.getHSBColor(
+//                Color.RGBtoHSB(238, 221, 130, null)[0],
+//                Color.RGBtoHSB(238, 221, 130, null)[1],
+//                Color.RGBtoHSB(238, 221, 130, null)[2]);
+//        setBackground(hsbColor);
+//        if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
+//            && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
+//          Color hsbColor2 =
+//              Color.getHSBColor(
+//                  Color.RGBtoHSB(255, 153, 18, null)[0],
+//                  Color.RGBtoHSB(255, 153, 18, null)[1],
+//                  Color.RGBtoHSB(255, 153, 18, null)[2]);
+//          setForeground(hsbColor2);
+//        } else if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
+//          setForeground(Color.RED);
+//        } else {
+//          setForeground(Color.BLACK);
+//        }
+//        return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
+//      }
+//      if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
+//          && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
+//        Color hsbColor =
+//            Color.getHSBColor(
+//                Color.RGBtoHSB(255, 153, 18, null)[0],
+//                Color.RGBtoHSB(255, 153, 18, null)[1],
+//                Color.RGBtoHSB(255, 153, 18, null)[2]);
+//        setBackground(Color.WHITE);
+//        setForeground(hsbColor);
+//        return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
+//      }
+//      if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
+//        setBackground(Color.WHITE);
+//        setForeground(Color.RED);
+//        return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
+//      } else 
+      {
         return renderer.getTableCellRendererComponent(table, value, isSelected, false, row, column);
       }
     }
@@ -306,30 +299,56 @@ public class MoreEngines extends JPanel {
   }
 
   private void handleTableClick(int row, int col) {
-    if (selectedorder != row) {
-      int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString());
-      Lizzie.frame.clickbadmove = coords;
-      Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
-      Lizzie.frame.repaint();
-      selectedorder = row;
-    } else {
-      Lizzie.frame.clickbadmove = Lizzie.frame.outOfBoundCoordinate;
-      Lizzie.frame.boardRenderer.removedrawmovestone();
-      Lizzie.frame.repaint();
-      selectedorder = -1;
-      table.clearSelection();
-    }
+//    if (selectedorder != row) {
+//      int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString());
+//      Lizzie.frame.clickbadmove = coords;
+//      Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
+//      Lizzie.frame.repaint();
+//      selectedorder = row;
+//    } else {
+//      Lizzie.frame.clickbadmove = Lizzie.frame.outOfBoundCoordinate;
+//      Lizzie.frame.boardRenderer.removedrawmovestone();
+//      Lizzie.frame.repaint();
+//      selectedorder = -1;
+//      table.clearSelection();
+//    }
   }
 
   private void handleTableDoubleClick(int row, int col) {
-    int movenumber = Integer.parseInt(table.getValueAt(row, 1).toString());
-    Lizzie.board.goToMoveNumber(1);
-    Lizzie.board.goToMoveNumber(movenumber - 1);
-    int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString());
-    Lizzie.frame.clickbadmove = coords;
-    Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
-    Lizzie.frame.repaint();
-    selectedorder = row;
+//    int movenumber = Integer.parseInt(table.getValueAt(row, 1).toString());
+//    Lizzie.board.goToMoveNumber(1);
+//    Lizzie.board.goToMoveNumber(movenumber - 1);
+//    int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString());
+//    Lizzie.frame.clickbadmove = coords;
+//    Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
+//    Lizzie.frame.repaint();
+//    selectedorder = row;
+  }
+  
+  private ArrayList<EngineData> getEngineData() {
+	  ArrayList<EngineData> engineData=new ArrayList<EngineData>();
+	  Optional<JSONArray> enginesCommandOpt =
+              Optional.ofNullable(
+                  Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
+      Optional<JSONArray> enginesNameOpt =
+              Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+      Optional<JSONArray> enginesPreloadOpt =
+              Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
+      
+      for (int i = 0; i < enginesCommandOpt.get().length(); i++) {         
+          	String commands=enginesCommandOpt.get().optString(i);
+          	
+          	String name = enginesNameOpt.get().optString(i);
+          	boolean preload=enginesPreloadOpt.get().optBoolean(i);
+          	EngineData enginedt=new EngineData();
+          	enginedt.commands=commands;
+          	enginedt.name=name;
+          	enginedt.preload=preload;
+          	enginedt.index=i;
+          	engineData.add(enginedt);
+          	
+        }
+      return engineData;
   }
 
   public AbstractTableModel getTableModel() {
@@ -337,185 +356,51 @@ public class MoreEngines extends JPanel {
     return new AbstractTableModel() {
       public int getColumnCount() {
 
-        return 8;
+        return 4;
       }
 
       public int getRowCount() {
-        int row = 0;
-        ArrayList<Movelistwr> data2 = Lizzie.board.movelistwr;
-        for (int i = 0; i < Lizzie.board.movelistwr.size(); i++) {
-          Movelistwr mwr = Lizzie.board.movelistwr.get(i);
-          if (!mwr.isdelete)
-            if (mwr.isblack && checkBlack.isSelected() || !mwr.isblack && checkWhite.isSelected())
-              if (Math.abs(mwr.diffwinrate) >= (int) dropwinratechooser.getValue())
-                if (mwr.playouts >= (int) playoutschooser.getValue()
-                    && mwr.previousplayouts >= (int) playoutschooser.getValue()) row = row + 1;
-        }
-
-        return row;
+     
+        return 50;
       }
 
       public String getColumnName(int column) {
 
-        if (column == 0) return "黑白";
-        if (column == 1) return "手数";
-        if (column == 2) return "坐标";
-        if (column == 3) return "胜率波动";
-        if (column == 4) return "此手胜率";
-        if (column == 5) return "AI胜率";
-        if (column == 6) return "计算量";
-        if (column == 7) return "前一手计算量";
+        if (column == 0) return "序号";
+        if (column == 1) return "名称";
+        if (column == 2) return "命令";
+        if (column == 3) return "预加载";
 
         return "无";
       }
 
       @SuppressWarnings("unchecked")
       public Object getValueAt(int row, int col) {
-        ArrayList<Movelistwr> data2 = new ArrayList<Movelistwr>();
-
-        for (int i = 0; i < Lizzie.board.movelistwr.size(); i++) {
-          Movelistwr mwr = Lizzie.board.movelistwr.get(i);
-
-          if (mwr.isblack && checkBlack.isSelected() || !mwr.isblack && checkWhite.isSelected())
-            if (!mwr.isdelete)
-              if (Math.abs(mwr.diffwinrate) >= (int) dropwinratechooser.getValue())
-                if (mwr.playouts >= (int) playoutschooser.getValue()
-                    && mwr.previousplayouts >= (int) playoutschooser.getValue()) data2.add(mwr);
+        ArrayList<EngineData> EngineDatas = getEngineData();
+        if(row>(EngineDatas.size()-1))
+        {
+        	return "";
         }
-        //		Collections.sort(data2) ;
-        Collections.sort(
-            data2,
-            new Comparator<Movelistwr>() {
-
-              @Override
-              public int compare(Movelistwr s1, Movelistwr s2) {
-                // 降序
-                if (!issorted) {
-                  if (sortnum == 0) {
-                    if (s2.isblack) return 1;
-                    if (!s2.isblack) return -1;
-                  }
-                  if (sortnum == 1) {
-                    if (s1.movenum > s2.movenum) return 1;
-                    if (s1.movenum < s2.movenum) return -1;
-                  }
-                  if (sortnum == 2) {
-                    return 1;
-                  }
-                  if (sortnum == 3) {
-                    if (Math.abs(s1.diffwinrate) < Math.abs(s2.diffwinrate)) return 1;
-                    if (Math.abs(s1.diffwinrate) > Math.abs(s2.diffwinrate)) return -1;
-                  }
-                  if (sortnum == 4) {
-                    if (s1.winrate < s2.winrate) return 1;
-                    if (s1.winrate > s2.winrate) return -1;
-                  }
-                  if (sortnum == 5) {
-                    if (s1.winrate - s1.diffwinrate < s2.winrate - s2.diffwinrate) return 1;
-                    if (s1.winrate - s1.diffwinrate > s2.winrate - s2.diffwinrate) return -1;
-                  }
-                  if (sortnum == 7) {
-                    if (s1.previousplayouts < s2.previousplayouts) return 1;
-                    if (s1.previousplayouts > s2.previousplayouts) return -1;
-                  }
-                  if (sortnum == 6) {
-                    if (s1.playouts < s2.playouts) return 1;
-                    if (s1.playouts > s2.playouts) return -1;
-                  }
-
-                } else {
-                  if (sortnum == 0) {
-                    if (!s2.isblack) return 1;
-                    if (s2.isblack) return -1;
-                  }
-                  if (sortnum == 1) {
-                    if (s1.movenum < s2.movenum) return 1;
-                    if (s1.movenum > s2.movenum) return -1;
-                  }
-                  if (sortnum == 2) {
-                    return 1;
-                  }
-                  if (sortnum == 3) {
-                    if (Math.abs(s1.diffwinrate) > Math.abs(s2.diffwinrate)) return 1;
-                    if (Math.abs(s1.diffwinrate) < Math.abs(s2.diffwinrate)) return -1;
-                  }
-                  if (sortnum == 4) {
-                    if (s1.winrate > s2.winrate) return 1;
-                    if (s1.winrate < s2.winrate) return -1;
-                  }
-                  if (sortnum == 5) {
-                    if (s1.winrate - s1.diffwinrate > s2.winrate - s2.diffwinrate) return 1;
-                    if (s1.winrate - s1.diffwinrate < s2.winrate - s2.diffwinrate) return -1;
-                  }
-                  if (sortnum == 7) {
-                    if (s1.previousplayouts > s2.previousplayouts) return 1;
-                    if (s1.previousplayouts < s2.previousplayouts) return -1;
-                  }
-                  if (sortnum == 6) {
-                    if (s1.playouts > s2.playouts) return 1;
-                    if (s1.playouts < s2.playouts) return -1;
-                  }
-                }
-                return 0;
-              }
-            });
-
-        // featurecat.lizzie.analysis.MoveDataSorter MoveDataSorter = new MoveDataSorter(data2);
-        // ArrayList sortedMoveData = MoveDataSorter.getSortedMoveDataByPolicy();
-
-        Movelistwr data = data2.get(row);
-        if (Lizzie.board.isPkBoard) {
+        EngineData data=EngineDatas.get(row);
+      
+if(data.commands.equals(""))
+{
+	return "";
+	}
+     
           switch (col) {
             case 0:
-              if (data.isblack) return "白";
-              return "黑";
+            	return data.index;
             case 1:
-              return data.movenum + 1;
+            	return data.name;
             case 2:
-              return Board.convertCoordinatesToName(data.coords[0], data.coords[1]);
+            	return data.commands;
             case 3:
-              return String.format("%.2f", -data.diffwinrate);
-            case 4:
-              return String.format("%.2f", 100 - data.winrate);
-            case 5:
-              if (data.previousplayouts > 0) {
-                return String.format("%.2f", 100 - (data.winrate - data.diffwinrate));
-              } else {
-                return "无";
-              }
-            case 6:
-              return data.playouts;
-            case 7:
-              return data.previousplayouts;
+            	return data.preload;
+           
             default:
               return "";
-          }
-        } else {
-          switch (col) {
-            case 0:
-              if (data.isblack) return "黑";
-              return "白";
-            case 1:
-              return data.movenum;
-            case 2:
-              return Board.convertCoordinatesToName(data.coords[0], data.coords[1]);
-            case 3:
-              return String.format("%.2f", data.diffwinrate);
-            case 4:
-              return String.format("%.2f", data.winrate);
-            case 5:
-              if (data.previousplayouts > 0) {
-                return String.format("%.2f", data.winrate - data.diffwinrate);
-              } else {
-                return "无";
-              }
-            case 6:
-              return data.playouts;
-            case 7:
-              return data.previousplayouts;
-            default:
-              return "";
-          }
+         
         }
       }
     };

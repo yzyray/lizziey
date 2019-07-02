@@ -119,7 +119,7 @@ public class Lizzie {
     if (config.config.getJSONObject("ui").getBoolean("confirm-exit")) {
       int ret =
           JOptionPane.showConfirmDialog(
-              null, "Do you want to save this SGF?", "Save SGF?", JOptionPane.OK_CANCEL_OPTION);
+              null, "是否保存SGF棋谱?", "保存SGF棋谱?", JOptionPane.OK_CANCEL_OPTION);
       if (ret == JOptionPane.OK_OPTION) {
         frame.saveFile();
       }
