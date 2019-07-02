@@ -1,0 +1,8 @@
+package featurecat.lizzie.gui;
+
+public class EngineData {
+  public int index;
+  public String commands;
+  public String name;
+  public boolean preload;
+}
