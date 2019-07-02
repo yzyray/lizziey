@@ -271,7 +271,7 @@ public class BoardRenderer {
           drawString(
               g,
               x + scaledMarginWidth + squareWidth * i,
-              y + scaledMarginHeight / 3,
+              y + scaledMarginHeight * 4 / 10,
               Lizzie.frame.uiFont,
               Board.asName(i),
               stoneRadius * 4 / 5,
@@ -279,7 +279,7 @@ public class BoardRenderer {
           drawString(
               g,
               x + scaledMarginWidth + squareWidth * i,
-              y - scaledMarginHeight / 3 + boardHeight,
+              y - scaledMarginHeight * 4 / 10 + boardHeight,
               Lizzie.frame.uiFont,
               Board.asName(i),
               stoneRadius * 4 / 5,
@@ -288,7 +288,7 @@ public class BoardRenderer {
         for (int i = 0; i < Board.boardHeight; i++) {
           drawString(
               g,
-              x + scaledMarginWidth / 3,
+              x + scaledMarginWidth * 4 / 10,
               y + scaledMarginHeight + squareHeight * i,
               Lizzie.frame.uiFont,
               "" + (Board.boardHeight <= 25 ? (Board.boardHeight - i) : (i + 1)),
@@ -296,7 +296,7 @@ public class BoardRenderer {
               stoneRadius);
           drawString(
               g,
-              x - scaledMarginWidth / 3 + boardWidth,
+              x - scaledMarginWidth * 4 / 10 + boardWidth,
               y + scaledMarginHeight + squareHeight * i,
               Lizzie.frame.uiFont,
               "" + (Board.boardHeight <= 25 ? (Board.boardHeight - i) : (i + 1)),
@@ -1296,8 +1296,7 @@ public class BoardRenderer {
     }
 
     // decrease boardLength until the availableLength will result in square board intersections
-    double marginWidth =
-        (showCoordinates ? (Board.boardWidth > 3 ? 0.06 : 0.04) : 0.03) / Board.boardWidth * 19.0;
+    double marginWidth = (showCoordinates ? 0.045 : 0.025) / Board.boardWidth * 19.0;
     boardWidth++;
     do {
       boardWidth--;
@@ -1308,10 +1307,7 @@ public class BoardRenderer {
     int squareWidth = 0;
     int squareHeight = 0;
     if (Board.boardWidth != Board.boardHeight) {
-      double marginHeight =
-          (showCoordinates ? (Board.boardHeight > 3 ? 0.06 : 0.04) : 0.03)
-              / Board.boardHeight
-              * 19.0;
+      double marginHeight = (showCoordinates ? 0.045 : 0.03) / Board.boardHeight * 19.0;
       boardHeight++;
       do {
         boardHeight--;
