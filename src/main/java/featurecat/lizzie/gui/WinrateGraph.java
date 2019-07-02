@@ -14,12 +14,12 @@ public class WinrateGraph {
   private int[] params = {0, 0, 0, 0, 0};
   private int numMovesOfPlayed = 0;
   public int mode = 0;
-  double maxcoreMean = 30.0;
+  public double maxcoreMean = 30.0;
 
   public void draw(Graphics2D g, int posx, int posy, int width, int height) {
     BoardHistoryNode curMove = Lizzie.board.getHistory().getCurrentHistoryNode();
     BoardHistoryNode node = curMove;
-    maxcoreMean = 30.0;
+    //  maxcoreMean = 30.0;
 
     // draw background rectangle
     final Paint gradient =

@@ -1822,6 +1822,7 @@ public class Board implements LeelazListener {
     Lizzie.leelaz.clear();
     Lizzie.frame.resetTitle();
     Lizzie.frame.clear();
+    Lizzie.frame.winrateGraph.maxcoreMean = 30;
     mvnumber = new int[boardHeight * boardWidth];
     movelistwr.clear();
     cleanedittemp();
@@ -1837,6 +1838,7 @@ public class Board implements LeelazListener {
 
   public void clearforpk() {
     // Lizzie.leelaz.clear();
+    Lizzie.frame.winrateGraph.maxcoreMean = 30;
     Lizzie.frame.resetTitle();
     Lizzie.frame.clear();
     mvnumber = new int[boardHeight * boardWidth];
