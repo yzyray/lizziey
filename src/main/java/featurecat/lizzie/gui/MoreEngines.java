@@ -2,10 +2,6 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Config;
 import featurecat.lizzie.Lizzie;
-import featurecat.lizzie.analysis.Leelaz;
-import featurecat.lizzie.rules.Board;
-import featurecat.lizzie.rules.Movelistwr;
-import featurecat.lizzie.rules.Stone;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -15,10 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Optional;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -29,7 +22,6 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import org.json.JSONArray;
-import org.json.JSONException;
 
 @SuppressWarnings("serial")
 public class MoreEngines extends JPanel {
@@ -230,51 +222,52 @@ public class MoreEngines extends JPanel {
 
     public Component getTableCellRendererComponent(
         JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-   
 
-//      if (Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[0]
-//              == Lizzie.frame.clickbadmove[0]
-//          && Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[1]
-//              == Lizzie.frame.clickbadmove[1]) {
+      //      if (Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[0]
+      //              == Lizzie.frame.clickbadmove[0]
+      //          && Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[1]
+      //              == Lizzie.frame.clickbadmove[1]) {
 
-        
-//        Color hsbColor =
-//            Color.getHSBColor(
-//                Color.RGBtoHSB(238, 221, 130, null)[0],
-//                Color.RGBtoHSB(238, 221, 130, null)[1],
-//                Color.RGBtoHSB(238, 221, 130, null)[2]);
-//        setBackground(hsbColor);
-//        if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
-//            && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
-//          Color hsbColor2 =
-//              Color.getHSBColor(
-//                  Color.RGBtoHSB(255, 153, 18, null)[0],
-//                  Color.RGBtoHSB(255, 153, 18, null)[1],
-//                  Color.RGBtoHSB(255, 153, 18, null)[2]);
-//          setForeground(hsbColor2);
-//        } else if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
-//          setForeground(Color.RED);
-//        } else {
-//          setForeground(Color.BLACK);
-//        }
-//        return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-//      }
-//      if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
-//          && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
-//        Color hsbColor =
-//            Color.getHSBColor(
-//                Color.RGBtoHSB(255, 153, 18, null)[0],
-//                Color.RGBtoHSB(255, 153, 18, null)[1],
-//                Color.RGBtoHSB(255, 153, 18, null)[2]);
-//        setBackground(Color.WHITE);
-//        setForeground(hsbColor);
-//        return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-//      }
-//      if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
-//        setBackground(Color.WHITE);
-//        setForeground(Color.RED);
-//        return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-//      } else 
+      //        Color hsbColor =
+      //            Color.getHSBColor(
+      //                Color.RGBtoHSB(238, 221, 130, null)[0],
+      //                Color.RGBtoHSB(238, 221, 130, null)[1],
+      //                Color.RGBtoHSB(238, 221, 130, null)[2]);
+      //        setBackground(hsbColor);
+      //        if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
+      //            && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
+      //          Color hsbColor2 =
+      //              Color.getHSBColor(
+      //                  Color.RGBtoHSB(255, 153, 18, null)[0],
+      //                  Color.RGBtoHSB(255, 153, 18, null)[1],
+      //                  Color.RGBtoHSB(255, 153, 18, null)[2]);
+      //          setForeground(hsbColor2);
+      //        } else if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
+      //          setForeground(Color.RED);
+      //        } else {
+      //          setForeground(Color.BLACK);
+      //        }
+      //        return super.getTableCellRendererComponent(table, value, isSelected, false, row,
+      // column);
+      //      }
+      //      if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
+      //          && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
+      //        Color hsbColor =
+      //            Color.getHSBColor(
+      //                Color.RGBtoHSB(255, 153, 18, null)[0],
+      //                Color.RGBtoHSB(255, 153, 18, null)[1],
+      //                Color.RGBtoHSB(255, 153, 18, null)[2]);
+      //        setBackground(Color.WHITE);
+      //        setForeground(hsbColor);
+      //        return super.getTableCellRendererComponent(table, value, isSelected, false, row,
+      // column);
+      //      }
+      //      if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
+      //        setBackground(Color.WHITE);
+      //        setForeground(Color.RED);
+      //        return super.getTableCellRendererComponent(table, value, isSelected, false, row,
+      // column);
+      //      } else
       {
         return renderer.getTableCellRendererComponent(table, value, isSelected, false, row, column);
       }
@@ -299,56 +292,55 @@ public class MoreEngines extends JPanel {
   }
 
   private void handleTableClick(int row, int col) {
-//    if (selectedorder != row) {
-//      int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString());
-//      Lizzie.frame.clickbadmove = coords;
-//      Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
-//      Lizzie.frame.repaint();
-//      selectedorder = row;
-//    } else {
-//      Lizzie.frame.clickbadmove = Lizzie.frame.outOfBoundCoordinate;
-//      Lizzie.frame.boardRenderer.removedrawmovestone();
-//      Lizzie.frame.repaint();
-//      selectedorder = -1;
-//      table.clearSelection();
-//    }
+    //    if (selectedorder != row) {
+    //      int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row,
+    // 2).toString());
+    //      Lizzie.frame.clickbadmove = coords;
+    //      Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
+    //      Lizzie.frame.repaint();
+    //      selectedorder = row;
+    //    } else {
+    //      Lizzie.frame.clickbadmove = Lizzie.frame.outOfBoundCoordinate;
+    //      Lizzie.frame.boardRenderer.removedrawmovestone();
+    //      Lizzie.frame.repaint();
+    //      selectedorder = -1;
+    //      table.clearSelection();
+    //    }
   }
 
   private void handleTableDoubleClick(int row, int col) {
-//    int movenumber = Integer.parseInt(table.getValueAt(row, 1).toString());
-//    Lizzie.board.goToMoveNumber(1);
-//    Lizzie.board.goToMoveNumber(movenumber - 1);
-//    int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString());
-//    Lizzie.frame.clickbadmove = coords;
-//    Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
-//    Lizzie.frame.repaint();
-//    selectedorder = row;
+    //    int movenumber = Integer.parseInt(table.getValueAt(row, 1).toString());
+    //    Lizzie.board.goToMoveNumber(1);
+    //    Lizzie.board.goToMoveNumber(movenumber - 1);
+    //    int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString());
+    //    Lizzie.frame.clickbadmove = coords;
+    //    Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
+    //    Lizzie.frame.repaint();
+    //    selectedorder = row;
   }
-  
+
   private ArrayList<EngineData> getEngineData() {
-	  ArrayList<EngineData> engineData=new ArrayList<EngineData>();
-	  Optional<JSONArray> enginesCommandOpt =
-              Optional.ofNullable(
-                  Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
-      Optional<JSONArray> enginesNameOpt =
-              Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
-      Optional<JSONArray> enginesPreloadOpt =
-              Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
-      
-      for (int i = 0; i < enginesCommandOpt.get().length(); i++) {         
-          	String commands=enginesCommandOpt.get().optString(i);
-          	
-          	String name = enginesNameOpt.get().optString(i);
-          	boolean preload=enginesPreloadOpt.get().optBoolean(i);
-          	EngineData enginedt=new EngineData();
-          	enginedt.commands=commands;
-          	enginedt.name=name;
-          	enginedt.preload=preload;
-          	enginedt.index=i;
-          	engineData.add(enginedt);
-          	
-        }
-      return engineData;
+    ArrayList<EngineData> engineData = new ArrayList<EngineData>();
+    Optional<JSONArray> enginesCommandOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
+    Optional<JSONArray> enginesNameOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+    Optional<JSONArray> enginesPreloadOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
+
+    for (int i = 0; i < enginesCommandOpt.get().length(); i++) {
+      String commands = enginesCommandOpt.get().optString(i);
+
+      String name = enginesNameOpt.get().optString(i);
+      boolean preload = enginesPreloadOpt.get().optBoolean(i);
+      EngineData enginedt = new EngineData();
+      enginedt.commands = commands;
+      enginedt.name = name;
+      enginedt.preload = preload;
+      enginedt.index = i;
+      engineData.add(enginedt);
+    }
+    return engineData;
   }
 
   public AbstractTableModel getTableModel() {
@@ -360,7 +352,7 @@ public class MoreEngines extends JPanel {
       }
 
       public int getRowCount() {
-     
+
         return 50;
       }
 
@@ -377,30 +369,27 @@ public class MoreEngines extends JPanel {
       @SuppressWarnings("unchecked")
       public Object getValueAt(int row, int col) {
         ArrayList<EngineData> EngineDatas = getEngineData();
-        if(row>(EngineDatas.size()-1))
-        {
-        	return "";
+        if (row > (EngineDatas.size() - 1)) {
+          return "";
         }
-        EngineData data=EngineDatas.get(row);
-      
-if(data.commands.equals(""))
-{
-	return "";
-	}
-     
-          switch (col) {
-            case 0:
-            	return data.index;
-            case 1:
-            	return data.name;
-            case 2:
-            	return data.commands;
-            case 3:
-            	return data.preload;
-           
-            default:
-              return "";
-         
+        EngineData data = EngineDatas.get(row);
+
+        if (data.commands.equals("")) {
+          return "";
+        }
+
+        switch (col) {
+          case 0:
+            return data.index;
+          case 1:
+            return data.name;
+          case 2:
+            return data.commands;
+          case 3:
+            return data.preload;
+
+          default:
+            return "";
         }
       }
     };

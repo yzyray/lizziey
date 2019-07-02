@@ -512,6 +512,8 @@ public class Leelaz {
 				String[] params = line.trim().split("=");				
 				try {
 					currentCmdNum = Integer.parseInt(params[1].split(" ")[0].trim());
+					if(currentCmdNum > cmdNumber - 1)
+						currentCmdNum=cmdNumber - 1;
 					if (!isLoaded)
 						isLoaded = true;
 				} catch (Exception ex) {
@@ -731,11 +733,13 @@ public class Leelaz {
 					}
 				}
 				else {if (isCheckingName) {
+					 isCheckingName=false;
 			          if (params[1].startsWith("KataGo")||isKatago) {
 			              this.isKatago = true;
 			              this.version=17;
 			              Lizzie.initializeAfterVersionCheck();
 			              isCheckingVersion=false;
+			             
 			              if (this.currentEngineN == EngineManager.currentEngineNo) {
 								Lizzie.config.leelaversion = version;
 							}
@@ -2555,7 +2559,6 @@ if(resigned)
 		if (!Lizzie.config.playponder && Lizzie.frame.isPlayingAgainstLeelaz) {
 			return;
 		}
-		startPonderTime = System.currentTimeMillis();
 		int currentmove = Lizzie.board.getcurrentmovenumber();
 		if (featurecat.lizzie.gui.RightClickMenu.move > 0 && featurecat.lizzie.gui.RightClickMenu.move >= currentmove
 				&& currentmove >= featurecat.lizzie.gui.RightClickMenu.startmove) {
@@ -2606,6 +2609,7 @@ if(resigned)
 	}
 
 	public void togglePonder() {
+		startPonderTime=System.currentTimeMillis();
 		isPondering = !isPondering;
 		if (isPondering) {
 			ponder();

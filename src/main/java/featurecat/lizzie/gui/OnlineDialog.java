@@ -2308,6 +2308,7 @@ public class OnlineDialog extends JDialog {
       if (c == null || !Lizzie.board.isValid(c)) {
         history.pass(color, false, false);
       } else {
+        history.getEnd();
         history.place(c[0], c[1], color, false, changeMove);
       }
 
