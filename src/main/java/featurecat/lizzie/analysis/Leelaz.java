@@ -749,7 +749,7 @@ public class Leelaz {
 									.setIcon(featurecat.lizzie.gui.Menu.icon);
 			            }
 				}
-			           if (isCheckingVersion && !isKatago) {
+				else       if (isCheckingVersion && !isKatago) {
 								String[] ver = params[1].split("\\.");
 								int minor = Integer.parseInt(ver[1]);
 								// Gtp support added in version 15

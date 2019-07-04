@@ -104,7 +104,7 @@ public class Lizzie {
     } else if (config.config.getJSONObject("ui").getBoolean("resume-previous-game")) {
       board.resumePreviousGame();
     }
-    leelaz.togglePonder();
+    leelaz.ponder();
 
     if (Lizzie.config.loadZen) {
       try {
