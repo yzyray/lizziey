@@ -2552,6 +2552,7 @@ if(resigned)
 	/** This initializes leelaz's pondering mode at its current position */
 	public void ponder() {
 		isPondering = true;
+		startPonderTime=System.currentTimeMillis();
 		if (Lizzie.frame.isheatmap) {
 			Lizzie.leelaz.heatcount.clear();
 			// Lizzie.frame.isheatmap = false;
@@ -2609,7 +2610,7 @@ if(resigned)
 	}
 
 	public void togglePonder() {
-		startPonderTime=System.currentTimeMillis();
+		
 		isPondering = !isPondering;
 		if (isPondering) {
 			ponder();

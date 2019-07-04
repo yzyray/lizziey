@@ -157,7 +157,7 @@ public boolean isChanged=false;
 
   public void tryToSetBestMoves(List<MoveData> moves) {
     // MoveData.getPlayouts(moves) > playouts	
-    if (MoveData.getPlayouts(moves) > playouts||isChanged ) {
+    if (MoveData.getPlayouts(moves) > playouts||isChanged||Lizzie.frame.urlSgf) {
 	
     	//added for change bestmoves when playouts is not increased
       bestMoves = moves;

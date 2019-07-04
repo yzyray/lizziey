@@ -69,6 +69,7 @@ public class ConfigDialog extends JDialog {
   private JTextField nameEngine9;
   private JTextField[] txts;
   private JTextField[] names;
+  private JCheckBox chkPreload;
   private JCheckBox chkPreload1;
   private JCheckBox chkPreload2;
   private JCheckBox chkPreload3;
@@ -166,10 +167,8 @@ public class ConfigDialog extends JDialog {
     txtEngine.setBounds(87, 40, 420, 26);
     engineTab.add(txtEngine);
     txtEngine.setColumns(10);
-    JCheckBox chkPreload = new JCheckBox();
+    chkPreload = new JCheckBox();
     chkPreload.setBounds(570, 41, 23, 23);
-    chkPreload.setSelected(true);
-    chkPreload.setEnabled(false);
     engineTab.add(chkPreload);
 
     nameEngine = new JTextField();
@@ -1022,6 +1021,7 @@ public class ConfigDialog extends JDialog {
 
     chkPreloads =
         new JCheckBox[] {
+          chkPreload,
           chkPreload1,
           chkPreload2,
           chkPreload3,
@@ -1280,6 +1280,8 @@ public class ConfigDialog extends JDialog {
       rdofast.setSelected(true);
     } else {
       rdonofast.setSelected(true);
+      chkPreload.setSelected(false);
+      chkPreload.setEnabled(false);
       chkPreload1.setSelected(false);
       chkPreload1.setEnabled(false);
       chkPreload2.setSelected(false);
@@ -1308,6 +1310,7 @@ public class ConfigDialog extends JDialog {
     }
     if (rdonofast.isSelected()) {
       Lizzie.config.fastChange = false;
+      chkPreload.setSelected(false);
       chkPreload1.setSelected(false);
       chkPreload2.setSelected(false);
       chkPreload3.setSelected(false);

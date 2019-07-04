@@ -154,7 +154,7 @@ public class Theme {
 
   /** The color of the winrate line */
   public Color winrateLineColor() {
-    return getColorByKey("winrate-line-color", Color.BLACK);
+    return getColorByKey("winrate-line-color", Color.GREEN);
   }
 
   /** The color of the line that missed the winrate */

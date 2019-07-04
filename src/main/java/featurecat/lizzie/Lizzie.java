@@ -43,7 +43,7 @@ public class Lizzie {
 
     movelistframe = MovelistFrame.createBadmovesDialog();
     moreEngines = MoreEngines.createBadmovesDialog();
-    moreEngines.setVisible(true);
+    moreEngines.setVisible(false);
     //   movelistframe.setLocation(-7, 302);
     movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", false));
     movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
@@ -125,12 +125,12 @@ public class Lizzie {
       }
     }
     board.autosaveToMemory();
-    if( Lizzie.config.uiConfig.optBoolean("autoload-last", false)) {
-    Lizzie.config.uiConfig.put("default-engine", leelaz.currentEngineN());
-    try {
-      Lizzie.config.save();
-    } catch (IOException es) {
-    }
+    if (Lizzie.config.uiConfig.optBoolean("autoload-last", false)) {
+      Lizzie.config.uiConfig.put("default-engine", leelaz.currentEngineN());
+      try {
+        Lizzie.config.save();
+      } catch (IOException es) {
+      }
     }
     try {
       config.persist();
