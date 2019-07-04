@@ -55,10 +55,10 @@ public class MoreEngines extends JPanel {
   JButton cancel;
   JButton exit;
   JCheckBox chkdefault;
-  JRadioButton  rdoDefault;
-  JRadioButton  rdoLast;
-  JRadioButton  rdoMannul;
-  int curIndex=-1;
+  JRadioButton rdoDefault;
+  JRadioButton rdoLast;
+  JRadioButton rdoMannul;
+  int curIndex = -1;
 
   public MoreEngines() {
     // super(new BorderLayout());
@@ -125,7 +125,7 @@ public class MoreEngines extends JPanel {
     JLabel lblpreload = new JLabel("预加载");
     JLabel lblWidth = new JLabel("默认棋盘 宽：");
     JLabel lblHeight = new JLabel("高：");
-    
+
     txtWidth = new JTextField();
     txtHeight = new JTextField();
     save = new JButton("保存");
@@ -137,16 +137,16 @@ public class MoreEngines extends JPanel {
     cancel.setMargin(new Insets(0, 0, 0, 0));
     exit.setFocusable(false);
     exit.setMargin(new Insets(0, 0, 0, 0));
-    
-    chkdefault =new JCheckBox();
+
+    chkdefault = new JCheckBox();
     JLabel lbldefault = new JLabel("默认引擎");
-    JLabel lblchooseStart= new JLabel("启动时：");
-    rdoDefault=new JRadioButton();
-    JLabel lblrdoDefault= new JLabel("自动加载默认引擎");
-    rdoLast=new JRadioButton();
-    JLabel lblrdoLast= new JLabel("自动加载上次退出的引擎");
-    rdoMannul=new JRadioButton();
-    JLabel lblrdoMannul= new JLabel("手动选择");
+    JLabel lblchooseStart = new JLabel("启动时：");
+    rdoDefault = new JRadioButton();
+    JLabel lblrdoDefault = new JLabel("自动加载默认引擎");
+    rdoLast = new JRadioButton();
+    JLabel lblrdoLast = new JLabel("自动加载上次退出的引擎");
+    rdoMannul = new JRadioButton();
+    JLabel lblrdoMannul = new JLabel("手动选择");
 
     engineName.setBounds(5, 5, 500, 20);
     txtName.setBounds(50, 35, 600, 20);
@@ -162,33 +162,27 @@ public class MoreEngines extends JPanel {
     save.setBounds(510, 270, 40, 22);
     cancel.setBounds(560, 270, 40, 22);
     exit.setBounds(610, 270, 40, 22);
-    
+
     chkdefault.setBounds(280, 271, 20, 20);
     lbldefault.setBounds(300, 271, 60, 20);
-    
-    
-     lblchooseStart.setBounds(5, 300, 60, 20);
+
+    lblchooseStart.setBounds(5, 300, 60, 20);
     rdoDefault.setBounds(60, 300, 20, 20);
-     lblrdoDefault.setBounds(80, 300, 150, 20);
+    lblrdoDefault.setBounds(80, 300, 150, 20);
     rdoLast.setBounds(180, 300, 20, 20);
-     lblrdoLast.setBounds(200, 300, 200, 20);
+    lblrdoLast.setBounds(200, 300, 200, 20);
     rdoMannul.setBounds(335, 300, 20, 20);
-     lblrdoMannul.setBounds(355, 300, 60, 20);
-     ButtonGroup startGroup = new ButtonGroup();
-     startGroup.add(rdoDefault);
-     startGroup.add(rdoLast);
-     startGroup.add(rdoMannul);
-if( Lizzie.config.uiConfig.optBoolean("autoload-default",false))
-{
-	if(Lizzie.config.uiConfig.optBoolean("autoload-last",false))
-		rdoLast.setSelected(true);
-	else
-		rdoDefault.setSelected(true);
-	}
-else
-{
-	rdoMannul.setSelected(true);
-	}
+    lblrdoMannul.setBounds(355, 300, 60, 20);
+    ButtonGroup startGroup = new ButtonGroup();
+    startGroup.add(rdoDefault);
+    startGroup.add(rdoLast);
+    startGroup.add(rdoMannul);
+    if (Lizzie.config.uiConfig.optBoolean("autoload-default", false)) {
+      if (Lizzie.config.uiConfig.optBoolean("autoload-last", false)) rdoLast.setSelected(true);
+      else rdoDefault.setSelected(true);
+    } else {
+      rdoMannul.setSelected(true);
+    }
     //    checkBlacktxt = new JLabel("黑:");
     //    checkWhitetxt = new JLabel("白:");
     //    JLabel dropwinratechoosertxt = new JLabel("胜率波动筛选:");
@@ -209,7 +203,7 @@ else
     selectpanel.add(exit);
     selectpanel.add(chkdefault);
     selectpanel.add(lbldefault);
-    
+
     selectpanel.add(lblchooseStart);
     selectpanel.add(rdoDefault);
     selectpanel.add(lblrdoDefault);
@@ -259,62 +253,59 @@ else
     //            }
     //          }
     //        });
-    
-    exit    .addActionListener(  new ActionListener() {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			engjf.setVisible(false);
-		}
-    
-    });
-    cancel.addActionListener(  new ActionListener() {
+    exit.addActionListener(
+        new ActionListener() {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			 command.setText("");
-			    engineName.setText("单机选中列表中的引擎进行设置");
-			    txtName.setText("");
-			   preload.setSelected(false);
-			    txtWidth.setText("");
-			    txtHeight.setText("");
-			    chkdefault.setSelected(false);    
-			    curIndex=-1;
-		}
-    
-    });
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            engjf.setVisible(false);
+          }
+        });
+    cancel.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            command.setText("");
+            engineName.setText("单机选中列表中的引擎进行设置");
+            txtName.setText("");
+            preload.setSelected(false);
+            txtWidth.setText("");
+            txtHeight.setText("");
+            chkdefault.setSelected(false);
+            curIndex = -1;
+          }
+        });
     save.addActionListener(
-            new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                	if(chkdefault.isSelected())
-                	 Lizzie.config.uiConfig.put("default-engine", curIndex);
-                	 if(rdoDefault.isSelected())
-                		 {Lizzie.config.uiConfig.put("autoload-default", true);}
-                	 else
-                	 {
-                		 Lizzie.config.uiConfig.put("autoload-last", false); 
-                	 }
-                		 
-                	 if(rdoLast.isSelected())
-                	 { Lizzie.config.uiConfig.put("autoload-last", true);
-                	 Lizzie.config.uiConfig.put("autoload-default", true);
-                	 }
-                	 if(rdoMannul.isSelected())
-                	 {
-                		 Lizzie.config.uiConfig.put("autoload-last", false);
-                    	 Lizzie.config.uiConfig.put("autoload-default", false);
-                	 }
-                	
-                    try {
-                      Lizzie.config.save();
-                    } catch (IOException es) {
-                    }
-                    table.validate();
-                    table.updateUI();
-                }
-              });
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            if (chkdefault.isSelected()) Lizzie.config.uiConfig.put("default-engine", curIndex);
+            if (rdoDefault.isSelected()) {
+              Lizzie.config.uiConfig.put("autoload-default", true);
+            } else {
+              Lizzie.config.uiConfig.put("autoload-last", false);
+            }
+
+            if (rdoLast.isSelected()) {
+              Lizzie.config.uiConfig.put("autoload-last", true);
+              Lizzie.config.uiConfig.put("autoload-default", true);
+            }
+            if (rdoMannul.isSelected()) {
+              Lizzie.config.uiConfig.put("autoload-last", false);
+              Lizzie.config.uiConfig.put("autoload-default", false);
+            }
+
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+            }
+            table.validate();
+            table.updateUI();
+          }
+        });
     table.addMouseListener(
         new MouseAdapter() {
           public void mouseClicked(MouseEvent e) {
@@ -349,31 +340,31 @@ else
     table.addKeyListener(
         new KeyAdapter() {
           public void keyPressed(KeyEvent e) {
-//            if (e.getKeyCode() == KeyEvent.VK_B) {
-//              Lizzie.frame.toggleBadMoves();
-//            }
-//            if (e.getKeyCode() == KeyEvent.VK_U) {
-//              Lizzie.frame.toggleBestMoves();
-//            }
-//            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-//              if (Lizzie.frame.isPlayingAgainstLeelaz) {
-//                Lizzie.frame.isPlayingAgainstLeelaz = false;
-//                Lizzie.leelaz.isThinking = false;
-//              }
-//              Lizzie.leelaz.togglePonder();
-//            }
-//            if (e.getKeyCode() == KeyEvent.VK_Q) {
-//              togglealwaysontop();
-//            }
+            //            if (e.getKeyCode() == KeyEvent.VK_B) {
+            //              Lizzie.frame.toggleBadMoves();
+            //            }
+            //            if (e.getKeyCode() == KeyEvent.VK_U) {
+            //              Lizzie.frame.toggleBestMoves();
+            //            }
+            //            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            //              if (Lizzie.frame.isPlayingAgainstLeelaz) {
+            //                Lizzie.frame.isPlayingAgainstLeelaz = false;
+            //                Lizzie.leelaz.isThinking = false;
+            //              }
+            //              Lizzie.leelaz.togglePonder();
+            //            }
+            //            if (e.getKeyCode() == KeyEvent.VK_Q) {
+            //              togglealwaysontop();
+            //            }
           }
         });
 
     header.addMouseListener(
         new MouseAdapter() {
           public void mouseReleased(MouseEvent e) {
-//            int pick = header.columnAtPoint(e.getPoint());
-//            sortnum = pick;
-//            issorted = !issorted;
+            //            int pick = header.columnAtPoint(e.getPoint());
+            //            sortnum = pick;
+            //            issorted = !issorted;
           }
         });
   }
@@ -475,8 +466,8 @@ else
     txtWidth.setText(table.getModel().getValueAt(row, 4).toString());
     txtHeight.setText(table.getModel().getValueAt(row, 5).toString());
     if (table.getModel().getValueAt(row, 6).toString().equals("是")) chkdefault.setSelected(true);
-    else chkdefault.setSelected(false);    
-    curIndex=Integer.parseInt(table.getModel().getValueAt(row, 0).toString())-1;
+    else chkdefault.setSelected(false);
+    curIndex = Integer.parseInt(table.getModel().getValueAt(row, 0).toString()) - 1;
   }
 
   private void handleTableDoubleClick(int row, int col) {
@@ -504,8 +495,8 @@ else
 
     Optional<JSONArray> enginesHeightOpt =
         Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-height-list"));
-    
-   int defaultEngine = Lizzie.config.uiConfig.optInt("default-engine",-1);
+
+    int defaultEngine = Lizzie.config.uiConfig.optInt("default-engine", -1);
 
     for (int i = 0; i < enginesCommandOpt.get().length(); i++) {
       if (i == 0) {
@@ -522,10 +513,8 @@ else
         enginedt.index = i;
         enginedt.width = width;
         enginedt.height = height;
-        if(defaultEngine==i)
-        enginedt.isDefault=true;
-        else
-        	enginedt.isDefault=false;
+        if (defaultEngine == i) enginedt.isDefault = true;
+        else enginedt.isDefault = false;
         engineData.add(enginedt);
       } else {
         String commands =
@@ -542,10 +531,8 @@ else
         enginedt.index = i;
         enginedt.width = width;
         enginedt.height = height;
-        if(defaultEngine==i)
-            enginedt.isDefault=true;
-            else
-            	enginedt.isDefault=false;
+        if (defaultEngine == i) enginedt.isDefault = true;
+        else enginedt.isDefault = false;
         engineData.add(enginedt);
       }
     }
@@ -606,10 +593,8 @@ else
           case 5:
             return data.height;
           case 6:
-        	  if(data.isDefault)
-        		  return "是";
-        	  else
-        		  return "否";
+            if (data.isDefault) return "是";
+            else return "否";
           default:
             return "";
         }
