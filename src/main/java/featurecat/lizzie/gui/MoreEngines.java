@@ -3,6 +3,8 @@ package featurecat.lizzie.gui;
 import featurecat.lizzie.Config;
 import featurecat.lizzie.Lizzie;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -51,6 +53,12 @@ public class MoreEngines extends JPanel {
   JTextField txtHeight;
   JButton save;
   JButton cancel;
+  JButton exit;
+  JCheckBox chkdefault;
+  JRadioButton  rdoDefault;
+  JRadioButton  rdoLast;
+  JRadioButton  rdoMannul;
+  int curIndex=-1;
 
   public MoreEngines() {
     // super(new BorderLayout());
@@ -70,9 +78,9 @@ public class MoreEngines extends JPanel {
     table.setRowHeight(20);
 
     tablepanel = new JPanel(new BorderLayout());
-    tablepanel.setBounds(0, 300, 685, 462);
+    tablepanel.setBounds(0, 330, 685, 432);
     this.add(tablepanel, BorderLayout.SOUTH);
-    selectpanel.setBounds(0, 0, 700, 400);
+    selectpanel.setBounds(0, 0, 700, 330);
     this.add(selectpanel, BorderLayout.NORTH);
     scrollpane = new JScrollPane(table);
 
@@ -81,10 +89,11 @@ public class MoreEngines extends JPanel {
     table.setFillsViewportHeight(true);
     table.getColumnModel().getColumn(0).setPreferredWidth(30);
     table.getColumnModel().getColumn(1).setPreferredWidth(100);
-    table.getColumnModel().getColumn(2).setPreferredWidth(400);
+    table.getColumnModel().getColumn(2).setPreferredWidth(370);
     table.getColumnModel().getColumn(3).setPreferredWidth(40);
     table.getColumnModel().getColumn(4).setPreferredWidth(20);
     table.getColumnModel().getColumn(5).setPreferredWidth(20);
+    table.getColumnModel().getColumn(6).setPreferredWidth(30);
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
@@ -103,7 +112,7 @@ public class MoreEngines extends JPanel {
     //    checkBlack.setSelected(true);
     //    checkWhite.setSelected(true);
 
-    engineName = new JLabel("设置引擎1");
+    engineName = new JLabel("单机选中列表中的引擎进行设置");
     engineName.setFont(new Font("微软雅黑", Font.PLAIN, 14));
     JLabel lblname = new JLabel("名称：");
     txtName = new JTextField();
@@ -116,16 +125,30 @@ public class MoreEngines extends JPanel {
     JLabel lblpreload = new JLabel("预加载");
     JLabel lblWidth = new JLabel("默认棋盘 宽：");
     JLabel lblHeight = new JLabel("高：");
+    
     txtWidth = new JTextField();
     txtHeight = new JTextField();
     save = new JButton("保存");
     cancel = new JButton("取消");
+    exit = new JButton("退出");
     save.setFocusable(false);
     save.setMargin(new Insets(0, 0, 0, 0));
     cancel.setFocusable(false);
     cancel.setMargin(new Insets(0, 0, 0, 0));
+    exit.setFocusable(false);
+    exit.setMargin(new Insets(0, 0, 0, 0));
+    
+    chkdefault =new JCheckBox();
+    JLabel lbldefault = new JLabel("默认引擎");
+    JLabel lblchooseStart= new JLabel("启动时：");
+    rdoDefault=new JRadioButton();
+    JLabel lblrdoDefault= new JLabel("自动加载默认引擎");
+    rdoLast=new JRadioButton();
+    JLabel lblrdoLast= new JLabel("自动加载上次退出的引擎");
+    rdoMannul=new JRadioButton();
+    JLabel lblrdoMannul= new JLabel("手动选择");
 
-    engineName.setBounds(5, 5, 80, 20);
+    engineName.setBounds(5, 5, 500, 20);
     txtName.setBounds(50, 35, 600, 20);
     lblname.setBounds(5, 35, 45, 20);
     lblcommand.setBounds(5, 65, 50, 20);
@@ -136,9 +159,36 @@ public class MoreEngines extends JPanel {
     txtWidth.setBounds(190, 272, 30, 20);
     lblHeight.setBounds(225, 271, 30, 20);
     txtHeight.setBounds(245, 272, 30, 20);
-    save.setBounds(560, 270, 40, 22);
-    cancel.setBounds(610, 270, 40, 22);
-
+    save.setBounds(510, 270, 40, 22);
+    cancel.setBounds(560, 270, 40, 22);
+    exit.setBounds(610, 270, 40, 22);
+    
+    chkdefault.setBounds(280, 271, 20, 20);
+    lbldefault.setBounds(300, 271, 60, 20);
+    
+    
+     lblchooseStart.setBounds(5, 300, 60, 20);
+    rdoDefault.setBounds(60, 300, 20, 20);
+     lblrdoDefault.setBounds(80, 300, 150, 20);
+    rdoLast.setBounds(180, 300, 20, 20);
+     lblrdoLast.setBounds(200, 300, 200, 20);
+    rdoMannul.setBounds(335, 300, 20, 20);
+     lblrdoMannul.setBounds(355, 300, 60, 20);
+     ButtonGroup startGroup = new ButtonGroup();
+     startGroup.add(rdoDefault);
+     startGroup.add(rdoLast);
+     startGroup.add(rdoMannul);
+if( Lizzie.config.uiConfig.optBoolean("autoload-default",false))
+{
+	if(Lizzie.config.uiConfig.optBoolean("autoload-last",false))
+		rdoLast.setSelected(true);
+	else
+		rdoDefault.setSelected(true);
+	}
+else
+{
+	rdoMannul.setSelected(true);
+	}
     //    checkBlacktxt = new JLabel("黑:");
     //    checkWhitetxt = new JLabel("白:");
     //    JLabel dropwinratechoosertxt = new JLabel("胜率波动筛选:");
@@ -156,6 +206,17 @@ public class MoreEngines extends JPanel {
     selectpanel.add(txtHeight);
     selectpanel.add(save);
     selectpanel.add(cancel);
+    selectpanel.add(exit);
+    selectpanel.add(chkdefault);
+    selectpanel.add(lbldefault);
+    
+    selectpanel.add(lblchooseStart);
+    selectpanel.add(rdoDefault);
+    selectpanel.add(lblrdoDefault);
+    selectpanel.add(rdoLast);
+    selectpanel.add(lblrdoLast);
+    selectpanel.add(rdoMannul);
+    selectpanel.add(lblrdoMannul);
 
     //
     //    selectpanel.add(checkBlacktxt);
@@ -198,6 +259,62 @@ public class MoreEngines extends JPanel {
     //            }
     //          }
     //        });
+    
+    exit    .addActionListener(  new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			engjf.setVisible(false);
+		}
+    
+    });
+    cancel.addActionListener(  new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			 command.setText("");
+			    engineName.setText("单机选中列表中的引擎进行设置");
+			    txtName.setText("");
+			   preload.setSelected(false);
+			    txtWidth.setText("");
+			    txtHeight.setText("");
+			    chkdefault.setSelected(false);    
+			    curIndex=-1;
+		}
+    
+    });
+    save.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                	if(chkdefault.isSelected())
+                	 Lizzie.config.uiConfig.put("default-engine", curIndex);
+                	 if(rdoDefault.isSelected())
+                		 {Lizzie.config.uiConfig.put("autoload-default", true);}
+                	 else
+                	 {
+                		 Lizzie.config.uiConfig.put("autoload-last", false); 
+                	 }
+                		 
+                	 if(rdoLast.isSelected())
+                	 { Lizzie.config.uiConfig.put("autoload-last", true);
+                	 Lizzie.config.uiConfig.put("autoload-default", true);
+                	 }
+                	 if(rdoMannul.isSelected())
+                	 {
+                		 Lizzie.config.uiConfig.put("autoload-last", false);
+                    	 Lizzie.config.uiConfig.put("autoload-default", false);
+                	 }
+                	
+                    try {
+                      Lizzie.config.save();
+                    } catch (IOException es) {
+                    }
+                    table.validate();
+                    table.updateUI();
+                }
+              });
     table.addMouseListener(
         new MouseAdapter() {
           public void mouseClicked(MouseEvent e) {
@@ -232,31 +349,31 @@ public class MoreEngines extends JPanel {
     table.addKeyListener(
         new KeyAdapter() {
           public void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_B) {
-              Lizzie.frame.toggleBadMoves();
-            }
-            if (e.getKeyCode() == KeyEvent.VK_U) {
-              Lizzie.frame.toggleBestMoves();
-            }
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-              if (Lizzie.frame.isPlayingAgainstLeelaz) {
-                Lizzie.frame.isPlayingAgainstLeelaz = false;
-                Lizzie.leelaz.isThinking = false;
-              }
-              Lizzie.leelaz.togglePonder();
-            }
-            if (e.getKeyCode() == KeyEvent.VK_Q) {
-              togglealwaysontop();
-            }
+//            if (e.getKeyCode() == KeyEvent.VK_B) {
+//              Lizzie.frame.toggleBadMoves();
+//            }
+//            if (e.getKeyCode() == KeyEvent.VK_U) {
+//              Lizzie.frame.toggleBestMoves();
+//            }
+//            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+//              if (Lizzie.frame.isPlayingAgainstLeelaz) {
+//                Lizzie.frame.isPlayingAgainstLeelaz = false;
+//                Lizzie.leelaz.isThinking = false;
+//              }
+//              Lizzie.leelaz.togglePonder();
+//            }
+//            if (e.getKeyCode() == KeyEvent.VK_Q) {
+//              togglealwaysontop();
+//            }
           }
         });
 
     header.addMouseListener(
         new MouseAdapter() {
           public void mouseReleased(MouseEvent e) {
-            int pick = header.columnAtPoint(e.getPoint());
-            sortnum = pick;
-            issorted = !issorted;
+//            int pick = header.columnAtPoint(e.getPoint());
+//            sortnum = pick;
+//            issorted = !issorted;
           }
         });
   }
@@ -357,6 +474,9 @@ public class MoreEngines extends JPanel {
     else preload.setSelected(false);
     txtWidth.setText(table.getModel().getValueAt(row, 4).toString());
     txtHeight.setText(table.getModel().getValueAt(row, 5).toString());
+    if (table.getModel().getValueAt(row, 6).toString().equals("是")) chkdefault.setSelected(true);
+    else chkdefault.setSelected(false);    
+    curIndex=Integer.parseInt(table.getModel().getValueAt(row, 0).toString())-1;
   }
 
   private void handleTableDoubleClick(int row, int col) {
@@ -384,6 +504,8 @@ public class MoreEngines extends JPanel {
 
     Optional<JSONArray> enginesHeightOpt =
         Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-height-list"));
+    
+   int defaultEngine = Lizzie.config.uiConfig.optInt("default-engine",-1);
 
     for (int i = 0; i < enginesCommandOpt.get().length(); i++) {
       if (i == 0) {
@@ -400,6 +522,10 @@ public class MoreEngines extends JPanel {
         enginedt.index = i;
         enginedt.width = width;
         enginedt.height = height;
+        if(defaultEngine==i)
+        enginedt.isDefault=true;
+        else
+        	enginedt.isDefault=false;
         engineData.add(enginedt);
       } else {
         String commands =
@@ -416,6 +542,10 @@ public class MoreEngines extends JPanel {
         enginedt.index = i;
         enginedt.width = width;
         enginedt.height = height;
+        if(defaultEngine==i)
+            enginedt.isDefault=true;
+            else
+            	enginedt.isDefault=false;
         engineData.add(enginedt);
       }
     }
@@ -427,7 +557,7 @@ public class MoreEngines extends JPanel {
     return new AbstractTableModel() {
       public int getColumnCount() {
 
-        return 6;
+        return 7;
       }
 
       public int getRowCount() {
@@ -443,6 +573,7 @@ public class MoreEngines extends JPanel {
         if (column == 3) return "预加载";
         if (column == 4) return "宽";
         if (column == 5) return "高";
+        if (column == 6) return "默认";
 
         return "无";
       }
@@ -474,6 +605,11 @@ public class MoreEngines extends JPanel {
             return data.width;
           case 5:
             return data.height;
+          case 6:
+        	  if(data.isDefault)
+        		  return "是";
+        	  else
+        		  return "否";
           default:
             return "";
         }
@@ -484,7 +620,7 @@ public class MoreEngines extends JPanel {
   public static JDialog createBadmovesDialog() {
     // Create and set up the window.
     engjf = new JDialog();
-    engjf.setTitle("仅记录主分支,B显示/关闭,右键/双击跳转,单击显示紫圈,Q切换总在最前");
+    engjf.setTitle("更多引擎设置");
 
     engjf.addWindowListener(
         new WindowAdapter() {

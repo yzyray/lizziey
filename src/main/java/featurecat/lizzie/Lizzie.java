@@ -125,7 +125,13 @@ public class Lizzie {
       }
     }
     board.autosaveToMemory();
-
+    if( Lizzie.config.uiConfig.optBoolean("autoload-last", false)) {
+    Lizzie.config.uiConfig.put("default-engine", leelaz.currentEngineN());
+    try {
+      Lizzie.config.save();
+    } catch (IOException es) {
+    }
+    }
     try {
       config.persist();
     } catch (IOException e) {

@@ -7,4 +7,5 @@ public class EngineData {
   public boolean preload;
   public int width;
   public int height;
+  public boolean isDefault;
 }
