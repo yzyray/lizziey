@@ -43,7 +43,7 @@ public class Lizzie {
 
     movelistframe = MovelistFrame.createBadmovesDialog();
     moreEngines = MoreEngines.createBadmovesDialog();
-    moreEngines.setVisible(false);
+    moreEngines.setVisible(true);
     //   movelistframe.setLocation(-7, 302);
     movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", false));
     movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);

@@ -5,4 +5,6 @@ public class EngineData {
   public String commands;
   public String name;
   public boolean preload;
+  public int width;
+  public int height;
 }

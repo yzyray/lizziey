@@ -1831,6 +1831,8 @@ public class Board implements LeelazListener {
     Lizzie.leelaz.sendCommand("komi 7.5");
     Lizzie.board.getHistory().getGameInfo().resetAll();
     Lizzie.frame.komi = "7.5";
+    Lizzie.frame.boardRenderer.removecountblock();
+    if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
     featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(5).setHeaderValue("AI胜率");
     featurecat.lizzie.gui.MovelistFrame.checkBlacktxt.setText("黑:");
     featurecat.lizzie.gui.MovelistFrame.checkWhitetxt.setText("白:");
@@ -1843,6 +1845,8 @@ public class Board implements LeelazListener {
     Lizzie.frame.clear();
     mvnumber = new int[boardHeight * boardWidth];
     movelistwr.clear();
+    Lizzie.frame.boardRenderer.removecountblock();
+    if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
     // cleanedittemp();
     initialize();
   }

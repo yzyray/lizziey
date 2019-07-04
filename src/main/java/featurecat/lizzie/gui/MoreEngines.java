@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
@@ -29,13 +27,14 @@ public class MoreEngines extends JPanel {
   public TableModel dataModel;
   JPanel tablepanel;
   JPanel selectpanel = new JPanel();
+
   JScrollPane scrollpane;
   public static JTable table;
   public static JLabel checkBlacktxt;
   public static JLabel checkWhitetxt;
   Font headFont;
   Font winrateFont;
-  static JDialog jf;
+  static JDialog engjf;
   Timer timer;
   int sortnum = 3;
   public static int selectedorder = -1;
@@ -44,116 +43,161 @@ public class MoreEngines extends JPanel {
   JSpinner playoutschooser = new JSpinner(new SpinnerNumberModel(100, 0, 99999, 100));
   JCheckBox checkBlack = new JCheckBox();
   JCheckBox checkWhite = new JCheckBox();
+  JTextArea command;
+  JTextField txtName;
+  JLabel engineName;
+  JCheckBox preload;
+  JTextField txtWidth;
+  JTextField txtHeight;
+  JButton save;
+  JButton cancel;
 
   public MoreEngines() {
     // super(new BorderLayout());
     this.setLayout(null);
     dataModel = getTableModel();
     table = new JTable(dataModel);
-
+    selectpanel.setLayout(null);
     winrateFont = new Font("微软雅黑", Font.PLAIN, 14);
     headFont = new Font("微软雅黑", Font.PLAIN, 13);
 
     table.getTableHeader().setFont(headFont);
     table.setFont(winrateFont);
+    table.getTableHeader().setReorderingAllowed(false);
+    table.getTableHeader().setResizingAllowed(false);
     TableCellRenderer tcr = new ColorTableCellRenderer();
     table.setDefaultRenderer(Object.class, tcr);
     table.setRowHeight(20);
 
     tablepanel = new JPanel(new BorderLayout());
-    tablepanel.setBounds(0, 0, 500, 100);
+    tablepanel.setBounds(0, 300, 685, 462);
     this.add(tablepanel, BorderLayout.SOUTH);
-    selectpanel.setBounds(0, 100, 500, 300);
-    // 测试到这
+    selectpanel.setBounds(0, 0, 700, 400);
     this.add(selectpanel, BorderLayout.NORTH);
     scrollpane = new JScrollPane(table);
 
-    //    timer =
-    //        new Timer(
-    //
-    // Lizzie.config.config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec")
-    //                * 30,
-    //            new ActionListener() {
-    //              public void actionPerformed(ActionEvent evt) {
-    //                dataModel.getColumnCount();
-    //                table.validate();
-    //                table.updateUI();
-    //                try {
-    //                  Lizzie.board.updateMovelist();
-    //                } catch (Exception e) {
-    //                }
-    //              }
-    //            });
-    //    timer.start();
     tablepanel.add(scrollpane);
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setFillsViewportHeight(true);
-    table.getColumnModel().getColumn(0).setPreferredWidth(52);
-    table.getColumnModel().getColumn(1).setPreferredWidth(50);
-    table.getColumnModel().getColumn(2).setPreferredWidth(57);
-    table.getColumnModel().getColumn(3).setPreferredWidth(72);
+    table.getColumnModel().getColumn(0).setPreferredWidth(30);
+    table.getColumnModel().getColumn(1).setPreferredWidth(100);
+    table.getColumnModel().getColumn(2).setPreferredWidth(400);
+    table.getColumnModel().getColumn(3).setPreferredWidth(40);
+    table.getColumnModel().getColumn(4).setPreferredWidth(20);
+    table.getColumnModel().getColumn(5).setPreferredWidth(20);
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
         && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 12) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
-      table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
-      table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
-      table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
-      table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
+      //      table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
+      //      table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
+      //      table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
+      //      table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
     }
 
     JTableHeader header = table.getTableHeader();
 
-    dropwinratechooser.setValue(Lizzie.config.limitbadmoves);
-    playoutschooser.setValue(Lizzie.config.limitbadplayouts);
-    checkBlack.setSelected(true);
-    checkWhite.setSelected(true);
+    //    dropwinratechooser.setValue(Lizzie.config.limitbadmoves);
+    //    playoutschooser.setValue(Lizzie.config.limitbadplayouts);
+    //    checkBlack.setSelected(true);
+    //    checkWhite.setSelected(true);
 
-    checkBlacktxt = new JLabel("黑:");
-    checkWhitetxt = new JLabel("白:");
-    JLabel dropwinratechoosertxt = new JLabel("胜率波动筛选:");
-    JLabel playoutschoosertxt = new JLabel("前后计算量筛选:");
-    selectpanel.add(checkBlacktxt);
-    selectpanel.add(checkBlack);
-    selectpanel.add(checkWhitetxt);
-    selectpanel.add(checkWhite);
-    selectpanel.add(dropwinratechoosertxt);
-    selectpanel.add(dropwinratechooser);
-    selectpanel.add(playoutschoosertxt);
-    selectpanel.add(playoutschooser);
+    engineName = new JLabel("设置引擎1");
+    engineName.setFont(new Font("微软雅黑", Font.PLAIN, 14));
+    JLabel lblname = new JLabel("名称：");
+    txtName = new JTextField();
+    command = new JTextArea(5, 80);
+    command.setLineWrap(true);
+    command.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+    txtName.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+    JLabel lblcommand = new JLabel("命令行：");
+    preload = new JCheckBox();
+    JLabel lblpreload = new JLabel("预加载");
+    JLabel lblWidth = new JLabel("默认棋盘 宽：");
+    JLabel lblHeight = new JLabel("高：");
+    txtWidth = new JTextField();
+    txtHeight = new JTextField();
+    save = new JButton("保存");
+    cancel = new JButton("取消");
+    save.setFocusable(false);
+    save.setMargin(new Insets(0, 0, 0, 0));
+    cancel.setFocusable(false);
+    cancel.setMargin(new Insets(0, 0, 0, 0));
 
-    playoutschooser.addChangeListener(
-        new ChangeListener() {
+    engineName.setBounds(5, 5, 80, 20);
+    txtName.setBounds(50, 35, 600, 20);
+    lblname.setBounds(5, 35, 45, 20);
+    lblcommand.setBounds(5, 65, 50, 20);
+    command.setBounds(50, 65, 600, 200);
+    preload.setBounds(47, 271, 20, 20);
+    lblpreload.setBounds(70, 271, 50, 20);
+    lblWidth.setBounds(120, 271, 80, 20);
+    txtWidth.setBounds(190, 272, 30, 20);
+    lblHeight.setBounds(225, 271, 30, 20);
+    txtHeight.setBounds(245, 272, 30, 20);
+    save.setBounds(560, 270, 40, 22);
+    cancel.setBounds(610, 270, 40, 22);
 
-          public void stateChanged(ChangeEvent e) {
+    //    checkBlacktxt = new JLabel("黑:");
+    //    checkWhitetxt = new JLabel("白:");
+    //    JLabel dropwinratechoosertxt = new JLabel("胜率波动筛选:");
+    //    JLabel playoutschoosertxt = new JLabel("前后计算量筛选:");
+    selectpanel.add(engineName);
+    selectpanel.add(lblname);
+    selectpanel.add(txtName);
+    selectpanel.add(command);
+    selectpanel.add(lblcommand);
+    selectpanel.add(lblpreload);
+    selectpanel.add(preload);
+    selectpanel.add(lblWidth);
+    selectpanel.add(txtWidth);
+    selectpanel.add(lblHeight);
+    selectpanel.add(txtHeight);
+    selectpanel.add(save);
+    selectpanel.add(cancel);
 
-            Lizzie.config.leelazConfig.putOpt(
-                "badmoves-playouts-limits", playoutschooser.getValue());
-            try {
-              Lizzie.config.save();
-            } catch (IOException e1) {
-              // TODO Auto-generated catch block
-              e1.printStackTrace();
-            }
-          }
-        });
+    //
+    //    selectpanel.add(checkBlacktxt);
+    //    selectpanel.add(checkBlack);
+    //    selectpanel.add(checkWhitetxt);
+    //    selectpanel.add(checkWhite);
+    //    selectpanel.add(dropwinratechoosertxt);
+    //    selectpanel.add(dropwinratechooser);
+    //    selectpanel.add(playoutschoosertxt);
+    //    selectpanel.add(playoutschooser);
 
-    dropwinratechooser.addChangeListener(
-        new ChangeListener() {
-
-          public void stateChanged(ChangeEvent e) {
-
-            Lizzie.config.leelazConfig.putOpt(
-                "badmoves-winrate-limits", dropwinratechooser.getValue());
-            try {
-              Lizzie.config.save();
-            } catch (IOException e1) {
-              // TODO Auto-generated catch block
-              e1.printStackTrace();
-            }
-          }
-        });
+    //    playoutschooser.addChangeListener(
+    //        new ChangeListener() {
+    //
+    //          public void stateChanged(ChangeEvent e) {
+    //
+    //            Lizzie.config.leelazConfig.putOpt(
+    //                "badmoves-playouts-limits", playoutschooser.getValue());
+    //            try {
+    //              Lizzie.config.save();
+    //            } catch (IOException e1) {
+    //              // TODO Auto-generated catch block
+    //              e1.printStackTrace();
+    //            }
+    //          }
+    //        });
+    //
+    //    dropwinratechooser.addChangeListener(
+    //        new ChangeListener() {
+    //
+    //          public void stateChanged(ChangeEvent e) {
+    //
+    //            Lizzie.config.leelazConfig.putOpt(
+    //                "badmoves-winrate-limits", dropwinratechooser.getValue());
+    //            try {
+    //              Lizzie.config.save();
+    //            } catch (IOException e1) {
+    //              // TODO Auto-generated catch block
+    //              e1.printStackTrace();
+    //            }
+    //          }
+    //        });
     table.addMouseListener(
         new MouseAdapter() {
           public void mouseClicked(MouseEvent e) {
@@ -275,11 +319,11 @@ public class MoreEngines extends JPanel {
   }
 
   private void togglealwaysontop() {
-    if (jf.isAlwaysOnTop()) {
-      jf.setAlwaysOnTop(false);
+    if (engjf.isAlwaysOnTop()) {
+      engjf.setAlwaysOnTop(false);
       Lizzie.config.uiConfig.put("badmoves-always-ontop", false);
     } else {
-      jf.setAlwaysOnTop(true);
+      engjf.setAlwaysOnTop(true);
       Lizzie.config.uiConfig.put("badmoves-always-ontop", true);
       if (Lizzie.frame.isAlwaysOnTop()) Lizzie.frame.toggleAlwaysOntop();
     }
@@ -306,6 +350,13 @@ public class MoreEngines extends JPanel {
     //      selectedorder = -1;
     //      table.clearSelection();
     //    }
+    command.setText(table.getModel().getValueAt(row, 2).toString());
+    engineName.setText("设置引擎" + table.getModel().getValueAt(row, 0).toString());
+    txtName.setText(table.getModel().getValueAt(row, 1).toString());
+    if (table.getModel().getValueAt(row, 3).toString().equals("是")) preload.setSelected(true);
+    else preload.setSelected(false);
+    txtWidth.setText(table.getModel().getValueAt(row, 4).toString());
+    txtHeight.setText(table.getModel().getValueAt(row, 5).toString());
   }
 
   private void handleTableDoubleClick(int row, int col) {
@@ -328,17 +379,45 @@ public class MoreEngines extends JPanel {
     Optional<JSONArray> enginesPreloadOpt =
         Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
 
-    for (int i = 0; i < enginesCommandOpt.get().length(); i++) {
-      String commands = enginesCommandOpt.get().optString(i);
+    Optional<JSONArray> enginesWidthOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-width-list"));
 
-      String name = enginesNameOpt.get().optString(i);
-      boolean preload = enginesPreloadOpt.get().optBoolean(i);
-      EngineData enginedt = new EngineData();
-      enginedt.commands = commands;
-      enginedt.name = name;
-      enginedt.preload = preload;
-      enginedt.index = i;
-      engineData.add(enginedt);
+    Optional<JSONArray> enginesHeightOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-height-list"));
+
+    for (int i = 0; i < enginesCommandOpt.get().length(); i++) {
+      if (i == 0) {
+        String engineCommand = Lizzie.config.leelazConfig.getString("engine-command");
+        int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i) : 19;
+        int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i) : 19;
+        String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i) : "";
+        boolean preload =
+            enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i) : false;
+        EngineData enginedt = new EngineData();
+        enginedt.commands = engineCommand;
+        enginedt.name = name;
+        enginedt.preload = preload;
+        enginedt.index = i;
+        enginedt.width = width;
+        enginedt.height = height;
+        engineData.add(enginedt);
+      } else {
+        String commands =
+            enginesCommandOpt.isPresent() ? enginesCommandOpt.get().optString(i - 1) : "";
+        int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i) : 19;
+        int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i) : 19;
+        String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i) : "";
+        boolean preload =
+            enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i) : false;
+        EngineData enginedt = new EngineData();
+        enginedt.commands = commands;
+        enginedt.name = name;
+        enginedt.preload = preload;
+        enginedt.index = i;
+        enginedt.width = width;
+        enginedt.height = height;
+        engineData.add(enginedt);
+      }
     }
     return engineData;
   }
@@ -348,7 +427,7 @@ public class MoreEngines extends JPanel {
     return new AbstractTableModel() {
       public int getColumnCount() {
 
-        return 4;
+        return 6;
       }
 
       public int getRowCount() {
@@ -360,8 +439,10 @@ public class MoreEngines extends JPanel {
 
         if (column == 0) return "序号";
         if (column == 1) return "名称";
-        if (column == 2) return "命令";
+        if (column == 2) return "命令行";
         if (column == 3) return "预加载";
+        if (column == 4) return "宽";
+        if (column == 5) return "高";
 
         return "无";
       }
@@ -370,24 +451,29 @@ public class MoreEngines extends JPanel {
       public Object getValueAt(int row, int col) {
         ArrayList<EngineData> EngineDatas = getEngineData();
         if (row > (EngineDatas.size() - 1)) {
+          if (col == 0) return row + 1;
           return "";
         }
         EngineData data = EngineDatas.get(row);
 
-        if (data.commands.equals("")) {
+        if (col != 0 && data.commands.equals("")) {
           return "";
         }
 
         switch (col) {
           case 0:
-            return data.index;
+            return data.index + 1;
           case 1:
             return data.name;
           case 2:
             return data.commands;
           case 3:
-            return data.preload;
-
+            if (data.preload) return "是";
+            return "否";
+          case 4:
+            return data.width;
+          case 5:
+            return data.height;
           default:
             return "";
         }
@@ -397,19 +483,19 @@ public class MoreEngines extends JPanel {
 
   public static JDialog createBadmovesDialog() {
     // Create and set up the window.
-    jf = new JDialog();
-    jf.setTitle("仅记录主分支,B显示/关闭,右键/双击跳转,单击显示紫圈,Q切换总在最前");
+    engjf = new JDialog();
+    engjf.setTitle("仅记录主分支,B显示/关闭,右键/双击跳转,单击显示紫圈,Q切换总在最前");
 
-    jf.addWindowListener(
+    engjf.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
-            Lizzie.frame.toggleBadMoves();
+            engjf.setVisible(false);
           }
         });
 
     final MoreEngines newContentPane = new MoreEngines();
     newContentPane.setOpaque(true); // content panes must be opaque
-    jf.setContentPane(newContentPane);
+    engjf.setContentPane(newContentPane);
     // Display the window.
     //  jf.setSize(521, 320);
 
@@ -418,17 +504,18 @@ public class MoreEngines extends JPanel {
         && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
         && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() >= 4) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
-      jf.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
+      // jf.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
+      engjf.setBounds(50, 50, 700, 800);
     } else {
-      jf.setBounds(-9, 0, 576, 287);
+      engjf.setBounds(50, 50, 700, 800);
     }
     try {
-      jf.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
+      engjf.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {
       e.printStackTrace();
     }
-
+    engjf.setLocationRelativeTo(engjf.getOwner());
     // jf.setResizable(false);
-    return jf;
+    return engjf;
   }
 }
