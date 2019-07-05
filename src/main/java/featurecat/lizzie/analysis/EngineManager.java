@@ -3,6 +3,7 @@ package featurecat.lizzie.analysis;
 import featurecat.lizzie.Config;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.gui.AnalysisFrame;
+import featurecat.lizzie.gui.EngineData;
 import featurecat.lizzie.rules.Movelist;
 import featurecat.lizzie.rules.SGFParser;
 import java.awt.event.ActionEvent;
@@ -33,8 +34,9 @@ public class EngineManager {
   Timer timer3;
   // Timer timer4;
 
-  public EngineManager(Config config) throws JSONException, IOException {
-
+  public EngineManager(Config config, int index) throws JSONException, IOException {
+    ArrayList<EngineData> engineData = getEngineData();
+    // 先做到这,后续处理根据index加载引擎,传递棋盘大小,贴目,以及不加载引擎的办法
     JSONObject eCfg = config.config.getJSONObject("leelaz");
     String engineCommand = eCfg.getString("engine-command");
     // substitute in the weights file
@@ -109,6 +111,80 @@ public class EngineManager {
               }
             });
     timer.start();
+  }
+
+  public ArrayList<EngineData> getEngineData() {
+    ArrayList<EngineData> engineData = new ArrayList<EngineData>();
+    Optional<JSONArray> enginesCommandOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
+    Optional<JSONArray> enginesNameOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+    Optional<JSONArray> enginesPreloadOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
+
+    Optional<JSONArray> enginesWidthOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-width-list"));
+
+    Optional<JSONArray> enginesHeightOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-height-list"));
+    Optional<JSONArray> enginesKomiOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-komi-list"));
+
+    int defaultEngine = Lizzie.config.uiConfig.optInt("default-engine", -1);
+
+    for (int i = 0;
+        i < (enginesCommandOpt.isPresent() ? enginesCommandOpt.get().length() + 1 : 0);
+        i++) {
+      if (i == 0) {
+        String engineCommand = Lizzie.config.leelazConfig.getString("engine-command");
+        int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i, 19) : 19;
+        int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i, 19) : 19;
+        String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
+        float komi =
+            enginesKomiOpt.isPresent()
+                ? enginesKomiOpt.get().optFloat(i, (float) 7.5)
+                : (float) 7.5;
+        boolean preload =
+            enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i, false) : false;
+        EngineData enginedt = new EngineData();
+        enginedt.commands = engineCommand;
+        enginedt.name = name;
+        enginedt.preload = preload;
+        enginedt.index = i;
+        enginedt.width = width;
+        enginedt.height = height;
+        enginedt.komi = komi;
+        if (defaultEngine == i) enginedt.isDefault = true;
+        else enginedt.isDefault = false;
+        engineData.add(enginedt);
+      } else {
+        String commands =
+            enginesCommandOpt.isPresent() ? enginesCommandOpt.get().optString(i - 1, "") : "";
+        if (!commands.equals("")) {
+          int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i, 19) : 19;
+          int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i, 19) : 19;
+          String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
+          float komi =
+              enginesKomiOpt.isPresent()
+                  ? enginesKomiOpt.get().optFloat(i, (float) 7.5)
+                  : (float) 7.5;
+          boolean preload =
+              enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i, false) : false;
+          EngineData enginedt = new EngineData();
+          enginedt.commands = commands;
+          enginedt.name = name;
+          enginedt.preload = preload;
+          enginedt.index = i;
+          enginedt.width = width;
+          enginedt.height = height;
+          enginedt.komi = komi;
+          if (defaultEngine == i) enginedt.isDefault = true;
+          else enginedt.isDefault = false;
+          engineData.add(enginedt);
+        }
+      }
+    }
+    return engineData;
   }
 
   private void checkEngineNotHang() {

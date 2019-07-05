@@ -1093,7 +1093,7 @@ public class ConfigDialog extends JDialog {
           weightFile = chooserw.getSelectedFile();
           if (weightFile != null) {
             weightPath = relativizePath(weightFile.toPath());
-            EngineParameter ep = new EngineParameter(enginePath, weightPath, this);
+            EngineParameter ep = new EngineParameter(enginePath, weightPath, commandHelp);
             ep.setVisible(true);
             if (!ep.commandLine.isEmpty()) {
               engineLine = ep.commandLine;

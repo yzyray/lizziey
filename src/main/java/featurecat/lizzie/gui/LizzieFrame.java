@@ -447,6 +447,12 @@ public class LizzieFrame extends JFrame {
     configDialog.setVisible(true);
   }
 
+  public static void openMoreEngineDialog() {
+    JDialog moreEngines;
+    moreEngines = MoreEngines.createBadmovesDialog();
+    moreEngines.setVisible(true);
+  }
+
   public static void openChangeMoveDialog() {
     ChangeMoveDialog changeMoveDialog = new ChangeMoveDialog();
     changeMoveDialog.setVisible(true);
@@ -2189,7 +2195,7 @@ public class LizzieFrame extends JFrame {
       if (autoIntervalCom > 0 && currentTime - lastAutocomTime >= autoIntervalCom) {
         lastAutocomTime = currentTime;
         // Append the winrate to the comment
-        if (Lizzie.leelaz.isPondering() && !Lizzie.board.isLoadingFile) {
+        if (Lizzie.leelaz != null && Lizzie.leelaz.isPondering() && !Lizzie.board.isLoadingFile) {
           // if (MoveData.getPlayouts(Lizzie.board.getHistory().getData().bestMoves) >
           // Lizzie.board.getHistory().getData().getPlayouts())
           // 重要!做保存文件时不更新的判断

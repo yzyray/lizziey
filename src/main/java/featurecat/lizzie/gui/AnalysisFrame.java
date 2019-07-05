@@ -254,7 +254,7 @@ public class AnalysisFrame extends JPanel {
 
     return new AbstractTableModel() {
       public int getColumnCount() {
-        if (Lizzie.leelaz.isKatago) {
+        if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
           return 7;
         } else {
           return 5;

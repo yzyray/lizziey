@@ -4,6 +4,7 @@ import static java.awt.event.KeyEvent.*;
 
 import featurecat.lizzie.Lizzie;
 import java.awt.event.*;
+import java.io.IOException;
 import javax.swing.SwingUtilities;
 
 public class Input implements MouseListener, KeyListener, MouseWheelListener, MouseMotionListener {
@@ -92,7 +93,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseReleased(MouseEvent e) {
-    if (Draggedmode) {
+    if (Draggedmode && !Lizzie.frame.isTrying) {
       Lizzie.frame.DraggedReleased(e.getX(), e.getY());
       return;
     }
@@ -106,7 +107,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseDragged(MouseEvent e) {
-    if (Draggedmode) {
+    if (Draggedmode && !Lizzie.frame.isTrying) {
       Lizzie.frame.DraggedDragged(e.getX(), e.getY());
       return;
     }
@@ -115,7 +116,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseMoved(MouseEvent e) {
-    if (Draggedmode) {
+    if (Draggedmode && !Lizzie.frame.isTrying) {
       Lizzie.frame.DraggedMoved(e.getX(), e.getY());
       return;
     }
@@ -435,6 +436,15 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           //            return;
           //          }
           Lizzie.frame.pasteSgf();
+        } else if (e.isAltDown()) {
+          Lizzie.config.showSuggestionVaritions = !Lizzie.config.showSuggestionVaritions;
+          Lizzie.config.uiConfig.put(
+              "show-suggestion-varitions", Lizzie.config.showSuggestionVaritions);
+          try {
+            Lizzie.config.save();
+          } catch (IOException es) {
+            // TODO Auto-generated catch block
+          }
         } else {
           Lizzie.frame.tryPlay();
         }

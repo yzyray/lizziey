@@ -485,6 +485,7 @@ public class BoardRenderer {
   }
 
   public void drawmoveblock(int x, int y, boolean isblack) {
+    if (boardWidth == 0 || boardHeight == 0) return;
     blockimage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
     Stone[] stones = Lizzie.board.getStones();
     if (stones[Lizzie.board.getIndex(x, y)].isBlack()

@@ -900,9 +900,21 @@ public class Menu extends MenuBar {
 
     final JMenuItem config = new JMenuItem();
     config.setText("设置");
-    // aboutItem.setMnemonic('A');
     config.addActionListener(new ItemListeneryzy());
     engineMenu.add(config);
+
+    final JMenuItem moreconfig = new JMenuItem();
+    moreconfig.setText("更多引擎设置");
+    engineMenu.add(moreconfig);
+    moreconfig.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.frame.openMoreEngineDialog();
+          }
+        });
   }
 
   public void updateEngineName() {

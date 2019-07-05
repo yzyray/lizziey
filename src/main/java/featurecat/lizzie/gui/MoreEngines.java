@@ -11,11 +11,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
@@ -52,6 +61,9 @@ public class MoreEngines extends JPanel {
   JTextField txtWidth;
   JTextField txtHeight;
   JTextField txtKomi;
+
+  JButton scan;
+  JButton delete;
   JButton save;
   JButton cancel;
   JButton exit;
@@ -61,8 +73,19 @@ public class MoreEngines extends JPanel {
   JRadioButton rdoMannul;
   int curIndex = -1;
 
+  public String enginePath = "";
+  public String weightPath = "";
+  public String commandHelp = "";
+  public final ResourceBundle resourceBundle = ResourceBundle.getBundle("l10n.DisplayStrings");
+  private String osName;
+  private BufferedInputStream inputStream;
+  private Path curPath;
+
   public MoreEngines() {
     // super(new BorderLayout());
+
+    curPath = (new File("")).getAbsoluteFile().toPath();
+    osName = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
     this.setLayout(null);
     dataModel = getTableModel();
     table = new JTable(dataModel);
@@ -135,13 +158,19 @@ public class MoreEngines extends JPanel {
     save = new JButton("保存");
     cancel = new JButton("取消");
     exit = new JButton("退出");
+    delete = new JButton("删除");
+    scan = new JButton("浏览");
+
+    scan.setFocusable(false);
+    scan.setMargin(new Insets(0, 0, 0, 0));
     save.setFocusable(false);
     save.setMargin(new Insets(0, 0, 0, 0));
     cancel.setFocusable(false);
     cancel.setMargin(new Insets(0, 0, 0, 0));
     exit.setFocusable(false);
     exit.setMargin(new Insets(0, 0, 0, 0));
-
+    delete.setFocusable(false);
+    delete.setMargin(new Insets(0, 0, 0, 0));
     chkdefault = new JCheckBox();
     JLabel lbldefault = new JLabel("默认引擎");
     JLabel lblchooseStart = new JLabel("启动时：");
@@ -156,7 +185,9 @@ public class MoreEngines extends JPanel {
     txtName.setBounds(50, 35, 800, 20);
     lblname.setBounds(5, 35, 45, 20);
     lblcommand.setBounds(5, 65, 50, 20);
+    scan.setBounds(5, 85, 40, 20);
     command.setBounds(50, 65, 800, 200);
+
     preload.setBounds(47, 271, 20, 20);
     lblpreload.setBounds(70, 271, 50, 20);
     lblWidth.setBounds(120, 271, 80, 20);
@@ -169,8 +200,10 @@ public class MoreEngines extends JPanel {
     chkdefault.setBounds(350, 271, 20, 20);
     lbldefault.setBounds(370, 271, 60, 20);
 
-    save.setBounds(710, 270, 40, 22);
-    cancel.setBounds(760, 270, 40, 22);
+    save.setBounds(660, 270, 40, 22);
+
+    cancel.setBounds(710, 270, 40, 22);
+    delete.setBounds(760, 270, 40, 22);
     exit.setBounds(810, 270, 40, 22);
 
     lblchooseStart.setBounds(5, 300, 60, 20);
@@ -194,6 +227,17 @@ public class MoreEngines extends JPanel {
     //    checkWhitetxt = new JLabel("白:");
     //    JLabel dropwinratechoosertxt = new JLabel("胜率波动筛选:");
     //    JLabel playoutschoosertxt = new JLabel("前后计算量筛选:");
+
+    engineName.setEnabled(false);
+    txtName.setEnabled(false);
+    command.setEnabled(false);
+    preload.setEnabled(false);
+    txtWidth.setEnabled(false);
+    txtHeight.setEnabled(false);
+    txtKomi.setEnabled(false);
+    chkdefault.setEnabled(false);
+    delete.setEnabled(false);
+    scan.setEnabled(false);
     selectpanel.add(engineName);
     selectpanel.add(lblname);
     selectpanel.add(txtName);
@@ -208,6 +252,7 @@ public class MoreEngines extends JPanel {
     selectpanel.add(lblKomi);
     selectpanel.add(txtKomi);
 
+    selectpanel.add(scan);
     selectpanel.add(save);
     selectpanel.add(cancel);
     selectpanel.add(exit);
@@ -221,6 +266,7 @@ public class MoreEngines extends JPanel {
     selectpanel.add(lblrdoLast);
     selectpanel.add(rdoMannul);
     selectpanel.add(lblrdoMannul);
+    selectpanel.add(delete);
 
     //
     //    selectpanel.add(checkBlacktxt);
@@ -264,6 +310,41 @@ public class MoreEngines extends JPanel {
     //          }
     //        });
 
+    scan.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            String el = getEngineLine();
+            if (!el.isEmpty()) {
+              command.setText(el);
+            }
+          }
+        });
+    delete.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            command.setText("");
+            saveEngineConfig();
+            table.validate();
+            table.updateUI();
+            engineName.setEnabled(false);
+            txtName.setEnabled(false);
+            command.setEnabled(false);
+            preload.setEnabled(false);
+            txtWidth.setEnabled(false);
+            txtHeight.setEnabled(false);
+            txtKomi.setEnabled(false);
+            chkdefault.setEnabled(false);
+            delete.setEnabled(false);
+            scan.setEnabled(false);
+            table.getSelectionModel().clearSelection();
+          }
+        });
     exit.addActionListener(
         new ActionListener() {
 
@@ -287,6 +368,17 @@ public class MoreEngines extends JPanel {
             txtHeight.setText("");
             chkdefault.setSelected(false);
             curIndex = -1;
+            engineName.setEnabled(false);
+            txtName.setEnabled(false);
+            command.setEnabled(false);
+            preload.setEnabled(false);
+            txtWidth.setEnabled(false);
+            txtHeight.setEnabled(false);
+            txtKomi.setEnabled(false);
+            chkdefault.setEnabled(false);
+            delete.setEnabled(false);
+            scan.setEnabled(false);
+            table.getSelectionModel().clearSelection();
           }
         });
     save.addActionListener(
@@ -454,6 +546,94 @@ public class MoreEngines extends JPanel {
   //    }
   //  }
 
+  public boolean isWindows() {
+    return osName != null && !osName.contains("darwin") && osName.contains("win");
+  }
+
+  private String getEngineLine() {
+    String engineLine = "";
+    File engineFile = null;
+    File weightFile = null;
+    JFileChooser chooser = new JFileChooser(".");
+    if (isWindows()) {
+      FileNameExtensionFilter filter =
+          new FileNameExtensionFilter(
+              resourceBundle.getString("LizzieConfig.title.engine"), "exe", "bat");
+      chooser.setFileFilter(filter);
+    } else {
+      setVisible(false);
+    }
+    chooser.setMultiSelectionEnabled(false);
+    chooser.setDialogTitle(resourceBundle.getString("LizzieConfig.prompt.selectEngine"));
+    int result = chooser.showOpenDialog(this);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      engineFile = chooser.getSelectedFile();
+      if (engineFile != null) {
+        enginePath = engineFile.getAbsolutePath();
+        enginePath = relativizePath(engineFile.toPath());
+        getCommandHelp();
+        JFileChooser chooserw = new JFileChooser(".");
+        chooserw.setMultiSelectionEnabled(false);
+        chooserw.setDialogTitle(resourceBundle.getString("LizzieConfig.prompt.selectWeight"));
+        result = chooserw.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+          weightFile = chooserw.getSelectedFile();
+          if (weightFile != null) {
+            weightPath = relativizePath(weightFile.toPath());
+            EngineParameter ep = new EngineParameter(enginePath, weightPath, commandHelp);
+            ep.setVisible(true);
+            if (!ep.commandLine.isEmpty()) {
+              engineLine = ep.commandLine;
+            }
+          }
+        }
+      }
+    }
+    return engineLine;
+  }
+
+  private String relativizePath(Path path) {
+    Path relatPath;
+    if (path.startsWith(curPath)) {
+      relatPath = curPath.relativize(path);
+    } else {
+      relatPath = path;
+    }
+    return relatPath.toString();
+  }
+
+  private void getCommandHelp() {
+
+    List<String> commands = new ArrayList<String>();
+    commands.add(enginePath);
+    commands.add("-h");
+
+    ProcessBuilder processBuilder = new ProcessBuilder(commands);
+    processBuilder.directory();
+    processBuilder.redirectErrorStream(true);
+    try {
+      Process process = processBuilder.start();
+      inputStream = new BufferedInputStream(process.getInputStream());
+      ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+      executor.execute(this::read);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void read() {
+    try {
+      int c;
+      StringBuilder line = new StringBuilder();
+      while ((c = inputStream.read()) != -1) {
+        line.append((char) c);
+      }
+      commandHelp = line.toString();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   private void handleTableClick(int row, int col) {
     //    if (selectedorder != row) {
     //      int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row,
@@ -474,12 +654,25 @@ public class MoreEngines extends JPanel {
     txtName.setText(table.getModel().getValueAt(row, 1).toString());
     if (table.getModel().getValueAt(row, 3).toString().equals("是")) preload.setSelected(true);
     else preload.setSelected(false);
-    txtWidth.setText(table.getModel().getValueAt(row, 4).toString());
-    txtHeight.setText(table.getModel().getValueAt(row, 5).toString());
+    if (table.getModel().getValueAt(row, 4).toString().equals("")) txtWidth.setText("19");
+    else txtWidth.setText(table.getModel().getValueAt(row, 4).toString());
+    if (table.getModel().getValueAt(row, 5).toString().equals("")) txtHeight.setText("19");
+    else txtHeight.setText(table.getModel().getValueAt(row, 5).toString());
     if (table.getModel().getValueAt(row, 7).toString().equals("是")) chkdefault.setSelected(true);
     else chkdefault.setSelected(false);
     curIndex = Integer.parseInt(table.getModel().getValueAt(row, 0).toString()) - 1;
-    txtKomi.setText(table.getModel().getValueAt(row, 6).toString());
+    if (table.getModel().getValueAt(row, 6).toString().equals("")) txtKomi.setText("7.5");
+    else txtKomi.setText(table.getModel().getValueAt(row, 6).toString());
+    engineName.setEnabled(true);
+    txtName.setEnabled(true);
+    command.setEnabled(true);
+    preload.setEnabled(true);
+    txtWidth.setEnabled(true);
+    txtHeight.setEnabled(true);
+    txtKomi.setEnabled(true);
+    chkdefault.setEnabled(true);
+    delete.setEnabled(true);
+    scan.setEnabled(true);
   }
 
   private void handleTableDoubleClick(int row, int col) {
@@ -500,13 +693,28 @@ public class MoreEngines extends JPanel {
     enginedt.commands = this.command.getText();
     enginedt.name = this.txtName.getText();
     enginedt.preload = this.preload.isSelected();
-    enginedt.width = Integer.parseInt(this.txtWidth.getText());
-    enginedt.height = Integer.parseInt(this.txtHeight.getText());
+    enginedt.width = 19;
+    try {
+      enginedt.width = Integer.parseInt(this.txtWidth.getText());
+    } catch (Exception ex) {
+    }
+    enginedt.height = 19;
+    try {
+      enginedt.height = Integer.parseInt(this.txtHeight.getText());
+    } catch (Exception ex) {
+    }
     enginedt.isDefault = this.chkdefault.isSelected();
-    enginedt.komi = Float.parseFloat(this.txtKomi.getText());
-    engData.remove(curIndex);
-    engData.add(curIndex, enginedt);
-
+    enginedt.komi = (float) 7.5;
+    try {
+      enginedt.komi = Integer.parseInt(this.txtKomi.getText());
+    } catch (Exception ex) {
+    }
+    if (curIndex + 1 > engData.size()) {
+      engData.add(enginedt);
+    } else {
+      engData.remove(curIndex);
+      engData.add(curIndex, enginedt);
+    }
     JSONArray commands = new JSONArray();
     JSONArray names = new JSONArray();
     JSONArray preloads = new JSONArray();
@@ -591,26 +799,28 @@ public class MoreEngines extends JPanel {
       } else {
         String commands =
             enginesCommandOpt.isPresent() ? enginesCommandOpt.get().optString(i - 1, "") : "";
-        int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i, 19) : 19;
-        int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i, 19) : 19;
-        String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
-        float komi =
-            enginesKomiOpt.isPresent()
-                ? enginesKomiOpt.get().optFloat(i, (float) 7.5)
-                : (float) 7.5;
-        boolean preload =
-            enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i, false) : false;
-        EngineData enginedt = new EngineData();
-        enginedt.commands = commands;
-        enginedt.name = name;
-        enginedt.preload = preload;
-        enginedt.index = i;
-        enginedt.width = width;
-        enginedt.height = height;
-        enginedt.komi = komi;
-        if (defaultEngine == i) enginedt.isDefault = true;
-        else enginedt.isDefault = false;
-        engineData.add(enginedt);
+        if (!commands.equals("")) {
+          int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i, 19) : 19;
+          int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i, 19) : 19;
+          String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
+          float komi =
+              enginesKomiOpt.isPresent()
+                  ? enginesKomiOpt.get().optFloat(i, (float) 7.5)
+                  : (float) 7.5;
+          boolean preload =
+              enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i, false) : false;
+          EngineData enginedt = new EngineData();
+          enginedt.commands = commands;
+          enginedt.name = name;
+          enginedt.preload = preload;
+          enginedt.index = i;
+          enginedt.width = width;
+          enginedt.height = height;
+          enginedt.komi = komi;
+          if (defaultEngine == i) enginedt.isDefault = true;
+          else enginedt.isDefault = false;
+          engineData.add(enginedt);
+        }
       }
     }
     return engineData;
@@ -626,7 +836,7 @@ public class MoreEngines extends JPanel {
 
       public int getRowCount() {
 
-        return 50;
+        return 100;
       }
 
       public String getColumnName(int column) {

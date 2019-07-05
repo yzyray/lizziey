@@ -7,7 +7,7 @@ import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.gui.CountResults;
 import featurecat.lizzie.gui.GtpConsolePane;
 import featurecat.lizzie.gui.LizzieFrame;
-import featurecat.lizzie.gui.MoreEngines;
+import featurecat.lizzie.gui.LoadEngine;
 import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Board;
 import java.awt.Font;
@@ -23,7 +23,7 @@ public class Lizzie {
   public static JDialog analysisframe;
   public static AnalysisFrame analysisFrame;
   public static JDialog movelistframe;
-  public static JDialog moreEngines;
+  public static JDialog loadEngine;
   public static MovelistFrame movelistFrame;
   public static CountResults countResults;
   public static Board board;
@@ -48,22 +48,21 @@ public class Lizzie {
     movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
 
     frame = new LizzieFrame();
-    moreEngines = MoreEngines.createBadmovesDialog();
-    moreEngines.setVisible(true);
     gtpConsole = new GtpConsolePane(frame);
     countResults = new CountResults(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
     //  menu = new Menu(frame);
     //  menu.setVisible(true);
 
-    try {
-      engineManager = new EngineManager(config);
-
-    } catch (IOException e) {
-      frame.openConfigDialog();
-      System.exit(1);
-    }
-
+    //    try {
+    //      engineManager = new EngineManager(config);
+    //
+    //    } catch (IOException e) {
+    //      frame.openConfigDialog();
+    //      System.exit(1);
+    //    }
+    loadEngine = LoadEngine.createBadmovesDialog();
+    loadEngine.setVisible(true);
     analysisframe = AnalysisFrame.createAnalysisDialog();
     analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", false));
     analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
