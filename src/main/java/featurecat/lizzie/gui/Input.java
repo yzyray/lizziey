@@ -5,6 +5,8 @@ import static java.awt.event.KeyEvent.*;
 import featurecat.lizzie.Lizzie;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.Optional;
+
 import javax.swing.SwingUtilities;
 
 public class Input implements MouseListener, KeyListener, MouseWheelListener, MouseMotionListener {
@@ -13,49 +15,19 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   public static int insert = 0;
   public static boolean shouldDisableAnalysis = true;
 
+  public  boolean nowheelPress=false;
   @Override
   public void mouseClicked(MouseEvent e) {
-    if (SwingUtilities.isMiddleMouseButton(e)) {
-
-      int moveNumber = Lizzie.board.getcurrentmovenumber();
-      if (Lizzie.frame.playCurrentVariation()) {
-
-        Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
-        if (Lizzie.board.getHistory().getCurrentHistoryNode().hasVariations()) {
-          try {
-            Lizzie.board.place(
-                Lizzie.board
-                    .getHistory()
-                    .getCurrentHistoryNode()
-                    .getVariation(
-                        Lizzie.board.getHistory().getCurrentHistoryNode().getVariations().size()
-                            - 1)
-                    .get()
-                    .getData()
-                    .lastMove
-                    .get()[0],
-                Lizzie.board
-                    .getHistory()
-                    .getCurrentHistoryNode()
-                    .getVariation(
-                        Lizzie.board.getHistory().getCurrentHistoryNode().getVariations().size()
-                            - 1)
-                    .get()
-                    .getData()
-                    .lastMove
-                    .get()[1]);
-          } catch (Exception ex) {
-          }
-        } else {
-          Lizzie.board.nextMove();
-        }
-      }
-    }
+	 
   }
 
+  
   @Override
   public void mousePressed(MouseEvent e) {
-
+	  if (SwingUtilities.isMiddleMouseButton(e)) {
+		  Lizzie.frame.replayBranchByWheel();
+		 
+		  	    }
     if (e.getButton() == MouseEvent.BUTTON1) // left click
     {
       if (e.getClickCount() == 2) { // TODO: Maybe need to delay check
@@ -79,6 +51,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         } else if (insert == 2) {
 
         }
+       
       }
 
     } else if (e.getButton() == MouseEvent.BUTTON3) // right click
@@ -96,6 +69,49 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     if (Draggedmode && !Lizzie.frame.isTrying) {
       Lizzie.frame.DraggedReleased(e.getX(), e.getY());
       return;
+    }
+    if (SwingUtilities.isMiddleMouseButton(e)) {
+if(nowheelPress)
+{nowheelPress=false;}
+else {
+   
+
+    int moveNumber = Lizzie.board.getcurrentmovenumber();
+    if (Lizzie.frame.playCurrentVariation()) {
+
+      Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
+      if (Lizzie.board.getHistory().getCurrentHistoryNode().hasVariations()) {
+        try {
+          Lizzie.board.place(
+              Lizzie.board
+                  .getHistory()
+                  .getCurrentHistoryNode()
+                  .getVariation(
+                      Lizzie.board.getHistory().getCurrentHistoryNode().getVariations().size()
+                          - 1)
+                  .get()
+                  .getData()
+                  .lastMove
+                  .get()[0],
+              Lizzie.board
+                  .getHistory()
+                  .getCurrentHistoryNode()
+                  .getVariation(
+                      Lizzie.board.getHistory().getCurrentHistoryNode().getVariations().size()
+                          - 1)
+                  .get()
+                  .getData()
+                  .lastMove
+                  .get()[1]);
+        } catch (Exception ex) {
+        }
+      } else {
+        Lizzie.board.nextMove();        	
+      }
+      
+    }
+
+    }
     }
   }
 
@@ -689,7 +705,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     }
     if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
     if (e.getWheelRotation() > 0) {
-      redo();
+    	 redo();
     } else if (e.getWheelRotation() < 0) {
       undo();
     }

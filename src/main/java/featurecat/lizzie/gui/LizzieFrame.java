@@ -61,15 +61,15 @@ public class LizzieFrame extends JFrame {
     resourceBundle.getString("LizzieFrame.commands.keySpace"),
     resourceBundle.getString("LizzieFrame.commands.rightClick"),
     resourceBundle.getString("LizzieFrame.commands.mouseWheelScroll"),
-    "滚轮按下|落鼠标指向变化图的第一步,后续步可滚动滚轮继续查看",
+    "滚轮单击|落鼠标指向变化图的第一步,后续步可滚动滚轮继续查看",
+    "滚轮长按或R|快速回放鼠标指向的变化图",
     "逗号|落最佳一手,如果鼠标指向变化图则落子到变化图结束",
     "B|显示恶手列表",
     "U|显示AI选点列表",
     "I|编辑棋局信息(修改贴目并告知引擎)",
     "V|试下",
     "F|关闭/显示AI推荐点",
-    resourceBundle.getString("LizzieFrame.commands.keyR"),
-    // resourceBundle.getString("LizzieFrame.commands.keyI"),
+      // resourceBundle.getString("LizzieFrame.commands.keyI"),
     resourceBundle.getString("LizzieFrame.commands.keyUpArrow"),
     resourceBundle.getString("LizzieFrame.commands.keyDownArrow"),
     resourceBundle.getString("LizzieFrame.commands.keyC"),
@@ -137,7 +137,7 @@ public class LizzieFrame extends JFrame {
   private int autoIntervalCom;
   private int autoInterval;
   private long lastAutosaveTime = System.currentTimeMillis();
-  private boolean isReplayVariation = false;
+  public boolean isReplayVariation = false;
   private RightClickMenu RightClickMenu = new RightClickMenu();
   private RightClickMenu2 RightClickMenu2 = new RightClickMenu2();
   private int boardPos = 0;
@@ -2453,8 +2453,8 @@ public class LizzieFrame extends JFrame {
           public void run() {
             int secs = (int) (Lizzie.config.replayBranchIntervalSeconds * 1000);
             for (int i = 1; i < replaySteps + 1; i++) {
-              if (!isReplayVariation) break;
-              setDisplayedBranchLength(i);
+              if (!isReplayVariation)  break;              
+              setDisplayedBranchLength(i);             
               repaint();
               try {
                 Thread.sleep(secs);
@@ -2470,6 +2470,39 @@ public class LizzieFrame extends JFrame {
     Thread thread = new Thread(runnable);
     thread.start();
   }
+  
+  public void replayBranchByWheel() {
+	    if (isReplayVariation) return;
+	    int replaySteps = boardRenderer.getReplayBranch();
+	    if (replaySteps <= 0) return; // Bad steps or no branch
+	    int oriBranchLength = boardRenderer.getDisplayedBranchLength();
+	    isReplayVariation = true;
+	    if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+	    Runnable runnable =
+	        new Runnable() {
+	          public void run() {
+	            int secs = (int) (Lizzie.config.replayBranchIntervalSeconds * 1000);
+	            for (int i = 1; i < replaySteps + 1; i++) {
+	              if (!isReplayVariation) break;	             
+	              setDisplayedBranchLength(i);
+	              if(i>1)
+	            	  Lizzie.frame.input.nowheelPress=true;
+	              repaint();	             
+	              try {
+	                Thread.sleep(secs);
+	                
+	              } catch (InterruptedException e) {
+	                e.printStackTrace();
+	              }
+	            }
+	            boardRenderer.setDisplayedBranchLength(oriBranchLength);
+	            isReplayVariation = false;	            
+	            if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+	          }
+	        };
+	    Thread thread = new Thread(runnable);
+	    thread.start();
+	  }
 
   public void DraggedMoved(int x, int y) {
     if (RightClickMenu.isVisible() || RightClickMenu2.isVisible()) {
