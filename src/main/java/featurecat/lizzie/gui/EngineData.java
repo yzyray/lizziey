@@ -8,4 +8,5 @@ public class EngineData {
   public int width;
   public int height;
   public boolean isDefault;
+  public float komi;
 }

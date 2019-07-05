@@ -42,13 +42,14 @@ public class Lizzie {
     board = new Board();
 
     movelistframe = MovelistFrame.createBadmovesDialog();
-    moreEngines = MoreEngines.createBadmovesDialog();
-    moreEngines.setVisible(false);
+
     //   movelistframe.setLocation(-7, 302);
     movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", false));
     movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
 
     frame = new LizzieFrame();
+    moreEngines = MoreEngines.createBadmovesDialog();
+    moreEngines.setVisible(true);
     gtpConsole = new GtpConsolePane(frame);
     countResults = new CountResults(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));

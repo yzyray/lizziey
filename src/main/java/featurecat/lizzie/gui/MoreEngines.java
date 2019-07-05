@@ -41,16 +41,17 @@ public class MoreEngines extends JPanel {
   int sortnum = 3;
   public static int selectedorder = -1;
   boolean issorted = false;
-  JSpinner dropwinratechooser = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
-  JSpinner playoutschooser = new JSpinner(new SpinnerNumberModel(100, 0, 99999, 100));
-  JCheckBox checkBlack = new JCheckBox();
-  JCheckBox checkWhite = new JCheckBox();
+  // JSpinner dropwinratechooser = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
+  // JSpinner playoutschooser = new JSpinner(new SpinnerNumberModel(100, 0, 99999, 100));
+  //  JCheckBox checkBlack = new JCheckBox();
+  //  JCheckBox checkWhite = new JCheckBox();
   JTextArea command;
   JTextField txtName;
   JLabel engineName;
   JCheckBox preload;
   JTextField txtWidth;
   JTextField txtHeight;
+  JTextField txtKomi;
   JButton save;
   JButton cancel;
   JButton exit;
@@ -78,9 +79,9 @@ public class MoreEngines extends JPanel {
     table.setRowHeight(20);
 
     tablepanel = new JPanel(new BorderLayout());
-    tablepanel.setBounds(0, 330, 685, 432);
+    tablepanel.setBounds(0, 330, 885, 432);
     this.add(tablepanel, BorderLayout.SOUTH);
-    selectpanel.setBounds(0, 0, 700, 330);
+    selectpanel.setBounds(0, 0, 900, 330);
     this.add(selectpanel, BorderLayout.NORTH);
     scrollpane = new JScrollPane(table);
 
@@ -88,12 +89,13 @@ public class MoreEngines extends JPanel {
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setFillsViewportHeight(true);
     table.getColumnModel().getColumn(0).setPreferredWidth(30);
-    table.getColumnModel().getColumn(1).setPreferredWidth(100);
-    table.getColumnModel().getColumn(2).setPreferredWidth(370);
+    table.getColumnModel().getColumn(1).setPreferredWidth(80);
+    table.getColumnModel().getColumn(2).setPreferredWidth(470);
     table.getColumnModel().getColumn(3).setPreferredWidth(40);
     table.getColumnModel().getColumn(4).setPreferredWidth(20);
     table.getColumnModel().getColumn(5).setPreferredWidth(20);
     table.getColumnModel().getColumn(6).setPreferredWidth(30);
+    table.getColumnModel().getColumn(7).setPreferredWidth(30);
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
@@ -116,6 +118,7 @@ public class MoreEngines extends JPanel {
     engineName.setFont(new Font("微软雅黑", Font.PLAIN, 14));
     JLabel lblname = new JLabel("名称：");
     txtName = new JTextField();
+    txtKomi = new JTextField();
     command = new JTextArea(5, 80);
     command.setLineWrap(true);
     command.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
@@ -125,6 +128,7 @@ public class MoreEngines extends JPanel {
     JLabel lblpreload = new JLabel("预加载");
     JLabel lblWidth = new JLabel("默认棋盘 宽：");
     JLabel lblHeight = new JLabel("高：");
+    JLabel lblKomi = new JLabel("贴目：");
 
     txtWidth = new JTextField();
     txtHeight = new JTextField();
@@ -148,23 +152,26 @@ public class MoreEngines extends JPanel {
     rdoMannul = new JRadioButton();
     JLabel lblrdoMannul = new JLabel("手动选择");
 
-    engineName.setBounds(5, 5, 500, 20);
-    txtName.setBounds(50, 35, 600, 20);
+    engineName.setBounds(5, 5, 700, 20);
+    txtName.setBounds(50, 35, 800, 20);
     lblname.setBounds(5, 35, 45, 20);
     lblcommand.setBounds(5, 65, 50, 20);
-    command.setBounds(50, 65, 600, 200);
+    command.setBounds(50, 65, 800, 200);
     preload.setBounds(47, 271, 20, 20);
     lblpreload.setBounds(70, 271, 50, 20);
     lblWidth.setBounds(120, 271, 80, 20);
     txtWidth.setBounds(190, 272, 30, 20);
     lblHeight.setBounds(225, 271, 30, 20);
     txtHeight.setBounds(245, 272, 30, 20);
-    save.setBounds(510, 270, 40, 22);
-    cancel.setBounds(560, 270, 40, 22);
-    exit.setBounds(610, 270, 40, 22);
+    lblKomi.setBounds(280, 272, 40, 20);
+    txtKomi.setBounds(315, 272, 30, 20);
 
-    chkdefault.setBounds(280, 271, 20, 20);
-    lbldefault.setBounds(300, 271, 60, 20);
+    chkdefault.setBounds(350, 271, 20, 20);
+    lbldefault.setBounds(370, 271, 60, 20);
+
+    save.setBounds(710, 270, 40, 22);
+    cancel.setBounds(760, 270, 40, 22);
+    exit.setBounds(810, 270, 40, 22);
 
     lblchooseStart.setBounds(5, 300, 60, 20);
     rdoDefault.setBounds(60, 300, 20, 20);
@@ -198,6 +205,9 @@ public class MoreEngines extends JPanel {
     selectpanel.add(txtWidth);
     selectpanel.add(lblHeight);
     selectpanel.add(txtHeight);
+    selectpanel.add(lblKomi);
+    selectpanel.add(txtKomi);
+
     selectpanel.add(save);
     selectpanel.add(cancel);
     selectpanel.add(exit);
@@ -302,6 +312,7 @@ public class MoreEngines extends JPanel {
               Lizzie.config.save();
             } catch (IOException es) {
             }
+            saveEngineConfig();
             table.validate();
             table.updateUI();
           }
@@ -426,22 +437,22 @@ public class MoreEngines extends JPanel {
     }
   }
 
-  private void togglealwaysontop() {
-    if (engjf.isAlwaysOnTop()) {
-      engjf.setAlwaysOnTop(false);
-      Lizzie.config.uiConfig.put("badmoves-always-ontop", false);
-    } else {
-      engjf.setAlwaysOnTop(true);
-      Lizzie.config.uiConfig.put("badmoves-always-ontop", true);
-      if (Lizzie.frame.isAlwaysOnTop()) Lizzie.frame.toggleAlwaysOntop();
-    }
-    try {
-      Lizzie.config.save();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
+  //  private void togglealwaysontop() {
+  //    if (engjf.isAlwaysOnTop()) {
+  //      engjf.setAlwaysOnTop(false);
+  //      Lizzie.config.uiConfig.put("badmoves-always-ontop", false);
+  //    } else {
+  //      engjf.setAlwaysOnTop(true);
+  //      Lizzie.config.uiConfig.put("badmoves-always-ontop", true);
+  //      if (Lizzie.frame.isAlwaysOnTop()) Lizzie.frame.toggleAlwaysOntop();
+  //    }
+  //    try {
+  //      Lizzie.config.save();
+  //    } catch (IOException e) {
+  //      // TODO Auto-generated catch block
+  //      e.printStackTrace();
+  //    }
+  //  }
 
   private void handleTableClick(int row, int col) {
     //    if (selectedorder != row) {
@@ -465,9 +476,10 @@ public class MoreEngines extends JPanel {
     else preload.setSelected(false);
     txtWidth.setText(table.getModel().getValueAt(row, 4).toString());
     txtHeight.setText(table.getModel().getValueAt(row, 5).toString());
-    if (table.getModel().getValueAt(row, 6).toString().equals("是")) chkdefault.setSelected(true);
+    if (table.getModel().getValueAt(row, 7).toString().equals("是")) chkdefault.setSelected(true);
     else chkdefault.setSelected(false);
     curIndex = Integer.parseInt(table.getModel().getValueAt(row, 0).toString()) - 1;
+    txtKomi.setText(table.getModel().getValueAt(row, 6).toString());
   }
 
   private void handleTableDoubleClick(int row, int col) {
@@ -481,7 +493,58 @@ public class MoreEngines extends JPanel {
     //    selectedorder = row;
   }
 
-  private ArrayList<EngineData> getEngineData() {
+  private void saveEngineConfig() {
+    ArrayList<EngineData> engData = getEngineData();
+    EngineData enginedt = new EngineData();
+    enginedt.index = curIndex;
+    enginedt.commands = this.command.getText();
+    enginedt.name = this.txtName.getText();
+    enginedt.preload = this.preload.isSelected();
+    enginedt.width = Integer.parseInt(this.txtWidth.getText());
+    enginedt.height = Integer.parseInt(this.txtHeight.getText());
+    enginedt.isDefault = this.chkdefault.isSelected();
+    enginedt.komi = Float.parseFloat(this.txtKomi.getText());
+    engData.remove(curIndex);
+    engData.add(curIndex, enginedt);
+
+    JSONArray commands = new JSONArray();
+    JSONArray names = new JSONArray();
+    JSONArray preloads = new JSONArray();
+    JSONArray widths = new JSONArray();
+    JSONArray heights = new JSONArray();
+    JSONArray komis = new JSONArray();
+    for (int i = 0; i < engData.size(); i++) {
+      EngineData engDt = engData.get(i);
+      if (i == 0) {
+        Lizzie.config.leelazConfig.put("engine-command", engDt.commands.trim());
+        names.put(engDt.name);
+        preloads.put(engDt.preload);
+        widths.put(engDt.width);
+        heights.put(engDt.height);
+        komis.put(engDt.komi);
+      } else {
+        commands.put(engDt.commands.trim());
+        names.put(engDt.name);
+        preloads.put(engDt.preload);
+        widths.put(engDt.width);
+        heights.put(engDt.height);
+        komis.put(engDt.komi);
+      }
+    }
+    Lizzie.config.leelazConfig.put("engine-command-list", commands);
+    Lizzie.config.leelazConfig.put("engine-name-list", names);
+    Lizzie.config.leelazConfig.put("engine-width-list", widths);
+    Lizzie.config.leelazConfig.put("engine-height-list", heights);
+    Lizzie.config.leelazConfig.put("engine-komi-list", komis);
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public ArrayList<EngineData> getEngineData() {
     ArrayList<EngineData> engineData = new ArrayList<EngineData>();
     Optional<JSONArray> enginesCommandOpt =
         Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
@@ -495,17 +558,25 @@ public class MoreEngines extends JPanel {
 
     Optional<JSONArray> enginesHeightOpt =
         Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-height-list"));
+    Optional<JSONArray> enginesKomiOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-komi-list"));
 
     int defaultEngine = Lizzie.config.uiConfig.optInt("default-engine", -1);
 
-    for (int i = 0; i < enginesCommandOpt.get().length(); i++) {
+    for (int i = 0;
+        i < (enginesCommandOpt.isPresent() ? enginesCommandOpt.get().length() + 1 : 0);
+        i++) {
       if (i == 0) {
         String engineCommand = Lizzie.config.leelazConfig.getString("engine-command");
-        int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i) : 19;
-        int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i) : 19;
-        String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i) : "";
+        int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i, 19) : 19;
+        int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i, 19) : 19;
+        String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
+        float komi =
+            enginesKomiOpt.isPresent()
+                ? enginesKomiOpt.get().optFloat(i, (float) 7.5)
+                : (float) 7.5;
         boolean preload =
-            enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i) : false;
+            enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i, false) : false;
         EngineData enginedt = new EngineData();
         enginedt.commands = engineCommand;
         enginedt.name = name;
@@ -513,17 +584,22 @@ public class MoreEngines extends JPanel {
         enginedt.index = i;
         enginedt.width = width;
         enginedt.height = height;
+        enginedt.komi = komi;
         if (defaultEngine == i) enginedt.isDefault = true;
         else enginedt.isDefault = false;
         engineData.add(enginedt);
       } else {
         String commands =
-            enginesCommandOpt.isPresent() ? enginesCommandOpt.get().optString(i - 1) : "";
-        int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i) : 19;
-        int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i) : 19;
-        String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i) : "";
+            enginesCommandOpt.isPresent() ? enginesCommandOpt.get().optString(i - 1, "") : "";
+        int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i, 19) : 19;
+        int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i, 19) : 19;
+        String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
+        float komi =
+            enginesKomiOpt.isPresent()
+                ? enginesKomiOpt.get().optFloat(i, (float) 7.5)
+                : (float) 7.5;
         boolean preload =
-            enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i) : false;
+            enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i, false) : false;
         EngineData enginedt = new EngineData();
         enginedt.commands = commands;
         enginedt.name = name;
@@ -531,6 +607,7 @@ public class MoreEngines extends JPanel {
         enginedt.index = i;
         enginedt.width = width;
         enginedt.height = height;
+        enginedt.komi = komi;
         if (defaultEngine == i) enginedt.isDefault = true;
         else enginedt.isDefault = false;
         engineData.add(enginedt);
@@ -544,7 +621,7 @@ public class MoreEngines extends JPanel {
     return new AbstractTableModel() {
       public int getColumnCount() {
 
-        return 7;
+        return 8;
       }
 
       public int getRowCount() {
@@ -560,7 +637,8 @@ public class MoreEngines extends JPanel {
         if (column == 3) return "预加载";
         if (column == 4) return "宽";
         if (column == 5) return "高";
-        if (column == 6) return "默认";
+        if (column == 6) return "贴目";
+        if (column == 7) return "默认";
 
         return "无";
       }
@@ -593,6 +671,8 @@ public class MoreEngines extends JPanel {
           case 5:
             return data.height;
           case 6:
+            return data.komi;
+          case 7:
             if (data.isDefault) return "是";
             else return "否";
           default:
@@ -626,15 +706,16 @@ public class MoreEngines extends JPanel {
         && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() >= 4) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
       // jf.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
-      engjf.setBounds(50, 50, 700, 800);
+      engjf.setBounds(50, 50, 900, 800);
     } else {
-      engjf.setBounds(50, 50, 700, 800);
+      engjf.setBounds(50, 50, 900, 800);
     }
     try {
       engjf.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {
       e.printStackTrace();
     }
+    engjf.setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     engjf.setLocationRelativeTo(engjf.getOwner());
     // jf.setResizable(false);
     return engjf;
