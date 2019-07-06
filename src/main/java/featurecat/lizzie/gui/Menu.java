@@ -178,7 +178,7 @@ public class Menu extends MenuBar {
     blunder.addActionListener(new ItemListeneryzy());
     winrate.add(blunder);
 
-    final JCheckBoxMenuItem setReplayTime = new JCheckBoxMenuItem();
+    final JMenuItem setReplayTime = new JMenuItem();
     setReplayTime.setText("设置推荐点分支回放间隔");
     setReplayTime.addActionListener(
         new ActionListener() {
