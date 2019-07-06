@@ -119,16 +119,16 @@ public class MoreEngines extends JPanel {
     table.getColumnModel().getColumn(5).setPreferredWidth(20);
     table.getColumnModel().getColumn(6).setPreferredWidth(30);
     table.getColumnModel().getColumn(7).setPreferredWidth(30);
-//    boolean persisted = Lizzie.config.persistedUi != null;
-//    if (persisted
-//        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
-//        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 12) {
-//      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
-//      //      table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
-//      //      table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
-//      //      table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
-//      //      table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
-//    }
+    //    boolean persisted = Lizzie.config.persistedUi != null;
+    //    if (persisted
+    //        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
+    //        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 12) {
+    //      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
+    //      //      table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
+    //      //      table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
+    //      //      table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
+    //      //      table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
+    //    }
 
     JTableHeader header = table.getTableHeader();
 
@@ -237,7 +237,7 @@ public class MoreEngines extends JPanel {
     txtKomi.setEnabled(false);
     chkdefault.setEnabled(false);
     delete.setEnabled(false);
-    
+
     cancel.setEnabled(false);
     scan.setEnabled(false);
     selectpanel.add(engineName);
@@ -330,9 +330,9 @@ public class MoreEngines extends JPanel {
           @Override
           public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
-        
+
             command.setText("");
-            saveEngineConfig();         
+            saveEngineConfig();
             command.setText("");
             engineName.setText("单机选中列表中的引擎进行设置");
             txtName.setText("");
@@ -348,14 +348,13 @@ public class MoreEngines extends JPanel {
             txtKomi.setEnabled(false);
             chkdefault.setEnabled(false);
             delete.setEnabled(false);
-            
+
             scan.setEnabled(false);
             cancel.setEnabled(false);
-      	  curIndex = -1;
+            curIndex = -1;
             table.validate();
             table.updateUI();
             table.getSelectionModel().clearSelection();
-            
           }
         });
     exit.addActionListener(
@@ -418,8 +417,7 @@ public class MoreEngines extends JPanel {
               Lizzie.config.save();
             } catch (IOException es) {
             }
-            if(curIndex >=0)
-            saveEngineConfig();
+            if (curIndex >= 0) saveEngineConfig();
             table.validate();
             table.updateUI();
           }
@@ -929,17 +927,17 @@ public class MoreEngines extends JPanel {
     // Display the window.
     //  jf.setSize(521, 320);
 
-//    boolean persisted = Lizzie.config.persistedUi != null;
-//    if (persisted
-//        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
-//        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() >= 4) {
-//      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
-//      // jf.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
-//      engjf.setBounds(50, 50, 900, 800);
-//    } else {
-      engjf.setBounds(50, 50, 900, 800);
-      engjf.setResizable(false);
- //   }
+    //    boolean persisted = Lizzie.config.persistedUi != null;
+    //    if (persisted
+    //        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
+    //        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() >= 4) {
+    //      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
+    //      // jf.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
+    //      engjf.setBounds(50, 50, 900, 800);
+    //    } else {
+    engjf.setBounds(50, 50, 900, 800);
+    engjf.setResizable(false);
+    //   }
     try {
       engjf.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {

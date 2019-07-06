@@ -2122,7 +2122,7 @@ public class BottomToolbar extends JPanel {
   public void addEngineLis() {
     enginePkBlackLis =
         new ItemListener() {
-          public void itemStateChanged(final ItemEvent e) {            
+          public void itemStateChanged(final ItemEvent e) {
             engineBlack = enginePkBlack.getSelectedIndex();
             setTxtUnfocuse();
           }
@@ -2130,7 +2130,7 @@ public class BottomToolbar extends JPanel {
     enginePkWhiteLis =
         new ItemListener() {
           public void itemStateChanged(final ItemEvent e) {
-        	   engineWhite = enginePkWhite.getSelectedIndex();
+            engineWhite = enginePkWhite.getSelectedIndex();
             setTxtUnfocuse();
           }
         };

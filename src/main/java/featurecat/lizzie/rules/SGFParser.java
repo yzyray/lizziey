@@ -32,15 +32,12 @@ public class SGFParser {
     //  Lizzie.board.getHistory().getCurrentHistoryNode().getData().setPlayouts(0);
     //  Lizzie.board.getHistory().getCurrentHistoryNode().getData().bestMoves.clear();
     // Lizzie.board=new Board();
-boolean oriEmpty=false;
+    boolean oriEmpty = false;
     Lizzie.board.isLoadingFile = true;
     Lizzie.board.clear();
-    if(Lizzie.engineManager.isEmpty)
-    {
-    	oriEmpty=true;
-    }
-    else
-    Lizzie.engineManager.isEmpty = true;
+    if (Lizzie.engineManager.isEmpty) {
+      oriEmpty = true;
+    } else Lizzie.engineManager.isEmpty = true;
     File file = new File(filename);
     if (!file.exists() || !file.canRead()) {
       return false;
@@ -65,8 +62,7 @@ boolean oriEmpty=false;
 
     boolean returnValue = parse(value);
     Lizzie.board.isLoadingFile = false;
-    if(!oriEmpty)
-    Lizzie.engineManager.isEmpty = false;
+    if (!oriEmpty) Lizzie.engineManager.isEmpty = false;
     return returnValue;
   }
 

@@ -402,21 +402,20 @@ public class Board implements LeelazListener {
       forceRefresh = true;
     }
   }
-  public void open(int width, int height) {
-	    width = (width >= 2) ? width : 19;
-	    height = (height >= 2) ? height : 19;
 
-	    if (width != boardWidth || height != boardHeight) {
-	      boardWidth = width;
-	      boardHeight = height;
-	      Zobrist.init();
-	      mvnumber = new int[boardHeight * boardWidth];
-	     // Lizzie.leelaz.boardSize(boardWidth, boardHeight);
-	      forceRefresh = true;
-	    }
-	  }
-	  
-  
+  public void open(int width, int height) {
+    width = (width >= 2) ? width : 19;
+    height = (height >= 2) ? height : 19;
+
+    if (width != boardWidth || height != boardHeight) {
+      boardWidth = width;
+      boardHeight = height;
+      Zobrist.init();
+      mvnumber = new int[boardHeight * boardWidth];
+      // Lizzie.leelaz.boardSize(boardWidth, boardHeight);
+      forceRefresh = true;
+    }
+  }
 
   public boolean isForceRefresh() {
     return forceRefresh;
@@ -1843,9 +1842,9 @@ public class Board implements LeelazListener {
     cleanedittemp();
     initialize();
     isPkBoard = false;
-    Lizzie.leelaz.sendCommand("komi "+Lizzie.leelaz.komi);
+    Lizzie.leelaz.sendCommand("komi " + Lizzie.leelaz.komi);
     Lizzie.board.getHistory().getGameInfo().resetAll();
-    Lizzie.frame.komi = Lizzie.leelaz.komi+"";
+    Lizzie.frame.komi = Lizzie.leelaz.komi + "";
     Lizzie.frame.boardRenderer.removecountblock();
     if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
     featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(5).setHeaderValue("AI胜率");
@@ -2504,8 +2503,7 @@ public class Board implements LeelazListener {
   }
 
   public void updateWinrate() {
-	  if(Lizzie.engineManager.isEmpty)
-		  return;
+    if (Lizzie.engineManager.isEmpty) return;
     updateMovelist(Lizzie.board.history.getCurrentHistoryNode());
     Leelaz.WinrateStats stats = Lizzie.leelaz.getWinrateStats();
     if (stats.maxWinrate >= 0 && stats.totalPlayouts > history.getData().getPlayouts()) {

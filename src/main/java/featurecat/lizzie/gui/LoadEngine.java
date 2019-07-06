@@ -121,16 +121,16 @@ public class LoadEngine extends JPanel {
     table.getColumnModel().getColumn(5).setPreferredWidth(20);
     table.getColumnModel().getColumn(6).setPreferredWidth(30);
     table.getColumnModel().getColumn(7).setPreferredWidth(30);
-//    boolean persisted = Lizzie.config.persistedUi != null;
-//    if (persisted
-//        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
-//        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 12) {
-//      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
-//      //      table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
-//      //      table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
-//      //      table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
-//      //      table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
-//    }
+    //    boolean persisted = Lizzie.config.persistedUi != null;
+    //    if (persisted
+    //        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
+    //        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 12) {
+    //      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
+    //      //      table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
+    //      //      table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
+    //      //      table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
+    //      //      table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
+    //    }
 
     JTableHeader header = table.getTableHeader();
 
@@ -191,7 +191,7 @@ public class LoadEngine extends JPanel {
 
           @Override
           public void actionPerformed(ActionEvent e) {
-        	   engjf.setVisible(false);
+            engjf.setVisible(false);
             if (curIndex < 0) {
               JOptionPane.showMessageDialog(engjf, "请先选择一个引擎 ");
               return;
@@ -219,18 +219,17 @@ public class LoadEngine extends JPanel {
             try {
               Lizzie.engineManager = new EngineManager(Lizzie.config, curIndex);
 
-            } catch (IOException es) {            	
-            	try {
-					Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
-				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+            } catch (IOException es) {
+              try {
+                Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
+              } catch (JSONException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+              } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+              }
             }
-         
           }
         });
     exit.addActionListener(
@@ -247,17 +246,16 @@ public class LoadEngine extends JPanel {
 
           @Override
           public void actionPerformed(ActionEvent e) {
-        	   engjf.setVisible(false);
-        	  try {
-				Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-        	
+            engjf.setVisible(false);
+            try {
+              Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
+            } catch (JSONException e1) {
+              // TODO Auto-generated catch block
+              e1.printStackTrace();
+            } catch (IOException e1) {
+              // TODO Auto-generated catch block
+              e1.printStackTrace();
+            }
           }
         });
 
@@ -492,7 +490,7 @@ public class LoadEngine extends JPanel {
   }
 
   private void handleTableDoubleClick(int row, int col) {
-	  engjf.setVisible(false);
+    engjf.setVisible(false);
     curIndex = Integer.parseInt(table.getModel().getValueAt(row, 0).toString()) - 1;
     Lizzie.config.uiConfig.put("default-engine", curIndex);
     if (rdoDefault.isSelected()) {
@@ -518,18 +516,17 @@ public class LoadEngine extends JPanel {
       Lizzie.engineManager = new EngineManager(Lizzie.config, curIndex);
 
     } catch (IOException es) {
-    	try {
-    		 JOptionPane.showMessageDialog(Lizzie.frame, "加载引擎失败,目前为不加载引擎直接运行 ");
-			Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+      try {
+        JOptionPane.showMessageDialog(Lizzie.frame, "加载引擎失败,目前为不加载引擎直接运行 ");
+        Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
+      } catch (JSONException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      } catch (IOException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
     }
-    
   }
 
   public ArrayList<EngineData> getEngineData() {
@@ -690,10 +687,10 @@ public class LoadEngine extends JPanel {
     // Display the window.
     //  jf.setSize(521, 320);
 
-   // boolean persisted = Lizzie.config.persistedUi != null;
+    // boolean persisted = Lizzie.config.persistedUi != null;
 
     engjf.setBounds(50, 50, 900, 320);
-engjf.setResizable(false);
+    engjf.setResizable(false);
     try {
       engjf.setIconImage(ImageIO.read(LoadEngine.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {

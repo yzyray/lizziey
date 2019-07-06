@@ -1186,7 +1186,6 @@ public class ConfigDialog extends JDialog {
       e.printStackTrace();
     }
     Lizzie.engineManager.updateEngines();
-   
   }
 
   private void applyChange() {
