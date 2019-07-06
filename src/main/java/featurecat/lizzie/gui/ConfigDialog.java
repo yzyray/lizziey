@@ -987,7 +987,7 @@ public class ConfigDialog extends JDialog {
         Optional.ofNullable(leelazConfig.optJSONArray("engine-name-list"));
     enginesNameOpt.ifPresent(
         a -> {
-          IntStream.range(0, a.length())
+          IntStream.range(0, 9)
               .forEach(
                   i -> {
                     names[i].setText(a.getString(i));
@@ -1012,7 +1012,7 @@ public class ConfigDialog extends JDialog {
         Optional.ofNullable(leelazConfig.optJSONArray("engine-command-list"));
     enginesOpt.ifPresent(
         a -> {
-          IntStream.range(0, a.length())
+          IntStream.range(0, 8)
               .forEach(
                   i -> {
                     txts[i].setText(a.getString(i));
@@ -1036,7 +1036,7 @@ public class ConfigDialog extends JDialog {
         Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
     enginePreloadOpt.ifPresent(
         a -> {
-          IntStream.range(0, a.length())
+          IntStream.range(0, 9)
               .forEach(
                   i -> {
                     chkPreloads[i].setSelected(a.optBoolean(i));
@@ -1186,7 +1186,7 @@ public class ConfigDialog extends JDialog {
       e.printStackTrace();
     }
     Lizzie.engineManager.updateEngines();
-    Lizzie.frame.menu.updateEngineName();
+   
   }
 
   private void applyChange() {

@@ -84,7 +84,7 @@ public class Leelaz {
 
 	public boolean preload = false;
 	public boolean started = false;
-	private boolean isLoaded = false;
+	public boolean isLoaded = false;
 	private boolean isCheckingVersion;
 	  private boolean isCheckingName;
 
@@ -122,6 +122,9 @@ public class Leelaz {
 	public double scoreMean=0;
 	public double scoreStdev=0;
 	private boolean isCommandLine=false;
+	public int width=19;
+	public int height=19;
+	public boolean firstLoad=false;
 	//private boolean isEstimating=true;
 	/**
 	 * Initializes the leelaz process and starts reading output
@@ -244,10 +247,18 @@ public class Leelaz {
 		try {
 			process = processBuilder.start();
 		} catch (IOException e) {
-			if (index == 0) {
-				Lizzie.frame.openConfigDialog();
-				System.exit(1);
-			}
+			if (firstLoad) {
+				try {					
+					 JOptionPane.showMessageDialog(Lizzie.frame, "加载引擎失败,目前为不加载引擎直接运行 ");
+					Lizzie.engineManager = new EngineManager(Lizzie.config, -1);					
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}		
 			return;
 		}
 		initializeStreams();
@@ -259,9 +270,10 @@ public class Leelaz {
 		//sendCommand("turnon");	
 		sendCommand("name");
 		sendCommand("version");
-		
-		 boardSize(Lizzie.board.boardWidth, Lizzie.board.boardHeight);
-	   
+			 sendCommand("komi "+komi);		
+		 boardSize(width, height);
+		 
+	
 		// start a thread to continuously read Leelaz output
 		// new Thread(this::read).start();
 		// can stop engine for switching weights
@@ -2078,6 +2090,15 @@ if(resigned)
 	
 	  public void boardSize(int width, int height) {
 		    sendCommand("boardsize " + width + (width != height ? " " + height : ""));
+		    if(firstLoad)
+		    {
+		    Lizzie.board.open( width,  height);
+		    Lizzie.board.getHistory().getGameInfo().setKomi(komi);
+		    Lizzie.board.getHistory().getGameInfo().DEFAULT_KOMI=(double)komi;
+	         Lizzie.frame.komi = komi+"";
+		    firstLoad=false;
+		  
+	  }
 		  }
 
 	public void nameCmdfornoponder() {
@@ -2261,6 +2282,8 @@ if(resigned)
 	 * @param command a GTP command containing no newline characters
 	 */
 	private void sendCommandToLeelaz(String command) {
+		if(Lizzie.engineManager.isEmpty)
+			return;
 		if (command.startsWith("fixed_handicap")||(isKatago&&command.startsWith("place_free_handicap")))
 			isSettingHandicap = true;
 //    if (printCommunication) {
@@ -2830,7 +2853,7 @@ if(resigned)
 		return started;
 	}
 
-	public boolean isLoaded() {
+	public boolean isLoaded() {		
 		return isLoaded;
 	}
 

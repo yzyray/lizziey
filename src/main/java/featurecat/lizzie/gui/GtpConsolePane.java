@@ -36,7 +36,7 @@ public class GtpConsolePane extends JDialog {
   private HTMLEditorKit htmlKit;
   private StyleSheet htmlStyle;
   private JScrollPane scrollPane;
-  private JTextPane console;
+  public JTextPane console;
   private String command;
   // private boolean isAnalyzeCommand = false;
   private final JTextField txtCommand = new JTextField();

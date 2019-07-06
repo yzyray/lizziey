@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
 
+import org.json.JSONException;
+
 /** Main class. */
 public class Lizzie {
   public static Config config;
@@ -54,15 +56,29 @@ public class Lizzie {
     //  menu = new Menu(frame);
     //  menu.setVisible(true);
 
-    //    try {
-    //      engineManager = new EngineManager(config);
-    //
-    //    } catch (IOException e) {
-    //      frame.openConfigDialog();
-    //      System.exit(1);
-    //    }
+  
+    if(Lizzie.config.uiConfig.optBoolean("autoload-default", false))
+    {
+    	int defaultEngine = Lizzie.config.uiConfig.optInt("default-engine", -1);
+        try {
+            engineManager = new EngineManager(config,defaultEngine);
+      
+          } catch (IOException e) {
+        	  try {
+					Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+          }
+    }
+    else {
     loadEngine = LoadEngine.createBadmovesDialog();
     loadEngine.setVisible(true);
+    }
     analysisframe = AnalysisFrame.createAnalysisDialog();
     analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", false));
     analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);

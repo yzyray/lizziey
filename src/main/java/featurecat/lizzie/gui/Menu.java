@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
@@ -23,8 +24,15 @@ public class Menu extends MenuBar {
   public static ImageIcon icon;
   public static ImageIcon stop;
   public static ImageIcon ready;
-  public static JMenuItem[] engine = new JMenuItem[10];
+  public static JMenuItem[] engine = new JMenuItem[21];
   public static JMenu engineMenu;
+  public static  MenuBar menuBar;
+  JMenuItem closeall;
+  JMenuItem forcecloseall;
+  JMenuItem closeother;
+  JMenuItem restartZen;
+  JMenuItem config;
+  JMenuItem moreconfig;
   // private boolean onlyboard = false;
 
   public Menu() {
@@ -45,7 +53,7 @@ public class Menu extends MenuBar {
     this.setBackground(hsbColor);
     JPanel bar = new JPanel(new BorderLayout());
     bar.setBorder(new EmptyBorder(0, 0, -1, -1));
-    final MenuBar menuBar = new MenuBar();
+     menuBar = new MenuBar();
     // bar.setBounds(0, 0, 450, 12);
 
     menuBar.setColor(hsbColor);
@@ -814,8 +822,7 @@ public class Menu extends MenuBar {
     editMenu.add(clearthis);
 
     engineMenu = new JMenu("引擎 ", false);
-    engineMenu.setText(" 引擎  ");
-    // helpMenu.setMnemonic('H');
+    engineMenu.setText(" 引擎  ");    
     engineMenu.setForeground(Color.BLACK);
     engineMenu.setFont(headFont);
     menuBar.add(engineMenu);
@@ -845,65 +852,47 @@ public class Menu extends MenuBar {
       e.printStackTrace();
     }
 
-    for (int i = 0; i < engine.length; i++) {
-      engine[i] = new JMenuItem();
-      engine[i].addActionListener(new ItemListeneryzy());
-      engineMenu.add(engine[i]);
-      engine[i].setText("引擎" + (i + 1) + ":");
-      engine[i].setVisible(false);
-    }
-
-    Optional<JSONArray> enginesNameOpt =
-        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
-    enginesNameOpt.ifPresent(
-        a -> {
-          IntStream.range(0, a.length())
-              .forEach(
-                  i -> {
-                    String name = a.getString(i);
-                    engine[i].setText(engine[i].getText() + name);
-                    if (!name.equals("")) {
-                      Lizzie.frame.toolbar.enginePkBlack.addItem("[" + i + "]" + name);
-                      Lizzie.frame.toolbar.enginePkWhite.addItem("[" + i + "]" + name);
-                    }
-                    if (!name.equals("")) {
-                      engine[i].setVisible(true);
-                    }
-                  });
-        });
+    updateEngineMenuone();
+    ArrayList<EngineData> engineData = getEngineData();
+    for (int i = 0; i < engineData.size(); i++) {
+    	EngineData engineDt=engineData.get(i);
+    	Lizzie.frame.toolbar.enginePkBlack.addItem("[" + (i+1) + "]" + engineDt.name);
+        Lizzie.frame.toolbar.enginePkWhite.addItem("[" + (i+1) + "]" + engineDt.name);
+  
+    }   
 
     engineMenu.addSeparator();
-    final JMenuItem closeall = new JMenuItem();
+     closeall = new JMenuItem();
     closeall.setText("关闭所有引擎");
     // aboutItem.setMnemonic('A');
     closeall.addActionListener(new ItemListeneryzy());
     engineMenu.add(closeall);
 
-    final JMenuItem forcecloseall = new JMenuItem();
+      forcecloseall = new JMenuItem();
     forcecloseall.setText("强制关闭所有引擎");
     // aboutItem.setMnemonic('A');
     forcecloseall.addActionListener(new ItemListeneryzy());
     engineMenu.add(forcecloseall);
 
-    final JMenuItem closeother = new JMenuItem();
+      closeother = new JMenuItem();
     closeother.setText("关闭当前以外引擎");
     // aboutItem.setMnemonic('A');
     closeother.addActionListener(new ItemListeneryzy());
     engineMenu.add(closeother);
 
-    final JMenuItem restartZen = new JMenuItem();
+      restartZen = new JMenuItem();
     restartZen.setText("重启Zen(形势判断用)");
     // aboutItem.setMnemonic('A');
     restartZen.addActionListener(new ItemListeneryzy());
     engineMenu.add(restartZen);
     engineMenu.addSeparator();
 
-    final JMenuItem config = new JMenuItem();
+     config = new JMenuItem();
     config.setText("设置");
     config.addActionListener(new ItemListeneryzy());
     engineMenu.add(config);
 
-    final JMenuItem moreconfig = new JMenuItem();
+     moreconfig = new JMenuItem();
     moreconfig.setText("更多引擎设置");
     engineMenu.add(moreconfig);
     moreconfig.addActionListener(
@@ -916,26 +905,212 @@ public class Menu extends MenuBar {
           }
         });
   }
-
-  public void updateEngineName() {
-    Optional<JSONArray> enginesNameOpt =
-        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
-    enginesNameOpt.ifPresent(
-        a -> {
-          IntStream.range(0, a.length())
-              .forEach(
-                  i -> {
-                    String name = a.getString(i);
-
-                    if (i == 9) engine[i].setText(engine[i].getText().substring(0, 5) + name);
-                    else engine[i].setText(engine[i].getText().substring(0, 4) + name);
-                    if (!name.equals("")) engine[i].setVisible(true);
-                    else {
-                      engine[i].setVisible(false);
-                    }
-                  });
-        });
+  
+  public void updateEngineMenuone() {	
+	 
+	  for (int i = 0; i < engine.length; i++) {	
+	      engine[i] = new JMenuItem();
+	      engineMenu.add(engine[i]);	      
+	      engine[i].setText("引擎" + (i + 1) + ":");
+	      engine[i].setVisible(false);
+	    }
+	  ArrayList<EngineData> engineData = getEngineData();
+	    for (int i = 0; i < engineData.size(); i++) {	    	
+	    	EngineData engineDt=engineData.get(i);
+	    	if(i>(engine.length-2))
+	    	{
+	    		 engine[i].setText("更多引擎...");        
+	 	        engine[i].setVisible(true);
+	 	       engine[i].addActionListener(
+		    	        new ActionListener() {
+		    	            public void actionPerformed(ActionEvent e) {
+		    	            	JDialog chooseMoreEngine;
+		    	            	chooseMoreEngine = ChooseMoreEngine.createBadmovesDialog();
+		    	            	chooseMoreEngine.setVisible(true);
+		    	            }
+		    	          });
+	 	        return;
+	    	}
+	    	else {
+	        engine[i].setText("引擎" + (i + 1) + ":"+engineDt.name);        
+	        engine[i].setVisible(true);
+	        int a=i;
+	       engine[i].addActionListener(
+	    	        new ActionListener() {
+	    	            public void actionPerformed(ActionEvent e) {
+	    	             Lizzie.engineManager.switchEngine(a);
+	    	            }
+	    	          });
+	    	}
+	      
+	    } 
+	  
   }
+
+  public void updateEngineMenu() {	
+	  
+	  menuBar.remove(engineMenu);
+	  engineMenu = new JMenu("引擎 ", false);
+	    engineMenu.setText(" 引擎  ");    
+	    engineMenu.setForeground(Color.BLACK);
+	    engineMenu.setFont(headFont);
+	    menuBar.add(engineMenu);
+	  for (int i = 0; i < engine.length; i++) {
+		  try {
+		  engineMenu.remove(engine[i]);
+		  }
+		  catch(Exception e)
+		  {}
+	      engine[i] = new JMenuItem();
+	      engineMenu.add(engine[i]);	      
+	      engine[i].setText("引擎" + (i + 1) + ":");
+	      engine[i].setVisible(false);	      
+	     
+	    }
+	  for(int i=0;i<Lizzie.engineManager.engineList.size();i++) {
+	  if(Lizzie.engineManager.engineList.get(i).isLoaded())
+      {
+    	  engine[i].setIcon(ready);    	 
+      }
+	  if(Lizzie.engineManager.engineList.get(i).currentEngineN()==Lizzie.engineManager.currentEngineNo)
+      {
+		  engine[i].setIcon(icon);
+		  engineMenu.setText("引擎"+(i+1)+": "+Lizzie.engineManager.engineList.get(i).currentEnginename);
+      }
+	  }
+	  ArrayList<EngineData> engineData = getEngineData();
+	    for (int i = 0; i < engineData.size(); i++) {	    	
+	    	EngineData engineDt=engineData.get(i);
+	    	if(i>(engine.length-2))
+	    	{
+	    		 engine[i].setText("更多引擎...");        
+	 	        engine[i].setVisible(true);
+	 	       engine[i].addActionListener(
+		    	        new ActionListener() {
+		    	            public void actionPerformed(ActionEvent e) {
+		    	            	JDialog chooseMoreEngine;
+		    	            	chooseMoreEngine = ChooseMoreEngine.createBadmovesDialog();
+		    	            	chooseMoreEngine.setVisible(true);
+		    	            }
+		    	          });
+	 	        return;
+	    	}
+	    	else {
+	        engine[i].setText("引擎" + (i + 1) + ":"+engineDt.name);        
+	        engine[i].setVisible(true);
+	        int a=i;
+	       engine[i].addActionListener(
+	    	        new ActionListener() {
+	    	            public void actionPerformed(ActionEvent e) {
+	    	             Lizzie.engineManager.switchEngine(a);
+	    	            }
+	    	          });
+	    	}
+	    } 
+	    engineMenu.addSeparator();
+	    engineMenu.add(closeall);
+		  engineMenu.add(forcecloseall);
+		  engineMenu.add(closeother	);
+		  engineMenu.add(restartZen);
+		    engineMenu.addSeparator();
+		  engineMenu.add(config);
+		  engineMenu.add(moreconfig);		  
+	  
+  }
+  
+//  public void updateEngineName() {
+//    Optional<JSONArray> enginesNameOpt =
+//        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+//    enginesNameOpt.ifPresent(
+//        a -> {
+//          IntStream.range(0, a.length())
+//              .forEach(
+//                  i -> {
+//                    String name = a.getString(i);
+//
+//                    if (i == 9) engine[i].setText(engine[i].getText().substring(0, 5) + name);
+//                    else engine[i].setText(engine[i].getText().substring(0, 4) + name);
+//                    if (!name.equals("")) engine[i].setVisible(true);
+//                    else {
+//                      engine[i].setVisible(false);
+//                    }
+//                  });
+//        });
+//  }
+  
+  public ArrayList<EngineData> getEngineData() {
+	    ArrayList<EngineData> engineData = new ArrayList<EngineData>();
+	    Optional<JSONArray> enginesCommandOpt =
+	        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
+	    Optional<JSONArray> enginesNameOpt =
+	        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+	    Optional<JSONArray> enginesPreloadOpt =
+	        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
+
+	    Optional<JSONArray> enginesWidthOpt =
+	        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-width-list"));
+
+	    Optional<JSONArray> enginesHeightOpt =
+	        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-height-list"));
+	    Optional<JSONArray> enginesKomiOpt =
+	        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-komi-list"));
+
+	    int defaultEngine = Lizzie.config.uiConfig.optInt("default-engine", -1);
+
+	    for (int i = 0;
+	        i < (enginesCommandOpt.isPresent() ? enginesCommandOpt.get().length() + 1 : 0);
+	        i++) {
+	      if (i == 0) {
+	        String engineCommand = Lizzie.config.leelazConfig.getString("engine-command");
+	        int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i, 19) : 19;
+	        int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i, 19) : 19;
+	        String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
+	        float komi =
+	            enginesKomiOpt.isPresent()
+	                ? enginesKomiOpt.get().optFloat(i, (float) 7.5)
+	                : (float) 7.5;
+	        boolean preload =
+	            enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i, false) : false;
+	        EngineData enginedt = new EngineData();
+	        enginedt.commands = engineCommand;
+	        enginedt.name = name;
+	        enginedt.preload = preload;
+	        enginedt.index = i;
+	        enginedt.width = width;
+	        enginedt.height = height;
+	        enginedt.komi = komi;
+	        if (defaultEngine == i) enginedt.isDefault = true;
+	        else enginedt.isDefault = false;
+	        engineData.add(enginedt);
+	      } else {
+	        String commands =
+	            enginesCommandOpt.isPresent() ? enginesCommandOpt.get().optString(i - 1, "") : "";
+	        if (!commands.equals("")) {
+	          int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i, 19) : 19;
+	          int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i, 19) : 19;
+	          String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
+	          float komi =
+	              enginesKomiOpt.isPresent()
+	                  ? enginesKomiOpt.get().optFloat(i, (float) 7.5)
+	                  : (float) 7.5;
+	          boolean preload =
+	              enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i, false) : false;
+	          EngineData enginedt = new EngineData();
+	          enginedt.commands = commands;
+	          enginedt.name = name;
+	          enginedt.preload = preload;
+	          enginedt.index = i;
+	          enginedt.width = width;
+	          enginedt.height = height;
+	          enginedt.komi = komi;
+	          if (defaultEngine == i) enginedt.isDefault = true;
+	          else enginedt.isDefault = false;
+	          engineData.add(enginedt);
+	        }
+	      }
+	    }
+	    return engineData;
+	  }
 
   class ItemListeneryzy implements ActionListener {
     public void actionPerformed(ActionEvent e) {
@@ -1066,47 +1241,7 @@ public class Menu extends MenuBar {
         Lizzie.leelaz.togglePonder();
         return;
       }
-
-      if (menuItem.getText().startsWith("引擎1") && !menuItem.getText().startsWith("引擎10")) {
-        Lizzie.engineManager.switchEngine(0);
-        return;
-      }
-      if (menuItem.getText().startsWith("引擎2")) {
-        Lizzie.engineManager.switchEngine(1);
-        return;
-      }
-      if (menuItem.getText().startsWith("引擎3")) {
-        Lizzie.engineManager.switchEngine(2);
-        return;
-      }
-      if (menuItem.getText().startsWith("引擎4")) {
-        Lizzie.engineManager.switchEngine(3);
-        return;
-      }
-      if (menuItem.getText().startsWith("引擎5")) {
-        Lizzie.engineManager.switchEngine(4);
-        return;
-      }
-      if (menuItem.getText().startsWith("引擎6")) {
-        Lizzie.engineManager.switchEngine(5);
-        return;
-      }
-      if (menuItem.getText().startsWith("引擎7")) {
-        Lizzie.engineManager.switchEngine(6);
-        return;
-      }
-      if (menuItem.getText().startsWith("引擎8")) {
-        Lizzie.engineManager.switchEngine(7);
-        return;
-      }
-      if (menuItem.getText().startsWith("引擎9")) {
-        Lizzie.engineManager.switchEngine(8);
-        return;
-      }
-      if (menuItem.getText().startsWith("引擎10")) {
-        Lizzie.engineManager.switchEngine(9);
-        return;
-      }
+      
       if (menuItem.getText().startsWith("交替落")) {
         featurecat.lizzie.gui.Input.insert = 0;
         Lizzie.frame.blackorwhite = 0;

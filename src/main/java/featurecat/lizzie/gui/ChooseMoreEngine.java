@@ -35,7 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 @SuppressWarnings("serial")
-public class LoadEngine extends JPanel {
+public class ChooseMoreEngine extends JPanel {
   public static Config config;
   public TableModel dataModel;
   JPanel tablepanel;
@@ -47,7 +47,7 @@ public class LoadEngine extends JPanel {
   public static JLabel checkWhitetxt;
   Font headFont;
   Font winrateFont;
-  static JDialog engjf;
+  static JDialog engch;
   Timer timer;
   int sortnum = 3;
   public static int selectedorder = -1;
@@ -67,8 +67,8 @@ public class LoadEngine extends JPanel {
   //  JButton scan;
   //  JButton delete;
   JButton ok;
-  JButton noEngine;
-  JButton exit;
+ // JButton noEngine;
+//  JButton exit;
   //  JCheckBox chkdefault;
   JRadioButton rdoDefault;
   JRadioButton rdoLast;
@@ -83,7 +83,7 @@ public class LoadEngine extends JPanel {
   private BufferedInputStream inputStream;
   private Path curPath;
 
-  public LoadEngine() {
+  public ChooseMoreEngine() {
     // super(new BorderLayout());
 
     curPath = (new File("")).getAbsoluteFile().toPath();
@@ -104,9 +104,9 @@ public class LoadEngine extends JPanel {
     table.setRowHeight(20);
 
     tablepanel = new JPanel(new BorderLayout());
-    tablepanel.setBounds(0, 0, 885, 232);
+    tablepanel.setBounds(0, 0, 885, 660);
     this.add(tablepanel);
-    selectpanel.setBounds(0, 232, 900, 330);
+    selectpanel.setBounds(0, 660, 900, 30);
     this.add(selectpanel);
     scrollpane = new JScrollPane(table);
 
@@ -139,14 +139,14 @@ public class LoadEngine extends JPanel {
     //    checkBlack.setSelected(true);
     //    checkWhite.setSelected(true);
 
-    ok = new JButton("加载选中引擎");
-    noEngine = new JButton("不加载引擎");
-    exit = new JButton("退出");
+    ok = new JButton("切换选中引擎");
+ //   noEngine = new JButton("不加载引擎");
+  //  exit = new JButton("退出");
 
-    noEngine.setFocusable(false);
-    noEngine.setMargin(new Insets(0, 0, 0, 0));
-    exit.setFocusable(false);
-    exit.setMargin(new Insets(0, 0, 0, 0));
+ //   noEngine.setFocusable(false);
+  //  noEngine.setMargin(new Insets(0, 0, 0, 0));
+ //   exit.setFocusable(false);
+ //   exit.setMargin(new Insets(0, 0, 0, 0));
     ok.setFocusable(false);
     ok.setMargin(new Insets(0, 0, 0, 0));
 
@@ -158,9 +158,9 @@ public class LoadEngine extends JPanel {
     rdoMannul = new JRadioButton();
     JLabel lblrdoMannul = new JLabel("手动选择");
 
-    ok.setBounds(600, 20, 80, 22);
-    noEngine.setBounds(700, 20, 80, 22);
-    exit.setBounds(800, 20, 80, 22);
+    ok.setBounds(800, 0, 80, 22);
+ //   noEngine.setBounds(800, 20, 80, 22);
+//    exit.setBounds(800, 20, 80, 22);
 
     lblchooseStart.setBounds(5, 0, 60, 20);
     rdoDefault.setBounds(60, 0, 20, 20);
@@ -175,8 +175,8 @@ public class LoadEngine extends JPanel {
     startGroup.add(rdoMannul);
 
     selectpanel.add(ok);
-    selectpanel.add(noEngine);
-    selectpanel.add(exit);
+  //  selectpanel.add(noEngine);
+ //   selectpanel.add(exit);
 
     selectpanel.add(lblchooseStart);
     selectpanel.add(rdoDefault);
@@ -191,9 +191,9 @@ public class LoadEngine extends JPanel {
 
           @Override
           public void actionPerformed(ActionEvent e) {
-        	   engjf.setVisible(false);
+        	   engch.setVisible(false);
             if (curIndex < 0) {
-              JOptionPane.showMessageDialog(engjf, "请先选择一个引擎 ");
+              JOptionPane.showMessageDialog(engch, "请先选择一个引擎 ");
               return;
             }
             Lizzie.config.uiConfig.put("default-engine", curIndex);
@@ -216,50 +216,38 @@ public class LoadEngine extends JPanel {
               Lizzie.config.save();
             } catch (IOException es) {
             }
-            try {
-              Lizzie.engineManager = new EngineManager(Lizzie.config, curIndex);
-
-            } catch (IOException es) {            	
-            	try {
-					Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
-				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-            }
+     
+              Lizzie.engineManager.switchEngine(curIndex);
          
           }
         });
-    exit.addActionListener(
-        new ActionListener() {
-
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            // TODO Auto-generated method stub
-            System.exit(0);
-          }
-        });
-    noEngine.addActionListener(
-        new ActionListener() {
-
-          @Override
-          public void actionPerformed(ActionEvent e) {
-        	   engjf.setVisible(false);
-        	  try {
-				Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-        	
-          }
-        });
+//    exit.addActionListener(
+//        new ActionListener() {
+//
+//          @Override
+//          public void actionPerformed(ActionEvent e) {
+//            // TODO Auto-generated method stub
+//            System.exit(0);
+//          }
+//        });
+//    noEngine.addActionListener(
+//        new ActionListener() {
+//
+//          @Override
+//          public void actionPerformed(ActionEvent e) {
+//        	  engch.setVisible(false);
+//        	  try {
+//				Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
+//			} catch (JSONException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			} catch (IOException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//        	
+//          }
+//        });
 
     table.addMouseListener(
         new MouseAdapter() {
@@ -492,7 +480,7 @@ public class LoadEngine extends JPanel {
   }
 
   private void handleTableDoubleClick(int row, int col) {
-	  engjf.setVisible(false);
+	  engch.setVisible(false);
     curIndex = Integer.parseInt(table.getModel().getValueAt(row, 0).toString()) - 1;
     Lizzie.config.uiConfig.put("default-engine", curIndex);
     if (rdoDefault.isSelected()) {
@@ -514,22 +502,7 @@ public class LoadEngine extends JPanel {
       Lizzie.config.save();
     } catch (IOException es) {
     }
-    try {
-      Lizzie.engineManager = new EngineManager(Lizzie.config, curIndex);
-
-    } catch (IOException es) {
-    	try {
-    		 JOptionPane.showMessageDialog(Lizzie.frame, "加载引擎失败,目前为不加载引擎直接运行 ");
-			Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-    }
-    
+    Lizzie.engineManager.switchEngine(curIndex);
   }
 
   public ArrayList<EngineData> getEngineData() {
@@ -674,34 +647,34 @@ public class LoadEngine extends JPanel {
 
   public static JDialog createBadmovesDialog() {
     // Create and set up the window.
-    engjf = new JDialog();
-    engjf.setTitle("选择要加载的引擎(双击直接加载)");
+    engch = new JDialog();
+    engch.setTitle("选择要切换的引擎(双击直接切换)");
 
-    engjf.addWindowListener(
+    engch.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
-            engjf.setVisible(false);
+        	  engch.setVisible(false);
           }
         });
 
-    final LoadEngine newContentPane = new LoadEngine();
+    final ChooseMoreEngine newContentPane = new ChooseMoreEngine();
     newContentPane.setOpaque(true); // content panes must be opaque
-    engjf.setContentPane(newContentPane);
+    engch.setContentPane(newContentPane);
     // Display the window.
     //  jf.setSize(521, 320);
 
-   // boolean persisted = Lizzie.config.persistedUi != null;
+    //boolean persisted = Lizzie.config.persistedUi != null;
 
-    engjf.setBounds(50, 50, 900, 320);
-engjf.setResizable(false);
+    engch.setBounds(50, 50, 900, 720);
+    engch.setResizable(false);
     try {
-      engjf.setIconImage(ImageIO.read(LoadEngine.class.getResourceAsStream("/assets/logo.png")));
+    	engch.setIconImage(ImageIO.read(LoadEngine.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {
       e.printStackTrace();
     }
-    engjf.setAlwaysOnTop(true);
-    engjf.setLocationRelativeTo(engjf.getOwner());
+    engch.setAlwaysOnTop(true);
+    engch.setLocationRelativeTo(engch.getOwner());
     // jf.setResizable(false);
-    return engjf;
+    return engch;
   }
 }

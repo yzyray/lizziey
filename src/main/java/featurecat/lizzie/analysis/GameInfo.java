@@ -5,7 +5,7 @@ import java.util.Date;
 public class GameInfo {
   public static final String DEFAULT_NAME_HUMAN_PLAYER = "我";
   public static final String DEFAULT_NAME_CPU_PLAYER = "Leela Zero";
-  public static final double DEFAULT_KOMI = 7.5;
+  public static  double DEFAULT_KOMI = 7.5;
 
   private String playerBlack = "";
   private String playerWhite = "";
