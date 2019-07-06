@@ -113,14 +113,9 @@ public class ChooseMoreEngine extends JPanel {
     tablepanel.add(scrollpane);
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setFillsViewportHeight(true);
-    table.getColumnModel().getColumn(0).setPreferredWidth(30);
-    table.getColumnModel().getColumn(1).setPreferredWidth(80);
-    table.getColumnModel().getColumn(2).setPreferredWidth(470);
-    table.getColumnModel().getColumn(3).setPreferredWidth(40);
-    table.getColumnModel().getColumn(4).setPreferredWidth(20);
-    table.getColumnModel().getColumn(5).setPreferredWidth(20);
-    table.getColumnModel().getColumn(6).setPreferredWidth(30);
-    table.getColumnModel().getColumn(7).setPreferredWidth(30);
+    table.getColumnModel().getColumn(0).setPreferredWidth(40);
+    table.getColumnModel().getColumn(1).setPreferredWidth(150);
+    table.getColumnModel().getColumn(2).setPreferredWidth(800);
     // boolean persisted = Lizzie.config.persistedUi != null;
     // if (persisted
     // && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
@@ -591,7 +586,7 @@ public class ChooseMoreEngine extends JPanel {
     return new AbstractTableModel() {
       public int getColumnCount() {
 
-        return 8;
+        return 3;
       }
 
       public int getRowCount() {
@@ -604,11 +599,6 @@ public class ChooseMoreEngine extends JPanel {
         if (column == 0) return "序号";
         if (column == 1) return "名称";
         if (column == 2) return "命令行";
-        if (column == 3) return "预加载";
-        if (column == 4) return "宽";
-        if (column == 5) return "高";
-        if (column == 6) return "贴目";
-        if (column == 7) return "默认";
 
         return "无";
       }
@@ -633,18 +623,6 @@ public class ChooseMoreEngine extends JPanel {
             return data.name;
           case 2:
             return data.commands;
-          case 3:
-            if (data.preload) return "是";
-            return "否";
-          case 4:
-            return data.width;
-          case 5:
-            return data.height;
-          case 6:
-            return data.komi;
-          case 7:
-            if (data.isDefault) return "是";
-            else return "否";
           default:
             return "";
         }

@@ -1745,7 +1745,7 @@ public class LizzieFrame extends JFrame {
             }
           }
           text = text + "目差:" + String.format("%.1f", score);
-          text = text + " 局面复杂度:" + String.format("%.1f", Lizzie.leelaz.scoreStdev) + " ";
+          text = text + " 复杂度:" + String.format("%.1f", Lizzie.leelaz.scoreStdev) + " ";
         }
       }
       if (Lizzie.leelaz.isColorEngine) {

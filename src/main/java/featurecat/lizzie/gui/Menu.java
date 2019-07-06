@@ -973,12 +973,12 @@ public class Menu extends MenuBar {
       engine[i].setVisible(false);
     }
     for (int i = 0; i < Lizzie.engineManager.engineList.size(); i++) {
-      if (Lizzie.engineManager.engineList.get(i).isLoaded()) {
+      if (i <= 20 && Lizzie.engineManager.engineList.get(i).isLoaded()) {
         engine[i].setIcon(ready);
       }
       if (Lizzie.engineManager.engineList.get(i).currentEngineN()
           == Lizzie.engineManager.currentEngineNo) {
-        engine[i].setIcon(icon);
+        if (i <= 20) engine[i].setIcon(icon);
         engineMenu.setText(
             "引擎" + (i + 1) + ": " + Lizzie.engineManager.engineList.get(i).currentEnginename);
       }
@@ -997,6 +997,14 @@ public class Menu extends MenuBar {
                 chooseMoreEngine.setVisible(true);
               }
             });
+        engineMenu.addSeparator();
+        engineMenu.add(closeall);
+        engineMenu.add(forcecloseall);
+        engineMenu.add(closeother);
+        engineMenu.add(restartZen);
+        engineMenu.addSeparator();
+        engineMenu.add(config);
+        engineMenu.add(moreconfig);
         return;
       } else {
         engine[i].setText("引擎" + (i + 1) + ":" + engineDt.name);
