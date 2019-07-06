@@ -2482,8 +2482,17 @@ public class LizzieFrame extends JFrame {
         new Runnable() {
           public void run() {
             int secs = (int) (Lizzie.config.replayBranchIntervalSeconds * 1000);
+            try {
+              Thread.sleep(500);
+            } catch (InterruptedException e1) {
+              // TODO Auto-generated catch block
+              e1.printStackTrace();
+            }
             for (int i = 1; i < replaySteps + 1; i++) {
-              if (!isReplayVariation) break;
+              if (!isReplayVariation) {
+                Lizzie.frame.input.nowheelPress = false;
+                break;
+              }
               setDisplayedBranchLength(i);
               if (i > 1) Lizzie.frame.input.nowheelPress = true;
               repaint();
