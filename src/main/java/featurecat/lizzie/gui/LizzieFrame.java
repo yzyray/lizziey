@@ -738,29 +738,52 @@ public class LizzieFrame extends JFrame {
     }
   }
 
-  public static void openFile() {
+  public void openFile() {
     boolean ponder = false;
     if (Lizzie.leelaz.isPondering()) {
       ponder = true;
       Lizzie.leelaz.togglePonder();
     }
-    FileNameExtensionFilter filter = new FileNameExtensionFilter("*.sgf or *.gib", "SGF", "GIB");
-    JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
-    JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
-    chooser.setFileFilter(filter);
-    chooser.setMultiSelectionEnabled(false);
-    JFrame frame = new JFrame();
-    frame.setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
-    Action details = chooser.getActionMap().get("viewTypeDetails");
-    details.actionPerformed(null);
-    // Find the JTable on the file chooser panel and manually do the sort
-    JTable table = SwingUtils.getDescendantsOfType(JTable.class, chooser).get(0);
-    table.getRowSorter().toggleSortOrder(3);
-    table.getRowSorter().toggleSortOrder(3);
-    int result = chooser.showOpenDialog(frame);
 
+    boolean onTop = false;
+    JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
+    JFrame frame = new JFrame();
+    FileDialog fileDialog = new FileDialog(frame, "选择棋谱");
+    if (this.isAlwaysOnTop()) {
+      this.setAlwaysOnTop(false);
+      fileDialog.setAlwaysOnTop(true);
+      onTop = true;
+    }
+
+    fileDialog.setLocationRelativeTo(null);
+    fileDialog.setDirectory(filesystem.getString("last-folder"));
+    fileDialog.setFile("*.sgf;*.gib;*.SGF;*.GIB;");
+
+    fileDialog.setMultipleMode(false);
+    fileDialog.setMode(0);
+    fileDialog.setVisible(true);
+
+    if (onTop) this.setAlwaysOnTop(true);
+    //
+    //    FileNameExtensionFilter filter = new FileNameExtensionFilter("*.sgf or *.gib", "SGF",
+    // "GIB");
+    //    JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
+    //    JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
+    //    chooser.setFileFilter(filter);
+    //    chooser.setMultiSelectionEnabled(false);
+    //    JFrame frame = new JFrame();
+    //    frame.setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
+    //    Action details = chooser.getActionMap().get("viewTypeDetails");
+    //    details.actionPerformed(null);
+    //    // Find the JTable on the file chooser panel and manually do the sort
+    //    JTable table = SwingUtils.getDescendantsOfType(JTable.class, chooser).get(0);
+    //    table.getRowSorter().toggleSortOrder(3);
+    //    table.getRowSorter().toggleSortOrder(3);
+    //   int result = chooser.showOpenDialog(frame);
+    File[] file = fileDialog.getFiles();
     // chooser.showOpenDialog(null);
-    if (result == JFileChooser.APPROVE_OPTION) loadFile(chooser.getSelectedFile());
+    if (file.length > 0) loadFile(file[0]);
+
     if (ponder) {
       Lizzie.leelaz.ponder();
     }
