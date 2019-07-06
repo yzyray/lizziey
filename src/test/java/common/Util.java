@@ -33,11 +33,13 @@ public class Util {
     // Finds depth on leftmost variation of this tree
     int depth = startNode.getDepth() + 1;
     int lane = startLane;
-    // Figures out how far out too the right (which lane) we have to go not to collide with other
+    // Figures out how far out too the right (which lane) we have to go not to
+    // collide with other
     // variations
     while (lane < laneUsageList.size()
         && laneUsageList.get(lane) <= startNode.getData().moveNumber + depth) {
-      // laneUsageList keeps a list of how far down it is to a variation in the different "lanes"
+      // laneUsageList keeps a list of how far down it is to a variation in the
+      // different "lanes"
       laneUsageList.set(lane, startNode.getData().moveNumber - 1);
       lane++;
     }
@@ -47,7 +49,8 @@ public class Util {
     if (variationNumber > 1) laneUsageList.set(lane - 1, startNode.getData().moveNumber - 1);
     laneUsageList.set(lane, startNode.getData().moveNumber);
 
-    // At this point, lane contains the lane we should use (the main branch is in lane 0)
+    // At this point, lane contains the lane we should use (the main branch is in
+    // lane 0)
     BoardHistoryNode cur = startNode;
 
     // Draw main line
@@ -58,7 +61,8 @@ public class Util {
       sb.append(formatMove(cur.getData()));
     }
     moveList.add(sb.toString());
-    // Now we have drawn all the nodes in this variation, and has reached the bottom of this
+    // Now we have drawn all the nodes in this variation, and has reached the bottom
+    // of this
     // variation
     // Move back up, and for each, draw any variations we find
     while (cur.previous().isPresent() && cur != startNode) {
@@ -67,7 +71,8 @@ public class Util {
       // Draw each variation, uses recursion
       for (int i = 1; i < cur.numberOfChildren(); i++) {
         curwidth++;
-        // Recursion, depth of recursion will normally not be very deep (one recursion level for
+        // Recursion, depth of recursion will normally not be very deep (one recursion
+        // level for
         // every variation that has a variation (sort of))
         Optional<BoardHistoryNode> variation = cur.getVariation(i);
         if (variation.isPresent()) {

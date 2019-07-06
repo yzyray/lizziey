@@ -39,7 +39,8 @@ public class MoveData {
   public static MoveData fromInfo(String line) throws ArrayIndexOutOfBoundsException {
     MoveData result = new MoveData();
     String[] data = line.trim().split(" ");
-    // int k = Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
+    // int k =
+    // Lizzie.config.config.getJSONObject("leelaz").getInt("max-suggestion-moves");
     boolean islcb = (Lizzie.config.leelaversion >= 17 && Lizzie.config.showlcbwinrate);
     // Todo: Proper tag parsing in case gtp protocol is extended(?)/changed
     for (int i = 0; i < data.length; i++) {
@@ -177,6 +178,7 @@ public class MoveData {
     }
     return result;
   }
+
   /**
    * Parses a leelaz summary output line. For example:
    *
@@ -195,22 +197,22 @@ public class MoveData {
     Matcher match = summaryPattern.matcher(summary.trim());
     if (!match.matches()) {
       // support 0.16 0.15
-      //        if(summary.contains("->   "))
-      //        { Matcher matchold = summaryPatternhandicap.matcher(summary.trim());
-      //        if (!matchold.matches()) {
-      //            throw new IllegalArgumentException("Unexpected summary format: " + summary);
-      //          } else {
-      //            MoveData result = new MoveData();
-      //            result.coordinate = matchold.group(1);
-      //            result.playouts = Integer.parseInt(matchold.group(2));
-      //            result.winrate = Double.parseDouble(matchold.group(3));
-      //            String aa=match.group(4);
-      //            result.variation =
-      //                Arrays.asList(match.group(4).split(" ", Lizzie.config.limitBranchLength));
-      //            //  result.variation = Arrays.asList(matchold.group(4).split(" "));
-      //            return result;
-      //          }
-      //        }
+      // if(summary.contains("-> "))
+      // { Matcher matchold = summaryPatternhandicap.matcher(summary.trim());
+      // if (!matchold.matches()) {
+      // throw new IllegalArgumentException("Unexpected summary format: " + summary);
+      // } else {
+      // MoveData result = new MoveData();
+      // result.coordinate = matchold.group(1);
+      // result.playouts = Integer.parseInt(matchold.group(2));
+      // result.winrate = Double.parseDouble(matchold.group(3));
+      // String aa=match.group(4);
+      // result.variation =
+      // Arrays.asList(match.group(4).split(" ", Lizzie.config.limitBranchLength));
+      // // result.variation = Arrays.asList(matchold.group(4).split(" "));
+      // return result;
+      // }
+      // }
       Matcher matchold = summaryPatternold.matcher(summary.trim());
       if (!matchold.matches()) {
         Lizzie.gtpConsole.addLine("读取总结信息出错");

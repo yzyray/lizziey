@@ -56,6 +56,7 @@ public class BoardHistoryNode {
   public BoardHistoryNode addOrGoto(BoardData data, boolean newBranch) {
     return addOrGoto(data, newBranch, false);
   }
+
   /**
    * If we already have a next node with the same BoardData, move to it, otherwise add it and move
    * to it.
@@ -97,68 +98,71 @@ public class BoardHistoryNode {
   }
 
   public BoardHistoryNode addOrGoto(BoardData data, boolean newBranch, boolean changeMove) {
-    // If you play a hand and immediately return it, it is most likely that you have made a mistake.
+    // If you play a hand and immediately return it, it is most likely that you have
+    // made a mistake.
     // Ask whether to delete the previous node.
-    //        if (!variations.isEmpty() && !variations.get(0).data.zobrist.equals(data.zobrist)) {
-    //            // You may just mark this hand, so its not necessarily wrong. Answer when the
+    // if (!variations.isEmpty() &&
+    // !variations.get(0).data.zobrist.equals(data.zobrist)) {
+    // // You may just mark this hand, so its not necessarily wrong. Answer when the
     // first query is wrong or it will not ask whether the move is wrong.
-    //            if (!variations.get(0).data.verify) {
-    //                int ret = JOptionPane.showConfirmDialog(null, "Do you want undo?", "Undo",
+    // if (!variations.get(0).data.verify) {
+    // int ret = JOptionPane.showConfirmDialog(null, "Do you want undo?", "Undo",
     // JOptionPane.OK_CANCEL_OPTION);
-    //                if (ret == JOptionPane.OK_OPTION) {
-    //                    variations.remove(0);
-    //                } else {
-    //                    variations.get(0).data.verify = true;
-    //                }
-    //            }
-    //        }
+    // if (ret == JOptionPane.OK_OPTION) {
+    // variations.remove(0);
+    // } else {
+    // variations.get(0).data.verify = true;
+    // }
+    // }
+    // }
 
-    //    if ( this.previous.isPresent() &&this.previous.get().isMainTrunk()) {
-    //    	double diffwr=0;
-    //    	if(!this.getData().bestMoves.isEmpty())
-    //    	{
-    //       diffwr =
+    // if ( this.previous.isPresent() &&this.previous.get().isMainTrunk()) {
+    // double diffwr=0;
+    // if(!this.getData().bestMoves.isEmpty())
+    // {
+    // diffwr =
     // (100-this.getData().bestMoves.get(0).winrate)-this.previous.get().getData().getWinrate();}
-    //      double wr = (100-this.data.winrate);
-    //      int x = data.lastMove.get()[0];
-    //      int y = data.lastMove.get()[1];
-    //      int mvnum = this.data.moveNumber;
-    //      boolean isb = !this.data.blackToPlay;
-    //      int plyout=this.data.getPlayouts();
-    //      ArrayList<Movelistwr> data2=Lizzie.board.movelistwr;
+    // double wr = (100-this.data.winrate);
+    // int x = data.lastMove.get()[0];
+    // int y = data.lastMove.get()[1];
+    // int mvnum = this.data.moveNumber;
+    // boolean isb = !this.data.blackToPlay;
+    // int plyout=this.data.getPlayouts();
+    // ArrayList<Movelistwr> data2=Lizzie.board.movelistwr;
     //
-    //      if (!Lizzie.board.movelistwr.isEmpty()&&Lizzie.board.movelistwr.size() >= mvnum) {
-    //    	  if(plyout>Lizzie.board.movelistwr.get(mvnum - 1).playouts) {
-    //        Lizzie.board.movelistwr.get(mvnum - 1).diffwinrate = 10.0;
-    //        Lizzie.board.movelistwr.get(mvnum - 1).winrate = wr;
-    //        Lizzie.board.movelistwr.get(mvnum - 1).x = x;
-    //        Lizzie.board.movelistwr.get(mvnum - 1).y = y;
-    //        Lizzie.board.movelistwr.get(mvnum - 1).isblack = isb;
-    //        Lizzie.board.movelistwr.get(mvnum - 1).playouts= plyout;
-    //        Lizzie.board.movelistwr.get(mvnum - 1).movenum=mvnum;
-    //    	  }
-    //      } else {
-    //        Movelistwr mv = new Movelistwr();
-    //        mv.diffwinrate = diffwr;
-    //        mv.winrate = wr;
-    //        mv.x = x;
-    //        mv.y = y;
-    //        mv.isblack = isb;
-    //        mv.playouts = plyout;
-    //        mv.movenum=mvnum;
-    //        Lizzie.board.movelistwr.add(mv);
-    //      }
-    //    }
+    // if (!Lizzie.board.movelistwr.isEmpty()&&Lizzie.board.movelistwr.size() >=
+    // mvnum) {
+    // if(plyout>Lizzie.board.movelistwr.get(mvnum - 1).playouts) {
+    // Lizzie.board.movelistwr.get(mvnum - 1).diffwinrate = 10.0;
+    // Lizzie.board.movelistwr.get(mvnum - 1).winrate = wr;
+    // Lizzie.board.movelistwr.get(mvnum - 1).x = x;
+    // Lizzie.board.movelistwr.get(mvnum - 1).y = y;
+    // Lizzie.board.movelistwr.get(mvnum - 1).isblack = isb;
+    // Lizzie.board.movelistwr.get(mvnum - 1).playouts= plyout;
+    // Lizzie.board.movelistwr.get(mvnum - 1).movenum=mvnum;
+    // }
+    // } else {
+    // Movelistwr mv = new Movelistwr();
+    // mv.diffwinrate = diffwr;
+    // mv.winrate = wr;
+    // mv.x = x;
+    // mv.y = y;
+    // mv.isblack = isb;
+    // mv.playouts = plyout;
+    // mv.movenum=mvnum;
+    // Lizzie.board.movelistwr.add(mv);
+    // }
+    // }
 
     if (!newBranch) {
       for (int i = 0; i < variations.size(); i++) {
         if (variations.get(i).data.zobrist.equals(data.zobrist)) {
-          //                if (i != 0) {
-          //                    // Swap selected next to foremost
-          //                    BoardHistoryNode currentNext = variations.get(i);
-          //                    variations.set(i, variations.get(0));
-          //                    variations.set(0, currentNext);
-          //                }
+          // if (i != 0) {
+          // // Swap selected next to foremost
+          // BoardHistoryNode currentNext = variations.get(i);
+          // variations.set(i, variations.get(0));
+          // variations.set(0, currentNext);
+          // }
           if (i != 0 && changeMove) {
             break;
           }

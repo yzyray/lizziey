@@ -50,10 +50,12 @@ public class MoreEngines extends JPanel {
   int sortnum = 3;
   public static int selectedorder = -1;
   boolean issorted = false;
-  // JSpinner dropwinratechooser = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
-  // JSpinner playoutschooser = new JSpinner(new SpinnerNumberModel(100, 0, 99999, 100));
-  //  JCheckBox checkBlack = new JCheckBox();
-  //  JCheckBox checkWhite = new JCheckBox();
+  // JSpinner dropwinratechooser = new JSpinner(new SpinnerNumberModel(1, 0, 99,
+  // 1));
+  // JSpinner playoutschooser = new JSpinner(new SpinnerNumberModel(100, 0, 99999,
+  // 100));
+  // JCheckBox checkBlack = new JCheckBox();
+  // JCheckBox checkWhite = new JCheckBox();
   JTextArea command;
   JTextField txtName;
   JLabel engineName;
@@ -119,23 +121,25 @@ public class MoreEngines extends JPanel {
     table.getColumnModel().getColumn(5).setPreferredWidth(20);
     table.getColumnModel().getColumn(6).setPreferredWidth(30);
     table.getColumnModel().getColumn(7).setPreferredWidth(30);
-    //    boolean persisted = Lizzie.config.persistedUi != null;
-    //    if (persisted
-    //        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
-    //        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 12) {
-    //      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
-    //      //      table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
-    //      //      table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
-    //      //      table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
-    //      //      table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
-    //    }
+    // boolean persisted = Lizzie.config.persistedUi != null;
+    // if (persisted
+    // && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
+    // && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length()
+    // == 12) {
+    // JSONArray pos =
+    // Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
+    // // table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
+    // // table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
+    // // table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
+    // // table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
+    // }
 
     JTableHeader header = table.getTableHeader();
 
-    //    dropwinratechooser.setValue(Lizzie.config.limitbadmoves);
-    //    playoutschooser.setValue(Lizzie.config.limitbadplayouts);
-    //    checkBlack.setSelected(true);
-    //    checkWhite.setSelected(true);
+    // dropwinratechooser.setValue(Lizzie.config.limitbadmoves);
+    // playoutschooser.setValue(Lizzie.config.limitbadplayouts);
+    // checkBlack.setSelected(true);
+    // checkWhite.setSelected(true);
 
     engineName = new JLabel("单机选中列表中的引擎进行设置");
     engineName.setFont(new Font("微软雅黑", Font.PLAIN, 14));
@@ -223,10 +227,10 @@ public class MoreEngines extends JPanel {
     } else {
       rdoMannul.setSelected(true);
     }
-    //    checkBlacktxt = new JLabel("黑:");
-    //    checkWhitetxt = new JLabel("白:");
-    //    JLabel dropwinratechoosertxt = new JLabel("胜率波动筛选:");
-    //    JLabel playoutschoosertxt = new JLabel("前后计算量筛选:");
+    // checkBlacktxt = new JLabel("黑:");
+    // checkWhitetxt = new JLabel("白:");
+    // JLabel dropwinratechoosertxt = new JLabel("胜率波动筛选:");
+    // JLabel playoutschoosertxt = new JLabel("前后计算量筛选:");
 
     engineName.setEnabled(false);
     txtName.setEnabled(false);
@@ -271,46 +275,46 @@ public class MoreEngines extends JPanel {
     selectpanel.add(delete);
 
     //
-    //    selectpanel.add(checkBlacktxt);
-    //    selectpanel.add(checkBlack);
-    //    selectpanel.add(checkWhitetxt);
-    //    selectpanel.add(checkWhite);
-    //    selectpanel.add(dropwinratechoosertxt);
-    //    selectpanel.add(dropwinratechooser);
-    //    selectpanel.add(playoutschoosertxt);
-    //    selectpanel.add(playoutschooser);
+    // selectpanel.add(checkBlacktxt);
+    // selectpanel.add(checkBlack);
+    // selectpanel.add(checkWhitetxt);
+    // selectpanel.add(checkWhite);
+    // selectpanel.add(dropwinratechoosertxt);
+    // selectpanel.add(dropwinratechooser);
+    // selectpanel.add(playoutschoosertxt);
+    // selectpanel.add(playoutschooser);
 
-    //    playoutschooser.addChangeListener(
-    //        new ChangeListener() {
+    // playoutschooser.addChangeListener(
+    // new ChangeListener() {
     //
-    //          public void stateChanged(ChangeEvent e) {
+    // public void stateChanged(ChangeEvent e) {
     //
-    //            Lizzie.config.leelazConfig.putOpt(
-    //                "badmoves-playouts-limits", playoutschooser.getValue());
-    //            try {
-    //              Lizzie.config.save();
-    //            } catch (IOException e1) {
-    //              // TODO Auto-generated catch block
-    //              e1.printStackTrace();
-    //            }
-    //          }
-    //        });
+    // Lizzie.config.leelazConfig.putOpt(
+    // "badmoves-playouts-limits", playoutschooser.getValue());
+    // try {
+    // Lizzie.config.save();
+    // } catch (IOException e1) {
+    // // TODO Auto-generated catch block
+    // e1.printStackTrace();
+    // }
+    // }
+    // });
     //
-    //    dropwinratechooser.addChangeListener(
-    //        new ChangeListener() {
+    // dropwinratechooser.addChangeListener(
+    // new ChangeListener() {
     //
-    //          public void stateChanged(ChangeEvent e) {
+    // public void stateChanged(ChangeEvent e) {
     //
-    //            Lizzie.config.leelazConfig.putOpt(
-    //                "badmoves-winrate-limits", dropwinratechooser.getValue());
-    //            try {
-    //              Lizzie.config.save();
-    //            } catch (IOException e1) {
-    //              // TODO Auto-generated catch block
-    //              e1.printStackTrace();
-    //            }
-    //          }
-    //        });
+    // Lizzie.config.leelazConfig.putOpt(
+    // "badmoves-winrate-limits", dropwinratechooser.getValue());
+    // try {
+    // Lizzie.config.save();
+    // } catch (IOException e1) {
+    // // TODO Auto-generated catch block
+    // e1.printStackTrace();
+    // }
+    // }
+    // });
 
     scan.addActionListener(
         new ActionListener() {
@@ -456,31 +460,31 @@ public class MoreEngines extends JPanel {
     table.addKeyListener(
         new KeyAdapter() {
           public void keyPressed(KeyEvent e) {
-            //            if (e.getKeyCode() == KeyEvent.VK_B) {
-            //              Lizzie.frame.toggleBadMoves();
-            //            }
-            //            if (e.getKeyCode() == KeyEvent.VK_U) {
-            //              Lizzie.frame.toggleBestMoves();
-            //            }
-            //            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            //              if (Lizzie.frame.isPlayingAgainstLeelaz) {
-            //                Lizzie.frame.isPlayingAgainstLeelaz = false;
-            //                Lizzie.leelaz.isThinking = false;
-            //              }
-            //              Lizzie.leelaz.togglePonder();
-            //            }
-            //            if (e.getKeyCode() == KeyEvent.VK_Q) {
-            //              togglealwaysontop();
-            //            }
+            // if (e.getKeyCode() == KeyEvent.VK_B) {
+            // Lizzie.frame.toggleBadMoves();
+            // }
+            // if (e.getKeyCode() == KeyEvent.VK_U) {
+            // Lizzie.frame.toggleBestMoves();
+            // }
+            // if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            // if (Lizzie.frame.isPlayingAgainstLeelaz) {
+            // Lizzie.frame.isPlayingAgainstLeelaz = false;
+            // Lizzie.leelaz.isThinking = false;
+            // }
+            // Lizzie.leelaz.togglePonder();
+            // }
+            // if (e.getKeyCode() == KeyEvent.VK_Q) {
+            // togglealwaysontop();
+            // }
           }
         });
 
     header.addMouseListener(
         new MouseAdapter() {
           public void mouseReleased(MouseEvent e) {
-            //            int pick = header.columnAtPoint(e.getPoint());
-            //            sortnum = pick;
-            //            issorted = !issorted;
+            // int pick = header.columnAtPoint(e.getPoint());
+            // sortnum = pick;
+            // issorted = !issorted;
           }
         });
   }
@@ -491,73 +495,79 @@ public class MoreEngines extends JPanel {
     public Component getTableCellRendererComponent(
         JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
-      //      if (Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[0]
-      //              == Lizzie.frame.clickbadmove[0]
-      //          && Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[1]
-      //              == Lizzie.frame.clickbadmove[1]) {
+      // if (Lizzie.board.convertNameToCoordinates(table.getValueAt(row,
+      // 2).toString())[0]
+      // == Lizzie.frame.clickbadmove[0]
+      // && Lizzie.board.convertNameToCoordinates(table.getValueAt(row,
+      // 2).toString())[1]
+      // == Lizzie.frame.clickbadmove[1]) {
 
-      //        Color hsbColor =
-      //            Color.getHSBColor(
-      //                Color.RGBtoHSB(238, 221, 130, null)[0],
-      //                Color.RGBtoHSB(238, 221, 130, null)[1],
-      //                Color.RGBtoHSB(238, 221, 130, null)[2]);
-      //        setBackground(hsbColor);
-      //        if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
-      //            && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
-      //          Color hsbColor2 =
-      //              Color.getHSBColor(
-      //                  Color.RGBtoHSB(255, 153, 18, null)[0],
-      //                  Color.RGBtoHSB(255, 153, 18, null)[1],
-      //                  Color.RGBtoHSB(255, 153, 18, null)[2]);
-      //          setForeground(hsbColor2);
-      //        } else if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
-      //          setForeground(Color.RED);
-      //        } else {
-      //          setForeground(Color.BLACK);
-      //        }
-      //        return super.getTableCellRendererComponent(table, value, isSelected, false, row,
+      // Color hsbColor =
+      // Color.getHSBColor(
+      // Color.RGBtoHSB(238, 221, 130, null)[0],
+      // Color.RGBtoHSB(238, 221, 130, null)[1],
+      // Color.RGBtoHSB(238, 221, 130, null)[2]);
+      // setBackground(hsbColor);
+      // if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
+      // && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
+      // Color hsbColor2 =
+      // Color.getHSBColor(
+      // Color.RGBtoHSB(255, 153, 18, null)[0],
+      // Color.RGBtoHSB(255, 153, 18, null)[1],
+      // Color.RGBtoHSB(255, 153, 18, null)[2]);
+      // setForeground(hsbColor2);
+      // } else if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >
+      // 10) {
+      // setForeground(Color.RED);
+      // } else {
+      // setForeground(Color.BLACK);
+      // }
+      // return super.getTableCellRendererComponent(table, value, isSelected, false,
+      // row,
       // column);
-      //      }
-      //      if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
-      //          && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
-      //        Color hsbColor =
-      //            Color.getHSBColor(
-      //                Color.RGBtoHSB(255, 153, 18, null)[0],
-      //                Color.RGBtoHSB(255, 153, 18, null)[1],
-      //                Color.RGBtoHSB(255, 153, 18, null)[2]);
-      //        setBackground(Color.WHITE);
-      //        setForeground(hsbColor);
-      //        return super.getTableCellRendererComponent(table, value, isSelected, false, row,
+      // }
+      // if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) >= 5
+      // && Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) <= 10) {
+      // Color hsbColor =
+      // Color.getHSBColor(
+      // Color.RGBtoHSB(255, 153, 18, null)[0],
+      // Color.RGBtoHSB(255, 153, 18, null)[1],
+      // Color.RGBtoHSB(255, 153, 18, null)[2]);
+      // setBackground(Color.WHITE);
+      // setForeground(hsbColor);
+      // return super.getTableCellRendererComponent(table, value, isSelected, false,
+      // row,
       // column);
-      //      }
-      //      if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
-      //        setBackground(Color.WHITE);
-      //        setForeground(Color.RED);
-      //        return super.getTableCellRendererComponent(table, value, isSelected, false, row,
+      // }
+      // if (Math.abs(Float.parseFloat(table.getValueAt(row, 3).toString())) > 10) {
+      // setBackground(Color.WHITE);
+      // setForeground(Color.RED);
+      // return super.getTableCellRendererComponent(table, value, isSelected, false,
+      // row,
       // column);
-      //      } else
+      // } else
       {
         return renderer.getTableCellRendererComponent(table, value, isSelected, false, row, column);
       }
     }
   }
 
-  //  private void togglealwaysontop() {
-  //    if (engjf.isAlwaysOnTop()) {
-  //      engjf.setAlwaysOnTop(false);
-  //      Lizzie.config.uiConfig.put("badmoves-always-ontop", false);
-  //    } else {
-  //      engjf.setAlwaysOnTop(true);
-  //      Lizzie.config.uiConfig.put("badmoves-always-ontop", true);
-  //      if (Lizzie.frame.isAlwaysOnTop()) Lizzie.frame.toggleAlwaysOntop();
-  //    }
-  //    try {
-  //      Lizzie.config.save();
-  //    } catch (IOException e) {
-  //      // TODO Auto-generated catch block
-  //      e.printStackTrace();
-  //    }
-  //  }
+  // private void togglealwaysontop() {
+  // if (engjf.isAlwaysOnTop()) {
+  // engjf.setAlwaysOnTop(false);
+  // Lizzie.config.uiConfig.put("badmoves-always-ontop", false);
+  // } else {
+  // engjf.setAlwaysOnTop(true);
+  // Lizzie.config.uiConfig.put("badmoves-always-ontop", true);
+  // if (Lizzie.frame.isAlwaysOnTop()) Lizzie.frame.toggleAlwaysOntop();
+  // }
+  // try {
+  // Lizzie.config.save();
+  // } catch (IOException e) {
+  // // TODO Auto-generated catch block
+  // e.printStackTrace();
+  // }
+  // }
 
   public boolean isWindows() {
     return osName != null && !osName.contains("darwin") && osName.contains("win");
@@ -648,20 +658,20 @@ public class MoreEngines extends JPanel {
   }
 
   private void handleTableClick(int row, int col) {
-    //    if (selectedorder != row) {
-    //      int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row,
+    // if (selectedorder != row) {
+    // int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row,
     // 2).toString());
-    //      Lizzie.frame.clickbadmove = coords;
-    //      Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
-    //      Lizzie.frame.repaint();
-    //      selectedorder = row;
-    //    } else {
-    //      Lizzie.frame.clickbadmove = Lizzie.frame.outOfBoundCoordinate;
-    //      Lizzie.frame.boardRenderer.removedrawmovestone();
-    //      Lizzie.frame.repaint();
-    //      selectedorder = -1;
-    //      table.clearSelection();
-    //    }
+    // Lizzie.frame.clickbadmove = coords;
+    // Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
+    // Lizzie.frame.repaint();
+    // selectedorder = row;
+    // } else {
+    // Lizzie.frame.clickbadmove = Lizzie.frame.outOfBoundCoordinate;
+    // Lizzie.frame.boardRenderer.removedrawmovestone();
+    // Lizzie.frame.repaint();
+    // selectedorder = -1;
+    // table.clearSelection();
+    // }
     command.setText(table.getModel().getValueAt(row, 2).toString());
     engineName.setText("设置引擎" + table.getModel().getValueAt(row, 0).toString());
     txtName.setText(table.getModel().getValueAt(row, 1).toString());
@@ -691,14 +701,15 @@ public class MoreEngines extends JPanel {
   }
 
   private void handleTableDoubleClick(int row, int col) {
-    //    int movenumber = Integer.parseInt(table.getValueAt(row, 1).toString());
-    //    Lizzie.board.goToMoveNumber(1);
-    //    Lizzie.board.goToMoveNumber(movenumber - 1);
-    //    int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString());
-    //    Lizzie.frame.clickbadmove = coords;
-    //    Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
-    //    Lizzie.frame.repaint();
-    //    selectedorder = row;
+    // int movenumber = Integer.parseInt(table.getValueAt(row, 1).toString());
+    // Lizzie.board.goToMoveNumber(1);
+    // Lizzie.board.goToMoveNumber(movenumber - 1);
+    // int[] coords = Lizzie.board.convertNameToCoordinates(table.getValueAt(row,
+    // 2).toString());
+    // Lizzie.frame.clickbadmove = coords;
+    // Lizzie.frame.boardRenderer.drawbadstone(coords[0], coords[1], Stone.BLACK);
+    // Lizzie.frame.repaint();
+    // selectedorder = row;
   }
 
   private void saveEngineConfig() {
@@ -925,19 +936,21 @@ public class MoreEngines extends JPanel {
     newContentPane.setOpaque(true); // content panes must be opaque
     engjf.setContentPane(newContentPane);
     // Display the window.
-    //  jf.setSize(521, 320);
+    // jf.setSize(521, 320);
 
-    //    boolean persisted = Lizzie.config.persistedUi != null;
-    //    if (persisted
-    //        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
-    //        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() >= 4) {
-    //      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
-    //      // jf.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
-    //      engjf.setBounds(50, 50, 900, 800);
-    //    } else {
+    // boolean persisted = Lizzie.config.persistedUi != null;
+    // if (persisted
+    // && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
+    // && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length()
+    // >= 4) {
+    // JSONArray pos =
+    // Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
+    // // jf.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
+    // engjf.setBounds(50, 50, 900, 800);
+    // } else {
     engjf.setBounds(50, 50, 900, 800);
     engjf.setResizable(false);
-    //   }
+    // }
     try {
       engjf.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {

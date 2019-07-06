@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.swing.SwingUtilities;
 
 public class Input implements MouseListener, KeyListener, MouseWheelListener, MouseMotionListener {
-  //  public static boolean isinsertmode = false;
+  // public static boolean isinsertmode = false;
   public static boolean Draggedmode = false;
   public static int insert = 0;
   public static boolean shouldDisableAnalysis = true;
@@ -269,9 +269,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         Lizzie.frame.toggleGtpConsole();
         break;
       case VK_RIGHT:
-        //        if (isinsertmode) {
-        //         return;
-        //        }
+        // if (isinsertmode) {
+        // return;
+        // }
         if (e.isShiftDown()) {
           moveBranchDown();
         } else {
@@ -281,9 +281,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_LEFT:
-        //        if (isinsertmode) {
-        //          return;
-        //        }
+        // if (isinsertmode) {
+        // return;
+        // }
         if (e.isShiftDown()) {
           moveBranchUp();
         } else if (controlIsPressed(e)) {
@@ -297,9 +297,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         Lizzie.frame.toggleBestMoves();
         break;
       case VK_UP:
-        //        if (isinsertmode) {
-        //         return;
-        //        }
+        // if (isinsertmode) {
+        // return;
+        // }
         if (controlIsPressed(e) && e.isShiftDown()) {
           goCommentNode(false);
         } else if (e.isShiftDown()) {
@@ -317,18 +317,18 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         if (controlIsPressed(e) && e.isShiftDown()) {
           Lizzie.frame.increaseMaxAlpha(-5);
         } else {
-          //          if (isinsertmode) {
-          //                        return;
-          //          }
+          // if (isinsertmode) {
+          // return;
+          // }
           Lizzie.frame.noautocounting();
           redo(10);
         }
         break;
 
       case VK_DOWN:
-        //        if (isinsertmode) {
-        //           return;
-        //        }
+        // if (isinsertmode) {
+        // return;
+        // }
         if (controlIsPressed(e) && e.isShiftDown()) {
           goCommentNode(true);
         } else if (controlIsPressed(e)) {
@@ -341,9 +341,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_N:
         // stop the ponder
-        //        if (isinsertmode) {
-        //          return;
-        //        }
+        // if (isinsertmode) {
+        // return;
+        // }
         if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
         LizzieFrame.startNewGame();
         break;
@@ -376,9 +376,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_M:
         if (e.isAltDown()) {
-          //          if (isinsertmode) {
-          //            return;
-          //          }
+          // if (isinsertmode) {
+          // return;
+          // }
           Lizzie.frame.openChangeMoveDialog();
         } else {
           Lizzie.config.toggleShowMoveNumber();
@@ -410,9 +410,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         if (controlIsPressed(e) && e.isShiftDown()) {
           Lizzie.frame.increaseMaxAlpha(5);
         } else {
-          //          if (isinsertmode) {
-          //            return;
-          //          }
+          // if (isinsertmode) {
+          // return;
+          // }
           Lizzie.frame.noautocounting();
           undo(10);
         }
@@ -439,9 +439,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_V:
         if (controlIsPressed(e)) {
-          //          if (isinsertmode) {
-          //            return;
-          //          }
+          // if (isinsertmode) {
+          // return;
+          // }
           Lizzie.frame.pasteSgf();
         } else if (e.isAltDown()) {
           Lizzie.config.showSuggestionVaritions = !Lizzie.config.showSuggestionVaritions;
@@ -459,9 +459,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_HOME:
         Lizzie.frame.noautocounting();
-        //        if (isinsertmode) {
-        //          return;
-        //        }
+        // if (isinsertmode) {
+        // return;
+        // }
         if (controlIsPressed(e)) {
           Lizzie.board.clear();
           if (Lizzie.leelaz.isPondering()) {
@@ -474,9 +474,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_END:
         Lizzie.frame.noautocounting();
-        //        if (isinsertmode) {
-        //          return;
-        //        }
+        // if (isinsertmode) {
+        // return;
+        // }
         while (Lizzie.board.nextMove()) ;
         break;
 
@@ -485,12 +485,12 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           Lizzie.frame.openConfigDialog();
         } else {
           if (!Lizzie.frame.showControls) {
-            //                    if (Lizzie.leelaz.isPondering()) {
-            //                      wasPonderingWhenControlsShown = true;
-            //                       Lizzie.leelaz.togglePonder();
-            //                    } else {
+            // if (Lizzie.leelaz.isPondering()) {
+            // wasPonderingWhenControlsShown = true;
+            // Lizzie.leelaz.togglePonder();
+            // } else {
             // wasPonderingWhenControlsShown = false;
-            //   }
+            // }
 
             // Lizzie.frame.drawControls();
             Lizzie.frame.showControls = true;
@@ -531,20 +531,20 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_ENTER:
-        //        if (isinsertmode) {
-        //          return;
-        //        }
+        // if (isinsertmode) {
+        // return;
+        // }
         if (e.isAltDown()) {
           if (!Lizzie.frame.toolbar.isAutoPlay) {
             Lizzie.frame.toolbar.isAutoPlay = true;
             Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
-
             Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(true);
             Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
             Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
             Lizzie.frame.toolbar.chkAutoPlayPlayouts.setSelected(false);
             Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.setSelected(false);
             Lizzie.frame.toolbar.txtAutoPlayTime.setText("1");
+            Lizzie.leelaz.ponder();
           } else {
             Lizzie.frame.toolbar.isAutoPlay = false;
             Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
@@ -570,9 +570,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
       case VK_DELETE:
       case VK_BACK_SPACE:
-        //        if (isinsertmode) {
-        //          return;
-        //        }
+        // if (isinsertmode) {
+        // return;
+        // }
         if (e.isAltDown()) {
           Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
         } else if (e.isShiftDown()) {
@@ -606,9 +606,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_PERIOD:
         Lizzie.frame.countstones();
-        //        if (!Lizzie.board.getHistory().getNext().isPresent()) {
-        //          Lizzie.board.setScoreMode(!Lizzie.board.inScoreMode());
-        //        }
+        // if (!Lizzie.board.getHistory().getNext().isPresent()) {
+        // Lizzie.board.setScoreMode(!Lizzie.board.inScoreMode());
+        // }
         break;
 
       case VK_D:
@@ -617,9 +617,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_R:
-        //        if (isinsertmode) {
-        //       return;
-        //      }
+        // if (isinsertmode) {
+        // return;
+        // }
         Lizzie.frame.replayBranch();
         break;
 
@@ -672,7 +672,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   public void keyReleased(KeyEvent e) {
     switch (e.getKeyCode()) {
       case VK_X:
-        // if (wasPonderingWhenControlsShown)  Lizzie.leelaz.togglePonder();
+        // if (wasPonderingWhenControlsShown) Lizzie.leelaz.togglePonder();
         Lizzie.frame.showControls = false;
         Lizzie.frame.repaint();
         break;
@@ -688,8 +688,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
-    //   if (isinsertmode) {
-    //    return;
+    // if (isinsertmode) {
+    // return;
     // }
     if (Lizzie.frame.processCommentMouseWheelMoved(e)) {
       return;

@@ -100,20 +100,20 @@ public class SubBoardRenderer {
 
     // setupSizeParameters();
 
-    //        Stopwatch timer = new Stopwatch();
+    // Stopwatch timer = new Stopwatch();
     drawGoban(g);
-    //        timer.lap("background");
+    // timer.lap("background");
     drawStones();
-    //        timer.lap("stones");
+    // timer.lap("stones");
     if (Lizzie.board.inScoreMode() && isMainBoard) {
       drawScore(g);
     } else {
       drawBranch();
     }
-    //        timer.lap("branch");
+    // timer.lap("branch");
 
     renderImages(g);
-    //        timer.lap("rendering images");
+    // timer.lap("rendering images");
 
     if (!isMainBoard) {
       drawMoveNumbers(g);
@@ -125,7 +125,7 @@ public class SubBoardRenderer {
       if (Lizzie.config.showNextMoves) {
         drawNextMoves(g);
       }
-      //        timer.lap("movenumbers");
+      // timer.lap("movenumbers");
       if (!Lizzie.frame.isPlayingAgainstLeelaz && Lizzie.config.showBestMovesNow()) {
         if ((Lizzie.board.getHistory().isBlacksTurn()
                 && Lizzie.frame.toolbar.chkShowBlack.isSelected())
@@ -138,9 +138,9 @@ public class SubBoardRenderer {
       drawStoneMarkup(g);
     }
 
-    //        timer.lap("leelaz");
+    // timer.lap("leelaz");
 
-    //        timer.print();
+    // timer.print();
   }
 
   /**
@@ -227,7 +227,7 @@ public class SubBoardRenderer {
       // Draw the lines
       g.setColor(Color.BLACK);
       for (int i = 0; i < Board.boardHeight; i++) {
-        //  g.setStroke(new BasicStroke(stoneRadius / 15f));
+        // g.setStroke(new BasicStroke(stoneRadius / 15f));
 
         g.drawLine(
             x + scaledMarginWidth,
@@ -237,7 +237,7 @@ public class SubBoardRenderer {
       }
 
       for (int i = 0; i < Board.boardWidth; i++) {
-        //  g.setStroke(new BasicStroke(stoneRadius / 15f));
+        // g.setStroke(new BasicStroke(stoneRadius / 15f));
 
         g.drawLine(
             x + scaledMarginWidth + squareWidth * i,
@@ -338,7 +338,8 @@ public class SubBoardRenderer {
 
   public void removedrawmovestone() {
     cachedStonesImagedraged = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
-    // cachedStonesShadowImagedraged = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
+    // cachedStonesShadowImagedraged = new BufferedImage(boardWidth, boardHeight,
+    // TYPE_INT_ARGB);
   }
 
   public void drawmovestone(int x, int y, Stone stone) {
@@ -348,10 +349,12 @@ public class SubBoardRenderer {
     Graphics2D gShadow = cachedStonesShadowImagedraged.createGraphics();
     gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     // gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-    // g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    // g.setRenderingHint(RenderingHints.KEY_RENDERING,
+    // RenderingHints.VALUE_RENDER_QUALITY);
     g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
 
-    // gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    // gShadow.setRenderingHint(RenderingHints.KEY_RENDERING,
+    // RenderingHints.VALUE_RENDER_QUALITY);
     // gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
     int stoneX = scaledMarginWidth + squareWidth * x;
     int stoneY = scaledMarginHeight + squareHeight * y;
@@ -493,10 +496,12 @@ public class SubBoardRenderer {
     Graphics2D gShadow = cachedStonesShadowImagedraged.createGraphics();
     gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     // gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-    // g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    // g.setRenderingHint(RenderingHints.KEY_RENDERING,
+    // RenderingHints.VALUE_RENDER_QUALITY);
     g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
 
-    // gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    // gShadow.setRenderingHint(RenderingHints.KEY_RENDERING,
+    // RenderingHints.VALUE_RENDER_QUALITY);
     // gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
     int stoneX = scaledMarginWidth + squareWidth * x;
     int stoneY = scaledMarginHeight + squareHeight * y;
@@ -524,7 +529,8 @@ public class SubBoardRenderer {
       Graphics2D gShadow = cachedStonesShadowImage.createGraphics();
       gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
-      // we need antialiasing to make the stones pretty. Java is a bit slow at antialiasing; that's
+      // we need antialiasing to make the stones pretty. Java is a bit slow at
+      // antialiasing; that's
       // why we want the cache
       g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
       gShadow.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
@@ -549,7 +555,8 @@ public class SubBoardRenderer {
   }
 
   /*
-   * Draw a white/black dot on territory and captured stones. Dame is drawn as red dot.
+   * Draw a white/black dot on territory and captured stones. Dame is drawn as red
+   * dot.
    */
   private void drawScore(Graphics2D go) {
     Graphics2D g = cachedStonesImage.createGraphics();
@@ -584,6 +591,7 @@ public class SubBoardRenderer {
   private Optional<MoveData> getBestMove2() {
     return bestMoves.isEmpty() ? Optional.empty() : Optional.of(bestMoves.get(0));
   }
+
   /** Draw the 'ghost stones' which show a variationOpt Leelaz is thinking about */
   private void drawBranch() {
     showingBranch = false;
@@ -617,9 +625,9 @@ public class SubBoardRenderer {
 
     Optional<MoveData> suggestedMove = (isMainBoard ? mouseOveredMove() : getBestMove());
     //
-    //    if (!suggestedMove.isPresent() || Lizzie.frame.isheatmap) {
-    //      return;
-    //    }
+    // if (!suggestedMove.isPresent() || Lizzie.frame.isheatmap) {
+    // return;
+    // }
     if (!suggestedMove.isPresent()) {
       suggestedMove = getBestMove2();
       if (!suggestedMove.isPresent()) return;
@@ -648,16 +656,18 @@ public class SubBoardRenderer {
         int stoneY = scaledMarginHeight + squareHeight * j;
 
         drawStone(g, gShadow, stoneX, stoneY, stone.unGhosted(), i, j);
-        //        if (i == Lizzie.frame.suggestionclick[0] && j == Lizzie.frame.suggestionclick[1])
+        // if (i == Lizzie.frame.suggestionclick[0] && j ==
+        // Lizzie.frame.suggestionclick[1])
         // {
-        //          Optional<int[]> coords1 = Board.asCoordinates(suggestedMove.get().coordinate);
-        //          if (coords1.isPresent()
-        //              && coords1.get()[0] == Lizzie.frame.suggestionclick[0]
-        //              && coords1.get()[1] == Lizzie.frame.suggestionclick[1]) {
-        //            g.setColor(Color.magenta);
-        //            drawCircle3(g, stoneX, stoneY, stoneRadius - 1);
-        //          }
-        //        }
+        // Optional<int[]> coords1 =
+        // Board.asCoordinates(suggestedMove.get().coordinate);
+        // if (coords1.isPresent()
+        // && coords1.get()[0] == Lizzie.frame.suggestionclick[0]
+        // && coords1.get()[1] == Lizzie.frame.suggestionclick[1]) {
+        // g.setColor(Color.magenta);
+        // drawCircle3(g, stoneX, stoneY, stoneRadius - 1);
+        // }
+        // }
       }
     }
 
@@ -773,7 +783,8 @@ public class SubBoardRenderer {
 
         Stone stoneHere = branchOpt.map(b -> b.data.stones[here]).orElse(board.getStones()[here]);
 
-        // don't write the move number if either: the move number is 0, or there will already be
+        // don't write the move number if either: the move number is 0, or there will
+        // already be
         // playout information written
         if (moveNumberList[Board.getIndex(i, j)] > 0
             && (!branchOpt.isPresent() || !Lizzie.frame.isMouseOver(i, j))) {
@@ -827,7 +838,7 @@ public class SubBoardRenderer {
           double percent = ((double) Lizzie.leelaz.heatcount.get(i)) / maxPolicy;
 
           // g.setColor(Color.BLACK);
-          //  g.fillRect(stoneX - stoneRadius / 2, stoneY - stoneRadius / 2, stoneRadius,
+          // g.fillRect(stoneX - stoneRadius / 2, stoneY - stoneRadius / 2, stoneRadius,
           // stoneRadius);
 
           float hue;
@@ -1023,26 +1034,27 @@ public class SubBoardRenderer {
               fillCircle(g, suggestionX, suggestionY, stoneRadius);
             }
 
-            //  boolean ringedMove =
-            //       !Lizzie.config.colorByWinrateInsteadOfVisits && (isBestMove || hasMaxWinrate);
-            //    if (!branchOpt.isPresent() || (ringedMove && isMouseOver)) {
+            // boolean ringedMove =
+            // !Lizzie.config.colorByWinrateInsteadOfVisits && (isBestMove ||
+            // hasMaxWinrate);
+            // if (!branchOpt.isPresent() || (ringedMove && isMouseOver)) {
             if (!branchOpt.isPresent() || (isMouseOver)) {
               int strokeWidth = 1;
-              //            if (ringedMove) {
-              //              strokeWidth = 2;
-              //              if (isBestMove) {
-              //                if (hasMaxWinrate) {
-              //                  g.setColor(color.darker());
-              //                  strokeWidth = 1;
-              //                } else {
-              //                  g.setColor(Color.RED);
-              //                }
-              //              } else {
-              //                g.setColor(Color.BLUE);
-              //              }
-              //            } else {
+              // if (ringedMove) {
+              // strokeWidth = 2;
+              // if (isBestMove) {
+              // if (hasMaxWinrate) {
+              // g.setColor(color.darker());
+              // strokeWidth = 1;
+              // } else {
+              // g.setColor(Color.RED);
+              // }
+              // } else {
+              // g.setColor(Color.BLUE);
+              // }
+              // } else {
               g.setColor(color.darker());
-              //    }
+              // }
               g.setStroke(new BasicStroke(strokeWidth));
               if (coords[0] == Lizzie.frame.suggestionclick[0]
                   && coords[1] == Lizzie.frame.suggestionclick[1]) {
@@ -1247,10 +1259,11 @@ public class SubBoardRenderer {
    */
   private static int[] calculatePixelMargins(
       int boardWidth, int boardHeight, boolean showCoordinates) {
-    // boardLength -= boardLength*MARGIN/3; // account for the shadows we will draw around the edge
+    // boardLength -= boardLength*MARGIN/3; // account for the shadows we will draw
+    // around the edge
     // of the board
-    //        if (boardLength < Board.BOARD_SIZE - 1)
-    //            throw new IllegalArgumentException("boardLength may not be less than " +
+    // if (boardLength < Board.BOARD_SIZE - 1)
+    // throw new IllegalArgumentException("boardLength may not be less than " +
     // (Board.BOARD_SIZE - 1) + ", but was " + boardLength);
 
     int scaledMarginWidth;
@@ -1261,7 +1274,8 @@ public class SubBoardRenderer {
       boardWidth = min(boardWidth, boardHeight);
     }
 
-    // decrease boardLength until the availableLength will result in square board intersections
+    // decrease boardLength until the availableLength will result in square board
+    // intersections
     double marginWidth =
         (showCoordinates ? (Board.boardWidth > 3 ? 0.06 : 0.04) : 0.03) / Board.boardWidth * 19.0;
     boardWidth++;
@@ -1270,7 +1284,8 @@ public class SubBoardRenderer {
       scaledMarginWidth = (int) (marginWidth * boardWidth);
       availableWidth = boardWidth - 2 * scaledMarginWidth;
     } while (!((availableWidth - 1) % (Board.boardWidth - 1) == 0));
-    // this will be true if BOARD_SIZE - 1 square intersections, plus one line, will fit
+    // this will be true if BOARD_SIZE - 1 square intersections, plus one line, will
+    // fit
     int squareWidth = 0;
     int squareHeight = 0;
     if (Board.boardWidth != Board.boardHeight) {
@@ -1441,8 +1456,8 @@ public class SubBoardRenderer {
   /** Draws a stone centered at (centerX, centerY) */
   private void drawStone(
       Graphics2D g, Graphics2D gShadow, int centerX, int centerY, Stone color, int x, int y) {
-    //        g.setRenderingHint(KEY_ALPHA_INTERPOLATION,
-    //                VALUE_ALPHA_INTERPOLATION_QUALITY);
+    // g.setRenderingHint(KEY_ALPHA_INTERPOLATION,
+    // VALUE_ALPHA_INTERPOLATION_QUALITY);
     g.setRenderingHint(KEY_INTERPOLATION, VALUE_INTERPOLATION_BILINEAR);
     g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
 
@@ -1507,50 +1522,53 @@ public class SubBoardRenderer {
    * traditional Image.getScaledInstance() method to provide the nice quality, but the performance
    * is poor. Recommended for use in a few drawings
    */
-  //    public void drawScaleSmoothImage(Graphics2D g, BufferedImage img, int x, int y, int width,
+  // public void drawScaleSmoothImage(Graphics2D g, BufferedImage img, int x, int
+  // y, int width,
   // int height, ImageObserver observer) {
-  //        BufferedImage newstone = new BufferedImage(width, height, TYPE_INT_ARGB);
-  //        Graphics2D g2 = newstone.createGraphics();
-  //        g2.drawImage(img.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH), 0, 0,
+  // BufferedImage newstone = new BufferedImage(width, height, TYPE_INT_ARGB);
+  // Graphics2D g2 = newstone.createGraphics();
+  // g2.drawImage(img.getScaledInstance(width, height,
+  // java.awt.Image.SCALE_SMOOTH), 0, 0,
   // observer);
-  //        g2.dispose();
-  //        g.drawImage(newstone, x, y, width, height, observer);
-  //    }
+  // g2.dispose();
+  // g.drawImage(newstone, x, y, width, height, observer);
+  // }
 
   /**
    * Draw scale smooth image, enhanced display quality (Not use, for future) This functions use a
    * multi-step approach to prevent the information loss and produces a much higher quality that is
    * close to the Image.getScaledInstance() and faster than Image.getScaledInstance() method.
    */
-  //    public void drawScaleImage(Graphics2D g, BufferedImage img, int x, int y, int width, int
+  // public void drawScaleImage(Graphics2D g, BufferedImage img, int x, int y, int
+  // width, int
   // height, ImageObserver observer) {
-  //        BufferedImage newstone = (BufferedImage)img;
-  //        int w = img.getWidth();
-  //        int h = img.getHeight();
-  //        do {
-  //            if (w > width) {
-  //                w /= 2;
-  //                if (w < width) {
-  //                    w = width;
-  //                }
-  //            }
-  //            if (h > height) {
-  //                h /= 2;
-  //                if (h < height) {
-  //                    h = height;
-  //                }
-  //            }
-  //            BufferedImage tmp = new BufferedImage(w, h, TYPE_INT_ARGB);
-  //            Graphics2D g2 = tmp.createGraphics();
-  //            g2.setRenderingHint(KEY_INTERPOLATION,
+  // BufferedImage newstone = (BufferedImage)img;
+  // int w = img.getWidth();
+  // int h = img.getHeight();
+  // do {
+  // if (w > width) {
+  // w /= 2;
+  // if (w < width) {
+  // w = width;
+  // }
+  // }
+  // if (h > height) {
+  // h /= 2;
+  // if (h < height) {
+  // h = height;
+  // }
+  // }
+  // BufferedImage tmp = new BufferedImage(w, h, TYPE_INT_ARGB);
+  // Graphics2D g2 = tmp.createGraphics();
+  // g2.setRenderingHint(KEY_INTERPOLATION,
   // VALUE_INTERPOLATION_BICUBIC);
-  //            g2.drawImage(newstone, 0, 0, w, h, null);
-  //            g2.dispose();
-  //            newstone = tmp;
-  //        }
-  //        while (w != width || h != height);
-  //        g.drawImage(newstone, x, y, width, height, observer);
-  //    }
+  // g2.drawImage(newstone, 0, 0, w, h, null);
+  // g2.dispose();
+  // newstone = tmp;
+  // }
+  // while (w != width || h != height);
+  // g.drawImage(newstone, x, y, width, height, observer);
+  // }
 
   /** Draw texture image */
   public void drawTextureImage(
@@ -1647,10 +1665,11 @@ public class SubBoardRenderer {
     g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
   }
 
-  //  private void drawCircle4(Graphics2D g, int centerX, int centerY, int radius) {
-  //    g.setStroke(new BasicStroke(1f));
-  //    g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
-  //  }
+  // private void drawCircle4(Graphics2D g, int centerX, int centerY, int radius)
+  // {
+  // g.setStroke(new BasicStroke(1f));
+  // g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+  // }
 
   private void drawCircle3(Graphics2D g, int centerX, int centerY, int radius) {
     g.setStroke(new BasicStroke(radius / 5f));
@@ -1703,7 +1722,8 @@ public class SubBoardRenderer {
     }
 
     // bounding box for debugging
-    // g.drawRect(x-(int)maximumFontWidth/2, y - height/2 + verticalOffset, (int)maximumFontWidth,
+    // g.drawRect(x-(int)maximumFontWidth/2, y - height/2 + verticalOffset,
+    // (int)maximumFontWidth,
     // height+verticalOffset );
     g.drawString(string, x - fm.stringWidth(string) / 2, y + height / 2 + verticalOffset);
   }
@@ -1783,9 +1803,10 @@ public class SubBoardRenderer {
     int marginHeight; // the pixel height of the margins
     int boardHeightWithoutMargins; // the pixel height of the game board without margins
 
-    // calculate a good set of boardLength, scaledMargin, and boardLengthWithoutMargins to use
-    //    int[] calculatedPixelMargins = calculatePixelMargins();
-    //    setBoardLength(calculatedPixelMargins[0], calculatedPixelMargins[3]);
+    // calculate a good set of boardLength, scaledMargin, and
+    // boardLengthWithoutMargins to use
+    // int[] calculatedPixelMargins = calculatePixelMargins();
+    // setBoardLength(calculatedPixelMargins[0], calculatedPixelMargins[3]);
     marginWidth = this.scaledMarginWidth;
     marginHeight = this.scaledMarginHeight;
 
@@ -1822,7 +1843,8 @@ public class SubBoardRenderer {
     stoneRadius = max(squareWidth, squareHeight) < 4 ? 1 : max(squareWidth, squareHeight) / 2 - 1;
 
     // re-center board
-    //    setLocation(x + (boardWidth0 - boardWidth) / 2, y + (boardHeight0 - boardHeight) / 2);
+    // setLocation(x + (boardWidth0 - boardWidth) / 2, y + (boardHeight0 -
+    // boardHeight) / 2);
 
     this.shadowRadius =
         Lizzie.config.showBorder ? (int) (max(boardWidth, boardHeight) * MARGIN / 6) : 0;

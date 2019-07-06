@@ -112,7 +112,7 @@ public class GtpConsolePane extends JDialog {
     lblCommand.setText(engineName + ">");
     this.command = command;
     // this.isAnalyzeCommand =
-    //    command.startsWith("lz-analyze") || command.startsWith("lz-genmove_analyze");
+    // command.startsWith("lz-analyze") || command.startsWith("lz-genmove_analyze");
     try {
       addText(formatCommand(command, commandNumber, engineName));
     } catch (Exception ex) {

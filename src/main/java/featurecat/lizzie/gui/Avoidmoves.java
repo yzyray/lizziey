@@ -110,7 +110,7 @@ public class Avoidmoves extends JDialog {
   private boolean checkMove() {
 
     changeMoveNumber = txtFieldValue(txtMoveNumber);
-    //  changePosition = getChangeToType();
+    // changePosition = getChangeToType();
     Color c = defaultText.getBackground();
     if (changeMoveNumber <= 0) {
       txtMoveNumber.setToolTipText(

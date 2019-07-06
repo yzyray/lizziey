@@ -35,15 +35,15 @@ public class Menu extends MenuBar {
   // private boolean onlyboard = false;
 
   public Menu() {
-    //  super(owner);
+    // super(owner);
     // setLayout(null);
     // setUndecorated(true);
     // setResizable(true);
-    //    setBounds(
-    //        Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
-    //        Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
-    //        Lizzie.frame.getContentPane().getWidth(),
-    //        25);
+    // setBounds(
+    // Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
+    // Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
+    // Lizzie.frame.getContentPane().getWidth(),
+    // 25);
     Color hsbColor =
         Color.getHSBColor(
             Color.RGBtoHSB(232, 232, 232, null)[0],
@@ -60,7 +60,7 @@ public class Menu extends MenuBar {
     bar.add(menuBar);
 
     headFont = new Font("幼圆", Font.BOLD, 15);
-    //  onlyboard = Lizzie.config.uiConfig.optBoolean("only-board", false);
+    // onlyboard = Lizzie.config.uiConfig.optBoolean("only-board", false);
 
     final JMenu fileMenu = new JMenu(" 文件  "); // 创建“文件”菜单
     // fileMenu.setMnemonic('F'); // 设置快捷键
@@ -178,6 +178,19 @@ public class Menu extends MenuBar {
     blunder.addActionListener(new ItemListeneryzy());
     winrate.add(blunder);
 
+    final JCheckBoxMenuItem setReplayTime = new JCheckBoxMenuItem();
+    setReplayTime.setText("设置推荐点分支回放间隔");
+    setReplayTime.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            SetReplayTime setReplayTime = new SetReplayTime();
+            setReplayTime.setVisible(true);
+          }
+        });
+    winrate.add(setReplayTime);
+
     final JCheckBoxMenuItem coordsItem = new JCheckBoxMenuItem();
     coordsItem.setText("坐标（C）");
     coordsItem.addActionListener(new ItemListeneryzy());
@@ -255,7 +268,7 @@ public class Menu extends MenuBar {
     alwaysontop.addActionListener(new ItemListeneryzy());
     viewMenu.add(alwaysontop);
     viewMenu.addSeparator();
-    final JCheckBoxMenuItem toolMenu = new JCheckBoxMenuItem("底部工具栏"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem toolMenu = new JCheckBoxMenuItem("简略工具栏"); // 创建“字体”子菜单
     viewMenu.add(toolMenu); // 添加到“编辑”菜单
     toolMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
@@ -265,7 +278,7 @@ public class Menu extends MenuBar {
 
     final JCheckBoxMenuItem closeTool = new JCheckBoxMenuItem("关闭工具栏"); // 创建“字体”子菜单
     viewMenu.add(closeTool); // 添加到“编辑”菜单
-    closeTool.addActionListener(new ItemListeneryzy()); // 添加动作监听器     viewMenu.addSeparator();
+    closeTool.addActionListener(new ItemListeneryzy()); // 添加动作监听器 viewMenu.addSeparator();
 
     final JMenuItem bigtoolConf = new JMenuItem("设置详细工具栏顺序");
     viewMenu.add(bigtoolConf);
@@ -319,26 +332,26 @@ public class Menu extends MenuBar {
 
     final JCheckBoxMenuItem katasugg1 = new JCheckBoxMenuItem("胜率+计算量", false);
 
-    //    ItemListener itn=   new ItemListeneryzy() {
-    //        public void itemStateChanged(ItemEvent e) {
+    // ItemListener itn= new ItemListeneryzy() {
+    // public void itemStateChanged(ItemEvent e) {
     //
-    //            if(katasugg1.getState()){
-    //          	  katasugg.add(katasugg1);
-    //            } else {
-    //          	  katasugg.remove(katasugg1);
-    //            }
-    //         }
-    //      };
+    // if(katasugg1.getState()){
+    // katasugg.add(katasugg1);
+    // } else {
+    // katasugg.remove(katasugg1);
+    // }
+    // }
+    // };
     //
-    //    katasugg1.addItemListener(itn);
+    // katasugg1.addItemListener(itn);
 
-    //    final JMenuItem katasugg1 = new JMenuItem("胜率+计算量");
+    // final JMenuItem katasugg1 = new JMenuItem("胜率+计算量");
     katasugg.add(katasugg1);
     katasugg1.addActionListener(new ItemListeneryzy());
 
     final JCheckBoxMenuItem katasugg2 = new JCheckBoxMenuItem("目差+计算量");
     katasugg.add(katasugg2);
-    //  katasugg2.addActionListener(new ItemListeneryzy());
+    // katasugg2.addActionListener(new ItemListeneryzy());
 
     katasugg2.addActionListener(
         new ActionListener() {
@@ -1007,25 +1020,25 @@ public class Menu extends MenuBar {
     engineMenu.add(moreconfig);
   }
 
-  //  public void updateEngineName() {
-  //    Optional<JSONArray> enginesNameOpt =
-  //        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
-  //    enginesNameOpt.ifPresent(
-  //        a -> {
-  //          IntStream.range(0, a.length())
-  //              .forEach(
-  //                  i -> {
-  //                    String name = a.getString(i);
+  // public void updateEngineName() {
+  // Optional<JSONArray> enginesNameOpt =
+  // Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+  // enginesNameOpt.ifPresent(
+  // a -> {
+  // IntStream.range(0, a.length())
+  // .forEach(
+  // i -> {
+  // String name = a.getString(i);
   //
-  //                    if (i == 9) engine[i].setText(engine[i].getText().substring(0, 5) + name);
-  //                    else engine[i].setText(engine[i].getText().substring(0, 4) + name);
-  //                    if (!name.equals("")) engine[i].setVisible(true);
-  //                    else {
-  //                      engine[i].setVisible(false);
-  //                    }
-  //                  });
-  //        });
-  //  }
+  // if (i == 9) engine[i].setText(engine[i].getText().substring(0, 5) + name);
+  // else engine[i].setText(engine[i].getText().substring(0, 4) + name);
+  // if (!name.equals("")) engine[i].setVisible(true);
+  // else {
+  // engine[i].setVisible(false);
+  // }
+  // });
+  // });
+  // }
 
   public ArrayList<EngineData> getEngineData() {
     ArrayList<EngineData> engineData = new ArrayList<EngineData>();
@@ -1405,8 +1418,8 @@ public class Menu extends MenuBar {
 
         if (Lizzie.config.showSubBoard) Lizzie.config.toggleShowSubBoard();
         if (Lizzie.config.showComment) Lizzie.config.toggleShowComment();
-        //   if (!Lizzie.config.showComment) Lizzie.config.toggleShowComment();
-        //  if (!Lizzie.config.showLargeSubBoard()) Lizzie.config.showLargeSubBoard();
+        // if (!Lizzie.config.showComment) Lizzie.config.toggleShowComment();
+        // if (!Lizzie.config.showLargeSubBoard()) Lizzie.config.showLargeSubBoard();
         if (Lizzie.config.showCaptured) Lizzie.config.toggleShowCaptured();
         if (Lizzie.config.showStatus) Lizzie.config.toggleShowStatus();
         if (Lizzie.config.showVariationGraph) Lizzie.config.toggleShowVariationGraph();
@@ -1473,7 +1486,7 @@ public class Menu extends MenuBar {
         }
         return;
       }
-      if (menuItem.getText().startsWith("底部")) {
+      if (menuItem.getText().startsWith("简略")) {
         int nowHeight = Lizzie.frame.toolbarHeight;
         Lizzie.frame.toolbarHeight = 26;
         Lizzie.frame.toolbar.setVisible(true);

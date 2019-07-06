@@ -377,9 +377,9 @@ public class OnlineDialog extends JDialog {
   private void proc() throws IOException, URISyntaxException {
     refreshTime = Utils.txtFieldValue(txtRefreshTime);
     refreshTime = (refreshTime > 0 ? refreshTime : 10);
-    //    if (!online.isShutdown()) {
-    //      online.shutdown();
-    //    }
+    // if (!online.isShutdown()) {
+    // online.shutdown();
+    // }
     if (schedule != null && !schedule.isCancelled() && !schedule.isDone()) {
       schedule.cancel(false);
     }
@@ -651,21 +651,21 @@ public class OnlineDialog extends JDialog {
           }
 
           public void onMessage(String arg0) {
-            //            System.out.println("socket message" + arg0);
+            // System.out.println("socket message" + arg0);
           }
 
           public void onError(Exception arg0) {
-            //            arg0.printStackTrace();
-            //            System.out.println("socket error");
+            // arg0.printStackTrace();
+            // System.out.println("socket error");
           }
 
           public void onClose(int arg0, String arg1, boolean arg2) {
-            //            System.out.println("socket close:" + arg0 + ":" + arg1 + ":" + arg2);
+            // System.out.println("socket close:" + arg0 + ":" + arg1 + ":" + arg2);
           }
 
           public void onMessage(ByteBuffer bytes) {
-            //                        System.out.println("socket message ByteBuffer" +
-            //             byteArrayToHexString(bytes.array()));
+            // System.out.println("socket message ByteBuffer" +
+            // byteArrayToHexString(bytes.array()));
             parseReq(bytes);
           }
         };
@@ -743,7 +743,7 @@ public class OnlineDialog extends JDialog {
     int bodyFlag = res.get();
     int option = res.get();
     int msgID = res.getShort();
-    //    System.out.println("recv msgID:" + msgID);
+    // System.out.println("recv msgID:" + msgID);
     if (msgID == 23406) {
       int msgType = res.getShort();
       int MsgSeq = res.getInt();
@@ -916,7 +916,8 @@ public class OnlineDialog extends JDialog {
 
     for (Fragment f : fragmentList) {
       if (f != null) {
-        //        System.out.println("Msg:" + f.type + ":" + (f.line != null ? f.line.toString() :
+        // System.out.println("Msg:" + f.type + ":" + (f.line != null ?
+        // f.line.toString() :
         // ""));
         if (f.type == 20032) {
           int size = ((JSONObject) f.line.opt("AAA307")).optInt("AAA16");
@@ -1014,7 +1015,7 @@ public class OnlineDialog extends JDialog {
                       "%d:%02d %d %d", (int) (time / 60), (int) (time % 60), readCount, readTime);
             }
           }
-          //  Lizzie.frame.updateBasicInfo(bTime, wTime);
+          // Lizzie.frame.updateBasicInfo(bTime, wTime);
         } else if (f.type == 8005) {
           int num = f.line.optInt("AAA72");
           String comment = f.line.optString("AAA37");
@@ -1033,10 +1034,10 @@ public class OnlineDialog extends JDialog {
               JSONArray branchMoves = branch.optJSONArray("AAA106");
               if (branchMoves != null && branchMoves.length() > 0) {
                 if (history.getCurrentHistoryNode().numberOfChildren() == 0) {
-                  //                  BoardData data = BoardData.empty(boardSize);
-                  //                  data.moveMNNumber = history.getData().moveMNNumber + 1;
-                  //                  data.moveNumber = history.getData().moveNumber + 1;
-                  //                  history.getCurrentHistoryNode().addOrGoto(data);
+                  // BoardData data = BoardData.empty(boardSize);
+                  // data.moveMNNumber = history.getData().moveMNNumber + 1;
+                  // data.moveNumber = history.getData().moveNumber + 1;
+                  // history.getCurrentHistoryNode().addOrGoto(data);
                   Stone color =
                       history.getLastMoveColor() == Stone.WHITE ? Stone.BLACK : Stone.WHITE;
                   history.pass(color, false, true);
@@ -1167,8 +1168,8 @@ public class OnlineDialog extends JDialog {
       this.len = len;
       this.frag = frag;
       Proto o = parseProto(frag);
-      //      System.out.println("type:" + o.type);
-      //       System.out.println("raw:" + byteArrayToHexString(o.raw));
+      // System.out.println("type:" + o.type);
+      // System.out.println("raw:" + byteArrayToHexString(o.raw));
       this.type = o.type;
       if (o.type == 20032) {
         line = decode52(ByteBuffer.wrap(o.raw));
@@ -1858,7 +1859,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:connect");
+                // System.out.println("io:connect");
                 login();
               }
             })
@@ -1867,7 +1868,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:message");
+                // System.out.println("io:message");
               }
             })
         .on(
@@ -1875,7 +1876,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:disconnect");
+                // System.out.println("io:disconnect");
               }
             })
         .on(
@@ -1883,7 +1884,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:error");
+                // System.out.println("io:error");
               }
             })
         .on(
@@ -1891,7 +1892,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:ping");
+                // System.out.println("io:ping");
               }
             })
         .on(
@@ -1899,7 +1900,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:pong");
+                // System.out.println("io:pong");
               }
             })
         .on(
@@ -1907,7 +1908,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:EVENT_CONNECT_ERROR");
+                // System.out.println("io:EVENT_CONNECT_ERROR");
               }
             })
         .on(
@@ -1915,7 +1916,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:EVENT_CONNECT_TIMEOUT");
+                // System.out.println("io:EVENT_CONNECT_TIMEOUT");
               }
             })
         .on(
@@ -1923,7 +1924,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:EVENT_CONNECTING");
+                // System.out.println("io:EVENT_CONNECTING");
               }
             })
         .on(
@@ -1931,7 +1932,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:EVENT_RECONNECT");
+                // System.out.println("io:EVENT_RECONNECT");
               }
             })
         .on(
@@ -1939,7 +1940,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:EVENT_RECONNECT_ATTEMPT");
+                // System.out.println("io:EVENT_RECONNECT_ATTEMPT");
               }
             })
         .on(
@@ -1947,7 +1948,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:EVENT_RECONNECT_FAILED");
+                // System.out.println("io:EVENT_RECONNECT_FAILED");
               }
             })
         .on(
@@ -1955,7 +1956,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:EVENT_RECONNECT_ERROR");
+                // System.out.println("io:EVENT_RECONNECT_ERROR");
               }
             })
         .on(
@@ -1963,7 +1964,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:EVENT_RECONNECTING");
+                // System.out.println("io:EVENT_RECONNECTING");
               }
             })
         .on(
@@ -1971,7 +1972,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:heartbeat:" + strJson(args));
+                // System.out.println("io:heartbeat:" + strJson(args));
               }
             })
         .on(
@@ -1979,12 +1980,12 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:userinfo:" + strJson(args));
-                //                System.out.println(
-                //                    "io:userinfo:userid:"
-                //                        + (args == null || args.length < 1
-                //                            ? ""
-                //                            : ((JSONObject) args[0]).opt("user_id").toString()));
+                // System.out.println("io:userinfo:" + strJson(args));
+                // System.out.println(
+                // "io:userinfo:userid:"
+                // + (args == null || args.length < 1
+                // ? ""
+                // : ((JSONObject) args[0]).opt("user_id").toString()));
                 userId =
                     (args == null || args.length < 1
                         ? userId
@@ -1997,7 +1998,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:init:" + strJson(args));
+                // System.out.println("io:init:" + strJson(args));
                 initData(args == null || args.length < 1 ? null : ((JSONObject) args[0]));
               }
             })
@@ -2006,7 +2007,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:move:" + strJson(args));
+                // System.out.println("io:move:" + strJson(args));
                 move(args == null || args.length < 1 ? null : (JSONObject) args[0]);
                 sync();
               }
@@ -2016,7 +2017,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:update_game:" + strJson(args));
+                // System.out.println("io:update_game:" + strJson(args));
                 updateGame(args == null || args.length < 1 ? null : (JSONObject) args[0]);
               }
             })
@@ -2025,7 +2026,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:move_delete:" + strJson(args));
+                // System.out.println("io:move_delete:" + strJson(args));
               }
             })
         .on(
@@ -2033,7 +2034,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:comments:" + strJson(args));
+                // System.out.println("io:comments:" + strJson(args));
                 procComments(args == null || args.length < 1 ? null : (JSONObject) args[0]);
                 sync();
               }
@@ -2043,7 +2044,7 @@ public class OnlineDialog extends JDialog {
             new Emitter.Listener() {
               @Override
               public void call(Object... args) {
-                //                System.out.println("io:notice:" + strJson(args));
+                // System.out.println("io:notice:" + strJson(args));
               }
             });
     sio.connect();
@@ -2074,7 +2075,7 @@ public class OnlineDialog extends JDialog {
         new Ack() {
           @Override
           public void call(Object... args) {
-            //            entry();
+            // entry();
           }
         });
   }
@@ -2123,7 +2124,7 @@ public class OnlineDialog extends JDialog {
         }
       }
     } else {
-      //      error(true);
+      // error(true);
       sio.close();
       try {
         refresh("(?s).*?(\\\"Content\\\":\\\")(.+)(\\\",\\\")(?s).*");
@@ -2163,9 +2164,9 @@ public class OnlineDialog extends JDialog {
         new Ack() {
           @Override
           public void call(Object... args) {
-            //            System.out.println(
-            //                "listen callback:"
-            //                    + (args == null || args.length <= 0 ? "null" :
+            // System.out.println(
+            // "listen callback:"
+            // + (args == null || args.length <= 0 ? "null" :
             // args[0].toString()));
             listenBack(args == null || args.length <= 0 ? null : (JSONArray) args[0]);
           }
@@ -2264,9 +2265,9 @@ public class OnlineDialog extends JDialog {
     } else {
       b = comments.get(move);
     }
-    //    if (!b.containsKey(id)) {
+    // if (!b.containsKey(id)) {
     b.put(id, c);
-    //    }
+    // }
     addComment(move, Utils.isBlank(member) ? content : member + "：" + content, add);
   }
 

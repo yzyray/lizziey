@@ -39,6 +39,7 @@ public class Zobrist {
       whiteZobrist[i] = random.nextLong();
     }
   }
+
   /**
    * Call this method to alter the current zobrist hash for this stone
    *

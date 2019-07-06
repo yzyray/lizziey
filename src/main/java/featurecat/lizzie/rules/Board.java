@@ -86,6 +86,7 @@ public class Board implements LeelazListener {
     int x = index % Board.boardWidth;
     return new int[] {x, y};
   }
+
   /**
    * Converts a named coordinate eg C16, T5, K10, etc to an x and y coordinate
    *
@@ -234,10 +235,10 @@ public class Board implements LeelazListener {
 
   public void clearbestmovesafter2(BoardHistoryNode node) {
     // if (node.getData().moveNumber <= movenumber) {
-    //  if (node.getData().getPlayouts() > 0) node.getData().isChanged = true;
+    // if (node.getData().getPlayouts() > 0) node.getData().isChanged = true;
     // }
-    //    node.getData().winrate = 50;
-    //    node.getData().bestMoves.clear();
+    // node.getData().winrate = 50;
+    // node.getData().bestMoves.clear();
     node.getData().setPlayouts(0);
     if (node.numberOfChildren() > 1) {
       // Variation
@@ -301,7 +302,7 @@ public class Board implements LeelazListener {
     tempmovelist2 = new ArrayList<Movelist>();
 
     // clear();
-    //  setlist();
+    // setlist();
     return tempmovelist;
   }
 
@@ -384,6 +385,7 @@ public class Board implements LeelazListener {
     setmovelist(tempmovelist);
     tempmovelist.clear();
   }
+
   /**
    * Open board again when the SZ property is setup by sgf
    *
@@ -1364,6 +1366,7 @@ public class Board implements LeelazListener {
     }
     return moveNumber;
   }
+
   /**
    * Gets current board move number
    *
@@ -1457,10 +1460,10 @@ public class Board implements LeelazListener {
     for (int i = 0; i < lenth; i++) {
       Movelist move = mv.get(lenth - 1 - i);
       if (!move.ispass) {
-        //	        placeinsert(move.x, move.y, move.isblack ? Stone.BLACK : Stone.WHITE);
-        //	        mvnumber[getIndex(move.x, move.y)] = i + 1;
-        //	      } else {
-        //	        passinsert(move.isblack ? Stone.BLACK : Stone.WHITE, false);
+        // placeinsert(move.x, move.y, move.isblack ? Stone.BLACK : Stone.WHITE);
+        // mvnumber[getIndex(move.x, move.y)] = i + 1;
+        // } else {
+        // passinsert(move.isblack ? Stone.BLACK : Stone.WHITE, false);
         String color = move.isblack ? "b" : "w";
         Lizzie.engineManager
             .engineList
@@ -1476,10 +1479,10 @@ public class Board implements LeelazListener {
     for (int i = 0; i < lenth; i++) {
       Movelist move = mv.get(lenth - 1 - i);
       if (!move.ispass) {
-        //	        placeinsert(move.x, move.y, move.isblack ? Stone.BLACK : Stone.WHITE);
-        //	        mvnumber[getIndex(move.x, move.y)] = i + 1;
-        //	      } else {
-        //	        passinsert(move.isblack ? Stone.BLACK : Stone.WHITE, false);
+        // placeinsert(move.x, move.y, move.isblack ? Stone.BLACK : Stone.WHITE);
+        // mvnumber[getIndex(move.x, move.y)] = i + 1;
+        // } else {
+        // passinsert(move.isblack ? Stone.BLACK : Stone.WHITE, false);
         String color = move.isblack ? "b" : "w";
         Lizzie.engineManager
             .engineList
@@ -1499,29 +1502,29 @@ public class Board implements LeelazListener {
           .sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
   }
 
-  //    Stone[] stones = history.getStones();
-  //    for (int i = 0; i < stones.length; i++) {
-  //      Stone stone = stones[i];
-  //      if (stone.isBlack() || stone.isWhite()) {
-  //        int y = i % Board.boardSize;
-  //        int x = (i - y) / Board.boardSize;
+  // Stone[] stones = history.getStones();
+  // for (int i = 0; i < stones.length; i++) {
+  // Stone stone = stones[i];
+  // if (stone.isBlack() || stone.isWhite()) {
+  // int y = i % Board.boardSize;
+  // int x = (i - y) / Board.boardSize;
   //
-  //        String colorString = "";
-  //        switch (stone) {
-  //          case BLACK:
-  //            colorString = "B";
-  //            break;
-  //          case WHITE:
-  //            colorString = "W";
-  //            break;
-  //        }
-  //        Lizzie.engineManager
-  //            .engineList
-  //            .get(index)
-  //            .sendCommand("play " + colorString + " " + convertCoordinatesToName(x, y));
-  //      }
-  //    }
-  //  }
+  // String colorString = "";
+  // switch (stone) {
+  // case BLACK:
+  // colorString = "B";
+  // break;
+  // case WHITE:
+  // colorString = "W";
+  // break;
+  // }
+  // Lizzie.engineManager
+  // .engineList
+  // .get(index)
+  // .sendCommand("play " + colorString + " " + convertCoordinatesToName(x, y));
+  // }
+  // }
+  // }
 
   /** Restore move number by node */
   public void restoreMoveNumber(BoardHistoryNode node) {
@@ -2513,7 +2516,8 @@ public class Board implements LeelazListener {
       // computing. i think its fine.
     }
     if (Lizzie.leelaz.isPondering() && !isLoadingFile || Lizzie.frame.toolbar.isEnginePk) {
-      // if (MoveData.getPlayouts(history.getData().bestMoves) > history.getData().getPlayouts())
+      // if (MoveData.getPlayouts(history.getData().bestMoves) >
+      // history.getData().getPlayouts())
       updateComment();
     }
   }
@@ -2950,7 +2954,7 @@ public class Board implements LeelazListener {
     goToMoveNumber(insertoricurrentMoveNumber); // 需要重新获取插入后的步数
     insertorimove.clear();
     insertoriisblack.clear();
-    //  featurecat.lizzie.gui.Input.isinsertmode = false;
+    // featurecat.lizzie.gui.Input.isinsertmode = false;
   }
 
   public void insertMove(int coords[], boolean isblack) {

@@ -32,7 +32,7 @@ public class Lizzie {
   public static String lizzieVersion = "0.7";
   private static String[] mainArgs;
   public static EngineManager engineManager;
-  //  public static Menu menu;
+  // public static Menu menu;
 
   /** Launches the game window, and runs the game. */
   public static void main(String[] args) throws IOException {
@@ -44,7 +44,7 @@ public class Lizzie {
 
     movelistframe = MovelistFrame.createBadmovesDialog();
 
-    //   movelistframe.setLocation(-7, 302);
+    // movelistframe.setLocation(-7, 302);
     movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", false));
     movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
 
@@ -52,8 +52,8 @@ public class Lizzie {
     gtpConsole = new GtpConsolePane(frame);
     countResults = new CountResults(frame);
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
-    //  menu = new Menu(frame);
-    //  menu.setVisible(true);
+    // menu = new Menu(frame);
+    // menu.setVisible(true);
 
     if (Lizzie.config.uiConfig.optBoolean("autoload-default", false)) {
       int defaultEngine = Lizzie.config.uiConfig.optInt("default-engine", -1);
@@ -117,7 +117,7 @@ public class Lizzie {
       board.resumePreviousGame();
     }
     leelaz.ponder();
-
+    Lizzie.frame.toolbar.reSetButtonLocation();
     if (Lizzie.config.loadZen) {
       try {
         frame.zen = new YaZenGtp();

@@ -130,7 +130,7 @@ public class SetBoardSize extends JDialog {
 
     widthNumber = txtFieldValue(width);
     heightNumber = txtFieldValue(height);
-    //  changePosition = getChangeToType();
+    // changePosition = getChangeToType();
     Color c = defaultText.getBackground();
     if (widthNumber < 2 || heightNumber < 2) {
       width.setToolTipText(resourceBundle.getString("LizzieChangeMove.txtMoveNumber.error"));

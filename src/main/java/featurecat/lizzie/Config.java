@@ -281,7 +281,8 @@ public class Config {
     showNextMoves = uiConfig.getBoolean("show-next-moves");
     showSubBoard = uiConfig.getBoolean("show-subboard");
     largeSubBoard = uiConfig.getBoolean("large-subboard");
-    // handicapInsteadOfWinrate = uiConfig.getBoolean("handicap-instead-of-winrate");
+    // handicapInsteadOfWinrate =
+    // uiConfig.getBoolean("handicap-instead-of-winrate");
     // showDynamicKomi = uiConfig.getBoolean("show-dynamic-komi");
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);
@@ -487,7 +488,7 @@ public class Config {
   }
 
   // public void toggleShowBestMoves() {
-  //   this.showBestMoves = !this.showBestMoves;
+  // this.showBestMoves = !this.showBestMoves;
   // }
 
   public void toggleShowNextMoves() {

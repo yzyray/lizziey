@@ -233,7 +233,8 @@ public class BoardHistoryList {
 
     // check to see if this position has occurred before
     while (head.previous().isPresent()) {
-      // if two zobrist hashes are equal, and it's the same player to coordinate, they are the same
+      // if two zobrist hashes are equal, and it's the same player to coordinate, they
+      // are the same
       // position
       if (data.zobrist.equals(head.getData().zobrist)
           && data.blackToPlay == head.getData().blackToPlay) return true;
@@ -317,7 +318,8 @@ public class BoardHistoryList {
 
       // check to see if this move is being replayed in history
       if (this.getNext().map(n -> !n.lastMove.isPresent()).orElse(false) && !newBranch) {
-        // this is the next move in history. Just increment history so that we don't erase the
+        // this is the next move in history. Just increment history so that we don't
+        // erase the
         // redo's
         this.next();
         return;
@@ -375,7 +377,8 @@ public class BoardHistoryList {
           && nextLast.get()[1] == y
           && !newBranch
           && !changeMove) {
-        // this is the next coordinate in history. Just increment history so that we don't erase the
+        // this is the next coordinate in history. Just increment history so that we
+        // don't erase the
         // redo's
         this.next();
         return;

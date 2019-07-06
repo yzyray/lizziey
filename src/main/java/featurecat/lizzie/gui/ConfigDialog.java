@@ -131,7 +131,7 @@ public class ConfigDialog extends JDialog {
           public void actionPerformed(ActionEvent e) {
             setVisible(false);
             saveConfig();
-            applyChange();
+            // applyChange();
           }
         });
     okButton.setActionCommand("OK");
@@ -897,7 +897,7 @@ public class ConfigDialog extends JDialog {
     chkPrintEngineLog.setBounds(167, 498, 80, 23);
     engineTab.add(chkPrintEngineLog);
     JPanel uiTab = new JPanel();
-    tabbedPane.addTab(resourceBundle.getString("LizzieConfig.title.ui"), null, uiTab, null);
+    //  tabbedPane.addTab(resourceBundle.getString("LizzieConfig.title.ui"), null, uiTab, null);
     uiTab.setLayout(null);
 
     JLabel lblBoardSize = new JLabel(resourceBundle.getString("LizzieConfig.title.boardSize"));
@@ -967,7 +967,8 @@ public class ConfigDialog extends JDialog {
     txtBoardSize.setColumns(10);
 
     JTabbedPane tabTheme = new JTabbedPane(JTabbedPane.TOP);
-    tabbedPane.addTab(resourceBundle.getString("LizzieConfig.title.theme"), null, tabTheme, null);
+    // tabbedPane.addTab(resourceBundle.getString("LizzieConfig.title.theme"), null, tabTheme,
+    // null);
 
     names =
         new JTextField[] {
@@ -1180,7 +1181,7 @@ public class ConfigDialog extends JDialog {
       JSONArray enginenames = new JSONArray();
       Arrays.asList(names).forEach(t -> enginenames.put(t.getText().trim()));
       leelazConfig.put("engine-name-list", enginenames);
-      Lizzie.config.uiConfig.put("board-size", getBoardSize());
+      //  Lizzie.config.uiConfig.put("board-size", getBoardSize());
       Lizzie.config.save();
     } catch (IOException e) {
       e.printStackTrace();
@@ -1188,9 +1189,9 @@ public class ConfigDialog extends JDialog {
     Lizzie.engineManager.updateEngines();
   }
 
-  private void applyChange() {
-    Lizzie.board.reopen(getBoardSize(), getBoardSize());
-  }
+  //  private void applyChange() {
+  //    Lizzie.board.reopen(getBoardSize(), getBoardSize());
+  //  }
 
   private Integer txtFieldValue(JTextField txt) {
     if (txt.getText().trim().isEmpty()) {

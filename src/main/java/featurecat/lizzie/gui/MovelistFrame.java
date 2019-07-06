@@ -238,10 +238,10 @@ public class MovelistFrame extends JPanel {
           && Lizzie.board.convertNameToCoordinates(table.getValueAt(row, 2).toString())[1]
               == Lizzie.frame.clickbadmove[1]) {
 
-        //        if (selectedorder != row) {
-        //          selectedorder = -1;
-        //          setForeground(Color.RED);
-        //        }
+        // if (selectedorder != row) {
+        // selectedorder = -1;
+        // setForeground(Color.RED);
+        // }
         Color hsbColor =
             Color.getHSBColor(
                 Color.RGBtoHSB(238, 221, 130, null)[0],
@@ -378,7 +378,7 @@ public class MovelistFrame extends JPanel {
                 if (mwr.playouts >= (int) playoutschooser.getValue()
                     && mwr.previousplayouts >= (int) playoutschooser.getValue()) data2.add(mwr);
         }
-        //		Collections.sort(data2) ;
+        // Collections.sort(data2) ;
         Collections.sort(
             data2,
             new Comparator<Movelistwr>() {
@@ -456,7 +456,8 @@ public class MovelistFrame extends JPanel {
               }
             });
 
-        // featurecat.lizzie.analysis.MoveDataSorter MoveDataSorter = new MoveDataSorter(data2);
+        // featurecat.lizzie.analysis.MoveDataSorter MoveDataSorter = new
+        // MoveDataSorter(data2);
         // ArrayList sortedMoveData = MoveDataSorter.getSortedMoveDataByPolicy();
 
         Movelistwr data = data2.get(row);
@@ -533,7 +534,7 @@ public class MovelistFrame extends JPanel {
     newContentPane.setOpaque(true); // content panes must be opaque
     jf.setContentPane(newContentPane);
     // Display the window.
-    //  jf.setSize(521, 320);
+    // jf.setSize(521, 320);
 
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted

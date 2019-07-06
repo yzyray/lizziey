@@ -35,21 +35,22 @@ public class EngineManager {
   public EngineManager(Config config, int index) throws JSONException, IOException {
     ArrayList<EngineData> engineData = getEngineData();
     // 先做到这,后续处理根据index加载引擎,传递棋盘大小,贴目,以及不加载引擎的办法
-    //    JSONObject eCfg = config.config.getJSONObject("leelaz");
-    //    String engineCommand = eCfg.getString("engine-command");
-    //    // substitute in the weights file
-    //    engineCommand = engineCommand.replaceAll("%network-file", eCfg.getString("network-file"));
+    // JSONObject eCfg = config.config.getJSONObject("leelaz");
+    // String engineCommand = eCfg.getString("engine-command");
+    // // substitute in the weights file
+    // engineCommand = engineCommand.replaceAll("%network-file",
+    // eCfg.getString("network-file"));
     //
-    //    // Start default engine
-    //    Leelaz lz = new Leelaz(engineCommand);
-    //    Lizzie.leelaz = lz;
-    //   Lizzie.board = lz.board;
-    //    if (engineCommand.equals("")) {
-    //      Lizzie.frame.openConfigDialog();
-    //      System.exit(1);
-    //    }
-    //    lz.startEngine(0);
-    //    lz.preload = true;
+    // // Start default engine
+    // Leelaz lz = new Leelaz(engineCommand);
+    // Lizzie.leelaz = lz;
+    // Lizzie.board = lz.board;
+    // if (engineCommand.equals("")) {
+    // Lizzie.frame.openConfigDialog();
+    // System.exit(1);
+    // }
+    // lz.startEngine(0);
+    // lz.preload = true;
     engineList = new ArrayList<Leelaz>();
     // engineList.add(lz);
 
@@ -92,48 +93,48 @@ public class EngineManager {
       featurecat.lizzie.gui.Menu.engineMenu.setText(
           "引擎" + (index + 1) + ": " + engineList.get(index).currentEnginename);
     Lizzie.gtpConsole.console.setText("");
-    //    new Thread(
-    //            () -> {
-    //              // Process other engine
-    //              Optional<JSONArray> enginesOpt =
-    //                  Optional.ofNullable(
-    //                      Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
-    //              Optional<JSONArray> enginePreloadOpt =
-    //                  Optional.ofNullable(
-    //                      Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
-    //              enginesOpt.ifPresent(
-    //                  m -> {
-    //                    IntStream.range(0, m.length())
-    //                        .forEach(
-    //                            i -> {
-    //                              String cmd = m.optString(i);
-    //                              if (cmd != null && !cmd.isEmpty()) {
-    //                                Leelaz e;
-    //                                try {
-    //                                  e = new Leelaz(cmd);
-    //                                  // TODO: how sync the board
-    //                                  //       e.board = Lizzie.board;
-    //                                  e.preload =
-    //                                      enginePreloadOpt.map(p ->
+    // new Thread(
+    // () -> {
+    // // Process other engine
+    // Optional<JSONArray> enginesOpt =
+    // Optional.ofNullable(
+    // Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
+    // Optional<JSONArray> enginePreloadOpt =
+    // Optional.ofNullable(
+    // Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
+    // enginesOpt.ifPresent(
+    // m -> {
+    // IntStream.range(0, m.length())
+    // .forEach(
+    // i -> {
+    // String cmd = m.optString(i);
+    // if (cmd != null && !cmd.isEmpty()) {
+    // Leelaz e;
+    // try {
+    // e = new Leelaz(cmd);
+    // // TODO: how sync the board
+    // // e.board = Lizzie.board;
+    // e.preload =
+    // enginePreloadOpt.map(p ->
     // p.optBoolean(i)).orElse(false);
-    //                                  if (e.preload) {
-    //                                    e.startEngine(i + 1);
-    //                                  }
-    //                                  // TODO: Need keep analyze?
-    //                                  // e.togglePonder();
-    //                                  engineList.add(e);
-    //                                } catch (JSONException | IOException e1) {
-    //                                  e1.printStackTrace();
-    //                                }
+    // if (e.preload) {
+    // e.startEngine(i + 1);
+    // }
+    // // TODO: Need keep analyze?
+    // // e.togglePonder();
+    // engineList.add(e);
+    // } catch (JSONException | IOException e1) {
+    // e1.printStackTrace();
+    // }
     //
-    //                              } else {
-    //                                // empty
-    //                                engineList.add(null);
-    //                              }
-    //                            });
-    //                  });
-    //            })
-    //        .start();
+    // } else {
+    // // empty
+    // engineList.add(null);
+    // }
+    // });
+    // });
+    // })
+    // .start();
 
     timer =
         new Timer(
@@ -254,24 +255,24 @@ public class EngineManager {
       }
     }
     if (Lizzie.frame.toolbar.isEnginePk) {
-      //      {
-      //        // if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
-      //        if (Lizzie.leelaz.isPondering()) {
-      //          timer3 =
-      //              new Timer(
-      //                  5000,
-      //                  new ActionListener() {
-      //                    public void actionPerformed(ActionEvent evt) {
-      //                      checkEngineNotHang();
+      // {
+      // // if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
+      // if (Lizzie.leelaz.isPondering()) {
+      // timer3 =
+      // new Timer(
+      // 5000,
+      // new ActionListener() {
+      // public void actionPerformed(ActionEvent evt) {
+      // checkEngineNotHang();
       //
-      //                      try {
-      //                      } catch (Exception e) {
-      //                      }
-      //                    }
-      //                  });
-      //          timer3.start();
-      //        }
-      //      }
+      // try {
+      // } catch (Exception e) {
+      // }
+      // }
+      // });
+      // timer3.start();
+      // }
+      // }
       timer2 =
           new Timer(
               5000,
@@ -334,15 +335,15 @@ public class EngineManager {
 
   public void updateEngines() {
     ArrayList<EngineData> engineData = getEngineData();
-    //    JSONObject config;
-    //    config = Lizzie.config.config.getJSONObject("leelaz");
-    //    String engineCommand;
-    //    engineCommand = config.getString("engine-command");
-    //    engineCommand = engineCommand.replaceAll("%network-file",
+    // JSONObject config;
+    // config = Lizzie.config.config.getJSONObject("leelaz");
+    // String engineCommand;
+    // engineCommand = config.getString("engine-command");
+    // engineCommand = engineCommand.replaceAll("%network-file",
     // config.getString("network-file"));
-    //    engineList.get(0).engineCommand = engineCommand;
-    //    Optional<JSONArray> enginesOpt =
-    //        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
+    // engineList.get(0).engineCommand = engineCommand;
+    // Optional<JSONArray> enginesOpt =
+    // Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
     for (int i = 0; i < engineData.size(); i++) {
       EngineData engineDt = engineData.get(i);
 
@@ -600,8 +601,8 @@ public class EngineManager {
       }
       Lizzie.leelaz = newEng;
       // TODO: how sync the board
-      //    newEng.board = curEng.board;
-      //    Lizzie.board = newEng.board;
+      // newEng.board = curEng.board;
+      // Lizzie.board = newEng.board;
       if (!newEng.isStarted()) {
         newEng.startEngine(index);
       } else {
@@ -641,7 +642,7 @@ public class EngineManager {
     Lizzie.frame.toolbar.isEnginePk = false;
     featurecat.lizzie.gui.Menu.engineMenu.setEnabled(true);
     if (Lizzie.board.getData().blackToPlay) {
-      //  switchEngine(Lizzie.frame.toolbar.engineWhite);
+      // switchEngine(Lizzie.frame.toolbar.engineWhite);
       Lizzie.leelaz = engineList.get(Lizzie.frame.toolbar.engineBlack);
       engineList.get(Lizzie.frame.toolbar.engineWhite).nameCmd();
 
@@ -650,7 +651,7 @@ public class EngineManager {
       // switchEngine(Lizzie.frame.toolbar.engineBlack);
       Lizzie.leelaz = engineList.get(Lizzie.frame.toolbar.engineWhite);
       engineList.get(Lizzie.frame.toolbar.engineBlack).nameCmd();
-      //	engineList.get(Lizzie.frame.toolbar.engineWhite).clear();
+      // engineList.get(Lizzie.frame.toolbar.engineWhite).clear();
       // switchEngine(Lizzie.frame.toolbar.engineWhite);
     }
     this.currentEngineNo = Lizzie.leelaz.currentEngineN();
@@ -659,16 +660,16 @@ public class EngineManager {
     changeEngIco();
   }
   //
-  //  private void ponderForEndpk() {
-  //    Lizzie.leelaz.togglePonder();
-  //    Lizzie.leelaz.togglePonder();
-  //    try {
-  //      timer4.stop();
-  //      timer4 = null;
-  //    } catch (Exception ex) {
+  // private void ponderForEndpk() {
+  // Lizzie.leelaz.togglePonder();
+  // Lizzie.leelaz.togglePonder();
+  // try {
+  // timer4.stop();
+  // timer4 = null;
+  // } catch (Exception ex) {
   //
-  //    }
-  //  }
+  // }
+  // }
 
   private void changeEngIco() {
     for (int i = 0; i < Lizzie.frame.menu.engine.length; i++) {

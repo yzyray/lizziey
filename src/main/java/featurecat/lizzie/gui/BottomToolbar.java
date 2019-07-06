@@ -146,11 +146,12 @@ public class BottomToolbar extends JPanel {
   public JCheckBox chkenginePkBatch;
   public JCheckBox chkenginePkContinue;
   public ArrayList<Movelist> startGame;
-  //  public JCheckBox chkenginePkAutosave;
+  // public JCheckBox chkenginePkAutosave;
 
   public JButton btnStartPk;
   public JButton btnEnginePkConfig;
   public JButton btnEnginePkStop;
+  public JButton btnEngineMannul;
 
   JLabel lblenginePk;
   // JLabel lblgenmove;
@@ -454,13 +455,13 @@ public class BottomToolbar extends JPanel {
             setTxtUnfocuse();
           }
         });
-    //        backward1.addActionListener(
-    //            new ActionListener() {
-    //              public void actionPerformed(ActionEvent e) {
-    //                Input.undo(1);
-    //                setAllUnfocuse();
-    //              }
-    //            });
+    // backward1.addActionListener(
+    // new ActionListener() {
+    // public void actionPerformed(ActionEvent e) {
+    // Input.undo(1);
+    // setAllUnfocuse();
+    // }
+    // });
     openfile.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -878,8 +879,8 @@ public class BottomToolbar extends JPanel {
     enginePkPanel.add(chkenginePk);
     enginePkPanel.add(lblenginePk);
 
-    chkenginePk.setBounds(5, 1, 20, 18);
-    lblenginePk.setBounds(25, 0, 60, 18);
+    chkenginePk.setBounds(2, 1, 20, 18);
+    lblenginePk.setBounds(22, 0, 60, 18);
     chkenginePk.addActionListener(
         new ActionListener() {
           @Override
@@ -897,29 +898,29 @@ public class BottomToolbar extends JPanel {
         });
 
     // chkenginePkgenmove = new JCheckBox();
-    //  lblgenmove = new JLabel("genmove");
-    //  enginePkPanel.add(chkenginePkgenmove);
-    //  enginePkPanel.add(lblgenmove);
-    //  chkenginePkgenmove.setBounds(70, 23, 20, 18);
-    //  lblgenmove.setBounds(90, 22, 60, 18);
+    // lblgenmove = new JLabel("genmove");
+    // enginePkPanel.add(chkenginePkgenmove);
+    // enginePkPanel.add(lblgenmove);
+    // chkenginePkgenmove.setBounds(70, 23, 20, 18);
+    // lblgenmove.setBounds(90, 22, 60, 18);
 
-    //    chkenginePkgenmove.addActionListener(
-    //        new ActionListener() {
-    //          @Override
-    //          public void actionPerformed(ActionEvent e) {
-    //            // TBD未完成
-    //            setTxtUnfocuse();
-    //            if (chkenginePkgenmove.isSelected()) {
-    //              chkenginePkPlayouts.setSelected(false);
-    //              chkenginePkPlayouts.setEnabled(false);
-    //              chkenginePkFirstPlayputs.setSelected(false);
-    //              chkenginePkFirstPlayputs.setEnabled(false);
-    //            } else {
-    //              chkenginePkFirstPlayputs.setEnabled(true);
-    //              chkenginePkPlayouts.setEnabled(true);
-    //            }
-    //          }
-    //        });
+    // chkenginePkgenmove.addActionListener(
+    // new ActionListener() {
+    // @Override
+    // public void actionPerformed(ActionEvent e) {
+    // // TBD未完成
+    // setTxtUnfocuse();
+    // if (chkenginePkgenmove.isSelected()) {
+    // chkenginePkPlayouts.setSelected(false);
+    // chkenginePkPlayouts.setEnabled(false);
+    // chkenginePkFirstPlayputs.setSelected(false);
+    // chkenginePkFirstPlayputs.setEnabled(false);
+    // } else {
+    // chkenginePkFirstPlayputs.setEnabled(true);
+    // chkenginePkPlayouts.setEnabled(true);
+    // }
+    // }
+    // });
 
     btnEnginePkConfig = new JButton("设置");
     enginePkPanel.add(btnEnginePkConfig);
@@ -1020,17 +1021,17 @@ public class BottomToolbar extends JPanel {
                   timew = Integer.parseInt(txtenginePkTimeWhite.getText().replace(" ", ""));
                 } catch (NumberFormatException err) {
                 }
-                //                if (timeb <= 0 || timew <= 0) {
-                //                  boolean onTop = false;
-                //                  if (Lizzie.frame.isAlwaysOnTop()) {
-                //                    Lizzie.frame.setAlwaysOnTop(false);
-                //                    onTop = true;
-                //                  }
-                //                  JOptionPane.showMessageDialog(Lizzie.frame,
+                // if (timeb <= 0 || timew <= 0) {
+                // boolean onTop = false;
+                // if (Lizzie.frame.isAlwaysOnTop()) {
+                // Lizzie.frame.setAlwaysOnTop(false);
+                // onTop = true;
+                // }
+                // JOptionPane.showMessageDialog(Lizzie.frame,
                 // "genmove模式下必须设置黑白双方用时");
-                //                  if (onTop) Lizzie.frame.setAlwaysOnTop(true);
-                //                  return;
-                //                }
+                // if (onTop) Lizzie.frame.setAlwaysOnTop(true);
+                // return;
+                // }
               }
               if (engineWhite == engineBlack) {
                 if (isGenmove) {
@@ -1074,14 +1075,14 @@ public class BottomToolbar extends JPanel {
               chkenginePkBatch.setEnabled(false);
               enginePkBlack.setEnabled(false);
               enginePkWhite.setEnabled(false);
-              //         chkenginePkgenmove.setEnabled(false);
+              // chkenginePkgenmove.setEnabled(false);
               chkenginePk.setEnabled(false);
               btnEnginePkConfig.setEnabled(false);
-              //   if (isEnginePkBatch) {
+              // if (isEnginePkBatch) {
               // chkenginePkAutosave.setSelected(true);
               // chkenginePkAutosave.setEnabled(false);
               // AutosavePk=true;
-              //   }
+              // }
               if (chkenginePkContinue.isSelected()) {
                 startGame = Lizzie.board.getmovelist();
               }
@@ -1214,23 +1215,23 @@ public class BottomToolbar extends JPanel {
 
     enginePkBlack = new JComboBox();
     enginePkPanel.add(enginePkBlack);
-    enginePkBlack.setBounds(95, 2, 105, 18);
+    enginePkBlack.setBounds(90, 2, 95, 18);
     lblengineBlack = new JLabel("黑:");
     enginePkPanel.add(lblengineBlack);
-    lblengineBlack.setBounds(80, 0, 15, 20);
+    lblengineBlack.setBounds(75, 0, 15, 20);
 
     lblenginePkResult = new JLabel("0:0");
     enginePkPanel.add(lblenginePkResult);
-    lblenginePkResult.setBounds(205, 0, 45, 20);
+    lblenginePkResult.setBounds(190, 0, 45, 20);
 
     enginePkWhite = new JComboBox();
     addEngineLis();
     enginePkPanel.add(enginePkWhite);
-    enginePkWhite.setBounds(270, 2, 105, 18);
+    enginePkWhite.setBounds(255, 2, 95, 18);
 
     lblengineWhite = new JLabel("白:");
     enginePkPanel.add(lblengineWhite);
-    lblengineWhite.setBounds(255, 0, 15, 20);
+    lblengineWhite.setBounds(230, 0, 15, 20);
 
     enginePkBlack.setEnabled(false);
     enginePkWhite.setEnabled(false);
@@ -1298,9 +1299,9 @@ public class BottomToolbar extends JPanel {
     enginePkPanel.add(lblenginePkPlayputs);
     enginePkPanel.add(chkenginePkPlayouts);
     enginePkPanel.add(txtenginePkPlayputs);
-    chkenginePkPlayouts.setBounds(380, 1, 20, 18);
-    lblenginePkPlayputs.setBounds(400, 0, 70, 18);
-    txtenginePkPlayputs.setBounds(470, 2, 50, 18);
+    chkenginePkPlayouts.setBounds(355, 1, 20, 18);
+    lblenginePkPlayputs.setBounds(375, 0, 70, 18);
+    txtenginePkPlayputs.setBounds(445, 2, 50, 18);
     chkenginePkPlayouts.addActionListener(
         new ActionListener() {
           @Override
@@ -1313,23 +1314,36 @@ public class BottomToolbar extends JPanel {
     txtenginePkPlayputsWhite = new JTextField();
     enginePkPanel.add(lblenginePkPlayputsWhite);
     enginePkPanel.add(txtenginePkPlayputsWhite);
-    lblenginePkPlayputsWhite.setBounds(525, 0, 15, 18);
-    txtenginePkPlayputsWhite.setBounds(540, 2, 50, 18);
+    lblenginePkPlayputsWhite.setBounds(498, 0, 15, 18);
+    txtenginePkPlayputsWhite.setBounds(513, 2, 50, 18);
 
-    //    chkenginePkAutosave = new JCheckBox();
-    //    lblenginePkAutosave = new JLabel("自动保存");
-    //    enginePkPanel.add(chkenginePkAutosave);
-    //    enginePkPanel.add(lblenginePkAutosave);
-    //    chkenginePkAutosave.setBounds(515, 1, 20, 18);
-    //    lblenginePkAutosave.setBounds(535, 0, 50, 20);
+    btnEngineMannul = new JButton("干预");
+
+    btnEngineMannul.setBounds(563, 1, 35, 20);
+    btnEngineMannul.setMargin(new Insets(0, 0, 0, 0));
+    btnEngineMannul.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            // 打开干预面板
+            setTxtUnfocuse();
+          }
+        });
+
+    enginePkPanel.add(btnEngineMannul);
+    // chkenginePkAutosave = new JCheckBox();
+    // lblenginePkAutosave = new JLabel("自动保存");
+    // enginePkPanel.add(chkenginePkAutosave);
+    // enginePkPanel.add(lblenginePkAutosave);
+    // chkenginePkAutosave.setBounds(515, 1, 20, 18);
+    // lblenginePkAutosave.setBounds(535, 0, 50, 20);
     //
-    //    chkenginePkAutosave.addActionListener(
-    //        new ActionListener() {
-    //          @Override
-    //          public void actionPerformed(ActionEvent e) {
-    //            setTxtUnfocuse();
-    //          }
-    //        });
+    // chkenginePkAutosave.addActionListener(
+    // new ActionListener() {
+    // @Override
+    // public void actionPerformed(ActionEvent e) {
+    // setTxtUnfocuse();
+    // }
+    // });
 
     chkAutoPlay.setFocusable(false);
     chkAutoPlayBlack.setFocusable(false);
@@ -1351,6 +1365,7 @@ public class BottomToolbar extends JPanel {
     chkAutoPlayPlayouts.setFocusable(false);
     chkAutoPlayFirstPlayouts.setFocusable(false);
     btnStartPk.setFocusable(false);
+    btnEngineMannul.setFocusable(false);
     chkenginePk.setFocusable(false);
     chkenginePkTime.setFocusable(false);
     chkenginePkPlayouts.setFocusable(false);

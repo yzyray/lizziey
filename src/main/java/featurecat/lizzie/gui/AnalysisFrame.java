@@ -52,13 +52,13 @@ public class AnalysisFrame extends JPanel {
 
     scrollpane = new JScrollPane(table);
     add(scrollpane);
-    //    {
+    // {
     //
-    //          @Override
-    //          public Dimension getPreferredSize() {
-    //            return new Dimension(510, 245);
-    //          }
-    //        };
+    // @Override
+    // public Dimension getPreferredSize() {
+    // return new Dimension(510, 245);
+    // }
+    // };
 
     timer =
         new Timer(
@@ -196,14 +196,14 @@ public class AnalysisFrame extends JPanel {
       }
     }
     // 该类继承与JLabel，Graphics用于绘制单元格,绘制红线
-    //      public void paintComponent(Graphics g){
-    //          super.paintComponent(g);
-    //          Graphics2D g2=(Graphics2D)g;
-    //          final BasicStroke stroke=new BasicStroke(2.0f);
-    //          g2.setColor(Color.RED);
-    //          g2.setStroke(stroke);
-    //          g2.drawLine(0,getHeight()/2,getWidth(),getHeight()/2);
-    //      }
+    // public void paintComponent(Graphics g){
+    // super.paintComponent(g);
+    // Graphics2D g2=(Graphics2D)g;
+    // final BasicStroke stroke=new BasicStroke(2.0f);
+    // g2.setColor(Color.RED);
+    // g2.setStroke(stroke);
+    // g2.drawLine(0,getHeight()/2,getWidth(),getHeight()/2);
+    // }
   }
 
   private void togglealwaysontop() {
@@ -288,7 +288,7 @@ public class AnalysisFrame extends JPanel {
             data2.add(Lizzie.board.getData().bestMoves.get(i));
         }
 
-        //		Collections.sort(data2) ;
+        // Collections.sort(data2) ;
         Collections.sort(
             data2,
             new Comparator<MoveData>() {
@@ -324,7 +324,8 @@ public class AnalysisFrame extends JPanel {
               }
             });
 
-        // featurecat.lizzie.analysis.MoveDataSorter MoveDataSorter = new MoveDataSorter(data2);
+        // featurecat.lizzie.analysis.MoveDataSorter MoveDataSorter = new
+        // MoveDataSorter(data2);
         // ArrayList sortedMoveData = MoveDataSorter.getSortedMoveDataByPolicy();
         double maxlcb = 0;
         for (MoveData move : data2) {
@@ -335,8 +336,8 @@ public class AnalysisFrame extends JPanel {
           case 0:
             //
             // if(Lizzie.board.convertNameToCoordinates(data.coordinate)[0]==Lizzie.frame.suggestionclick[0]&&Lizzie.board.convertNameToCoordinates(data.coordinate)[1]==Lizzie.frame.suggestionclick[1])
-            //        	  {return "*"+data.coordinate;}
-            //        	  else
+            // {return "*"+data.coordinate;}
+            // else
             return data.coordinate;
           case 1:
             return String.format("%.2f", data.lcb) + "-" + String.format("%.2f", maxlcb - data.lcb);
@@ -376,7 +377,8 @@ public class AnalysisFrame extends JPanel {
 
     jfs.setTitle("U显示/关闭,单击显示紫圈(小棋盘显示变化),右键落子,双击显示变化,Q切换总在最前");
 
-    //  JDialog dialog = new JDialog(owner, "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
+    // JDialog dialog = new JDialog(owner,
+    // "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
     jfs.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {

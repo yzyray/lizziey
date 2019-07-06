@@ -188,9 +188,9 @@ public class LizzieFrame extends JFrame {
 
     try {
       uiFont = new Font("微软雅黑", Font.PLAIN, 12);
-      //      uiFont = // new Font("圆体", Font.TRUETYPE_FONT, 15);
-      //          Font.createFont(
-      //              Font.TRUETYPE_FONT,
+      // uiFont = // new Font("圆体", Font.TRUETYPE_FONT, 15);
+      // Font.createFont(
+      // Font.TRUETYPE_FONT,
       //
       // Thread.currentThread().getContextClassLoader().getResourceAsStream("fonts/MSYH.TTC"));
       winrateFont =
@@ -362,10 +362,11 @@ public class LizzieFrame extends JFrame {
 
     setVisible(true);
 
-    //  createBufferStrategy(2);
-    //   bs = getBufferStrategy();
+    // createBufferStrategy(2);
+    // bs = getBufferStrategy();
 
-    // necessary for Windows users - otherwise Lizzie shows a blank white screen on startup until
+    // necessary for Windows users - otherwise Lizzie shows a blank white screen on
+    // startup until
     // updates occur.
     repaint();
     autoIntervalCom =
@@ -580,14 +581,14 @@ public class LizzieFrame extends JFrame {
   }
 
   public void countstones() {
-    //    if (isfirstcount) {
-    //      try {
-    //        zen = new YaZenGtp();
-    //      } catch (IOException e1) {
-    //        e1.printStackTrace();
-    //      }
-    //      isfirstcount = false;
-    //    } else
+    // if (isfirstcount) {
+    // try {
+    // zen = new YaZenGtp();
+    // } catch (IOException e1) {
+    // e1.printStackTrace();
+    // }
+    // isfirstcount = false;
+    // } else
     if (zen == null || !zen.process.isAlive()) {
       try {
         zen = new YaZenGtp();
@@ -937,17 +938,17 @@ public class LizzieFrame extends JFrame {
       int ponderingY =
           height - bottomInset; // - (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize);
       int ponderingY2 =
-          height
-              - bottomInset; // - (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize * 0.4);
+          height - bottomInset; // - (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize *
+      // 0.4);
       if (Lizzie.config.showStatus) {
         ponderingY = ponderingY - (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize);
         ponderingY2 =
             ponderingY2 - (int) (maxSize * 0.023) - (int) (maxBound * ponderingSize * 0.4);
       }
       // dynamic komi
-      //   double dynamicKomiSize = .02;
-      //  int dynamicKomiX = leftInset;
-      //  int dynamicKomiY = ponderingY - (int) (maxBound * dynamicKomiSize);
+      // double dynamicKomiSize = .02;
+      // int dynamicKomiX = leftInset;
+      // int dynamicKomiY = ponderingY - (int) (maxBound * dynamicKomiSize);
       // int dynamicKomiLabelX = leftInset;
       // int dynamicKomiLabelY = dynamicKomiY - (int) (maxBound * dynamicKomiSize);
 
@@ -1273,16 +1274,18 @@ public class LizzieFrame extends JFrame {
         }
         // Optional<String> dynamicKomi = Lizzie.leelaz.getDynamicKomi();
         // if (Lizzie.config.showDynamicKomi && dynamicKomi.isPresent()) {
-        //   String text = resourceBundle.getString("LizzieFrame.display.dynamic-komi");
-        //    drawPonderingState(g, text, dynamicKomiLabelX, dynamicKomiLabelY, dynamicKomiSize);
-        //   drawPonderingState(g, dynamicKomi.get(), dynamicKomiX, dynamicKomiY, dynamicKomiSize);
-        //  }
+        // String text = resourceBundle.getString("LizzieFrame.display.dynamic-komi");
+        // drawPonderingState(g, text, dynamicKomiLabelX, dynamicKomiLabelY,
+        // dynamicKomiSize);
+        // drawPonderingState(g, dynamicKomi.get(), dynamicKomiX, dynamicKomiY,
+        // dynamicKomiSize);
+        // }
 
         // Todo: Make board move over when there is no space beside the board
 
         if (Lizzie.config.showVariationGraph || Lizzie.config.showComment) {
-          //  if (backgroundG.isPresent()) {
-          //  drawContainer(backgroundG.get(), vx, vy, vw, vh);
+          // if (backgroundG.isPresent()) {
+          // drawContainer(backgroundG.get(), vx, vy, vw, vh);
           // }
           if (Lizzie.config.showVariationGraph) {
             if (isSmallCap) {
@@ -1297,7 +1300,7 @@ public class LizzieFrame extends JFrame {
         if (Lizzie.config.showSubBoard) {
           try {
             subBoardRenderer.setLocation(subBoardX, subBoardY);
-            //	  subBoardRenderer.setLocation( cx,cy);
+            // subBoardRenderer.setLocation( cx,cy);
             subBoardRenderer.setBoardLength(subBoardLength, subBoardLength);
             subBoardRenderer.setupSizeParameters();
             subBoardRenderer.draw(g);
@@ -1306,13 +1309,13 @@ public class LizzieFrame extends JFrame {
           }
         }
         if (Lizzie.config.showWinrate) {
-          //	  drawMoveStatistics(g, statx, staty, statw, stath);
+          // drawMoveStatistics(g, statx, staty, statw, stath);
           // if (backgroundG.isPresent()) {
           // if (isSmallCap) {
-          //   contw = contw + contw;
+          // contw = contw + contw;
           // }
           // drawContainer(backgroundG.get(), contx, conty, contw, conth);
-          //  }
+          // }
           winrateGraph.draw(g, grx, gry, grw, grh);
         }
       } else {
@@ -1327,14 +1330,14 @@ public class LizzieFrame extends JFrame {
     }
 
     // draw the image
-    //   Graphics2D bsGraphics = (Graphics2D) bs.getDrawGraphics();
-    //    bsGraphics.setRenderingHint(RenderingHints.KEY_RENDERING,
+    // Graphics2D bsGraphics = (Graphics2D) bs.getDrawGraphics();
+    // bsGraphics.setRenderingHint(RenderingHints.KEY_RENDERING,
     // RenderingHints.VALUE_RENDER_QUALITY);
-    //    bsGraphics.drawImage(cachedBackground, 0, 0, null);
-    //    bsGraphics.drawImage(cachedImage, 0, 0, null);
+    // bsGraphics.drawImage(cachedBackground, 0, 0, null);
+    // bsGraphics.drawImage(cachedImage, 0, 0, null);
 
     // cleanup
-    //  bsGraphics.dispose();
+    // bsGraphics.dispose();
     // bs.show();
     g0.drawImage(cachedBackground, 0, 0, null);
     g0.drawImage(cachedImage, 0, 0, null);
@@ -1429,9 +1432,10 @@ public class LizzieFrame extends JFrame {
     int height = max((int) (stringHeight * 1.2), 1);
 
     BufferedImage result = new BufferedImage(width, height, TYPE_INT_ARGB);
-    // commenting this out for now... always causing an exception on startup. will fix in the
+    // commenting this out for now... always causing an exception on startup. will
+    // fix in the
     // upcoming refactoring
-    //        filter20.filter(cachedBackground.getSubimage(x, y, result.getWidth(),
+    // filter20.filter(cachedBackground.getSubimage(x, y, result.getWidth(),
     // result.getHeight()), result);
     g.drawImage(result, x, y, null);
 
@@ -1509,8 +1513,8 @@ public class LizzieFrame extends JFrame {
     createBackground(mainPanel.getWidth(), mainPanel.getHeight());
 
     List<String> commandsToShow = new ArrayList<>(Arrays.asList(commands));
-    //  if (Lizzie.leelaz.getDynamicKomi().isPresent()) {
-    //   commandsToShow.add(resourceBundle.getString("LizzieFrame.commands.keyD"));
+    // if (Lizzie.leelaz.getDynamicKomi().isPresent()) {
+    // commandsToShow.add(resourceBundle.getString("LizzieFrame.commands.keyD"));
     // }
 
     Graphics2D g = cachedImage.createGraphics();
@@ -1591,7 +1595,7 @@ public class LizzieFrame extends JFrame {
     int showCommandsWidth = g.getFontMetrics(font).stringWidth(commandString) + 4 * strokeRadius;
     int showCommandsX = mainPanel.getInsets().left;
     int showCommandsY = mainPanel.getHeight() - showCommandsHeight - mainPanel.getInsets().bottom;
-    //   - this.getJMenuBar().getHeight();
+    // - this.getJMenuBar().getHeight();
     g.setColor(new Color(0, 0, 0, 130));
     g.fillRect(showCommandsX, showCommandsY, showCommandsWidth, showCommandsHeight);
     if (Lizzie.config.showBorder) {
@@ -1661,15 +1665,18 @@ public class LizzieFrame extends JFrame {
     int strokeRadius = Lizzie.config.showBorder ? 3 : 1;
     g.setStroke(new BasicStroke(strokeRadius == 1 ? strokeRadius : 2 * strokeRadius));
     g.drawLine(
-        posX + strokeRadius, posY + strokeRadius,
-        posX - strokeRadius + width, posY + strokeRadius);
+        posX + strokeRadius, posY + strokeRadius, posX - strokeRadius + width, posY + strokeRadius);
     if (Lizzie.config.showBorder) {
       g.drawLine(
-          posX + strokeRadius, posY + 3 * strokeRadius,
-          posX + strokeRadius, posY - strokeRadius + height);
+          posX + strokeRadius,
+          posY + 3 * strokeRadius,
+          posX + strokeRadius,
+          posY - strokeRadius + height);
       g.drawLine(
-          posX - strokeRadius + width, posY + 3 * strokeRadius,
-          posX - strokeRadius + width, posY - strokeRadius + height);
+          posX - strokeRadius + width,
+          posY + 3 * strokeRadius,
+          posX - strokeRadius + width,
+          posY - strokeRadius + height);
     }
 
     // resize the box now so it's inside the border
@@ -1689,11 +1696,11 @@ public class LizzieFrame extends JFrame {
     // validLastWinrate && validWinrate
     if (true) {
       String text = "";
-      //   if (Lizzie.config.handicapInsteadOfWinrate) {
-      //   double currHandicapedWR = Lizzie.leelaz.winrateToHandicap(100 - curWR);
-      //    double lastHandicapedWR = Lizzie.leelaz.winrateToHandicap(lastWR);
-      //    text = String.format(": %.2f", currHandicapedWR - lastHandicapedWR);
-      //  } else {
+      // if (Lizzie.config.handicapInsteadOfWinrate) {
+      // double currHandicapedWR = Lizzie.leelaz.winrateToHandicap(100 - curWR);
+      // double lastHandicapedWR = Lizzie.leelaz.winrateToHandicap(lastWR);
+      // text = String.format(": %.2f", currHandicapedWR - lastHandicapedWR);
+      // } else {
 
       // }
       if (toolbar.isEnginePk && Lizzie.board.getHistory().getMoveNumber() <= 3) {
@@ -1743,8 +1750,9 @@ public class LizzieFrame extends JFrame {
     } else {
       // I think it's more elegant to just not display anything when we don't have
       // valid data --dfannius
-      // g.drawString(resourceBundle.getString("LizzieFrame.display.lastMove") + ": ?%",
-      //              posX + 2 * strokeRadius, posY + height - 2 * strokeRadius);
+      // g.drawString(resourceBundle.getString("LizzieFrame.display.lastMove") + ":
+      // ?%",
+      // posX + 2 * strokeRadius, posY + height - 2 * strokeRadius);
     }
 
     if (validWinrate || validLastWinrate) {
@@ -1942,9 +1950,9 @@ public class LizzieFrame extends JFrame {
       noautocounting();
       Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
     }
-    //    if (Lizzie.config.showSubBoard && subBoardRenderer.isInside(x, y)) {
-    //      Lizzie.config.toggleLargeSubBoard();
-    //    }
+    // if (Lizzie.config.showSubBoard && subBoardRenderer.isInside(x, y)) {
+    // Lizzie.config.toggleLargeSubBoard();
+    // }
     if (Lizzie.config.showVariationGraph) {
       variationTree.onClicked(x, y);
     }
@@ -2343,11 +2351,11 @@ public class LizzieFrame extends JFrame {
     if (Lizzie.config.showLargeSubBoard() || Lizzie.config.showLargeWinrate()) {
       fontSize = (int) (min(getWidth() * 0.4, getHeight()) * 0.0225);
     }
-    //	    if (Lizzie.config.commentFontSize > 0) {
-    //	      fontSize = Lizzie.config.commentFontSize;
-    //	    } else if (fontSize < 12) {
-    //	      fontSize = 12;
-    //	    }
+    // if (Lizzie.config.commentFontSize > 0) {
+    // fontSize = Lizzie.config.commentFontSize;
+    // } else if (fontSize < 12) {
+    // fontSize = 12;
+    // }
 
     if (Lizzie.config.commentFontSize != fontSize) {
       Lizzie.config.commentFontSize = fontSize;
@@ -2552,8 +2560,8 @@ public class LizzieFrame extends JFrame {
         boardRenderer.removedrawmovestone();
         repaint();
       } else {
-        //  System.out.println("拖动前后不一致");
-        //  System.out.println("拖动的棋子序号:"+draggedmovenumer);
+        // System.out.println("拖动前后不一致");
+        // System.out.println("拖动的棋子序号:"+draggedmovenumer);
 
         Stone stone = Lizzie.board.getstonestat(coords);
         if (stone != Stone.EMPTY) {
@@ -2582,10 +2590,10 @@ public class LizzieFrame extends JFrame {
     if (!isheatmap) {
       Lizzie.leelaz.isheatmap = true;
       isheatmap = true;
-      //      if (!Lizzie.leelaz.isPondering()) lastponder = false;
-      //      else {
-      //        lastponder = true;
-      //      }
+      // if (!Lizzie.leelaz.isPondering()) lastponder = false;
+      // else {
+      // lastponder = true;
+      // }
       //
       Lizzie.leelaz.sendCommand("heatmap");
       if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.ponder();

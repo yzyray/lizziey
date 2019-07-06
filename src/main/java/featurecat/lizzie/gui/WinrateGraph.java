@@ -19,7 +19,7 @@ public class WinrateGraph {
   public void draw(Graphics2D g, int posx, int posy, int width, int height) {
     BoardHistoryNode curMove = Lizzie.board.getHistory().getCurrentHistoryNode();
     BoardHistoryNode node = curMove;
-    //  maxcoreMean = 30.0;
+    // maxcoreMean = 30.0;
 
     // draw background rectangle
     final Paint gradient =
@@ -52,8 +52,10 @@ public class WinrateGraph {
           height - 2 * strokeRadius);
     } else {
       g.drawLine(
-          posx + strokeRadius, posy + strokeRadius,
-          posx - strokeRadius + width, posy + strokeRadius);
+          posx + strokeRadius,
+          posy + strokeRadius,
+          posx - strokeRadius + width,
+          posy + strokeRadius);
     }
 
     g.setPaint(original);
@@ -199,7 +201,8 @@ public class WinrateGraph {
           double lastMoveRate = convertWinrate(lastWr) - convertWinrate(wr);
           int lastHeight = 0;
           if (Lizzie.config.weightedBlunderBarHeight) {
-            // Weighted display: <= 50% will use 75% of height, >= 50% will use 25% of height
+            // Weighted display: <= 50% will use 75% of height, >= 50% will use 25% of
+            // height
             if (Math.abs(lastMoveRate) <= 50) {
               lastHeight = Math.abs((int) (lastMoveRate) * height * 3 / 400);
             } else {
@@ -320,10 +323,10 @@ public class WinrateGraph {
             } else if (!node.getData().blackToPlay) {
               wr = 100 - wr;
             }
-            //            if (Lizzie.frame.isPlayingAgainstLeelaz
-            //                && Lizzie.frame.playerIsBlack == !node.getData().blackToPlay) {
-            //              wr = lastWr;
-            //            }
+            // if (Lizzie.frame.isPlayingAgainstLeelaz
+            // && Lizzie.frame.playerIsBlack == !node.getData().blackToPlay) {
+            // wr = lastWr;
+            // }
 
             if (lastNodeOk) g.setColor(Lizzie.config.winrateLineColor);
             // g.setColor(Color.BLACK);
@@ -336,7 +339,8 @@ public class WinrateGraph {
                 double lastMoveRate = convertWinrate(lastWr) - convertWinrate(wr);
                 int lastHeight = 0;
                 if (Lizzie.config.weightedBlunderBarHeight) {
-                  // Weighted display: <= 50% will use 75% of height, >= 50% will use 25% of height
+                  // Weighted display: <= 50% will use 75% of height, >= 50% will use 25% of
+                  // height
                   if (Math.abs(lastMoveRate) <= 50) {
                     lastHeight = Math.abs((int) (lastMoveRate) * height * 3 / 400);
                   } else {
@@ -370,8 +374,8 @@ public class WinrateGraph {
                   posy + height - (int) (convertWinrate(wr) * height / 100) - DOT_RADIUS,
                   DOT_RADIUS * 2,
                   DOT_RADIUS * 2);
-              //              if (node.getData().blackToPlay) g.setColor(Color.WHITE);
-              //              else g.setColor(Color.BLACK);
+              // if (node.getData().blackToPlay) g.setColor(Color.WHITE);
+              // else g.setColor(Color.BLACK);
               cwr = wr;
               cmovenum = movenum;
             }
@@ -460,10 +464,10 @@ public class WinrateGraph {
             } else if (!node.getData().blackToPlay) {
               wr = 100 - wr;
             }
-            //            if (Lizzie.frame.isPlayingAgainstLeelaz
-            //                && Lizzie.frame.playerIsBlack == !node.getData().blackToPlay) {
-            //              wr = lastWr;
-            //            }
+            // if (Lizzie.frame.isPlayingAgainstLeelaz
+            // && Lizzie.frame.playerIsBlack == !node.getData().blackToPlay) {
+            // wr = lastWr;
+            // }
 
             if (lastOkMove > 0) {
               if (Lizzie.config.showBlunderBar) {
@@ -472,7 +476,8 @@ public class WinrateGraph {
                 double lastMoveRate = convertWinrate(lastWr) - convertWinrate(wr);
                 int lastHeight = 0;
                 if (Lizzie.config.weightedBlunderBarHeight) {
-                  // Weighted display: <= 50% will use 75% of height, >= 50% will use 25% of height
+                  // Weighted display: <= 50% will use 75% of height, >= 50% will use 25% of
+                  // height
                   if (Math.abs(lastMoveRate) <= 50) {
                     lastHeight = Math.abs((int) (lastMoveRate) * height * 3 / 400);
                   } else {
@@ -502,7 +507,7 @@ public class WinrateGraph {
               g.setColor(Color.WHITE);
               if (lastNodeOk) g.setStroke(new BasicStroke(2f));
               else g.setStroke(new BasicStroke(1f));
-              //  g.setColor(Color.WHITE);
+              // g.setColor(Color.WHITE);
               g.drawLine(
                   posx + (lastOkMove * width / numMoves),
                   posy + height - (int) (convertWinrate(100 - lastWr) * height / 100),
