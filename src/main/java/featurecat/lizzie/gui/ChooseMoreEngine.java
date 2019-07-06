@@ -2,7 +2,6 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Config;
 import featurecat.lizzie.Lizzie;
-import featurecat.lizzie.analysis.EngineManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +31,6 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import org.json.JSONArray;
-import org.json.JSONException;
 
 @SuppressWarnings("serial")
 public class ChooseMoreEngine extends JPanel {
@@ -67,8 +65,8 @@ public class ChooseMoreEngine extends JPanel {
   //  JButton scan;
   //  JButton delete;
   JButton ok;
- // JButton noEngine;
-//  JButton exit;
+  // JButton noEngine;
+  //  JButton exit;
   //  JCheckBox chkdefault;
   JRadioButton rdoDefault;
   JRadioButton rdoLast;
@@ -121,16 +119,16 @@ public class ChooseMoreEngine extends JPanel {
     table.getColumnModel().getColumn(5).setPreferredWidth(20);
     table.getColumnModel().getColumn(6).setPreferredWidth(30);
     table.getColumnModel().getColumn(7).setPreferredWidth(30);
-//    boolean persisted = Lizzie.config.persistedUi != null;
-//    if (persisted
-//        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
-//        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 12) {
-//      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
-//      //      table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
-//      //      table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
-//      //      table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
-//      //      table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
-//    }
+    //    boolean persisted = Lizzie.config.persistedUi != null;
+    //    if (persisted
+    //        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null
+    //        && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length() == 12) {
+    //      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
+    //      //      table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
+    //      //      table.getColumnModel().getColumn(1).setPreferredWidth(pos.getInt(5));
+    //      //      table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
+    //      //      table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
+    //    }
 
     JTableHeader header = table.getTableHeader();
 
@@ -140,13 +138,13 @@ public class ChooseMoreEngine extends JPanel {
     //    checkWhite.setSelected(true);
 
     ok = new JButton("切换选中引擎");
- //   noEngine = new JButton("不加载引擎");
-  //  exit = new JButton("退出");
+    //   noEngine = new JButton("不加载引擎");
+    //  exit = new JButton("退出");
 
- //   noEngine.setFocusable(false);
-  //  noEngine.setMargin(new Insets(0, 0, 0, 0));
- //   exit.setFocusable(false);
- //   exit.setMargin(new Insets(0, 0, 0, 0));
+    //   noEngine.setFocusable(false);
+    //  noEngine.setMargin(new Insets(0, 0, 0, 0));
+    //   exit.setFocusable(false);
+    //   exit.setMargin(new Insets(0, 0, 0, 0));
     ok.setFocusable(false);
     ok.setMargin(new Insets(0, 0, 0, 0));
 
@@ -159,8 +157,8 @@ public class ChooseMoreEngine extends JPanel {
     JLabel lblrdoMannul = new JLabel("手动选择");
 
     ok.setBounds(800, 0, 80, 22);
- //   noEngine.setBounds(800, 20, 80, 22);
-//    exit.setBounds(800, 20, 80, 22);
+    //   noEngine.setBounds(800, 20, 80, 22);
+    //    exit.setBounds(800, 20, 80, 22);
 
     lblchooseStart.setBounds(5, 0, 60, 20);
     rdoDefault.setBounds(60, 0, 20, 20);
@@ -175,8 +173,8 @@ public class ChooseMoreEngine extends JPanel {
     startGroup.add(rdoMannul);
 
     selectpanel.add(ok);
-  //  selectpanel.add(noEngine);
- //   selectpanel.add(exit);
+    //  selectpanel.add(noEngine);
+    //   selectpanel.add(exit);
 
     selectpanel.add(lblchooseStart);
     selectpanel.add(rdoDefault);
@@ -191,7 +189,7 @@ public class ChooseMoreEngine extends JPanel {
 
           @Override
           public void actionPerformed(ActionEvent e) {
-        	   engch.setVisible(false);
+            engch.setVisible(false);
             if (curIndex < 0) {
               JOptionPane.showMessageDialog(engch, "请先选择一个引擎 ");
               return;
@@ -216,38 +214,37 @@ public class ChooseMoreEngine extends JPanel {
               Lizzie.config.save();
             } catch (IOException es) {
             }
-     
-              Lizzie.engineManager.switchEngine(curIndex);
-         
+
+            Lizzie.engineManager.switchEngine(curIndex);
           }
         });
-//    exit.addActionListener(
-//        new ActionListener() {
-//
-//          @Override
-//          public void actionPerformed(ActionEvent e) {
-//            // TODO Auto-generated method stub
-//            System.exit(0);
-//          }
-//        });
-//    noEngine.addActionListener(
-//        new ActionListener() {
-//
-//          @Override
-//          public void actionPerformed(ActionEvent e) {
-//        	  engch.setVisible(false);
-//        	  try {
-//				Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
-//			} catch (JSONException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			} catch (IOException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//        	
-//          }
-//        });
+    //    exit.addActionListener(
+    //        new ActionListener() {
+    //
+    //          @Override
+    //          public void actionPerformed(ActionEvent e) {
+    //            // TODO Auto-generated method stub
+    //            System.exit(0);
+    //          }
+    //        });
+    //    noEngine.addActionListener(
+    //        new ActionListener() {
+    //
+    //          @Override
+    //          public void actionPerformed(ActionEvent e) {
+    //        	  engch.setVisible(false);
+    //        	  try {
+    //				Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
+    //			} catch (JSONException e1) {
+    //				// TODO Auto-generated catch block
+    //				e1.printStackTrace();
+    //			} catch (IOException e1) {
+    //				// TODO Auto-generated catch block
+    //				e1.printStackTrace();
+    //			}
+    //
+    //          }
+    //        });
 
     table.addMouseListener(
         new MouseAdapter() {
@@ -480,7 +477,7 @@ public class ChooseMoreEngine extends JPanel {
   }
 
   private void handleTableDoubleClick(int row, int col) {
-	  engch.setVisible(false);
+    engch.setVisible(false);
     curIndex = Integer.parseInt(table.getModel().getValueAt(row, 0).toString()) - 1;
     Lizzie.config.uiConfig.put("default-engine", curIndex);
     if (rdoDefault.isSelected()) {
@@ -653,7 +650,7 @@ public class ChooseMoreEngine extends JPanel {
     engch.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
-        	  engch.setVisible(false);
+            engch.setVisible(false);
           }
         });
 
@@ -663,12 +660,12 @@ public class ChooseMoreEngine extends JPanel {
     // Display the window.
     //  jf.setSize(521, 320);
 
-    //boolean persisted = Lizzie.config.persistedUi != null;
+    // boolean persisted = Lizzie.config.persistedUi != null;
 
     engch.setBounds(50, 50, 900, 720);
     engch.setResizable(false);
     try {
-    	engch.setIconImage(ImageIO.read(LoadEngine.class.getResourceAsStream("/assets/logo.png")));
+      engch.setIconImage(ImageIO.read(LoadEngine.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {
       e.printStackTrace();
     }
