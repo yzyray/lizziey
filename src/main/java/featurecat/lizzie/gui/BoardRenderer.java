@@ -1126,10 +1126,10 @@ public class BoardRenderer {
                 Color oriColor = g.getColor();
                 g.setColor(Color.ORANGE);
                 g.fillRect(
-                    (int) (suggestionX + stoneRadius * 0.6),
-                    (int) (suggestionY - stoneRadius * 1.2),
-                    (int) (stoneRadius * 0.5),
-                    (int) (stoneRadius * 0.5));
+                    (int) (suggestionX + stoneRadius * 0.55),
+                    (int) (suggestionY - stoneRadius * 1.3),
+                    (int) (stoneRadius * 0.58),
+                    (int) (stoneRadius * 0.6));
                 g.setColor(Color.BLACK);
                 drawString(
                     g,
@@ -1138,8 +1138,8 @@ public class BoardRenderer {
                     LizzieFrame.winrateFont,
                     Font.PLAIN,
                     number + "",
-                    (float) (stoneRadius * 0.5),
-                    stoneRadius * 0.5,
+                    (float) (stoneRadius * 0.8),
+                    stoneRadius * 0.8,
                     1);
                 g.setColor(oriColor);
               }
