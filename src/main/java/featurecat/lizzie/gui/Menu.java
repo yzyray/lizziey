@@ -721,7 +721,7 @@ public class Menu extends MenuBar {
     gameMenu.addSeparator();
 
     final JMenuItem setBoard = new JMenuItem();
-    setBoard.setText("设置棋盘大小");
+    setBoard.setText("设置棋盘大小(Ctrl+I)");
     setBoard.addActionListener(new ItemListeneryzy());
     gameMenu.add(setBoard);
 
@@ -779,7 +779,6 @@ public class Menu extends MenuBar {
 
     final JMenuItem setMain = new JMenuItem();
     setMain.setText("设为主分支");
-    setMain.addActionListener(new ItemListeneryzy());
     gameMenu.add(setMain);
 
     setMain.addActionListener(
@@ -910,6 +909,26 @@ public class Menu extends MenuBar {
     editMenu.add(bhisItem);
 
     editMenu.addSeparator();
+
+    final JCheckBoxMenuItem allowdrag = new JCheckBoxMenuItem();
+    allowdrag.setText("允许拖动和双击棋子");
+    editMenu.add(allowdrag);
+
+    allowdrag.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.allowDrageDoubleClick = !Lizzie.config.allowDrageDoubleClick;
+            Lizzie.config.uiConfig.put(
+                "allow-drag-doubleclick", Lizzie.config.allowDrageDoubleClick);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+
+    editMenu.addSeparator();
     final JMenuItem clearsave = new JMenuItem();
     clearsave.setText("清除Lizzie所有选点缓存");
     // aboutItem.setMnemonic('A');
@@ -921,6 +940,26 @@ public class Menu extends MenuBar {
     // aboutItem.setMnemonic('A');
     clearthis.addActionListener(new ItemListeneryzy());
     editMenu.add(clearthis);
+
+    editMenu.addMenuListener(
+        new MenuListener() {
+
+          public void menuSelected(MenuEvent e) {
+            if (Lizzie.config.allowDrageDoubleClick) allowdrag.setState(true);
+            else allowdrag.setState(false);
+          }
+
+          @Override
+          public void menuDeselected(MenuEvent e) {
+            // TODO Auto-generated method stub
+          }
+
+          @Override
+          public void menuCanceled(MenuEvent e) {
+            // TODO Auto-generated method stub
+
+          }
+        });
 
     engineMenu = new JMenu("引擎 ", false);
     engineMenu.setText(" 引擎  ");

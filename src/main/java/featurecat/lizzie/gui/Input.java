@@ -25,7 +25,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     }
     if (e.getButton() == MouseEvent.BUTTON1) // left click
     {
-      if (e.getClickCount() == 2) { // TODO: Maybe need to delay check
+      if (e.getClickCount() == 2
+          && !Lizzie.frame.isTrying
+          && !Lizzie.frame.urlSgf
+          && Lizzie.config.allowDrageDoubleClick) { // TODO: Maybe need to delay check
         Lizzie.frame.onDoubleClicked(e.getX(), e.getY());
       } else {
         if (insert == 0) {
@@ -60,7 +63,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseReleased(MouseEvent e) {
-    if (Draggedmode && !Lizzie.frame.isTrying) {
+    if (Draggedmode
+        && !Lizzie.frame.isTrying
+        && !Lizzie.frame.urlSgf
+        && Lizzie.config.allowDrageDoubleClick) {
       Lizzie.frame.DraggedReleased(e.getX(), e.getY());
       return;
     }
@@ -114,7 +120,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseDragged(MouseEvent e) {
-    if (Draggedmode && !Lizzie.frame.isTrying) {
+    if (Draggedmode
+        && !Lizzie.frame.isTrying
+        && !Lizzie.frame.urlSgf
+        && Lizzie.config.allowDrageDoubleClick) {
       Lizzie.frame.DraggedDragged(e.getX(), e.getY());
       return;
     }
@@ -123,7 +132,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseMoved(MouseEvent e) {
-    if (Draggedmode && !Lizzie.frame.isTrying) {
+    if (Draggedmode
+        && !Lizzie.frame.isTrying
+        && !Lizzie.frame.urlSgf
+        && Lizzie.config.allowDrageDoubleClick) {
       Lizzie.frame.DraggedMoved(e.getX(), e.getY());
       return;
     }
@@ -421,7 +433,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       case VK_I:
         // stop the ponder
         // if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
-        Lizzie.frame.editGameInfo();
+        if (e.isControlDown()) {
+          SetBoardSize st = new SetBoardSize();
+          st.setVisible(true);
+        } else Lizzie.frame.editGameInfo();
         break;
       case VK_S:
         // stop the ponder

@@ -45,6 +45,7 @@ public class Config {
   public boolean kataGoNotShowWinrate = false;
   public boolean scoreMeanWinrateGraphBoard = false;
   public boolean showKataGoEstimate = false;
+  public boolean allowDrageDoubleClick = true;
   public boolean showKataGoEstimateBySize = false;
   public boolean showKataGoEstimateOnSubbord = true;
   public boolean showKataGoEstimateOnMainbord = true;
@@ -281,6 +282,7 @@ public class Config {
     showSuggestionMaxRed = uiConfig.optBoolean("show-suggestion-maxred", true);
     showSuggestionVaritions = uiConfig.optBoolean("show-suggestion-varitions", true);
     showKataGoEstimateBySize = uiConfig.optBoolean("show-katago-estimate-bysize", false);
+    allowDrageDoubleClick = uiConfig.optBoolean("allow-drag-doubleclick", true);
     showKataGoEstimateOnSubbord = uiConfig.optBoolean("show-katago-estimate-onsubbord", true);
     showKataGoEstimateOnMainbord = uiConfig.optBoolean("show-katago-estimate-onmainboard", true);
     // showBestMoves = uiConfig.getBoolean("show-best-moves");
