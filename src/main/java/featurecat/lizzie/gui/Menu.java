@@ -68,32 +68,32 @@ public class Menu extends MenuBar {
     fileMenu.setFont(headFont);
 
     menuBar.add(fileMenu);
-    final JMenuItem openItem = new JMenuItem("打开棋谱（O）");
+    final JMenuItem openItem = new JMenuItem("打开棋谱(O)");
     openItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openItem);
 
     menuBar.add(fileMenu);
-    final JMenuItem batchfile = new JMenuItem("批量分析棋谱（ALT+O）");
+    final JMenuItem batchfile = new JMenuItem("批量分析棋谱(ALT+O)");
     batchfile.addActionListener(new ItemListeneryzy());
     fileMenu.add(batchfile);
 
-    final JMenuItem openUrlItem = new JMenuItem("打开在线棋谱（Q）");
+    final JMenuItem openUrlItem = new JMenuItem("打开在线棋谱(Q)");
     openUrlItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openUrlItem);
 
     final JMenuItem saveItem = new JMenuItem();
-    saveItem.setText("保存棋谱（S）");
+    saveItem.setText("保存棋谱(S)");
     saveItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(saveItem);
 
     fileMenu.addSeparator();
     final JMenuItem copyItem = new JMenuItem();
-    copyItem.setText("复制到剪贴板（CTRL+C）");
+    copyItem.setText("复制到剪贴板(CTRL+C)");
     copyItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(copyItem);
 
     final JMenuItem pasteItem = new JMenuItem();
-    pasteItem.setText("从剪贴板粘贴（CTRL+V）");
+    pasteItem.setText("从剪贴板粘贴(CTRL+V)");
     pasteItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(pasteItem);
     fileMenu.addSeparator();
@@ -141,12 +141,12 @@ public class Menu extends MenuBar {
     viewMenu.setFont(headFont);
 
     final JMenuItem leftItem = new JMenuItem();
-    leftItem.setText("棋盘左移（[）");
+    leftItem.setText("棋盘左移([)");
     leftItem.addActionListener(new ItemListeneryzy());
     viewMenu.add(leftItem);
 
     final JMenuItem rightItem = new JMenuItem();
-    rightItem.setText("棋盘右移（]）");
+    rightItem.setText("棋盘右移(])");
     rightItem.addActionListener(new ItemListeneryzy());
     viewMenu.add(rightItem);
 
@@ -229,7 +229,7 @@ public class Menu extends MenuBar {
     winrate.add(setReplayTime);
 
     final JCheckBoxMenuItem coordsItem = new JCheckBoxMenuItem();
-    coordsItem.setText("坐标（C）");
+    coordsItem.setText("坐标(C)");
     coordsItem.addActionListener(new ItemListeneryzy());
     viewMenu.add(coordsItem);
 
@@ -286,7 +286,7 @@ public class Menu extends MenuBar {
     moveMenu.add(alwaysone);
 
     final JCheckBoxMenuItem subItem = new JCheckBoxMenuItem();
-    subItem.setText("放大小棋盘（ALT+V）");
+    subItem.setText("放大小棋盘(ALT+V)");
     subItem.addActionListener(new ItemListeneryzy());
     viewMenu.add(subItem);
 
@@ -697,7 +697,7 @@ public class Menu extends MenuBar {
     menuBar.add(gameMenu);
 
     final JMenuItem newGameItem = new JMenuItem();
-    newGameItem.setText("新的一局（N）");
+    newGameItem.setText("新的一局(N)");
     // aboutItem.setMnemonic('A');
     newGameItem.addActionListener(new ItemListeneryzy());
     gameMenu.add(newGameItem);
@@ -748,19 +748,19 @@ public class Menu extends MenuBar {
     gameMenu.addSeparator();
 
     final JMenuItem empty = new JMenuItem();
-    empty.setText("清空棋盘（Ctrl+Home）");
+    empty.setText("清空棋盘(Ctrl+Home)");
     // aboutItem.setMnemonic('A');
     empty.addActionListener(new ItemListeneryzy());
     gameMenu.add(empty);
 
     final JMenuItem firstItem = new JMenuItem();
-    firstItem.setText("跳转到最前（Home）");
+    firstItem.setText("跳转到最前(Home)");
     // aboutItem.setMnemonic('A');
     firstItem.addActionListener(new ItemListeneryzy());
     gameMenu.add(firstItem);
 
     final JMenuItem lastItem = new JMenuItem();
-    lastItem.setText("跳转到最后（End）");
+    lastItem.setText("跳转到最后(End)");
     // aboutItem.setMnemonic('A');
     lastItem.addActionListener(new ItemListeneryzy());
     gameMenu.add(lastItem);
@@ -801,24 +801,24 @@ public class Menu extends MenuBar {
     menuBar.add(analyMenu);
 
     final JMenuItem anaItem = new JMenuItem();
-    anaItem.setText("分析/停止（空格）");
+    anaItem.setText("分析/停止(空格)");
     // aboutItem.setMnemonic('A');
     anaItem.addActionListener(new ItemListeneryzy());
     analyMenu.add(anaItem);
 
     final JMenuItem autoanItem = new JMenuItem();
-    autoanItem.setText("自动分析（A）");
+    autoanItem.setText("自动分析(A)");
     // aboutItem.setMnemonic('A');
     autoanItem.addActionListener(new ItemListeneryzy());
     analyMenu.add(autoanItem);
 
     final JMenuItem heatItem = new JMenuItem();
-    heatItem.setText("策略网络（H）");
+    heatItem.setText("策略网络(H)");
     heatItem.addActionListener(new ItemListeneryzy());
     analyMenu.add(heatItem);
 
     final JMenuItem countsItem = new JMenuItem();
-    countsItem.setText("形势判断（点）");
+    countsItem.setText("形势判断(点)");
     // aboutItem.setMnemonic('A');
     countsItem.addActionListener(new ItemListeneryzy());
     analyMenu.add(countsItem);
