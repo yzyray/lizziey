@@ -6,11 +6,16 @@ import java.awt.Graphics2D;
 import javax.swing.JMenuBar;
 
 class MenuBar extends JMenuBar {
-  Color bgColor = Color.BLUE;
+  Color hsbColor =
+      Color.getHSBColor(
+          Color.RGBtoHSB(232, 232, 232, null)[0],
+          Color.RGBtoHSB(232, 232, 232, null)[1],
+          Color.RGBtoHSB(232, 232, 232, null)[2]);
+  Color bgColor = hsbColor;
 
-  public void setColor(Color color) {
-    bgColor = color;
-  }
+  //  public void setColor(Color color) {
+  //    bgColor = color;
+  //  }
 
   @Override
   protected void paintComponent(Graphics g) {

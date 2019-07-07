@@ -712,10 +712,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
     if (e.getWheelRotation() > 0) {
       redo();
-      Lizzie.frame.isReplayVariation=false;
+      Lizzie.frame.isReplayVariation = false;
     } else if (e.getWheelRotation() < 0) {
       undo();
-      Lizzie.frame.isReplayVariation=false;
+      Lizzie.frame.isReplayVariation = false;
     }
     Lizzie.frame.repaint();
   }

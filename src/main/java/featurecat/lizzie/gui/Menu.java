@@ -1,7 +1,6 @@
 package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.*;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.json.JSONArray;
@@ -25,7 +23,7 @@ public class Menu extends MenuBar {
   public static ImageIcon ready;
   public static JMenuItem[] engine = new JMenuItem[21];
   public static JMenu engineMenu;
-  public static MenuBar menuBar;
+  // public static MenuBar menuBar;
   JMenuItem closeall;
   JMenuItem forcecloseall;
   JMenuItem closeother;
@@ -44,20 +42,20 @@ public class Menu extends MenuBar {
     // Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
     // Lizzie.frame.getContentPane().getWidth(),
     // 25);
-    Color hsbColor =
-        Color.getHSBColor(
-            Color.RGBtoHSB(232, 232, 232, null)[0],
-            Color.RGBtoHSB(232, 232, 232, null)[1],
-            Color.RGBtoHSB(232, 232, 232, null)[2]);
-    this.setBackground(hsbColor);
-    JPanel bar = new JPanel(new BorderLayout());
-    bar.setBorder(new EmptyBorder(0, 0, -1, -1));
-    menuBar = new MenuBar();
+    //    Color hsbColor =
+    //        Color.getHSBColor(
+    //            Color.RGBtoHSB(232, 232, 232, null)[0],
+    //            Color.RGBtoHSB(232, 232, 232, null)[1],
+    //            Color.RGBtoHSB(232, 232, 232, null)[2]);
+    //    this.setBackground(hsbColor);
+    // JPanel bar = new JPanel(new BorderLayout());
+    // bar.setBorder(new EmptyBorder(0, 0, -1, -1));
+    //  menuBar = new MenuBar();
     // bar.setBounds(0, 0, 450, 12);
 
-    menuBar.setColor(hsbColor);
-    this.add(bar);
-    bar.add(menuBar);
+    //    menuBar.setColor(hsbColor);
+    //    this.add(bar);
+    //    bar.add(menuBar);
 
     headFont = new Font("幼圆", Font.BOLD, 15);
     // onlyboard = Lizzie.config.uiConfig.optBoolean("only-board", false);
@@ -67,12 +65,12 @@ public class Menu extends MenuBar {
     fileMenu.setForeground(Color.BLACK);
     fileMenu.setFont(headFont);
 
-    menuBar.add(fileMenu);
+    this.add(fileMenu);
     final JMenuItem openItem = new JMenuItem("打开棋谱(O)");
     openItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openItem);
 
-    menuBar.add(fileMenu);
+    this.add(fileMenu);
     final JMenuItem batchfile = new JMenuItem("批量分析棋谱(ALT+O)");
     batchfile.addActionListener(new ItemListeneryzy());
     fileMenu.add(batchfile);
@@ -136,7 +134,7 @@ public class Menu extends MenuBar {
     final JMenu viewMenu = new JMenu();
     viewMenu.setText(" 显示  ");
     // editMenu.setMnemonic('E');
-    menuBar.add(viewMenu);
+    this.add(viewMenu);
     viewMenu.setForeground(Color.BLACK);
     viewMenu.setFont(headFont);
 
@@ -696,7 +694,7 @@ public class Menu extends MenuBar {
     // helpMenu.setMnemonic('H');
     gameMenu.setForeground(Color.BLACK);
     gameMenu.setFont(headFont);
-    menuBar.add(gameMenu);
+    this.add(gameMenu);
 
     final JMenuItem newGameItem = new JMenuItem();
     newGameItem.setText("新的一局(N)");
@@ -800,7 +798,7 @@ public class Menu extends MenuBar {
     analyMenu.setText(" 分析  ");
     analyMenu.setForeground(Color.BLACK);
     analyMenu.setFont(headFont);
-    menuBar.add(analyMenu);
+    this.add(analyMenu);
 
     final JMenuItem anaItem = new JMenuItem();
     anaItem.setText("分析/停止(空格)");
@@ -839,7 +837,7 @@ public class Menu extends MenuBar {
     // helpMenu.setMnemonic('H');
     editMenu.setForeground(Color.BLACK);
     editMenu.setFont(headFont);
-    menuBar.add(editMenu);
+    this.add(editMenu);
 
     ImageIcon iconblack = new ImageIcon();
     try {
@@ -967,7 +965,7 @@ public class Menu extends MenuBar {
     engineMenu.setText(" 引擎  ");
     engineMenu.setForeground(Color.BLACK);
     engineMenu.setFont(headFont);
-    menuBar.add(engineMenu);
+    this.add(engineMenu);
 
     icon = new ImageIcon();
     try {
@@ -1086,12 +1084,12 @@ public class Menu extends MenuBar {
 
   public void updateEngineMenu() {
     synchronized (this) {
-      menuBar.remove(engineMenu);
+      this.remove(engineMenu);
       engineMenu = new JMenu("引擎 ", false);
       engineMenu.setText(" 引擎  ");
       engineMenu.setForeground(Color.BLACK);
       engineMenu.setFont(headFont);
-      menuBar.add(engineMenu);
+      this.add(engineMenu);
       for (int i = 0; i < engine.length; i++) {
         try {
           engineMenu.remove(engine[i]);
