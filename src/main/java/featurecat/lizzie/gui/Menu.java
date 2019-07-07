@@ -178,6 +178,43 @@ public class Menu extends MenuBar {
     blunder.addActionListener(new ItemListeneryzy());
     winrate.add(blunder);
 
+    final JCheckBoxMenuItem showsuggorder = new JCheckBoxMenuItem();
+    showsuggorder.setText("显示推荐点右上方角标");
+    showsuggorder.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.showSuggestionOrder = !Lizzie.config.showSuggestionOrder;
+            Lizzie.config.uiConfig.put("show-suggestion-order", Lizzie.config.showSuggestionOrder);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    winrate.add(showsuggorder);
+
+    final JCheckBoxMenuItem showsuggred = new JCheckBoxMenuItem();
+    showsuggred.setText("最高胜率-计算量-目差 显示为红色");
+    showsuggred.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.showSuggestionMaxRed = !Lizzie.config.showSuggestionMaxRed;
+            Lizzie.config.uiConfig.put(
+                "show-suggestion-maxred", Lizzie.config.showSuggestionMaxRed);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    winrate.add(showsuggred);
+
     final JMenuItem setReplayTime = new JMenuItem();
     setReplayTime.setText("设置推荐点分支回放间隔");
     setReplayTime.addActionListener(
@@ -398,6 +435,45 @@ public class Menu extends MenuBar {
     katameanalways.add(katameanblackwhite);
     katameanblackwhite.addActionListener(new ItemListeneryzy());
 
+    final JMenu katawingraphboard = new JMenu("KataGo目差在胜率图上显示");
+    viewMenu.add(katawingraphboard);
+
+    final JCheckBoxMenuItem katawinboardmean = new JCheckBoxMenuItem("目差");
+    katawingraphboard.add(katawinboardmean);
+    katawinboardmean.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.scoreMeanWinrateGraphBoard = false;
+            Lizzie.config.uiConfig.put(
+                "scoremean-winrategraph-board", Lizzie.config.scoreMeanWinrateGraphBoard);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+
+    final JCheckBoxMenuItem katawinboardboard = new JCheckBoxMenuItem("盘面差");
+    katawingraphboard.add(katawinboardboard);
+    katawinboardboard.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.scoreMeanWinrateGraphBoard = true;
+            Lizzie.config.uiConfig.put(
+                "scoremean-winrategraph-board", Lizzie.config.scoreMeanWinrateGraphBoard);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+
     final JMenu kataEstimate = new JMenu("KataGo评估显示");
     viewMenu.add(kataEstimate);
 
@@ -586,6 +662,19 @@ public class Menu extends MenuBar {
             }
             if (Lizzie.config.showMoveNumberFromOne) alwaysone.setState(true);
             else alwaysone.setState(false);
+
+            if (Lizzie.config.showSuggestionOrder) showsuggorder.setState(true);
+            else showsuggorder.setState(false);
+
+            if (Lizzie.config.showSuggestionMaxRed) showsuggred.setState(true);
+            else showsuggred.setState(false);
+            if (Lizzie.config.scoreMeanWinrateGraphBoard) {
+              katawinboardmean.setState(false);
+              katawinboardboard.setState(true);
+            } else {
+              katawinboardmean.setState(true);
+              katawinboardboard.setState(false);
+            }
           }
 
           @Override

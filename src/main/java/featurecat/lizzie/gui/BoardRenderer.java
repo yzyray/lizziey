@@ -84,6 +84,7 @@ public class BoardRenderer {
   private boolean isMainBoard = false;
   public boolean reverseBestmoves = false;
   private int maxAlpha = 240;
+  int number = 1;
 
   public BoardRenderer(boolean isMainBoard) {
     uiConfig = Lizzie.config.uiConfig;
@@ -854,6 +855,7 @@ public class BoardRenderer {
     float redHue = Color.RGBtoHSB(255, 0, 0, null)[0];
     float greenHue = Color.RGBtoHSB(0, 255, 0, null)[0];
     float cyanHue = Color.RGBtoHSB(0, 255, 255, null)[0];
+
     if (Lizzie.frame.isheatmap) {
       int maxPolicy = 0;
       int minPolicy = 0;
@@ -928,6 +930,7 @@ public class BoardRenderer {
         int maxPlayouts = 0;
         double maxWinrate = 0;
         double minWinrate = 100.0;
+        double maxScoreMean = -300;
         List<MoveData> tempbest1 = new ArrayList();
         List<MoveData> tempbest2 = new ArrayList();
         for (int i = 0; i < bestMoves.size(); i++) {
@@ -968,6 +971,9 @@ public class BoardRenderer {
           if (move.playouts > maxPlayouts) maxPlayouts = move.playouts;
           if (move.winrate > maxWinrate) maxWinrate = move.winrate;
           if (move.winrate < minWinrate) minWinrate = move.winrate;
+          if (Lizzie.leelaz.isKatago && Lizzie.config.showKataGoScoreMean) {
+            if (move.scoreMean > maxScoreMean) maxScoreMean = move.scoreMean;
+          }
         }
 
         for (int i = 0; i < Board.boardWidth; i++) {
@@ -975,7 +981,7 @@ public class BoardRenderer {
             Optional<MoveData> moveOpt = Optional.empty();
 
             // This is inefficient but it looks better with shadows
-
+            number = 1;
             for (MoveData m : bestMoves) {
               Optional<int[]> coord = Board.asCoordinates(m.coordinate);
               if (coord.isPresent()) {
@@ -984,6 +990,7 @@ public class BoardRenderer {
                   moveOpt = Optional.of(m);
                   break;
                 }
+                number = number + 1;
               }
             }
 
@@ -1115,6 +1122,28 @@ public class BoardRenderer {
               } else {
                 text = String.format("%.1f", roundedWinrate);
               }
+              if (Lizzie.config.showSuggestionOrder && number < 10) {
+                Color oriColor = g.getColor();
+                g.setColor(Color.ORANGE);
+                g.fillRect(
+                    (int) (suggestionX + stoneRadius * 0.6),
+                    (int) (suggestionY - stoneRadius * 1.2),
+                    (int) (stoneRadius * 0.5),
+                    (int) (stoneRadius * 0.5));
+                g.setColor(Color.BLACK);
+                drawString(
+                    g,
+                    (int) (suggestionX + stoneRadius * 0.8),
+                    suggestionY - stoneRadius * 7 / 9,
+                    LizzieFrame.winrateFont,
+                    Font.PLAIN,
+                    number + "",
+                    (float) (stoneRadius * 0.5),
+                    stoneRadius * 0.5,
+                    1);
+                g.setColor(oriColor);
+              }
+              // number++;
               if (Lizzie.leelaz.isKatago && Lizzie.config.showKataGoScoreMean) {
                 if (Lizzie.config.kataGoNotShowWinrate) {
                   double score = move.scoreMean;
@@ -1130,6 +1159,9 @@ public class BoardRenderer {
                       score = -score;
                     }
                   }
+                  Color oriColor = g.getColor();
+                  if (Lizzie.config.showSuggestionMaxRed && move.scoreMean == maxScoreMean)
+                    g.setColor(Color.RED);
                   drawString(
                       g,
                       suggestionX,
@@ -1140,7 +1172,9 @@ public class BoardRenderer {
                       stoneRadius,
                       stoneRadius * 1.6,
                       1);
-
+                  if (Lizzie.config.showSuggestionMaxRed) g.setColor(oriColor);
+                  if (Lizzie.config.showSuggestionMaxRed && move.playouts == maxPlayouts)
+                    g.setColor(Color.RED);
                   drawString(
                       g,
                       suggestionX,
@@ -1149,7 +1183,10 @@ public class BoardRenderer {
                       Lizzie.frame.getPlayoutsString(move.playouts),
                       (float) (stoneRadius * 1.0),
                       stoneRadius * 1.6);
+                  if (Lizzie.config.showSuggestionMaxRed) g.setColor(oriColor);
                 } else {
+                  Color oriColor = g.getColor();
+                  if (Lizzie.config.showSuggestionMaxRed && hasMaxWinrate) g.setColor(Color.RED);
                   if (roundedWinrate < 10) {
                     drawString(
                         g,
@@ -1173,6 +1210,9 @@ public class BoardRenderer {
                         stoneRadius * 1.45,
                         1);
                   }
+                  if (Lizzie.config.showSuggestionMaxRed) g.setColor(oriColor);
+                  if (Lizzie.config.showSuggestionMaxRed && move.playouts == maxPlayouts)
+                    g.setColor(Color.RED);
                   drawString(
                       g,
                       suggestionX,
@@ -1181,6 +1221,7 @@ public class BoardRenderer {
                       Lizzie.frame.getPlayoutsString(move.playouts),
                       (float) (stoneRadius * 0.8),
                       stoneRadius * 1.4);
+                  if (Lizzie.config.showSuggestionMaxRed) g.setColor(oriColor);
                   double score = move.scoreMean;
                   if (Lizzie.board.getHistory().isBlacksTurn()) {
                     if (Lizzie.config.showKataGoBoardScoreMean) {
@@ -1194,6 +1235,8 @@ public class BoardRenderer {
                       score = -score;
                     }
                   }
+                  if (Lizzie.config.showSuggestionMaxRed && move.scoreMean == maxScoreMean)
+                    g.setColor(Color.RED);
                   drawString(
                       g,
                       suggestionX,
@@ -1202,8 +1245,12 @@ public class BoardRenderer {
                       String.format("%.1f", score),
                       (float) (stoneRadius * 0.75),
                       stoneRadius * 1.3);
+                  if (Lizzie.config.showSuggestionMaxRed) g.setColor(oriColor);
                 }
+
               } else {
+                Color oriColor = g.getColor();
+                if (Lizzie.config.showSuggestionMaxRed && hasMaxWinrate) g.setColor(Color.RED);
                 drawString(
                     g,
                     suggestionX,
@@ -1214,7 +1261,9 @@ public class BoardRenderer {
                     stoneRadius,
                     stoneRadius * 1.6,
                     1);
-
+                if (Lizzie.config.showSuggestionMaxRed) g.setColor(oriColor);
+                if (Lizzie.config.showSuggestionMaxRed && move.playouts == maxPlayouts)
+                  g.setColor(Color.RED);
                 drawString(
                     g,
                     suggestionX,
@@ -1223,6 +1272,7 @@ public class BoardRenderer {
                     Lizzie.frame.getPlayoutsString(move.playouts),
                     (float) (stoneRadius * 1.0),
                     stoneRadius * 1.6);
+                if (Lizzie.config.showSuggestionMaxRed) g.setColor(oriColor);
               }
             }
           }

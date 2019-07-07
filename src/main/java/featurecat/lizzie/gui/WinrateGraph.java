@@ -748,9 +748,12 @@ public class WinrateGraph {
         if (!node.getData().bestMoves.isEmpty()) {
 
           double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
+
           if (!node.getData().blackToPlay) {
             curscoreMean = -curscoreMean;
           }
+          if (Lizzie.config.scoreMeanWinrateGraphBoard)
+            curscoreMean = curscoreMean + Lizzie.board.getHistory().getGameInfo().getKomi();
           if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
 
           if (node == curMove) {

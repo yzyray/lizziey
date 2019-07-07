@@ -43,10 +43,13 @@ public class Config {
   public boolean showKataGoBoardScoreMean = false;
   public boolean kataGoScoreMeanAlwaysBlack = false;
   public boolean kataGoNotShowWinrate = false;
+  public boolean scoreMeanWinrateGraphBoard = false;
   public boolean showKataGoEstimate = false;
   public boolean showKataGoEstimateBySize = false;
   public boolean showKataGoEstimateOnSubbord = true;
   public boolean showKataGoEstimateOnMainbord = true;
+  public boolean showSuggestionOrder = true;
+  public boolean showSuggestionMaxRed = true;
   public boolean showStatus = true;
   public boolean showBranch = true;
   public boolean showBestMoves = true;
@@ -273,6 +276,9 @@ public class Config {
     showMoveNumberFromOne = uiConfig.optBoolean("movenumber-from-one", false);
     kataGoNotShowWinrate = uiConfig.optBoolean("katago-notshow-winrate", false);
     showKataGoEstimate = uiConfig.optBoolean("show-katago-estimate", false);
+    scoreMeanWinrateGraphBoard = uiConfig.optBoolean("scoremean-winrategraph-board", false);
+    showSuggestionOrder = uiConfig.optBoolean("show-suggestion-order", true);
+    showSuggestionMaxRed = uiConfig.optBoolean("show-suggestion-maxred", true);
     showSuggestionVaritions = uiConfig.optBoolean("show-suggestion-varitions", true);
     showKataGoEstimateBySize = uiConfig.optBoolean("show-katago-estimate-bysize", false);
     showKataGoEstimateOnSubbord = uiConfig.optBoolean("show-katago-estimate-onsubbord", true);

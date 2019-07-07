@@ -404,8 +404,10 @@ public class MoreEngines extends JPanel {
             if (chkdefault.isSelected()) Lizzie.config.uiConfig.put("default-engine", curIndex);
             if (rdoDefault.isSelected()) {
               Lizzie.config.uiConfig.put("autoload-default", true);
+              Lizzie.config.uiConfig.put("autoload-last", false);
             } else {
               Lizzie.config.uiConfig.put("autoload-last", false);
+              Lizzie.config.uiConfig.put("autoload-default", false);
             }
 
             if (rdoLast.isSelected()) {

@@ -170,6 +170,12 @@ public class ChooseMoreEngine extends JPanel {
     startGroup.add(rdoDefault);
     startGroup.add(rdoLast);
     startGroup.add(rdoMannul);
+    if (Lizzie.config.uiConfig.optBoolean("autoload-default", false)) {
+      if (Lizzie.config.uiConfig.optBoolean("autoload-last", false)) rdoLast.setSelected(true);
+      else rdoDefault.setSelected(true);
+    } else {
+      rdoMannul.setSelected(true);
+    }
 
     selectpanel.add(ok);
     // selectpanel.add(noEngine);
@@ -193,11 +199,12 @@ public class ChooseMoreEngine extends JPanel {
               JOptionPane.showMessageDialog(engch, "请先选择一个引擎 ");
               return;
             }
-            Lizzie.config.uiConfig.put("default-engine", curIndex);
             if (rdoDefault.isSelected()) {
               Lizzie.config.uiConfig.put("autoload-default", true);
+              Lizzie.config.uiConfig.put("autoload-last", false);
             } else {
               Lizzie.config.uiConfig.put("autoload-last", false);
+              Lizzie.config.uiConfig.put("autoload-default", false);
             }
 
             if (rdoLast.isSelected()) {
