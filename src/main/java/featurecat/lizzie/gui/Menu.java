@@ -152,6 +152,18 @@ public class Menu extends MenuBar {
 
     final JMenu winrate = new JMenu("胜率图和推荐点");
     viewMenu.add(winrate);
+    
+    final JCheckBoxMenuItem winratemode1 = new JCheckBoxMenuItem();
+    winratemode1.setText("显示双方胜率图");
+    winratemode1.addActionListener(new ItemListeneryzy());
+    winrate.add(winratemode1);
+
+    final JCheckBoxMenuItem winratemode0 = new JCheckBoxMenuItem();
+    winratemode0.setText("显示黑方胜率图");
+    winratemode0.addActionListener(new ItemListeneryzy());
+    winrate.add(winratemode0);
+    
+    //增加设置胜率曲线宽度
 
     final JCheckBoxMenuItem alwaysBlack = new JCheckBoxMenuItem();
     alwaysBlack.setText("总是显示黑胜率");
@@ -162,16 +174,6 @@ public class Menu extends MenuBar {
     isOnmouse.setText("鼠标所指推荐点显示变化图");
     isOnmouse.addActionListener(new ItemListeneryzy());
     winrate.add(isOnmouse);
-
-    final JCheckBoxMenuItem winratemode1 = new JCheckBoxMenuItem();
-    winratemode1.setText("显示双方胜率图");
-    winratemode1.addActionListener(new ItemListeneryzy());
-    winrate.add(winratemode1);
-
-    final JCheckBoxMenuItem winratemode0 = new JCheckBoxMenuItem();
-    winratemode0.setText("显示黑方胜率图");
-    winratemode0.addActionListener(new ItemListeneryzy());
-    winrate.add(winratemode0);
 
     final JCheckBoxMenuItem blunder = new JCheckBoxMenuItem();
     blunder.setText("显示柱状失误条");
