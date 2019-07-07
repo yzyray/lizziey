@@ -2643,7 +2643,7 @@ public class Leelaz {
 		if (isPondering) {
 			ponder();
 		} else {
-			sendCommand("version"); // ends pondering
+			sendCommand("name"); // ends pondering
 		}
 	}
 

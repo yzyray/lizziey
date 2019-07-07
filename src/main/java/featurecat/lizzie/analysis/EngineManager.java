@@ -34,6 +34,9 @@ public class EngineManager {
 
   public EngineManager(Config config, int index) throws JSONException, IOException {
     ArrayList<EngineData> engineData = getEngineData();
+    if (index > engineData.size() - 1) {
+      index = 0;
+    }
     // 先做到这,后续处理根据index加载引擎,传递棋盘大小,贴目,以及不加载引擎的办法
     // JSONObject eCfg = config.config.getJSONObject("leelaz");
     // String engineCommand = eCfg.getString("engine-command");

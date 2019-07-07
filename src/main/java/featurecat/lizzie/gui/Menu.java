@@ -1044,77 +1044,77 @@ public class Menu extends MenuBar {
   }
 
   public void updateEngineMenu() {
-
-    menuBar.remove(engineMenu);
-    engineMenu = new JMenu("引擎 ", false);
-    engineMenu.setText(" 引擎  ");
-    engineMenu.setForeground(Color.BLACK);
-    engineMenu.setFont(headFont);
-    menuBar.add(engineMenu);
-    for (int i = 0; i < engine.length; i++) {
-      try {
-        engineMenu.remove(engine[i]);
-      } catch (Exception e) {
+    synchronized (this) {
+      menuBar.remove(engineMenu);
+      engineMenu = new JMenu("引擎 ", false);
+      engineMenu.setText(" 引擎  ");
+      engineMenu.setForeground(Color.BLACK);
+      engineMenu.setFont(headFont);
+      menuBar.add(engineMenu);
+      for (int i = 0; i < engine.length; i++) {
+        try {
+          engineMenu.remove(engine[i]);
+        } catch (Exception e) {
+        }
+        engine[i] = new JMenuItem();
+        engineMenu.add(engine[i]);
+        engine[i].setText("引擎" + (i + 1) + ":");
+        engine[i].setVisible(false);
       }
-      engine[i] = new JMenuItem();
-      engineMenu.add(engine[i]);
-      engine[i].setText("引擎" + (i + 1) + ":");
-      engine[i].setVisible(false);
+      for (int i = 0; i < Lizzie.engineManager.engineList.size(); i++) {
+        if (i <= 20 && Lizzie.engineManager.engineList.get(i).isLoaded()) {
+          engine[i].setIcon(ready);
+        }
+        if (i == Lizzie.engineManager.currentEngineNo && i <= 20) {
+          engine[i].setIcon(icon);
+          engineMenu.setText(
+              "引擎" + (i + 1) + ": " + Lizzie.engineManager.engineList.get(i).currentEnginename);
+        }
+      }
+      ArrayList<EngineData> engineData = getEngineData();
+      for (int i = 0; i < engineData.size(); i++) {
+        EngineData engineDt = engineData.get(i);
+        if (i > (engine.length - 2)) {
+          engine[i].setText("更多引擎...");
+          engine[i].setVisible(true);
+          engine[i].addActionListener(
+              new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                  JDialog chooseMoreEngine;
+                  chooseMoreEngine = ChooseMoreEngine.createBadmovesDialog();
+                  chooseMoreEngine.setVisible(true);
+                }
+              });
+          engineMenu.addSeparator();
+          engineMenu.add(closeall);
+          engineMenu.add(forcecloseall);
+          engineMenu.add(closeother);
+          engineMenu.add(restartZen);
+          engineMenu.addSeparator();
+          engineMenu.add(config);
+          engineMenu.add(moreconfig);
+          return;
+        } else {
+          engine[i].setText("引擎" + (i + 1) + ":" + engineDt.name);
+          engine[i].setVisible(true);
+          int a = i;
+          engine[i].addActionListener(
+              new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                  Lizzie.engineManager.switchEngine(a);
+                }
+              });
+        }
+      }
+      engineMenu.addSeparator();
+      engineMenu.add(closeall);
+      engineMenu.add(forcecloseall);
+      engineMenu.add(closeother);
+      engineMenu.add(restartZen);
+      engineMenu.addSeparator();
+      engineMenu.add(config);
+      engineMenu.add(moreconfig);
     }
-    for (int i = 0; i < Lizzie.engineManager.engineList.size(); i++) {
-      if (i <= 20 && Lizzie.engineManager.engineList.get(i).isLoaded()) {
-        engine[i].setIcon(ready);
-      }
-      if (Lizzie.engineManager.engineList.get(i).currentEngineN()
-          == Lizzie.engineManager.currentEngineNo) {
-        if (i <= 20) engine[i].setIcon(icon);
-        engineMenu.setText(
-            "引擎" + (i + 1) + ": " + Lizzie.engineManager.engineList.get(i).currentEnginename);
-      }
-    }
-    ArrayList<EngineData> engineData = getEngineData();
-    for (int i = 0; i < engineData.size(); i++) {
-      EngineData engineDt = engineData.get(i);
-      if (i > (engine.length - 2)) {
-        engine[i].setText("更多引擎...");
-        engine[i].setVisible(true);
-        engine[i].addActionListener(
-            new ActionListener() {
-              public void actionPerformed(ActionEvent e) {
-                JDialog chooseMoreEngine;
-                chooseMoreEngine = ChooseMoreEngine.createBadmovesDialog();
-                chooseMoreEngine.setVisible(true);
-              }
-            });
-        engineMenu.addSeparator();
-        engineMenu.add(closeall);
-        engineMenu.add(forcecloseall);
-        engineMenu.add(closeother);
-        engineMenu.add(restartZen);
-        engineMenu.addSeparator();
-        engineMenu.add(config);
-        engineMenu.add(moreconfig);
-        return;
-      } else {
-        engine[i].setText("引擎" + (i + 1) + ":" + engineDt.name);
-        engine[i].setVisible(true);
-        int a = i;
-        engine[i].addActionListener(
-            new ActionListener() {
-              public void actionPerformed(ActionEvent e) {
-                Lizzie.engineManager.switchEngine(a);
-              }
-            });
-      }
-    }
-    engineMenu.addSeparator();
-    engineMenu.add(closeall);
-    engineMenu.add(forcecloseall);
-    engineMenu.add(closeother);
-    engineMenu.add(restartZen);
-    engineMenu.addSeparator();
-    engineMenu.add(config);
-    engineMenu.add(moreconfig);
   }
 
   // public void updateEngineName() {

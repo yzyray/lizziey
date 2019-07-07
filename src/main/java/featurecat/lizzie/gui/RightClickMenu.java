@@ -80,6 +80,21 @@ public class RightClickMenu extends JPopupMenu {
 					reedit.setVisible(true);
 					cleanedittemp.setVisible(true);
 				}
+				if(Lizzie.leelaz.isKatago||Lizzie.leelaz.version<17)
+				{
+					allow.setVisible(false);
+					allow2.setVisible(false);
+					avoid.setVisible(false);
+					avoid2.setVisible(false);
+					cancelavoid.setVisible(false);
+				}
+				else
+				{
+					allow.setVisible(true);
+					avoid.setVisible(true);
+					avoid2.setVisible(true);
+					cancelavoid.setVisible(true);
+				}
 			}
 		};
 
@@ -94,7 +109,7 @@ public class RightClickMenu extends JPopupMenu {
 		allow2 = new JMenuItem("增加分析此点(强制)");
 		avoid = new JMenuItem("不分析此点(强制)");
 		avoid2 = new JMenuItem("设置不分析持续手数");
-		cancelavoid = new JMenuItem("清除分析设置");
+		cancelavoid = new JMenuItem("清除强制分析设置");
 		cleanedittemp = new JMenuItem("清除编辑缓存");
 		// test=new JMenuItem("测试删除棋子");
 		// test2=new JMenuItem("测试恢复棋盘状态");
