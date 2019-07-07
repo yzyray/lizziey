@@ -272,6 +272,7 @@ public class Leelaz {
 		sendCommand("name");
 		sendCommand("version");
 		sendCommand("komi " + komi);
+		if(width!=19||height!=19)
 		boardSize(width, height);
 
 		// start a thread to continuously read Leelaz output

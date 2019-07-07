@@ -999,7 +999,7 @@ public class BoardRenderer {
             }
             MoveData move = moveOpt.get();
 
-            boolean isBestMove = tempbest1.get(0) == move;
+            boolean isBestMove = bestMoves.get(0) == move;
             boolean hasMaxWinrate = move.winrate == maxWinrate;
             boolean flipWinrate =
                 uiConfig.getBoolean("win-rate-always-black") && !Lizzie.board.getData().blackToPlay;

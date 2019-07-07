@@ -578,6 +578,7 @@ public class EngineManager {
     if (index > this.engineList.size()) return;
     Leelaz newEng = engineList.get(index);
     if (newEng == null) return;
+    boolean changeBoard = true;
 
     ArrayList<Movelist> mv = Lizzie.board.getmovelist();
 
@@ -585,8 +586,12 @@ public class EngineManager {
       if (currentEngineNo != -1) {
         Leelaz curEng = engineList.get(this.currentEngineNo);
         curEng.switching = true;
-        newEng.width = Lizzie.board.boardWidth;
-        newEng.height = Lizzie.board.boardHeight;
+        if (newEng.width == Lizzie.board.boardWidth && newEng.height == Lizzie.board.boardHeight)
+          changeBoard = false;
+        else {
+          newEng.width = Lizzie.board.boardWidth;
+          newEng.height = Lizzie.board.boardHeight;
+        }
         newEng.komi = (float) Lizzie.board.getHistory().getGameInfo().getKomi();
         try {
           if (!Lizzie.config.fastChange) {
@@ -607,7 +612,7 @@ public class EngineManager {
         newEng.startEngine(index);
       } else {
         // newEng.getEngineName(index);
-        newEng.boardSize(newEng.width, newEng.height);
+        if (changeBoard) newEng.boardSize(newEng.width, newEng.height);
         newEng.sendCommand("komi " + newEng.komi);
         Lizzie.config.leelaversion = newEng.version;
       }
