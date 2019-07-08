@@ -141,7 +141,7 @@ public class MoreEngines extends JPanel {
     // checkBlack.setSelected(true);
     // checkWhite.setSelected(true);
 
-    engineName = new JLabel("单机选中列表中的引擎进行设置");
+    engineName = new JLabel("单击选中列表中的引擎进行设置");
     engineName.setFont(new Font("微软雅黑", Font.PLAIN, 14));
     JLabel lblname = new JLabel("名称：");
     txtName = new JTextField();
@@ -338,7 +338,7 @@ public class MoreEngines extends JPanel {
             command.setText("");
             saveEngineConfig();
             command.setText("");
-            engineName.setText("单机选中列表中的引擎进行设置");
+            engineName.setText("单击选中列表中的引擎进行设置");
             txtName.setText("");
             preload.setSelected(false);
             txtWidth.setText("");
@@ -377,7 +377,7 @@ public class MoreEngines extends JPanel {
           public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
             command.setText("");
-            engineName.setText("单机选中列表中的引擎进行设置");
+            engineName.setText("单击选中列表中的引擎进行设置");
             txtName.setText("");
             preload.setSelected(false);
             txtWidth.setText("");
