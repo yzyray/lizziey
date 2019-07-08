@@ -143,6 +143,7 @@ public class MoveData {
         }
       }
     }
+    if (result.winrate < 0) result.winrate = result.oriwinrate;
     return result;
   }
 

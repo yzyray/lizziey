@@ -546,10 +546,12 @@ public class LizzieFrame extends JFrame {
       }
       titleBeforeTrying = this.getTitle();
       this.setTitle("试下中...");
+      toolbar.tryPlay.setText("恢复");
       tryMoveList = Lizzie.board.getmovelist();
       Lizzie.board.getHistory().getCurrentHistoryNode().getData().moveNumber = 0;
     } else {
       isTrying = false;
+      toolbar.tryPlay.setText("试下");
       SGFParser.loadFromString(tryString);
       Lizzie.board.setmovelist(tryMoveList);
       this.setTitle(titleBeforeTrying);

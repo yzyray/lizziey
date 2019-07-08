@@ -685,17 +685,6 @@ public class EngineManager {
   // }
 
   private void changeEngIco() {
-    for (int i = 0; i < 21; i++) {
-      if (featurecat.lizzie.gui.Menu.engine[i].getIcon() != null
-          && featurecat.lizzie.gui.Menu.engine[i].getIcon() != featurecat.lizzie.gui.Menu.stop) {
-        featurecat.lizzie.gui.Menu.engine[i].setIcon(featurecat.lizzie.gui.Menu.ready);
-      }
-    }
-    if (currentEngineNo <= 20) {
-      if (featurecat.lizzie.gui.Menu.engine[currentEngineNo].getIcon() == null) {
-      } else {
-        featurecat.lizzie.gui.Menu.engine[currentEngineNo].setIcon(featurecat.lizzie.gui.Menu.icon);
-      }
-    }
+    Lizzie.frame.menu.changeicon();
   }
 }

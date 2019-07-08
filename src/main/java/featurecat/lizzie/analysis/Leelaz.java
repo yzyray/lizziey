@@ -512,7 +512,7 @@ public class Leelaz {
 				Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
 			}
 			// if (printCommunication || gtpConsole) {
-			// Lizzie.gtpConsole.addLineforce(line);
+			 //Lizzie.gtpConsole.addLineforce(line);
 			// }
 //      if (line.startsWith("komi=")) {
 //        try {
@@ -584,6 +584,11 @@ public class Leelaz {
 			}
 			if (line.startsWith("info")) {
 
+				if (Lizzie.frame.toolbar.isEnginePk) {
+					Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
+					Lizzie.frame.boardRenderer.reverseBestmoves = false;
+					Lizzie.leelaz = this;
+				}
 				// Clear switching prompt
 				switching = false;
 
@@ -617,11 +622,7 @@ public class Leelaz {
 					} else {
 						this.bestMoves = parseInfo(line.substring(5));
 					}
-					if (Lizzie.frame.toolbar.isEnginePk) {
-						Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
-						Lizzie.frame.boardRenderer.reverseBestmoves = false;
-						Lizzie.leelaz = this;
-					}
+					
 					// notifyBestMoveListeners();
 					if (!bestMoves.isEmpty()) {
 						notifyAutoPK();
@@ -1353,6 +1354,11 @@ public class Leelaz {
 				Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).played = false;
 				// Lizzie.engineManager.switchEngineForEndPk(Lizzie.engineManager.currentEngineNo);
 				Lizzie.frame.toolbar.batchPkName = "";
+				Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
+	              Lizzie.frame.boardRenderer.reverseBestmoves = false;
+				Lizzie.frame.toolbar.analyse.setEnabled(true);
+				Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
+				Lizzie.engineManager.changeEngIcoForEndPk();
 				
 				if(msg==null||!msg.isVisible())
             	{	
@@ -1362,9 +1368,6 @@ public class Leelaz {
 	             msg.setVisible(true);
             	}
 
-				Lizzie.frame.toolbar.analyse.setEnabled(true);
-				Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
-				Lizzie.engineManager.changeEngIcoForEndPk();
 			}
 		} else {
 			clear();
@@ -1401,12 +1404,17 @@ public class Leelaz {
 			if (Lizzie.frame.toolbar.AutosavePk) {
 				jg = jg + "，棋谱保存在PkAutoSave文件夹下";
 			}
+			Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
+            Lizzie.frame.boardRenderer.reverseBestmoves = false;
+			Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
+			Lizzie.engineManager.changeEngIcoForEndPk();
 			if(msg==null||!msg.isVisible())
         	{	
 			  msg=new Message();
               msg.setMessage(jg);
               msg.setVisible(true);
         	}
+			
 		}
 
 	}
@@ -1590,7 +1598,10 @@ public class Leelaz {
 				// Lizzie.engineManager.switchEngineForEndPk(Lizzie.engineManager.currentEngineNo);
 				Lizzie.frame.toolbar.batchPkName = "";
 				
-
+				Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
+	            Lizzie.frame.boardRenderer.reverseBestmoves = false;
+				Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
+				Lizzie.engineManager.changeEngIcoForEndPk();
 				if(msg==null||!msg.isVisible())
             	{	
 				  msg=new Message();
@@ -1598,7 +1609,7 @@ public class Leelaz {
 							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在PkAutoSave文件夹下");
 	              msg.setVisible(true);
             	}
-				Lizzie.engineManager.changeEngIcoForEndPk();
+				
 			}
 		} else {
 			// 结束PKLizzie.engineManager.engineList.get(engineBlack).notPondering();
@@ -1635,6 +1646,10 @@ public class Leelaz {
 			if (Lizzie.frame.toolbar.AutosavePk) {
 				jg = jg + "，棋谱保存在PkAutoSave文件夹下";
 			}
+			Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
+            Lizzie.frame.boardRenderer.reverseBestmoves = false;
+			Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
+			Lizzie.engineManager.changeEngIcoForEndPk();
 			if(msg==null||!msg.isVisible())
         	{	
 			  msg=new Message();

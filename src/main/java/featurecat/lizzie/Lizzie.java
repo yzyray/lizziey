@@ -78,7 +78,6 @@ public class Lizzie {
     analysisframe = AnalysisFrame.createAnalysisDialog();
     analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", false));
     analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
-    frame.refresh();
   }
 
   public static void setLookAndFeel() {
@@ -109,7 +108,6 @@ public class Lizzie {
 
   public static void initializeAfterVersionCheck() {
     frame.addInput();
-    frame.refresh();
     if (config.handicapInsteadOfWinrate) {
       leelaz.estimatePassWinrate();
     }
