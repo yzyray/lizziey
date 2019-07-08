@@ -715,38 +715,22 @@ public class Menu extends MenuBar {
     continueGameWhiteItem.addActionListener(new ItemListeneryzy());
     gameMenu.add(continueGameWhiteItem);
 
-    final JMenuItem breakplay = new JMenuItem();
-    breakplay.setText("中断对局");
-    breakplay.addActionListener(new ItemListeneryzy());
-    gameMenu.add(breakplay);
     gameMenu.addSeparator();
 
     final JMenuItem newanaGame = new JMenuItem();
-    newanaGame.setText("新的一局(分析模式)");
+    newanaGame.setText("新的一局(分析模式 ALT+N)");
     newanaGame.addActionListener(
         new ActionListener() {
 
           @Override
           public void actionPerformed(ActionEvent e) {
-            GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
-            NewAnaGameDialog newgame = new NewAnaGameDialog();
-            newgame.setGameInfo(gameInfo);
-            newgame.setVisible(true);
-            newgame.dispose();
-            if (newgame.isCancelled()) return;
-            Lizzie.board.clear();
-            Lizzie.board.getHistory().setGameInfo(gameInfo);
-            Lizzie.leelaz.sendCommand("komi " + gameInfo.getKomi());
-            Lizzie.frame.komi = gameInfo.getKomi() + "";
-            Lizzie.frame.isAnaPlayingAgainstLeelaz = true;
-            Lizzie.frame.toolbar.isAutoPlay = true;
-            Lizzie.leelaz.ponder();
+            newGame();
           }
         });
     gameMenu.add(newanaGame);
 
     final JMenuItem continueanaGameBlack = new JMenuItem();
-    continueanaGameBlack.setText("续弈(我执黑)(分析模式)");
+    continueanaGameBlack.setText("续弈(我执黑)(分析模式 ALT+回车)");
 
     continueanaGameBlack.addActionListener(
         new ActionListener() {
@@ -774,7 +758,7 @@ public class Menu extends MenuBar {
     gameMenu.add(continueanaGameBlack);
 
     final JMenuItem continueanaGameWhite = new JMenuItem();
-    continueanaGameWhite.setText("续弈(我执白)(分析模式)");
+    continueanaGameWhite.setText("续弈(我执白)(分析模式 ALT+回车)");
 
     continueanaGameWhite.addActionListener(
         new ActionListener() {
@@ -801,6 +785,11 @@ public class Menu extends MenuBar {
 
     gameMenu.add(continueanaGameWhite);
 
+    gameMenu.addSeparator();
+    final JMenuItem breakplay = new JMenuItem();
+    breakplay.setText("中断对局");
+    breakplay.addActionListener(new ItemListeneryzy());
+    gameMenu.add(breakplay);
     gameMenu.addSeparator();
 
     final JMenuItem setBoard = new JMenuItem();
@@ -1331,6 +1320,22 @@ public class Menu extends MenuBar {
       }
     }
     return engineData;
+  }
+
+  public void newGame() {
+    GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
+    NewAnaGameDialog newgame = new NewAnaGameDialog();
+    newgame.setGameInfo(gameInfo);
+    newgame.setVisible(true);
+    newgame.dispose();
+    if (newgame.isCancelled()) return;
+
+    Lizzie.board.getHistory().setGameInfo(gameInfo);
+    Lizzie.leelaz.sendCommand("komi " + gameInfo.getKomi());
+    Lizzie.frame.komi = gameInfo.getKomi() + "";
+    Lizzie.frame.isAnaPlayingAgainstLeelaz = true;
+    Lizzie.frame.toolbar.isAutoPlay = true;
+    Lizzie.leelaz.ponder();
   }
 
   class ItemListeneryzy implements ActionListener {

@@ -359,8 +359,12 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         // if (isinsertmode) {
         // return;
         // }
-        if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
-        LizzieFrame.startNewGame();
+        if (e.isAltDown()) {
+          Lizzie.frame.menu.newGame();
+        } else {
+          if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+          LizzieFrame.startNewGame();
+        }
         break;
       case VK_SPACE:
         if (Lizzie.frame.isPlayingAgainstLeelaz) {
@@ -562,20 +566,23 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         // return;
         // }
         if (e.isAltDown()) {
-          if (!Lizzie.frame.toolbar.isAutoPlay) {
-            Lizzie.frame.toolbar.isAutoPlay = true;
-            Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
+          Lizzie.frame.toolbar.txtAutoPlayTime.setText(
+              Lizzie.config.config.getJSONObject("leelaz").getInt("max-game-thinking-time-seconds")
+                  + "");
+          if (Lizzie.board.getHistory().isBlacksTurn()) {
             Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(true);
-            Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
-            Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
-            Lizzie.frame.toolbar.chkAutoPlayPlayouts.setSelected(false);
-            Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.setSelected(false);
-            Lizzie.frame.toolbar.txtAutoPlayTime.setText("1");
-            Lizzie.leelaz.ponder();
+            Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
           } else {
-            Lizzie.frame.toolbar.isAutoPlay = false;
-            Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
+            Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
+            Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
           }
+          Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
+          Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
+          Lizzie.frame.toolbar.chkShowBlack.setSelected(false);
+          Lizzie.frame.toolbar.chkShowWhite.setSelected(false);
+          Lizzie.frame.isAnaPlayingAgainstLeelaz = true;
+          Lizzie.frame.toolbar.isAutoPlay = true;
+          Lizzie.leelaz.ponder();
         } else {
           if (!Lizzie.leelaz.isThinking) {
             Lizzie.leelaz.sendCommand(

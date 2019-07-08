@@ -6,6 +6,7 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
+import featurecat.lizzie.rules.Stone;
 import java.awt.*;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -194,28 +195,106 @@ public class NewAnaGameDialog extends JDialog {
       Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
       Lizzie.frame.toolbar.chkShowBlack.setSelected(false);
       Lizzie.frame.toolbar.chkShowWhite.setSelected(false);
-      if (FORMAT_HANDICAP.parse(textTime.getText()).intValue() > 0) {
-        Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
-        Lizzie.frame.toolbar.txtAutoPlayTime.setText(
-            FORMAT_HANDICAP.parse(textTime.getText()).intValue() + "");
+      try {
+        if (FORMAT_HANDICAP.parse(textTime.getText()).intValue() > 0) {
+          Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
+          Lizzie.frame.toolbar.txtAutoPlayTime.setText(
+              FORMAT_HANDICAP.parse(textTime.getText()).intValue() + "");
+        }
+      } catch (Exception ex) {
       }
-      if (FORMAT_HANDICAP.parse(textPlayouts.getText()).intValue() > 0) {
-        Lizzie.frame.toolbar.chkAutoPlayPlayouts.setSelected(true);
-        Lizzie.frame.toolbar.txtAutoPlayPlayouts.setText(
-            FORMAT_HANDICAP.parse(textPlayouts.getText()).intValue() + "");
+      try {
+        if (FORMAT_HANDICAP.parse(textPlayouts.getText()).intValue() > 0) {
+          Lizzie.frame.toolbar.chkAutoPlayPlayouts.setSelected(true);
+          Lizzie.frame.toolbar.txtAutoPlayPlayouts.setText(
+              FORMAT_HANDICAP.parse(textPlayouts.getText()).intValue() + "");
+        }
+      } catch (Exception ex) {
       }
-      if (FORMAT_HANDICAP.parse(textFirstPlayouts.getText()).intValue() > 0) {
-        Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.setSelected(true);
-        Lizzie.frame.toolbar.txtAutoPlayFirstPlayouts.setText(
-            FORMAT_HANDICAP.parse(textFirstPlayouts.getText()).intValue() + "");
+      try {
+        if (FORMAT_HANDICAP.parse(textFirstPlayouts.getText()).intValue() > 0) {
+          Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.setSelected(true);
+          Lizzie.frame.toolbar.txtAutoPlayFirstPlayouts.setText(
+              FORMAT_HANDICAP.parse(textFirstPlayouts.getText()).intValue() + "");
+        }
+      } catch (Exception ex) {
       }
       // close window
       cancelled = false;
       setVisible(false);
+      Lizzie.board.clear();
+      if (handicap >= 2 && Lizzie.board.boardWidth == 19 && Lizzie.board.boardHeight == 19) {
+        placeHandicap(handicap);
+      }
+
     } catch (ParseException e) {
-      cancelled = false;
-      setVisible(false);
       // hide input mistakes.
+    }
+  }
+
+  private void placeHandicap(int handicap) {
+    // TODO Auto-generated method stub
+    switch (handicap) {
+      case 2:
+        Lizzie.board.place(3, 3, Stone.BLACK);
+        Lizzie.board.place(15, 15, Stone.BLACK);
+        break;
+      case 3:
+        Lizzie.board.place(3, 3, Stone.BLACK);
+        Lizzie.board.place(15, 3, Stone.BLACK);
+        Lizzie.board.place(15, 15, Stone.BLACK);
+        break;
+      case 4:
+        Lizzie.board.place(3, 3, Stone.BLACK);
+        Lizzie.board.place(3, 15, Stone.BLACK);
+        Lizzie.board.place(15, 3, Stone.BLACK);
+        Lizzie.board.place(15, 15, Stone.BLACK);
+        break;
+      case 5:
+        Lizzie.board.place(3, 3, Stone.BLACK);
+        Lizzie.board.place(3, 15, Stone.BLACK);
+        Lizzie.board.place(15, 3, Stone.BLACK);
+        Lizzie.board.place(15, 15, Stone.BLACK);
+        Lizzie.board.place(9, 9, Stone.BLACK);
+        break;
+      case 6:
+        Lizzie.board.place(3, 3, Stone.BLACK);
+        Lizzie.board.place(3, 15, Stone.BLACK);
+        Lizzie.board.place(15, 3, Stone.BLACK);
+        Lizzie.board.place(15, 15, Stone.BLACK);
+        Lizzie.board.place(9, 3, Stone.BLACK);
+        Lizzie.board.place(9, 15, Stone.BLACK);
+        break;
+      case 7:
+        Lizzie.board.place(3, 3, Stone.BLACK);
+        Lizzie.board.place(3, 15, Stone.BLACK);
+        Lizzie.board.place(15, 3, Stone.BLACK);
+        Lizzie.board.place(15, 15, Stone.BLACK);
+        Lizzie.board.place(9, 3, Stone.BLACK);
+        Lizzie.board.place(9, 15, Stone.BLACK);
+        Lizzie.board.place(9, 9, Stone.BLACK);
+        break;
+      case 8:
+        Lizzie.board.place(3, 3, Stone.BLACK);
+        Lizzie.board.place(3, 15, Stone.BLACK);
+        Lizzie.board.place(15, 3, Stone.BLACK);
+        Lizzie.board.place(15, 15, Stone.BLACK);
+        Lizzie.board.place(9, 3, Stone.BLACK);
+        Lizzie.board.place(9, 15, Stone.BLACK);
+        Lizzie.board.place(3, 9, Stone.BLACK);
+        Lizzie.board.place(15, 9, Stone.BLACK);
+        break;
+      case 9:
+        Lizzie.board.place(3, 3, Stone.BLACK);
+        Lizzie.board.place(3, 15, Stone.BLACK);
+        Lizzie.board.place(15, 3, Stone.BLACK);
+        Lizzie.board.place(15, 15, Stone.BLACK);
+        Lizzie.board.place(9, 3, Stone.BLACK);
+        Lizzie.board.place(9, 15, Stone.BLACK);
+        Lizzie.board.place(3, 9, Stone.BLACK);
+        Lizzie.board.place(15, 9, Stone.BLACK);
+        Lizzie.board.place(9, 9, Stone.BLACK);
+        break;
     }
   }
 
