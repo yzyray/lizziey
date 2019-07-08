@@ -595,6 +595,9 @@ public class MoreEngines extends JPanel {
       engineFile = chooser.getSelectedFile();
       if (engineFile != null) {
         enginePath = engineFile.getAbsolutePath();
+        if (enginePath.toLowerCase().contains(".bat")) {
+          return enginePath;
+        }
         enginePath = relativizePath(engineFile.toPath());
         getCommandHelp();
         JFileChooser chooserw = new JFileChooser(".");

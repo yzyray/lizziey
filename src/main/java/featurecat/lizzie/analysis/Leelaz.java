@@ -2,6 +2,7 @@ package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.gui.LizzieFrame;
+import featurecat.lizzie.gui.Message;
 import featurecat.lizzie.rules.SGFParser;
 import featurecat.lizzie.rules.Stone;
 import java.io.BufferedInputStream;
@@ -30,9 +31,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -125,6 +123,7 @@ public class Leelaz {
 	public int width = 19;
 	public int height = 19;
 	public boolean firstLoad = false;
+	public boolean playNow=false;
 
 	// private boolean isEstimating=true;
 	/**
@@ -250,7 +249,9 @@ public class Leelaz {
 		} catch (IOException e) {
 			if (firstLoad) {
 				try {
-					JOptionPane.showMessageDialog(Lizzie.frame, "加载引擎失败,目前为不加载引擎直接运行 ");
+					 Message msg=new Message();
+		             msg.setMessage("加载引擎失败,目前为不加载引擎直接运行 ");
+		             msg.setVisible(true);
 					Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
@@ -695,27 +696,18 @@ public class Leelaz {
 						if (params[1].startsWith("resign")) {
 							if (Lizzie.frame.playerIsBlack) {
 
-								boolean onTop = false;
-								if (Lizzie.frame.isAlwaysOnTop()) {
-									Lizzie.frame.setAlwaysOnTop(false);
-									onTop = true;
-								}
-								JOptionPane.showMessageDialog(null, "黑胜,LeelaZero 认输!");
-								if (onTop)
-									Lizzie.frame.setAlwaysOnTop(true);
+								 Message msg=new Message();
+					             msg.setMessage( "黑胜,LeelaZero 认输!");
+					             msg.setVisible(true);
+								
 								GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 								gameInfo.setResult("黑胜");
 								Lizzie.frame.setResult("黑胜");
 
 							} else {
-								boolean onTop = false;
-								if (Lizzie.frame.isAlwaysOnTop()) {
-									Lizzie.frame.setAlwaysOnTop(false);
-									onTop = true;
-								}
-								JOptionPane.showMessageDialog(null, "白胜,LeelaZero 认输!");
-								if (onTop)
-									Lizzie.frame.setAlwaysOnTop(true);
+								Message msg=new Message();
+					             msg.setMessage( "白胜,LeelaZero 认输!");
+					             msg.setVisible(true);
 								GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 								gameInfo.setResult("白胜");
 								Lizzie.frame.setResult("白胜");
@@ -779,15 +771,10 @@ public class Leelaz {
 							Lizzie.config.leelaversion = minor;
 						}
 						if (minor < 15) {
-							boolean onTop = false;
-							if (Lizzie.frame.isAlwaysOnTop()) {
-								Lizzie.frame.setAlwaysOnTop(false);
-								onTop = true;
-							}
-							JOptionPane.showMessageDialog(null,
-									"Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本是: " + params[1]);
-							if (onTop)
-								Lizzie.frame.setAlwaysOnTop(true);
+							Message msg=new Message();
+				             msg.setMessage("Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本是: " + params[1]);
+				             msg.setVisible(true);
+				
 						}
 						isCheckingVersion = false;
 						Lizzie.initializeAfterVersionCheck();
@@ -946,16 +933,14 @@ public class Leelaz {
 				e.printStackTrace();
 			}
 			isSaving = false;
-			boolean onTop = false;
-			if (Lizzie.frame.isAlwaysOnTop()) {
-				Lizzie.frame.setAlwaysOnTop(false);
-				onTop = true;
-			}
 
 			if (analysed)
-				JOptionPane.showMessageDialog(null, "自动分析已完毕,棋谱在目录AutoSave中");
-			if (onTop)
-				Lizzie.frame.setAlwaysOnTop(true);
+			{
+				Message msg=new Message();
+            msg.setMessage("自动分析已完毕,棋谱在目录AutoSave中");
+            msg.setVisible(true);
+			}
+			
 			return;
 		} else {
 			String name = Lizzie.frame.Batchfiles[Lizzie.frame.BatchAnaNum].getName();
@@ -979,14 +964,11 @@ public class Leelaz {
 			} else {
 				Lizzie.frame.isBatchAna = false;
 				Lizzie.frame.toolbar.chkAnaAutoSave.setEnabled(true);
-				boolean onTop = false;
-				if (Lizzie.frame.isAlwaysOnTop()) {
-					Lizzie.frame.setAlwaysOnTop(false);
-					onTop = true;
-				}
-				JOptionPane.showMessageDialog(null, "批量棋谱已全部分析完毕");
-				if (onTop)
-					Lizzie.frame.setAlwaysOnTop(true);
+				
+				Message msg=new Message();
+	             msg.setMessage( "批量棋谱已全部分析完毕");
+	             msg.setVisible(true);
+				
 				Lizzie.frame.addInput();
 				return;
 			}
@@ -1354,17 +1336,12 @@ public class Leelaz {
 				Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).played = false;
 				// Lizzie.engineManager.switchEngineForEndPk(Lizzie.engineManager.currentEngineNo);
 				Lizzie.frame.toolbar.batchPkName = "";
-				boolean onTop = false;
-				if (Lizzie.frame.isAlwaysOnTop()) {
-					Lizzie.frame.setAlwaysOnTop(false);
-					onTop = true;
-				}
+				
+				Message msg=new Message();
+	             msg.setMessage( "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
+							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在PkAutoSave文件夹下");
+	             msg.setVisible(true);
 
-				JOptionPane.showMessageDialog(null, "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
-						+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在PkAutoSave文件夹下");
-
-				if (onTop)
-					Lizzie.frame.setAlwaysOnTop(true);
 				Lizzie.frame.toolbar.analyse.setEnabled(true);
 				Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
 				Lizzie.engineManager.changeEngIcoForEndPk();
@@ -1393,11 +1370,6 @@ public class Leelaz {
 			Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).played = false;
 			// Lizzie.engineManager.switchEngineForEndPk(Lizzie.engineManager.currentEngineNo);
 			Lizzie.frame.toolbar.batchPkName = "";
-			boolean onTop = false;
-			if (Lizzie.frame.isAlwaysOnTop()) {
-				Lizzie.frame.setAlwaysOnTop(false);
-				onTop = true;
-			}
 
 			String jg = "对战已结束，";
 			if (currentEngineN == Lizzie.frame.toolbar.engineBlack) {
@@ -1409,12 +1381,10 @@ public class Leelaz {
 			if (Lizzie.frame.toolbar.AutosavePk) {
 				jg = jg + "，棋谱保存在PkAutoSave文件夹下";
 			}
-			JOptionPane.showMessageDialog(null, jg);
+		      Message msg=new Message();
+              msg.setMessage(jg);
+              msg.setVisible(true);
 
-			if (onTop)
-				Lizzie.frame.setAlwaysOnTop(true);
-			Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
-			Lizzie.engineManager.changeEngIcoForEndPk();
 		}
 
 	}
@@ -1597,17 +1567,12 @@ public class Leelaz {
 				Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).played = false;
 				// Lizzie.engineManager.switchEngineForEndPk(Lizzie.engineManager.currentEngineNo);
 				Lizzie.frame.toolbar.batchPkName = "";
-				boolean onTop = false;
-				if (Lizzie.frame.isAlwaysOnTop()) {
-					Lizzie.frame.setAlwaysOnTop(false);
-					onTop = true;
-				}
+				
 
-				JOptionPane.showMessageDialog(null, "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
-						+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在PkAutoSave文件夹下");
-
-				if (onTop)
-					Lizzie.frame.setAlwaysOnTop(true);
+				 Message msg=new Message();
+	              msg.setMessage( "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
+							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在PkAutoSave文件夹下");
+	              msg.setVisible(true);
 				Lizzie.engineManager.changeEngIcoForEndPk();
 			}
 		} else {
@@ -1633,11 +1598,7 @@ public class Leelaz {
 			Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).played = false;
 			// Lizzie.engineManager.switchEngineForEndPk(Lizzie.engineManager.currentEngineNo);
 			Lizzie.frame.toolbar.batchPkName = "";
-			boolean onTop = false;
-			if (Lizzie.frame.isAlwaysOnTop()) {
-				Lizzie.frame.setAlwaysOnTop(false);
-				onTop = true;
-			}
+	
 
 			String jg = "对战已结束，";
 			if (currentEngineN == Lizzie.frame.toolbar.engineBlack) {
@@ -1649,11 +1610,9 @@ public class Leelaz {
 			if (Lizzie.frame.toolbar.AutosavePk) {
 				jg = jg + "，棋谱保存在PkAutoSave文件夹下";
 			}
-			JOptionPane.showMessageDialog(null, jg);
-
-			if (onTop)
-				Lizzie.frame.setAlwaysOnTop(true);
-			Lizzie.engineManager.changeEngIcoForEndPk();
+			 Message msg=new Message();
+             msg.setMessage(jg);
+             msg.setVisible(true);
 		}
 
 	}
@@ -1762,11 +1721,10 @@ public class Leelaz {
 				}
 			}
 
-			if (firstPlayouts > 0) {
-				if (bestMoves.get(0).playouts >= firstPlayouts) {
+			if (firstPlayouts > 0||playNow) {
+				if (bestMoves.get(0).playouts >= firstPlayouts||playNow) {
 					played = true;
-					// if(playanyway)
-					// playanyway=false;
+					playNow=false;
 					if ((curWR < Lizzie.frame.toolbar.pkResginWinrate)
 							&& Lizzie.board.getHistory().getMoveNumber() > 30) {
 						if (Lizzie.board.getHistory().isBlacksTurn())
@@ -2182,13 +2140,13 @@ public class Leelaz {
 			}
 			// this line will be reached when Leelaz shuts down
 			System.out.println("Leelaz process ended.");
-			process.destroy();
+			//process.destroy();
 			shutdown();
 			// Do no exit for switching weights
 			// System.exit(-1);
 		} catch (IOException e) {
 			// e.printStackTrace();
-			System.out.println("读出错");
+		//	System.out.println("读出错");
 			// System.exit(-1);
 			// read();
 		}
@@ -2207,15 +2165,10 @@ public class Leelaz {
 				saveAndLoad();
 
 			} else {
-				boolean onTop = false;
-				if (Lizzie.frame.isAlwaysOnTop()) {
-					Lizzie.frame.setAlwaysOnTop(false);
-					onTop = true;
-				}
-				if (analysed)
-					JOptionPane.showMessageDialog(null, "自动分析已完毕");
-				if (onTop)
-					Lizzie.frame.setAlwaysOnTop(true);
+				
+					 Message msg=new Message();
+		             msg.setMessage("自动分析已完毕");
+		             msg.setVisible(true);
 
 			}
 
@@ -2331,7 +2284,21 @@ public class Leelaz {
 			return;
 		}
 		if (Lizzie.frame.toolbar.isEnginePk)
-			return;
+			{
+		int coords[] = Lizzie.board.convertNameToCoordinates(move);
+		if(Lizzie.board.getHistory().isBlacksTurn()) {
+			Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).played = true;
+		Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B",Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
+		Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B",Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
+		}
+		else
+		{
+			Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).played=true;
+			Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W",Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
+			Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W",Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
+			
+		}
+		return;}
 		synchronized (this) {
 			String colorString;
 			switch (color) {

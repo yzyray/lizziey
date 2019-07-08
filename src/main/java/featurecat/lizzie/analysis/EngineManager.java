@@ -92,9 +92,14 @@ public class EngineManager {
       Lizzie.leelaz.isLoaded = true;
       featurecat.lizzie.gui.Menu.engineMenu.setText("未加载引擎");
       isEmpty = true;
-    } else if (!isEmpty)
-      featurecat.lizzie.gui.Menu.engineMenu.setText(
-          "引擎" + (index + 1) + ": " + engineList.get(index).currentEnginename);
+      Lizzie.frame.addInput();
+    } else if (!isEmpty) {
+      try {
+        featurecat.lizzie.gui.Menu.engineMenu.setText(
+            "引擎" + (index + 1) + ": " + engineList.get(index).currentEnginename);
+      } catch (Exception ex) {
+      }
+    }
     Lizzie.gtpConsole.console.setText("");
     // new Thread(
     // () -> {

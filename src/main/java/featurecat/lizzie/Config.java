@@ -901,6 +901,18 @@ public class Config {
     } catch (NumberFormatException err) {
       toolbarParameter.put(-1);
     }
+    if (Lizzie.frame.toolbar.chkAutoSub.isSelected()) toolbarParameter.put(1);
+    else toolbarParameter.put(-1);
+    try {
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtAutoMain.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
+    try {
+      toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtAutoSub.getText()));
+    } catch (NumberFormatException err) {
+      toolbarParameter.put(-1);
+    }
     persistedUi.put("toolbar-parameter", toolbarParameter);
 
     JSONArray movecountPos = new JSONArray();

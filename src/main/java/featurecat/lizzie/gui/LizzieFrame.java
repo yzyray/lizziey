@@ -130,6 +130,7 @@ public class LizzieFrame extends JFrame {
   public int[] mouseOverCoordinate = outOfBoundCoordinate;
   public boolean showControls = false;
   public boolean isPlayingAgainstLeelaz = false;
+  public boolean isAnaPlayingAgainstLeelaz = false;
   public boolean playerIsBlack = true;
   public int winRateGridLines = 3;
   public int BoardPositionProportion = Lizzie.config.boardPositionProportion;
@@ -408,7 +409,6 @@ public class LizzieFrame extends JFrame {
         1,
         1,
         TimeUnit.SECONDS);
-    addInput();
     mainPanel.addMouseMotionListener(input);
     toolbar.addMouseWheelListener(input);
   }
@@ -1946,6 +1946,16 @@ public class LizzieFrame extends JFrame {
    * @param x x coordinate
    * @param y y coordinate
    */
+  public void onClickedForManul(int x, int y) {
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
+    if (boardCoordinates.isPresent()) {
+      int[] coords = boardCoordinates.get();
+      if (blackorwhite == 0) Lizzie.board.placeForManul(coords[0], coords[1]);
+      if (blackorwhite == 1) Lizzie.board.placeForManul(coords[0], coords[1], Stone.BLACK);
+      if (blackorwhite == 2) Lizzie.board.placeForManul(coords[0], coords[1], Stone.WHITE);
+    }
+  }
+
   public void onClicked(int x, int y) {
     // Check for board click
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
@@ -1963,10 +1973,15 @@ public class LizzieFrame extends JFrame {
         featurecat.lizzie.gui.Input.Draggedmode = true;
       }
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
-      if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay))
-        if (blackorwhite == 0) Lizzie.board.place(coords[0], coords[1]);
-      if (blackorwhite == 1) Lizzie.board.place(coords[0], coords[1], Stone.BLACK);
-      if (blackorwhite == 2) Lizzie.board.place(coords[0], coords[1], Stone.WHITE);
+      if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay)) {
+        if (!isAnaPlayingAgainstLeelaz
+            || !Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected()
+                == Lizzie.board.getData().blackToPlay) {
+          if (blackorwhite == 0) Lizzie.board.place(coords[0], coords[1]);
+          if (blackorwhite == 1) Lizzie.board.place(coords[0], coords[1], Stone.BLACK);
+          if (blackorwhite == 2) Lizzie.board.place(coords[0], coords[1], Stone.WHITE);
+        }
+      }
     }
     if (Lizzie.config.showWinrate && moveNumber >= 0) {
       isPlayingAgainstLeelaz = false;

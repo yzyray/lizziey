@@ -1084,6 +1084,9 @@ public class ConfigDialog extends JDialog {
       engineFile = chooser.getSelectedFile();
       if (engineFile != null) {
         enginePath = engineFile.getAbsolutePath();
+        if (enginePath.toLowerCase().contains(".bat")) {
+          return enginePath;
+        }
         enginePath = relativizePath(engineFile.toPath());
         getCommandHelp();
         JFileChooser chooserw = new JFileChooser(".");

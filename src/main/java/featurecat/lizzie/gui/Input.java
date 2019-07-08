@@ -25,6 +25,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     }
     if (e.getButton() == MouseEvent.BUTTON1) // left click
     {
+      if (Lizzie.frame.toolbar.isEnginePk) {
+        Lizzie.frame.onClickedForManul(e.getX(), e.getY());
+      }
       if (e.getClickCount() == 2
           && !Lizzie.frame.isTrying
           && !Lizzie.frame.urlSgf
@@ -363,6 +366,15 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         if (Lizzie.frame.isPlayingAgainstLeelaz) {
           Lizzie.frame.isPlayingAgainstLeelaz = false;
           Lizzie.leelaz.isThinking = false;
+        }
+        if (Lizzie.frame.isAnaPlayingAgainstLeelaz) {
+          Lizzie.frame.isAnaPlayingAgainstLeelaz = false;
+          Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
+          Lizzie.frame.toolbar.isAutoPlay = false;
+          Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
+          Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
+          Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
+          Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
         }
         Lizzie.leelaz.togglePonder();
         break;

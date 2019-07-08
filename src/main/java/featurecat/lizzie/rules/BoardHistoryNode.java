@@ -201,7 +201,8 @@ public class BoardHistoryNode {
       variations.add(node);
     }
     node.previous = Optional.of(this);
-
+    if (Lizzie.frame.toolbar.chkAutoSub.isSelected())
+      Lizzie.frame.toolbar.displayedSubBoardBranchLength = 1;
     return node;
   }
 

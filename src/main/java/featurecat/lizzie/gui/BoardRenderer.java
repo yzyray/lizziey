@@ -1126,14 +1126,14 @@ public class BoardRenderer {
                 Color oriColor = g.getColor();
                 g.setColor(Color.ORANGE);
                 g.fillRect(
-                    (int) (suggestionX + stoneRadius * 0.55),
+                    (int) (suggestionX + stoneRadius * 0.65),
                     (int) (suggestionY - stoneRadius * 1.3),
                     (int) (stoneRadius * 0.58),
                     (int) (stoneRadius * 0.6));
                 g.setColor(Color.BLACK);
                 drawString(
                     g,
-                    (int) (suggestionX + stoneRadius * 0.8),
+                    (int) (suggestionX + stoneRadius * 0.9),
                     suggestionY - stoneRadius * 7 / 9,
                     LizzieFrame.winrateFont,
                     Font.PLAIN,

@@ -108,6 +108,7 @@ public class Lizzie {
   }
 
   public static void initializeAfterVersionCheck() {
+    frame.addInput();
     if (config.handicapInsteadOfWinrate) {
       leelaz.estimatePassWinrate();
     }
@@ -150,16 +151,16 @@ public class Lizzie {
       e.printStackTrace(); // Failed to save config
     }
 
-    if (leelaz != null) engineManager.forcekillAllEngines();
-    if (Lizzie.frame.zen != null
-        && Lizzie.frame.zen.process != null
-        && Lizzie.frame.zen.process.isAlive()) {
-
-      try {
-        Lizzie.frame.zen.process.destroy();
-      } catch (Exception e) {
-      }
-    }
+    //   if (leelaz != null) engineManager.forcekillAllEngines();
+    //    if (Lizzie.frame.zen != null
+    //        && Lizzie.frame.zen.process != null
+    //        && Lizzie.frame.zen.process.isAlive()) {
+    //
+    //      try {
+    //        Lizzie.frame.zen.process.destroy();
+    //      } catch (Exception e) {
+    //      }
+    //   }
     System.exit(0);
   }
 }

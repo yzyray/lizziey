@@ -1,6 +1,7 @@
 package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.analysis.GameInfo;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.*;
@@ -718,6 +719,88 @@ public class Menu extends MenuBar {
     breakplay.setText("中断对局");
     breakplay.addActionListener(new ItemListeneryzy());
     gameMenu.add(breakplay);
+    gameMenu.addSeparator();
+
+    final JMenuItem newanaGame = new JMenuItem();
+    newanaGame.setText("新的一局(分析模式)");
+    newanaGame.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
+            NewAnaGameDialog newgame = new NewAnaGameDialog();
+            newgame.setGameInfo(gameInfo);
+            newgame.setVisible(true);
+            newgame.dispose();
+            if (newgame.isCancelled()) return;
+            Lizzie.board.clear();
+            Lizzie.board.getHistory().setGameInfo(gameInfo);
+            Lizzie.leelaz.sendCommand("komi " + gameInfo.getKomi());
+            Lizzie.frame.komi = gameInfo.getKomi() + "";
+            Lizzie.frame.isAnaPlayingAgainstLeelaz = true;
+            Lizzie.frame.toolbar.isAutoPlay = true;
+            Lizzie.leelaz.ponder();
+          }
+        });
+    gameMenu.add(newanaGame);
+
+    final JMenuItem continueanaGameBlack = new JMenuItem();
+    continueanaGameBlack.setText("续弈(我执黑)(分析模式)");
+
+    continueanaGameBlack.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.toolbar.txtAutoPlayTime.setText(
+                Lizzie.config
+                        .config
+                        .getJSONObject("leelaz")
+                        .getInt("max-game-thinking-time-seconds")
+                    + "");
+            Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
+            Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
+            Lizzie.frame.toolbar.chkShowBlack.setSelected(false);
+            Lizzie.frame.toolbar.chkShowWhite.setSelected(false);
+            Lizzie.frame.isAnaPlayingAgainstLeelaz = true;
+            Lizzie.frame.toolbar.isAutoPlay = true;
+            Lizzie.leelaz.ponder();
+          }
+        });
+
+    gameMenu.add(continueanaGameBlack);
+
+    final JMenuItem continueanaGameWhite = new JMenuItem();
+    continueanaGameWhite.setText("续弈(我执白)(分析模式)");
+
+    continueanaGameWhite.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.toolbar.txtAutoPlayTime.setText(
+                Lizzie.config
+                        .config
+                        .getJSONObject("leelaz")
+                        .getInt("max-game-thinking-time-seconds")
+                    + "");
+            Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
+            Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
+            Lizzie.frame.toolbar.chkShowBlack.setSelected(false);
+            Lizzie.frame.toolbar.chkShowWhite.setSelected(false);
+            Lizzie.frame.isAnaPlayingAgainstLeelaz = true;
+            Lizzie.frame.toolbar.isAutoPlay = true;
+            Lizzie.leelaz.ponder();
+          }
+        });
+
+    gameMenu.add(continueanaGameWhite);
+
     gameMenu.addSeparator();
 
     final JMenuItem setBoard = new JMenuItem();
@@ -1619,6 +1702,15 @@ public class Menu extends MenuBar {
         if (Lizzie.frame.isPlayingAgainstLeelaz) {
           Lizzie.frame.isPlayingAgainstLeelaz = false;
           Lizzie.leelaz.isThinking = false;
+          if (Lizzie.frame.isAnaPlayingAgainstLeelaz) {
+            Lizzie.frame.isAnaPlayingAgainstLeelaz = false;
+            Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
+            Lizzie.frame.toolbar.isAutoPlay = false;
+            Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
+            Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
+            Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
+            Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
+          }
         }
         return;
       }

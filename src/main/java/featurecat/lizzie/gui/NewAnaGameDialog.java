@@ -15,7 +15,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 /** @author unknown */
-public class NewGameDialog extends JDialog {
+public class NewAnaGameDialog extends JDialog {
   // create formatters
   public static final DecimalFormat FORMAT_KOMI = new DecimalFormat("#0.0");
   public static final DecimalFormat FORMAT_HANDICAP = new DecimalFormat("0");
@@ -36,12 +36,14 @@ public class NewGameDialog extends JDialog {
   private JTextField textFieldKomi;
   private JTextField textFieldHandicap;
   private JTextField textTime;
+  private JTextField textPlayouts;
+  private JTextField textFirstPlayouts;
   private JCheckBox chkPonder;
 
   private boolean cancelled = true;
   private GameInfo gameInfo;
 
-  public NewGameDialog() {
+  public NewAnaGameDialog() {
     initComponents();
   }
 
@@ -51,7 +53,7 @@ public class NewGameDialog extends JDialog {
   private void initComponents() {
     setMinimumSize(new Dimension(100, 150));
     setResizable(false);
-    setTitle(resourceBundle.getString("NewGameDialog.title"));
+    setTitle("新对局(分析模式)");
     setModal(true);
 
     Container contentPane = getContentPane();
@@ -74,7 +76,7 @@ public class NewGameDialog extends JDialog {
   }
 
   private void initContentPanel() {
-    GridLayout gridLayout = new GridLayout(7, 2, 4, 4);
+    GridLayout gridLayout = new GridLayout(9, 2, 4, 4);
     contentPanel.setLayout(gridLayout);
 
     checkBoxPlayerIsBlack =
@@ -90,6 +92,12 @@ public class NewGameDialog extends JDialog {
         Lizzie.config.config.getJSONObject("leelaz").getInt("max-game-thinking-time-seconds") + "");
     chkPonder = new JCheckBox();
     chkPonder.setSelected(Lizzie.config.playponder);
+
+    textPlayouts = new JTextField();
+    textFirstPlayouts = new JTextField();
+    textPlayouts.setText(Lizzie.frame.toolbar.txtAutoPlayPlayouts.getText());
+    textFirstPlayouts.setText(Lizzie.frame.toolbar.txtAutoPlayFirstPlayouts.getText());
+
     contentPanel.add(checkBoxPlayerIsBlack);
     contentPanel.add(PLACEHOLDER);
     contentPanel.add(new JLabel(resourceBundle.getString("NewGameDialog.Black")));
@@ -98,12 +106,16 @@ public class NewGameDialog extends JDialog {
     contentPanel.add(textFieldWhite);
     contentPanel.add(new JLabel(resourceBundle.getString("NewGameDialog.Komi")));
     contentPanel.add(textFieldKomi);
-    contentPanel.add(new JLabel(resourceBundle.getString("NewGameDialog.Handicap")));
+    contentPanel.add(new JLabel("让子(仅支持19路棋盘)"));
     contentPanel.add(textFieldHandicap);
     contentPanel.add(new JLabel("AI每手用时(秒)"));
     contentPanel.add(textTime);
     contentPanel.add(new JLabel("AI是否后台思考"));
     contentPanel.add(chkPonder);
+    contentPanel.add(new JLabel("AI每手总计算量(选填)"));
+    contentPanel.add(textPlayouts);
+    contentPanel.add(new JLabel("AI每手首位计算量(选填)"));
+    contentPanel.add(textFirstPlayouts);
 
     textFieldKomi.setEnabled(true);
 
@@ -171,10 +183,38 @@ public class NewGameDialog extends JDialog {
       } catch (IOException e) {
         e.printStackTrace();
       }
+
+      if (playerIsBlack()) {
+        Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
+        Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
+      } else {
+        Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(true);
+        Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
+      }
+      Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
+      Lizzie.frame.toolbar.chkShowBlack.setSelected(false);
+      Lizzie.frame.toolbar.chkShowWhite.setSelected(false);
+      if (FORMAT_HANDICAP.parse(textTime.getText()).intValue() > 0) {
+        Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
+        Lizzie.frame.toolbar.txtAutoPlayTime.setText(
+            FORMAT_HANDICAP.parse(textTime.getText()).intValue() + "");
+      }
+      if (FORMAT_HANDICAP.parse(textPlayouts.getText()).intValue() > 0) {
+        Lizzie.frame.toolbar.chkAutoPlayPlayouts.setSelected(true);
+        Lizzie.frame.toolbar.txtAutoPlayPlayouts.setText(
+            FORMAT_HANDICAP.parse(textPlayouts.getText()).intValue() + "");
+      }
+      if (FORMAT_HANDICAP.parse(textFirstPlayouts.getText()).intValue() > 0) {
+        Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.setSelected(true);
+        Lizzie.frame.toolbar.txtAutoPlayFirstPlayouts.setText(
+            FORMAT_HANDICAP.parse(textFirstPlayouts.getText()).intValue() + "");
+      }
       // close window
       cancelled = false;
       setVisible(false);
     } catch (ParseException e) {
+      cancelled = false;
+      setVisible(false);
       // hide input mistakes.
     }
   }
@@ -203,7 +243,7 @@ public class NewGameDialog extends JDialog {
     EventQueue.invokeLater(
         () -> {
           try {
-            NewGameDialog window = new NewGameDialog();
+            NewAnaGameDialog window = new NewAnaGameDialog();
             window.setVisible(true);
           } catch (Exception e) {
             e.printStackTrace();
