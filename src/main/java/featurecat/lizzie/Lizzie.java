@@ -109,6 +109,7 @@ public class Lizzie {
 
   public static void initializeAfterVersionCheck() {
     frame.addInput();
+    frame.refresh();
     if (config.handicapInsteadOfWinrate) {
       leelaz.estimatePassWinrate();
     }

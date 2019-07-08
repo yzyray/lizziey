@@ -123,6 +123,7 @@ public class Leelaz {
 	public int width = 19;
 	public int height = 19;
 	public boolean firstLoad = false;
+	 Message msg;
 	public boolean playNow=false;
 
 	// private boolean isEstimating=true;
@@ -249,9 +250,12 @@ public class Leelaz {
 		} catch (IOException e) {
 			if (firstLoad) {
 				try {
-					 Message msg=new Message();
+					if(msg==null||!msg.isVisible())
+	            	{	
+					  msg=new Message();
 		             msg.setMessage("加载引擎失败,目前为不加载引擎直接运行 ");
 		             msg.setVisible(true);
+	            	}
 					Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
@@ -696,18 +700,23 @@ public class Leelaz {
 						if (params[1].startsWith("resign")) {
 							if (Lizzie.frame.playerIsBlack) {
 
-								 Message msg=new Message();
+								if(msg==null||!msg.isVisible())
+				            	{	
+								  msg=new Message();
 					             msg.setMessage( "黑胜,LeelaZero 认输!");
 					             msg.setVisible(true);
-								
+				            	}
 								GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 								gameInfo.setResult("黑胜");
 								Lizzie.frame.setResult("黑胜");
 
 							} else {
-								Message msg=new Message();
+								if(msg==null||!msg.isVisible())
+				            	{	
+								  msg=new Message();
 					             msg.setMessage( "白胜,LeelaZero 认输!");
 					             msg.setVisible(true);
+				            	}
 								GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 								gameInfo.setResult("白胜");
 								Lizzie.frame.setResult("白胜");
@@ -771,9 +780,12 @@ public class Leelaz {
 							Lizzie.config.leelaversion = minor;
 						}
 						if (minor < 15) {
-							Message msg=new Message();
+							if(msg==null||!msg.isVisible())
+			            	{	
+							  msg=new Message();
 				             msg.setMessage("Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本是: " + params[1]);
 				             msg.setVisible(true);
+			            	}
 				
 						}
 						isCheckingVersion = false;
@@ -936,9 +948,12 @@ public class Leelaz {
 
 			if (analysed)
 			{
-				Message msg=new Message();
+				if(msg==null||!msg.isVisible())
+            	{	
+				  msg=new Message();
             msg.setMessage("自动分析已完毕,棋谱在目录AutoSave中");
             msg.setVisible(true);
+            	}
 			}
 			
 			return;
@@ -964,11 +979,13 @@ public class Leelaz {
 			} else {
 				Lizzie.frame.isBatchAna = false;
 				Lizzie.frame.toolbar.chkAnaAutoSave.setEnabled(true);
-				
-				Message msg=new Message();
+
+				if(msg==null||!msg.isVisible())
+            	{	
+				  msg=new Message();
 	             msg.setMessage( "批量棋谱已全部分析完毕");
 	             msg.setVisible(true);
-				
+            	}
 				Lizzie.frame.addInput();
 				return;
 			}
@@ -1337,10 +1354,13 @@ public class Leelaz {
 				// Lizzie.engineManager.switchEngineForEndPk(Lizzie.engineManager.currentEngineNo);
 				Lizzie.frame.toolbar.batchPkName = "";
 				
-				Message msg=new Message();
+				if(msg==null||!msg.isVisible())
+            	{	
+				  msg=new Message();
 	             msg.setMessage( "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
 							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在PkAutoSave文件夹下");
 	             msg.setVisible(true);
+            	}
 
 				Lizzie.frame.toolbar.analyse.setEnabled(true);
 				Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
@@ -1381,10 +1401,12 @@ public class Leelaz {
 			if (Lizzie.frame.toolbar.AutosavePk) {
 				jg = jg + "，棋谱保存在PkAutoSave文件夹下";
 			}
-		      Message msg=new Message();
+			if(msg==null||!msg.isVisible())
+        	{	
+			  msg=new Message();
               msg.setMessage(jg);
               msg.setVisible(true);
-
+        	}
 		}
 
 	}
@@ -1569,10 +1591,13 @@ public class Leelaz {
 				Lizzie.frame.toolbar.batchPkName = "";
 				
 
-				 Message msg=new Message();
+				if(msg==null||!msg.isVisible())
+            	{	
+				  msg=new Message();
 	              msg.setMessage( "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
 							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在PkAutoSave文件夹下");
 	              msg.setVisible(true);
+            	}
 				Lizzie.engineManager.changeEngIcoForEndPk();
 			}
 		} else {
@@ -1610,9 +1635,12 @@ public class Leelaz {
 			if (Lizzie.frame.toolbar.AutosavePk) {
 				jg = jg + "，棋谱保存在PkAutoSave文件夹下";
 			}
-			 Message msg=new Message();
+			if(msg==null||!msg.isVisible())
+        	{	
+			  msg=new Message();
              msg.setMessage(jg);
              msg.setVisible(true);
+        	}
 		}
 
 	}
@@ -2166,9 +2194,12 @@ public class Leelaz {
 
 			} else {
 				
-					 Message msg=new Message();
+				if(msg==null||!msg.isVisible())
+            	{	
+				  msg=new Message();
 		             msg.setMessage("自动分析已完毕");
 		             msg.setVisible(true);
+            	}
 
 			}
 

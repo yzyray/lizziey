@@ -8,6 +8,7 @@ public class Message extends JDialog {
   JLabel lblmessage;
 
   public Message() {
+    this.setModal(true);
     setType(Type.POPUP);
     setTitle("消息提醒");
     setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());

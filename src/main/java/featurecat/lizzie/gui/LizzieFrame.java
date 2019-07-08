@@ -665,7 +665,7 @@ public class LizzieFrame extends JFrame {
     boolean playerIsBlack = newGameDialog.playerIsBlack();
     newGameDialog.dispose();
     if (newGameDialog.isCancelled()) return;
-
+    Lizzie.frame.isAnaPlayingAgainstLeelaz = false;
     Lizzie.board.clear();
     Lizzie.board.getHistory().setGameInfo(gameInfo);
     Lizzie.leelaz.sendCommand("komi " + gameInfo.getKomi());

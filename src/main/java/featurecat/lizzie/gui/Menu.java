@@ -31,6 +31,7 @@ public class Menu extends MenuBar {
   JMenuItem restartZen;
   JMenuItem config;
   JMenuItem moreconfig;
+  Message msg;
   // private boolean onlyboard = false;
 
   public Menu() {
@@ -703,6 +704,45 @@ public class Menu extends MenuBar {
     newGameItem.addActionListener(new ItemListeneryzy());
     gameMenu.add(newGameItem);
 
+    final JMenuItem enginePk = new JMenuItem();
+    enginePk.setText("引擎对战");
+
+    enginePk.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            if (Lizzie.frame.toolbar.isEnginePk) {
+              msg = new Message();
+              msg.setMessage("请等待当前引擎对战结束,或使用详细工具栏引擎对战面板中的[终止]按钮中断对战");
+              msg.setVisible(true);
+              return;
+            }
+            Lizzie.frame.toolbar.enginePkBlack.setEnabled(true);
+            Lizzie.frame.toolbar.enginePkWhite.setEnabled(true);
+            NewEngineGameDialog engineGame = new NewEngineGameDialog();
+            GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
+            engineGame.setGameInfo(gameInfo);
+            engineGame.setVisible(true);
+            Lizzie.frame.toolbar.resetEnginePk();
+            if (engineGame.isCancelled()) {
+              Lizzie.frame.toolbar.chkenginePk.setSelected(false);
+              Lizzie.frame.toolbar.enginePkBlack.setEnabled(false);
+              Lizzie.frame.toolbar.enginePkWhite.setEnabled(false);
+              return;
+            }
+
+            Lizzie.board.getHistory().setGameInfo(gameInfo);
+            Lizzie.leelaz.sendCommand("komi " + gameInfo.getKomi());
+            Lizzie.frame.komi = gameInfo.getKomi() + "";
+
+            Lizzie.frame.toolbar.chkenginePk.setSelected(true);
+            Lizzie.frame.toolbar.isEnginePk = true;
+            Lizzie.frame.toolbar.startEnginePk();
+          }
+        });
+    gameMenu.add(enginePk);
+
     final JMenuItem continueGameBlackItem = new JMenuItem();
     continueGameBlackItem.setText("续弈(我执黑)(回车)");
     // aboutItem.setMnemonic('A');
@@ -714,7 +754,6 @@ public class Menu extends MenuBar {
     // aboutItem.setMnemonic('A');
     continueGameWhiteItem.addActionListener(new ItemListeneryzy());
     gameMenu.add(continueGameWhiteItem);
-
     gameMenu.addSeparator();
 
     final JMenuItem newanaGame = new JMenuItem();
@@ -784,7 +823,6 @@ public class Menu extends MenuBar {
         });
 
     gameMenu.add(continueanaGameWhite);
-
     gameMenu.addSeparator();
     final JMenuItem breakplay = new JMenuItem();
     breakplay.setText("中断对局");
@@ -1323,6 +1361,7 @@ public class Menu extends MenuBar {
   }
 
   public void newGame() {
+    Lizzie.frame.isPlayingAgainstLeelaz = false;
     GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
     NewAnaGameDialog newgame = new NewAnaGameDialog();
     newgame.setGameInfo(gameInfo);

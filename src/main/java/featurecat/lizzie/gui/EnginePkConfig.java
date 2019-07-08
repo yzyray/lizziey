@@ -30,6 +30,7 @@ public class EnginePkConfig extends JDialog {
 
   public EnginePkConfig() {
     setType(Type.POPUP);
+    setModal(true);
     setTitle("引擎对战设置");
     setBounds(0, 0, 490, 300);
     setResizable(false);
