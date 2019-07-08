@@ -195,11 +195,11 @@ public class LoadEngine extends JPanel {
 
           @Override
           public void actionPerformed(ActionEvent e) {
-            engjf.setVisible(false);
             if (curIndex < 0) {
               JOptionPane.showMessageDialog(engjf, "请先选择一个引擎 ");
               return;
             }
+            engjf.setVisible(false);
             Lizzie.config.uiConfig.put("default-engine", curIndex);
             if (rdoDefault.isSelected()) {
               Lizzie.config.uiConfig.put("autoload-default", true);
