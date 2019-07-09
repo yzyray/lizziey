@@ -2469,7 +2469,7 @@ public class Board implements LeelazListener {
           && node.previous().get().previous().isPresent()
           && !node.previous().get().previous().get().getData().bestMoves.isEmpty()) {
         return (node.previous().get().previous().get().getData().bestMoves.get(0).scoreMean
-            - node.getData().bestMoves.get(0).scoreMean);
+            - node.getData().scoreMean);
       }
     } else {
       Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
@@ -2488,7 +2488,7 @@ public class Board implements LeelazListener {
         if (lastNode.get().blackToPlay == node.getData().blackToPlay) {
           return lastWR - node.getData().scoreMean;
         } else {
-          return (-lastWR) - node.getData().bestMoves.get(0).scoreMean;
+          return (-lastWR) - node.getData().scoreMean;
         }
       }
     }

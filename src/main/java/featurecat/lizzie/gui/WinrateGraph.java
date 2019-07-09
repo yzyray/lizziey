@@ -624,7 +624,11 @@ public class WinrateGraph {
         while (node.previous().isPresent() && node.previous().get().previous().isPresent()) {
           if (node.getData().blackToPlay && !node.getData().bestMoves.isEmpty()) {
 
-            double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
+            double curscoreMean = 0;
+            try {
+              curscoreMean = node.previous().get().getData().bestMoves.get(0).scoreMean;
+            } catch (Exception ex) {
+            }
 
             if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
 
@@ -655,15 +659,19 @@ public class WinrateGraph {
             lastscoreMean = curscoreMean;
             lastOkMove = movenum;
           } else {
-            double curscoreMean = node.previous().get().getData().bestMoves.get(0).scoreMean;
+            double curscoreMean = 0;
+            try {
+              curscoreMean = node.previous().get().getData().bestMoves.get(0).scoreMean;
+            } catch (Exception ex) {
+            }
             if (curscoreMean != 0) {
               curmovenum = movenum;
               drawcurscoreMean = curscoreMean;
             }
             node = node.previous().get();
           }
-
-          node = node.previous().get().previous().get();
+          if (node.previous().isPresent() && node.previous().get().previous().isPresent())
+            node = node.previous().get().previous().get();
           movenum = movenum - 2;
         }
         if (curmovenum > 0) {
@@ -716,15 +724,19 @@ public class WinrateGraph {
             lastscoreMean = curscoreMean;
             lastOkMove = movenum;
           } else {
-            double curscoreMean = node.previous().get().getData().bestMoves.get(0).scoreMean;
+            double curscoreMean = 0;
+            try {
+              curscoreMean = node.previous().get().getData().bestMoves.get(0).scoreMean;
+            } catch (Exception ex) {
+            }
             if (curscoreMean != 0) {
               curmovenum = movenum;
               drawcurscoreMean = curscoreMean;
             }
             node = node.previous().get();
           }
-
-          node = node.previous().get().previous().get();
+          if (node.previous().isPresent() && node.previous().get().previous().isPresent())
+            node = node.previous().get().previous().get();
           movenum = movenum - 2;
         }
         if (curmovenum > 0) {
