@@ -8,9 +8,11 @@ import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
 import featurecat.lizzie.rules.Stone;
 import java.awt.*;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ResourceBundle;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -55,7 +57,11 @@ public class NewAnaGameDialog extends JDialog {
     setResizable(false);
     setTitle("新对局(分析模式)");
     setModal(true);
-
+    try {
+      this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout());
 

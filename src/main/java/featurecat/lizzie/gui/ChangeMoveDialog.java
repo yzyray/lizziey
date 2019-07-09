@@ -7,9 +7,11 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -143,7 +145,11 @@ public class ChangeMoveDialog extends JDialog {
     JLabel lblPrompt3 = new JLabel(resourceBundle.getString("LizzieChangeMove.lblPrompt3.text"));
     lblPrompt3.setBounds(10, 45, 349, 14);
     buttonPane.add(lblPrompt3);
-
+    try {
+      this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     setLocationRelativeTo(getOwner());
   }
 

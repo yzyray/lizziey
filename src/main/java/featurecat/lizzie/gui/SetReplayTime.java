@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ResourceBundle;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
@@ -67,12 +68,16 @@ public class SetReplayTime extends JDialog {
 
               private DocumentFilter filter = new DigitOnlyFilter();
             });
-    time.setBounds(190, 26, 30, 19);
+    time.setBounds(190, 26, 50, 19);
     buttonPane.add(time);
     time.setColumns(3);
 
     time.setText((int) (Lizzie.config.replayBranchIntervalSeconds * 1000) + "");
-
+    try {
+      this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     setLocationRelativeTo(getOwner());
   }
 

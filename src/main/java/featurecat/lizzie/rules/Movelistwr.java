@@ -9,4 +9,5 @@ public class Movelistwr {
   public int playouts;
   public int previousplayouts;
   public boolean isdelete;
+  public double scoreMeanDiff;
 }

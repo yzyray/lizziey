@@ -1,5 +1,6 @@
 package featurecat.lizzie;
 
+import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.theme.Theme;
 import java.awt.Color;
 import java.io.*;
@@ -98,6 +99,7 @@ public class Config {
   public int limitBranchLength = 0;
   public int limitMaxSuggestion = 0;
   public int limitbadmoves = 0;
+  public int limitbadMeanmoves = 0;
   public int limitbadplayouts = 0;
   public long maxAnalyzeTimeMillis;
   public int analyzeUpdateIntervalCentisec;
@@ -303,6 +305,7 @@ public class Config {
     limitBranchLength = leelazConfig.optInt("limit-branch-length", 0);
     limitMaxSuggestion = leelazConfig.optInt("limit-max-suggestion", 0);
     limitbadmoves = leelazConfig.optInt("badmoves-winrate-limits", 0);
+    limitbadMeanmoves = leelazConfig.optInt("badmoves-scoremean-limits", 0);
     limitbadplayouts = leelazConfig.optInt("badmoves-playouts-limits", 0);
     winrateStrokeWidth = theme.winrateStrokeWidth();
     minimumBlunderBarWidth = theme.minimumBlunderBarWidth();
@@ -731,12 +734,15 @@ public class Config {
     persistedUi.put("board-postion-propotion", Lizzie.frame.BoardPositionProportion);
     persistedUi.put("window-maximized", windowIsMaximized);
 
-    JSONArray suggestionlistPos = new JSONArray();
+    
 
-    suggestionlistPos.put(Lizzie.analysisframe.getX());
-    suggestionlistPos.put(Lizzie.analysisframe.getY());
-    suggestionlistPos.put(Lizzie.analysisframe.getWidth());
-    suggestionlistPos.put(Lizzie.analysisframe.getHeight());
+    if( Lizzie.frame.analysisFrame!=null) {
+    	JSONArray suggestionlistPos = new JSONArray();
+    	int a =Lizzie.frame.analysisFrame.getX();
+    suggestionlistPos.put( Lizzie.frame.analysisFrame.getX());
+    suggestionlistPos.put( Lizzie.frame.analysisFrame.getY());
+    suggestionlistPos.put( Lizzie.frame.analysisFrame.getWidth());
+    suggestionlistPos.put( Lizzie.frame.analysisFrame.getHeight());
     suggestionlistPos.put(
         featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(0).getWidth());
     suggestionlistPos.put(
@@ -754,7 +760,15 @@ public class Config {
           featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(6).getWidth());
     }
     persistedUi.put("suggestions-list-position", suggestionlistPos);
+    }
+    else
+    {  boolean persisted = Lizzie.config.persistedUi != null;
 
+    if (persisted && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null)
+    	{
+    	JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
+    	persistedUi.put("suggestions-list-position", pos);
+    	}}
     JSONArray badmoveslistPos = new JSONArray();
 
     badmoveslistPos.put(Lizzie.movelistframe.getX());

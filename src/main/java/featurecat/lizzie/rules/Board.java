@@ -2406,6 +2406,36 @@ public class Board implements LeelazListener {
     }
     return 0;
   }
+  
+  public double lastScoreMeanDiff2(BoardHistoryNode node) {
+	    if (Lizzie.board.isPkBoard) {
+	      if (node.previous().isPresent()
+	          && node.previous().get().previous().isPresent()
+	          && !node.previous().get().previous().get().getData().bestMoves.isEmpty()) {
+	        return (node.previous().get().previous().get().getData().bestMoves.get(0).scoreMean
+	            - Lizzie.board.getData().bestMoves.get(0).scoreMean);
+	      }
+	    } else {
+	      // Last winrate
+	      Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
+	      boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
+	      while (!validLastWinrate && node.previous().isPresent()) {
+	        node = node.previous().get();
+	        lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
+	        validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
+	      }
+	      if (!node.previous().isPresent()) {
+	        return 0;
+	      }
+	      double lastWR = lastNode.get().bestMoves.get(0).scoreMean;
+	      if (lastNode.get().blackToPlay == node.getData().blackToPlay) {
+	        return lastWR - Lizzie.board.getData().bestMoves.get(0).scoreMean;
+	      } else {
+	        return (- lastWR) - Lizzie.board.getData().bestMoves.get(0).scoreMean;
+	      }
+	    }
+	    return 0;
+	  }
 
   public double lastWinrateDiff(BoardHistoryNode node) {
     if (Lizzie.board.isPkBoard) {
@@ -2435,6 +2465,36 @@ public class Board implements LeelazListener {
     }
     return 0;
   }
+  
+  public double lastScoreMeanDiff(BoardHistoryNode node) {
+	    if (Lizzie.board.isPkBoard) {
+	      if (node.previous().isPresent()
+	          && node.previous().get().previous().isPresent()
+	          && !node.previous().get().previous().get().getData().bestMoves.isEmpty()) {
+	        return (node.previous().get().previous().get().getData().bestMoves.get(0).scoreMean
+	            - node.getData().bestMoves.get(0).scoreMean);
+	      }
+	    } else {
+	      Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
+	      boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
+	      while (!validLastWinrate && node.previous().isPresent()) {
+	        node = node.previous().get();
+	        lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
+	        validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
+	      }
+	      if (!node.previous().isPresent()) {
+	        return 0;
+	      }
+	      
+	      {double lastWR = lastNode.get().bestMoves.get(0).scoreMean;
+	      if (lastNode.get().blackToPlay == node.getData().blackToPlay) {
+	        return lastWR - node.getData().scoreMean;
+	      } else {
+	        return ( - lastWR) - node.getData().bestMoves.get(0).scoreMean;
+	      }}
+	    }
+	    return 0;
+	  }
 
   public void setMovelistAll() {
     BoardHistoryNode node = Lizzie.board.getHistory().getStart();
@@ -2469,7 +2529,8 @@ public class Board implements LeelazListener {
       }
     }
     if (node.getData().winrate >= 0 && isLarger) {
-      double winrateDiff = lastWinrateDiff(node);
+      double winrateDiff = lastWinrateDiff(node);      
+     
       Optional<int[]> passstep = Optional.empty();
       if (Lizzie.board.isPkBoard) {
         if (node.previous().isPresent()
@@ -2490,6 +2551,10 @@ public class Board implements LeelazListener {
             Lizzie.board.movelistwr.get(i).movenum = movenumer;
             Lizzie.board.movelistwr.get(i).previousplayouts = previousplayouts;
             Lizzie.board.movelistwr.get(i).isdelete = false;
+            if(Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago||Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago)
+            {
+            	Lizzie.board.movelistwr.get(i).scoreMeanDiff=lastScoreMeanDiff(node); 
+            }
           } else {
             Movelistwr mv = new Movelistwr();
             mv.diffwinrate = winrateDiff;
@@ -2500,6 +2565,10 @@ public class Board implements LeelazListener {
             mv.movenum = movenumer;
             mv.previousplayouts = previousplayouts;
             mv.isdelete = false;
+            if(Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago||Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago)
+            {
+            	mv.scoreMeanDiff=lastScoreMeanDiff(node); 
+            }
             Lizzie.board.movelistwr.add(mv);
           }
         }
@@ -2520,6 +2589,10 @@ public class Board implements LeelazListener {
             Lizzie.board.movelistwr.get(i).movenum = movenumer;
             Lizzie.board.movelistwr.get(i).previousplayouts = previousplayouts;
             Lizzie.board.movelistwr.get(i).isdelete = false;
+            if(Lizzie.leelaz.isKatago)
+            {
+            	Lizzie.board.movelistwr.get(i).scoreMeanDiff=lastScoreMeanDiff(node); 
+            }
           } else {
             Movelistwr mv = new Movelistwr();
             mv.diffwinrate = winrateDiff;
@@ -2530,6 +2603,10 @@ public class Board implements LeelazListener {
             mv.movenum = movenumer;
             mv.previousplayouts = previousplayouts;
             mv.isdelete = false;
+            if(Lizzie.leelaz.isKatago)
+            {
+            	mv.scoreMeanDiff=lastScoreMeanDiff(node); 
+            }
             Lizzie.board.movelistwr.add(mv);
           }
         }
@@ -2590,6 +2667,10 @@ public class Board implements LeelazListener {
             Lizzie.board.movelistwr.get(i).movenum = movenumer;
             Lizzie.board.movelistwr.get(i).previousplayouts = previousplayouts;
             Lizzie.board.movelistwr.get(i).isdelete = false;
+            if(Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago||Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago)
+            {
+            	Lizzie.board.movelistwr.get(i).scoreMeanDiff=lastScoreMeanDiff2(history.getCurrentHistoryNode()); 
+            }
           } else {
             Movelistwr mv = new Movelistwr();
             mv.diffwinrate = winrateDiff;
@@ -2600,6 +2681,10 @@ public class Board implements LeelazListener {
             mv.movenum = movenumer;
             mv.previousplayouts = previousplayouts;
             mv.isdelete = false;
+            if(Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago||Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago)
+            {
+            	mv.scoreMeanDiff=lastScoreMeanDiff2(history.getCurrentHistoryNode()); 
+            }
             Lizzie.board.movelistwr.add(mv);
           }
         }
@@ -2629,6 +2714,10 @@ public class Board implements LeelazListener {
             Lizzie.board.movelistwr.get(i).movenum = movenumer;
             Lizzie.board.movelistwr.get(i).previousplayouts = previousplayouts;
             Lizzie.board.movelistwr.get(i).isdelete = false;
+            if(Lizzie.leelaz.isKatago)
+            {
+            	Lizzie.board.movelistwr.get(i).scoreMeanDiff=lastScoreMeanDiff2(history.getCurrentHistoryNode()); 
+            }
           } else {
             Movelistwr mv = new Movelistwr();
             mv.diffwinrate = winrateDiff;
@@ -2639,6 +2728,10 @@ public class Board implements LeelazListener {
             mv.movenum = movenumer;
             mv.previousplayouts = previousplayouts;
             mv.isdelete = false;
+            if(Lizzie.leelaz.isKatago)
+            {
+            	mv.scoreMeanDiff=lastScoreMeanDiff2(history.getCurrentHistoryNode()); 
+            }
             Lizzie.board.movelistwr.add(mv);
           }
         }

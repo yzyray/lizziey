@@ -4,8 +4,10 @@ import featurecat.lizzie.Lizzie;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ResourceBundle;
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -36,6 +38,11 @@ public class AvoidMoveDialog extends JDialog {
     setModalityType(ModalityType.APPLICATION_MODAL);
     setType(Type.POPUP);
     setBounds(100, 100, 416, 282);
+    try {
+      this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     getContentPane().setLayout(new BorderLayout());
     JPanel buttonPane = new JPanel();

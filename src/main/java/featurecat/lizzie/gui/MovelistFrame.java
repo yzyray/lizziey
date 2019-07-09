@@ -46,16 +46,19 @@ public class MovelistFrame extends JPanel {
   int sortnum = 3;
   public static int selectedorder = -1;
   boolean issorted = false;
-  JSpinner dropwinratechooser = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
-  JSpinner playoutschooser = new JSpinner(new SpinnerNumberModel(100, 0, 99999, 100));
+  JSpinner dropwinratechooser = new JSpinner(new SpinnerNumberModel(1, 0, 9, 1));
+  JSpinner dropScoreMeanChooser = new JSpinner(new SpinnerNumberModel(1, 0, 9, 1));
+  JSpinner playoutschooser = new JSpinner(new SpinnerNumberModel(100, 0, 999, 100));
   JCheckBox checkBlack = new JCheckBox();
   JCheckBox checkWhite = new JCheckBox();
+  boolean isKatago=false;
 
-  public MovelistFrame() {
+  public MovelistFrame() {	  
     super(new BorderLayout());
+    if(Lizzie.leelaz.isKatago||(Lizzie.board.isPkBoard&&(Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago||Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago)))
+    	isKatago=true;
     dataModel = getTableModel();
-    table = new JTable(dataModel);
-
+    table = new JTable(dataModel); 
     winrateFont = new Font("微软雅黑", Font.PLAIN, 14);
     headFont = new Font("微软雅黑", Font.PLAIN, 13);
 
@@ -75,12 +78,14 @@ public class MovelistFrame extends JPanel {
                 * 30,
             new ActionListener() {
               public void actionPerformed(ActionEvent evt) {
-                dataModel.getColumnCount();
-                table.validate();
-                table.updateUI();
-                try {
-                  Lizzie.board.updateMovelist();
-                } catch (Exception e) {
+                if (Lizzie.leelaz != null && Lizzie.leelaz.isLoaded()) {
+                  dataModel.getColumnCount();
+                  table.validate();
+                  table.updateUI();
+                  try {
+                    Lizzie.board.updateMovelist();
+                  } catch (Exception e) {
+                  }
                 }
               }
             });
@@ -114,6 +119,7 @@ public class MovelistFrame extends JPanel {
     JTableHeader header = table.getTableHeader();
 
     dropwinratechooser.setValue(Lizzie.config.limitbadmoves);
+    dropScoreMeanChooser.setValue(Lizzie.config.limitbadMeanmoves);
     playoutschooser.setValue(Lizzie.config.limitbadplayouts);
     checkBlack.setSelected(true);
     checkWhite.setSelected(true);
@@ -121,6 +127,7 @@ public class MovelistFrame extends JPanel {
     checkBlacktxt = new JLabel("黑:");
     checkWhitetxt = new JLabel("白:");
     JLabel dropwinratechoosertxt = new JLabel("胜率波动筛选:");
+    JLabel lbldropScoreMeanChooser= new JLabel("目差波动筛选:");
     JLabel playoutschoosertxt = new JLabel("前后计算量筛选:");
     selectpanel.add(checkBlacktxt);
     selectpanel.add(checkBlack);
@@ -130,6 +137,8 @@ public class MovelistFrame extends JPanel {
     selectpanel.add(dropwinratechooser);
     selectpanel.add(playoutschoosertxt);
     selectpanel.add(playoutschooser);
+    selectpanel.add(lbldropScoreMeanChooser);
+    selectpanel.add(dropScoreMeanChooser);
 
     playoutschooser.addChangeListener(
         new ChangeListener() {
@@ -162,6 +171,21 @@ public class MovelistFrame extends JPanel {
             }
           }
         });
+    dropScoreMeanChooser.addChangeListener(
+            new ChangeListener() {
+
+                public void stateChanged(ChangeEvent e) {
+
+                  Lizzie.config.leelazConfig.putOpt(
+                		  "badmoves-scoremean-limits", dropScoreMeanChooser.getValue());
+                  try {
+                    Lizzie.config.save();
+                  } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                  }
+                }
+              });
     table.addMouseListener(
         new MouseAdapter() {
           public void mouseClicked(MouseEvent e) {
@@ -332,8 +356,10 @@ public class MovelistFrame extends JPanel {
 
     return new AbstractTableModel() {
       public int getColumnCount() {
-
-        return 8;
+    	  if(isKatago)
+	return 9;
+else
+	return 8;
       }
 
       public int getRowCount() {
@@ -344,15 +370,28 @@ public class MovelistFrame extends JPanel {
           if (!mwr.isdelete)
             if (mwr.isblack && checkBlack.isSelected() || !mwr.isblack && checkWhite.isSelected())
               if (Math.abs(mwr.diffwinrate) >= (int) dropwinratechooser.getValue())
-                if (mwr.playouts >= (int) playoutschooser.getValue()
-                    && mwr.previousplayouts >= (int) playoutschooser.getValue()) row = row + 1;
+                if (mwr.playouts >= (int) playoutschooser.getValue()&& mwr.previousplayouts >= (int) playoutschooser.getValue()) 
+                	 if(!isKatago||mwr.scoreMeanDiff>=(int)dropScoreMeanChooser.getValue())
+                		 row = row + 1;
         }
 
         return row;
       }
 
       public String getColumnName(int column) {
-
+    	  if(isKatago)
+    	  {
+    		   if (column == 0) return "黑白";
+    	        if (column == 1) return "手数";
+    	        if (column == 2) return "坐标";
+    	        if (column == 3) return "胜率波动";
+    	        if (column == 4) return "目差波动"; 
+    	        if (column == 5) return "此手胜率";
+    	        if (column == 6) return "AI胜率";
+    	        if (column == 7) return "计算量";
+    	        if (column == 8) return "前一手计算量";
+    	  }
+    	  else {
         if (column == 0) return "黑白";
         if (column == 1) return "手数";
         if (column == 2) return "坐标";
@@ -361,7 +400,7 @@ public class MovelistFrame extends JPanel {
         if (column == 5) return "AI胜率";
         if (column == 6) return "计算量";
         if (column == 7) return "前一手计算量";
-
+    	  }
         return "无";
       }
 
@@ -376,7 +415,9 @@ public class MovelistFrame extends JPanel {
             if (!mwr.isdelete)
               if (Math.abs(mwr.diffwinrate) >= (int) dropwinratechooser.getValue())
                 if (mwr.playouts >= (int) playoutschooser.getValue()
-                    && mwr.previousplayouts >= (int) playoutschooser.getValue()) data2.add(mwr);
+                    && mwr.previousplayouts >= (int) playoutschooser.getValue())
+                	if(!isKatago||mwr.scoreMeanDiff>=(int)dropScoreMeanChooser.getValue())
+                	data2.add(mwr);
         }
         // Collections.sort(data2) ;
         Collections.sort(
@@ -386,6 +427,86 @@ public class MovelistFrame extends JPanel {
               @Override
               public int compare(Movelistwr s1, Movelistwr s2) {
                 // 降序
+            	  if(isKatago)
+            	  {
+            		  if (!issorted) {
+                          if (sortnum == 0) {
+                            if (s2.isblack) return 1;
+                            if (!s2.isblack) return -1;
+                          }
+                          if (sortnum == 1) {
+                            if (s1.movenum > s2.movenum) return 1;
+                            if (s1.movenum < s2.movenum) return -1;
+                          }
+                          if (sortnum == 2) {
+                            return 1;
+                          }
+                          if (sortnum == 3) {
+                            if (Math.abs(s1.diffwinrate) < Math.abs(s2.diffwinrate)) return 1;
+                            if (Math.abs(s1.diffwinrate) > Math.abs(s2.diffwinrate)) return -1;
+                          }
+                          if (sortnum == 4) {
+                              if (Math.abs(s1.scoreMeanDiff) < Math.abs(s2.scoreMeanDiff)) return 1;
+                              if (Math.abs(s1.scoreMeanDiff) > Math.abs(s2.scoreMeanDiff)) return -1;
+                            }
+                          if (sortnum == 5) {
+                            if (s1.winrate < s2.winrate) return 1;
+                            if (s1.winrate > s2.winrate) return -1;
+                          }
+                          if (sortnum == 6) {
+                            if (s1.winrate - s1.diffwinrate < s2.winrate - s2.diffwinrate) return 1;
+                            if (s1.winrate - s1.diffwinrate > s2.winrate - s2.diffwinrate) return -1;
+                          }
+                          if (sortnum == 7) {
+                            if (s1.previousplayouts < s2.previousplayouts) return 1;
+                            if (s1.previousplayouts > s2.previousplayouts) return -1;
+                          }
+                          if (sortnum == 8) {
+                            if (s1.playouts < s2.playouts) return 1;
+                            if (s1.playouts > s2.playouts) return -1;
+                          }
+
+                        } else {
+                          if (sortnum == 0) {
+                            if (!s2.isblack) return 1;
+                            if (s2.isblack) return -1;
+                          }
+                          if (sortnum == 1) {
+                            if (s1.movenum < s2.movenum) return 1;
+                            if (s1.movenum > s2.movenum) return -1;
+                          }
+                          if (sortnum == 2) {
+                            return 1;
+                          }
+                          if (sortnum == 3) {
+                            if (Math.abs(s1.diffwinrate) > Math.abs(s2.diffwinrate)) return 1;
+                            if (Math.abs(s1.diffwinrate) < Math.abs(s2.diffwinrate)) return -1;
+                          }
+                          if (sortnum == 4) {
+                              if (Math.abs(s1.scoreMeanDiff) > Math.abs(s2.scoreMeanDiff)) return 1;
+                              if (Math.abs(s1.scoreMeanDiff) < Math.abs(s2.scoreMeanDiff)) return -1;
+                            }
+                          if (sortnum == 5) {
+                            if (s1.winrate > s2.winrate) return 1;
+                            if (s1.winrate < s2.winrate) return -1;
+                          }
+                          if (sortnum == 6) {
+                            if (s1.winrate - s1.diffwinrate > s2.winrate - s2.diffwinrate) return 1;
+                            if (s1.winrate - s1.diffwinrate < s2.winrate - s2.diffwinrate) return -1;
+                          }
+                          if (sortnum == 7) {
+                            if (s1.previousplayouts > s2.previousplayouts) return 1;
+                            if (s1.previousplayouts < s2.previousplayouts) return -1;
+                          }
+                          if (sortnum == 8) {
+                            if (s1.playouts > s2.playouts) return 1;
+                            if (s1.playouts < s2.playouts) return -1;
+                          }
+                        }
+                        return 0;
+                      }
+            	  
+            	  else {
                 if (!issorted) {
                   if (sortnum == 0) {
                     if (s2.isblack) return 1;
@@ -454,6 +575,7 @@ public class MovelistFrame extends JPanel {
                 }
                 return 0;
               }
+              }
             });
 
         // featurecat.lizzie.analysis.MoveDataSorter MoveDataSorter = new
@@ -461,6 +583,66 @@ public class MovelistFrame extends JPanel {
         // ArrayList sortedMoveData = MoveDataSorter.getSortedMoveDataByPolicy();
 
         Movelistwr data = data2.get(row);
+        if(isKatago) {
+        	 if (Lizzie.board.isPkBoard) {
+                 switch (col) {
+                   case 0:
+                     if (data.isblack) return "白";
+                     return "黑";
+                   case 1:
+                     return data.movenum + 1;
+                   case 2:
+                     return Board.convertCoordinatesToName(data.coords[0], data.coords[1]);
+                   case 3:
+                     return String.format("%.2f", -data.diffwinrate);
+                   case 4:
+                	   return String.format("%.2f", -data.scoreMeanDiff);
+                   case 5:
+                     return String.format("%.2f", 100 - data.winrate);
+                   case 6:
+                     if (data.previousplayouts > 0) {
+                       return String.format("%.2f", 100 - (data.winrate - data.diffwinrate));
+                     } else {
+                       return "无";
+                     }
+                   case 7:
+                     return data.playouts;
+                   case 8:
+                     return data.previousplayouts;
+                   default:
+                     return "";
+                 }
+               } else {
+                 switch (col) {
+                   case 0:
+                     if (data.isblack) return "黑";
+                     return "白";
+                   case 1:
+                     return data.movenum;
+                   case 2:
+                     return Board.convertCoordinatesToName(data.coords[0], data.coords[1]);
+                   case 3:
+                     return String.format("%.2f", data.diffwinrate);
+                   case 4:
+                       return String.format("%.2f", data.scoreMeanDiff);
+                   case 5:
+                     return String.format("%.2f", data.winrate);
+                   case 6:
+                     if (data.previousplayouts > 0) {
+                       return String.format("%.2f", data.winrate - data.diffwinrate);
+                     } else {
+                       return "无";
+                     }
+                   case 7:
+                     return data.playouts;
+                   case 8:
+                     return data.previousplayouts;
+                   default:
+                     return "";
+                 }
+               }	
+        }
+        else {
         if (Lizzie.board.isPkBoard) {
           switch (col) {
             case 0:
@@ -513,6 +695,7 @@ public class MovelistFrame extends JPanel {
             default:
               return "";
           }
+        }
         }
       }
     };

@@ -10,9 +10,11 @@ import featurecat.lizzie.rules.Stone;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ResourceBundle;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -54,7 +56,11 @@ public class NewEngineGameDialog extends JDialog {
     setResizable(false);
     setTitle("引擎对战");
     setModal(true);
-
+    try {
+      this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout());
 

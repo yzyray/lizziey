@@ -4,6 +4,7 @@ import featurecat.lizzie.Config;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.gui.EngineData;
+import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Movelist;
 import featurecat.lizzie.rules.SGFParser;
 import java.awt.event.ActionEvent;
@@ -90,6 +91,8 @@ public class EngineManager {
     if (index == -1) {
       Lizzie.leelaz = new Leelaz("");
       Lizzie.leelaz.isLoaded = true;
+      Lizzie.frame.addInput();
+      Lizzie.frame.toolbar.detail.setEnabled(true);
       featurecat.lizzie.gui.Menu.engineMenu.setText("未加载引擎");
       isEmpty = true;
       Lizzie.frame.addInput();
@@ -637,15 +640,7 @@ public class EngineManager {
     }
 
     changeEngIco();
-    Lizzie.frame.toolbar.reSetButtonLocation();
-    if (Lizzie.analysisframe.isVisible()) {
-      Lizzie.analysisframe.setVisible(false);
-      Lizzie.analysisframe = AnalysisFrame.createAnalysisDialog();
-      Lizzie.analysisframe.setVisible(
-          Lizzie.config.uiConfig.optBoolean("show-suggestions-frame", true));
-      Lizzie.analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
-      Lizzie.analysisframe.setVisible(true);
-    }
+    Lizzie.frame.toolbar.reSetButtonLocation();    
 
     Lizzie.frame.boardRenderer.removecountblock();
     if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();

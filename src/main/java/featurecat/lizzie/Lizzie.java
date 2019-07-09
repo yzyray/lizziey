@@ -4,10 +4,12 @@ import featurecat.lizzie.analysis.EngineManager;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.analysis.YaZenGtp;
 import featurecat.lizzie.gui.AnalysisFrame;
+import featurecat.lizzie.gui.ChangeMoveDialog;
 import featurecat.lizzie.gui.CountResults;
 import featurecat.lizzie.gui.GtpConsolePane;
 import featurecat.lizzie.gui.LizzieFrame;
 import featurecat.lizzie.gui.LoadEngine;
+import featurecat.lizzie.gui.Message;
 import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Board;
 import java.awt.Font;
@@ -21,8 +23,8 @@ public class Lizzie {
   public static Config config;
   public static GtpConsolePane gtpConsole;
   public static LizzieFrame frame;
-  public static JDialog analysisframe;
-  public static AnalysisFrame analysisFrame;
+ // public  JDialog analysisframe;
+  public  AnalysisFrame analysisFrame;
   public static JDialog movelistframe;
   public static JDialog loadEngine;
   public static MovelistFrame movelistFrame;
@@ -40,44 +42,42 @@ public class Lizzie {
     setUIFont(new javax.swing.plaf.FontUIResource("", Font.PLAIN, 12));
     mainArgs = args;
     config = new Config();
-    board = new Board();
-
-    movelistframe = MovelistFrame.createBadmovesDialog();
-
-    // movelistframe.setLocation(-7, 302);
-    movelistframe.setVisible(config.uiConfig.optBoolean("show-badmoves-frame", false));
-    movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
-
-    frame = new LizzieFrame();
-    gtpConsole = new GtpConsolePane(frame);
-    countResults = new CountResults(frame);
-    gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
-    // menu = new Menu(frame);
-    // menu.setVisible(true);
-
     if (Lizzie.config.uiConfig.optBoolean("autoload-default", false)) {
       int defaultEngine = Lizzie.config.uiConfig.optInt("default-engine", -1);
-      try {
-        engineManager = new EngineManager(config, defaultEngine);
-
-      } catch (IOException e) {
-        try {
-          Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
-        } catch (JSONException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
-        } catch (IOException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
-        }
-      }
+      start(defaultEngine);
     } else {
       loadEngine = LoadEngine.createBadmovesDialog();
       loadEngine.setVisible(true);
     }
-    analysisframe = AnalysisFrame.createAnalysisDialog();
-    analysisframe.setVisible(config.uiConfig.optBoolean("show-suggestions-frame", false));
-    analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
+  }
+
+  public static void start(int index) {
+
+    board = new Board();
+    frame = new LizzieFrame();
+    gtpConsole = new GtpConsolePane(frame);
+    try {
+      Lizzie.engineManager = new EngineManager(Lizzie.config, index);
+    } catch (Exception e) {
+      try {
+        Message msg = new Message();
+        msg.setMessage("加载引擎失败,目前为不加载引擎运行");
+        msg.setVisible(true);
+        Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
+      } catch (JSONException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      } catch (IOException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
+    }
+
+    
+    gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
+
+    countResults = new CountResults(frame);
+
   }
 
   public static void setLookAndFeel() {
@@ -107,7 +107,7 @@ public class Lizzie {
   }
 
   public static void initializeAfterVersionCheck() {
-    frame.addInput();
+
     if (config.handicapInsteadOfWinrate) {
       leelaz.estimatePassWinrate();
     }
@@ -118,6 +118,17 @@ public class Lizzie {
     }
     leelaz.ponder();
     Lizzie.frame.toolbar.reSetButtonLocation();
+//    if (config.uiConfig.optBoolean("show-suggestions-frame", false)) {    	
+//    	frame.toggleBestMoves();
+//      }
+      
+//      if (config.uiConfig.optBoolean("show-badmoves-frame", false)) {
+//    	  if(Lizzie.movelistframe!=null)
+//          Lizzie.movelistframe.setVisible(false);
+//          Lizzie.movelistframe = MovelistFrame.createBadmovesDialog();
+//          Lizzie.movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
+//          Lizzie.movelistframe.setVisible(true);
+//        }
     if (Lizzie.config.loadZen) {
       try {
         frame.zen = new YaZenGtp();
@@ -146,8 +157,8 @@ public class Lizzie {
     }
     try {
       config.persist();
-    } catch (IOException e) {
-      e.printStackTrace(); // Failed to save config
+    } catch (Exception e) {
+      // Failed to save config
     }
 
     //   if (leelaz != null) engineManager.forcekillAllEngines();

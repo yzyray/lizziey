@@ -46,7 +46,7 @@ public class BottomToolbar extends JPanel {
   JButton openfile;
   JButton savefile;
   public JButton analyse;
-  JButton detail;
+  public JButton detail;
   JButton kataEstimate;
   JButton heatMap;
   JButton backMain;
@@ -417,6 +417,7 @@ public class BottomToolbar extends JPanel {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.leelaz.togglePonder();
+            Lizzie.frame.refresh();
             setTxtUnfocuse();
           }
         });

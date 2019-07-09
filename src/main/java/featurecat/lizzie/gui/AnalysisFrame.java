@@ -25,7 +25,7 @@ import javax.swing.table.TableModel;
 import org.json.JSONArray;
 
 @SuppressWarnings("serial")
-public class AnalysisFrame extends JPanel {
+public class AnalysisFrame extends JDialog {
 
   TableModel dataModel;
   JScrollPane scrollpane;
@@ -33,13 +33,38 @@ public class AnalysisFrame extends JPanel {
   Timer timer;
   int sortnum = 1;
   static int selectedorder = -1;
-  static JDialog jfs;
+
   Font winrateFont;
   Font headFont;
 
   public AnalysisFrame() {
-    super(new BorderLayout());
+    new BorderLayout();
     dataModel = getTableModel();
+    
+    setTitle("U显示/关闭,单击显示紫圈(小棋盘显示变化),右键落子,双击显示变化,Q切换总在最前");
+
+    // JDialog dialog = new JDialog(owner,
+    // "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
+    addWindowListener(
+        new WindowAdapter() {
+          public void windowClosing(WindowEvent e) {
+            Lizzie.frame.toggleBestMoves();
+          }
+        });
+
+    // Create and set up the content pane.
+   // final AnalysisFrame newContentPane = new AnalysisFrame();
+   // newContentPane.setOpaque(true); // content panes must be opaque
+   // setContentPane(newContentPane);
+    // Display the window.
+    // jfs.setSize(521, 285);
+   
+ 
+    try {
+      setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     table = new JTable(dataModel);
 
     winrateFont = new Font("微软雅黑", Font.PLAIN, 14);
@@ -81,9 +106,10 @@ public class AnalysisFrame extends JPanel {
     table.getColumnModel().getColumn(3).setPreferredWidth(89);
     table.getColumnModel().getColumn(4).setPreferredWidth(72);
     boolean persisted = Lizzie.config.persistedUi != null;
-
+   
     if (persisted && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
+  
       if (table.getColumnCount() == 7
           && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length() == 11) {
         table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
@@ -93,6 +119,10 @@ public class AnalysisFrame extends JPanel {
         table.getColumnModel().getColumn(4).setPreferredWidth(pos.getInt(8));
         table.getColumnModel().getColumn(5).setPreferredWidth(pos.getInt(9));
         table.getColumnModel().getColumn(6).setPreferredWidth(pos.getInt(10));
+        setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
+      
+       
+      
       } else if (Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length()
           >= 9) {
 
@@ -101,6 +131,11 @@ public class AnalysisFrame extends JPanel {
         table.getColumnModel().getColumn(2).setPreferredWidth(pos.getInt(6));
         table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
         table.getColumnModel().getColumn(4).setPreferredWidth(pos.getInt(8));
+        setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
+      }
+      else
+      {
+    	  setBounds(-9, 278, 407, 259);
       }
     }
 
@@ -207,11 +242,11 @@ public class AnalysisFrame extends JPanel {
   }
 
   private void togglealwaysontop() {
-    if (jfs.isAlwaysOnTop()) {
-      jfs.setAlwaysOnTop(false);
+    if (isAlwaysOnTop()) {
+      setAlwaysOnTop(false);
       Lizzie.config.uiConfig.put("suggestions-always-ontop", false);
     } else {
-      jfs.setAlwaysOnTop(true);
+      setAlwaysOnTop(true);
       Lizzie.config.uiConfig.put("suggestions-always-ontop", true);
       if (Lizzie.frame.isAlwaysOnTop()) Lizzie.frame.toggleAlwaysOntop();
     }
@@ -371,44 +406,5 @@ public class AnalysisFrame extends JPanel {
     };
   }
 
-  public static JDialog createAnalysisDialog() {
-    // Create and set up the window.
-    jfs = new JDialog();
 
-    jfs.setTitle("U显示/关闭,单击显示紫圈(小棋盘显示变化),右键落子,双击显示变化,Q切换总在最前");
-
-    // JDialog dialog = new JDialog(owner,
-    // "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
-    jfs.addWindowListener(
-        new WindowAdapter() {
-          public void windowClosing(WindowEvent e) {
-            Lizzie.frame.toggleBestMoves();
-          }
-        });
-
-    // Create and set up the content pane.
-    final AnalysisFrame newContentPane = new AnalysisFrame();
-    newContentPane.setOpaque(true); // content panes must be opaque
-    jfs.setContentPane(newContentPane);
-    // Display the window.
-    // jfs.setSize(521, 285);
-    boolean persisted = Lizzie.config.persistedUi != null;
-    if (persisted
-        && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null
-        && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length() >= 4) {
-      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
-      jfs.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
-    } else {
-      jfs.setBounds(-9, 278, 407, 259);
-    }
-    try {
-      jfs.setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    // jfs.setResizable(false);
-    // Handle close event
-
-    return jfs;
-  }
 }

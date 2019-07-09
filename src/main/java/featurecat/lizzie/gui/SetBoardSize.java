@@ -7,8 +7,10 @@ import java.awt.EventQueue;
 import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ResourceBundle;
+import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -97,7 +99,11 @@ public class SetBoardSize extends JDialog {
     height.setColumns(3);
 
     height.setText(Lizzie.board.boardHeight + "");
-
+    try {
+      this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     setLocationRelativeTo(getOwner());
   }
 

@@ -114,6 +114,7 @@ public class LizzieFrame extends JFrame {
   public static Font winrateFont;
   public boolean isshowrightmenu;
   public ArrayList<Movelist> movelist;
+  public AnalysisFrame analysisFrame;
 
   public int blackorwhite = 0;
   // private final BufferStrategy bs;
@@ -249,7 +250,6 @@ public class LizzieFrame extends JFrame {
       setExtendedState(Frame.MAXIMIZED_BOTH);
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("main-window-position");
     }
-
     mainPanel =
         new JPanel(true) {
           @Override
@@ -306,7 +306,6 @@ public class LizzieFrame extends JFrame {
             }
           }
         });
-
     // Allow change font in the config
     if (Lizzie.config.uiFontName != null) {
       uiFont = new Font(Lizzie.config.uiFontName, Font.PLAIN, 12);
@@ -411,6 +410,7 @@ public class LizzieFrame extends JFrame {
         TimeUnit.SECONDS);
     mainPanel.addMouseMotionListener(input);
     toolbar.addMouseWheelListener(input);
+    addInput();
   }
 
   public void addInput() {
@@ -559,22 +559,15 @@ public class LizzieFrame extends JFrame {
   }
 
   public void toggleBestMoves() {
-    if (Lizzie.analysisframe.isVisible()) {
-      suggestionclick = outOfBoundCoordinate;
-      Lizzie.analysisframe.setVisible(false);
-      Lizzie.config.uiConfig.put("show-suggestions-frame", false);
-      featurecat.lizzie.gui.AnalysisFrame.selectedorder = -1;
-
-    } else {
-      Lizzie.analysisframe.setVisible(false);
-      Lizzie.analysisframe = AnalysisFrame.createAnalysisDialog();
-      Lizzie.analysisframe.setVisible(
-          Lizzie.config.uiConfig.optBoolean("show-suggestions-frame", true));
-      Lizzie.analysisframe.setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
-      Lizzie.analysisframe.setVisible(true);
-      Lizzie.config.uiConfig.put("show-suggestions-frame", true);
-    }
-    try {
+	  if(analysisFrame==null||!analysisFrame.isVisible())
+	  {   analysisFrame=new AnalysisFrame();
+	  analysisFrame.setVisible(true);
+	  }
+	  else {
+		  analysisFrame.setVisible(false);  
+	  }
+      Lizzie.config.uiConfig.put("show-suggestions-frame", analysisFrame.isVisible());
+       try {
       Lizzie.config.save();
     } catch (IOException e) {
       // TODO Auto-generated catch block
@@ -620,7 +613,7 @@ public class LizzieFrame extends JFrame {
     }
   }
 
-  public void toggleAlwaysOntop() {
+  public void toggleAlwaysOntop() {	  
     if (this.isAlwaysOnTop()) {
       this.setAlwaysOnTop(false);
       Lizzie.config.uiConfig.put("mains-always-ontop", false);
@@ -637,7 +630,13 @@ public class LizzieFrame extends JFrame {
   }
 
   public void toggleBadMoves() {
-
+if(Lizzie.movelistframe==null) {
+	 Lizzie.movelistframe = MovelistFrame.createBadmovesDialog();
+     Lizzie.movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
+     Lizzie.movelistframe.setVisible(true);
+     return;
+}
+	  
     if (Lizzie.movelistframe.isVisible()) {
       Lizzie.movelistframe.setVisible(false);
       Lizzie.config.uiConfig.put("show-badmoves-frame", false);
@@ -647,8 +646,12 @@ public class LizzieFrame extends JFrame {
       Lizzie.frame.repaint();
 
     } else {
-      Lizzie.movelistframe.setVisible(true);
-      Lizzie.config.uiConfig.put("show-badmoves-frame", true);
+    	  Lizzie.movelistframe.setVisible(false);
+          Lizzie.movelistframe = MovelistFrame.createBadmovesDialog();
+          Lizzie.movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
+          Lizzie.movelistframe.setVisible(true);
+          Lizzie.config.uiConfig.put("show-badmoves-frame", true);
+          
     }
     try {
       Lizzie.config.save();
@@ -2147,7 +2150,6 @@ public class LizzieFrame extends JFrame {
       if (Lizzie.config.showrect) {
         boardRenderer.drawmoveblock(
             coords.get()[0], coords.get()[1], Lizzie.board.getHistory().isBlacksTurn());
-        repaint();
       }
     }
   }

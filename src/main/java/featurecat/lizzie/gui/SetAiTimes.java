@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ResourceBundle;
+import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -102,7 +103,11 @@ public class SetAiTimes extends JDialog {
     } else {
       rdonoponder.setSelected(true);
     }
-
+    try {
+      this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     setLocationRelativeTo(getOwner());
   }
 

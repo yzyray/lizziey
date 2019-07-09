@@ -7,8 +7,10 @@ import java.awt.EventQueue;
 import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ResourceBundle;
+import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -75,7 +77,11 @@ public class Avoidmoves extends JDialog {
     txtMoveNumber.setBounds(210, 34, 60, 20);
     buttonPane.add(txtMoveNumber);
     txtMoveNumber.setColumns(10);
-
+    try {
+      this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     setLocationRelativeTo(getOwner());
   }
 

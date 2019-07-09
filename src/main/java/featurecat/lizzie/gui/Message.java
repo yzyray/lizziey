@@ -1,6 +1,8 @@
 package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
@@ -15,6 +17,11 @@ public class Message extends JDialog {
 
     lblmessage = new JLabel("", JLabel.CENTER);
     this.add(lblmessage);
+    try {
+      this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void setMessage(String message) {

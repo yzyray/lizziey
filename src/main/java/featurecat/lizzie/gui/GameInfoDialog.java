@@ -7,7 +7,9 @@ package featurecat.lizzie.gui;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
 import java.awt.*;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -45,7 +47,11 @@ public class GameInfoDialog extends JDialog {
     setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout());
-
+    try {
+      this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     initDialogPane(contentPane);
 
     pack();

@@ -2,7 +2,6 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Config;
 import featurecat.lizzie.Lizzie;
-import featurecat.lizzie.analysis.EngineManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +31,6 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import org.json.JSONArray;
-import org.json.JSONException;
 
 @SuppressWarnings("serial")
 public class LoadEngine extends JPanel {
@@ -52,6 +50,7 @@ public class LoadEngine extends JPanel {
   int sortnum = 3;
   public static int selectedorder = -1;
   boolean issorted = false;
+  boolean firstConf = true;
   // JSpinner dropwinratechooser = new JSpinner(new SpinnerNumberModel(1, 0, 99,
   // 1));
   // JSpinner playoutschooser = new JSpinner(new SpinnerNumberModel(100, 0, 99999,
@@ -220,20 +219,7 @@ public class LoadEngine extends JPanel {
               Lizzie.config.save();
             } catch (IOException es) {
             }
-            try {
-              Lizzie.engineManager = new EngineManager(Lizzie.config, curIndex);
-
-            } catch (IOException es) {
-              try {
-                Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
-              } catch (JSONException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-              } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-              }
-            }
+            Lizzie.start(curIndex);
           }
         });
     exit.addActionListener(
@@ -251,15 +237,26 @@ public class LoadEngine extends JPanel {
           @Override
           public void actionPerformed(ActionEvent e) {
             engjf.setVisible(false);
-            try {
-              Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
-            } catch (JSONException e1) {
-              // TODO Auto-generated catch block
-              e1.printStackTrace();
-            } catch (IOException e1) {
-              // TODO Auto-generated catch block
-              e1.printStackTrace();
+            if (rdoDefault.isSelected()) {
+              Lizzie.config.uiConfig.put("autoload-default", true);
+            } else {
+              Lizzie.config.uiConfig.put("autoload-last", false);
             }
+
+            if (rdoLast.isSelected()) {
+              Lizzie.config.uiConfig.put("autoload-last", true);
+              Lizzie.config.uiConfig.put("autoload-default", true);
+            }
+            if (rdoMannul.isSelected()) {
+              Lizzie.config.uiConfig.put("autoload-last", false);
+              Lizzie.config.uiConfig.put("autoload-default", false);
+            }
+
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+            }
+            Lizzie.start(curIndex);
           }
         });
 
@@ -522,21 +519,8 @@ public class LoadEngine extends JPanel {
       Lizzie.config.save();
     } catch (IOException es) {
     }
-    try {
-      Lizzie.engineManager = new EngineManager(Lizzie.config, curIndex);
 
-    } catch (IOException es) {
-      try {
-        JOptionPane.showMessageDialog(Lizzie.frame, "加载引擎失败,目前为不加载引擎直接运行 ");
-        Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
-      } catch (JSONException e1) {
-        // TODO Auto-generated catch block
-        e1.printStackTrace();
-      } catch (IOException e1) {
-        // TODO Auto-generated catch block
-        e1.printStackTrace();
-      }
-    }
+    Lizzie.start(curIndex);
   }
 
   public ArrayList<EngineData> getEngineData() {
@@ -608,6 +592,15 @@ public class LoadEngine extends JPanel {
           else enginedt.isDefault = false;
           engineData.add(enginedt);
         }
+      }
+    }
+    if (engineData.size() == 0) {
+      if (firstConf) {
+        Lizzie.frame.openConfigDialog();
+        engjf.setVisible(false);
+        firstConf = false;
+      } else {
+        System.exit(0);
       }
     }
     return engineData;
@@ -694,11 +687,17 @@ public class LoadEngine extends JPanel {
     final LoadEngine newContentPane = new LoadEngine();
     newContentPane.setOpaque(true); // content panes must be opaque
     engjf.setContentPane(newContentPane);
+    engjf.setModal(true);
     // Display the window.
     // jf.setSize(521, 320);
 
     // boolean persisted = Lizzie.config.persistedUi != null;
-
+    engjf.addWindowListener(
+        new WindowAdapter() {
+          public void windowClosing(WindowEvent e) {
+            System.exit(0);
+          }
+        });
     engjf.setBounds(50, 50, 900, 320);
     engjf.setResizable(false);
     try {

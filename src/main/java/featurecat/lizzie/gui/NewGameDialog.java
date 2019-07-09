@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ResourceBundle;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -53,7 +54,11 @@ public class NewGameDialog extends JDialog {
     setResizable(false);
     setTitle(resourceBundle.getString("NewGameDialog.title"));
     setModal(true);
-
+    try {
+      this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout());
 

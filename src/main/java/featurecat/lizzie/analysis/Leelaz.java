@@ -287,9 +287,9 @@ public class Leelaz {
 		executor.execute(this::read);
 		started = true;
 		if(index>20)
-			featurecat.lizzie.gui.Menu.engine[20].setIcon(featurecat.lizzie.gui.Menu.stop);
+			Lizzie.frame.menu.changeEngineIcon(20,1);
 		else
-		featurecat.lizzie.gui.Menu.engine[index].setIcon(featurecat.lizzie.gui.Menu.stop);
+			Lizzie.frame.menu.changeEngineIcon(index,1);
 
 	}
 
@@ -331,9 +331,9 @@ public class Leelaz {
 
 	public void normalQuit() {
 		if(currentEngineN>20)
-			featurecat.lizzie.gui.Menu.engine[20].setIcon(null);
+			Lizzie.frame.menu.changeEngineIcon(20,0);
 		else
-		featurecat.lizzie.gui.Menu.engine[currentEngineN].setIcon(null);
+			Lizzie.frame.menu.changeEngineIcon(currentEngineN,0);
 
 		sendCommand("quit");
 		executor.shutdown();
@@ -763,14 +763,13 @@ public class Leelaz {
 							}
 							isLoaded = true;
 							if(currentEngineN>20)
-								featurecat.lizzie.gui.Menu.engine[20].setIcon(featurecat.lizzie.gui.Menu.ready);
+								Lizzie.frame.menu.changeEngineIcon(20,2);
 							else
-							featurecat.lizzie.gui.Menu.engine[currentEngineN].setIcon(featurecat.lizzie.gui.Menu.ready);
+								Lizzie.frame.menu.changeEngineIcon(currentEngineN,2);
 							if(Lizzie.engineManager.currentEngineNo>20)
-								featurecat.lizzie.gui.Menu.engine[20].setIcon(featurecat.lizzie.gui.Menu.icon);
+								Lizzie.frame.menu.changeEngineIcon(20,3);
 							else
-							featurecat.lizzie.gui.Menu.engine[Lizzie.engineManager.currentEngineNo]
-									.setIcon(featurecat.lizzie.gui.Menu.icon);
+								Lizzie.frame.menu.changeEngineIcon(Lizzie.engineManager.currentEngineNo,3);
 						}
 					} else if (isCheckingVersion && !isKatago) {
 						String[] ver = params[1].split("\\.");
@@ -793,14 +792,13 @@ public class Leelaz {
 						Lizzie.initializeAfterVersionCheck();
 						isLoaded = true;
 						if(currentEngineN>20)
-							featurecat.lizzie.gui.Menu.engine[20].setIcon(featurecat.lizzie.gui.Menu.ready);
+							Lizzie.frame.menu.changeEngineIcon(20,2);
 						else
-						featurecat.lizzie.gui.Menu.engine[currentEngineN].setIcon(featurecat.lizzie.gui.Menu.ready);
+							Lizzie.frame.menu.changeEngineIcon(currentEngineN,2);
 						if(Lizzie.engineManager.currentEngineNo>20)
-							featurecat.lizzie.gui.Menu.engine[20].setIcon(featurecat.lizzie.gui.Menu.icon);
+							Lizzie.frame.menu.changeEngineIcon(20,3);
 						else
-						featurecat.lizzie.gui.Menu.engine[Lizzie.engineManager.currentEngineNo]
-								.setIcon(featurecat.lizzie.gui.Menu.icon);
+							Lizzie.frame.menu.changeEngineIcon(Lizzie.engineManager.currentEngineNo,3);
 
 					}
 				}
