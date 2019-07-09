@@ -754,14 +754,14 @@ public class Leelaz {
 						isCheckingName = false;
 						if (params[1].startsWith("KataGo") || isKatago) {
 							this.isKatago = true;
-							this.version = 17;
-							Lizzie.initializeAfterVersionCheck();
+							this.version = 17;							
 							isCheckingVersion = false;
 
 							if (this.currentEngineN == EngineManager.currentEngineNo) {
 								Lizzie.config.leelaversion = version;
 							}
 							isLoaded = true;
+							Lizzie.initializeAfterVersionCheck();
 							if(currentEngineN>20)
 								Lizzie.frame.menu.changeEngineIcon(20,2);
 							else
@@ -788,9 +788,9 @@ public class Leelaz {
 			            	}
 				
 						}
-						isCheckingVersion = false;
-						Lizzie.initializeAfterVersionCheck();
+						isCheckingVersion = false;						
 						isLoaded = true;
+						Lizzie.initializeAfterVersionCheck();
 						if(currentEngineN>20)
 							Lizzie.frame.menu.changeEngineIcon(20,2);
 						else

@@ -559,15 +559,20 @@ public class LizzieFrame extends JFrame {
   }
 
   public void toggleBestMoves() {
-	  if(analysisFrame==null||!analysisFrame.isVisible())
-	  {   analysisFrame=new AnalysisFrame();
-	  analysisFrame.setVisible(true);
-	  }
-	  else {
-		  analysisFrame.setVisible(false);  
-	  }
-      Lizzie.config.uiConfig.put("show-suggestions-frame", analysisFrame.isVisible());
-       try {
+    if (analysisFrame == null || !analysisFrame.isVisible()) {
+      analysisFrame = new AnalysisFrame();
+      analysisFrame.setVisible(true);
+    } else {
+      analysisFrame.setVisible(false);
+      try {
+        Lizzie.config.persist();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+    Lizzie.config.uiConfig.put("show-suggestions-frame", analysisFrame.isVisible());
+    try {
       Lizzie.config.save();
     } catch (IOException e) {
       // TODO Auto-generated catch block
@@ -613,7 +618,7 @@ public class LizzieFrame extends JFrame {
     }
   }
 
-  public void toggleAlwaysOntop() {	  
+  public void toggleAlwaysOntop() {
     if (this.isAlwaysOnTop()) {
       this.setAlwaysOnTop(false);
       Lizzie.config.uiConfig.put("mains-always-ontop", false);
@@ -630,13 +635,20 @@ public class LizzieFrame extends JFrame {
   }
 
   public void toggleBadMoves() {
-if(Lizzie.movelistframe==null) {
-	 Lizzie.movelistframe = MovelistFrame.createBadmovesDialog();
-     Lizzie.movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
-     Lizzie.movelistframe.setVisible(true);
-     return;
-}
-	  
+    if (Lizzie.movelistframe == null) {
+      Lizzie.movelistframe = MovelistFrame.createBadmovesDialog();
+      Lizzie.movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
+      Lizzie.movelistframe.setVisible(true);
+      Lizzie.config.uiConfig.put("show-badmoves-frame", true);
+      try {
+        Lizzie.config.save();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      return;
+    }
+
     if (Lizzie.movelistframe.isVisible()) {
       Lizzie.movelistframe.setVisible(false);
       Lizzie.config.uiConfig.put("show-badmoves-frame", false);
@@ -644,14 +656,19 @@ if(Lizzie.movelistframe==null) {
       clickbadmove = Lizzie.frame.outOfBoundCoordinate;
       Lizzie.frame.boardRenderer.removedrawmovestone();
       Lizzie.frame.repaint();
+      try {
+        Lizzie.config.persist();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
 
     } else {
-    	  Lizzie.movelistframe.setVisible(false);
-          Lizzie.movelistframe = MovelistFrame.createBadmovesDialog();
-          Lizzie.movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
-          Lizzie.movelistframe.setVisible(true);
-          Lizzie.config.uiConfig.put("show-badmoves-frame", true);
-          
+      Lizzie.movelistframe.setVisible(false);
+      Lizzie.movelistframe = MovelistFrame.createBadmovesDialog();
+      Lizzie.movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
+      Lizzie.movelistframe.setVisible(true);
+      Lizzie.config.uiConfig.put("show-badmoves-frame", true);
     }
     try {
       Lizzie.config.save();

@@ -40,7 +40,7 @@ public class AnalysisFrame extends JDialog {
   public AnalysisFrame() {
     new BorderLayout();
     dataModel = getTableModel();
-    
+
     setTitle("U显示/关闭,单击显示紫圈(小棋盘显示变化),右键落子,双击显示变化,Q切换总在最前");
 
     // JDialog dialog = new JDialog(owner,
@@ -53,13 +53,12 @@ public class AnalysisFrame extends JDialog {
         });
 
     // Create and set up the content pane.
-   // final AnalysisFrame newContentPane = new AnalysisFrame();
-   // newContentPane.setOpaque(true); // content panes must be opaque
-   // setContentPane(newContentPane);
+    // final AnalysisFrame newContentPane = new AnalysisFrame();
+    // newContentPane.setOpaque(true); // content panes must be opaque
+    // setContentPane(newContentPane);
     // Display the window.
     // jfs.setSize(521, 285);
-   
- 
+
     try {
       setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {
@@ -106,10 +105,10 @@ public class AnalysisFrame extends JDialog {
     table.getColumnModel().getColumn(3).setPreferredWidth(89);
     table.getColumnModel().getColumn(4).setPreferredWidth(72);
     boolean persisted = Lizzie.config.persistedUi != null;
-   
+
     if (persisted && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
-  
+
       if (table.getColumnCount() == 7
           && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length() == 11) {
         table.getColumnModel().getColumn(0).setPreferredWidth(pos.getInt(4));
@@ -120,9 +119,7 @@ public class AnalysisFrame extends JDialog {
         table.getColumnModel().getColumn(5).setPreferredWidth(pos.getInt(9));
         table.getColumnModel().getColumn(6).setPreferredWidth(pos.getInt(10));
         setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
-      
-       
-      
+
       } else if (Lizzie.config.persistedUi.optJSONArray("suggestions-list-position").length()
           >= 9) {
 
@@ -132,10 +129,8 @@ public class AnalysisFrame extends JDialog {
         table.getColumnModel().getColumn(3).setPreferredWidth(pos.getInt(7));
         table.getColumnModel().getColumn(4).setPreferredWidth(pos.getInt(8));
         setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
-      }
-      else
-      {
-    	  setBounds(-9, 278, 407, 259);
+      } else {
+        setBounds(-9, 278, 407, 259);
       }
     }
 
@@ -405,6 +400,4 @@ public class AnalysisFrame extends JDialog {
       }
     };
   }
-
-
 }

@@ -4,7 +4,6 @@ import featurecat.lizzie.analysis.EngineManager;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.analysis.YaZenGtp;
 import featurecat.lizzie.gui.AnalysisFrame;
-import featurecat.lizzie.gui.ChangeMoveDialog;
 import featurecat.lizzie.gui.CountResults;
 import featurecat.lizzie.gui.GtpConsolePane;
 import featurecat.lizzie.gui.LizzieFrame;
@@ -23,8 +22,8 @@ public class Lizzie {
   public static Config config;
   public static GtpConsolePane gtpConsole;
   public static LizzieFrame frame;
- // public  JDialog analysisframe;
-  public  AnalysisFrame analysisFrame;
+  // public  JDialog analysisframe;
+  public AnalysisFrame analysisFrame;
   public static JDialog movelistframe;
   public static JDialog loadEngine;
   public static MovelistFrame movelistFrame;
@@ -73,11 +72,9 @@ public class Lizzie {
       }
     }
 
-    
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
 
     countResults = new CountResults(frame);
-
   }
 
   public static void setLookAndFeel() {
@@ -117,18 +114,28 @@ public class Lizzie {
       board.resumePreviousGame();
     }
     leelaz.ponder();
-    Lizzie.frame.toolbar.reSetButtonLocation();
-//    if (config.uiConfig.optBoolean("show-suggestions-frame", false)) {    	
-//    	frame.toggleBestMoves();
-//      }
-      
-//      if (config.uiConfig.optBoolean("show-badmoves-frame", false)) {
-//    	  if(Lizzie.movelistframe!=null)
-//          Lizzie.movelistframe.setVisible(false);
-//          Lizzie.movelistframe = MovelistFrame.createBadmovesDialog();
-//          Lizzie.movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
-//          Lizzie.movelistframe.setVisible(true);
-//        }
+    Runnable runnable =
+        new Runnable() {
+          public void run() {
+            Lizzie.frame.toolbar.reSetButtonLocation();
+            if (config.uiConfig.optBoolean("show-suggestions-frame", false)) {
+              if (frame.analysisFrame == null) frame.toggleBestMoves();
+              else {
+                frame.toggleBestMoves();
+                frame.toggleBestMoves();
+              }
+            }
+            if (config.uiConfig.optBoolean("show-badmoves-frame", false)) {
+              if (Lizzie.movelistframe != null) Lizzie.movelistframe.setVisible(false);
+              Lizzie.movelistframe = MovelistFrame.createBadmovesDialog();
+              Lizzie.movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
+              Lizzie.movelistframe.setVisible(true);
+            }
+          }
+        };
+    Thread thread = new Thread(runnable);
+    thread.start();
+
     if (Lizzie.config.loadZen) {
       try {
         frame.zen = new YaZenGtp();

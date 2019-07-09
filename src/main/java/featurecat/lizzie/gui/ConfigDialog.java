@@ -988,7 +988,7 @@ public class ConfigDialog extends JDialog {
         Optional.ofNullable(leelazConfig.optJSONArray("engine-name-list"));
     enginesNameOpt.ifPresent(
         a -> {
-          IntStream.range(0, 9)
+          IntStream.range(0, 10)
               .forEach(
                   i -> {
                     names[i].setText(a.getString(i));
@@ -1013,7 +1013,7 @@ public class ConfigDialog extends JDialog {
         Optional.ofNullable(leelazConfig.optJSONArray("engine-command-list"));
     enginesOpt.ifPresent(
         a -> {
-          IntStream.range(0, 8)
+          IntStream.range(0, 9)
               .forEach(
                   i -> {
                     txts[i].setText(a.getString(i));
@@ -1037,7 +1037,7 @@ public class ConfigDialog extends JDialog {
         Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
     enginePreloadOpt.ifPresent(
         a -> {
-          IntStream.range(0, 9)
+          IntStream.range(0, 10)
               .forEach(
                   i -> {
                     chkPreloads[i].setSelected(a.optBoolean(i));
@@ -1153,7 +1153,7 @@ public class ConfigDialog extends JDialog {
 
   private void saveConfig() {
     try {
-
+      ArrayList<EngineData> engData = getEngineData();
       leelazConfig.putOpt("max-analyze-time-minutes", txtFieldValue(txtMaxAnalyzeTime));
       Lizzie.config.maxAnalyzeTimeMillis = 60 * 1000 * txtFieldValue(txtMaxAnalyzeTime);
       if (Lizzie.config.maxAnalyzeTimeMillis == 0) {
@@ -1173,6 +1173,11 @@ public class ConfigDialog extends JDialog {
       leelazConfig.put("engine-command", txtEngine.getText().trim());
       JSONArray preloads = new JSONArray();
       Arrays.asList(chkPreloads).forEach(t -> preloads.put(t.isSelected()));
+      if (engData.size() > 10) {
+        for (int i = 10; i < engData.size(); i++) {
+          preloads.put(engData.get(i).preload);
+        }
+      }
       leelazConfig.put("engine-preload-list", preloads);
       leelazConfig.putOpt("limit-max-suggestion", txtFieldValue(txtMaxsuggestionmoves));
       leelazConfig.putOpt("limit-branch-length", txtFieldValue(txtlimitBranchLength));
@@ -1180,21 +1185,72 @@ public class ConfigDialog extends JDialog {
       Lizzie.config.limitBranchLength = txtFieldValue(txtlimitBranchLength);
       JSONArray engines = new JSONArray();
       Arrays.asList(txts).forEach(t -> engines.put(t.getText().trim()));
+      if (engData.size() > 10) {
+        for (int i = 10; i < engData.size(); i++) {
+          engines.put(engData.get(i).commands);
+        }
+      }
       leelazConfig.put("engine-command-list", engines);
       JSONArray enginenames = new JSONArray();
       Arrays.asList(names).forEach(t -> enginenames.put(t.getText().trim()));
+      if (engData.size() > 10) {
+        for (int i = 10; i < engData.size(); i++) {
+          enginenames.put(engData.get(i).name);
+        }
+      }
       leelazConfig.put("engine-name-list", enginenames);
       //  Lizzie.config.uiConfig.put("board-size", getBoardSize());
       Lizzie.config.save();
+
     } catch (IOException e) {
       e.printStackTrace();
     }
     try {
-      Lizzie.engineManager.updateEngines();
+      saveEngineConfig();
     } catch (Exception ex) {
     }
   }
 
+  private void saveEngineConfig() {
+    ArrayList<EngineData> engData = getEngineData();
+    JSONArray commands = new JSONArray();
+    JSONArray names = new JSONArray();
+    JSONArray preloads = new JSONArray();
+    JSONArray widths = new JSONArray();
+    JSONArray heights = new JSONArray();
+    JSONArray komis = new JSONArray();
+    for (int i = 0; i < engData.size(); i++) {
+      EngineData engDt = engData.get(i);
+      if (i == 0) {
+        Lizzie.config.leelazConfig.put("engine-command", engDt.commands.trim());
+        names.put(engDt.name);
+        preloads.put(engDt.preload);
+        widths.put(engDt.width);
+        heights.put(engDt.height);
+        komis.put(engDt.komi);
+      } else {
+        commands.put(engDt.commands.trim());
+        names.put(engDt.name);
+        preloads.put(engDt.preload);
+        widths.put(engDt.width);
+        heights.put(engDt.height);
+        komis.put(engDt.komi);
+      }
+    }
+    Lizzie.config.leelazConfig.put("engine-command-list", commands);
+    Lizzie.config.leelazConfig.put("engine-name-list", names);
+    Lizzie.config.leelazConfig.put("engine-preload-list", preloads);
+    Lizzie.config.leelazConfig.put("engine-width-list", widths);
+    Lizzie.config.leelazConfig.put("engine-height-list", heights);
+    Lizzie.config.leelazConfig.put("engine-komi-list", komis);
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    Lizzie.engineManager.updateEngines();
+  }
   //  private void applyChange() {
   //    Lizzie.board.reopen(getBoardSize(), getBoardSize());
   //  }
@@ -1430,6 +1486,80 @@ public class ConfigDialog extends JDialog {
         txtBoardSize.setEnabled(true);
         break;
     }
+  }
+
+  public ArrayList<EngineData> getEngineData() {
+    ArrayList<EngineData> engineData = new ArrayList<EngineData>();
+    Optional<JSONArray> enginesCommandOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
+    Optional<JSONArray> enginesNameOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
+    Optional<JSONArray> enginesPreloadOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
+
+    Optional<JSONArray> enginesWidthOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-width-list"));
+
+    Optional<JSONArray> enginesHeightOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-height-list"));
+    Optional<JSONArray> enginesKomiOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-komi-list"));
+
+    int defaultEngine = Lizzie.config.uiConfig.optInt("default-engine", -1);
+
+    for (int i = 0;
+        i < (enginesCommandOpt.isPresent() ? enginesCommandOpt.get().length() + 1 : 0);
+        i++) {
+      if (i == 0) {
+        String engineCommand = Lizzie.config.leelazConfig.getString("engine-command");
+        int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i, 19) : 19;
+        int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i, 19) : 19;
+        String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
+        float komi =
+            enginesKomiOpt.isPresent()
+                ? enginesKomiOpt.get().optFloat(i, (float) 7.5)
+                : (float) 7.5;
+        boolean preload =
+            enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i, false) : false;
+        EngineData enginedt = new EngineData();
+        enginedt.commands = engineCommand;
+        enginedt.name = name;
+        enginedt.preload = preload;
+        enginedt.index = i;
+        enginedt.width = width;
+        enginedt.height = height;
+        enginedt.komi = komi;
+        if (defaultEngine == i) enginedt.isDefault = true;
+        else enginedt.isDefault = false;
+        engineData.add(enginedt);
+      } else {
+        String commands =
+            enginesCommandOpt.isPresent() ? enginesCommandOpt.get().optString(i - 1, "") : "";
+        if (!commands.equals("")) {
+          int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i, 19) : 19;
+          int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i, 19) : 19;
+          String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
+          float komi =
+              enginesKomiOpt.isPresent()
+                  ? enginesKomiOpt.get().optFloat(i, (float) 7.5)
+                  : (float) 7.5;
+          boolean preload =
+              enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i, false) : false;
+          EngineData enginedt = new EngineData();
+          enginedt.commands = commands;
+          enginedt.name = name;
+          enginedt.preload = preload;
+          enginedt.index = i;
+          enginedt.width = width;
+          enginedt.height = height;
+          enginedt.komi = komi;
+          if (defaultEngine == i) enginedt.isDefault = true;
+          else enginedt.isDefault = false;
+          engineData.add(enginedt);
+        }
+      }
+    }
+    return engineData;
   }
 
   private int getBoardSize() {

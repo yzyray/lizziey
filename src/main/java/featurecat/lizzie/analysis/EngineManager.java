@@ -2,7 +2,6 @@ package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Config;
 import featurecat.lizzie.Lizzie;
-import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.gui.EngineData;
 import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Movelist;
@@ -626,6 +625,27 @@ public class EngineManager {
         if (changeBoard) newEng.boardSize(newEng.width, newEng.height);
         newEng.sendCommand("komi " + newEng.komi);
         Lizzie.config.leelaversion = newEng.version;
+        Runnable runnable =
+            new Runnable() {
+              public void run() {
+                Lizzie.frame.toolbar.reSetButtonLocation();
+                if (Lizzie.config.uiConfig.optBoolean("show-suggestions-frame", false)) {
+                  if (Lizzie.frame.analysisFrame == null) Lizzie.frame.toggleBestMoves();
+                  else {
+                    Lizzie.frame.toggleBestMoves();
+                    Lizzie.frame.toggleBestMoves();
+                  }
+                }
+                if (Lizzie.config.uiConfig.optBoolean("show-badmoves-frame", false)) {
+                  if (Lizzie.movelistframe != null) Lizzie.movelistframe.setVisible(false);
+                  Lizzie.movelistframe = MovelistFrame.createBadmovesDialog();
+                  Lizzie.movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
+                  Lizzie.movelistframe.setVisible(true);
+                }
+              }
+            };
+        Thread thread = new Thread(runnable);
+        thread.start();
       }
       newEng.sendCommand("clear_board");
       Lizzie.board.restoreMoveNumber(index, mv);
@@ -640,7 +660,7 @@ public class EngineManager {
     }
 
     changeEngIco();
-    Lizzie.frame.toolbar.reSetButtonLocation();    
+    Lizzie.frame.toolbar.reSetButtonLocation();
 
     Lizzie.frame.boardRenderer.removecountblock();
     if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();

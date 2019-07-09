@@ -1,6 +1,5 @@
 package featurecat.lizzie;
 
-import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.theme.Theme;
 import java.awt.Color;
 import java.io.*;
@@ -734,64 +733,73 @@ public class Config {
     persistedUi.put("board-postion-propotion", Lizzie.frame.BoardPositionProportion);
     persistedUi.put("window-maximized", windowIsMaximized);
 
-    
-
-    if( Lizzie.frame.analysisFrame!=null) {
-    	JSONArray suggestionlistPos = new JSONArray();
-    	int a =Lizzie.frame.analysisFrame.getX();
-    suggestionlistPos.put( Lizzie.frame.analysisFrame.getX());
-    suggestionlistPos.put( Lizzie.frame.analysisFrame.getY());
-    suggestionlistPos.put( Lizzie.frame.analysisFrame.getWidth());
-    suggestionlistPos.put( Lizzie.frame.analysisFrame.getHeight());
-    suggestionlistPos.put(
-        featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(0).getWidth());
-    suggestionlistPos.put(
-        featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(1).getWidth());
-    suggestionlistPos.put(
-        featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(2).getWidth());
-    suggestionlistPos.put(
-        featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(3).getWidth());
-    suggestionlistPos.put(
-        featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(4).getWidth());
-    if (featurecat.lizzie.gui.AnalysisFrame.table.getColumnCount() == 7) {
+    if (Lizzie.frame.analysisFrame != null) {
+      JSONArray suggestionlistPos = new JSONArray();
+      suggestionlistPos.put(Lizzie.frame.analysisFrame.getX());
+      suggestionlistPos.put(Lizzie.frame.analysisFrame.getY());
+      suggestionlistPos.put(Lizzie.frame.analysisFrame.getWidth());
+      suggestionlistPos.put(Lizzie.frame.analysisFrame.getHeight());
       suggestionlistPos.put(
-          featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(5).getWidth());
+          featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(0).getWidth());
       suggestionlistPos.put(
-          featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(6).getWidth());
+          featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(1).getWidth());
+      suggestionlistPos.put(
+          featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(2).getWidth());
+      suggestionlistPos.put(
+          featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(3).getWidth());
+      suggestionlistPos.put(
+          featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(4).getWidth());
+      if (featurecat.lizzie.gui.AnalysisFrame.table.getColumnCount() == 7) {
+        suggestionlistPos.put(
+            featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(5).getWidth());
+        suggestionlistPos.put(
+            featurecat.lizzie.gui.AnalysisFrame.table.getColumnModel().getColumn(6).getWidth());
+      }
+      persistedUi.put("suggestions-list-position", suggestionlistPos);
+    } else {
+      boolean persisted = Lizzie.config.persistedUi != null;
+      if (persisted
+          && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null) {
+        JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
+        persistedUi.put("suggestions-list-position", pos);
+      }
     }
-    persistedUi.put("suggestions-list-position", suggestionlistPos);
+    if (Lizzie.movelistframe != null) {
+      JSONArray badmoveslistPos = new JSONArray();
+
+      badmoveslistPos.put(Lizzie.movelistFrame.sortnum);
+      badmoveslistPos.put(Lizzie.movelistframe.getX());
+      badmoveslistPos.put(Lizzie.movelistframe.getY());
+      badmoveslistPos.put(Lizzie.movelistframe.getWidth());
+      badmoveslistPos.put(Lizzie.movelistframe.getHeight());
+      badmoveslistPos.put(
+          featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(0).getWidth());
+      badmoveslistPos.put(
+          featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(1).getWidth());
+      badmoveslistPos.put(
+          featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(2).getWidth());
+      badmoveslistPos.put(
+          featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(3).getWidth());
+      badmoveslistPos.put(
+          featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(4).getWidth());
+      badmoveslistPos.put(
+          featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(5).getWidth());
+      badmoveslistPos.put(
+          featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(6).getWidth());
+      badmoveslistPos.put(
+          featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(7).getWidth());
+      if (featurecat.lizzie.gui.MovelistFrame.table.getColumnCount() == 9) {
+        badmoveslistPos.put(
+            featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(8).getWidth());
+      }
+      persistedUi.put("badmoves-list-position", badmoveslistPos);
+    } else {
+      boolean persisted = Lizzie.config.persistedUi != null;
+      if (persisted && Lizzie.config.persistedUi.optJSONArray("badmoves-list-position") != null) {
+        JSONArray pos = Lizzie.config.persistedUi.getJSONArray("badmoves-list-position");
+        persistedUi.put("badmoves-list-position", pos);
+      }
     }
-    else
-    {  boolean persisted = Lizzie.config.persistedUi != null;
-
-    if (persisted && Lizzie.config.persistedUi.optJSONArray("suggestions-list-position") != null)
-    	{
-    	JSONArray pos = Lizzie.config.persistedUi.getJSONArray("suggestions-list-position");
-    	persistedUi.put("suggestions-list-position", pos);
-    	}}
-    JSONArray badmoveslistPos = new JSONArray();
-
-    badmoveslistPos.put(Lizzie.movelistframe.getX());
-    badmoveslistPos.put(Lizzie.movelistframe.getY());
-    badmoveslistPos.put(Lizzie.movelistframe.getWidth());
-    badmoveslistPos.put(Lizzie.movelistframe.getHeight());
-    badmoveslistPos.put(
-        featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(0).getWidth());
-    badmoveslistPos.put(
-        featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(1).getWidth());
-    badmoveslistPos.put(
-        featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(2).getWidth());
-    badmoveslistPos.put(
-        featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(3).getWidth());
-    badmoveslistPos.put(
-        featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(4).getWidth());
-    badmoveslistPos.put(
-        featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(5).getWidth());
-    badmoveslistPos.put(
-        featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(6).getWidth());
-    badmoveslistPos.put(
-        featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(7).getWidth());
-    persistedUi.put("badmoves-list-position", badmoveslistPos);
 
     JSONArray toolbarParameter = new JSONArray();
     try {
