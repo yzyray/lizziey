@@ -982,15 +982,29 @@ public class BoardRenderer {
 
             // This is inefficient but it looks better with shadows
             number = 1;
-            for (MoveData m : bestMoves) {
-              Optional<int[]> coord = Board.asCoordinates(m.coordinate);
-              if (coord.isPresent()) {
-                int[] c = coord.get();
-                if (c[0] == i && c[1] == j) {
-                  moveOpt = Optional.of(m);
-                  break;
+            if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove) {
+              for (MoveData m : tempbest1) {
+                Optional<int[]> coord = Board.asCoordinates(m.coordinate);
+                if (coord.isPresent()) {
+                  int[] c = coord.get();
+                  if (c[0] == i && c[1] == j) {
+                    moveOpt = Optional.of(m);
+                    break;
+                  }
+                  number = number + 1;
                 }
-                number = number + 1;
+              }
+            } else {
+              for (MoveData m : bestMoves) {
+                Optional<int[]> coord = Board.asCoordinates(m.coordinate);
+                if (coord.isPresent()) {
+                  int[] c = coord.get();
+                  if (c[0] == i && c[1] == j) {
+                    moveOpt = Optional.of(m);
+                    break;
+                  }
+                  number = number + 1;
+                }
               }
             }
 

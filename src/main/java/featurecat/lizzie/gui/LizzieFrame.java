@@ -176,7 +176,7 @@ public class LizzieFrame extends JFrame {
   private HtmlKit htmlKit;
   private StyleSheet htmlStyle;
   public Input input = new Input();
-  boolean noInput = true;
+  public boolean noInput = true;
 
   public boolean isTrying = false;
   ArrayList<Movelist> tryMoveList;

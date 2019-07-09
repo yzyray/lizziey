@@ -2316,7 +2316,7 @@ public class BottomToolbar extends JPanel {
           Lizzie.frame.setAlwaysOnTop(false);
           onTop = true;
         }
-        JOptionPane.showMessageDialog(null, "黑白必须为不同引擎");
+        JOptionPane.showMessageDialog(null, "genmove模式下,黑白必须为不同引擎");
         if (onTop) Lizzie.frame.setAlwaysOnTop(true);
         return;
       }
@@ -2368,9 +2368,15 @@ public class BottomToolbar extends JPanel {
       Lizzie.leelaz.nameCmd();
 
     } else {
-      Lizzie.leelaz.normalQuit();
+      if (!Lizzie.engineManager.isEmpty) {
+        try {
+          Lizzie.leelaz.normalQuit();
+        } catch (Exception ex) {
+        }
+      } else {
+        Lizzie.engineManager.switchEngine(engineBlack);
+      }
     }
-
     if (!isGenmove) {
       // 分析模式对战
       Lizzie.engineManager.engineList.get(engineBlack).blackResignMoveCounts = 0;
@@ -2378,20 +2384,56 @@ public class BottomToolbar extends JPanel {
       Lizzie.engineManager.engineList.get(engineWhite).blackResignMoveCounts = 0;
       Lizzie.engineManager.engineList.get(engineBlack).whiteResignMoveCounts = 0;
 
-      Lizzie.leelaz.Pondering();
-
       Lizzie.board.clearforpk();
 
       if (chkenginePkContinue.isSelected()) {
+        Lizzie.engineManager.isEmpty = true;
         Lizzie.board.setlist(startGame);
+        Lizzie.engineManager.isEmpty = false;
       }
       if (Lizzie.board.getHistory().isBlacksTurn()) {
         Lizzie.engineManager.startEngineForPk(engineWhite);
-        Lizzie.engineManager.startEngineForPkPonder(engineBlack);
+        Lizzie.engineManager.startEngineForPk(engineBlack);
+        Runnable runnable =
+            new Runnable() {
+              public void run() {
+                while (!Lizzie.engineManager.engineList.get(engineWhite).isLoaded()
+                    || !Lizzie.engineManager.engineList.get(engineBlack).isLoaded()) {
+                  try {
+                    Thread.sleep(500);
+                  } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                  }
+                }
+                Lizzie.leelaz = Lizzie.engineManager.engineList.get(engineBlack);
+                Lizzie.leelaz.ponder();
+              }
+            };
+        Thread thread = new Thread(runnable);
+        thread.start();
 
       } else {
         Lizzie.engineManager.startEngineForPk(engineBlack);
-        Lizzie.engineManager.startEngineForPkPonder(engineWhite);
+        Lizzie.engineManager.startEngineForPk(engineWhite);
+        Runnable runnable =
+            new Runnable() {
+              public void run() {
+                while (!Lizzie.engineManager.engineList.get(engineWhite).isLoaded()
+                    || !Lizzie.engineManager.engineList.get(engineBlack).isLoaded()) {
+                  try {
+                    Thread.sleep(500);
+                  } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                  }
+                }
+                Lizzie.leelaz = Lizzie.engineManager.engineList.get(engineWhite);
+                Lizzie.leelaz.ponder();
+              }
+            };
+        Thread thread = new Thread(runnable);
+        thread.start();
       }
       Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
 
@@ -2408,39 +2450,80 @@ public class BottomToolbar extends JPanel {
       txtenginePkTimeWhite.setEnabled(false);
       Lizzie.board.clearforpk();
       if (chkenginePkContinue.isSelected()) {
+        Lizzie.engineManager.isEmpty = true;
         Lizzie.board.setlist(startGame);
+        Lizzie.engineManager.isEmpty = false;
       }
-
       if (Lizzie.board.getHistory().isBlacksTurn()) {
         Lizzie.engineManager.startEngineForPk(engineWhite);
         Lizzie.engineManager.startEngineForPk(engineBlack);
-        if (timew > 0)
-          Lizzie.engineManager
-              .engineList
-              .get(engineWhite)
-              .sendCommand("time_settings 0 " + timew + " 1");
-        if (timeb > 0)
-          Lizzie.engineManager
-              .engineList
-              .get(engineBlack)
-              .sendCommand("time_settings 0 " + timeb + " 1");
-        Lizzie.engineManager.engineList.get(engineBlack).genmoveForPk("B");
+        Runnable runnable =
+            new Runnable() {
+              public void run() {
+                while (!Lizzie.engineManager.engineList.get(engineWhite).isLoaded()
+                    || !Lizzie.engineManager.engineList.get(engineBlack).isLoaded()) {
+                  try {
+                    Thread.sleep(500);
+                  } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                  }
+                }
+                Lizzie.engineManager.engineList.get(engineBlack).nameCmd();
+                Lizzie.engineManager.engineList.get(engineBlack).notPondering();
+                Lizzie.engineManager.engineList.get(engineWhite).nameCmd();
+                Lizzie.engineManager.engineList.get(engineWhite).notPondering();
+                if (timew > 0)
+                  Lizzie.engineManager
+                      .engineList
+                      .get(engineWhite)
+                      .sendCommand("time_settings 0 " + timew + " 1");
+                if (timeb > 0)
+                  Lizzie.engineManager
+                      .engineList
+                      .get(engineBlack)
+                      .sendCommand("time_settings 0 " + timeb + " 1");
+                Lizzie.engineManager.engineList.get(engineBlack).genmoveForPk("B");
+              }
+            };
+        Thread thread = new Thread(runnable);
+        thread.start();
 
       } else {
         Lizzie.engineManager.startEngineForPk(engineBlack);
         Lizzie.engineManager.startEngineForPk(engineWhite);
-        Lizzie.engineManager
-            .engineList
-            .get(engineWhite)
-            .sendCommand("time_settings 0 " + timew + " 1");
-        Lizzie.engineManager
-            .engineList
-            .get(engineBlack)
-            .sendCommand("time_settings 0 " + timeb + " 1");
-        Lizzie.engineManager.engineList.get(engineWhite).genmoveForPk("W");
+        Runnable runnable =
+            new Runnable() {
+              public void run() {
+                while (!Lizzie.engineManager.engineList.get(engineWhite).isLoaded()
+                    || !Lizzie.engineManager.engineList.get(engineBlack).isLoaded()) {
+                  try {
+                    Thread.sleep(500);
+                  } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                  }
+                }
+                Lizzie.engineManager.engineList.get(engineBlack).nameCmd();
+                Lizzie.engineManager.engineList.get(engineBlack).notPondering();
+                Lizzie.engineManager.engineList.get(engineWhite).nameCmd();
+                Lizzie.engineManager.engineList.get(engineWhite).notPondering();
+                if (timew > 0)
+                  Lizzie.engineManager
+                      .engineList
+                      .get(engineWhite)
+                      .sendCommand("time_settings 0 " + timew + " 1");
+                if (timeb > 0)
+                  Lizzie.engineManager
+                      .engineList
+                      .get(engineBlack)
+                      .sendCommand("time_settings 0 " + timeb + " 1");
+                Lizzie.engineManager.engineList.get(engineWhite).genmoveForPk("W");
+              }
+            };
+        Thread thread = new Thread(runnable);
+        thread.start();
       }
-      Lizzie.engineManager.engineList.get(engineWhite).notPondering();
-      Lizzie.engineManager.engineList.get(engineBlack).notPondering();
 
       Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
       Lizzie.frame.setPlayers(

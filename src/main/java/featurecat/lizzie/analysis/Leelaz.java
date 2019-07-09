@@ -412,10 +412,11 @@ public class Leelaz {
 	 */
 
 	private void parseLineForGenmovePk(String line) {
+		//Lizzie.gtpConsole.addLineforce(line);
 		if (line.startsWith("=")) {
 			String[] params = line.trim().split(" ");
 			currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
-			if (!isCheckingVersion && Lizzie.frame.toolbar.isEnginePk && params.length == 2) {
+			if ( Lizzie.frame.toolbar.isEnginePk && params.length == 2) {
 
 				if (Lizzie.board.getHistory().isBlacksTurn()
 						&& (this.currentEngineN == Lizzie.frame.toolbar.engineWhite)) {
@@ -624,9 +625,7 @@ public class Leelaz {
 					}
 					
 					// notifyBestMoveListeners();
-					if (!bestMoves.isEmpty()) {
-						notifyAutoPK();
-					}
+					
 					Lizzie.frame.refresh();
 					// don't follow the maxAnalyzeTime rule if we are in analysis mode
 					if ((!Lizzie.frame.toolbar.isEnginePk || !Lizzie.frame.toolbar.isAutoAna)
@@ -761,7 +760,10 @@ public class Leelaz {
 								Lizzie.config.leelaversion = version;
 							}
 							isLoaded = true;
-							Lizzie.initializeAfterVersionCheck();
+							if(Lizzie.frame.toolbar.isEnginePk&&Lizzie.frame.toolbar.isGenmove)
+							{}
+							else {
+							Lizzie.initializeAfterVersionCheck();}
 							if(currentEngineN>20)
 								Lizzie.frame.menu.changeEngineIcon(20,2);
 							else
@@ -790,7 +792,10 @@ public class Leelaz {
 						}
 						isCheckingVersion = false;						
 						isLoaded = true;
-						Lizzie.initializeAfterVersionCheck();
+						if(Lizzie.frame.toolbar.isEnginePk&&Lizzie.frame.toolbar.isGenmove)
+						{}
+						else {
+						Lizzie.initializeAfterVersionCheck();}
 						if(currentEngineN>20)
 							Lizzie.frame.menu.changeEngineIcon(20,2);
 						else
@@ -2095,7 +2100,7 @@ public class Leelaz {
 
 	public void nameCmd() {
 		try {
-			sendCommand("version");
+			sendCommand("name");
 		} catch (Exception es) {
 
 		}
@@ -2116,7 +2121,7 @@ public class Leelaz {
 	public void nameCmdfornoponder() {
 		canGetGenmoveInfo = false;
 		try {
-			sendCommand("version");
+			sendCommand("name");
 		} catch (Exception es) {
 
 		}
@@ -2153,26 +2158,29 @@ public class Leelaz {
 				// c = process.getInputStream().read();
 				line.append((char) c);
 				if ((c == '\n')) {
-					if (!this.bestMoves.isEmpty()) {
-						notifyAutoAna();
-						notifyAutoPlay();
-						// notifyAutoPK();
-						if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
-							pkResign();
-					}
+					
 					if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove && isLoaded) {
 						try {
 							parseLineForGenmovePk(line.toString());
 						} catch (Exception e) {
 						}
 
-					} else if (!played) {
+					} else {if (!played) {
 						try {
 							parseLine(line.toString());
 						} catch (Exception e) {
 						}
 					}
-
+					if (!this.bestMoves.isEmpty()) {
+						notifyAutoAna();
+						notifyAutoPlay();
+						notifyAutoPK();
+						
+						// notifyAutoPK();
+						if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
+							pkResign();
+					}
+					}
 					line = new StringBuilder();
 					isCommandLine = false;
 				} else if (c == '=') {

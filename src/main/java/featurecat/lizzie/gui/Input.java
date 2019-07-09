@@ -21,7 +21,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   @Override
   public void mousePressed(MouseEvent e) {
     if (SwingUtilities.isMiddleMouseButton(e)) {
-      Lizzie.frame.replayBranchByWheel();
+      try {
+        Lizzie.frame.replayBranchByWheel();
+      } catch (Exception ex) {
+      }
     }
     if (e.getButton() == MouseEvent.BUTTON1) // left click
     {
