@@ -1989,9 +1989,6 @@ public class Board implements LeelazListener {
     Lizzie.frame.komi = Lizzie.leelaz.komi + "";
     Lizzie.frame.boardRenderer.removecountblock();
     if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
-    featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(5).setHeaderValue("AI胜率");
-    featurecat.lizzie.gui.MovelistFrame.checkBlacktxt.setText("黑:");
-    featurecat.lizzie.gui.MovelistFrame.checkWhitetxt.setText("白:");
   }
 
   public void clearforpk() {

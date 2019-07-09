@@ -55,6 +55,7 @@ public class Lizzie {
     board = new Board();
     frame = new LizzieFrame();
     gtpConsole = new GtpConsolePane(frame);
+
     try {
       Lizzie.engineManager = new EngineManager(Lizzie.config, index);
     } catch (Exception e) {

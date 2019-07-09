@@ -353,12 +353,6 @@ public class SGFParser {
           } else if (tag.equals("DZ")) {
             if (tagContent.equals("Y")) {
               Lizzie.board.isPkBoard = true;
-              featurecat.lizzie.gui.MovelistFrame.table
-                  .getColumnModel()
-                  .getColumn(5)
-                  .setHeaderValue("前一手胜率");
-              featurecat.lizzie.gui.MovelistFrame.checkBlacktxt.setText("白:");
-              featurecat.lizzie.gui.MovelistFrame.checkWhitetxt.setText("黑:");
             }
           } else if (tag.equals("KM")) {
             try {

@@ -2327,9 +2327,6 @@ public class BottomToolbar extends JPanel {
     isAutoAna = false;
     isAutoPlay = false;
     Lizzie.board.isPkBoard = true;
-    featurecat.lizzie.gui.MovelistFrame.table.getColumnModel().getColumn(5).setHeaderValue("前一手胜率");
-    featurecat.lizzie.gui.MovelistFrame.checkBlacktxt.setText("白:");
-    featurecat.lizzie.gui.MovelistFrame.checkWhitetxt.setText("黑:");
     if (checkGameTime) {
       Lizzie.engineManager.gameTime = System.currentTimeMillis();
     }

@@ -85,6 +85,15 @@ public class MovelistFrame extends JPanel {
                   dataModel.getColumnCount();
                   table.validate();
                   table.updateUI();
+                  if (Lizzie.board.isPkBoard) {
+                    table.getColumnModel().getColumn(5).setHeaderValue("前一手胜率");
+                    checkBlacktxt.setText("白:");
+                    checkWhitetxt.setText("黑:");
+                  } else {
+                    table.getColumnModel().getColumn(5).setHeaderValue("AI胜率");
+                    checkBlacktxt.setText("黑:");
+                    checkWhitetxt.setText("白:");
+                  }
                   try {
                     Lizzie.board.updateMovelist();
                   } catch (Exception e) {
