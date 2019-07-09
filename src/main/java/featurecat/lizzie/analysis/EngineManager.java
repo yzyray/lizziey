@@ -667,6 +667,8 @@ public class EngineManager {
   }
 
   public void changeEngIcoForEndPk() {
+    Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
+    Lizzie.frame.boardRenderer.reverseBestmoves = false;
     Lizzie.frame.toolbar.isEnginePk = false;
     featurecat.lizzie.gui.Menu.engineMenu.setEnabled(true);
     if (Lizzie.board.getData().blackToPlay) {
@@ -683,6 +685,7 @@ public class EngineManager {
       // switchEngine(Lizzie.frame.toolbar.engineWhite);
     }
     this.currentEngineNo = Lizzie.leelaz.currentEngineN();
+    Lizzie.engineManager.switchEngine(Lizzie.leelaz.currentEngineN());
     featurecat.lizzie.gui.Menu.engineMenu.setText(
         "引擎" + (currentEngineNo + 1) + ": " + engineList.get(currentEngineNo).currentEnginename);
     changeEngIco();

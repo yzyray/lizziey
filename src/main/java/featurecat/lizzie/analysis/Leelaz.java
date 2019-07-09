@@ -1601,8 +1601,6 @@ public class Leelaz {
 				// Lizzie.engineManager.switchEngineForEndPk(Lizzie.engineManager.currentEngineNo);
 				Lizzie.frame.toolbar.batchPkName = "";
 				
-				Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
-	            Lizzie.frame.boardRenderer.reverseBestmoves = false;
 				Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
 				Lizzie.engineManager.changeEngIcoForEndPk();
 				if(msg==null||!msg.isVisible())
