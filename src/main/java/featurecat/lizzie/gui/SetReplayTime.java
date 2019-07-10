@@ -68,7 +68,7 @@ public class SetReplayTime extends JDialog {
 
               private DocumentFilter filter = new DigitOnlyFilter();
             });
-    time.setBounds(190, 26, 50, 19);
+    time.setBounds(190, 26, 90, 19);
     buttonPane.add(time);
     time.setColumns(3);
 

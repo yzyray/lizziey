@@ -132,6 +132,7 @@ public class Lizzie {
               Lizzie.movelistframe.setAlwaysOnTop(Lizzie.config.badmovesalwaysontop);
               Lizzie.movelistframe.setVisible(true);
             }
+            frame.setVisible(true);
           }
         };
     Thread thread = new Thread(runnable);
