@@ -274,19 +274,10 @@ public class LoadEngine extends JPanel {
                 }
               }
             } else {
-              if (row >= 0 && col >= 0) {
-                if (e.getButton() == MouseEvent.BUTTON3)
-                  try {
-                    handleTableDoubleClick(row, col);
-                  } catch (Exception ex) {
-                    ex.printStackTrace();
-                  }
-                else
-                  try {
-                    handleTableClick(row, col);
-                  } catch (Exception ex) {
-                    ex.printStackTrace();
-                  }
+              try {
+                handleTableClick(row, col);
+              } catch (Exception ex) {
+                ex.printStackTrace();
               }
             }
           }
