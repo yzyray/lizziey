@@ -433,30 +433,8 @@ public class MoreEngines extends JPanel {
           public void mouseClicked(MouseEvent e) {
             int row = table.rowAtPoint(e.getPoint());
             int col = table.columnAtPoint(e.getPoint());
-            if (e.getClickCount() == 2) {
-              if (row >= 0 && col >= 0) {
-                try {
-                  handleTableDoubleClick(row, col);
-                } catch (Exception ex) {
-                  ex.printStackTrace();
-                }
-              }
-            } else {
-              if (row >= 0 && col >= 0) {
-                if (e.getButton() == MouseEvent.BUTTON3)
-                  try {
-                    handleTableDoubleClick(row, col);
-                  } catch (Exception ex) {
-                    ex.printStackTrace();
-                  }
-                else
-                  try {
-                    handleTableClick(row, col);
-                  } catch (Exception ex) {
-                    ex.printStackTrace();
-                  }
-              }
-            }
+
+            handleTableClick(row, col);
           }
         });
     table.addKeyListener(
