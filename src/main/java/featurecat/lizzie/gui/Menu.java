@@ -140,95 +140,18 @@ public class Menu extends MenuBar {
     viewMenu.setForeground(Color.BLACK);
     viewMenu.setFont(headFont);
 
+    final JMenu mainboard = new JMenu("主棋盘位置");
+    viewMenu.add(mainboard);
+
     final JMenuItem leftItem = new JMenuItem();
-    leftItem.setText("棋盘左移([)");
+    leftItem.setText("左移([)");
     leftItem.addActionListener(new ItemListeneryzy());
-    viewMenu.add(leftItem);
+    mainboard.add(leftItem);
 
     final JMenuItem rightItem = new JMenuItem();
-    rightItem.setText("棋盘右移(])");
+    rightItem.setText("右移(])");
     rightItem.addActionListener(new ItemListeneryzy());
-    viewMenu.add(rightItem);
-
-    final JMenu winrate = new JMenu("胜率图和推荐点");
-    viewMenu.add(winrate);
-
-    final JCheckBoxMenuItem winratemode1 = new JCheckBoxMenuItem();
-    winratemode1.setText("显示双方胜率图");
-    winratemode1.addActionListener(new ItemListeneryzy());
-    winrate.add(winratemode1);
-
-    final JCheckBoxMenuItem winratemode0 = new JCheckBoxMenuItem();
-    winratemode0.setText("显示黑方胜率图");
-    winratemode0.addActionListener(new ItemListeneryzy());
-    winrate.add(winratemode0);
-    winrate.addSeparator();
-    // 增加设置胜率曲线宽度
-
-    final JCheckBoxMenuItem alwaysBlack = new JCheckBoxMenuItem();
-    alwaysBlack.setText("总是显示黑胜率");
-    alwaysBlack.addActionListener(new ItemListeneryzy());
-    winrate.add(alwaysBlack);
-
-    final JCheckBoxMenuItem isOnmouse = new JCheckBoxMenuItem();
-    isOnmouse.setText("鼠标所指推荐点显示变化图");
-    isOnmouse.addActionListener(new ItemListeneryzy());
-    winrate.add(isOnmouse);
-
-    final JCheckBoxMenuItem blunder = new JCheckBoxMenuItem();
-    blunder.setText("显示柱状失误条");
-    blunder.addActionListener(new ItemListeneryzy());
-    winrate.add(blunder);
-
-    final JCheckBoxMenuItem showsuggorder = new JCheckBoxMenuItem();
-    showsuggorder.setText("显示推荐点右上方角标");
-    showsuggorder.addActionListener(
-        new ActionListener() {
-
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            Lizzie.config.showSuggestionOrder = !Lizzie.config.showSuggestionOrder;
-            Lizzie.config.uiConfig.put("show-suggestion-order", Lizzie.config.showSuggestionOrder);
-            try {
-              Lizzie.config.save();
-            } catch (IOException es) {
-              // TODO Auto-generated catch block
-            }
-          }
-        });
-    winrate.add(showsuggorder);
-
-    final JCheckBoxMenuItem showsuggred = new JCheckBoxMenuItem();
-    showsuggred.setText("最高胜率-计算量-目差 显示为红色");
-    showsuggred.addActionListener(
-        new ActionListener() {
-
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            Lizzie.config.showSuggestionMaxRed = !Lizzie.config.showSuggestionMaxRed;
-            Lizzie.config.uiConfig.put(
-                "show-suggestion-maxred", Lizzie.config.showSuggestionMaxRed);
-            try {
-              Lizzie.config.save();
-            } catch (IOException es) {
-              // TODO Auto-generated catch block
-            }
-          }
-        });
-    winrate.add(showsuggred);
-
-    final JMenuItem setReplayTime = new JMenuItem();
-    setReplayTime.setText("设置推荐点分支回放间隔");
-    setReplayTime.addActionListener(
-        new ActionListener() {
-
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            SetReplayTime setReplayTime = new SetReplayTime();
-            setReplayTime.setVisible(true);
-          }
-        });
-    winrate.add(setReplayTime);
+    mainboard.add(rightItem);
 
     final JCheckBoxMenuItem coordsItem = new JCheckBoxMenuItem();
     coordsItem.setText("坐标(C)");
@@ -307,50 +230,139 @@ public class Menu extends MenuBar {
     alwaysontop.addActionListener(new ItemListeneryzy());
     viewMenu.add(alwaysontop);
     viewMenu.addSeparator();
+
+    final JMenu winrate = new JMenu("胜率图和推荐点设置");
+    viewMenu.add(winrate);
+
+    final JMenu tool = new JMenu("工具栏设置");
+    viewMenu.add(tool);
+
     final JCheckBoxMenuItem toolMenu = new JCheckBoxMenuItem("简略工具栏"); // 创建“字体”子菜单
-    viewMenu.add(toolMenu); // 添加到“编辑”菜单
+    tool.add(toolMenu); // 添加到“编辑”菜单
     toolMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JCheckBoxMenuItem bigtoolMenu = new JCheckBoxMenuItem("详细工具栏");
-    viewMenu.add(bigtoolMenu);
+    tool.add(bigtoolMenu);
     bigtoolMenu.addActionListener(new ItemListeneryzy());
 
     final JCheckBoxMenuItem closeTool = new JCheckBoxMenuItem("关闭工具栏"); // 创建“字体”子菜单
-    viewMenu.add(closeTool); // 添加到“编辑”菜单
+    tool.add(closeTool); // 添加到“编辑”菜单
     closeTool.addActionListener(new ItemListeneryzy()); // 添加动作监听器 viewMenu.addSeparator();
 
     final JMenuItem bigtoolConf = new JMenuItem("设置详细工具栏顺序");
-    viewMenu.add(bigtoolConf);
+    tool.add(bigtoolConf);
     bigtoolConf.addActionListener(new ItemListeneryzy());
-    viewMenu.addSeparator();
+
+    final JMenu panel = new JMenu("面板设置");
+    viewMenu.add(panel);
 
     final JCheckBoxMenuItem subboard = new JCheckBoxMenuItem("小棋盘"); // 创建“字体”子菜单
-    viewMenu.add(subboard); // 添加到“编辑”菜单
+    panel.add(subboard); // 添加到“编辑”菜单
     subboard.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JCheckBoxMenuItem winratetMenu = new JCheckBoxMenuItem("胜率面板(W)"); // 创建“字体”子菜单
-    viewMenu.add(winratetMenu); // 添加到“编辑”菜单
+    panel.add(winratetMenu); // 添加到“编辑”菜单
     winratetMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JCheckBoxMenuItem commitMenu = new JCheckBoxMenuItem("评论面板(T)"); // 创建“字体”子菜单
-    viewMenu.add(commitMenu); // 添加到“编辑”菜单
+    panel.add(commitMenu); // 添加到“编辑”菜单
     commitMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JCheckBoxMenuItem branch = new JCheckBoxMenuItem("分支面板(G)"); // 创建“字体”子菜单
-    viewMenu.add(branch); // 添加到“编辑”菜单
+    panel.add(branch); // 添加到“编辑”菜单
     branch.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JCheckBoxMenuItem topleft = new JCheckBoxMenuItem("左上角面板"); // 创建“字体”子菜单
-    viewMenu.add(topleft); // 添加到“编辑”菜单
+    panel.add(topleft); // 添加到“编辑”菜单
     topleft.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JCheckBoxMenuItem bottomleft = new JCheckBoxMenuItem("左下角状态"); // 创建“字体”子菜单
-    viewMenu.add(bottomleft); // 添加到“编辑”菜单
+    panel.add(bottomleft); // 添加到“编辑”菜单
     bottomleft.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
     final JCheckBoxMenuItem gtpMenu = new JCheckBoxMenuItem("命令窗口(E)"); // 创建“字体”子菜单
-    viewMenu.add(gtpMenu); // 添加到“编辑”菜单
+    panel.add(gtpMenu); // 添加到“编辑”菜单
     gtpMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
+
+    final JCheckBoxMenuItem winratemode1 = new JCheckBoxMenuItem();
+    winratemode1.setText("显示双方胜率图");
+    winratemode1.addActionListener(new ItemListeneryzy());
+    winrate.add(winratemode1);
+
+    final JCheckBoxMenuItem winratemode0 = new JCheckBoxMenuItem();
+    winratemode0.setText("显示黑方胜率图");
+    winratemode0.addActionListener(new ItemListeneryzy());
+    winrate.add(winratemode0);
+    winrate.addSeparator();
+    // 增加设置胜率曲线宽度
+
+    final JCheckBoxMenuItem alwaysBlack = new JCheckBoxMenuItem();
+    alwaysBlack.setText("总是显示黑胜率");
+    alwaysBlack.addActionListener(new ItemListeneryzy());
+    winrate.add(alwaysBlack);
+
+    final JCheckBoxMenuItem isOnmouse = new JCheckBoxMenuItem();
+    isOnmouse.setText("鼠标所指推荐点显示变化图");
+    isOnmouse.addActionListener(new ItemListeneryzy());
+    winrate.add(isOnmouse);
+
+    final JCheckBoxMenuItem blunder = new JCheckBoxMenuItem();
+    blunder.setText("显示柱状失误条");
+    blunder.addActionListener(new ItemListeneryzy());
+    winrate.add(blunder);
+
+    final JCheckBoxMenuItem showsuggorder = new JCheckBoxMenuItem();
+    showsuggorder.setText("显示推荐点右上方角标");
+    showsuggorder.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.showSuggestionOrder = !Lizzie.config.showSuggestionOrder;
+            Lizzie.config.uiConfig.put("show-suggestion-order", Lizzie.config.showSuggestionOrder);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    winrate.add(showsuggorder);
+
+    final JCheckBoxMenuItem showsuggred = new JCheckBoxMenuItem();
+    showsuggred.setText("最高胜率-计算量-目差 显示为红色");
+    showsuggred.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.showSuggestionMaxRed = !Lizzie.config.showSuggestionMaxRed;
+            Lizzie.config.uiConfig.put(
+                "show-suggestion-maxred", Lizzie.config.showSuggestionMaxRed);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    winrate.add(showsuggred);
+
+    final JMenuItem setReplayTime = new JMenuItem();
+    setReplayTime.setText("设置推荐点分支回放间隔");
+    setReplayTime.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            SetReplayTime setReplayTime = new SetReplayTime();
+            setReplayTime.setVisible(true);
+          }
+        });
+    winrate.add(setReplayTime);
+
+    final JMenu kata = new JMenu("KataGo相关设置");
+    viewMenu.add(kata);
     viewMenu.addSeparator();
 
     final JMenuItem defview = new JMenuItem("默认模式"); // 创建“字体”子菜单
@@ -364,10 +376,9 @@ public class Menu extends MenuBar {
     final JMenuItem allview = new JMenuItem("精简模式");
     viewMenu.add(allview);
     allview.addActionListener(new ItemListeneryzy());
-    viewMenu.addSeparator();
 
     final JMenu katasugg = new JMenu("KataGo推荐点显示");
-    viewMenu.add(katasugg);
+    kata.add(katasugg);
 
     final JCheckBoxMenuItem katasugg1 = new JCheckBoxMenuItem("胜率+计算量", false);
 
@@ -416,7 +427,7 @@ public class Menu extends MenuBar {
     katasugg3.addActionListener(new ItemListeneryzy());
 
     final JMenu kataboard = new JMenu("KataGo目差显示");
-    viewMenu.add(kataboard);
+    kata.add(kataboard);
 
     final JCheckBoxMenuItem kataboardmean = new JCheckBoxMenuItem("目差");
     kataboard.add(kataboardmean);
@@ -427,7 +438,7 @@ public class Menu extends MenuBar {
     kataboardboard.addActionListener(new ItemListeneryzy());
 
     final JMenu katameanalways = new JMenu("KataGo目差视角");
-    viewMenu.add(katameanalways);
+    kata.add(katameanalways);
 
     final JCheckBoxMenuItem katameanblack = new JCheckBoxMenuItem("永远为黑视角");
     katameanalways.add(katameanblack);
@@ -438,7 +449,7 @@ public class Menu extends MenuBar {
     katameanblackwhite.addActionListener(new ItemListeneryzy());
 
     final JMenu katawingraphboard = new JMenu("KataGo目差在胜率图上显示");
-    viewMenu.add(katawingraphboard);
+    kata.add(katawingraphboard);
 
     final JCheckBoxMenuItem katawinboardmean = new JCheckBoxMenuItem("目差");
     katawingraphboard.add(katawinboardmean);
@@ -477,7 +488,7 @@ public class Menu extends MenuBar {
         });
 
     final JMenu kataEstimate = new JMenu("KataGo评估显示");
-    viewMenu.add(kataEstimate);
+    kata.add(kataEstimate);
 
     final JCheckBoxMenuItem kataEstimate1 = new JCheckBoxMenuItem("关闭评估");
     kataEstimate.add(kataEstimate1);
@@ -698,8 +709,14 @@ public class Menu extends MenuBar {
     gameMenu.setFont(headFont);
     this.add(gameMenu);
 
+    final JMenu newgames = new JMenu("新对局");
+    gameMenu.add(newgames);
+
+    final JMenu contgames = new JMenu("人机续弈");
+    gameMenu.add(contgames);
+
     final JMenuItem enginePk = new JMenuItem();
-    enginePk.setText("引擎对战");
+    enginePk.setText("引擎对局");
 
     enginePk.addActionListener(
         new ActionListener() {
@@ -735,26 +752,25 @@ public class Menu extends MenuBar {
             Lizzie.frame.toolbar.startEnginePk();
           }
         });
-    gameMenu.add(enginePk);
+    newgames.add(enginePk);
 
     final JMenuItem newGameItem = new JMenuItem();
     newGameItem.setText("人机对局(N)");
     // aboutItem.setMnemonic('A');
     newGameItem.addActionListener(new ItemListeneryzy());
-    gameMenu.add(newGameItem);
+    newgames.add(newGameItem);
 
     final JMenuItem continueGameBlackItem = new JMenuItem();
     continueGameBlackItem.setText("续弈(我执黑)(回车)");
     // aboutItem.setMnemonic('A');
     continueGameBlackItem.addActionListener(new ItemListeneryzy());
-    gameMenu.add(continueGameBlackItem);
+    contgames.add(continueGameBlackItem);
 
     final JMenuItem continueGameWhiteItem = new JMenuItem();
     continueGameWhiteItem.setText("续弈(我执白)(回车)");
     // aboutItem.setMnemonic('A');
     continueGameWhiteItem.addActionListener(new ItemListeneryzy());
-    gameMenu.add(continueGameWhiteItem);
-    gameMenu.addSeparator();
+    contgames.add(continueGameWhiteItem);
 
     final JMenuItem newanaGame = new JMenuItem();
     newanaGame.setText("人机对局(分析模式 ALT+N)");
@@ -766,7 +782,7 @@ public class Menu extends MenuBar {
             newGame();
           }
         });
-    gameMenu.add(newanaGame);
+    newgames.add(newanaGame);
 
     final JMenuItem continueanaGameBlack = new JMenuItem();
     continueanaGameBlack.setText("续弈(我执黑)(分析模式 ALT+回车)");
@@ -794,7 +810,7 @@ public class Menu extends MenuBar {
           }
         });
 
-    gameMenu.add(continueanaGameBlack);
+    contgames.add(continueanaGameBlack);
 
     final JMenuItem continueanaGameWhite = new JMenuItem();
     continueanaGameWhite.setText("续弈(我执白)(分析模式 ALT+回车)");
@@ -822,12 +838,17 @@ public class Menu extends MenuBar {
           }
         });
 
-    gameMenu.add(continueanaGameWhite);
+    contgames.add(continueanaGameWhite);
     gameMenu.addSeparator();
     final JMenuItem breakplay = new JMenuItem();
     breakplay.setText("中断人机对局");
     breakplay.addActionListener(new ItemListeneryzy());
     gameMenu.add(breakplay);
+
+    final JMenuItem settime = new JMenuItem();
+    settime.setText("设置AI用时");
+    settime.addActionListener(new ItemListeneryzy());
+    gameMenu.add(settime);
     gameMenu.addSeparator();
 
     final JMenuItem setinfo = new JMenuItem();
@@ -839,11 +860,6 @@ public class Menu extends MenuBar {
     setBoard.setText("设置棋盘大小(Ctrl+I)");
     setBoard.addActionListener(new ItemListeneryzy());
     gameMenu.add(setBoard);
-
-    final JMenuItem settime = new JMenuItem();
-    settime.setText("设置AI用时");
-    settime.addActionListener(new ItemListeneryzy());
-    gameMenu.add(settime);
 
     gameMenu.addSeparator();
 
@@ -880,6 +896,7 @@ public class Menu extends MenuBar {
     // aboutItem.setMnemonic('A');
     branchStart.addActionListener(new ItemListeneryzy());
     gameMenu.add(branchStart);
+    gameMenu.addSeparator();
 
     final JMenuItem firstItem = new JMenuItem();
     firstItem.setText("跳转到最前(Home)");
@@ -935,13 +952,37 @@ public class Menu extends MenuBar {
     analyMenu.add(countsItem);
     analyMenu.addSeparator();
 
-    final JMenuItem badmovesItem = new JMenuItem("恶手列表(B)");
+    final JCheckBoxMenuItem badmovesItem = new JCheckBoxMenuItem("恶手列表(B)");
     badmovesItem.addActionListener(new ItemListeneryzy()); // 添加动作监听器
     analyMenu.add(badmovesItem); // 添加到“属性”子菜单
 
-    final JMenuItem leelasu = new JMenuItem("AI选点列表(U)");
+    final JCheckBoxMenuItem leelasu = new JCheckBoxMenuItem("AI选点列表(U)");
     leelasu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
     analyMenu.add(leelasu); // 添加到“属性”子菜单
+
+    analyMenu.addMenuListener(
+        new MenuListener() {
+
+          public void menuSelected(MenuEvent e) {
+            if (Lizzie.config.uiConfig.optBoolean("show-suggestions-frame", false))
+              leelasu.setState(true);
+            else leelasu.setState(false);
+            if (Lizzie.config.uiConfig.optBoolean("show-badmoves-frame", false))
+              badmovesItem.setState(true);
+            else badmovesItem.setState(false);
+          }
+
+          @Override
+          public void menuDeselected(MenuEvent e) {
+            // TODO Auto-generated method stub
+          }
+
+          @Override
+          public void menuCanceled(MenuEvent e) {
+            // TODO Auto-generated method stub
+
+          }
+        });
 
     final JMenu editMenu = new JMenu("编辑 ", false);
     editMenu.setText(" 编辑  ");
@@ -1458,15 +1499,15 @@ public class Menu extends MenuBar {
         Lizzie.frame.toggleGtpConsole();
         return;
       }
-      if (menuItem.getText().startsWith("棋盘左")) {
+      if (menuItem.getText().startsWith("左移")) {
         if (Lizzie.frame.BoardPositionProportion > 0) Lizzie.frame.BoardPositionProportion--;
         return;
       }
-      if (menuItem.getText().startsWith("棋盘右")) {
+      if (menuItem.getText().startsWith("右移")) {
         if (Lizzie.frame.BoardPositionProportion < 8) Lizzie.frame.BoardPositionProportion++;
         return;
       }
-      if (menuItem.getText().startsWith("新的")) {
+      if (menuItem.getText().startsWith("人机对局")) {
         if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
         LizzieFrame.startNewGame();
         return;
@@ -1753,20 +1794,23 @@ public class Menu extends MenuBar {
         Lizzie.frame.toggleAlwaysOntop();
         return;
       }
-      if (menuItem.getText().startsWith("中断对局")) {
+      if (menuItem.getText().startsWith("中断人机")) {
         if (Lizzie.frame.isPlayingAgainstLeelaz) {
           Lizzie.frame.isPlayingAgainstLeelaz = false;
           Lizzie.leelaz.isThinking = false;
-          if (Lizzie.frame.isAnaPlayingAgainstLeelaz) {
-            Lizzie.frame.isAnaPlayingAgainstLeelaz = false;
-            Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
-            Lizzie.frame.toolbar.isAutoPlay = false;
-            Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
-            Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
-            Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
-            Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
-          }
+          Lizzie.leelaz.ponder();
         }
+        if (Lizzie.frame.isAnaPlayingAgainstLeelaz) {
+          Lizzie.frame.isAnaPlayingAgainstLeelaz = false;
+          Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
+          Lizzie.frame.toolbar.isAutoPlay = false;
+          Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
+          Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
+          Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
+          Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
+          Lizzie.leelaz.ponder();
+        }
+
         return;
       }
       if (menuItem.getText().startsWith("简略")) {

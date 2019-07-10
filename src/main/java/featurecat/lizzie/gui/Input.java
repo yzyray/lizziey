@@ -371,6 +371,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         if (Lizzie.frame.isPlayingAgainstLeelaz) {
           Lizzie.frame.isPlayingAgainstLeelaz = false;
           Lizzie.leelaz.isThinking = false;
+          Lizzie.leelaz.togglePonder();
         }
         if (Lizzie.frame.isAnaPlayingAgainstLeelaz) {
           Lizzie.frame.isAnaPlayingAgainstLeelaz = false;
@@ -380,6 +381,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
           Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
           Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
+          Lizzie.leelaz.togglePonder();
         }
         Lizzie.leelaz.togglePonder();
         break;

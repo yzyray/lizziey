@@ -229,6 +229,10 @@ public class GtpConsolePane extends JDialog {
           Lizzie.frame.komi = cmdParams[1];
         }
         Lizzie.leelaz.sendCommand(command);
+        Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
+        if (Lizzie.leelaz.isPondering()) {
+          Lizzie.leelaz.ponder();
+        }
       } else if ("undo".equals(command)) {
         Input.undo();
       } else {
