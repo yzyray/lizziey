@@ -76,6 +76,33 @@ public class Lizzie {
     gtpConsole.setVisible(config.leelazConfig.optBoolean("print-comms", false));
 
     countResults = new CountResults(frame);
+
+    Runnable runnable =
+        new Runnable() {
+          public void run() {
+            try {
+              Thread.sleep(1000);
+            } catch (InterruptedException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+            if (mainArgs.length == 1) {
+              frame.loadFile(new File(mainArgs[0]));
+            } else if (config.config.getJSONObject("ui").getBoolean("resume-previous-game")) {
+              board.resumePreviousGame();
+            }
+
+            if (Lizzie.config.loadZen) {
+              try {
+                frame.zen = new YaZenGtp();
+              } catch (IOException e1) {
+                e1.printStackTrace();
+              }
+            }
+          }
+        };
+    Thread thread = new Thread(runnable);
+    thread.start();
   }
 
   public static void setLookAndFeel() {
@@ -105,16 +132,10 @@ public class Lizzie {
   }
 
   public static void initializeAfterVersionCheck() {
-
-    if (config.handicapInsteadOfWinrate) {
-      leelaz.estimatePassWinrate();
-    }
-    if (mainArgs.length == 1) {
-      frame.loadFile(new File(mainArgs[0]));
-    } else if (config.config.getJSONObject("ui").getBoolean("resume-previous-game")) {
-      board.resumePreviousGame();
-    }
-    leelaz.ponder();
+    //    if (config.handicapInsteadOfWinrate) {
+    //      leelaz.estimatePassWinrate();
+    //    }
+    if (!frame.toolbar.isEnginePk) leelaz.ponder();
     Runnable runnable =
         new Runnable() {
           public void run() {
@@ -137,14 +158,6 @@ public class Lizzie {
         };
     Thread thread = new Thread(runnable);
     thread.start();
-
-    if (Lizzie.config.loadZen) {
-      try {
-        frame.zen = new YaZenGtp();
-      } catch (IOException e1) {
-        e1.printStackTrace();
-      }
-    }
   }
 
   public static void shutdown() {

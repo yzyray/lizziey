@@ -2392,8 +2392,9 @@ public class BottomToolbar extends JPanel {
         Lizzie.engineManager.isEmpty = false;
       }
       if (Lizzie.board.getHistory().isBlacksTurn()) {
-        Lizzie.engineManager.startEngineForPk(engineWhite);
+        isEnginePk = true;
         Lizzie.engineManager.startEngineForPk(engineBlack);
+        Lizzie.engineManager.startEngineForPk(engineWhite);
         Runnable runnable =
             new Runnable() {
               public void run() {
@@ -2406,18 +2407,16 @@ public class BottomToolbar extends JPanel {
                     e.printStackTrace();
                   }
                 }
-                isEnginePk = true;
                 Lizzie.leelaz = Lizzie.engineManager.engineList.get(engineBlack);
                 Lizzie.leelaz.ponder();
               }
             };
         Thread thread = new Thread(runnable);
         thread.start();
-
       } else {
-
-        Lizzie.engineManager.startEngineForPk(engineBlack);
+        isEnginePk = true;
         Lizzie.engineManager.startEngineForPk(engineWhite);
+        Lizzie.engineManager.startEngineForPk(engineBlack);
         Runnable runnable =
             new Runnable() {
               public void run() {
@@ -2430,7 +2429,7 @@ public class BottomToolbar extends JPanel {
                     e.printStackTrace();
                   }
                 }
-                isEnginePk = true;
+
                 Lizzie.leelaz = Lizzie.engineManager.engineList.get(engineWhite);
                 Lizzie.leelaz.ponder();
               }

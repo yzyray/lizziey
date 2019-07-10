@@ -760,10 +760,8 @@ public class Leelaz {
 								Lizzie.config.leelaversion = version;
 							}
 							isLoaded = true;
-							if(Lizzie.frame.toolbar.isEnginePk&&Lizzie.frame.toolbar.isGenmove)
-							{}
-							else {
-							Lizzie.initializeAfterVersionCheck();}
+							
+							Lizzie.initializeAfterVersionCheck();
 							if(currentEngineN>20)
 								Lizzie.frame.menu.changeEngineIcon(20,2);
 							else
@@ -792,10 +790,8 @@ public class Leelaz {
 						}
 						isCheckingVersion = false;						
 						isLoaded = true;
-						if(Lizzie.frame.toolbar.isEnginePk&&Lizzie.frame.toolbar.isGenmove)
-						{}
-						else {
-						Lizzie.initializeAfterVersionCheck();}
+						
+						Lizzie.initializeAfterVersionCheck();
 						if(currentEngineN>20)
 							Lizzie.frame.menu.changeEngineIcon(20,2);
 						else
@@ -1193,14 +1189,7 @@ public class Leelaz {
 		}
 	}
 
-	public void genmoveResign() {
-		if (isResigning) {
-			return;
-		}
-		if (resigned) {
-			isResigning = true;
-			resigned = false;
-		}
+	public void genmoveResign() {		
 		Lizzie.gtpConsole.addLine(currentEnginename + " 认输");
 		Lizzie.board.updateComment();
 		if (this.currentEngineN == Lizzie.frame.toolbar.engineBlack) {
