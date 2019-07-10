@@ -1536,31 +1536,68 @@ public class Leelaz {
 					Lizzie.board.setlist(Lizzie.frame.toolbar.startGame);
 				}
 				if (Lizzie.board.getHistory().isBlacksTurn()) {
-					// Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).notPondering();
-					Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineWhite);
-					// Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).Pondering();
-					Lizzie.engineManager.startEngineForPkPonder(Lizzie.frame.toolbar.engineBlack);
+					 Lizzie.frame.toolbar.isEnginePk = false;
+					 Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineBlack);
+				        Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineWhite);
+				        Runnable runnable =
+				            new Runnable() {
+				              public void run() {
+				            	  try {
+					                    Thread.sleep(500);
+					                  } catch (InterruptedException e) {
+					                    // TODO Auto-generated catch block
+					                    e.printStackTrace();
+					                  }
+				                while (!Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isLoaded()
+				                    || !Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isLoaded()) {
+				                	 try {
+						                    Thread.sleep(500);
+						                  } catch (InterruptedException e) {
+						                    // TODO Auto-generated catch block
+						                    e.printStackTrace();
+						                  }
+				                }
+				                Lizzie.frame.toolbar.isEnginePk = true;
+				                Lizzie.leelaz = Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+				                Lizzie.leelaz.ponder();
+				              }
+			            };
+			            Thread thread = new Thread(runnable);
+			            thread.start();
 
 				} else {
-					// Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).notPondering();
-					Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineBlack);
-					// Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).Pondering();
-					Lizzie.engineManager.startEngineForPkPonder(Lizzie.frame.toolbar.engineWhite);
+					 Lizzie.frame.toolbar.isEnginePk = false;
+					 Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineWhite);
+				        Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineBlack);
+				        Runnable runnable =
+				            new Runnable() {
+				              public void run() {
+				            	  try {
+					                    Thread.sleep(500);
+					                  } catch (InterruptedException e) {
+					                    // TODO Auto-generated catch block
+					                    e.printStackTrace();
+					                  }
+				                while (!Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isLoaded()
+				                    || !Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isLoaded()) {
+				                  try {
+				                    Thread.sleep(500);
+				                  } catch (InterruptedException e) {
+				                    // TODO Auto-generated catch block
+				                    e.printStackTrace();
+				                  }
+				                }
+				                Lizzie.frame.toolbar.isEnginePk = true;
+				                Lizzie.leelaz = Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+				                Lizzie.leelaz.ponder();
+				              }
+			            };
+			            Thread thread = new Thread(runnable);
+			            thread.start();
 
 				}
 
 				Lizzie.board.clearbestmovesafter2(Lizzie.board.getHistory().getStart());
-				// Lizzie.leelaz.ponder();
-//            Timer timer = new Timer();
-//            timer.schedule(
-//                new TimerTask() {
-//                  public void run() {
-//                	  Lizzie.leelaz.ponder();
-//                	 // Lizzie.leelaz.playanyway=true;
-//                    this.cancel();
-//                  }
-//                },
-//               1000);
 
 				Lizzie.frame.setPlayers(
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename,
@@ -2549,6 +2586,8 @@ public class Leelaz {
 
 	public void clearWithoutPonder() {
 		synchronized (this) {
+			this.notPondering();
+			sendCommand("name");			
 			sendCommand("clear_board");
 			// sendCommand("clear_cache");
 			bestMoves = new ArrayList<>();

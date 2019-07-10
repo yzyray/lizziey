@@ -470,7 +470,7 @@ public class SGFParser {
     StringBuilder builder = new StringBuilder("(;");
     StringBuilder generalProps = new StringBuilder("");
     if (handicap != 0) generalProps.append(String.format("HA[%s]", handicap));
-    if (Lizzie.frame.toolbar.isEnginePk) {
+    if (Lizzie.frame.toolbar.isEnginePk || Lizzie.board.isPkBoard) {
       generalProps.append(
           String.format(
               "KM[%s]PW[%s]PB[%s]DT[%s]DZ[Y]AP[Lizzie: %s]RE[%s]SZ[%s]",
@@ -602,7 +602,7 @@ public class SGFParser {
 
         if (Lizzie.config.appendWinrateToComment) {
           // Append the winrate to the comment of sgf
-          if (!Lizzie.frame.toolbar.isEnginePk) {
+          if (!Lizzie.frame.toolbar.isEnginePk && !Lizzie.board.isPkBoard) {
             if (data.getPlayouts() > 0) data.comment = formatComment(node);
           }
         }

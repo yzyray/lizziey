@@ -2330,7 +2330,7 @@ public class BottomToolbar extends JPanel {
     if (checkGameTime) {
       Lizzie.engineManager.gameTime = System.currentTimeMillis();
     }
-    isEnginePk = true;
+
     Lizzie.frame.isPlayingAgainstLeelaz = false;
     btnStartPk.setText("终止");
     Lizzie.frame.removeInput();
@@ -2406,6 +2406,7 @@ public class BottomToolbar extends JPanel {
                     e.printStackTrace();
                   }
                 }
+                isEnginePk = true;
                 Lizzie.leelaz = Lizzie.engineManager.engineList.get(engineBlack);
                 Lizzie.leelaz.ponder();
               }
@@ -2414,6 +2415,7 @@ public class BottomToolbar extends JPanel {
         thread.start();
 
       } else {
+
         Lizzie.engineManager.startEngineForPk(engineBlack);
         Lizzie.engineManager.startEngineForPk(engineWhite);
         Runnable runnable =
@@ -2428,6 +2430,7 @@ public class BottomToolbar extends JPanel {
                     e.printStackTrace();
                   }
                 }
+                isEnginePk = true;
                 Lizzie.leelaz = Lizzie.engineManager.engineList.get(engineWhite);
                 Lizzie.leelaz.ponder();
               }
@@ -2445,6 +2448,7 @@ public class BottomToolbar extends JPanel {
       gameInfo.setPlayerBlack(Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
     } else {
       // genmove对战
+      isEnginePk = true;
       chkenginePkTime.setEnabled(false);
       txtenginePkTime.setEnabled(false);
       txtenginePkTimeWhite.setEnabled(false);

@@ -2271,7 +2271,7 @@ public class LizzieFrame extends JFrame {
             if (Lizzie.board.getHistory().getData().comment.isEmpty())
               SGFParser.appendCommentForPk();
           } else {
-            SGFParser.appendComment();
+            if (!Lizzie.board.isPkBoard) SGFParser.appendComment();
           }
         }
       }

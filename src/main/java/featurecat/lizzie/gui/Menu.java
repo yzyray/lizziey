@@ -698,12 +698,6 @@ public class Menu extends MenuBar {
     gameMenu.setFont(headFont);
     this.add(gameMenu);
 
-    final JMenuItem newGameItem = new JMenuItem();
-    newGameItem.setText("新的一局(N)");
-    // aboutItem.setMnemonic('A');
-    newGameItem.addActionListener(new ItemListeneryzy());
-    gameMenu.add(newGameItem);
-
     final JMenuItem enginePk = new JMenuItem();
     enginePk.setText("引擎对战");
 
@@ -743,6 +737,12 @@ public class Menu extends MenuBar {
         });
     gameMenu.add(enginePk);
 
+    final JMenuItem newGameItem = new JMenuItem();
+    newGameItem.setText("人机对局(N)");
+    // aboutItem.setMnemonic('A');
+    newGameItem.addActionListener(new ItemListeneryzy());
+    gameMenu.add(newGameItem);
+
     final JMenuItem continueGameBlackItem = new JMenuItem();
     continueGameBlackItem.setText("续弈(我执黑)(回车)");
     // aboutItem.setMnemonic('A');
@@ -757,7 +757,7 @@ public class Menu extends MenuBar {
     gameMenu.addSeparator();
 
     final JMenuItem newanaGame = new JMenuItem();
-    newanaGame.setText("新的一局(分析模式 ALT+N)");
+    newanaGame.setText("人机对局(分析模式 ALT+N)");
     newanaGame.addActionListener(
         new ActionListener() {
 
@@ -825,10 +825,15 @@ public class Menu extends MenuBar {
     gameMenu.add(continueanaGameWhite);
     gameMenu.addSeparator();
     final JMenuItem breakplay = new JMenuItem();
-    breakplay.setText("中断对局");
+    breakplay.setText("中断人机对局");
     breakplay.addActionListener(new ItemListeneryzy());
     gameMenu.add(breakplay);
     gameMenu.addSeparator();
+
+    final JMenuItem setinfo = new JMenuItem();
+    setinfo.setText("设置棋局信息(I)");
+    setinfo.addActionListener(new ItemListeneryzy());
+    gameMenu.add(setinfo);
 
     final JMenuItem setBoard = new JMenuItem();
     setBoard.setText("设置棋盘大小(Ctrl+I)");
@@ -840,10 +845,6 @@ public class Menu extends MenuBar {
     settime.addActionListener(new ItemListeneryzy());
     gameMenu.add(settime);
 
-    final JMenuItem setinfo = new JMenuItem();
-    setinfo.setText("设置棋局信息(修改贴目)");
-    setinfo.addActionListener(new ItemListeneryzy());
-    gameMenu.add(setinfo);
     gameMenu.addSeparator();
 
     final JMenuItem bestone = new JMenuItem();
@@ -862,6 +863,23 @@ public class Menu extends MenuBar {
     // aboutItem.setMnemonic('A');
     empty.addActionListener(new ItemListeneryzy());
     gameMenu.add(empty);
+
+    final JMenuItem setMain = new JMenuItem();
+    setMain.setText("设为主分支");
+    gameMenu.add(setMain);
+
+    setMain.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            while (Lizzie.board.setAsMainBranch()) ;
+          }
+        });
+
+    final JMenuItem branchStart = new JMenuItem();
+    branchStart.setText("返回主分支(CTRL+左)");
+    // aboutItem.setMnemonic('A');
+    branchStart.addActionListener(new ItemListeneryzy());
+    gameMenu.add(branchStart);
 
     final JMenuItem firstItem = new JMenuItem();
     firstItem.setText("跳转到最前(Home)");
@@ -886,23 +904,6 @@ public class Menu extends MenuBar {
     // aboutItem.setMnemonic('A');
     commetdown.addActionListener(new ItemListeneryzy());
     gameMenu.add(commetdown);
-
-    final JMenuItem setMain = new JMenuItem();
-    setMain.setText("设为主分支");
-    gameMenu.add(setMain);
-
-    setMain.addActionListener(
-        new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            while (Lizzie.board.setAsMainBranch()) ;
-          }
-        });
-
-    final JMenuItem branchStart = new JMenuItem();
-    branchStart.setText("返回主分支(CTRL+左)");
-    // aboutItem.setMnemonic('A');
-    branchStart.addActionListener(new ItemListeneryzy());
-    gameMenu.add(branchStart);
 
     final JMenu analyMenu = new JMenu("分析 ", false);
     analyMenu.setText(" 分析  ");
