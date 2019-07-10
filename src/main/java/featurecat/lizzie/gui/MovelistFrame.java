@@ -146,7 +146,6 @@ public class MovelistFrame extends JPanel {
       sortnum = 3;
     }
     JTableHeader header = table.getTableHeader();
-    int a = Lizzie.config.persistedUi.optJSONArray("badmoves-list-position").length();
     dropwinratechooser.setValue(Lizzie.config.limitbadmoves);
     dropScoreMeanChooser.setValue(Lizzie.config.limitbadMeanmoves);
     playoutschooser.setValue(Lizzie.config.limitbadplayouts);

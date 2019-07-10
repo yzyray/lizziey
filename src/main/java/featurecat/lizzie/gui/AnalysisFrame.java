@@ -132,8 +132,9 @@ public class AnalysisFrame extends JDialog {
       } else {
         setBounds(-9, 278, 407, 259);
       }
+    } else {
+      setBounds(-9, 278, 407, 259);
     }
-
     JTableHeader header = table.getTableHeader();
 
     table.addMouseListener(

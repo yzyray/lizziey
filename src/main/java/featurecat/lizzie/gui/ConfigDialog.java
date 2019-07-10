@@ -984,17 +984,19 @@ public class ConfigDialog extends JDialog {
           nameEngine9
         };
     leelazConfig = Lizzie.config.leelazConfig;
-    Optional<JSONArray> enginesNameOpt =
-        Optional.ofNullable(leelazConfig.optJSONArray("engine-name-list"));
-    enginesNameOpt.ifPresent(
-        a -> {
-          IntStream.range(0, 10)
-              .forEach(
-                  i -> {
-                    names[i].setText(a.getString(i));
-                  });
-        });
-
+    try {
+      Optional<JSONArray> enginesNameOpt =
+          Optional.ofNullable(leelazConfig.optJSONArray("engine-name-list"));
+      enginesNameOpt.ifPresent(
+          a -> {
+            IntStream.range(0, 10)
+                .forEach(
+                    i -> {
+                      names[i].setText(a.getString(i));
+                    });
+          });
+    } catch (Exception ex) {
+    }
     txts =
         new JTextField[] {
           txtEngine1,
@@ -1009,17 +1011,19 @@ public class ConfigDialog extends JDialog {
         };
 
     txtEngine.setText(leelazConfig.getString("engine-command"));
-    Optional<JSONArray> enginesOpt =
-        Optional.ofNullable(leelazConfig.optJSONArray("engine-command-list"));
-    enginesOpt.ifPresent(
-        a -> {
-          IntStream.range(0, 9)
-              .forEach(
-                  i -> {
-                    txts[i].setText(a.getString(i));
-                  });
-        });
-
+    try {
+      Optional<JSONArray> enginesOpt =
+          Optional.ofNullable(leelazConfig.optJSONArray("engine-command-list"));
+      enginesOpt.ifPresent(
+          a -> {
+            IntStream.range(0, 9)
+                .forEach(
+                    i -> {
+                      txts[i].setText(a.getString(i));
+                    });
+          });
+    } catch (Exception ex) {
+    }
     chkPreloads =
         new JCheckBox[] {
           chkPreload,
