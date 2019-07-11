@@ -90,6 +90,9 @@ public class MovelistFrame extends JPanel {
                     checkBlacktxt.setText("白:");
                     checkWhitetxt.setText("黑:");
                   } else {
+                	  if(isKatago)
+                		  table.getColumnModel().getColumn(6).setHeaderValue("AI胜率");
+                	  else
                     table.getColumnModel().getColumn(5).setHeaderValue("AI胜率");
                     checkBlacktxt.setText("黑:");
                     checkWhitetxt.setText("白:");
