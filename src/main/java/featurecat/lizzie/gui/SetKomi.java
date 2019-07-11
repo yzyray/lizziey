@@ -107,6 +107,7 @@ public class SetKomi extends JDialog {
     Lizzie.board.getHistory().getGameInfo().setKomi(komi);
     Lizzie.frame.komi = komi + "";
     Lizzie.leelaz.sendCommand("komi " + komi);
+    if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.ponder();
   }
 
   private Integer txtFieldValue(JTextField txt) {
