@@ -982,31 +982,31 @@ public class BoardRenderer {
 
             // This is inefficient but it looks better with shadows
             number = 1;
-            if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove) {
-              for (MoveData m : tempbest1) {
-                Optional<int[]> coord = Board.asCoordinates(m.coordinate);
-                if (coord.isPresent()) {
-                  int[] c = coord.get();
-                  if (c[0] == i && c[1] == j) {
-                    moveOpt = Optional.of(m);
-                    break;
-                  }
-                  number = number + 1;
+            //    if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove) {
+            for (MoveData m : tempbest1) {
+              Optional<int[]> coord = Board.asCoordinates(m.coordinate);
+              if (coord.isPresent()) {
+                int[] c = coord.get();
+                if (c[0] == i && c[1] == j) {
+                  moveOpt = Optional.of(m);
+                  break;
                 }
-              }
-            } else {
-              for (MoveData m : bestMoves) {
-                Optional<int[]> coord = Board.asCoordinates(m.coordinate);
-                if (coord.isPresent()) {
-                  int[] c = coord.get();
-                  if (c[0] == i && c[1] == j) {
-                    moveOpt = Optional.of(m);
-                    break;
-                  }
-                  number = number + 1;
-                }
+                number = number + 1;
               }
             }
+            //            } else {
+            //              for (MoveData m : bestMoves) {
+            //                Optional<int[]> coord = Board.asCoordinates(m.coordinate);
+            //                if (coord.isPresent()) {
+            //                  int[] c = coord.get();
+            //                  if (c[0] == i && c[1] == j) {
+            //                    moveOpt = Optional.of(m);
+            //                    break;
+            //                  }
+            //                  number = number + 1;
+            //                }
+            //              }
+            //            }
 
             if (!moveOpt.isPresent()) {
               continue;
@@ -1145,17 +1145,30 @@ public class BoardRenderer {
                     (int) (stoneRadius * 0.58),
                     (int) (stoneRadius * 0.6));
                 g.setColor(Color.BLACK);
-                drawString(
-                    g,
-                    (int) (suggestionX + stoneRadius * 0.9),
-                    suggestionY - stoneRadius * 7 / 9,
-                    LizzieFrame.winrateFont,
-                    Font.PLAIN,
-                    number + "",
-                    (float) (stoneRadius * 0.8),
-                    stoneRadius * 0.8,
-                    1);
-                g.setColor(oriColor);
+                if (isBestMove) {
+                  drawString(
+                      g,
+                      (int) (suggestionX + stoneRadius * 0.9),
+                      suggestionY - stoneRadius * 7 / 9,
+                      LizzieFrame.winrateFont,
+                      Font.PLAIN,
+                      1 + "",
+                      (float) (stoneRadius * 0.8),
+                      stoneRadius * 0.8,
+                      1);
+                } else {
+                  drawString(
+                      g,
+                      (int) (suggestionX + stoneRadius * 0.9),
+                      suggestionY - stoneRadius * 7 / 9,
+                      LizzieFrame.winrateFont,
+                      Font.PLAIN,
+                      number + "",
+                      (float) (stoneRadius * 0.8),
+                      stoneRadius * 0.8,
+                      1);
+                  g.setColor(oriColor);
+                }
               }
               // number++;
               if (Lizzie.leelaz.isKatago && Lizzie.config.showKataGoScoreMean) {
