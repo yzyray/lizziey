@@ -626,7 +626,7 @@ public class WinrateGraph {
 
             double curscoreMean = 0;
             try {
-              curscoreMean = node.previous().get().getData().bestMoves.get(0).scoreMean;
+              curscoreMean = node.getData().bestMoves.get(0).scoreMean;
             } catch (Exception ex) {
             }
 

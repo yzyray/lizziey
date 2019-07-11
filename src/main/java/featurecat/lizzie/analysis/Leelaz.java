@@ -1830,8 +1830,7 @@ public class Leelaz {
 		if (resigned) {
 			return;
 		}
-		if (Lizzie.frame.toolbar.isPkStop) {							
-								
+		if (Lizzie.frame.toolbar.isPkStop) {
 			return;
 		}
 
@@ -2305,8 +2304,7 @@ public class Leelaz {
 					}
 					if (!this.bestMoves.isEmpty()) {
 						notifyAutoAna();
-						notifyAutoPlay();
-						
+						notifyAutoPlay();						
 						notifyAutoPK();
 						
 						// notifyAutoPK();
