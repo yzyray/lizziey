@@ -5,14 +5,10 @@ import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.gui.EngineData;
 import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Movelist;
-import featurecat.lizzie.rules.SGFParser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.Timer;
@@ -24,7 +20,7 @@ public class EngineManager {
   public List<Leelaz> engineList;
   public static int currentEngineNo;
   public long startInfoTime = System.currentTimeMillis();
-  public long gameTime = System.currentTimeMillis();
+  // public long gameTime = System.currentTimeMillis();
   public static boolean isEmpty = false;
 
   Timer timer;
@@ -251,19 +247,17 @@ public class EngineManager {
 
   private void checkEngineAlive() {
     if (isEmpty) return;
-    if (Lizzie.frame.toolbar.checkGameTime
-        && Lizzie.frame.toolbar.isEnginePk
-        && !Lizzie.frame.toolbar.isPkStop) {
-      if (System.currentTimeMillis() - gameTime > Lizzie.frame.toolbar.maxGanmeTime * 60 * 1000) {
-        saveTimeoutFile();
-        Lizzie.board.clear();
-        this.engineList.get(Lizzie.frame.toolbar.engineBlack).clearWithoutPonder();
-        this.engineList.get(Lizzie.frame.toolbar.engineWhite).clearWithoutPonder();
-        this.engineList.get(Lizzie.frame.toolbar.engineBlack).ponder();
-        // forcekillAllEngines();
-        gameTime = System.currentTimeMillis();
-      }
-    }
+    //    if (Lizzie.frame.toolbar.checkGameTime && Lizzie.frame.toolbar.isEnginePk) {
+    //      if (Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime) {
+    //        saveTimeoutFile();
+    //        Lizzie.board.clear();
+    //        this.engineList.get(Lizzie.frame.toolbar.engineBlack).clearWithoutPonder();
+    //        this.engineList.get(Lizzie.frame.toolbar.engineWhite).clearWithoutPonder();
+    //        this.engineList.get(Lizzie.frame.toolbar.engineBlack).ponder();
+    //        // forcekillAllEngines();
+    //      //  gameTime = System.currentTimeMillis();
+    //      }
+    //    }
     if (Lizzie.frame.toolbar.isEnginePk) {
       // {
       // // if (Lizzie.leelaz.resigned) Lizzie.leelaz.pkResign();
@@ -424,64 +418,64 @@ public class EngineManager {
     }
   }
 
-  private void saveTimeoutFile() {
-    File file = new File("");
-    String courseFile = "";
-    try {
-      courseFile = file.getCanonicalPath();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    File autoSaveFile;
-    File autoSaveFile2 = null;
-    String sf = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-    autoSaveFile =
-        new File(
-            courseFile
-                + "\\"
-                + "PkAutoSave"
-                + "\\"
-                + Lizzie.frame.toolbar.batchPkName
-                + "\\"
-                + "超时对局"
-                + sf
-                + ".sgf");
-    autoSaveFile2 =
-        new File(
-            courseFile
-                + "\\"
-                + "PkAutoSave"
-                + "\\"
-                + Lizzie.frame.toolbar.SF
-                + "\\"
-                + "超时对局"
-                + sf
-                + ".sgf");
-
-    File fileParent = autoSaveFile.getParentFile();
-    if (!fileParent.exists()) {
-      fileParent.mkdirs();
-    }
-    try {
-      SGFParser.save(Lizzie.board, autoSaveFile.getPath());
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      if (Lizzie.frame.toolbar.isEnginePkBatch) {
-        try {
-          File fileParent2 = autoSaveFile2.getParentFile();
-          if (!fileParent2.exists()) {
-            fileParent2.mkdirs();
-          }
-          SGFParser.save(Lizzie.board, autoSaveFile2.getPath());
-        } catch (IOException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
-        }
-      }
-      e.printStackTrace();
-    }
-  }
+  //  private void saveTimeoutFile() {
+  //    File file = new File("");
+  //    String courseFile = "";
+  //    try {
+  //      courseFile = file.getCanonicalPath();
+  //    } catch (IOException e) {
+  //      // TODO Auto-generated catch block
+  //      e.printStackTrace();
+  //    }
+  //    File autoSaveFile;
+  //    File autoSaveFile2 = null;
+  //    String sf = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+  //    autoSaveFile =
+  //        new File(
+  //            courseFile
+  //                + "\\"
+  //                + "PkAutoSave"
+  //                + "\\"
+  //                + Lizzie.frame.toolbar.batchPkName
+  //                + "\\"
+  //                + "超手数对局"
+  //                + sf
+  //                + ".sgf");
+  //    autoSaveFile2 =
+  //        new File(
+  //            courseFile
+  //                + "\\"
+  //                + "PkAutoSave"
+  //                + "\\"
+  //                + Lizzie.frame.toolbar.SF
+  //                + "\\"
+  //                + "超手数对局"
+  //                + sf
+  //                + ".sgf");
+  //
+  //    File fileParent = autoSaveFile.getParentFile();
+  //    if (!fileParent.exists()) {
+  //      fileParent.mkdirs();
+  //    }
+  //    try {
+  //      SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+  //    } catch (IOException e) {
+  //      // TODO Auto-generated catch block
+  //      if (Lizzie.frame.toolbar.isEnginePkBatch) {
+  //        try {
+  //          File fileParent2 = autoSaveFile2.getParentFile();
+  //          if (!fileParent2.exists()) {
+  //            fileParent2.mkdirs();
+  //          }
+  //          SGFParser.save(Lizzie.board, autoSaveFile2.getPath());
+  //        } catch (IOException e1) {
+  //          // TODO Auto-generated catch block
+  //          e1.printStackTrace();
+  //        }
+  //      }
+  //      e.printStackTrace();
+  //    }
+  //  }
 
   /**
    * Switch the Engine by index number

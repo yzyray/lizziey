@@ -146,6 +146,8 @@ public class GameInfoDialog extends JDialog {
       Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
       Lizzie.frame.komi = textFieldKomi.getText();
       gameInfo.setKomi(Double.parseDouble(textFieldKomi.getText()));
+      if (Lizzie.frame.toolbar.setkomi != null)
+        Lizzie.frame.toolbar.setkomi.textFieldKomi.setText(textFieldKomi.getText());
     }
     Lizzie.board.getHistory().setGameInfo(gameInfo);
     if (Lizzie.leelaz.isPondering()) {

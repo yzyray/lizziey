@@ -227,6 +227,8 @@ public class GtpConsolePane extends JDialog {
         if (cmdParams.length == 2) {
           Lizzie.board.getHistory().getGameInfo().setKomi(Double.parseDouble(cmdParams[1]));
           Lizzie.frame.komi = cmdParams[1];
+          if (Lizzie.frame.toolbar.setkomi != null)
+            Lizzie.frame.toolbar.setkomi.textFieldKomi.setText(cmdParams[1]);
         }
         Lizzie.leelaz.sendCommand(command);
         Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());

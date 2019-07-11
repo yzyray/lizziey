@@ -54,6 +54,9 @@ public class BottomToolbar extends JPanel {
   JButton batchOpen;
   JButton refresh;
   JButton tryPlay;
+  JButton komi;
+  public SetKomi setkomi;
+
   int savedbroadmid;
   JTextField txtMoveNumber;
   private int changeMoveNumber = 0;
@@ -67,7 +70,7 @@ public class BottomToolbar extends JPanel {
   public int timeb = -1;
   public int timew = -1;
 
-  public int maxGanmeTime = 60;
+  public int maxGanmeTime = 360;
   public boolean checkGameTime = false;
 
   public boolean isEnginePk = false;
@@ -221,6 +224,7 @@ public class BottomToolbar extends JPanel {
     batchOpen = new JButton("批量打开");
     refresh = new JButton("刷新");
     tryPlay = new JButton("试下");
+    komi = new JButton("贴目");
     iconUp = new ImageIcon();
     try {
       iconUp.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/up.png")));
@@ -257,6 +261,7 @@ public class BottomToolbar extends JPanel {
     add(batchOpen);
     add(refresh);
     add(tryPlay);
+    add(komi);
     firstButton.setFocusable(false);
     lastButton.setFocusable(false);
     clearButton.setFocusable(false);
@@ -277,6 +282,7 @@ public class BottomToolbar extends JPanel {
     batchOpen.setFocusable(false);
     refresh.setFocusable(false);
     tryPlay.setFocusable(false);
+    komi.setFocusable(false);
 
     firstButton.setMargin(new Insets(0, 0, 0, 0));
     lastButton.setMargin(new Insets(0, 0, 0, 0));
@@ -298,7 +304,7 @@ public class BottomToolbar extends JPanel {
     batchOpen.setMargin(new Insets(0, 0, 0, 0));
     refresh.setMargin(new Insets(0, 0, 0, 0));
     tryPlay.setMargin(new Insets(0, 0, 0, 0));
-
+    komi.setMargin(new Insets(0, 0, 0, 0));
     // NumberFormat nf = NumberFormat.getNumberInstance();
 
     // nf.setGroupingUsed(false);
@@ -333,12 +339,20 @@ public class BottomToolbar extends JPanel {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.board.clearbestmoves();
+            Lizzie.frame.refresh();
           }
         });
     tryPlay.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.tryPlay();
+          }
+        });
+    komi.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            setkomi = new SetKomi();
+            setkomi.setVisible(true);
           }
         });
     batchOpen.addActionListener(
@@ -488,6 +502,7 @@ public class BottomToolbar extends JPanel {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.board.clear();
+            Lizzie.frame.refresh();
             setTxtUnfocuse();
           }
         });
@@ -1063,16 +1078,26 @@ public class BottomToolbar extends JPanel {
               btnEnginePkStop.setText("暂停");
               isPkStop = false;
               if (Lizzie.board.getData().blackToPlay) {
+
                 Lizzie.engineManager.engineList.get(engineBlack).ponder();
               } else {
+
                 Lizzie.engineManager.engineList.get(engineWhite).ponder();
               }
             } else {
               btnEnginePkStop.setText("继续");
+
+              if (Lizzie.board.getData().blackToPlay) {
+
+                Lizzie.engineManager.engineList.get(engineBlack).nameCmd();
+              } else {
+
+                Lizzie.engineManager.engineList.get(engineWhite).nameCmd();
+              }
               isPkStop = true;
             }
             Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
-            Lizzie.engineManager.gameTime = System.currentTimeMillis();
+            //  Lizzie.engineManager.gameTime = System.currentTimeMillis();
           }
         });
 
@@ -1220,7 +1245,7 @@ public class BottomToolbar extends JPanel {
     enginePkPanel.add(lblenginePkExchange);
     chkenginePkContinue.setBounds(545, 23, 20, 18);
     lblenginePkExchange.setBounds(565, 22, 50, 20);
-
+    chkenginePkContinue.setToolTipText("先摆好一个局面,然后勾选就可以每盘都从这个局面开始对战");
     chkenginePkContinue.addActionListener(
         new ActionListener() {
           @Override
@@ -2327,9 +2352,9 @@ public class BottomToolbar extends JPanel {
     isAutoAna = false;
     isAutoPlay = false;
     Lizzie.board.isPkBoard = true;
-    if (checkGameTime) {
-      Lizzie.engineManager.gameTime = System.currentTimeMillis();
-    }
+    //    if (checkGameTime) {
+    //      Lizzie.engineManager.gameTime = System.currentTimeMillis();
+    //    }
 
     Lizzie.frame.isPlayingAgainstLeelaz = false;
     btnStartPk.setText("终止");
@@ -2544,13 +2569,14 @@ public class BottomToolbar extends JPanel {
 
     if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
       if (boardmid + 364 > w) boardmid = w - 364;
-      if (boardmid - 562 < 0) boardmid = 562;
+      if (boardmid - 601 < 0) boardmid = 601;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(true);
-      kataEstimate.setBounds(boardmid - 543, 0, 60, 26);
-      batchOpen.setBounds(boardmid - 484, 0, 60, 26);
-      openfile.setBounds(boardmid - 425, 0, 40, 26);
-      savefile.setBounds(boardmid - 386, 0, 40, 26);
+      kataEstimate.setBounds(boardmid - 582, 0, 60, 26);
+      batchOpen.setBounds(boardmid - 523, 0, 60, 26);
+      openfile.setBounds(boardmid - 464, 0, 40, 26);
+      savefile.setBounds(boardmid - 425, 0, 40, 26);
+      komi.setBounds(boardmid - 386, 0, 40, 26);
       refresh.setBounds(boardmid - 347, 0, 40, 26);
       analyse.setBounds(boardmid - 308, 0, 65, 26);
       tryPlay.setBounds(boardmid - 244, 0, 40, 26);
@@ -2569,12 +2595,13 @@ public class BottomToolbar extends JPanel {
       gotomove.setBounds(boardmid + 313, 0, 35, 26);
     } else {
       if (boardmid + 364 > w) boardmid = w - 364;
-      if (boardmid - 503 < 0) boardmid = 503;
+      if (boardmid - 542 < 0) boardmid = 542;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(false);
-      batchOpen.setBounds(boardmid - 484, 0, 60, 26);
-      openfile.setBounds(boardmid - 425, 0, 40, 26);
-      savefile.setBounds(boardmid - 386, 0, 40, 26);
+      batchOpen.setBounds(boardmid - 523, 0, 60, 26);
+      openfile.setBounds(boardmid - 464, 0, 40, 26);
+      savefile.setBounds(boardmid - 425, 0, 40, 26);
+      komi.setBounds(boardmid - 386, 0, 40, 26);
       refresh.setBounds(boardmid - 347, 0, 40, 26);
       analyse.setBounds(boardmid - 308, 0, 65, 26);
       tryPlay.setBounds(boardmid - 244, 0, 40, 26);
@@ -2641,13 +2668,14 @@ public class BottomToolbar extends JPanel {
     int w = Lizzie.frame.getWidth();
     if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
       if (boardmid + 364 > w) boardmid = w - 364;
-      if (boardmid - 562 < 0) boardmid = 562;
+      if (boardmid - 601 < 0) boardmid = 601;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(true);
-      kataEstimate.setBounds(boardmid - 543, 0, 60, 26);
-      batchOpen.setBounds(boardmid - 484, 0, 60, 26);
-      openfile.setBounds(boardmid - 425, 0, 40, 26);
-      savefile.setBounds(boardmid - 386, 0, 40, 26);
+      kataEstimate.setBounds(boardmid - 582, 0, 60, 26);
+      batchOpen.setBounds(boardmid - 523, 0, 60, 26);
+      openfile.setBounds(boardmid - 464, 0, 40, 26);
+      savefile.setBounds(boardmid - 425, 0, 40, 26);
+      komi.setBounds(boardmid - 386, 0, 40, 26);
       refresh.setBounds(boardmid - 347, 0, 40, 26);
       analyse.setBounds(boardmid - 308, 0, 65, 26);
       tryPlay.setBounds(boardmid - 244, 0, 40, 26);
@@ -2666,12 +2694,13 @@ public class BottomToolbar extends JPanel {
       gotomove.setBounds(boardmid + 313, 0, 35, 26);
     } else {
       if (boardmid + 364 > w) boardmid = w - 364;
-      if (boardmid - 503 < 0) boardmid = 503;
+      if (boardmid - 542 < 0) boardmid = 542;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(false);
-      batchOpen.setBounds(boardmid - 484, 0, 60, 26);
-      openfile.setBounds(boardmid - 425, 0, 40, 26);
-      savefile.setBounds(boardmid - 386, 0, 40, 26);
+      batchOpen.setBounds(boardmid - 523, 0, 60, 26);
+      openfile.setBounds(boardmid - 464, 0, 40, 26);
+      savefile.setBounds(boardmid - 425, 0, 40, 26);
+      komi.setBounds(boardmid - 386, 0, 40, 26);
       refresh.setBounds(boardmid - 347, 0, 40, 26);
       analyse.setBounds(boardmid - 308, 0, 65, 26);
       tryPlay.setBounds(boardmid - 244, 0, 40, 26);

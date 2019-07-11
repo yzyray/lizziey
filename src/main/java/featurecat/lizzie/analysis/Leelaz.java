@@ -115,6 +115,7 @@ public class Leelaz {
 	public int whiteResignMoveCounts = 0;
 	public boolean resigned = false;
 	public boolean doublePass = false;
+	public boolean outOfMoveNum = false;
 	public boolean played = false;
 	public boolean isKatago = false;
 	public double scoreMean = 0;
@@ -431,6 +432,12 @@ public class Leelaz {
 					genmoveResign();
 					return;
 				}
+				if (Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime) {
+					   outOfMoveNum=true;	
+						nameCmdfornoponder();
+						genmoveResign();
+					  return;
+				   }
 				if (params[1].startsWith("pass")) {
 					Optional<int[]> passStep = Optional.empty();
 					Optional<int[]> lastMove = Lizzie.board.getLastMove();
@@ -658,7 +665,11 @@ public class Leelaz {
 					if (Lizzie.gtpConsole.isVisible())
 						Lizzie.gtpConsole.addLineforce(currentEnginename + ": " + line);
 					stage = Integer.parseInt(params[3].substring(0, params[3].length() - 1));
-					komi = Float.parseFloat(params[6].substring(0, params[6].length() - 1));
+					komi = Float.parseFloat(params[6].substring(0, params[6].length() - 1));					
+					  Lizzie.board.getHistory().getGameInfo().setKomi(komi);
+			          Lizzie.frame.komi = komi+"";
+			          if(Lizzie.frame.toolbar.setkomi!=null)
+			          Lizzie.frame.toolbar.setkomi.textFieldKomi.setText(komi+"");			       
 				}
 			} else if (line.startsWith("play")) {
 				// In lz-genmove_analyze
@@ -1192,6 +1203,12 @@ public class Leelaz {
 	public void genmoveResign() {		
 		Lizzie.gtpConsole.addLine(currentEnginename + " 认输");
 		Lizzie.board.updateComment();
+		
+		if(outOfMoveNum)
+		{
+			saveTimeoutFile();
+		}
+		else {
 		if (this.currentEngineN == Lizzie.frame.toolbar.engineBlack) {
 			// 白胜
 			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
@@ -1224,7 +1241,7 @@ public class Leelaz {
 				savePkFile();
 			}
 		}
-
+		}
 		if (Lizzie.frame.toolbar.isEnginePkBatch) {
 			int EnginePkBatchNumber = 1;
 			try {
@@ -1234,9 +1251,9 @@ public class Leelaz {
 			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow < EnginePkBatchNumber) {
 				Lizzie.frame.toolbar.EnginePkBatchNumberNow = Lizzie.frame.toolbar.EnginePkBatchNumberNow + 1;
 				// 下一盘PK
-				if (Lizzie.frame.toolbar.checkGameTime) {
-					Lizzie.engineManager.gameTime = System.currentTimeMillis();
-				}
+//				if (Lizzie.frame.toolbar.checkGameTime) {
+//					Lizzie.engineManager.gameTime = System.currentTimeMillis();
+//				}
 				Lizzie.frame.setResult("");
 				if (Lizzie.frame.toolbar.exChange)
 				// if(false)
@@ -1419,7 +1436,11 @@ public class Leelaz {
 		Lizzie.gtpConsole.addLine(currentEnginename + " 认输");
 
 		Lizzie.board.updateComment();
-		if (blackResignMoveCounts >= Lizzie.frame.toolbar.pkResignMoveCounts) {
+		if(outOfMoveNum)
+		{
+			saveTimeoutFile();
+		}
+		else {	if (blackResignMoveCounts >= Lizzie.frame.toolbar.pkResignMoveCounts) {
 			// df=df+"_白胜";
 
 			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
@@ -1447,8 +1468,9 @@ public class Leelaz {
 				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
 
 		}
+	
 
-		if (Lizzie.frame.toolbar.AutosavePk || Lizzie.frame.toolbar.isEnginePkBatch) {
+		 if (Lizzie.frame.toolbar.AutosavePk || Lizzie.frame.toolbar.isEnginePkBatch) {
 			if (doublePass) {
 				savePassFile();
 				doublePass = false;
@@ -1456,7 +1478,7 @@ public class Leelaz {
 				savePkFile();
 			}
 		}
-
+		}
 		if (Lizzie.frame.toolbar.isEnginePkBatch) {
 			int EnginePkBatchNumber = 1;
 			try {
@@ -1466,9 +1488,9 @@ public class Leelaz {
 			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow < EnginePkBatchNumber) {
 				Lizzie.frame.toolbar.EnginePkBatchNumberNow = Lizzie.frame.toolbar.EnginePkBatchNumberNow + 1;
 				// 下一盘PK
-				if (Lizzie.frame.toolbar.checkGameTime) {
-					Lizzie.engineManager.gameTime = System.currentTimeMillis();
-				}
+//				if (Lizzie.frame.toolbar.checkGameTime) {
+//					Lizzie.engineManager.gameTime = System.currentTimeMillis();
+//				}
 				Lizzie.frame.setResult("");
 				if (Lizzie.frame.toolbar.exChange)
 				// if(false)
@@ -1728,12 +1750,80 @@ public class Leelaz {
 		}
 	}
 
+	 private void saveTimeoutFile() {
+		 outOfMoveNum=false;
+		    File file = new File("");
+		    String courseFile = "";
+		    try {
+		      courseFile = file.getCanonicalPath();
+		    } catch (IOException e) {
+		      // TODO Auto-generated catch block
+		      e.printStackTrace();
+		    }
+		    File autoSaveFile;
+		    File autoSaveFile2 = null;
+			String sf = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+
+			String df = "";
+			if (Lizzie.frame.toolbar.isEnginePkBatch) {
+				df = Lizzie.frame.toolbar.EnginePkBatchNumberNow + "_";
+			}
+			df = df + "黑" + Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename + "_白"
+					+ Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename;
+		    autoSaveFile =
+		        new File(
+		            courseFile
+		                + "\\"
+		                + "PkAutoSave"
+		                + "\\"
+		                + Lizzie.frame.toolbar.batchPkName
+		                + "\\"
+		                +df+ "_超手数对局_"
+		                + sf
+		                + ".sgf");
+		    autoSaveFile2 =
+		        new File(
+		            courseFile
+		                + "\\"
+		                + "PkAutoSave"
+		                + "\\"
+		                + Lizzie.frame.toolbar.SF
+		                + "\\"
+		                +df  + "_超手数对局_"
+		                + sf
+		                + ".sgf");
+
+		    File fileParent = autoSaveFile.getParentFile();
+		    if (!fileParent.exists()) {
+		      fileParent.mkdirs();
+		    }
+		    try {
+		      SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+		    } catch (IOException e) {
+		      // TODO Auto-generated catch block
+		      if (Lizzie.frame.toolbar.isEnginePkBatch) {
+		        try {
+		          File fileParent2 = autoSaveFile2.getParentFile();
+		          if (!fileParent2.exists()) {
+		            fileParent2.mkdirs();
+		          }
+		          SGFParser.save(Lizzie.board, autoSaveFile2.getPath());
+		        } catch (IOException e1) {
+		          // TODO Auto-generated catch block
+		          e1.printStackTrace();
+		        }
+		      }
+		      e.printStackTrace();
+		    }
+		  }
+
+	 
 	private void notifyAutoPK() {
 		if (resigned) {
 			return;
 		}
-		if (Lizzie.frame.toolbar.isPkStop) {
-			nameCmd();
+		if (Lizzie.frame.toolbar.isPkStop) {							
+								
 			return;
 		}
 
@@ -1790,6 +1880,16 @@ public class Leelaz {
 					}
 				}
 			}
+			
+			   if (Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime) {
+				   outOfMoveNum=true;
+					resigned = true;
+
+					pkResign();
+				
+					nameCmd();
+				  return;
+			   }
 
 			if (firstPlayouts > 0||playNow) {
 				if (bestMoves.get(0).playouts >= firstPlayouts||playNow) {
@@ -1822,7 +1922,7 @@ public class Leelaz {
 						resigned = true;
 
 						pkResign();
-						// System.out.println("认输1"+this.currentEngineN);
+					
 						nameCmd();
 						return;
 					}
@@ -2198,6 +2298,7 @@ public class Leelaz {
 					if (!this.bestMoves.isEmpty()) {
 						notifyAutoAna();
 						notifyAutoPlay();
+						
 						notifyAutoPK();
 						
 						// notifyAutoPK();
@@ -2311,6 +2412,9 @@ public class Leelaz {
 			sendCommandToLeelaz(command);
 		}
 	}
+	
+	
+
 
 	/**
 	 * Sends a command for leelaz to execute
@@ -2346,7 +2450,7 @@ public class Leelaz {
 		return currentCmdNum >= cmdNumber - 1;
 	}
 
-	private void setResponseUpToDate() {
+	public void setResponseUpToDate() {
 		// Use >= instead of == for avoiding hang-up, though it cannot happen
 		currentCmdNum = cmdNumber - 1;
 	}

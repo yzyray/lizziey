@@ -74,7 +74,8 @@ public class SetBoardSize extends JDialog {
 
               private DocumentFilter filter = new DigitOnlyFilter();
             });
-    width.setBounds(210, 26, 30, 20);
+    
+    width.setBounds(150, 26, 30, 20);
     buttonPane.add(width);
     width.setColumns(3);
 
@@ -94,7 +95,7 @@ public class SetBoardSize extends JDialog {
 
               private DocumentFilter filter = new DigitOnlyFilter();
             });
-    height.setBounds(150, 26, 30, 20);
+    height.setBounds(210, 26, 30, 20);
     buttonPane.add(height);
     height.setColumns(3);
 

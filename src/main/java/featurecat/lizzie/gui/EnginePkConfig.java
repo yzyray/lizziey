@@ -103,7 +103,7 @@ public class EnginePkConfig extends JDialog {
     add(lblAutosave);
 
     chkGameTime = new JCheckBox();
-    JLabel lblGameTime = new JLabel("单局超时(分)");
+    JLabel lblGameTime = new JLabel("最大手数");
     txtGameTime = new JTextField();
     add(chkGameTime);
     add(lblGameTime);
@@ -114,7 +114,7 @@ public class EnginePkConfig extends JDialog {
 
     chkAutosave.setBounds(152, 65, 20, 20);
     lblAutosave.setBounds(172, 65, 100, 18);
-    JLabel lblHints = new JLabel("注:  设置单局超时后,超时的对局将被中止并保存,不记入比分");
+    JLabel lblHints = new JLabel("注:  设置最大手数后,超过手数的对局将被中止并保存,不记入比分");
     JLabel lblHints2 = new JLabel("       如出现双方pass则不计入比分,但会记录棋谱");
     JLabel lblHints3 = new JLabel("       genmove模式下,引擎强烈建议添加 --noponder参数,否则可能争用资源并且显示混乱");
     JLabel lblHints4 = new JLabel("       在genmove模式下,使用 genmove命令落子,只能按时间落子,认输阈值和计算量");
