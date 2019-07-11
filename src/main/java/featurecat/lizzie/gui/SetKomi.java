@@ -67,7 +67,7 @@ public class SetKomi extends JDialog {
     NumberFormat nf = NumberFormat.getIntegerInstance();
     nf.setGroupingUsed(false);
 
-    JLabel lblChangeTo = new JLabel("设置贴目(负数为到题目)：");
+    JLabel lblChangeTo = new JLabel("设置贴目(负数为倒贴目)：");
     lblChangeTo.setBounds(15, 4, 150, 20);
     buttonPane.add(lblChangeTo);
     lblChangeTo.setHorizontalAlignment(SwingConstants.LEFT);

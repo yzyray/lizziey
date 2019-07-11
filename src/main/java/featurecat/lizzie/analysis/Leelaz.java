@@ -432,7 +432,7 @@ public class Leelaz {
 					genmoveResign();
 					return;
 				}
-				if (Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime) {
+				if (Lizzie.frame.toolbar.checkGameTime&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime) {
 					   outOfMoveNum=true;	
 						nameCmdfornoponder();
 						genmoveResign();
@@ -1404,11 +1404,15 @@ public class Leelaz {
 			Lizzie.frame.toolbar.batchPkName = "";
 
 			String jg = "对战已结束，";
+			if(Lizzie.frame.toolbar.checkGameTime&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime)
+				jg=jg+"超过手数限制";
+			else {
 			if (currentEngineN == Lizzie.frame.toolbar.engineBlack) {
-				// df=df+"_白胜";
+				// df=df+"_白胜";				
 				jg = jg + "白胜";
 			} else {
 				jg = jg + "黑胜";
+			}
 			}
 			if (Lizzie.frame.toolbar.AutosavePk) {
 				jg = jg + "，棋谱保存在PkAutoSave文件夹下";
@@ -1686,11 +1690,15 @@ public class Leelaz {
 	
 
 			String jg = "对战已结束，";
+			if(Lizzie.frame.toolbar.checkGameTime&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime)
+				jg=jg+"超过手数限制";
+			else {
 			if (currentEngineN == Lizzie.frame.toolbar.engineBlack) {
 				// df=df+"_白胜";
 				jg = jg + "白胜";
 			} else {
 				jg = jg + "黑胜";
+			}
 			}
 			if (Lizzie.frame.toolbar.AutosavePk) {
 				jg = jg + "，棋谱保存在PkAutoSave文件夹下";
@@ -1881,7 +1889,7 @@ public class Leelaz {
 				}
 			}
 			
-			   if (Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime) {
+			   if (Lizzie.frame.toolbar.checkGameTime&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime) {
 				   outOfMoveNum=true;
 					resigned = true;
 
