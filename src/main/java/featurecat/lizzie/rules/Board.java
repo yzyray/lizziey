@@ -70,6 +70,18 @@ public class Board implements LeelazListener {
     history = new BoardHistoryList(BoardData.empty(boardWidth, boardHeight));
   }
 
+  private void initializeForPk() {
+    double komi = Lizzie.board.getHistory().getGameInfo().getKomi();
+    capturedStones = new Stone[] {};
+    scoreMode = false;
+    analysisMode = false;
+    playoutsAnalysis = 100;
+    saveNode = Optional.empty();
+    forceRefresh = false;
+    history = new BoardHistoryList(BoardData.empty(boardWidth, boardHeight));
+    Lizzie.board.getHistory().getGameInfo().setKomi(komi);
+  }
+
   /**
    * Calculates the array index of a stone stored at (x, y)
    *
@@ -2001,7 +2013,7 @@ public class Board implements LeelazListener {
     Lizzie.frame.boardRenderer.removecountblock();
     if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
     // cleanedittemp();
-    initialize();
+    initializeForPk();
   }
 
   public void clearforedit() {

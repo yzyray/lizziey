@@ -414,9 +414,12 @@ public class Leelaz {
 
 	private void parseLineForGenmovePk(String line) {
 		//Lizzie.gtpConsole.addLineforce(line);
+		if (isCommandLine) 
+		{
+			currentCmdNum = cmdNumber - 1;}
 		if (line.startsWith("=")) {
 			String[] params = line.trim().split(" ");
-			currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
+			//currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
 			if ( Lizzie.frame.toolbar.isEnginePk && params.length == 2) {
 
 				if (Lizzie.board.getHistory().isBlacksTurn()
@@ -520,7 +523,7 @@ public class Leelaz {
 				Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
 			}
 			// if (printCommunication || gtpConsole) {
-			 //Lizzie.gtpConsole.addLineforce(line);
+			//Lizzie.gtpConsole.addLineforce(line);
 			// }
 //      if (line.startsWith("komi=")) {
 //        try {
@@ -538,17 +541,38 @@ public class Leelaz {
 			// if (line.equals("\n")) {
 			// End of response
 			// } else
-			if (isCommandLine) {
-				String[] params = line.trim().split("=");
-				try {
-					currentCmdNum = Integer.parseInt(params[1].split(" ")[0].trim());
-					if (currentCmdNum > cmdNumber - 1)
-						currentCmdNum = cmdNumber - 1;
-					if (!isLoaded)
+			if (isCommandLine) 
+			{
+				currentCmdNum = cmdNumber - 1;
+//				String[] params = line.trim().split("=");
+//				try {
+//					
+//							for(int i=1;i<params.length;i++)
+//							{		String str=params[i];
+//							for(int j=0;j<=str.length();j++)
+//							{
+//								try {
+//									Integer.parseInt(str.substring(j,j+1));
+//									}
+//								catch(Exception ex)
+//								{
+//									if(j>0)
+//									{
+//										int temp =Integer.parseInt(str.substring(0,j));
+//										 if(temp>currentCmdNum)
+//											 currentCmdNum=temp;
+//									}
+//								}
+//							}				
+//							//params[1].split(" ")[0].trim());
+//							}
+//					if (currentCmdNum > cmdNumber - 1)
+//						currentCmdNum = cmdNumber - 1;
+//					if (!isLoaded)
 						isLoaded = true;
-				} catch (Exception ex) {
+			//	} catch (Exception ex) {
 					// currentCmdNum = currentCmdNum + 1;
-				}
+			//	}
 				try {
 					trySendCommandFromQueue();
 				} catch (Exception ex) {
@@ -630,16 +654,6 @@ public class Leelaz {
 					} else {
 						this.bestMoves = parseInfo(line.substring(5));
 					}
-					
-					if (!this.bestMoves.isEmpty()) {
-						notifyAutoAna();
-						notifyAutoPlay();						
-						notifyAutoPK();
-						
-						// notifyAutoPK();
-					
-					}
-					
 					Lizzie.frame.refresh();
 					// don't follow the maxAnalyzeTime rule if we are in analysis mode
 					if ((!Lizzie.frame.toolbar.isEnginePk || !Lizzie.frame.toolbar.isAutoAna)
@@ -647,6 +661,11 @@ public class Leelaz {
 							&& !Lizzie.frame.toolbar.isAutoAna) {
 						togglePonder();
 					}
+				}
+				if (!this.bestMoves.isEmpty()) {
+					notifyAutoPK();	
+					notifyAutoAna();
+					notifyAutoPlay();	
 				}
 				// 临时添加为了解决SSH时的卡顿
 //				else { if(firstNoRespond)
@@ -662,8 +681,9 @@ public class Leelaz {
 //				}
 				// 临时添加为了解决SSH时的卡顿
 				// }
-			} else if (Lizzie.gtpConsole.isVisible())
-				Lizzie.gtpConsole.addLine(line);
+			}
+			else if (Lizzie.gtpConsole.isVisible())
+			Lizzie.gtpConsole.addLine(line);
 			// System.out.println(line);
 			if (line.startsWith("| ST")) {
 				String[] params = line.trim().split(" ");
@@ -1841,7 +1861,7 @@ public class Leelaz {
 			return;
 		}
 
-		if (Lizzie.frame.toolbar.isEnginePk && !played) {
+		if (Lizzie.frame.toolbar.isEnginePk) {
 			double curWR = this.bestMoves.get(0).winrate;
 
 			int time = 0;
@@ -2469,23 +2489,7 @@ public class Leelaz {
 	public void playMove(Stone color, String move) {
 		if (Lizzie.engineManager.isEmpty) {
 			return;
-		}
-		if (Lizzie.frame.toolbar.isEnginePk)
-			{
-		int coords[] = Lizzie.board.convertNameToCoordinates(move);
-		if(Lizzie.board.getHistory().isBlacksTurn()) {
-			Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).played = true;
-		Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveNoPonder("B",Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
-		Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMovePonder("B",Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
-		}
-		else
-		{
-			Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).played=true;
-			Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveNoPonder("W",Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
-			Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMovePonder("W",Lizzie.board.convertCoordinatesToName(coords[0], coords[1]));
-			
-		}
-		return;}
+		}	
 		synchronized (this) {
 			String colorString;
 			switch (color) {
@@ -2510,87 +2514,21 @@ public class Leelaz {
 
 	public void playMoveNoPonder(String colorString, String move) {
 		synchronized (this) {
-			// String colorString;
-//	      switch (color) {
-//	        case BLACK:
-//	          colorString = "B";
-//	          break;
-//	        case WHITE:
-//	          colorString = "W";
-//	          break;
-//	        default:
-//	          throw new IllegalArgumentException(
-//	              "The stone color must be B or W, but was " + color.toString());
-//	      }
 
 			sendCommand("play " + colorString + " " + move);
 			Lizzie.frame.subBoardRenderer.reverseBestmoves = true;
 			Lizzie.frame.boardRenderer.reverseBestmoves = true;
 			// bestMoves = new ArrayList<>();
-
 		}
-	}
-
-//  public void playPassNoPonder(Stone color) {
-//	  synchronized (this) {
-//	  String colorString;
-//	  switch (color) {
-//      case BLACK:
-//        colorString = "B";
-//        break;
-//      case WHITE:
-//        colorString = "W";
-//        break;
-//      default:
-//        throw new IllegalArgumentException(
-//            "The stone color must be B or W, but was " + color.toString());
-//    }
-//	      sendCommand("play " + colorString +" pass");
-//	      played=false;
-//	      //bestMoves = new ArrayList<>();
-//	     
-//	  }
-//	  }
-//  
-//  public void playPassPonder(Stone color) {
-//	  synchronized (this) {
-//	  String colorString;
-//	  switch (color) {
-//      case BLACK:
-//        colorString = "B";
-//        break;
-//      case WHITE:
-//        colorString = "W";
-//        break;
-//      default:
-//        throw new IllegalArgumentException(
-//            "The stone color must be B or W, but was " + color.toString());
-//    }
-//	      sendCommand("play " + colorString +" pass");
-//	      played=false;
-//	   //   bestMoves = new ArrayList<>();
-//	      ponder();	     
-//	  }
-//	  }
+		}	
 
 	public void playMovePonder(String colorString, String move) {
+		
 		synchronized (this) {
-//	      String colorString;
-//	      switch (color) {
-//	        case BLACK:
-//	          colorString = "B";
-//	          break;
-//	        case WHITE:
-//	          colorString = "W";
-//	          break;
-//	        default:
-//	          throw new IllegalArgumentException(
-//	              "The stone color must be B or W, but was " + color.toString());
-//	      }
 			played = false;
 			bestMoves = new ArrayList<>();
 			sendCommand("play " + colorString + " " + move);
-			ponder();
+			pkponder();
 		}
 	}
 
@@ -2599,15 +2537,15 @@ public class Leelaz {
 			played = false;
 
 			sendCommand("play " + colorString + " " + move);
-
 		}
+		
 	}
 
 	public void playMovewithavoid(Stone color, String move) {
 		if (Lizzie.frame.toolbar.isEnginePk) {
 			return;
 		}
-		synchronized (this) {
+		
 			String colorString;
 			switch (color) {
 			case BLACK:
@@ -2625,7 +2563,7 @@ public class Leelaz {
 
 			if (isPondering && !Lizzie.frame.isPlayingAgainstLeelaz)
 				ponder();
-		}
+	
 	}
 
 	public void genmove(String color) {
@@ -2763,6 +2701,26 @@ public class Leelaz {
 			} // until it responds to this, incoming
 				// ponder results are obsolete
 		}
+	}
+	
+	public void pkponder() {
+		isPondering = true;
+		startPonderTime = System.currentTimeMillis();
+		if (Lizzie.frame.isheatmap) {
+			Lizzie.leelaz.heatcount.clear();
+			// Lizzie.frame.isheatmap = false;
+		}
+		
+			if (this.isKatago) {
+				if (Lizzie.config.showKataGoEstimate)
+					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec + " ownership true");
+				else
+					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+			} else {
+				sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+			} // until it responds to this, incoming
+				// ponder results are obsolete
+		
 	}
 
 	public void ponderwithavoid() {

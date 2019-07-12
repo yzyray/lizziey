@@ -106,23 +106,23 @@ public class YaZenGtp {
   }
 
   private void parseLine(String line) {
-    synchronized (this) {
-      Lizzie.gtpConsole.addLineforce(line);
-      if (line.startsWith("=  ")) {
-        String[] params = line.trim().split(" ");
-        // Lizzie.gtpConsole.addLineforce("这是详细点目第一行,21分参数");
-        for (int i = 2; i < params.length; i++) tempcount.add(Integer.parseInt(params[i]));
-      }
+    //  synchronized (this) {
+    Lizzie.gtpConsole.addLineforce(line);
+    if (line.startsWith("=  ")) {
+      String[] params = line.trim().split(" ");
+      // Lizzie.gtpConsole.addLineforce("这是详细点目第一行,21分参数");
+      for (int i = 2; i < params.length; i++) tempcount.add(Integer.parseInt(params[i]));
+    }
 
-      if (line.startsWith(" ")) {
+    if (line.startsWith(" ")) {
 
-        String[] params = line.trim().split(" ");
-        if (params.length == Lizzie.board.boardWidth) {
-          for (int i = 0; i < params.length; i++) tempcount.add(Integer.parseInt(params[i]));
-          // Lizzie.gtpConsole.addLineforce("这是详细点目");
-        }
+      String[] params = line.trim().split(" ");
+      if (params.length == Lizzie.board.boardWidth) {
+        for (int i = 0; i < params.length; i++) tempcount.add(Integer.parseInt(params[i]));
+        // Lizzie.gtpConsole.addLineforce("这是详细点目");
       }
     }
+    //  }
     if (line.startsWith("= ")) {
       String[] params = line.trim().split(" ");
       if (params.length == 14) {
@@ -180,23 +180,23 @@ public class YaZenGtp {
   }
 
   public void sendCommand(String command) {
-    synchronized (cmdQueue) {
-      if (!cmdQueue.isEmpty()) {
-        cmdQueue.removeLast();
-      }
-      cmdQueue.addLast(command);
-      trySendCommandFromQueue();
+    //  synchronized (cmdQueue) {
+    if (!cmdQueue.isEmpty()) {
+      cmdQueue.removeLast();
     }
+    cmdQueue.addLast(command);
+    trySendCommandFromQueue();
+    //   }
   }
 
   private void trySendCommandFromQueue() {
-    synchronized (cmdQueue) {
-      if (cmdQueue.isEmpty()) {
-        return;
-      }
-      String command = cmdQueue.removeFirst();
-      sendCommandToZen(command);
+    // synchronized (cmdQueue) {
+    if (cmdQueue.isEmpty()) {
+      return;
     }
+    String command = cmdQueue.removeFirst();
+    sendCommandToZen(command);
+    // }
   }
 
   private void sendCommandToZen(String command) {

@@ -132,23 +132,23 @@ public class CountResults extends JDialog {
       int whitePrisonerCount,
       int blackpont,
       int whitepoint) {
-    synchronized (this) {
-      allblackcounts = 0;
-      allwhitecounts = 0;
-      blackEat = 0;
-      whiteEat = 0;
+    // synchronized (this) {
+    allblackcounts = 0;
+    allwhitecounts = 0;
+    blackEat = 0;
+    whiteEat = 0;
 
-      allblackcounts = blackpont + blackEatCount + whitePrisonerCount;
-      allwhitecounts = whitepoint + whiteEatCount + blackPrisonerCount;
-      blackEat = blackEatCount;
-      whiteEat = whiteEatCount;
-      if (!Lizzie.frame.isAutocounting) {
-        button.setText("关闭判断");
-        iscounted = true;
-      }
-
-      repaint();
+    allblackcounts = blackpont + blackEatCount + whitePrisonerCount;
+    allwhitecounts = whitepoint + whiteEatCount + blackPrisonerCount;
+    blackEat = blackEatCount;
+    whiteEat = whiteEatCount;
+    if (!Lizzie.frame.isAutocounting) {
+      button.setText("关闭判断");
+      iscounted = true;
     }
+
+    repaint();
+    //  }
   }
 
   public void paint(Graphics g) // 画图对象
