@@ -514,7 +514,7 @@ public class LoadEngine extends JPanel {
     Lizzie.start(curIndex);
   }
 
-  public ArrayList<EngineData> getEngineData() {
+  private ArrayList<EngineData> getEngineData() {
     ArrayList<EngineData> engineData = new ArrayList<EngineData>();
     Optional<JSONArray> enginesCommandOpt =
         Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
@@ -587,11 +587,11 @@ public class LoadEngine extends JPanel {
     }
     if (engineData.size() == 0) {
       if (firstConf) {
+    	  firstConf = false;
         Lizzie.frame.openConfigDialog();
-        engjf.setVisible(false);
-        firstConf = false;
+        engjf.setVisible(false);       
       } else {
-        System.exit(0);
+      
       }
     }
     return engineData;
