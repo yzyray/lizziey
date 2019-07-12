@@ -587,11 +587,11 @@ public class LoadEngine extends JPanel {
     }
     if (engineData.size() == 0) {
       if (firstConf) {
-    	  firstConf = false;
+        firstConf = false;
         Lizzie.frame.openConfigDialog();
-        engjf.setVisible(false);       
+        engjf.setVisible(false);
       } else {
-      
+
       }
     }
     return engineData;

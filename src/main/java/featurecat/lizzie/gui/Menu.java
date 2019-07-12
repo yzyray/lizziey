@@ -24,6 +24,7 @@ public class Menu extends MenuBar {
   public static ImageIcon ready;
   public static JMenuItem[] engine = new JMenuItem[21];
   public static JMenu engineMenu;
+  public static JMenu closeEngine;
   // public static MenuBar menuBar;
   JMenuItem closeall;
   JMenuItem forcecloseall;
@@ -71,6 +72,11 @@ public class Menu extends MenuBar {
     final JMenuItem openItem = new JMenuItem("打开棋谱(O)");
     openItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openItem);
+    
+    final JMenuItem saveItem = new JMenuItem();
+    saveItem.setText("保存棋谱(S)");
+    saveItem.addActionListener(new ItemListeneryzy());
+    fileMenu.add(saveItem);
 
     this.add(fileMenu);
     final JMenuItem batchfile = new JMenuItem("批量分析棋谱(ALT+O)");
@@ -81,10 +87,7 @@ public class Menu extends MenuBar {
     openUrlItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openUrlItem);
 
-    final JMenuItem saveItem = new JMenuItem();
-    saveItem.setText("保存棋谱(S)");
-    saveItem.addActionListener(new ItemListeneryzy());
-    fileMenu.add(saveItem);
+   
 
     fileMenu.addSeparator();
     final JMenuItem copyItem = new JMenuItem();
@@ -97,21 +100,64 @@ public class Menu extends MenuBar {
     pasteItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(pasteItem);
     fileMenu.addSeparator();
+    
+//    if (menuItem.getText().startsWith("打开关闭前")) {
+//        Lizzie.board.resumePreviousGame();
+//        return;
+//      }
+//      if (menuItem.getText().startsWith("关闭自动保存")) {
+
+//        return;
+//      }
+//
+//      if (menuItem.getText().startsWith("打开自动保存")) {
+//
+
+//      }
 
     final JMenuItem resume = new JMenuItem();
-    resume.setText("打开关闭前的棋谱或自动保存的棋谱");
-    resume.addActionListener(new ItemListeneryzy());
+    resume.setText("恢复棋谱");
     fileMenu.add(resume);
+    
+    resume.addActionListener(
+            new ActionListener() {
 
-    final JMenuItem resumeItem = new JMenuItem();
-    resumeItem.setText("打开自动保存棋谱(10秒一次)");
-    resumeItem.addActionListener(new ItemListeneryzy());
-    fileMenu.add(resumeItem);
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                	  Lizzie.board.resumePreviousGame();
+                }
+              });
 
-    final JMenuItem resumeItem2 = new JMenuItem();
-    resumeItem2.setText("关闭自动保存棋谱");
-    resumeItem2.addActionListener(new ItemListeneryzy());
-    fileMenu.add(resumeItem2);
+    final JCheckBoxMenuItem autoSave = new JCheckBoxMenuItem();
+    autoSave.setText("自动保存棋谱(10秒一次)");
+    autoSave.addActionListener(
+            new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                  // TODO Auto-generated method stub
+                	if(Lizzie.config.uiConfig.optInt("autosave-interval-seconds",-1)>0)
+                	{
+                        Lizzie.config.uiConfig.put("autosave-interval-seconds", -1);
+                        Lizzie.config.uiConfig.put("resume-previous-game", false);
+                        try {
+                          Lizzie.config.save();
+                        } catch (IOException es) {
+                          // TODO Auto-generated catch block
+                        }
+                	}
+                	else {
+                    Lizzie.config.uiConfig.put("autosave-interval-seconds", 10);
+                    Lizzie.config.uiConfig.put("resume-previous-game", true);
+                    try {
+                      Lizzie.config.save();
+                    } catch (IOException es) {
+                      // TODO Auto-generated catch block
+                    }
+                	}
+                }
+              });
+    fileMenu.add(autoSave);
 
     fileMenu.addSeparator();
 
@@ -132,6 +178,28 @@ public class Menu extends MenuBar {
           }
         });
     fileMenu.add(exit);
+    
+    fileMenu.addMenuListener(
+            new MenuListener() {
+
+              public void menuSelected(MenuEvent e) {
+            	  if(Lizzie.config.uiConfig.optInt("autosave-interval-seconds",-1)>0)
+              	            		  autoSave.setState(true);
+              	
+            	  else  autoSave.setState(false);
+              }
+
+              @Override
+              public void menuDeselected(MenuEvent e) {
+                // TODO Auto-generated method stub
+              }
+
+              @Override
+              public void menuCanceled(MenuEvent e) {
+                // TODO Auto-generated method stub
+
+              }
+            });
 
     final JMenu viewMenu = new JMenu();
     viewMenu.setText(" 显示  ");
@@ -1153,23 +1221,30 @@ public class Menu extends MenuBar {
     }
 
     engineMenu.addSeparator();
+    
+    closeEngine = new JMenu("关闭引擎 ", false);
+    closeEngine.setText("关闭引擎");
+    engineMenu.add(closeEngine);
+    
+    closeother = new JMenuItem();
+    closeother.setText("关闭当前以外引擎");
+    // aboutItem.setMnemonic('A');
+    closeother.addActionListener(new ItemListeneryzy());
+    closeEngine.add(closeother);
+    
     closeall = new JMenuItem();
     closeall.setText("关闭所有引擎");
     // aboutItem.setMnemonic('A');
     closeall.addActionListener(new ItemListeneryzy());
-    engineMenu.add(closeall);
+    closeEngine.add(closeall);
 
     forcecloseall = new JMenuItem();
     forcecloseall.setText("强制关闭所有引擎");
     // aboutItem.setMnemonic('A');
     forcecloseall.addActionListener(new ItemListeneryzy());
-    engineMenu.add(forcecloseall);
+    closeEngine.add(forcecloseall);
 
-    closeother = new JMenuItem();
-    closeother.setText("关闭当前以外引擎");
-    // aboutItem.setMnemonic('A');
-    closeother.addActionListener(new ItemListeneryzy());
-    engineMenu.add(closeother);
+
 
     restartZen = new JMenuItem();
     restartZen.setText("重启Zen(形势判断用)");
@@ -1277,9 +1352,10 @@ public class Menu extends MenuBar {
               }
             });
         engineMenu.addSeparator();
-        engineMenu.add(closeall);
-        engineMenu.add(forcecloseall);
-        engineMenu.add(closeother);
+        engineMenu.add(closeEngine);
+        closeEngine.add(closeall);
+        closeEngine.add(forcecloseall);
+        closeEngine.add(closeother);
         engineMenu.add(restartZen);
         engineMenu.addSeparator();
         engineMenu.add(config);
@@ -1878,33 +1954,7 @@ public class Menu extends MenuBar {
             Lizzie.frame.toolbarHeight);
         return;
       }
-      if (menuItem.getText().startsWith("打开关闭前")) {
-        Lizzie.board.resumePreviousGame();
-        return;
-      }
-      if (menuItem.getText().startsWith("关闭自动保存")) {
-
-        Lizzie.config.uiConfig.put("autosave-interval-seconds", -1);
-        Lizzie.config.uiConfig.put("resume-previous-game", false);
-        try {
-          Lizzie.config.save();
-        } catch (IOException es) {
-          // TODO Auto-generated catch block
-        }
-        return;
-      }
-
-      if (menuItem.getText().startsWith("打开自动保存")) {
-
-        Lizzie.config.uiConfig.put("autosave-interval-seconds", 10);
-        Lizzie.config.uiConfig.put("resume-previous-game", true);
-        try {
-          Lizzie.config.save();
-        } catch (IOException es) {
-          // TODO Auto-generated catch block
-        }
-        return;
-      }
+     
       if (menuItem.getText().startsWith("打开在线")) {
         Lizzie.frame.openOnlineDialog();
         return;

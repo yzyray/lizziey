@@ -36,7 +36,7 @@ public class SetKomi extends JDialog {
     setType(Type.POPUP);
     setTitle("设置贴目");
     setAlwaysOnTop(true);
-    setBounds(0, 0, 240, 95);
+    setBounds(0, 0, 240, 115);
     getContentPane().setLayout(new BorderLayout());
     JPanel buttonPane = new JPanel();
     getContentPane().add(buttonPane, BorderLayout.CENTER);
