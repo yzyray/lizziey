@@ -2456,7 +2456,7 @@ public class Leelaz {
 //    if (printCommunication) {
 //      System.out.println(currentEnginename+" "+ cmdNumber+" "+ command);
 //    }
-		if (Lizzie.gtpConsole.isVisible())
+		//if (Lizzie.gtpConsole.isVisible())
 			Lizzie.gtpConsole.addCommand(command, cmdNumber, currentEnginename);
 		command = cmdNumber + " " + command;
 		cmdNumber++;
