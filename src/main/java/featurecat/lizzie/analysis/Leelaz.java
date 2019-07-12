@@ -682,7 +682,7 @@ public class Leelaz {
 				// 临时添加为了解决SSH时的卡顿
 				// }
 			}
-			else if (Lizzie.gtpConsole.isVisible())
+			else //if (Lizzie.gtpConsole.isVisible())
 			Lizzie.gtpConsole.addLine(line);
 			// System.out.println(line);
 			if (line.startsWith("| ST")) {
