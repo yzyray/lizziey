@@ -232,6 +232,7 @@ public class EngineManager {
 
   private void checkEngineNotHang() {
     if (Lizzie.frame.toolbar.isEnginePk
+        && !Lizzie.frame.toolbar.isGenmove
         && !Lizzie.frame.toolbar.isPkStop
         && System.currentTimeMillis() - startInfoTime > 1000 * 240) {
       Lizzie.leelaz.process.destroy();
@@ -680,6 +681,8 @@ public class EngineManager {
     }
     this.currentEngineNo = Lizzie.leelaz.currentEngineN();
     Lizzie.engineManager.switchEngine(Lizzie.leelaz.currentEngineN());
+    Lizzie.leelaz.nameCmd();
+    Lizzie.leelaz.notPondering();
     featurecat.lizzie.gui.Menu.engineMenu.setText(
         "引擎" + (currentEngineNo + 1) + ": " + engineList.get(currentEngineNo).currentEnginename);
     changeEngIco();

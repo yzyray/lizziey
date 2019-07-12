@@ -631,7 +631,14 @@ public class Leelaz {
 						this.bestMoves = parseInfo(line.substring(5));
 					}
 					
-					// notifyBestMoveListeners();
+					if (!this.bestMoves.isEmpty()) {
+						notifyAutoAna();
+						notifyAutoPlay();						
+						notifyAutoPK();
+						
+						// notifyAutoPK();
+					
+					}
 					
 					Lizzie.frame.refresh();
 					// don't follow the maxAnalyzeTime rule if we are in analysis mode
@@ -1892,7 +1899,7 @@ public class Leelaz {
 				   outOfMoveNum=true;
 					resigned = true;
 
-					pkResign();
+				//	pkResign();
 				
 					nameCmd();
 				  return;
@@ -1928,7 +1935,7 @@ public class Leelaz {
 						}
 						resigned = true;
 
-						pkResign();
+				//		pkResign();
 					
 						nameCmd();
 						return;
@@ -2302,16 +2309,10 @@ public class Leelaz {
 						} catch (Exception e) {
 						}
 					}
-					if (!this.bestMoves.isEmpty()) {
-						notifyAutoAna();
-						notifyAutoPlay();						
-						notifyAutoPK();
-						
-						// notifyAutoPK();
-						if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
-							pkResign();
+					
 					}
-					}
+					if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
+						pkResign();
 					line = new StringBuilder();
 					isCommandLine = false;
 				} else if (c == '=') {

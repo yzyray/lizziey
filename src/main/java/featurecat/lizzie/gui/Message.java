@@ -1,6 +1,5 @@
 package featurecat.lizzie.gui;
 
-import featurecat.lizzie.Lizzie;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JDialog;
@@ -13,7 +12,7 @@ public class Message extends JDialog {
     this.setModal(true);
     setType(Type.POPUP);
     setTitle("消息提醒");
-    setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
+    setAlwaysOnTop(true);
 
     lblmessage = new JLabel("", JLabel.CENTER);
     this.add(lblmessage);
