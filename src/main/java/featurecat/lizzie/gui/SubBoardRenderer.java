@@ -211,11 +211,11 @@ public class SubBoardRenderer {
         || cachedX != x
         || cachedY != y
         || cachedBackgroundImageHasCoordinatesEnabled != showCoordinates()
-        || Lizzie.board.isForceRefresh()) {
+        || Lizzie.board.isForceRefresh2()) {
 
       cachedBoardWidth = boardWidth;
       cachedBoardHeight = boardHeight;
-      Lizzie.board.setForceRefresh(false);
+      Lizzie.board.setForceRefresh2(false);
 
       cachedBackgroundImage = new BufferedImage(width, height, TYPE_INT_ARGB);
       Graphics2D g = cachedBackgroundImage.createGraphics();

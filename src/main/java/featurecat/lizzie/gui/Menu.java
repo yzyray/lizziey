@@ -1369,9 +1369,10 @@ public class Menu extends MenuBar {
       }
     }
     engineMenu.addSeparator();
-    engineMenu.add(closeall);
-    engineMenu.add(forcecloseall);
-    engineMenu.add(closeother);
+    engineMenu.add(closeEngine);
+    closeEngine.add(closeall);
+    closeEngine.add(forcecloseall);
+    closeEngine.add(closeother);
     engineMenu.add(restartZen);
     engineMenu.addSeparator();
     engineMenu.add(config);

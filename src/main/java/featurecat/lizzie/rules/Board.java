@@ -54,6 +54,7 @@ public class Board implements LeelazListener {
 
   // Force refresh board
   private boolean forceRefresh;
+  private boolean forceRefresh2;
 
   public Board() {
     initialize();
@@ -67,6 +68,7 @@ public class Board implements LeelazListener {
     playoutsAnalysis = 100;
     saveNode = Optional.empty();
     forceRefresh = false;
+    forceRefresh2 = false;
     history = new BoardHistoryList(BoardData.empty(boardWidth, boardHeight));
   }
 
@@ -78,6 +80,7 @@ public class Board implements LeelazListener {
     playoutsAnalysis = 100;
     saveNode = Optional.empty();
     forceRefresh = false;
+    forceRefresh2 = false;
     history = new BoardHistoryList(BoardData.empty(boardWidth, boardHeight));
     Lizzie.board.getHistory().getGameInfo().setKomi(komi);
   }
@@ -414,6 +417,7 @@ public class Board implements LeelazListener {
       clear();
       Lizzie.leelaz.boardSize(boardWidth, boardHeight);
       forceRefresh = true;
+      forceRefresh2 = true;
     }
   }
 
@@ -428,6 +432,7 @@ public class Board implements LeelazListener {
       mvnumber = new int[boardHeight * boardWidth];
       // Lizzie.leelaz.boardSize(boardWidth, boardHeight);
       forceRefresh = true;
+      forceRefresh2 = true;
     }
   }
 
@@ -435,8 +440,16 @@ public class Board implements LeelazListener {
     return forceRefresh;
   }
 
+  public boolean isForceRefresh2() {
+    return forceRefresh2;
+  }
+
   public void setForceRefresh(boolean forceRefresh) {
     this.forceRefresh = forceRefresh;
+  }
+
+  public void setForceRefresh2(boolean forceRefresh) {
+    this.forceRefresh2 = forceRefresh;
   }
 
   /**
