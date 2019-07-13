@@ -656,8 +656,12 @@ public class MoreEngines extends JPanel {
       // row,
       // column);
       // } else
+    	if(row==curIndex){
+    		return renderer.getTableCellRendererComponent(table, value, true, false, row, column);
+    	}
+    	else
       {
-        return renderer.getTableCellRendererComponent(table, value, isSelected, false, row, column);
+        return renderer.getTableCellRendererComponent(table, value, false, false, row, column);
       }
     }
   }
@@ -813,6 +817,8 @@ public class MoreEngines extends JPanel {
     scan.setEnabled(true);
     moveUp.setEnabled(true);
     moveDown.setEnabled(true);
+    table.validate();
+    table.updateUI();
   }
 
   private void handleTableDoubleClick(int row, int col) {
