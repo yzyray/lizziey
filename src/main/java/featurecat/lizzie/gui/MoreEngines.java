@@ -983,7 +983,7 @@ public class MoreEngines extends JPanel {
 
       public int getRowCount() {
 
-        return 100;
+        return 500;
       }
 
       public String getColumnName(int column) {
