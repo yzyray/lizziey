@@ -656,11 +656,9 @@ public class MoreEngines extends JPanel {
       // row,
       // column);
       // } else
-    	if(row==curIndex){
-    		return renderer.getTableCellRendererComponent(table, value, true, false, row, column);
-    	}
-    	else
-      {
+      if (row == curIndex) {
+        return renderer.getTableCellRendererComponent(table, value, true, false, row, column);
+      } else {
         return renderer.getTableCellRendererComponent(table, value, false, false, row, column);
       }
     }
