@@ -381,8 +381,8 @@ public class BoardRenderer {
   }
 
   public void drawcountblockkata(ArrayList<Double> tempcount) {
-    countblockimage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
-    Graphics2D g = countblockimage.createGraphics();
+	  BufferedImage newEstimateImage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
+    Graphics2D g = newEstimateImage.createGraphics();
     for (int i = 0; i < tempcount.size(); i++) {
 
       if ((tempcount.get(i) > 0 && Lizzie.board.getHistory().isBlacksTurn())
@@ -418,6 +418,7 @@ public class BoardRenderer {
             (int) (stoneRadius * 1.2));
       }
     }
+    countblockimage = newEstimateImage;
   }
 
   private double convertLength(double length) {
@@ -431,8 +432,8 @@ public class BoardRenderer {
   }
 
   public void drawcountblockkata2(ArrayList<Double> tempcount) {
-    countblockimage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
-    Graphics2D g = countblockimage.createGraphics();
+	  BufferedImage newEstimateImage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
+	  Graphics2D g = newEstimateImage.createGraphics();
     for (int i = 0; i < tempcount.size(); i++) {
       if ((tempcount.get(i) > 0 && Lizzie.board.getHistory().isBlacksTurn())
           || (tempcount.get(i) < 0 && !Lizzie.board.getHistory().isBlacksTurn())) {
@@ -458,6 +459,7 @@ public class BoardRenderer {
         if (length > 0) g.fillRect(stoneX - length / 2, stoneY - length / 2, length, length);
       }
     }
+    countblockimage = newEstimateImage;
   }
 
   public void drawcountblock(ArrayList<Integer> tempcount) {
