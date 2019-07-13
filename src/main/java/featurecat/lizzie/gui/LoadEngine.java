@@ -256,7 +256,7 @@ public class LoadEngine extends JPanel {
               Lizzie.config.save();
             } catch (IOException es) {
             }
-            Lizzie.start(curIndex);
+            Lizzie.start(-1);
           }
         });
 
