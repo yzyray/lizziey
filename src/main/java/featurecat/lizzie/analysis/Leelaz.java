@@ -692,11 +692,8 @@ public class Leelaz {
 					if (Lizzie.gtpConsole.isVisible())
 						Lizzie.gtpConsole.addLineforce(currentEnginename + ": " + line);
 					stage = Integer.parseInt(params[3].substring(0, params[3].length() - 1));
-					komi = Float.parseFloat(params[6].substring(0, params[6].length() - 1));					
-					  Lizzie.board.getHistory().getGameInfo().setKomi(komi);
-			          Lizzie.frame.komi = komi+"";
-			          if(Lizzie.frame.toolbar.setkomi!=null)
-			          Lizzie.frame.toolbar.setkomi.textFieldKomi.setText(komi+"");			       
+					komi = Float.parseFloat(params[6].substring(0, params[6].length() - 1));	
+			        
 				}
 			} else if (line.startsWith("play")) {
 				// In lz-genmove_analyze
