@@ -2011,6 +2011,10 @@ public class BoardRenderer {
         return true;
     }
   }
+  
+  public void startNormalBoard() {
+	    setDisplayedBranchLength(SHOW_NORMAL_BOARD);
+	  }
 
   public boolean isInside(int x1, int y1) {
     return x <= x1 && x1 < x + boardWidth && y <= y1 && y1 < y + boardHeight;
@@ -2024,4 +2028,8 @@ public class BoardRenderer {
     maxAlpha = min(maxAlpha + k, 255);
     uiPersist.put("max-alpha", maxAlpha);
   }
+  
+  public boolean isShowingNormalBoard() {
+	    return displayedBranchLength == SHOW_NORMAL_BOARD;
+	  }
 }

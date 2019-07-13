@@ -158,6 +158,7 @@ public class LizzieFrame extends JFrame {
   private Rectangle commentRect;
   public YaZenGtp zen;
   public boolean isheatmap = false;
+  public boolean isMouseOver =false;
   // Show the playouts in the title
   private ScheduledExecutorService showPlayouts = Executors.newScheduledThreadPool(1);
   private long lastPlayouts = 0;
@@ -2163,8 +2164,15 @@ public class LizzieFrame extends JFrame {
     coords.ifPresent(
         c -> {
           mouseOverCoordinate = c;
+          if (Lizzie.frame != null) {
+              Lizzie.frame.isMouseOver = boardRenderer.isShowingBranch();
+            }
           isReplayVariation = false;
         });
+    if (!isMouseOver) {
+        clearMoved();
+        repaint();
+      }
     if (coords.isPresent()) {
       if (Lizzie.config.showrect) {
         boardRenderer.drawmoveblock(
@@ -2172,6 +2180,14 @@ public class LizzieFrame extends JFrame {
       }
     }
   }
+  
+  public void clearMoved() {
+	    isReplayVariation = false;
+	    if (Lizzie.frame != null ) {
+	      Lizzie.frame.isMouseOver = false;
+	      boardRenderer.startNormalBoard();
+	    }
+	  }
 
   public boolean isMouseOver(int x, int y) {
     if (!Lizzie.frame.toolbar.chkShowBlack.isSelected()
@@ -2681,4 +2697,24 @@ public class LizzieFrame extends JFrame {
       return style;
     }
   }
+  
+  public void doBranch(int moveTo) {
+	    if (moveTo > 0) {
+	      if (boardRenderer.isShowingNormalBoard()) {
+	        setDisplayedBranchLength(2);
+	      } else {
+	        if (boardRenderer.getReplayBranch() > boardRenderer.getDisplayedBranchLength()) {
+	          boardRenderer.incrementDisplayedBranchLength(1);
+	        }
+	      }
+	    } else {
+	      if (boardRenderer.isShowingNormalBoard()) {
+	        setDisplayedBranchLength(boardRenderer.getReplayBranch());
+	      } else {
+	        if (boardRenderer.getDisplayedBranchLength() > 1) {
+	          boardRenderer.incrementDisplayedBranchLength(-1);
+	        }
+	      }
+	    }
+	  }
 }

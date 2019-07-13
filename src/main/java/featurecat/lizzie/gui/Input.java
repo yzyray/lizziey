@@ -398,7 +398,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_COMMA:
         if (!Lizzie.config.showSuggestionVaritions) {
-          if (Lizzie.frame.isMouseOverSuggestions()) Lizzie.frame.playCurrentVariation();
+          if (Lizzie.frame.isMouseOver) Lizzie.frame.playCurrentVariation();
           else Lizzie.frame.playBestMove();
         } else {
           if (!Lizzie.frame.playCurrentVariation()) Lizzie.frame.playBestMove();
@@ -722,7 +722,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       default:
     }
   }
-
+  private long wheelWhen;
+  
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
     // if (isinsertmode) {
@@ -731,14 +732,23 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     if (Lizzie.frame.processCommentMouseWheelMoved(e)) {
       return;
     }
+    if (e.getWhen() - wheelWhen > 0) {
+        wheelWhen = e.getWhen();
     if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
     if (e.getWheelRotation() > 0) {
-      redo();
-      Lizzie.frame.isReplayVariation = false;
-    } else if (e.getWheelRotation() < 0) {
-      undo();
-      Lizzie.frame.isReplayVariation = false;
+        if (Lizzie.frame.isMouseOver) {
+          Lizzie.frame.doBranch(1);
+        } else {
+          redo();
+        }
+      } else if (e.getWheelRotation() < 0) {
+        if (Lizzie.frame.isMouseOver) {
+          Lizzie.frame.doBranch(-1);
+        } else {
+          undo();
+        }
+      }
+    Lizzie.frame.refresh();
     }
-    Lizzie.frame.repaint();
   }
 }
