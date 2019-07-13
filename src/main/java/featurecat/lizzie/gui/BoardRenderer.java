@@ -2011,10 +2011,10 @@ public class BoardRenderer {
         return true;
     }
   }
-  
+
   public void startNormalBoard() {
-	    setDisplayedBranchLength(SHOW_NORMAL_BOARD);
-	  }
+    setDisplayedBranchLength(SHOW_NORMAL_BOARD);
+  }
 
   public boolean isInside(int x1, int y1) {
     return x <= x1 && x1 < x + boardWidth && y <= y1 && y1 < y + boardHeight;
@@ -2028,8 +2028,40 @@ public class BoardRenderer {
     maxAlpha = min(maxAlpha + k, 255);
     uiPersist.put("max-alpha", maxAlpha);
   }
-  
+
   public boolean isShowingNormalBoard() {
-	    return displayedBranchLength == SHOW_NORMAL_BOARD;
-	  }
+    return displayedBranchLength == SHOW_NORMAL_BOARD;
+  }
+
+  public void addSuggestionAsBranch() {
+    mouseOveredMove()
+        .ifPresent(
+            m -> {
+              if (m.variation.size() > 0) {
+                if (Lizzie.board.getHistory().getCurrentHistoryNode().numberOfChildren() == 0) {
+                  Stone color =
+                      Lizzie.board.getHistory().getLastMoveColor() == Stone.WHITE
+                          ? Stone.BLACK
+                          : Stone.WHITE;
+                  Lizzie.board.getHistory().pass(color, false, true);
+                  Lizzie.board.getHistory().previous();
+                }
+                for (int i = 0; i < m.variation.size(); i++) {
+                  Stone color =
+                      Lizzie.board.getHistory().getLastMoveColor() == Stone.WHITE
+                          ? Stone.BLACK
+                          : Stone.WHITE;
+                  Optional<int[]> coordOpt = Board.asCoordinates(m.variation.get(i));
+                  if (!coordOpt.isPresent()
+                      || !Board.isValid(coordOpt.get()[0], coordOpt.get()[1])) {
+                    break;
+                  }
+                  int[] coord = coordOpt.get();
+                  Lizzie.board.getHistory().place(coord[0], coord[1], color, i == 0);
+                }
+                Lizzie.board.getHistory().toBranchTop();
+                Lizzie.frame.refresh();
+              }
+            });
+  }
 }

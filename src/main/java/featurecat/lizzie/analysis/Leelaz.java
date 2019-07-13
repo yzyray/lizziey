@@ -2651,6 +2651,7 @@ public class Leelaz {
 		// than previous
 		// analyze result
 		analyzeAvoid(String.format("%s %s %s %d", type, color, coordList, untilMove <= 0 ? 1 : untilMove));
+	//	Lizzie.board.getHistory().getData().tryToClearBestMoves();
 		Lizzie.board.clearbestmoves();
 	}
 
@@ -2667,7 +2668,7 @@ public class Leelaz {
 			startPonderTime = System.currentTimeMillis();
 		}
 		sendCommand(String.format("lz-analyze %d %s", Lizzie.config.analyzeUpdateIntervalCentisec, parameters));
-
+		//Lizzie.board.getHistory().getData().tryToClearBestMoves();
 		Lizzie.board.clearbestmoves();
 	}
 
@@ -2683,9 +2684,8 @@ public class Leelaz {
 			return;
 		}
 		int currentmove = Lizzie.board.getcurrentmovenumber();
-		if (featurecat.lizzie.gui.RightClickMenu.move > 0 && featurecat.lizzie.gui.RightClickMenu.move >= currentmove
-				&& currentmove >= featurecat.lizzie.gui.RightClickMenu.startmove) {
-			featurecat.lizzie.gui.RightClickMenu.voidanalyze();
+		if (featurecat.lizzie.gui.RightClickMenu.isKeepForcing) {
+			featurecat.lizzie.gui.RightClickMenu.voidanalyzeponder();
 		} else {
 			featurecat.lizzie.gui.RightClickMenu.allowcoords = "";
 			featurecat.lizzie.gui.RightClickMenu.avoidcoords = "";

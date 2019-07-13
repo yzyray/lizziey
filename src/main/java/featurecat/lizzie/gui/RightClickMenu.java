@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
@@ -23,7 +25,8 @@ public class RightClickMenu extends JPopupMenu {
 	private JMenuItem allow;
 	private JMenuItem allow2;
 	private JMenuItem avoid;
-	private JMenuItem avoid2;
+	  private JMenuItem addSuggestionAsBranch;
+	private JCheckBoxMenuItem avoid2;
 	private static JMenuItem cancelavoid;
 	private static JMenuItem reedit;
 	private static JMenuItem cleanupedit;
@@ -34,6 +37,7 @@ public class RightClickMenu extends JPopupMenu {
 	public static int startmove = 0;
 	public static boolean isforcing = false;
 	public static boolean isallow = false;
+	public static boolean isKeepForcing=false;
 
 	public RightClickMenu() {
 
@@ -56,15 +60,12 @@ public class RightClickMenu extends JPopupMenu {
 			}
 
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-
-				if (allowcoords != "") {
-					allow2.setVisible(true);
-					if (avoidcoords != "") {
-						cancelavoid.setVisible(true);
-					}
-				} else {
-					allow2.setVisible(false);
-				}
+				 if ( Lizzie.frame.isMouseOver) {
+				      addSuggestionAsBranch.setVisible(true);
+				    } else {
+				      addSuggestionAsBranch.setVisible(false);
+				    }
+			
 				if (Lizzie.board.boardstatbeforeedit == "") {
 					cleanupedit.setVisible(false);
 					if (Lizzie.board.boardstatafteredit == "") {
@@ -92,9 +93,17 @@ public class RightClickMenu extends JPopupMenu {
 				{
 					allow.setVisible(true);
 					avoid.setVisible(true);
-					avoid2.setVisible(true);
-					cancelavoid.setVisible(true);
+					avoid2.setVisible(true);					
+					if (allowcoords != "") {
+						allow2.setVisible(true);
+						if (avoidcoords != "") {
+							cancelavoid.setVisible(true);
+						}
+					} else {
+						allow2.setVisible(false);
+					}
 				}
+				
 			}
 		};
 
@@ -102,14 +111,15 @@ public class RightClickMenu extends JPopupMenu {
 
 		// insertmode = new JMenuItem("进入插入棋子模式");
 		// quitinsert = new JMenuItem("退出插入棋子模式");
+		addSuggestionAsBranch = new JMenuItem("将变化图添加为分支");
 		addblack = new JMenuItem("插入黑子");
 		addwhite = new JMenuItem("插入白子");
 		// deleteone = new JMenuItem("更改棋子位置");
-		allow = new JMenuItem("只分析此点(强制)");
-		allow2 = new JMenuItem("增加分析此点(强制)");
-		avoid = new JMenuItem("不分析此点(强制)");
-		avoid2 = new JMenuItem("设置不分析持续手数");
-		cancelavoid = new JMenuItem("清除强制分析设置");
+		allow = new JMenuItem("只分析此点");
+		allow2 = new JMenuItem("增加分析此点");
+		avoid = new JMenuItem("不分析此点");
+		avoid2 = new JCheckBoxMenuItem("持续不分析");
+		cancelavoid = new JMenuItem("清除分析与不分析");
 		cleanedittemp = new JMenuItem("清除编辑缓存");
 		// test=new JMenuItem("测试删除棋子");
 		// test2=new JMenuItem("测试恢复棋盘状态");
@@ -117,6 +127,7 @@ public class RightClickMenu extends JPopupMenu {
 		cleanupedit = new JMenuItem("恢复到编辑前");
 		// this.add(addblack);
 		// this.add(addwhite);
+		this.add(addSuggestionAsBranch);
 		this.add(allow);
 		this.add(allow2);
 		this.add(avoid);
@@ -128,6 +139,14 @@ public class RightClickMenu extends JPopupMenu {
 		this.add(reedit);
 		this.add(cleanupedit);
 
+		 addSuggestionAsBranch.addActionListener(
+			        new ActionListener() {
+			          @Override
+			          public void actionPerformed(ActionEvent e) {
+			        	  Lizzie.frame.addSuggestionAsBranch();
+			          }
+			        });
+		 
 		cleanedittemp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -304,33 +323,35 @@ public class RightClickMenu extends JPopupMenu {
 	}
 
 	public static void voidanalyzeponder() {
-		if (avoidcoords == "") {
-			avoidcoords = "A0";
-		}
+		
 		isforcing = true;
 		isallow = false;
 		allowcoords = "";
 		Lizzie.leelaz.Pondering();
+		if (avoidcoords == "") {
+			Lizzie.leelaz.sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+		}
+		else
 		Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturnponder(), avoidcoords, 30);
 
 	}
 
 	public static void voidanalyze() {
 
-		if (avoidcoords == "") {
-			avoidcoords = "A0";
-		}
+		
 		allowcoords = "";
 		isforcing = true;
 		isallow = false;
 		Lizzie.leelaz.Pondering();
+		if (avoidcoords == "") {
+			Lizzie.leelaz.sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+		}else
 		Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturn(), avoidcoords, 30);
 
 	}
 
 	private void avoid2() {
-		Lizzie.leelaz.notPondering();
-		Lizzie.frame.openAvoidmoves();
+		isKeepForcing=!isKeepForcing;
 	}
 
 	public void Store(int x, int y) {

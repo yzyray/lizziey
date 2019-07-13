@@ -145,21 +145,24 @@ public class BoardData {
 
 	public void tryToSetBestMoves(List<MoveData> moves) {
 		// MoveData.getPlayouts(moves) > playouts
-		if (MoveData.getPlayouts(moves) > playouts || isChanged || Lizzie.frame.urlSgf) {
+		int plyouts= MoveData.getPlayouts(moves);
+		if (plyouts > playouts ||isChanged||  Lizzie.frame.urlSgf) {
 
 			// added for change bestmoves when playouts is not increased
+			if(plyouts<playouts)
+				isChanged=false;
 			bestMoves = moves;
-			setPlayouts(MoveData.getPlayouts(moves));
+			setPlayouts(plyouts);
 			winrate = moves.get(0).winrate;
-			if (isChanged) {
-				isChanged = false;
-			}
+			
+			
 			if (Lizzie.leelaz.isKatago) {
 				scoreMean = moves.get(0).scoreMean;
 				Lizzie.leelaz.scoreMean = moves.get(0).scoreMean;
 				Lizzie.leelaz.scoreStdev = moves.get(0).scoreStdev;
 			}
 		}
+		
 	}
 
 	public static double getWinrateFromBestMoves(List<MoveData> bestMoves) {
@@ -194,9 +197,9 @@ public class BoardData {
 	}
 
 	public void setPlayouts(int playouts) {
-		if (playouts > this.playouts || isChanged) {
+		//if (playouts > this.playouts || isChanged) {
 			this.playouts = playouts;
-		}
+		//}
 	}
 
 	public void setPlayoutsForce(int playouts) {
@@ -235,4 +238,12 @@ public class BoardData {
 		}
 		return this.lastMove.map(m -> (m[0] == coord[0] && m[1] == coord[1])).orElse(false);
 	}
+	  public void tryToClearBestMoves() {
+		    bestMoves = new ArrayList<>();
+		    playouts = 0;
+		    if (Lizzie.leelaz.isKatago) {
+		      Lizzie.leelaz.scoreMean = 0;
+		      Lizzie.leelaz.scoreStdev = 0;
+		    }
+		  }
 }
