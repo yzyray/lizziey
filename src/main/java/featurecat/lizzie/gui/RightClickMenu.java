@@ -38,6 +38,7 @@ public class RightClickMenu extends JPopupMenu {
 	public static boolean isforcing = false;
 	public static boolean isallow = false;
 	public static boolean isKeepForcing=false;
+	Separator sep= new Separator();;
 
 	public RightClickMenu() {
 
@@ -88,9 +89,11 @@ public class RightClickMenu extends JPopupMenu {
 					avoid.setVisible(false);
 					avoid2.setVisible(false);
 					cancelavoid.setVisible(false);
+					sep.setVisible(false);
 				}
 				else
 				{
+					sep.setVisible(true);
 					allow.setVisible(true);
 					avoid.setVisible(true);
 					avoid2.setVisible(true);					
@@ -133,7 +136,8 @@ public class RightClickMenu extends JPopupMenu {
 		this.add(avoid);
 		this.add(avoid2);
 		this.add(cancelavoid);
-		this.add(cleanedittemp);
+		this.add(cleanedittemp);		
+		this.add(sep);		
 		this.add(addblack);
 		this.add(addwhite);
 		this.add(reedit);
