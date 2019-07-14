@@ -1250,7 +1250,7 @@ public class LizzieFrame extends JFrame {
             }
           }
         }
-        if (!Lizzie.config.showLargeSubBoard()) {
+        if (!Lizzie.config.showLargeSubBoard() && width > height) {
           int tempx = cx;
           int tempy = cy;
           int tempw = cw;
