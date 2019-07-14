@@ -916,8 +916,8 @@ public class Config {
     toolbarParameter.put(Lizzie.frame.toolbar.enginePkOrder);
     toolbarParameter.put(Lizzie.frame.toolbar.autoPlayOrder);
     toolbarParameter.put(Lizzie.frame.toolbar.exChange);
-    toolbarParameter.put(Lizzie.frame.toolbar.maxGanmeTime);
-    toolbarParameter.put(Lizzie.frame.toolbar.checkGameTime);
+    toolbarParameter.put(Lizzie.frame.toolbar.maxGanmeMove);
+    toolbarParameter.put(Lizzie.frame.toolbar.checkGameMaxMove);
     try {
       toolbarParameter.put(Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTimeWhite.getText()));
     } catch (NumberFormatException err) {
@@ -935,6 +935,8 @@ public class Config {
     } catch (NumberFormatException err) {
       toolbarParameter.put(-1);
     }
+    toolbarParameter.put(Lizzie.frame.toolbar.minGanmeMove);
+    toolbarParameter.put(Lizzie.frame.toolbar.checkGameMinMove);
     persistedUi.put("toolbar-parameter", toolbarParameter);
 
     JSONArray movecountPos = new JSONArray();

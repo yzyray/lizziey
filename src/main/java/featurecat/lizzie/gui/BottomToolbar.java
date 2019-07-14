@@ -4,6 +4,7 @@ import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
 import featurecat.lizzie.rules.Movelist;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -70,8 +71,12 @@ public class BottomToolbar extends JPanel {
   public int timeb = -1;
   public int timew = -1;
 
-  public int maxGanmeTime = 360;
-  public boolean checkGameTime = false;
+  public int maxGanmeMove = 360;
+  public boolean checkGameMaxMove = false;
+
+  public int minGanmeMove = 100;
+  public int minMove = -1;
+  public boolean checkGameMinMove = false;
 
   public boolean isEnginePk = false;
   public int displayedSubBoardBranchLength = 1;
@@ -1180,6 +1185,9 @@ public class BottomToolbar extends JPanel {
     lblengineBlack = new JLabel("黑:");
     enginePkPanel.add(lblengineBlack);
     lblengineBlack.setBounds(75, 0, 15, 20);
+    UI ui = new UI();
+    enginePkBlack.setUI(ui);
+    ((Popup) ui.getPopup()).setDisplaySize(200, 100);
 
     lblenginePkResult = new JLabel("0:0");
     enginePkPanel.add(lblenginePkResult);
@@ -1189,6 +1197,10 @@ public class BottomToolbar extends JPanel {
     addEngineLis();
     enginePkPanel.add(enginePkWhite);
     enginePkWhite.setBounds(255, 2, 95, 18);
+
+    UI ui2 = new UI();
+    enginePkWhite.setUI(ui2);
+    ((Popup) ui2.getPopup()).setDisplaySize(200, 100);
 
     lblengineWhite = new JLabel("白:");
     enginePkPanel.add(lblengineWhite);
@@ -1350,7 +1362,7 @@ public class BottomToolbar extends JPanel {
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter") != null
-        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 42) {
+        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 44) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("toolbar-parameter");
       if (pos.getInt(0) > 0) {
         this.txtFirstAnaMove.setText(pos.getInt(0) + "");
@@ -1450,8 +1462,8 @@ public class BottomToolbar extends JPanel {
       enginePkOrder = pos.getInt(33);
       autoPlayOrder = pos.getInt(34);
       exChange = pos.getBoolean(35);
-      maxGanmeTime = pos.getInt(36);
-      checkGameTime = pos.getBoolean(37);
+      maxGanmeMove = pos.getInt(36);
+      checkGameMaxMove = pos.getBoolean(37);
       if (pos.getInt(38) > 0) {
         txtenginePkTimeWhite.setText(pos.getInt(38) + "");
       }
@@ -1465,7 +1477,8 @@ public class BottomToolbar extends JPanel {
       if (pos.getInt(41) > 0) {
         this.txtAutoSub.setText(pos.getInt(41) + "");
       }
-
+      maxGanmeMove = pos.getInt(42);
+      checkGameMaxMove = pos.getBoolean(43);
       setOrder();
     }
     if (chkAutoSub.isSelected()) {
@@ -2272,6 +2285,68 @@ public class BottomToolbar extends JPanel {
     }
   }
 
+  class UI extends javax.swing.plaf.basic.BasicComboBoxUI {
+    protected javax.swing.plaf.basic.ComboPopup createPopup() {
+      Popup popup = new Popup(comboBox);
+      popup.getAccessibleContext().setAccessibleParent(comboBox);
+      return popup;
+    }
+
+    public javax.swing.plaf.basic.ComboPopup getPopup() {
+      return popup;
+    }
+  }
+
+  class Popup extends javax.swing.plaf.basic.BasicComboPopup {
+    public Popup(JComboBox combo) {
+      super(combo);
+    }
+
+    public void setDisplaySize(int width, int height) {
+      scroller.setSize(width, height);
+      scroller.setPreferredSize(new Dimension(width, height));
+    }
+
+    public void show() {
+      setListSelection(comboBox.getSelectedIndex());
+      //  java.awt.Point location = getPopupLocation();
+      show(comboBox, 0, 0);
+    }
+
+    private void setListSelection(int selectedIndex) {
+      if (selectedIndex == -1) {
+        list.clearSelection();
+      } else {
+        list.setSelectedIndex(selectedIndex);
+        list.ensureIndexIsVisible(selectedIndex);
+      }
+    }
+
+    //    private java.awt.Point getPopupLocation() {
+    //      Dimension popupSize = comboBox.getSize();
+    //      Insets insets = getInsets();
+    //
+    //      // reduce the width of the scrollpane by the insets so that the popup
+    //      // is the same width as the combo box.
+    //      popupSize.setSize(
+    //          popupSize.width - (insets.right + insets.left),
+    //          getPopupHeightForRowCount(comboBox.getMaximumRowCount()));
+    //      Rectangle popupBounds =
+    //          computePopupBounds(0, comboBox.getBounds().height, popupSize.width,
+    // popupSize.height);
+    //      Dimension scrollSize = popupBounds.getSize();
+    //      java.awt.Point popupLocation = popupBounds.getLocation();
+    //
+    //      //          scroller.setMaximumSize( scrollSize );
+    //      //          scroller.setPreferredSize( scrollSize );
+    //      //          scroller.setMinimumSize( scrollSize );
+    //
+    //      list.revalidate();
+    //
+    //      return popupLocation;
+    //    }
+  }
+
   private void startAutoAna() {
     isAutoAna = true;
     startAutoAna = true;
@@ -2404,6 +2479,9 @@ public class BottomToolbar extends JPanel {
     }
     if (!isGenmove) {
       // 分析模式对战
+      if (checkGameMinMove) {
+        minMove = minGanmeMove;
+      } else minMove = -1;
       Lizzie.engineManager.engineList.get(engineBlack).blackResignMoveCounts = 0;
       Lizzie.engineManager.engineList.get(engineBlack).whiteResignMoveCounts = 0;
       Lizzie.engineManager.engineList.get(engineWhite).blackResignMoveCounts = 0;

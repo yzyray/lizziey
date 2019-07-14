@@ -435,7 +435,7 @@ public class Leelaz {
 					genmoveResign();
 					return;
 				}
-				if (Lizzie.frame.toolbar.checkGameTime&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime) {
+				if (Lizzie.frame.toolbar.checkGameMaxMove&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeMove) {
 					   outOfMoveNum=true;	
 						nameCmdfornoponder();
 						genmoveResign();
@@ -1428,7 +1428,7 @@ public class Leelaz {
 			Lizzie.frame.toolbar.batchPkName = "";
 
 			String jg = "对战已结束，";
-			if(Lizzie.frame.toolbar.checkGameTime&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime)
+			if(Lizzie.frame.toolbar.checkGameMaxMove&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeMove)
 				jg=jg+"超过手数限制";
 			else {
 			if (currentEngineN == Lizzie.frame.toolbar.engineBlack) {
@@ -1714,7 +1714,7 @@ public class Leelaz {
 	
 
 			String jg = "对战已结束，";
-			if(Lizzie.frame.toolbar.checkGameTime&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime)
+			if(Lizzie.frame.toolbar.checkGameMaxMove&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeMove)
 				jg=jg+"超过手数限制";
 			else {
 			if (currentEngineN == Lizzie.frame.toolbar.engineBlack) {
@@ -1912,7 +1912,7 @@ public class Leelaz {
 				}
 			}
 			
-			   if (Lizzie.frame.toolbar.checkGameTime&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeTime) {
+			   if (Lizzie.frame.toolbar.checkGameMaxMove&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeMove) {
 				   outOfMoveNum=true;
 					resigned = true;
 
@@ -1927,7 +1927,7 @@ public class Leelaz {
 					played = true;
 					playNow=false;
 					if ((curWR < Lizzie.frame.toolbar.pkResginWinrate)
-							&& Lizzie.board.getHistory().getMoveNumber() > 30) {
+							&& Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.minMove) {
 						if (Lizzie.board.getHistory().isBlacksTurn())
 							blackResignMoveCounts = blackResignMoveCounts + 1;
 						else
@@ -2038,7 +2038,7 @@ public class Leelaz {
 					// if(playanyway)
 					// playanyway=false;
 					if (curWR < Lizzie.frame.toolbar.pkResginWinrate
-							&& Lizzie.board.getHistory().getMoveNumber() > 30) {
+							&& Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.minMove) {
 						if (Lizzie.board.getHistory().isBlacksTurn())
 							blackResignMoveCounts = blackResignMoveCounts + 1;
 						else
@@ -2150,7 +2150,7 @@ public class Leelaz {
 					// if(playanyway)
 					// playanyway=false;
 					if (curWR < Lizzie.frame.toolbar.pkResginWinrate
-							&& Lizzie.board.getHistory().getMoveNumber() > 30) {
+							&& Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.minMove) {
 						if (Lizzie.board.getHistory().isBlacksTurn())
 							blackResignMoveCounts = blackResignMoveCounts + 1;
 						else

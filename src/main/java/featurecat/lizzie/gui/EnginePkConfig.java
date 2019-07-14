@@ -19,14 +19,16 @@ public class EnginePkConfig extends JDialog {
   JTextField txtresignSetting;
   JTextField txtresignSetting2;
   JTextField txtnameSetting;
-  JTextField txtGameTime;
+  JTextField txtGameMAX;
+  JTextField txtGameMIN;
 
   // JCheckBox chkGenmove;
   JRadioButton rdoGenmove;
   JRadioButton rdoAna;
   JCheckBox chkAutosave;
   JCheckBox chkExchange;
-  JCheckBox chkGameTime;
+  JCheckBox chkGameMAX;
+  JCheckBox chkGameMIN;
 
   public EnginePkConfig() {
     setType(Type.POPUP);
@@ -78,6 +80,8 @@ public class EnginePkConfig extends JDialog {
             // TODO Auto-generated method stub
             txtresignSetting.setEnabled(false);
             txtresignSetting2.setEnabled(false);
+            txtGameMIN.setEnabled(false);
+            chkGameMIN.setEnabled(false);
           }
 
           @Override
@@ -85,6 +89,8 @@ public class EnginePkConfig extends JDialog {
             // TODO Auto-generated method stub
             txtresignSetting.setEnabled(true);
             txtresignSetting2.setEnabled(true);
+            txtGameMIN.setEnabled(true);
+            chkGameMIN.setEnabled(true);
           }
         });
     ButtonGroup wrgroup = new ButtonGroup();
@@ -97,28 +103,40 @@ public class EnginePkConfig extends JDialog {
     rdoGenmove.setBounds(2, 45, 140, 20);
     rdoAna.setBounds(142, 45, 140, 20);
 
+    chkGameMAX = new JCheckBox();
+    JLabel lblGameMAX = new JLabel("最大手数");
+    txtGameMAX = new JTextField();
+    add(chkGameMAX);
+    add(lblGameMAX);
+    add(txtGameMAX);
+
+    chkGameMAX.setBounds(2, 65, 20, 20);
+    lblGameMAX.setBounds(22, 65, 50, 18);
+    txtGameMAX.setBounds(72, 66, 40, 18);
+
+    chkGameMIN = new JCheckBox();
+    JLabel lblGameMIN = new JLabel("最小手数");
+    txtGameMIN = new JTextField();
+    add(chkGameMIN);
+    add(lblGameMIN);
+    add(txtGameMIN);
+
+    chkGameMIN.setBounds(112, 65, 20, 20);
+    lblGameMIN.setBounds(132, 65, 50, 18);
+    txtGameMIN.setBounds(182, 66, 40, 18);
+
     chkAutosave = new JCheckBox();
     JLabel lblAutosave = new JLabel("自动保存棋谱");
     add(chkAutosave);
     add(lblAutosave);
+    chkAutosave.setBounds(222, 65, 20, 20);
+    lblAutosave.setBounds(242, 65, 100, 18);
 
-    chkGameTime = new JCheckBox();
-    JLabel lblGameTime = new JLabel("最大手数");
-    txtGameTime = new JTextField();
-    add(chkGameTime);
-    add(lblGameTime);
-    add(txtGameTime);
-    chkGameTime.setBounds(2, 65, 20, 20);
-    lblGameTime.setBounds(22, 65, 70, 18);
-    txtGameTime.setBounds(92, 66, 40, 18);
-
-    chkAutosave.setBounds(152, 65, 20, 20);
-    lblAutosave.setBounds(172, 65, 100, 18);
     JLabel lblHints = new JLabel("注:  设置最大手数后,超过手数的对局将被中止并保存,不记入比分");
     JLabel lblHints2 = new JLabel("       如出现双方pass则不计入比分,但会记录棋谱");
     JLabel lblHints3 = new JLabel("       genmove模式下,引擎强烈建议添加 --noponder参数,否则可能争用资源并且显示混乱");
     JLabel lblHints4 = new JLabel("       在genmove模式下,使用 genmove命令落子,只能按时间落子,认输阈值和计算量");
-    JLabel lblHints5 = new JLabel("       只受引擎参数限制(-r,-p,-v),界面上的设置无效,且92手前不会认输");
+    JLabel lblHints5 = new JLabel("       只受引擎参数限制(-r,-p,-v),界面上的设置无效,且固定92手前不会认输");
     JLabel lblHints6 = new JLabel("       建议使用分析模式对战,熟悉引擎参数的用户并希望低V测试可以考虑genmove模式");
     lblHints3.setForeground(Color.RED);
     add(lblHints);
@@ -170,10 +188,15 @@ public class EnginePkConfig extends JDialog {
     if (Lizzie.frame.toolbar.exChange) {
       chkExchange.setSelected(true);
     }
-    if (Lizzie.frame.toolbar.checkGameTime) {
-      chkGameTime.setSelected(true);
+    if (Lizzie.frame.toolbar.checkGameMaxMove) {
+      chkGameMAX.setSelected(true);
     }
-    txtGameTime.setText(Lizzie.frame.toolbar.maxGanmeTime + "");
+    txtGameMAX.setText(Lizzie.frame.toolbar.maxGanmeMove + "");
+
+    if (Lizzie.frame.toolbar.checkGameMinMove) {
+      chkGameMIN.setSelected(true);
+    }
+    txtGameMIN.setText(Lizzie.frame.toolbar.minGanmeMove + "");
   }
 
   private void applyChange() {
@@ -193,9 +216,14 @@ public class EnginePkConfig extends JDialog {
 
     Lizzie.frame.toolbar.setGenmove();
 
-    Lizzie.frame.toolbar.checkGameTime = chkGameTime.isSelected();
+    Lizzie.frame.toolbar.checkGameMaxMove = chkGameMAX.isSelected();
     try {
-      Lizzie.frame.toolbar.maxGanmeTime = Integer.parseInt(txtGameTime.getText());
+      Lizzie.frame.toolbar.maxGanmeMove = Integer.parseInt(txtGameMAX.getText());
+    } catch (NumberFormatException err) {
+    }
+    Lizzie.frame.toolbar.checkGameMinMove = chkGameMIN.isSelected();
+    try {
+      Lizzie.frame.toolbar.minGanmeMove = Integer.parseInt(txtGameMIN.getText());
     } catch (NumberFormatException err) {
     }
     setVisible(false);
