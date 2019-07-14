@@ -64,6 +64,7 @@ public class Lizzie {
         msg.setMessage("加载引擎失败,目前为不加载引擎运行");
         msg.setVisible(true);
         Lizzie.engineManager = new EngineManager(Lizzie.config, -1);
+        frame.refresh();
       } catch (JSONException e1) {
         // TODO Auto-generated catch block
         e1.printStackTrace();

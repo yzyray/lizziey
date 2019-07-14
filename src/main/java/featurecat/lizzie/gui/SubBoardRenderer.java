@@ -1276,7 +1276,7 @@ public class SubBoardRenderer {
 
     // decrease boardLength until the availableLength will result in square board
     // intersections
-    double marginWidth = 0.015 / Board.boardWidth * 19.0;
+    double marginWidth = 0.025 / Board.boardWidth * 19.0;
     boardWidth++;
     do {
       boardWidth--;
@@ -1289,7 +1289,7 @@ public class SubBoardRenderer {
     int squareHeight = 0;
     if (Board.boardWidth != Board.boardHeight) {
 
-      double marginHeight = 0.02 / Board.boardHeight * 19.0;
+      double marginHeight = 0.03 / Board.boardHeight * 19.0;
       boardHeight++;
       do {
         boardHeight--;
