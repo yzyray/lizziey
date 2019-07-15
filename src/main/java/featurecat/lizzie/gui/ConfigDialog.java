@@ -1088,7 +1088,7 @@ public class ConfigDialog extends JDialog {
       engineFile = chooser.getSelectedFile();
       if (engineFile != null) {
         enginePath = engineFile.getAbsolutePath();
-        if (enginePath.toLowerCase().contains(".bat")) {
+        if (enginePath.toLowerCase().contains(".bat") || enginePath.toLowerCase().contains("zen")) {
           return enginePath;
         }
         enginePath = relativizePath(engineFile.toPath());

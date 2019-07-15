@@ -49,6 +49,7 @@ public class Leelaz {
 	// private long maxAnalyzeTimeMillis; // , maxThinkingTimeMillis;
 	private int cmdNumber;
 	private int currentCmdNum;
+	private boolean isResponse=false;
 	private ArrayDeque<String> cmdQueue;
 
 	public Process process;
@@ -126,6 +127,7 @@ public class Leelaz {
 	public boolean firstLoad = false;
 	 Message msg;
 	public boolean playNow=false;
+	private boolean isZen=false;
 
 	// private boolean isEstimating=true;
 	/**
@@ -153,6 +155,9 @@ public class Leelaz {
 		gtpConsole = printCommunication;
 		if (engineCommand.toLowerCase().contains("override-version")) {
 			this.isKatago = true;
+		}
+		if (engineCommand.toLowerCase().contains("zen")) {
+			this.isZen = true;
 		}
 		// maxAnalyzeTimeMillis = MINUTE * config.getInt("max-analyze-time-minutes");
 
@@ -416,7 +421,7 @@ public class Leelaz {
 		//Lizzie.gtpConsole.addLineforce(line);
 		if (isCommandLine) 
 		{
-			currentCmdNum = cmdNumber - 1;}
+			isResponse = true;}
 		if (line.startsWith("=")) {
 			String[] params = line.trim().split(" ");
 			//currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
@@ -543,7 +548,7 @@ public class Leelaz {
 			// } else
 			if (isCommandLine) 
 			{
-				currentCmdNum = cmdNumber - 1;
+				isResponse = true;
 //				String[] params = line.trim().split("=");
 //				try {
 //					
@@ -786,6 +791,8 @@ public class Leelaz {
 				} else {
 					if (isCheckingName) {
 						isCheckingName = false;
+						if (params[1].toLowerCase().startsWith("zen"))
+							this.isZen=true;
 						if (params[1].startsWith("KataGo") || isKatago) {
 							this.isKatago = true;
 							this.version = 17;							
@@ -808,21 +815,26 @@ public class Leelaz {
 						}
 					} else if (isCheckingVersion && !isKatago) {
 						String[] ver = params[1].split("\\.");
+						try {
 						int minor = Integer.parseInt(ver[1]);
 						// Gtp support added in version 15
-						version = minor;
+						version = minor;}
+						catch(Exception ex)
+						{
+							version=16;
+						}
 						if (this.currentEngineN == EngineManager.currentEngineNo) {
-							Lizzie.config.leelaversion = minor;
+							Lizzie.config.leelaversion = version;
 						}
-						if (minor < 15) {
-							if(msg==null||!msg.isVisible())
-			            	{	
-							  msg=new Message();
-				             msg.setMessage("Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本是: " + params[1]);
-				             msg.setVisible(true);
-			            	}
-				
-						}
+//						if (minor < 15) {
+//							if(msg==null||!msg.isVisible())
+//			            	{	
+//							  msg=new Message();
+//				             msg.setMessage("Lizzie需要使用0.15或更新版本的leela zero引擎,当前引擎版本是: " + params[1]);
+//				             msg.setVisible(true);
+//			            	}
+//				
+//						}
 						isCheckingVersion = false;						
 						isLoaded = true;
 						
@@ -2331,7 +2343,7 @@ public class Leelaz {
 					if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
 						pkResign();
 					line = new StringBuilder();
-					isCommandLine = false;
+					//isCommandLine = false;
 				} else if (c == '=') {
 					isCommandLine = true;
 				}
@@ -2454,12 +2466,14 @@ public class Leelaz {
 //      System.out.println(currentEnginename+" "+ cmdNumber+" "+ command);
 //    }
 		//if (Lizzie.gtpConsole.isVisible())
-			Lizzie.gtpConsole.addCommand(command, cmdNumber, currentEnginename);
-		command = cmdNumber + " " + command;
-		cmdNumber++;
+		cmdNumber=Lizzie.board.getHistory().getMoveNumber();
+			Lizzie.gtpConsole.addCommand(command, cmdNumber, currentEnginename);			
+		//command = cmdNumber + " " + command;
+		//cmdNumber++;
 		try {
 			outputStream.write((command + "\n").getBytes());
 			outputStream.flush();
+			isResponse=false;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -2471,7 +2485,7 @@ public class Leelaz {
 	/** Check whether leelaz is responding to the last command */
 	private boolean isResponseUpToDate() {
 		// Use >= instead of == for avoiding hang-up, though it cannot happen
-		return currentCmdNum >= cmdNumber - 1;
+		return isResponse;
 	}
 
 	public void setResponseUpToDate() {
@@ -2671,6 +2685,8 @@ public class Leelaz {
 
 	/** This initializes leelaz's pondering mode at its current position */
 	public void ponder() {
+		if(isZen)
+			return;
 		isPondering = true;
 		startPonderTime = System.currentTimeMillis();
 		if (Lizzie.frame.isheatmap) {
