@@ -1538,8 +1538,7 @@ public class Board implements LeelazListener {
     return history.getMoveNumberList();
   }
 
-  /** Goes to the next coordinate, thread safe */
-  public boolean nextMove() {
+  private void clearAfterMove() {
     if (Lizzie.frame.toolbar.chkAutoSub.isSelected()) {
       Lizzie.frame.toolbar.displayedSubBoardBranchLength = 1;
       Lizzie.frame.subBoardRenderer.wheeled = false;
@@ -1555,7 +1554,11 @@ public class Board implements LeelazListener {
       Lizzie.countResults.iscounted = false;
       Lizzie.frame.iscounting = false;
     }
+  }
+  /** Goes to the next coordinate, thread safe */
+  public boolean nextMove() {
 
+    clearAfterMove();
     synchronized (this) {
       updateWinrate();
       if (history.next().isPresent()) {
@@ -2041,21 +2044,8 @@ public class Board implements LeelazListener {
 
   /** Goes to the previous coordinate, thread safe */
   public boolean previousMove() {
-    if (Lizzie.frame.toolbar.chkAutoSub.isSelected()) {
-      Lizzie.frame.toolbar.displayedSubBoardBranchLength = 1;
-      Lizzie.frame.subBoardRenderer.wheeled = false;
-    }
-    Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(-2);
-    Lizzie.frame.subBoardRenderer.bestmovesNum = 0;
-    Lizzie.frame.boardRenderer.removedrawmovestone();
-    Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
-    if (Lizzie.frame.isheatmap) Lizzie.frame.toggleheatmap();
-    if (Lizzie.frame.iscounting) {
-      Lizzie.frame.boardRenderer.removecountblock();
-      Lizzie.countResults.button.setText("形式判断");
-      Lizzie.countResults.iscounted = false;
-      Lizzie.frame.iscounting = false;
-    }
+
+    clearAfterMove();
     synchronized (this) {
       if (inScoreMode()) setScoreMode(false);
       updateWinrate();

@@ -201,15 +201,18 @@ public class BoardHistoryNode {
       variations.add(node);
     }
     node.previous = Optional.of(this);
+    clearAfterMove();
+    return node;
+  }
+
+  private void clearAfterMove() {
     if (Lizzie.frame.toolbar.chkAutoSub.isSelected()) {
       Lizzie.frame.toolbar.displayedSubBoardBranchLength = 1;
       Lizzie.frame.subBoardRenderer.wheeled = false;
     }
     Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(-2);
     Lizzie.frame.subBoardRenderer.bestmovesNum = 0;
-    return node;
   }
-
   /** @return data stored on this node */
   public BoardData getData() {
     return data;

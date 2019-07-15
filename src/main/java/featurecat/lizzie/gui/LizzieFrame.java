@@ -181,6 +181,7 @@ public class LizzieFrame extends JFrame {
   private HtmlKit htmlKit;
   private StyleSheet htmlStyle;
   public Input input = new Input();
+  public InputSubboard input2 = new InputSubboard();
   public boolean noInput = true;
 
   public boolean isTrying = false;
@@ -423,6 +424,8 @@ public class LizzieFrame extends JFrame {
       mainPanel.addKeyListener(input);
       mainPanel.addMouseListener(input);
       mainPanel.addMouseWheelListener(input);
+      mainPanel.removeMouseListener(input2);
+      mainPanel.removeMouseWheelListener(input2);
       noInput = false;
     }
   }
@@ -432,6 +435,8 @@ public class LizzieFrame extends JFrame {
       mainPanel.removeKeyListener(input);
       mainPanel.removeMouseListener(input);
       mainPanel.removeMouseWheelListener(input);
+      mainPanel.addMouseListener(input2);
+      mainPanel.addMouseWheelListener(input2);
       noInput = true;
     }
   }
