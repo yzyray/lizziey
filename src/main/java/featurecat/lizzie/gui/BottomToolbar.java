@@ -863,13 +863,13 @@ public class BottomToolbar extends JPanel {
                       } catch (NumberFormatException err) {
                       }
                       if (time <= 0) {
-                        chkAutoMain.setSelected(false);
+                        chkAutoSub.setSelected(false);
                         return;
                       }
                       while (chkAutoSub.isSelected()) {
-                        int m = displayedSubBoardBranchLength;
-                        Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(
-                            displayedSubBoardBranchLength);
+                        if (!Lizzie.frame.subBoardRenderer.wheeled)
+                          Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(
+                              displayedSubBoardBranchLength);
                         try {
                           try {
                             time = Integer.parseInt(txtAutoSub.getText().replace(" ", ""));
@@ -1491,13 +1491,13 @@ public class BottomToolbar extends JPanel {
               } catch (NumberFormatException err) {
               }
               if (time <= 0) {
-                chkAutoMain.setSelected(false);
+                chkAutoSub.setSelected(false);
                 return;
               }
               while (chkAutoSub.isSelected()) {
-                int m = displayedSubBoardBranchLength;
-                Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(
-                    displayedSubBoardBranchLength);
+                if (!Lizzie.frame.subBoardRenderer.wheeled)
+                  Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(
+                      displayedSubBoardBranchLength);
                 try {
                   try {
                     time = Integer.parseInt(txtAutoSub.getText().replace(" ", ""));

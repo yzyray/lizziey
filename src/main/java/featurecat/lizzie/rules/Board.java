@@ -1540,8 +1540,12 @@ public class Board implements LeelazListener {
 
   /** Goes to the next coordinate, thread safe */
   public boolean nextMove() {
-    if (Lizzie.frame.toolbar.chkAutoSub.isSelected())
+    if (Lizzie.frame.toolbar.chkAutoSub.isSelected()) {
       Lizzie.frame.toolbar.displayedSubBoardBranchLength = 1;
+      Lizzie.frame.subBoardRenderer.wheeled = false;
+    }
+    Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(-2);
+    Lizzie.frame.subBoardRenderer.bestmovesNum = 0;
     Lizzie.frame.boardRenderer.removedrawmovestone();
     Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
     if (Lizzie.frame.isheatmap) Lizzie.frame.toggleheatmap();
@@ -2037,8 +2041,12 @@ public class Board implements LeelazListener {
 
   /** Goes to the previous coordinate, thread safe */
   public boolean previousMove() {
-    if (Lizzie.frame.toolbar.chkAutoSub.isSelected())
+    if (Lizzie.frame.toolbar.chkAutoSub.isSelected()) {
       Lizzie.frame.toolbar.displayedSubBoardBranchLength = 1;
+      Lizzie.frame.subBoardRenderer.wheeled = false;
+    }
+    Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(-2);
+    Lizzie.frame.subBoardRenderer.bestmovesNum = 0;
     Lizzie.frame.boardRenderer.removedrawmovestone();
     Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
     if (Lizzie.frame.isheatmap) Lizzie.frame.toggleheatmap();

@@ -48,6 +48,7 @@ public class SubBoardRenderer {
   private int scaledMarginHeight, availableHeight, squareHeight;
   public Optional<Branch> branchOpt = Optional.empty();
   private List<MoveData> bestMoves;
+  public int bestmovesNum = 0;
 
   private BufferedImage cachedBackgroundImage = emptyImage;
   private boolean cachedBackgroundImageHasCoordinatesEnabled = false;
@@ -85,6 +86,7 @@ public class SubBoardRenderer {
   private boolean showingBranch = false;
   private boolean isMainBoard = false;
   public boolean reverseBestmoves = false;
+  public boolean wheeled = false;
   private int maxAlpha = 240;
   public boolean showHeat = Lizzie.config.showHeat;
   public boolean showHeatAfterCalc = Lizzie.config.showHeatAfterCalc;
@@ -601,7 +603,11 @@ public class SubBoardRenderer {
   }
 
   private Optional<MoveData> getBestMove2() {
-    return bestMoves.isEmpty() ? Optional.empty() : Optional.of(bestMoves.get(0));
+    if (!bestMoves.isEmpty()) {
+      if (bestMoves.size() < this.bestmovesNum + 1) bestmovesNum = bestMoves.size() - 1;
+      return Optional.of(bestMoves.get(bestmovesNum));
+    }
+    return Optional.empty();
   }
 
   /** Draw the 'ghost stones' which show a variationOpt Leelaz is thinking about */
@@ -699,7 +705,12 @@ public class SubBoardRenderer {
   }
 
   private Optional<MoveData> getBestMove() {
-    return bestMoves.isEmpty() ? Optional.empty() : Optional.of(bestMoves.get(0));
+
+    if (!bestMoves.isEmpty()) {
+      if (bestMoves.size() < this.bestmovesNum + 1) bestmovesNum = bestMoves.size() - 1;
+      return Optional.of(bestMoves.get(bestmovesNum));
+    }
+    return Optional.empty();
   }
 
   /** Render the shadows and stones in correct background-foreground order */
@@ -1952,8 +1963,7 @@ public class SubBoardRenderer {
   }
 
   public int getReplayBranch() {
-
-    return mouseOveredMove().isPresent() ? mouseOveredMove().get().variation.size() : 0;
+    return variationOpt.isPresent() ? variationOpt.get().size() : 0;
   }
 
   public boolean incrementDisplayedBranchLength(int n) {
@@ -1966,6 +1976,10 @@ public class SubBoardRenderer {
         displayedBranchLength = max(0, displayedBranchLength + n);
         return true;
     }
+  }
+
+  public boolean isShowingNormalBoard() {
+    return displayedBranchLength == SHOW_NORMAL_BOARD;
   }
 
   public boolean isInside(int x1, int y1) {

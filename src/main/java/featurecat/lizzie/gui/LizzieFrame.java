@@ -27,6 +27,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -102,6 +103,9 @@ public class LizzieFrame extends JFrame {
   private static final String DEFAULT_TITLE = resourceBundle.getString("LizzieFrame.title");
   public static BoardRenderer boardRenderer;
   public static SubBoardRenderer subBoardRenderer;
+  public int subBoardXmouse;
+  public int subBoardYmouse;
+  public int subBoardLengthmouse;
   private static VariationTree variationTree;
   public static WinrateGraph winrateGraph;
   public static Menu menu;
@@ -1348,6 +1352,10 @@ public class LizzieFrame extends JFrame {
             subBoardRenderer.setLocation(subBoardX, subBoardY);
             // subBoardRenderer.setLocation( cx,cy);
             subBoardRenderer.setBoardLength(subBoardLength, subBoardLength);
+
+            subBoardXmouse = subBoardX;
+            subBoardYmouse = subBoardY;
+            subBoardLengthmouse = subBoardLength;
             subBoardRenderer.setupSizeParameters();
             subBoardRenderer.draw(g);
           } catch (Exception e) {
@@ -2241,6 +2249,51 @@ public class LizzieFrame extends JFrame {
     }
   }
 
+  public boolean processPressOnSub(MouseEvent e) {
+    if (Lizzie.config.showSubBoard) {
+      int x = e.getX();
+      int y = e.getY();
+      if (x >= subBoardXmouse
+          && x <= subBoardXmouse + subBoardLengthmouse
+          && y <= subBoardYmouse + subBoardLengthmouse
+          && y >= subBoardYmouse) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+          subBoardRenderer.bestmovesNum++;
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
+          if (subBoardRenderer.bestmovesNum >= 1) subBoardRenderer.bestmovesNum--;
+        }
+
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
+
+  public boolean processSubboardMouseWheelMoved(MouseWheelEvent e) {
+    if (Lizzie.config.showSubBoard) {
+      int x = e.getX();
+      int y = e.getY();
+      if (x >= subBoardXmouse
+          && x <= subBoardXmouse + subBoardLengthmouse
+          && y <= subBoardYmouse + subBoardLengthmouse
+          && y >= subBoardYmouse) {
+        if (e.getWheelRotation() > 0) {
+          doBranchSub(1);
+          refresh();
+        } else if (e.getWheelRotation() < 0) {
+          doBranchSub(-1);
+          refresh();
+        }
+
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
   /**
    * Create comment cached image
    *
@@ -2339,6 +2392,10 @@ public class LizzieFrame extends JFrame {
 
   private void setDisplayedBranchLength(int n) {
     boardRenderer.setDisplayedBranchLength(n);
+  }
+
+  private void setDisplayedBranchLengthSub(int n) {
+    subBoardRenderer.setDisplayedBranchLength(n);
   }
 
   public void startRawBoard() {
@@ -2700,6 +2757,30 @@ public class LizzieFrame extends JFrame {
 
   public void addSuggestionAsBranch() {
     boardRenderer.addSuggestionAsBranch();
+  }
+
+  public void doBranchSub(int moveTo) {
+    if (moveTo > 0) {
+      if (subBoardRenderer.isShowingNormalBoard()) {
+        setDisplayedBranchLengthSub(2);
+        subBoardRenderer.wheeled = true;
+      } else {
+        if (subBoardRenderer.getReplayBranch() > subBoardRenderer.getDisplayedBranchLength()) {
+          subBoardRenderer.incrementDisplayedBranchLength(1);
+          subBoardRenderer.wheeled = true;
+        }
+      }
+
+    } else {
+      if (subBoardRenderer.isShowingNormalBoard()) {
+        setDisplayedBranchLengthSub(subBoardRenderer.getReplayBranch());
+      } else {
+        if (subBoardRenderer.getDisplayedBranchLength() > 1) {
+          subBoardRenderer.incrementDisplayedBranchLength(-1);
+          subBoardRenderer.wheeled = true;
+        }
+      }
+    }
   }
 
   public void doBranch(int moveTo) {

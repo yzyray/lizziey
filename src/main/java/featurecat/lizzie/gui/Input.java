@@ -20,6 +20,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mousePressed(MouseEvent e) {
+    if (Lizzie.frame.processPressOnSub(e)) {
+      return;
+    }
     if (SwingUtilities.isMiddleMouseButton(e)) {
 
       Lizzie.frame.replayBranchByWheel();
@@ -752,6 +755,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     if (Lizzie.frame.processCommentMouseWheelMoved(e)) {
       return;
     }
+    if (Lizzie.frame.processSubboardMouseWheelMoved(e)) {
+      return;
+    }
+
     if (e.getWhen() - wheelWhen > 0) {
       wheelWhen = e.getWhen();
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
