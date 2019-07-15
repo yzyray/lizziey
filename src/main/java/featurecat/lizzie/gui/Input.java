@@ -434,7 +434,12 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_H:
         // Lizzie.config.toggleHandicapInsteadOfWinrate();
-        Lizzie.frame.toggleheatmap();
+        if (e.isAltDown()) {
+          Lizzie.config.showHeat = !Lizzie.config.showHeat;
+          Lizzie.frame.subBoardRenderer.showHeat = Lizzie.config.showHeat;
+          Lizzie.frame.subBoardRenderer.clearBranch();
+          Lizzie.frame.subBoardRenderer.removeHeat();
+        } else Lizzie.frame.toggleheatmap();
         break;
 
       case VK_PAGE_UP:
