@@ -102,6 +102,8 @@ public class Config {
   public int limitbadplayouts = 0;
   public long maxAnalyzeTimeMillis;
   public int analyzeUpdateIntervalCentisec;
+  public boolean showHeat = false;
+  public boolean showHeatAfterCalc = false;
   public String gtpConsoleStyle = "";
   private final String defaultGtpConsoleStyle =
       "body {background:#000000; color:#d0d0d0; font-family:Consolas, Menlo, Monaco, 'Ubuntu Mono', monospace; margin:4px;} .command {color:#ffffff;font-weight:bold;} .winrate {color:#ffffff;font-weight:bold;} .coord {color:#ffffff;font-weight:bold;}";
@@ -275,6 +277,8 @@ public class Config {
     showKataGoScoreMean = uiConfig.optBoolean("show-katago-scoremean", true);
     showKataGoBoardScoreMean = uiConfig.optBoolean("show-katago-boardscoremean", false);
     kataGoScoreMeanAlwaysBlack = uiConfig.optBoolean("katago-scoremean-alwaysblack", false);
+    showHeat = uiConfig.optBoolean("show-heat", false);
+    showHeatAfterCalc = uiConfig.optBoolean("show-heat-aftercalc", false);
     showMoveNumberFromOne = uiConfig.optBoolean("movenumber-from-one", false);
     kataGoNotShowWinrate = uiConfig.optBoolean("katago-notshow-winrate", false);
     showKataGoEstimate = uiConfig.optBoolean("show-katago-estimate", false);

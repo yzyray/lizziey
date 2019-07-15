@@ -49,7 +49,7 @@ public class Leelaz {
 	// private long maxAnalyzeTimeMillis; // , maxThinkingTimeMillis;
 	private int cmdNumber;
 	private int currentCmdNum;
-	private boolean isResponse=false;
+	//private boolean isResponse=false;
 	private ArrayDeque<String> cmdQueue;
 
 	public Process process;
@@ -121,7 +121,7 @@ public class Leelaz {
 	public boolean isKatago = false;
 	public double scoreMean = 0;
 	public double scoreStdev = 0;
-	private boolean isCommandLine = false;
+//	private boolean isCommandLine = false;
 	public int width = 19;
 	public int height = 19;
 	public boolean firstLoad = false;
@@ -418,11 +418,13 @@ public class Leelaz {
 	 */
 
 	private void parseLineForGenmovePk(String line) {
-		//Lizzie.gtpConsole.addLineforce(line);
-		if (isCommandLine) 
-		{
-			isResponse = true;}
+		//Lizzie.gtpConsole.addLineforce(line);	
+
+	
 		if (line.startsWith("=")) {
+			currentCmdNum = currentCmdNum+1;
+			if(currentCmdNum>cmdNumber-1)
+				currentCmdNum=cmdNumber-1;
 			String[] params = line.trim().split(" ");
 			//currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
 			if ( Lizzie.frame.toolbar.isEnginePk && params.length == 2) {
@@ -524,6 +526,7 @@ public class Leelaz {
 
 	private void parseLine(String line) {
 		synchronized (this) {
+			if (!played) {
 			if (Lizzie.frame.toolbar.isEnginePk && this.isPondering) {
 				Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
 			}
@@ -546,43 +549,7 @@ public class Leelaz {
 			// if (line.equals("\n")) {
 			// End of response
 			// } else
-			if (isCommandLine) 
-			{
-				isResponse = true;
-//				String[] params = line.trim().split("=");
-//				try {
-//					
-//							for(int i=1;i<params.length;i++)
-//							{		String str=params[i];
-//							for(int j=0;j<=str.length();j++)
-//							{
-//								try {
-//									Integer.parseInt(str.substring(j,j+1));
-//									}
-//								catch(Exception ex)
-//								{
-//									if(j>0)
-//									{
-//										int temp =Integer.parseInt(str.substring(0,j));
-//										 if(temp>currentCmdNum)
-//											 currentCmdNum=temp;
-//									}
-//								}
-//							}				
-//							//params[1].split(" ")[0].trim());
-//							}
-//					if (currentCmdNum > cmdNumber - 1)
-//						currentCmdNum = cmdNumber - 1;
-//					if (!isLoaded)
-						isLoaded = true;
-			//	} catch (Exception ex) {
-					// currentCmdNum = currentCmdNum + 1;
-			//	}
-				try {
-					trySendCommandFromQueue();
-				} catch (Exception ex) {
-				}
-			}
+			
 			if ((Lizzie.frame.isPlayingAgainstLeelaz && !genmovenoponder)) {
 				if (isThinking && !canGetGenmoveInfo && Lizzie.config.playponder) {
 					if (Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()) {
@@ -708,6 +675,15 @@ public class Leelaz {
 				isThinking = false;
 
 			} else if (line.startsWith("=") || line.startsWith("?")) {
+				currentCmdNum = currentCmdNum+ 1;
+//				if (!isLoaded)
+					isLoaded = true;
+					try {
+						trySendCommandFromQueue();
+				} catch (Exception ex) {
+				}
+		if(currentCmdNum>cmdNumber-1)
+			currentCmdNum=cmdNumber-1;
 				if (isThinking) {
 					canGetGenmoveInfo = true;
 				}
@@ -870,7 +846,13 @@ public class Leelaz {
 					Lizzie.frame.refresh();
 				}
 			}
+		}else  if (line.startsWith("=") || line.startsWith("?")) {
+			currentCmdNum = currentCmdNum+ 1;			
+	if(currentCmdNum>cmdNumber-1)
+		currentCmdNum=cmdNumber-1;}
 		}
+		
+			
 	}
 
 	private void notifyAutoPlay() {
@@ -2332,21 +2314,22 @@ public class Leelaz {
 						} catch (Exception e) {
 						}
 
-					} else {if (!played) {
+					} else {
 						try {
 							parseLine(line.toString());
 						} catch (Exception e) {
 						}
-					}
+					
 					
 					}
 					if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
 						pkResign();
 					line = new StringBuilder();
 					//isCommandLine = false;
-				} else if (c == '=') {
-					isCommandLine = true;
-				}
+				} 
+//				else if (c == '=') {
+//					isCommandLine = true;
+//				}
 			}
 			// this line will be reached when Leelaz shuts down
 			System.out.println("Leelaz process ended.");
@@ -2449,6 +2432,8 @@ public class Leelaz {
 		}
 	}
 	
+
+	
 	
 
 
@@ -2466,14 +2451,13 @@ public class Leelaz {
 //      System.out.println(currentEnginename+" "+ cmdNumber+" "+ command);
 //    }
 		//if (Lizzie.gtpConsole.isVisible())
-		cmdNumber=Lizzie.board.getHistory().getMoveNumber();
+		cmdNumber++;
 			Lizzie.gtpConsole.addCommand(command, cmdNumber, currentEnginename);			
 		//command = cmdNumber + " " + command;
 		//cmdNumber++;
 		try {
 			outputStream.write((command + "\n").getBytes());
 			outputStream.flush();
-			isResponse=false;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -2485,7 +2469,7 @@ public class Leelaz {
 	/** Check whether leelaz is responding to the last command */
 	private boolean isResponseUpToDate() {
 		// Use >= instead of == for avoiding hang-up, though it cannot happen
-		return isResponse;
+		return currentCmdNum >= cmdNumber - 1;
 	}
 
 	public void setResponseUpToDate() {

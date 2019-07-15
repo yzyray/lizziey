@@ -426,7 +426,82 @@ public class Menu extends MenuBar {
 
     final JMenu kata = new JMenu("KataGo相关设置");
     viewMenu.add(kata);
+
+    final JMenu heat = new JMenu("热点图设置");
+    viewMenu.add(heat);
     viewMenu.addSeparator();
+
+    final JCheckBoxMenuItem showHeat = new JCheckBoxMenuItem("第一感热点图");
+    heat.add(showHeat);
+
+    showHeat.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.config.showHeat = true;
+
+            Lizzie.config.showHeatAfterCalc = false;
+            Lizzie.frame.subBoardRenderer.showHeat = Lizzie.config.showHeat;
+            Lizzie.frame.subBoardRenderer.showHeatAfterCalc = Lizzie.config.showHeatAfterCalc;
+            Lizzie.frame.subBoardRenderer.clearBranch();
+            Lizzie.frame.subBoardRenderer.removeHeat();
+            Lizzie.config.uiConfig.put("show-heat", true);
+            Lizzie.config.uiConfig.put("show-heat-aftercalc", false);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+
+    final JCheckBoxMenuItem showHeatAfterCalc = new JCheckBoxMenuItem("计算后热点图");
+    heat.add(showHeatAfterCalc);
+
+    showHeatAfterCalc.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.config.showHeat = true;
+            Lizzie.config.showHeatAfterCalc = true;
+            Lizzie.frame.subBoardRenderer.showHeat = Lizzie.config.showHeat;
+            Lizzie.frame.subBoardRenderer.showHeatAfterCalc = Lizzie.config.showHeatAfterCalc;
+            Lizzie.frame.subBoardRenderer.clearBranch();
+            Lizzie.frame.subBoardRenderer.removeHeat();
+            Lizzie.config.uiConfig.put("show-heat", true);
+            Lizzie.config.uiConfig.put("show-heat-aftercalc", true);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+
+    final JCheckBoxMenuItem notShowHeat = new JCheckBoxMenuItem("不显示热点图");
+    heat.add(notShowHeat);
+
+    notShowHeat.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.config.showHeat = false;
+            Lizzie.config.showHeatAfterCalc = false;
+            Lizzie.frame.subBoardRenderer.showHeat = Lizzie.config.showHeat;
+            Lizzie.frame.subBoardRenderer.showHeatAfterCalc = Lizzie.config.showHeatAfterCalc;
+            Lizzie.frame.subBoardRenderer.removeHeat();
+            Lizzie.config.uiConfig.put("show-heat", false);
+            Lizzie.config.uiConfig.put("show-heat-aftercalc", false);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
 
     final JMenuItem defview = new JMenuItem("默认模式"); // 创建“字体”子菜单
     viewMenu.add(defview); // 添加到“编辑”菜单
@@ -750,6 +825,22 @@ public class Menu extends MenuBar {
             } else {
               katawinboardmean.setState(true);
               katawinboardboard.setState(false);
+            }
+
+            if (Lizzie.config.showHeat) {
+              if (Lizzie.config.showHeatAfterCalc) {
+                showHeatAfterCalc.setState(true);
+                showHeat.setState(false);
+                notShowHeat.setState(false);
+              } else {
+                showHeat.setState(true);
+                showHeatAfterCalc.setState(false);
+                notShowHeat.setState(false);
+              }
+            } else {
+              notShowHeat.setState(true);
+              showHeat.setState(false);
+              showHeatAfterCalc.setState(false);
             }
           }
 
