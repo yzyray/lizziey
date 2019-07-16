@@ -1075,7 +1075,7 @@ public class MoreEngines extends JPanel {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    engjf.setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
+    engjf.setAlwaysOnTop(true);
     engjf.setLocationRelativeTo(engjf.getOwner());
     // jf.setResizable(false);
     return engjf;
