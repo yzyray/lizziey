@@ -196,6 +196,7 @@ public class LizzieFrame extends JFrame {
 
     try {
       uiFont = new Font("微软雅黑", Font.PLAIN, 12);
+      // uiFont = new Font("SansSerif", Font.TRUETYPE_FONT, 12);
       // uiFont = // new Font("圆体", Font.TRUETYPE_FONT, 15);
       // Font.createFont(
       // Font.TRUETYPE_FONT,

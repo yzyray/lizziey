@@ -135,12 +135,12 @@ public class RightClickMenu extends JPopupMenu {
 		this.add(allow2);
 		this.add(avoid);
 		this.add(avoid2);
-		this.add(cancelavoid);
-		this.add(cleanedittemp);		
+		this.add(cancelavoid);		
 		this.add(sep);		
 		this.add(addblack);
 		this.add(addwhite);
-		this.add(reedit);
+		this.add(cleanedittemp);
+		this.add(reedit);				
 		this.add(cleanupedit);
 
 		 addSuggestionAsBranch.addActionListener(
