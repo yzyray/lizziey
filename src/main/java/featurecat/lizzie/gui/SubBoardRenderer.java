@@ -613,7 +613,8 @@ public class SubBoardRenderer {
   /** Draw the 'ghost stones' which show a variationOpt Leelaz is thinking about */
   private void drawBranch() {
     showingBranch = false;
-    branchStonesImage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
+    BufferedImage newImage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
+    // branchStonesImage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
     branchStonesShadowImage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
     branchOpt = Optional.empty();
 
@@ -636,7 +637,7 @@ public class SubBoardRenderer {
       return;
     }
 
-    Graphics2D g = (Graphics2D) branchStonesImage.getGraphics();
+    Graphics2D g = (Graphics2D) newImage.getGraphics();
     g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     Graphics2D gShadow = (Graphics2D) branchStonesShadowImage.getGraphics();
     gShadow.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -690,22 +691,22 @@ public class SubBoardRenderer {
       g.setColor(new Color(0, 0, 0, 255));
       g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
       g.setFont(new Font("", Font.PLAIN, stoneRadius * 5 / 4));
-      g.drawString("变化", boardWidth - stoneRadius * 4, boardWidth - stoneRadius * 1 / 3);
-//      drawString(
-//              g,
-//              boardWidth - stoneRadius * 4,
-//              boardWidth - stoneRadius * 2 / 3,
-//              LizzieFrame.uiFont,
-//              "变化",
-//              stoneRadius * 4,
-//              stoneRadius *2 );
+      g.drawString("变化", boardWidth - stoneRadius * 13 / 3, boardWidth - stoneRadius * 1 / 3);
+      //      drawString(
+      //              g,
+      //              boardWidth - stoneRadius * 4,
+      //              boardWidth - stoneRadius * 2 / 3,
+      //              LizzieFrame.uiFont,
+      //              "变化",
+      //              stoneRadius * 4,
+      //              stoneRadius *2 );
       g.setFont(new Font("", Font.PLAIN, stoneRadius * 3 / 2));
       g.drawString(
           "" + (this.bestmovesNum + 1),
-          boardWidth - stoneRadius * 6 / 5,
+          boardWidth - stoneRadius * 9 / 5,
           boardWidth - stoneRadius * 1 / 3);
     }
-
+    branchStonesImage = newImage;
     g.dispose();
     gShadow.dispose();
   }

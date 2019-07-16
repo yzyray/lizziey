@@ -2191,6 +2191,10 @@ public class LizzieFrame extends JFrame {
         boardRenderer.drawmoveblock(
             coords.get()[0], coords.get()[1], Lizzie.board.getHistory().isBlacksTurn());
       }
+    } else {
+      if (Lizzie.config.showrect) {
+        boardRenderer.removeblock();
+      }
     }
   }
 

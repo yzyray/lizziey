@@ -381,8 +381,8 @@ public class BoardRenderer {
   }
 
   public void drawcountblockkata(ArrayList<Double> tempcount) {
-    countblockimage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
-    Graphics2D g = countblockimage.createGraphics();
+    BufferedImage newEstimateImage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
+    Graphics2D g = newEstimateImage.createGraphics();
     for (int i = 0; i < tempcount.size(); i++) {
 
       if ((tempcount.get(i) > 0 && Lizzie.board.getHistory().isBlacksTurn())
@@ -395,12 +395,17 @@ public class BoardRenderer {
 
         int alpha = (int) (tempcount.get(i) * 255);
         Color cl = new Color(0, 0, 0, Math.abs(alpha));
-        g.setColor(cl);
+        Color cl2 =
+            new Color(255 - Math.abs(alpha), 255 - Math.abs(alpha), 255 - Math.abs(alpha), 255);
+        if (Lizzie.board.getHistory().getStones()[Lizzie.board.getIndex(x, y)].isBlack())
+          g.setColor(cl2);
+        else g.setColor(cl);
         g.fillRect(
-            (int) (stoneX - stoneRadius * 0.6),
-            (int) (stoneY - stoneRadius * 0.6),
-            (int) (stoneRadius * 1.2),
-            (int) (stoneRadius * 1.2));
+            (int) (stoneX - squareWidth * 0.3),
+            (int) (stoneY - squareHeight * 0.3),
+            (int) (squareWidth * 0.6),
+            (int) (squareHeight * 0.6));
+        ;
       }
       if ((tempcount.get(i) < 0 && Lizzie.board.getHistory().isBlacksTurn())
           || (tempcount.get(i) > 0 && !Lizzie.board.getHistory().isBlacksTurn())) {
@@ -410,14 +415,19 @@ public class BoardRenderer {
         int stoneY = scaledMarginHeight + squareHeight * y;
         int alpha = (int) (tempcount.get(i) * 255);
         Color cl = new Color(255, 255, 255, Math.abs(alpha));
+        //        Color cl2 = new Color(Math.abs(alpha), Math.abs(alpha), Math.abs(alpha), 255);
+        //        if(Lizzie.board.getHistory().getStones()[Lizzie.board.getIndex(x, y)].isWhite())
+        //        	g.setColor(cl2);
+        //        else
         g.setColor(cl);
         g.fillRect(
-            (int) (stoneX - stoneRadius * 0.6),
-            (int) (stoneY - stoneRadius * 0.6),
-            (int) (stoneRadius * 1.2),
-            (int) (stoneRadius * 1.2));
+            (int) (stoneX - squareWidth * 0.3),
+            (int) (stoneY - squareHeight * 0.3),
+            (int) (squareWidth * 0.6),
+            (int) (squareHeight * 0.6));
       }
     }
+    countblockimage = newEstimateImage;
   }
 
   private double convertLength(double length) {
@@ -431,8 +441,8 @@ public class BoardRenderer {
   }
 
   public void drawcountblockkata2(ArrayList<Double> tempcount) {
-    countblockimage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
-    Graphics2D g = countblockimage.createGraphics();
+    BufferedImage newEstimateImage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
+    Graphics2D g = newEstimateImage.createGraphics();
     for (int i = 0; i < tempcount.size(); i++) {
       if ((tempcount.get(i) > 0 && Lizzie.board.getHistory().isBlacksTurn())
           || (tempcount.get(i) < 0 && !Lizzie.board.getHistory().isBlacksTurn())) {
@@ -458,6 +468,7 @@ public class BoardRenderer {
         if (length > 0) g.fillRect(stoneX - length / 2, stoneY - length / 2, length, length);
       }
     }
+    countblockimage = newEstimateImage;
   }
 
   public void drawcountblock(ArrayList<Integer> tempcount) {
@@ -499,7 +510,8 @@ public class BoardRenderer {
     int stoneX = scaledMarginWidth + squareWidth * x;
     int stoneY = scaledMarginHeight + squareHeight * y;
     g.setColor(isblack ? Color.BLACK : Color.WHITE);
-    g.fillRect(stoneX - stoneRadius / 2, stoneY - stoneRadius / 2, stoneRadius, stoneRadius);
+    g.fillRect(
+        stoneX - squareWidth / 4, stoneY - squareWidth / 4, squareWidth / 2, squareWidth / 2);
   }
 
   public void drawbadstone(int x, int y, Stone stone) {
