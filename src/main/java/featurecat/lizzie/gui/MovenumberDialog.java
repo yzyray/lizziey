@@ -97,7 +97,7 @@ public class MovenumberDialog extends JDialog {
     Lizzie.config.allowMoveNumber = changeMoveNumber;
     Lizzie.config.uiConfig.put("allow-move-number", changeMoveNumber);
     Lizzie.config.onlyLastMoveNumber = changeMoveNumber;
-    Lizzie.config.uiConfig.put("only-last-move-number",changeMoveNumber);
+    Lizzie.config.uiConfig.put("only-last-move-number", changeMoveNumber);
     try {
       Lizzie.config.save();
     } catch (IOException es) {

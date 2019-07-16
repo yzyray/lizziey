@@ -540,7 +540,7 @@ public class Menu extends MenuBar {
     final JCheckBoxMenuItem katasugg2 = new JCheckBoxMenuItem("目差+计算量");
     katasugg.add(katasugg2);
     // katasugg2.addActionListener(new ItemListeneryzy());
-    
+
     katasugg2.addActionListener(
         new ActionListener() {
 
@@ -1828,7 +1828,7 @@ public class Menu extends MenuBar {
         Lizzie.config.allowMoveNumber = 1;
         Lizzie.config.uiConfig.put("allow-move-number", 1);
         Lizzie.config.onlyLastMoveNumber = 1;
-        Lizzie.config.uiConfig.put("only-last-move-number",1);
+        Lizzie.config.uiConfig.put("only-last-move-number", 1);
         try {
           Lizzie.config.save();
         } catch (IOException es) {
@@ -1839,7 +1839,7 @@ public class Menu extends MenuBar {
         Lizzie.config.allowMoveNumber = 5;
         Lizzie.config.uiConfig.put("allow-move-number", 5);
         Lizzie.config.onlyLastMoveNumber = 5;
-        Lizzie.config.uiConfig.put("only-last-move-number",5);
+        Lizzie.config.uiConfig.put("only-last-move-number", 5);
         try {
           Lizzie.config.save();
         } catch (IOException es) {
@@ -1850,7 +1850,7 @@ public class Menu extends MenuBar {
         Lizzie.config.allowMoveNumber = 10;
         Lizzie.config.uiConfig.put("allow-move-number", 10);
         Lizzie.config.onlyLastMoveNumber = 10;
-        Lizzie.config.uiConfig.put("only-last-move-number",10);
+        Lizzie.config.uiConfig.put("only-last-move-number", 10);
         try {
           Lizzie.config.save();
         } catch (IOException es) {
@@ -1865,9 +1865,9 @@ public class Menu extends MenuBar {
       if (menuItem.getText() == ("全部")) {
         Lizzie.config.allowMoveNumber = -1;
         try {
-            Lizzie.config.save();
-          } catch (IOException es) {
-          }
+          Lizzie.config.save();
+        } catch (IOException es) {
+        }
         return;
       }
       if (menuItem.getText().startsWith("自动分")) {
@@ -2173,7 +2173,7 @@ public class Menu extends MenuBar {
           // TODO Auto-generated catch block
         }
         return;
-      }    
+      }
       if (menuItem.getText().startsWith("目差")) {
         Lizzie.config.showKataGoBoardScoreMean = false;
         Lizzie.config.uiConfig.put(
