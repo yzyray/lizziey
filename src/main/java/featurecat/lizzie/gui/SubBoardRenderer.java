@@ -689,9 +689,17 @@ public class SubBoardRenderer {
       }
       g.setColor(new Color(0, 0, 0, 255));
       g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-      g.setFont(new Font("幼圆", Font.PLAIN, stoneRadius * 5 / 4));
+      g.setFont(new Font("", Font.PLAIN, stoneRadius * 5 / 4));
       g.drawString("变化", boardWidth - stoneRadius * 4, boardWidth - stoneRadius * 1 / 3);
-      g.setFont(new Font("幼圆", Font.BOLD, stoneRadius * 3 / 2));
+//      drawString(
+//              g,
+//              boardWidth - stoneRadius * 4,
+//              boardWidth - stoneRadius * 2 / 3,
+//              LizzieFrame.uiFont,
+//              "变化",
+//              stoneRadius * 4,
+//              stoneRadius *2 );
+      g.setFont(new Font("", Font.PLAIN, stoneRadius * 3 / 2));
       g.drawString(
           "" + (this.bestmovesNum + 1),
           boardWidth - stoneRadius * 6 / 5,
