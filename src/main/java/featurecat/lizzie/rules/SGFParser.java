@@ -315,34 +315,47 @@ public class SGFParser {
               }
             }
           } else if (tag.equals("AB") || tag.equals("AW")) {
+        	  if(Lizzie.engineManager.currentEngineNo>=0)
             Lizzie.engineManager.isEmpty = false;
             int[] move = convertSgfPosToCoord(tagContent);
             Stone color = tag.equals("AB") ? Stone.BLACK : Stone.WHITE;
-            if (moveStart) {
+           // if (moveStart) {
               // add to node properties
-              Lizzie.board.addNodeProperty(tag, tagContent);
-              if (addPassForMove) {
-                // Save the step count
-                subTreeStepMap.put(subTreeDepth, subTreeStepMap.get(subTreeDepth) + 1);
-                boolean newBranch = (subTreeStepMap.get(subTreeDepth) == 1);
-                Lizzie.board.pass(color, newBranch, true);
-                if (newBranch) {
-                  processPendingPros(Lizzie.board.getHistory(), pendingProps);
-                }
-                addPassForMove = false;
-              }
-              Lizzie.board.addNodeProperty(tag, tagContent);
-              if (move != null) {
-                Lizzie.board.addStone(move[0], move[1], color);
-              }
-            } else {
-              if (move == null) {
-                Lizzie.board.pass(color);
-              } else {
-                Lizzie.board.place(move[0], move[1], color);
-              }
-              Lizzie.board.flatten();
-            }
+            	 moveStart = true;
+                 addPassForMove = true;
+                 int[] move2 = convertSgfPosToCoord(tagContent);
+                 // Save the step count
+                 subTreeStepMap.put(subTreeDepth, subTreeStepMap.get(subTreeDepth) + 1);
+               
+                 if (move == null) {
+                   Lizzie.board.pass(color, false, false);
+                 } else {
+                   Lizzie.board.place(move2[0], move2[1], color, false);
+                 }                
+            	//Lizzie.board.place(move[0], move[1], color);
+//              Lizzie.board.addNodeProperty(tag, tagContent);
+//              if (addPassForMove) {
+//                // Save the step count
+//                subTreeStepMap.put(subTreeDepth, subTreeStepMap.get(subTreeDepth) + 1);
+//                boolean newBranch = (subTreeStepMap.get(subTreeDepth) == 1);
+//                Lizzie.board.pass(color, newBranch, true);
+//                if (newBranch) {
+//                  processPendingPros(Lizzie.board.getHistory(), pendingProps);
+//                }
+//                addPassForMove = false;
+//              }
+//              Lizzie.board.addNodeProperty(tag, tagContent);
+//              if (move != null) {
+//                Lizzie.board.addStone(move[0], move[1], color);
+//              }
+//            } else {
+//              if (move == null) {
+//                Lizzie.board.pass(color);
+//              } else {
+//                Lizzie.board.place(move[0], move[1], color);
+//              }
+//              Lizzie.board.flatten();
+//            }
             Lizzie.engineManager.isEmpty = true;
           } else if (tag.equals("PB")) {
             blackPlayer = tagContent;

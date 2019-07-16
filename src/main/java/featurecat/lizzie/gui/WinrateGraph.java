@@ -368,6 +368,11 @@ public class WinrateGraph {
 
             if (node == curMove) {
               g.setColor(Lizzie.config.winrateLineColor);
+              if (Lizzie.config.dynamicWinrateGraphWidth
+                  && node.getData().moveNumber - 1 > this.numMovesOfPlayed) {
+                this.numMovesOfPlayed = node.getData().moveNumber - 1;
+                numMoves = this.numMovesOfPlayed;
+              }
               // g.setColor(Color.BLACK);
               g.fillOval(
                   posx + (movenum * width / numMoves) - DOT_RADIUS,
@@ -616,6 +621,9 @@ public class WinrateGraph {
     if (numMoves < 1) return;
     lastOkMove = -1;
     movenum = node.getData().moveNumber - 1;
+    if (Lizzie.config.dynamicWinrateGraphWidth && this.numMovesOfPlayed > 0) {
+      numMoves = this.numMovesOfPlayed;
+    }
     if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove) {
       if (Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago) {
         double lastscoreMean = -500;
@@ -802,6 +810,11 @@ public class WinrateGraph {
         movenum--;
       }
       if (curmovenum > 0) {
+        if (Lizzie.config.dynamicWinrateGraphWidth
+            && node.getData().moveNumber - 1 > this.numMovesOfPlayed) {
+          this.numMovesOfPlayed = node.getData().moveNumber - 1;
+          numMoves = this.numMovesOfPlayed;
+        }
         g.setColor(Color.WHITE);
         Font f = new Font("", Font.BOLD, 15);
         g.setFont(f);

@@ -110,7 +110,7 @@ public class SubBoardRenderer {
     // Stopwatch timer = new Stopwatch();
     drawGoban(g);
     // timer.lap("background");
-    drawStones();
+
     // timer.lap("stones");
     if (Lizzie.board.inScoreMode() && isMainBoard) {
       drawScore(g);
@@ -118,7 +118,7 @@ public class SubBoardRenderer {
       if (!showHeat) drawBranch();
     }
     // timer.lap("branch");
-
+    drawStones();
     renderImages(g);
     // timer.lap("rendering images");
 
@@ -687,6 +687,15 @@ public class SubBoardRenderer {
         // }
         // }
       }
+      g.setColor(new Color(0, 0, 0, 255));
+      g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+      g.setFont(new Font("幼圆", Font.PLAIN, stoneRadius * 5 / 4));
+      g.drawString("变化", boardWidth - stoneRadius * 4, boardWidth - stoneRadius * 1 / 3);
+      g.setFont(new Font("幼圆", Font.BOLD, stoneRadius * 3 / 2));
+      g.drawString(
+          "" + (this.bestmovesNum + 1),
+          boardWidth - stoneRadius * 6 / 5,
+          boardWidth - stoneRadius * 1 / 3);
     }
 
     g.dispose();
@@ -1320,7 +1329,7 @@ public class SubBoardRenderer {
 
     // decrease boardLength until the availableLength will result in square board
     // intersections
-    double marginWidth = 0.025 / Board.boardWidth * 19.0;
+    double marginWidth = 0.035 / Board.boardWidth * 19.0;
     boardWidth++;
     do {
       boardWidth--;
@@ -1333,7 +1342,7 @@ public class SubBoardRenderer {
     int squareHeight = 0;
     if (Board.boardWidth != Board.boardHeight) {
 
-      double marginHeight = 0.03 / Board.boardHeight * 19.0;
+      double marginHeight = 0.035 / Board.boardHeight * 19.0;
       boardHeight++;
       do {
         boardHeight--;
