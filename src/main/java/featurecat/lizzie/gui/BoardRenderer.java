@@ -396,7 +396,11 @@ public class BoardRenderer {
         int alpha = (int) (tempcount.get(i) * 255);
         Color cl = new Color(0, 0, 0, Math.abs(alpha));
         Color cl2 =
-            new Color(255 - Math.abs(alpha), 255 - Math.abs(alpha), 255 - Math.abs(alpha), 255);
+            new Color(
+                127 - (Math.abs(alpha) - 1) / 2,
+                127 - (Math.abs(alpha) - 1) / 2,
+                127 - (Math.abs(alpha) - 1) / 2,
+                255);
         if (Lizzie.board.getHistory().getStones()[Lizzie.board.getIndex(x, y)].isBlack())
           g.setColor(cl2);
         else g.setColor(cl);
