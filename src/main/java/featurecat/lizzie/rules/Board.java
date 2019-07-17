@@ -2009,10 +2009,9 @@ public class Board implements LeelazListener {
   }
 
   public void clearBoardStat() {
-    isPkBoard = false;
-    isPkBoardKataB = false;
-    isPkBoardKataW = false;
-    isKataBoard = false;
+    if (isPkBoard) {
+      if (Lizzie.leelaz.isKatago) isPkBoardKataB = true;
+    }
   }
 
   /** Clears all history and starts over from empty board. */
