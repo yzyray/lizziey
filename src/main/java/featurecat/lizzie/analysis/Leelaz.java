@@ -1000,14 +1000,14 @@ public class Leelaz {
 				Timer timer = new Timer();
 				timer.schedule(new TimerTask() {
 					public void run() {
-						loadAutoBatchFile();
+						loadAutoBatchFile();						
 						this.cancel();
 					}
 				}, 300);
 			} else {
 				Lizzie.frame.isBatchAna = false;
 				Lizzie.frame.toolbar.chkAnaAutoSave.setEnabled(true);
-
+				isSaving = false;
 				if(msg==null||!msg.isVisible())
             	{	
 				  msg=new Message();
@@ -1143,8 +1143,8 @@ if(bestMoves.isEmpty())
 					togglePonder();
 					Lizzie.frame.toolbar.isAutoAna = false;
 					Lizzie.frame.addInput();
-					if (Lizzie.frame.isBatchAna) {
-						loadAutoBatchFile();
+					if (Lizzie.frame.isBatchAna) {						
+						closeAutoAna();				
 					}
 					return;
 				} else {
@@ -2353,8 +2353,7 @@ if(bestMoves.isEmpty())
 			Lizzie.frame.addInput();
 			if (!isSaving && Lizzie.frame.toolbar.chkAnaAutoSave.isSelected() && analysed) {
 				isSaving = true;
-				saveAndLoad();
-
+				saveAndLoad();				
 			} else {
 				
 				if(msg==null||!msg.isVisible())
