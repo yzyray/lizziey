@@ -2029,6 +2029,7 @@ public class Board implements LeelazListener {
     isPkBoardKataB = false;
     isPkBoardKataW = false;
     isKataBoard = false;
+    Lizzie.frame.isBatchAna = false;
     Lizzie.leelaz.sendCommand("komi " + Lizzie.leelaz.komi);
     Lizzie.board.getHistory().getGameInfo().resetAll();
     Lizzie.frame.komi = Lizzie.leelaz.komi + "";
@@ -2041,6 +2042,7 @@ public class Board implements LeelazListener {
     Lizzie.frame.winrateGraph.maxcoreMean = 30;
     Lizzie.frame.resetTitle();
     Lizzie.frame.clear();
+    Lizzie.frame.isBatchAna = false;
     isKataBoard = false;
     mvnumber = new int[boardHeight * boardWidth];
     movelistwr.clear();
