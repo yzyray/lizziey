@@ -987,7 +987,8 @@ public class BoardRenderer {
           if (move.playouts > maxPlayouts) maxPlayouts = move.playouts;
           if (move.winrate > maxWinrate) maxWinrate = move.winrate;
           if (move.winrate < minWinrate) minWinrate = move.winrate;
-          if (Lizzie.leelaz.isKatago && Lizzie.config.showKataGoScoreMean) {
+          if ((Lizzie.leelaz.isKatago && Lizzie.config.showKataGoScoreMean)
+              || Lizzie.board.isPkKataBoard) {
             if (move.scoreMean > maxScoreMean) maxScoreMean = move.scoreMean;
           }
         }
@@ -1177,7 +1178,8 @@ public class BoardRenderer {
               }
 
               // number++;
-              if (Lizzie.leelaz.isKatago && Lizzie.config.showKataGoScoreMean) {
+              if ((Lizzie.leelaz.isKatago && Lizzie.config.showKataGoScoreMean)
+                  || Lizzie.board.isPkKataBoard) {
                 if (Lizzie.config.kataGoNotShowWinrate) {
                   double score = move.scoreMean;
                   if (Lizzie.board.getHistory().isBlacksTurn()) {

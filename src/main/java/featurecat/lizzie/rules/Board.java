@@ -48,6 +48,7 @@ public class Board implements LeelazListener {
   public String boardstatafteredit = "";
   public boolean isLoadingFile = false;
   public boolean isPkBoard = false;
+  public boolean isPkKataBoard = false;
 
   // Save the node for restore move when in the branch
   private Optional<BoardHistoryNode> saveNode;
@@ -2016,6 +2017,7 @@ public class Board implements LeelazListener {
     cleanedittemp();
     initialize();
     isPkBoard = false;
+    isPkKataBoard = false;
     Lizzie.leelaz.sendCommand("komi " + Lizzie.leelaz.komi);
     Lizzie.board.getHistory().getGameInfo().resetAll();
     Lizzie.frame.komi = Lizzie.leelaz.komi + "";
@@ -2028,6 +2030,7 @@ public class Board implements LeelazListener {
     Lizzie.frame.winrateGraph.maxcoreMean = 30;
     Lizzie.frame.resetTitle();
     Lizzie.frame.clear();
+    isPkKataBoard = false;
     mvnumber = new int[boardHeight * boardWidth];
     movelistwr.clear();
     Lizzie.frame.boardRenderer.removecountblock();

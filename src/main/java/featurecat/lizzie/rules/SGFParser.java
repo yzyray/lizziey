@@ -367,6 +367,10 @@ public class SGFParser {
             if (tagContent.equals("Y")) {
               Lizzie.board.isPkBoard = true;
             }
+            if (tagContent.equals("K")) {
+              Lizzie.board.isPkBoard = true;
+              Lizzie.board.isPkKataBoard = true;
+            }
           } else if (tag.equals("KM")) {
             try {
               if (tagContent.trim().isEmpty()) {
@@ -484,17 +488,31 @@ public class SGFParser {
     StringBuilder generalProps = new StringBuilder("");
     if (handicap != 0) generalProps.append(String.format("HA[%s]", handicap));
     if (Lizzie.frame.toolbar.isEnginePk || Lizzie.board.isPkBoard) {
-      generalProps.append(
-          String.format(
-              "KM[%s]PW[%s]PB[%s]DT[%s]DZ[Y]AP[Lizzie: %s]RE[%s]SZ[%s]",
-              komi,
-              playerW,
-              playerB,
-              date,
-              Lizzie.lizzieVersion,
-              result,
-              Board.boardWidth
-                  + (Board.boardWidth != Board.boardHeight ? ":" + Board.boardHeight : "")));
+      if (Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago
+          || Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago)
+        generalProps.append(
+            String.format(
+                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[K]AP[Lizzie: %s]RE[%s]SZ[%s]",
+                komi,
+                playerW,
+                playerB,
+                date,
+                Lizzie.lizzieVersion,
+                result,
+                Board.boardWidth
+                    + (Board.boardWidth != Board.boardHeight ? ":" + Board.boardHeight : "")));
+      else
+        generalProps.append(
+            String.format(
+                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[Y]AP[Lizzie: %s]RE[%s]SZ[%s]",
+                komi,
+                playerW,
+                playerB,
+                date,
+                Lizzie.lizzieVersion,
+                result,
+                Board.boardWidth
+                    + (Board.boardWidth != Board.boardHeight ? ":" + Board.boardHeight : "")));
     } else {
       generalProps.append(
           String.format(
