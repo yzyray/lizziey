@@ -223,6 +223,11 @@ public class Menu extends MenuBar {
 
     final JMenu moveMenu = new JMenu("手数(M)");
     viewMenu.add(moveMenu);
+    
+    final JMenu panel = new JMenu("面板");
+    viewMenu.add(panel);
+    
+    viewMenu.addSeparator();
 
     final JCheckBoxMenuItem noItem = new JCheckBoxMenuItem();
     noItem.setText("不显示");
@@ -316,8 +321,7 @@ public class Menu extends MenuBar {
     tool.add(bigtoolConf);
     bigtoolConf.addActionListener(new ItemListeneryzy());
 
-    final JMenu panel = new JMenu("面板设置");
-    viewMenu.add(panel);
+
 
     final JCheckBoxMenuItem subboard = new JCheckBoxMenuItem("小棋盘"); // 创建“字体”子菜单
     panel.add(subboard); // 添加到“编辑”菜单

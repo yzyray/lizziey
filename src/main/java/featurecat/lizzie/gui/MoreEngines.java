@@ -875,15 +875,14 @@ public class MoreEngines extends JPanel {
         heights.put(engDt.height);
         komis.put(engDt.komi);
       } else {
-    	  if(!commands.equals(""))
-    	  {
-        commands.put(engDt.commands.trim());
-        names.put(engDt.name);
-        preloads.put(engDt.preload);
-        widths.put(engDt.width);
-        heights.put(engDt.height);
-        komis.put(engDt.komi);
-    	  }
+        if (!commands.equals("")) {
+          commands.put(engDt.commands.trim());
+          names.put(engDt.name);
+          preloads.put(engDt.preload);
+          widths.put(engDt.width);
+          heights.put(engDt.height);
+          komis.put(engDt.komi);
+        }
       }
     }
     Lizzie.config.leelazConfig.put("engine-command-list", commands);
@@ -1017,7 +1016,7 @@ public class MoreEngines extends JPanel {
 
         switch (col) {
           case 0:
-            return row+ 1;
+            return row + 1;
           case 1:
             return data.name;
           case 2:
