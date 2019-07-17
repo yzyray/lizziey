@@ -915,13 +915,13 @@ public class Menu extends MenuBar {
     newgames.add(newGameItem);
 
     final JMenuItem continueGameBlackItem = new JMenuItem();
-    continueGameBlackItem.setText("续弈(我执黑)(回车)");
+    continueGameBlackItem.setText("续弈[我执黑](回车)");
     // aboutItem.setMnemonic('A');
     continueGameBlackItem.addActionListener(new ItemListeneryzy());
     contgames.add(continueGameBlackItem);
 
     final JMenuItem continueGameWhiteItem = new JMenuItem();
-    continueGameWhiteItem.setText("续弈(我执白)(回车)");
+    continueGameWhiteItem.setText("续弈[我执白](回车)");
     // aboutItem.setMnemonic('A');
     continueGameWhiteItem.addActionListener(new ItemListeneryzy());
     contgames.add(continueGameWhiteItem);
@@ -995,7 +995,7 @@ public class Menu extends MenuBar {
     contgames.add(continueanaGameWhite);
     gameMenu.addSeparator();
     final JMenuItem breakplay = new JMenuItem();
-    breakplay.setText("中断人机对局");
+    breakplay.setText("中断人机对局(空格)");
     breakplay.addActionListener(new ItemListeneryzy());
     gameMenu.add(breakplay);
 
