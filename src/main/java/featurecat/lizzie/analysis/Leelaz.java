@@ -979,7 +979,7 @@ public class Leelaz {
 				if(msg==null||!msg.isVisible())
             	{	
 				  msg=new Message();
-            msg.setMessage("自动分析已完毕,棋谱在目录AutoSave中");
+            msg.setMessage("自动分析已完毕,棋谱保存在Lizzie根目录AutoSave文件夹中");
             msg.setVisible(true);
             	}
 			}
@@ -1011,7 +1011,7 @@ public class Leelaz {
 				if(msg==null||!msg.isVisible())
             	{	
 				  msg=new Message();
-	             msg.setMessage( "批量棋谱已全部分析完毕");
+	             msg.setMessage( "批量棋谱已全部分析完毕,保存在棋谱所在目录下");
 	             msg.setVisible(true);
             	}
 				Lizzie.frame.addInput();

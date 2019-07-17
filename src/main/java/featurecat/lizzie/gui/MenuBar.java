@@ -11,7 +11,7 @@ class MenuBar extends JMenuBar {
           Color.RGBtoHSB(232, 232, 232, null)[0],
           Color.RGBtoHSB(232, 232, 232, null)[1],
           Color.RGBtoHSB(232, 232, 232, null)[2]);
-  Color bgColor = hsbColor;
+  // Color bgColor = hsbColor;
 
   //  public void setColor(Color color) {
   //    bgColor = color;
@@ -21,7 +21,7 @@ class MenuBar extends JMenuBar {
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g;
-    g2d.setColor(bgColor);
+    g2d.setColor(hsbColor);
     g2d.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
   }
 }

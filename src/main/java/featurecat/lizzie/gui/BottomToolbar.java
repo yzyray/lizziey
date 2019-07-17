@@ -493,7 +493,7 @@ public class BottomToolbar extends JPanel {
     openfile.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.frame.openFile();
+            Lizzie.frame.openFileAll();
             setTxtUnfocuse();
           }
         });

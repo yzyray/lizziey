@@ -831,7 +831,7 @@ public class LizzieFrame extends JFrame {
     boolean onTop = false;
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     JFrame frame = new JFrame();
-    FileDialog fileDialog = new FileDialog(frame, "批量棋谱选择");
+    FileDialog fileDialog = new FileDialog(frame, "选择棋谱");
     if (this.isAlwaysOnTop()) {
       this.setAlwaysOnTop(false);
       fileDialog.setAlwaysOnTop(true);

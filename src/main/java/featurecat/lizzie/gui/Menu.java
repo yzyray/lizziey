@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.json.JSONArray;
@@ -52,7 +53,7 @@ public class Menu extends MenuBar {
     //            Color.RGBtoHSB(232, 232, 232, null)[2]);
     //    this.setBackground(hsbColor);
     // JPanel bar = new JPanel(new BorderLayout());
-    // bar.setBorder(new EmptyBorder(0, 0, -1, -1));
+    setBorder(new EmptyBorder(0, 0, 0, 0));
     //  menuBar = new MenuBar();
     // bar.setBounds(0, 0, 450, 12);
 
@@ -60,7 +61,7 @@ public class Menu extends MenuBar {
     //    this.add(bar);
     //    bar.add(menuBar);
 
-    headFont = new Font("", Font.PLAIN, 12);
+    headFont = new Font("幼圆", Font.BOLD, 15);
     // onlyboard = Lizzie.config.uiConfig.optBoolean("only-board", false);
 
     final JMenu fileMenu = new JMenu(" 文件  "); // 创建“文件”菜单
@@ -1596,7 +1597,7 @@ public class Menu extends MenuBar {
       // System.out.println("您单击的是菜单项：" + menuItem.getText());
       Lizzie.frame.setVisible(true);
       if (menuItem.getText().startsWith("打开棋谱")) {
-        Lizzie.frame.openFile();
+        Lizzie.frame.openFileAll();
         return;
       }
 
