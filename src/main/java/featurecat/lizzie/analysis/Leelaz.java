@@ -635,8 +635,7 @@ public class Leelaz {
 					}
 				}
 				if (!this.bestMoves.isEmpty()) {
-					notifyAutoPK();	
-					notifyAutoAna();
+					notifyAutoPK();						
 					notifyAutoPlay();	
 				}
 				// 临时添加为了解决SSH时的卡顿
@@ -1119,9 +1118,9 @@ public class Leelaz {
 	}
 
 	private void notifyAutoAna() {
-
 		if (Lizzie.frame.toolbar.isAutoAna) {
-
+if(bestMoves.isEmpty())
+	return;
 			if (Lizzie.frame.toolbar.startAutoAna) {
 				Lizzie.frame.toolbar.startAutoAna = false;
 				if (Lizzie.frame.toolbar.firstMove != -1) {
@@ -2319,8 +2318,7 @@ public class Leelaz {
 							parseLine(line.toString());
 						} catch (Exception e) {
 						}
-					
-					
+						notifyAutoAna();					
 					}
 					if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
 						pkResign();
