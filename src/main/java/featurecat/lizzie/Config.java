@@ -23,7 +23,7 @@ public class Config {
   public boolean largeWinrate = false;
   public boolean showBlunderBar = true;
   public boolean weightedBlunderBarHeight = false;
-  public boolean dynamicWinrateGraphWidth = true;
+  // public boolean dynamicWinrateGraphWidth = true;
   public boolean showVariationGraph = true;
   public boolean showComment = true;
   public boolean showRawBoard = false;
@@ -270,7 +270,7 @@ public class Config {
     largeWinrate = uiConfig.optBoolean("large-winrate", false);
     showBlunderBar = uiConfig.optBoolean("show-blunder-bar", true);
     weightedBlunderBarHeight = uiConfig.optBoolean("weighted-blunder-bar-height", false);
-    dynamicWinrateGraphWidth = uiConfig.optBoolean("dynamic-winrate-graph-width", true);
+    // dynamicWinrateGraphWidth = uiConfig.optBoolean("dynamic-winrate-graph-width", true);
     showVariationGraph = uiConfig.getBoolean("show-variation-graph");
     showComment = uiConfig.optBoolean("show-comment", true);
     showCaptured = uiConfig.getBoolean("show-captured");
@@ -641,7 +641,7 @@ public class Config {
     ui.put("show-blunder-bar", true);
     ui.put("minimum-blunder-bar-width", 3);
     ui.put("weighted-blunder-bar-height", false);
-    ui.put("dynamic-winrate-graph-width", true);
+    // ui.put("dynamic-winrate-graph-width", true);
     ui.put("show-comment", true);
     ui.put("comment-font-size", 0);
     ui.put("show-variation-graph", true);

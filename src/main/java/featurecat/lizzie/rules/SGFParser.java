@@ -367,9 +367,18 @@ public class SGFParser {
             if (tagContent.equals("Y")) {
               Lizzie.board.isPkBoard = true;
             }
-            if (tagContent.equals("K")) {
+            if (tagContent.equals("KB")) {
               Lizzie.board.isPkBoard = true;
-              Lizzie.board.isPkKataBoard = true;
+              Lizzie.board.isKataBoard = true;
+              Lizzie.board.isPkBoardKataB = true;
+            }
+            if (tagContent.equals("KW")) {
+              Lizzie.board.isPkBoard = true;
+              Lizzie.board.isKataBoard = true;
+              Lizzie.board.isPkBoardKataW = true;
+            }
+            if (tagContent.equals("G")) {
+              Lizzie.board.isKataBoard = true;
             }
           } else if (tag.equals("KM")) {
             try {
@@ -488,11 +497,22 @@ public class SGFParser {
     StringBuilder generalProps = new StringBuilder("");
     if (handicap != 0) generalProps.append(String.format("HA[%s]", handicap));
     if (Lizzie.frame.toolbar.isEnginePk || Lizzie.board.isPkBoard) {
-      if (Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago
-          || Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago)
+      if (Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago)
         generalProps.append(
             String.format(
-                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[K]AP[Lizzie: %s]RE[%s]SZ[%s]",
+                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[KB]AP[Lizzie: %s]RE[%s]SZ[%s]",
+                komi,
+                playerW,
+                playerB,
+                date,
+                Lizzie.lizzieVersion,
+                result,
+                Board.boardWidth
+                    + (Board.boardWidth != Board.boardHeight ? ":" + Board.boardHeight : "")));
+      else if (Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago)
+        generalProps.append(
+            String.format(
+                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[KW]AP[Lizzie: %s]RE[%s]SZ[%s]",
                 komi,
                 playerW,
                 playerB,
@@ -514,17 +534,30 @@ public class SGFParser {
                 Board.boardWidth
                     + (Board.boardWidth != Board.boardHeight ? ":" + Board.boardHeight : "")));
     } else {
-      generalProps.append(
-          String.format(
-              "KM[%s]PW[%s]PB[%s]DT[%s]AP[Lizzie: %s]RE[%s]SZ[%s]",
-              komi,
-              playerW,
-              playerB,
-              date,
-              Lizzie.lizzieVersion,
-              result,
-              Board.boardWidth
-                  + (Board.boardWidth != Board.boardHeight ? ":" + Board.boardHeight : "")));
+      if (Lizzie.leelaz.isKatago)
+        generalProps.append(
+            String.format(
+                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[G]AP[Lizzie: %s]RE[%s]SZ[%s]",
+                komi,
+                playerW,
+                playerB,
+                date,
+                Lizzie.lizzieVersion,
+                result,
+                Board.boardWidth
+                    + (Board.boardWidth != Board.boardHeight ? ":" + Board.boardHeight : "")));
+      else
+        generalProps.append(
+            String.format(
+                "KM[%s]PW[%s]PB[%s]DT[%s]AP[Lizzie: %s]RE[%s]SZ[%s]",
+                komi,
+                playerW,
+                playerB,
+                date,
+                Lizzie.lizzieVersion,
+                result,
+                Board.boardWidth
+                    + (Board.boardWidth != Board.boardHeight ? ":" + Board.boardHeight : "")));
     }
     // To append the winrate to the comment of sgf we might need to update the
     // Winrate

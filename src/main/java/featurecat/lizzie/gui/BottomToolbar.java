@@ -344,6 +344,7 @@ public class BottomToolbar extends JPanel {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.board.clearbestmoves();
+            Lizzie.leelaz.setResponseUpToDate();
             Lizzie.frame.refresh();
           }
         });
@@ -2350,6 +2351,7 @@ public class BottomToolbar extends JPanel {
   private void startAutoAna() {
     isAutoAna = true;
     startAutoAna = true;
+    Lizzie.board.clearBoardStat();
     Lizzie.leelaz.ponder();
   }
 

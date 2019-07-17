@@ -48,7 +48,9 @@ public class Board implements LeelazListener {
   public String boardstatafteredit = "";
   public boolean isLoadingFile = false;
   public boolean isPkBoard = false;
-  public boolean isPkKataBoard = false;
+  public boolean isPkBoardKataB = false;
+  public boolean isPkBoardKataW = false;
+  public boolean isKataBoard = false;
 
   // Save the node for restore move when in the branch
   private Optional<BoardHistoryNode> saveNode;
@@ -2006,6 +2008,13 @@ public class Board implements LeelazListener {
     return false;
   }
 
+  public void clearBoardStat() {
+    isPkBoard = false;
+    isPkBoardKataB = false;
+    isPkBoardKataW = false;
+    isKataBoard = false;
+  }
+
   /** Clears all history and starts over from empty board. */
   public void clear() {
     Lizzie.leelaz.clear();
@@ -2017,7 +2026,9 @@ public class Board implements LeelazListener {
     cleanedittemp();
     initialize();
     isPkBoard = false;
-    isPkKataBoard = false;
+    isPkBoardKataB = false;
+    isPkBoardKataW = false;
+    isKataBoard = false;
     Lizzie.leelaz.sendCommand("komi " + Lizzie.leelaz.komi);
     Lizzie.board.getHistory().getGameInfo().resetAll();
     Lizzie.frame.komi = Lizzie.leelaz.komi + "";
@@ -2030,7 +2041,7 @@ public class Board implements LeelazListener {
     Lizzie.frame.winrateGraph.maxcoreMean = 30;
     Lizzie.frame.resetTitle();
     Lizzie.frame.clear();
-    isPkKataBoard = false;
+    isKataBoard = false;
     mvnumber = new int[boardHeight * boardWidth];
     movelistwr.clear();
     Lizzie.frame.boardRenderer.removecountblock();
