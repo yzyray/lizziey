@@ -979,7 +979,7 @@ public class Leelaz {
 				if(msg==null||!msg.isVisible())
             	{	
 				  msg=new Message();
-            msg.setMessage("自动分析已完毕,保存在"+courseFile+ "\\" + "AutoSave");
+            msg.setMessage("自动分析已完毕,棋谱保存在"+courseFile+ "\\" + "AutoSave");
             msg.setVisible(true);
             	}
 			}
@@ -1011,7 +1011,7 @@ public class Leelaz {
 				if(msg==null||!msg.isVisible())
             	{	
 				  msg=new Message();
-	             msg.setMessage( "批量棋谱已全部分析完毕,保存在"+path);
+	             msg.setMessage( "批量棋谱已全部分析完毕,棋谱保存在"+path);
 	             msg.setVisible(true);
             	}
 				Lizzie.frame.addInput();
@@ -1398,7 +1398,7 @@ if(bestMoves.isEmpty())
 					}
 				  msg=new Message();
 	             msg.setMessage( "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
-							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在"+courseFile);
+							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在"+courseFile+"\\PkAutoSave");
 	             msg.setVisible(true);
             	}
 
@@ -1448,7 +1448,7 @@ if(bestMoves.isEmpty())
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				jg = jg + "，棋谱保存在"+courseFile;
+				jg = jg + "，棋谱保存在"+courseFile+"\\PkAutoSave";
 			}
 			Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
             Lizzie.frame.boardRenderer.reverseBestmoves = false;
@@ -1700,7 +1700,7 @@ if(bestMoves.isEmpty())
 					}
 				  msg=new Message();
 	              msg.setMessage( "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
-							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在"+courseFile);
+							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在"+courseFile+"\\PkAutoSave");
 	              msg.setVisible(true);
             	}
 				
@@ -1750,7 +1750,7 @@ if(bestMoves.isEmpty())
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				jg = jg + "，棋谱保存在"+courseFile;
+				jg = jg + "，棋谱保存在"+courseFile+"\\PkAutoSave";
 			}
 			Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
             Lizzie.frame.boardRenderer.reverseBestmoves = false;
