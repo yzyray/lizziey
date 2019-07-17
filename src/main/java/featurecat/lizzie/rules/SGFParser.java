@@ -500,7 +500,7 @@ public class SGFParser {
       if (Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago)
         generalProps.append(
             String.format(
-                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[KB]AP[Lizzie: %s]RE[%s]SZ[%s]",
+                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[KB]AP[Lizzie: %s]RE[%s]SZ[%s]CA[]",
                 komi,
                 playerW,
                 playerB,
@@ -512,7 +512,7 @@ public class SGFParser {
       else if (Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago)
         generalProps.append(
             String.format(
-                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[KW]AP[Lizzie: %s]RE[%s]SZ[%s]",
+                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[KW]AP[Lizzie: %s]RE[%s]SZ[%s]CA[]",
                 komi,
                 playerW,
                 playerB,
@@ -524,7 +524,7 @@ public class SGFParser {
       else
         generalProps.append(
             String.format(
-                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[Y]AP[Lizzie: %s]RE[%s]SZ[%s]",
+                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[Y]AP[Lizzie: %s]RE[%s]SZ[%s]CA[]",
                 komi,
                 playerW,
                 playerB,
@@ -537,7 +537,7 @@ public class SGFParser {
       if (Lizzie.leelaz.isKatago)
         generalProps.append(
             String.format(
-                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[G]AP[Lizzie: %s]RE[%s]SZ[%s]",
+                "KM[%s]PW[%s]PB[%s]DT[%s]DZ[G]AP[Lizzie: %s]RE[%s]SZ[%s]CA[]",
                 komi,
                 playerW,
                 playerB,
@@ -549,7 +549,7 @@ public class SGFParser {
       else
         generalProps.append(
             String.format(
-                "KM[%s]PW[%s]PB[%s]DT[%s]AP[Lizzie: %s]RE[%s]SZ[%s]",
+                "KM[%s]PW[%s]PB[%s]DT[%s]AP[Lizzie: %s]RE[%s]SZ[%s]CA[]",
                 komi,
                 playerW,
                 playerB,
