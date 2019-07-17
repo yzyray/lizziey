@@ -1388,9 +1388,17 @@ if(bestMoves.isEmpty())
 				
 				if(msg==null||!msg.isVisible())
             	{	
+					File file = new File("");
+					String courseFile = "";
+					try {
+						courseFile = file.getCanonicalPath();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				  msg=new Message();
 	             msg.setMessage( "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
-							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在Lizzie所在目录中PkAutoSave文件夹下");
+							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在"+courseFile);
 	             msg.setVisible(true);
             	}
 
@@ -1432,7 +1440,15 @@ if(bestMoves.isEmpty())
 			}
 			}
 			if (Lizzie.frame.toolbar.AutosavePk) {
-				jg = jg + "，棋谱保存在Lizzie所在目录中PkAutoSave文件夹下";
+				File file = new File("");
+				String courseFile = "";
+				try {
+					courseFile = file.getCanonicalPath();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				jg = jg + "，棋谱保存在"+courseFile;
 			}
 			Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
             Lizzie.frame.boardRenderer.reverseBestmoves = false;
@@ -1674,9 +1690,17 @@ if(bestMoves.isEmpty())
 				Lizzie.engineManager.changeEngIcoForEndPk();
 				if(msg==null||!msg.isVisible())
             	{	
+					File file = new File("");
+					String courseFile = "";
+					try {
+						courseFile = file.getCanonicalPath();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				  msg=new Message();
 	              msg.setMessage( "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
-							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在Lizzie所在目录中PkAutoSave文件夹下");
+							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在"+courseFile);
 	              msg.setVisible(true);
             	}
 				
@@ -1718,7 +1742,15 @@ if(bestMoves.isEmpty())
 			}
 			}
 			if (Lizzie.frame.toolbar.AutosavePk) {
-				jg = jg + "，棋谱保存在Lizzie所在目录中PkAutoSave文件夹下";
+				File file = new File("");
+				String courseFile = "";
+				try {
+					courseFile = file.getCanonicalPath();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				jg = jg + "，棋谱保存在"+courseFile;
 			}
 			Lizzie.frame.subBoardRenderer.reverseBestmoves = false;
             Lizzie.frame.boardRenderer.reverseBestmoves = false;
@@ -1726,6 +1758,7 @@ if(bestMoves.isEmpty())
 			Lizzie.engineManager.changeEngIcoForEndPk();
 			if(msg==null||!msg.isVisible())
         	{	
+				
 			  msg=new Message();
              msg.setMessage(jg);
              msg.setVisible(true);

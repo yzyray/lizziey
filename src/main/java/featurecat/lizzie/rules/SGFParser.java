@@ -1712,8 +1712,8 @@ public class SGFParser {
 
   private static String asCoord(int[] c) {
     char x = alphabet.charAt(c[0]);
-    char y = alphabet.charAt(c[1]); 
+    char y = alphabet.charAt(c[1]);
 
-    return String.format("%c%c", x, y); 
+    return String.format("%c%c", x, y);
   }
 }
