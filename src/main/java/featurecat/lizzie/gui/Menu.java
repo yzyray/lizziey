@@ -60,7 +60,7 @@ public class Menu extends MenuBar {
     //    this.add(bar);
     //    bar.add(menuBar);
 
-    headFont = new Font("幼圆", Font.BOLD, 15);
+    headFont = new Font("", Font.PLAIN, 12);
     // onlyboard = Lizzie.config.uiConfig.optBoolean("only-board", false);
 
     final JMenu fileMenu = new JMenu(" 文件  "); // 创建“文件”菜单
@@ -223,10 +223,10 @@ public class Menu extends MenuBar {
 
     final JMenu moveMenu = new JMenu("手数(M)");
     viewMenu.add(moveMenu);
-    
+
     final JMenu panel = new JMenu("面板");
     viewMenu.add(panel);
-    
+
     viewMenu.addSeparator();
 
     final JCheckBoxMenuItem noItem = new JCheckBoxMenuItem();
@@ -320,8 +320,6 @@ public class Menu extends MenuBar {
     final JMenuItem bigtoolConf = new JMenuItem("设置详细工具栏顺序");
     tool.add(bigtoolConf);
     bigtoolConf.addActionListener(new ItemListeneryzy());
-
-
 
     final JCheckBoxMenuItem subboard = new JCheckBoxMenuItem("小棋盘"); // 创建“字体”子菜单
     panel.add(subboard); // 添加到“编辑”菜单
