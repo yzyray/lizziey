@@ -153,7 +153,11 @@ public class BoardHistoryNode {
     // Lizzie.board.movelistwr.add(mv);
     // }
     // }
-
+    Optional<BoardHistoryNode> next = next(true);
+    boolean nextDummy = next.isPresent() && next.get().isEndDummay();
+    if (!newBranch && nextDummy) {
+      changeMove = true;
+    }
     if (!newBranch) {
       for (int i = 0; i < variations.size(); i++) {
         if (variations.get(i).data.zobrist.equals(data.zobrist)) {
@@ -187,7 +191,7 @@ public class BoardHistoryNode {
     }
     BoardHistoryNode node = new BoardHistoryNode(data);
     if (changeMove) {
-      Optional<BoardHistoryNode> next = next(true);
+      //   Optional<BoardHistoryNode> next = next(true);
       next.ifPresent(
           n -> {
             node.variations = n.variations;

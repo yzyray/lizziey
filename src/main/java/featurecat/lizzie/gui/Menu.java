@@ -57,22 +57,22 @@ public class Menu extends MenuBar {
     fileMenu.add(saveItem);
 
     this.add(fileMenu);
-    final JMenuItem batchfile = new JMenuItem("批量分析棋谱(ALT+O)");
+    final JMenuItem batchfile = new JMenuItem("批量分析棋谱(Alt+O)");
     batchfile.addActionListener(new ItemListeneryzy());
     fileMenu.add(batchfile);
 
-    final JMenuItem openUrlItem = new JMenuItem("打开在线棋谱(Q)");
+    final JMenuItem openUrlItem = new JMenuItem("打开在线链接(Q)");
     openUrlItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openUrlItem);
 
     fileMenu.addSeparator();
     final JMenuItem copyItem = new JMenuItem();
-    copyItem.setText("复制到剪贴板(CTRL+C)");
+    copyItem.setText("复制到剪贴板(Ctrl+C)");
     copyItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(copyItem);
 
     final JMenuItem pasteItem = new JMenuItem();
-    pasteItem.setText("从剪贴板粘贴(CTRL+V)");
+    pasteItem.setText("从剪贴板粘贴(Ctrl+V)");
     pasteItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(pasteItem);
     fileMenu.addSeparator();
@@ -91,21 +91,8 @@ public class Menu extends MenuBar {
 
     //      }
 
-    final JMenuItem resume = new JMenuItem();
-    resume.setText("恢复棋谱");
-    fileMenu.add(resume);
-
-    resume.addActionListener(
-        new ActionListener() {
-
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            Lizzie.board.resumePreviousGame();
-          }
-        });
-
     final JCheckBoxMenuItem autoSave = new JCheckBoxMenuItem();
-    autoSave.setText("自动保存棋谱(10秒一次)");
+    autoSave.setText("自动保存棋谱(每10秒)");
     autoSave.addActionListener(
         new ActionListener() {
 
@@ -132,6 +119,19 @@ public class Menu extends MenuBar {
           }
         });
     fileMenu.add(autoSave);
+
+    final JMenuItem resume = new JMenuItem();
+    resume.setText("恢复棋谱");
+    fileMenu.add(resume);
+
+    resume.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.board.resumePreviousGame();
+          }
+        });
 
     fileMenu.addSeparator();
 
@@ -185,12 +185,12 @@ public class Menu extends MenuBar {
     viewMenu.add(mainboard);
 
     final JMenuItem leftItem = new JMenuItem();
-    leftItem.setText("左移([)");
+    leftItem.setText("左移 ([)");
     leftItem.addActionListener(new ItemListeneryzy());
     mainboard.add(leftItem);
 
     final JMenuItem rightItem = new JMenuItem();
-    rightItem.setText("右移(])");
+    rightItem.setText("右移 (])");
     rightItem.addActionListener(new ItemListeneryzy());
     mainboard.add(rightItem);
 
@@ -257,7 +257,7 @@ public class Menu extends MenuBar {
     moveMenu.add(alwaysone);
 
     final JCheckBoxMenuItem subItem = new JCheckBoxMenuItem();
-    subItem.setText("放大小棋盘(ALT+V)");
+    subItem.setText("放大小棋盘(Alt+V)");
     subItem.addActionListener(new ItemListeneryzy());
     viewMenu.add(subItem);
 
@@ -303,7 +303,7 @@ public class Menu extends MenuBar {
     panel.add(subboard); // 添加到“编辑”菜单
     subboard.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
-    final JCheckBoxMenuItem winratetMenu = new JCheckBoxMenuItem("胜率面板(W)"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem winratetMenu = new JCheckBoxMenuItem("胜率图(W)"); // 创建“字体”子菜单
     panel.add(winratetMenu); // 添加到“编辑”菜单
     winratetMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
@@ -323,7 +323,7 @@ public class Menu extends MenuBar {
     panel.add(bottomleft); // 添加到“编辑”菜单
     bottomleft.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
-    final JCheckBoxMenuItem gtpMenu = new JCheckBoxMenuItem("命令窗口(E)"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem gtpMenu = new JCheckBoxMenuItem("Gtp窗口(E)"); // 创建“字体”子菜单
     panel.add(gtpMenu); // 添加到“编辑”菜单
     gtpMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
@@ -495,10 +495,10 @@ public class Menu extends MenuBar {
     viewMenu.add(allview);
     allview.addActionListener(new ItemListeneryzy());
 
-    final JMenu katasugg = new JMenu("KataGo推荐点显示");
+    final JMenu katasugg = new JMenu("推荐点显示");
     kata.add(katasugg);
 
-    final JCheckBoxMenuItem katasugg1 = new JCheckBoxMenuItem("胜率+计算量", false);
+    final JCheckBoxMenuItem katasugg1 = new JCheckBoxMenuItem("胜率+计算量");
 
     // ItemListener itn= new ItemListeneryzy() {
     // public void itemStateChanged(ItemEvent e) {
@@ -544,7 +544,7 @@ public class Menu extends MenuBar {
     katasugg.add(katasugg3);
     katasugg3.addActionListener(new ItemListeneryzy());
 
-    final JMenu kataboard = new JMenu("KataGo目差显示");
+    final JMenu kataboard = new JMenu("目差显示");
     kata.add(kataboard);
 
     final JCheckBoxMenuItem kataboardmean = new JCheckBoxMenuItem("目差");
@@ -555,7 +555,7 @@ public class Menu extends MenuBar {
     kataboard.add(kataboardboard);
     kataboardboard.addActionListener(new ItemListeneryzy());
 
-    final JMenu katameanalways = new JMenu("KataGo目差视角");
+    final JMenu katameanalways = new JMenu("目差视角");
     kata.add(katameanalways);
 
     final JCheckBoxMenuItem katameanblack = new JCheckBoxMenuItem("永远为黑视角");
@@ -566,7 +566,7 @@ public class Menu extends MenuBar {
     katameanalways.add(katameanblackwhite);
     katameanblackwhite.addActionListener(new ItemListeneryzy());
 
-    final JMenu katawingraphboard = new JMenu("KataGo目差在胜率图上显示");
+    final JMenu katawingraphboard = new JMenu("目差在胜率图上显示");
     kata.add(katawingraphboard);
 
     final JCheckBoxMenuItem katawinboardmean = new JCheckBoxMenuItem("目差");
@@ -605,7 +605,7 @@ public class Menu extends MenuBar {
           }
         });
 
-    final JMenu kataEstimate = new JMenu("KataGo评估显示");
+    final JMenu kataEstimate = new JMenu("Kata评估显示");
     kata.add(kataEstimate);
 
     final JCheckBoxMenuItem kataEstimate1 = new JCheckBoxMenuItem("关闭评估");
@@ -627,11 +627,11 @@ public class Menu extends MenuBar {
     kataEstimate.addSeparator();
 
     final JCheckBoxMenuItem kataEstimate5 = new JCheckBoxMenuItem("以方块大小表示占有率");
-    kataEstimate.add(kataEstimate5);
     kataEstimate5.addActionListener(new ItemListeneryzy());
 
     final JCheckBoxMenuItem kataEstimate6 = new JCheckBoxMenuItem("以方块透明度表示占有率");
     kataEstimate.add(kataEstimate6);
+    kataEstimate.add(kataEstimate5);
     kataEstimate6.addActionListener(new ItemListeneryzy());
 
     viewMenu.addMenuListener(
@@ -907,7 +907,7 @@ public class Menu extends MenuBar {
     contgames.add(continueGameWhiteItem);
 
     final JMenuItem newanaGame = new JMenuItem();
-    newanaGame.setText("人机对局(分析模式 ALT+N)");
+    newanaGame.setText("人机对局(分析模式 Alt+N)");
     newanaGame.addActionListener(
         new ActionListener() {
 
@@ -919,7 +919,7 @@ public class Menu extends MenuBar {
     newgames.add(newanaGame);
 
     final JMenuItem continueanaGameBlack = new JMenuItem();
-    continueanaGameBlack.setText("续弈(我执黑)(分析模式 ALT+回车)");
+    continueanaGameBlack.setText("续弈(我执黑)(分析模式 Alt+回车)");
 
     continueanaGameBlack.addActionListener(
         new ActionListener() {
@@ -947,7 +947,7 @@ public class Menu extends MenuBar {
     contgames.add(continueanaGameBlack);
 
     final JMenuItem continueanaGameWhite = new JMenuItem();
-    continueanaGameWhite.setText("续弈(我执白)(分析模式 ALT+回车)");
+    continueanaGameWhite.setText("续弈(我执白)(分析模式 Alt+回车)");
 
     continueanaGameWhite.addActionListener(
         new ActionListener() {
@@ -1026,7 +1026,7 @@ public class Menu extends MenuBar {
         });
 
     final JMenuItem branchStart = new JMenuItem();
-    branchStart.setText("返回主分支(CTRL+左)");
+    branchStart.setText("返回主分支(Ctrl+左)");
     // aboutItem.setMnemonic('A');
     branchStart.addActionListener(new ItemListeneryzy());
     gameMenu.add(branchStart);
@@ -1045,18 +1045,18 @@ public class Menu extends MenuBar {
     gameMenu.add(lastItem);
 
     final JMenuItem commetup = new JMenuItem();
-    commetup.setText("跳转到左分支(左)");
+    commetup.setText("跳转到左分支(←)");
     // aboutItem.setMnemonic('A');
     commetup.addActionListener(new ItemListeneryzy());
     gameMenu.add(commetup);
 
     final JMenuItem commetdown = new JMenuItem();
-    commetdown.setText("跳转到右分支(右)");
+    commetdown.setText("跳转到右分(→)");
     // aboutItem.setMnemonic('A');
     commetdown.addActionListener(new ItemListeneryzy());
     gameMenu.add(commetdown);
 
-    final JMenu analyMenu = new JMenu("分析 ", false);
+    final JMenu analyMenu = new JMenu("分析 ");
     analyMenu.setText(" 分析  ");
     analyMenu.setForeground(Color.BLACK);
     analyMenu.setFont(headFont);
