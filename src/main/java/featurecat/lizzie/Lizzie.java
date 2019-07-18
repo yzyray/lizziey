@@ -137,6 +137,7 @@ public class Lizzie {
     //      leelaz.estimatePassWinrate();
     //    }
     if (!frame.toolbar.isEnginePk) leelaz.ponder();
+    leelaz.setResponseUpToDate();
     Runnable runnable =
         new Runnable() {
           public void run() {

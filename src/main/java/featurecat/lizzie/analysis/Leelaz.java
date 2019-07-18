@@ -988,7 +988,11 @@ public class Leelaz {
 		} else {
 			String name = Lizzie.frame.Batchfiles[Lizzie.frame.BatchAnaNum].getName();
 			String path = Lizzie.frame.Batchfiles[Lizzie.frame.BatchAnaNum].getParent();
-			String filename = path + "\\" + name.replaceAll("\\..*$", "") + "_已分析.sgf";
+			String df = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());			
+			String prefix=name.substring(name.lastIndexOf("."));
+					      int num=prefix.length();		      
+		      String fileOtherName=name.substring(0, name.length()-num);		      
+			String filename = path + "\\" + fileOtherName + "_已分析_"+df+".sgf";
 			File autoSaveFile = new File(filename);
 			try {
 				SGFParser.save(Lizzie.board, autoSaveFile.getPath());

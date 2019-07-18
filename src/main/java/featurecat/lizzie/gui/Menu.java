@@ -3,6 +3,7 @@ package featurecat.lizzie.gui;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.*;
 import java.io.IOException;
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.json.JSONArray;
@@ -26,7 +26,7 @@ public class Menu extends MenuBar {
   public static JMenuItem[] engine = new JMenuItem[21];
   public static JMenu engineMenu;
   public static JMenu closeEngine;
-  // public static MenuBar menuBar;
+  public static MenuBar menuBar;
   JMenuItem closeall;
   JMenuItem forcecloseall;
   JMenuItem closeother;
@@ -37,38 +37,15 @@ public class Menu extends MenuBar {
   // private boolean onlyboard = false;
 
   public Menu() {
-    // super(owner);
-    // setLayout(null);
-    // setUndecorated(true);
-    // setResizable(true);
-    // setBounds(
-    // Lizzie.frame.getX() + Lizzie.frame.getInsets().left,
-    // Lizzie.frame.getY() + Lizzie.frame.getInsets().top,
-    // Lizzie.frame.getContentPane().getWidth(),
-    // 25);
-    //    Color hsbColor =
-    //        Color.getHSBColor(
-    //            Color.RGBtoHSB(232, 232, 232, null)[0],
-    //            Color.RGBtoHSB(232, 232, 232, null)[1],
-    //            Color.RGBtoHSB(232, 232, 232, null)[2]);
-    //    this.setBackground(hsbColor);
-    // JPanel bar = new JPanel(new BorderLayout());
-    setBorder(new EmptyBorder(0, 0, 0, 0));
-    //  menuBar = new MenuBar();
-    // bar.setBounds(0, 0, 450, 12);
 
-    //    menuBar.setColor(hsbColor);
-    //    this.add(bar);
-    //    bar.add(menuBar);
-
-    headFont = new Font("幼圆", Font.BOLD, 15);
+    headFont = new Font("", Font.PLAIN, 12);
     // onlyboard = Lizzie.config.uiConfig.optBoolean("only-board", false);
 
     final JMenu fileMenu = new JMenu(" 文件  "); // 创建“文件”菜单
     // fileMenu.setMnemonic('F'); // 设置快捷键
     fileMenu.setForeground(Color.BLACK);
     fileMenu.setFont(headFont);
-
+    setPreferredSize(new Dimension(100, 18));
     this.add(fileMenu);
     final JMenuItem openItem = new JMenuItem("打开棋谱(O)");
     openItem.addActionListener(new ItemListeneryzy());
@@ -1273,7 +1250,9 @@ public class Menu extends MenuBar {
     engineMenu = new JMenu("引擎 ", false);
     engineMenu.setText(" 引擎  ");
     engineMenu.setForeground(Color.BLACK);
+    headFont = new Font("", Font.BOLD, 15);
     engineMenu.setFont(headFont);
+    headFont = new Font("", Font.PLAIN, 12);
     this.add(engineMenu);
 
     icon = new ImageIcon();

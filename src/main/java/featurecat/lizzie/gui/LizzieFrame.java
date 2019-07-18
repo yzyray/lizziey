@@ -271,7 +271,8 @@ public class LizzieFrame extends JFrame {
     getContentPane().add(toolbar);
     getContentPane().setLayout(null);
     setJMenuBar(menu);
-    menu.setVisible(true);
+    // menu.add(Box.createRigidArea(new Dimension(600, 10)));
+    // menu.setVisible(true);
     mainPanel.setFocusable(true);
     this.getJMenuBar().setBorder(new EmptyBorder(0, 0, 0, 0));
     if (this.toolbarHeight == 0) toolbar.setVisible(false);
