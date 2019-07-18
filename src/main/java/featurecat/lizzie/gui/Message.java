@@ -24,8 +24,9 @@ public class Message extends JDialog {
   }
 
   public void setMessage(String message) {
+    String regex = "[\u4e00-\u9fa5]";
     lblmessage.setText(message);
-    setBounds(0, 0, message.length() * 15, 80);
+    setBounds(0, 0, message.replaceAll(regex, "12").length() * 8, 80);
     setLocationRelativeTo(getOwner());
   }
 }

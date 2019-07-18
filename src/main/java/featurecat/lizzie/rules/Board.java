@@ -251,6 +251,20 @@ public class Board implements LeelazListener {
     }
   }
 
+  public void resetbestmoves(BoardHistoryNode node) {
+    // if (node.getData().moveNumber <= movenumber) {
+    if (node.getData().getPlayouts() > 0) node.getData().tryToClearBestMoves();
+    // }
+    if (node.numberOfChildren() > 1) {
+      // Variation
+      for (BoardHistoryNode sub : node.getVariations()) {
+        resetbestmoves(sub);
+      }
+    } else if (node.numberOfChildren() == 1) {
+      resetbestmoves(node.next().orElse(null));
+    }
+  }
+
   public void clearbestmovesafter2(BoardHistoryNode node) {
     // if (node.getData().moveNumber <= movenumber) {
     // if (node.getData().getPlayouts() > 0) node.getData().isChanged = true;
@@ -2009,9 +2023,11 @@ public class Board implements LeelazListener {
   }
 
   public void clearBoardStat() {
-    if (isPkBoard) {
-      if (Lizzie.leelaz.isKatago) isPkBoardKataB = true;
-    }
+    isPkBoard = false;
+    isPkBoardKataB = false;
+    isPkBoardKataW = false;
+    isKataBoard = false;
+    resetbestmoves(history.getStart());
   }
 
   /** Clears all history and starts over from empty board. */
