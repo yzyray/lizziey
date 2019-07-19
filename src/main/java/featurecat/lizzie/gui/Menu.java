@@ -1637,7 +1637,7 @@ public class Menu extends MenuBar {
         Lizzie.config.toggleShowWinrate();
         return;
       }
-      if (menuItem.getText().startsWith("命令")) {
+      if (menuItem.getText().startsWith("Gtp")) {
         Lizzie.frame.toggleGtpConsole();
         return;
       }
