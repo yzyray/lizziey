@@ -634,12 +634,15 @@ public class SubBoardRenderer {
     branchOpt = Optional.empty();
 
     if (Lizzie.frame.isPlayingAgainstLeelaz) {
+      branchStonesImage = newImage;
       return;
     }
 
     // Leela Zero isn't connected yet
-    if (Lizzie.leelaz == null) return;
-
+    if (Lizzie.leelaz == null) {
+      branchStonesImage = newImage;
+      return;
+    }
     // calculate best moves and branch
     bestMoves = Lizzie.leelaz.getBestMoves();
     if (MoveData.getPlayouts(bestMoves) < Lizzie.board.getData().getPlayouts()) {
@@ -649,6 +652,7 @@ public class SubBoardRenderer {
     variationOpt = Optional.empty();
 
     if (isMainBoard && (isShowingRawBoard() || !Lizzie.config.showBranchNow())) {
+      branchStonesImage = newImage;
       return;
     }
 
@@ -664,7 +668,10 @@ public class SubBoardRenderer {
     // }
     if (!suggestedMove.isPresent()) {
       suggestedMove = getBestMove2();
-      if (!suggestedMove.isPresent()) return;
+      if (!suggestedMove.isPresent()) {
+        branchStonesImage = newImage;
+        return;
+      }
     }
     List<String> variation = suggestedMove.get().variation;
     Branch branch = null;

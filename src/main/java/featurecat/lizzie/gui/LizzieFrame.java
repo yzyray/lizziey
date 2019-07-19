@@ -2270,8 +2270,12 @@ public class LizzieFrame extends JFrame {
           && y >= subBoardYmouse) {
         if (e.getButton() == MouseEvent.BUTTON1) {
           subBoardRenderer.bestmovesNum++;
+          repaint();
         } else if (e.getButton() == MouseEvent.BUTTON3) {
-          if (subBoardRenderer.bestmovesNum >= 1) subBoardRenderer.bestmovesNum--;
+          if (subBoardRenderer.bestmovesNum >= 1) {
+            subBoardRenderer.bestmovesNum--;
+            repaint();
+          }
         }
 
         return true;
@@ -2290,6 +2294,7 @@ public class LizzieFrame extends JFrame {
           && x <= subBoardXmouse + subBoardLengthmouse
           && y <= subBoardYmouse + subBoardLengthmouse
           && y >= subBoardYmouse) {
+
         if (e.getWheelRotation() > 0) {
           doBranchSub(1);
           refresh();
@@ -2771,11 +2776,11 @@ public class LizzieFrame extends JFrame {
   }
 
   public void doBranchSub(int moveTo) {
-    if (moveTo > 0) {
-      if (subBoardRenderer.isShowingNormalBoard()) {
-        setDisplayedBranchLengthSub(2);
-        subBoardRenderer.wheeled = true;
-      } else {
+    if (subBoardRenderer.isShowingNormalBoard()) {
+      setDisplayedBranchLengthSub(2);
+      subBoardRenderer.wheeled = true;
+    } else if (moveTo > 0) {
+      {
         if (subBoardRenderer.getReplayBranch() > subBoardRenderer.getDisplayedBranchLength()) {
           subBoardRenderer.incrementDisplayedBranchLength(1);
           subBoardRenderer.wheeled = true;
