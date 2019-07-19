@@ -345,6 +345,8 @@ public class BottomToolbar extends JPanel {
           public void actionPerformed(ActionEvent e) {
             Lizzie.board.clearbestmoves();
             Lizzie.leelaz.setResponseUpToDate();
+            Lizzie.leelaz.sendCommand("clear_cache");
+            if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.ponder();
             Lizzie.frame.refresh();
           }
         });
