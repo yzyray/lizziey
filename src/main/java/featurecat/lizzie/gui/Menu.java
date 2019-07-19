@@ -1590,6 +1590,7 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("坐标")) {
         Lizzie.config.toggleCoordinates();
+        Lizzie.frame.refresh();
         return;
       }
       if (menuItem.getText().startsWith("放大小")) {
