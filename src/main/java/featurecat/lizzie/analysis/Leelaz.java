@@ -115,6 +115,8 @@ public class Leelaz {
 	public int blackResignMoveCounts = 0;
 	public int whiteResignMoveCounts = 0;
 	public boolean resigned = false;
+	public boolean isManualB=false;
+	public boolean isManualW=false;
 	public boolean doublePass = false;
 	public boolean outOfMoveNum = false;
 	public boolean played = false;
@@ -1472,6 +1474,14 @@ if(bestMoves.isEmpty())
 	public void pkResign() {
 		if (!resigned || isResigning)
 			return;
+		if(isManualB) {
+			isManualB=false;
+			blackResignMoveCounts=Lizzie.frame.toolbar.pkResignMoveCounts+1;
+		}
+		if(isManualW) {
+			isManualW=false;
+			whiteResignMoveCounts=Lizzie.frame.toolbar.pkResignMoveCounts+1;
+		}
 		isResigning = true;
 		resigned = false;
 		Lizzie.gtpConsole.addLine(currentEnginename + " 认输");
