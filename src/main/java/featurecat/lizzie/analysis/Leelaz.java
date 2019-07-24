@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 import java.util.Timer;
@@ -3012,6 +3013,22 @@ if(bestMoves.isEmpty())
 
 	public boolean isStarted() {
 		return started;
+	}
+	
+	//随机落子
+	public MoveData randomBestmove(List<MoveData> bestMoves,double diffWinrate)
+	{
+		double minWinrate=bestMoves.get(0).winrate-diffWinrate;
+		List<MoveData> bestMovesTemp = new ArrayList<>();
+		bestMovesTemp.add(bestMoves.get(0));
+		for(int i=1;i<bestMoves.size();i++)
+		{
+              if(bestMoves.get(i).winrate>=minWinrate)
+            	  bestMovesTemp.add(bestMoves.get(i));
+		}
+		    Random random = new Random();
+		         int n = random.nextInt(bestMovesTemp.size());		         
+		return bestMovesTemp.get(n);
 	}
 
 	public boolean isLoaded() {
