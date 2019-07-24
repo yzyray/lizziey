@@ -668,7 +668,16 @@ public class SubBoardRenderer {
     // }
     if (!suggestedMove.isPresent()) {
       suggestedMove = getBestMove2();
-      if (!suggestedMove.isPresent()) {
+      if (!suggestedMove.isPresent()) {    	  
+    	  g.setColor(new Color(0, 0, 0, 255));
+          g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+          g.setFont(new Font("", Font.PLAIN, stoneRadius * 5 / 4));
+          g.drawString("变化", boardWidth - stoneRadius * 13 / 3, boardWidth - stoneRadius * 1 / 3);  
+          g.setFont(new Font("", Font.PLAIN, stoneRadius * 3 / 2));
+          g.drawString(
+              "" + 1,
+              boardWidth - stoneRadius * 9 / 5,
+              boardWidth - stoneRadius * 1 / 3);
         branchStonesImage = newImage;
         return;
       }
@@ -713,15 +722,7 @@ public class SubBoardRenderer {
       g.setColor(new Color(0, 0, 0, 255));
       g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
       g.setFont(new Font("", Font.PLAIN, stoneRadius * 5 / 4));
-      g.drawString("变化", boardWidth - stoneRadius * 13 / 3, boardWidth - stoneRadius * 1 / 3);
-      //      drawString(
-      //              g,
-      //              boardWidth - stoneRadius * 4,
-      //              boardWidth - stoneRadius * 2 / 3,
-      //              LizzieFrame.uiFont,
-      //              "变化",
-      //              stoneRadius * 4,
-      //              stoneRadius *2 );
+      g.drawString("变化", boardWidth - stoneRadius * 13 / 3, boardWidth - stoneRadius * 1 / 3);  
       g.setFont(new Font("", Font.PLAIN, stoneRadius * 3 / 2));
       g.drawString(
           "" + (this.bestmovesNum + 1),
@@ -850,8 +851,7 @@ public class SubBoardRenderer {
         // don't write the move number if either: the move number is 0, or there will
         // already be
         // playout information written
-        if (moveNumberList[Board.getIndex(i, j)] > 0
-            && (!branchOpt.isPresent() || !Lizzie.frame.isMouseOver(i, j))) {
+        if (moveNumberList[Board.getIndex(i, j)] > 0) {
           boolean reverse = (moveNumberList[Board.getIndex(i, j)] > maxBranchMoves());
           if ((lastMoveOpt.isPresent() && lastMoveOpt.get()[0] == i && lastMoveOpt.get()[1] == j)) {
             if (reverse) continue;

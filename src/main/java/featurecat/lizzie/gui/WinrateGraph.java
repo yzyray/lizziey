@@ -12,7 +12,7 @@ public class WinrateGraph {
   private int DOT_RADIUS = 3;
   private int[] origParams = {0, 0, 0, 0};
   private int[] params = {0, 0, 0, 0, 0};
-  private int numMovesOfPlayed = 0;
+  // private int numMovesOfPlayed = 0;
   public int mode = 0;
   public double maxcoreMean = 30.0;
 
@@ -145,19 +145,21 @@ public class WinrateGraph {
       if (Lizzie.board.getHistory().getCurrentHistoryNode() != Lizzie.board.getHistory().getEnd())
         g.drawLine(x, posy, x, posy + height);
       g.setStroke(previousStroke);
-      String moveNumString = "" + node.getData().moveNumber;
-      int mw = g.getFontMetrics().stringWidth(moveNumString);
+      String moveNumString =
+          "" + Lizzie.board.getHistory().getCurrentHistoryNode().getData().moveNumber;
+      //  int mw = g.getFontMetrics().stringWidth(moveNumString);
       int margin = strokeRadius;
-      int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
-      if (node.getData().blackToPlay) {
-        g.setColor(Color.WHITE);
-      } else {
-        g.setColor(Color.BLACK);
-      }
+      //      int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
+      //      if (node.getData().blackToPlay) {
+      //
+      //      } else {
+      //        g.setColor(Color.BLACK);
+      //      }
+      g.setColor(Color.WHITE);
       if (Lizzie.board.getHistory().getCurrentHistoryNode() != Lizzie.board.getHistory().getEnd()) {
         Font f = new Font("", Font.BOLD, 12);
         g.setFont(f);
-        g.drawString(moveNumString, mx, posy + height - margin);
+        g.drawString(moveNumString, x, posy + height - margin);
       }
       while (node.previous().isPresent() && node.previous().get().previous().isPresent()) {
         double wr = 50;
@@ -309,12 +311,12 @@ public class WinrateGraph {
             g.drawLine(x, posy, x, posy + height);
             // Show move number
             String moveNumString = "" + node.getData().moveNumber;
-            int mw = g.getFontMetrics().stringWidth(moveNumString);
+            //    int mw = g.getFontMetrics().stringWidth(moveNumString);
             int margin = strokeRadius;
-            int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
+            // int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
             Font f = new Font("", Font.BOLD, 12);
             g.setFont(f);
-            g.drawString(moveNumString, mx, posy + height - margin);
+            g.drawString(moveNumString, x, posy + height - margin);
             g.setStroke(previousStroke);
           }
           if (playouts > 0) {
@@ -447,19 +449,19 @@ public class WinrateGraph {
 
             // Show move number
             String moveNumString = "" + node.getData().moveNumber;
-            int mw = g.getFontMetrics().stringWidth(moveNumString);
+            //   int mw = g.getFontMetrics().stringWidth(moveNumString);
             int margin = strokeRadius;
-            int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
-            if (node.getData().blackToPlay) {
-              g.setColor(Color.WHITE);
-            } else {
-              g.setColor(Color.BLACK);
-            }
+            //       int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
+            //            if (node.getData().blackToPlay) {
+            //              g.setColor(Color.WHITE);
+            //            } else {
+            //              g.setColor(Color.BLACK);
+            //            }
             if (Lizzie.board.getHistory().getCurrentHistoryNode()
                 != Lizzie.board.getHistory().getEnd()) {
               Font f = new Font("", Font.BOLD, 12);
               g.setFont(f);
-              g.drawString(moveNumString, mx, posy + height - margin);
+              g.drawString(moveNumString, x, posy + height - margin);
             }
             g.setStroke(previousStroke);
           }
@@ -882,6 +884,6 @@ public class WinrateGraph {
 
   /** Clears winrate status from empty board. */
   public void clear() {
-    this.numMovesOfPlayed = 0;
+    // this.numMovesOfPlayed = 0;
   }
 }
