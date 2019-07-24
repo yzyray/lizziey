@@ -1115,6 +1115,7 @@ public class Leelaz {
 			Lizzie.frame.toolbar.lastMove = Integer.parseInt(Lizzie.frame.toolbar.txtLastAnaMove.getText());
 		} catch (Exception ex) {
 		}
+	    Lizzie.board.clearBoardStat();
 		Lizzie.frame.toolbar.isAutoAna = true;
 		Lizzie.frame.toolbar.startAutoAna = true;
 		Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);
