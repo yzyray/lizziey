@@ -888,26 +888,8 @@ public class Menu extends MenuBar {
         });
     newgames.add(enginePk);
 
-    final JMenuItem newGameItem = new JMenuItem();
-    newGameItem.setText("人机对局(N)");
-    // aboutItem.setMnemonic('A');
-    newGameItem.addActionListener(new ItemListeneryzy());
-    newgames.add(newGameItem);
-
-    final JMenuItem continueGameBlackItem = new JMenuItem();
-    continueGameBlackItem.setText("续弈[我执黑](回车)");
-    // aboutItem.setMnemonic('A');
-    continueGameBlackItem.addActionListener(new ItemListeneryzy());
-    contgames.add(continueGameBlackItem);
-
-    final JMenuItem continueGameWhiteItem = new JMenuItem();
-    continueGameWhiteItem.setText("续弈[我执白](回车)");
-    // aboutItem.setMnemonic('A');
-    continueGameWhiteItem.addActionListener(new ItemListeneryzy());
-    contgames.add(continueGameWhiteItem);
-
     final JMenuItem newanaGame = new JMenuItem();
-    newanaGame.setText("人机对局(分析模式 Alt+N)");
+    newanaGame.setText("人机对局(N)");
     newanaGame.addActionListener(
         new ActionListener() {
 
@@ -918,8 +900,14 @@ public class Menu extends MenuBar {
         });
     newgames.add(newanaGame);
 
+    final JMenuItem newGameItem = new JMenuItem();
+    newGameItem.setText("人机对局(Genmove模式 Alt+N)");
+    // aboutItem.setMnemonic('A');
+    newGameItem.addActionListener(new ItemListeneryzy());
+    newgames.add(newGameItem);
+
     final JMenuItem continueanaGameBlack = new JMenuItem();
-    continueanaGameBlack.setText("续弈(我执黑)(分析模式 Alt+回车)");
+    continueanaGameBlack.setText("续弈[我执黑](回车)");
 
     continueanaGameBlack.addActionListener(
         new ActionListener() {
@@ -947,7 +935,7 @@ public class Menu extends MenuBar {
     contgames.add(continueanaGameBlack);
 
     final JMenuItem continueanaGameWhite = new JMenuItem();
-    continueanaGameWhite.setText("续弈(我执白)(分析模式 Alt+回车)");
+    continueanaGameWhite.setText("续弈[我执白](回车)");
 
     continueanaGameWhite.addActionListener(
         new ActionListener() {
@@ -973,6 +961,18 @@ public class Menu extends MenuBar {
         });
 
     contgames.add(continueanaGameWhite);
+
+    final JMenuItem continueGameBlackItem = new JMenuItem();
+    continueGameBlackItem.setText("续弈[我执黑](Genmove模式 Alt+回车)");
+    // aboutItem.setMnemonic('A');
+    continueGameBlackItem.addActionListener(new ItemListeneryzy());
+    contgames.add(continueGameBlackItem);
+
+    final JMenuItem continueGameWhiteItem = new JMenuItem();
+    continueGameWhiteItem.setText("续弈[我执白](Genmove模式 Alt+回车)");
+    // aboutItem.setMnemonic('A');
+    continueGameWhiteItem.addActionListener(new ItemListeneryzy());
+    contgames.add(continueGameWhiteItem);
     gameMenu.addSeparator();
     final JMenuItem breakplay = new JMenuItem();
     breakplay.setText("中断人机对局(空格)");
@@ -1557,7 +1557,7 @@ public class Menu extends MenuBar {
     Lizzie.frame.isPlayingAgainstLeelaz = false;
     GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
     NewAnaGameDialog newgame = new NewAnaGameDialog();
-    newgame.setGameInfo(gameInfo);
+    // newgame.setGameInfo(gameInfo);
     newgame.setVisible(true);
     newgame.dispose();
     if (newgame.isCancelled()) return;

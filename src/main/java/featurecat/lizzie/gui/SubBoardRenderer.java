@@ -668,15 +668,15 @@ public class SubBoardRenderer {
     // }
     if (!suggestedMove.isPresent()) {
       suggestedMove = getBestMove2();
-      if (!suggestedMove.isPresent()) {    	  
-    	  g.setColor(new Color(0, 0, 0, 255));
-          g.setFont(new Font("幼圆", Font.BOLD, stoneRadius * 5 / 4));
-          g.drawString("变化", boardWidth - stoneRadius * 14 / 3, boardWidth - stoneRadius * 1 / 3);  
-          g.setFont(new Font("", Font.BOLD, stoneRadius * 3 / 2));
-          g.drawString(
-              "" + (this.bestmovesNum + 1),
-              boardWidth - stoneRadius * 9 / 5,
-              boardWidth - stoneRadius * 1 / 5);
+      if (!suggestedMove.isPresent()) {
+        g.setColor(new Color(0, 0, 0, 255));
+        g.setFont(new Font("幼圆", Font.BOLD, stoneRadius * 5 / 4));
+        g.drawString("变化", boardWidth - stoneRadius * 14 / 3, boardWidth - stoneRadius * 1 / 3);
+        g.setFont(new Font("", Font.BOLD, stoneRadius * 3 / 2));
+        g.drawString(
+            "" + (this.bestmovesNum + 1),
+            boardWidth - stoneRadius * 9 / 5,
+            boardWidth - stoneRadius * 1 / 5);
         branchStonesImage = newImage;
         return;
       }
@@ -721,7 +721,7 @@ public class SubBoardRenderer {
       g = (Graphics2D) newImage.getGraphics();
       g.setColor(new Color(0, 0, 0, 255));
       g.setFont(new Font("幼圆", Font.BOLD, stoneRadius * 5 / 4));
-      g.drawString("变化", boardWidth - stoneRadius * 14 / 3, boardWidth - stoneRadius * 1 / 3);  
+      g.drawString("变化", boardWidth - stoneRadius * 14 / 3, boardWidth - stoneRadius * 1 / 3);
       g.setFont(new Font("", Font.BOLD, stoneRadius * 3 / 2));
       g.drawString(
           "" + (this.bestmovesNum + 1),

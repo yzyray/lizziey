@@ -174,7 +174,7 @@ public class LizzieFrame extends JFrame {
   public JPanel mainPanel;
   public int mainPanleX;
   public int mainPanleY;
-  public int toolbarHeight = 70;
+  public int toolbarHeight = 26;
   boolean isSmallCap = false;
   boolean firstTime = true;
   private HTMLDocument htmlDoc;
@@ -694,7 +694,7 @@ public class LizzieFrame extends JFrame {
     GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 
     NewGameDialog newGameDialog = new NewGameDialog();
-    newGameDialog.setGameInfo(gameInfo);
+    // newGameDialog.setGameInfo(gameInfo);
     newGameDialog.setVisible(true);
     boolean playerIsBlack = newGameDialog.playerIsBlack();
     newGameDialog.dispose();

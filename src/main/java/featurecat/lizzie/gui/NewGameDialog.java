@@ -52,7 +52,7 @@ public class NewGameDialog extends JDialog {
   private void initComponents() {
     setMinimumSize(new Dimension(100, 150));
     setResizable(false);
-    setTitle(resourceBundle.getString("NewGameDialog.title"));
+    setTitle("新的一局(Genmove模式)");
     setModal(true);
     try {
       this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
@@ -88,7 +88,9 @@ public class NewGameDialog extends JDialog {
     textFieldWhite = new JTextField();
     textFieldBlack = new JTextField();
     textFieldKomi = new JFormattedTextField(FORMAT_KOMI);
+    textFieldKomi.setText("7.5");
     textFieldHandicap = new JFormattedTextField(FORMAT_HANDICAP);
+    textFieldKomi.setText("0");
     textFieldHandicap.addPropertyChangeListener(evt -> modifyHandicap());
     textTime = new JTextField();
     textTime.setText(
@@ -109,6 +111,7 @@ public class NewGameDialog extends JDialog {
     contentPanel.add(textTime);
     contentPanel.add(new JLabel("AI是否后台思考"));
     contentPanel.add(chkPonder);
+    togglePlayerIsBlack();
 
     textFieldKomi.setEnabled(true);
 
@@ -122,7 +125,7 @@ public class NewGameDialog extends JDialog {
     humanTextField.setEnabled(true);
     humanTextField.setText(GameInfo.DEFAULT_NAME_HUMAN_PLAYER);
     computerTextField.setEnabled(false);
-    computerTextField.setText(GameInfo.DEFAULT_NAME_CPU_PLAYER);
+    computerTextField.setText(Lizzie.leelaz.currentEnginename);
   }
 
   private void modifyHandicap() {
@@ -193,7 +196,7 @@ public class NewGameDialog extends JDialog {
     textFieldKomi.setText(FORMAT_KOMI.format(gameInfo.getKomi()));
 
     // update player names
-    togglePlayerIsBlack();
+
   }
 
   public boolean playerIsBlack() {

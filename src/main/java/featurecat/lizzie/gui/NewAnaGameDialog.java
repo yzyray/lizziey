@@ -91,7 +91,9 @@ public class NewAnaGameDialog extends JDialog {
     textFieldWhite = new JTextField();
     textFieldBlack = new JTextField();
     textFieldKomi = new JFormattedTextField(FORMAT_KOMI);
+    textFieldKomi.setText("7.5");
     textFieldHandicap = new JFormattedTextField(FORMAT_HANDICAP);
+    textFieldKomi.setText("0");
     textFieldHandicap.addPropertyChangeListener(evt -> modifyHandicap());
     textTime = new JTextField();
     textTime.setText(
@@ -123,6 +125,7 @@ public class NewAnaGameDialog extends JDialog {
     contentPanel.add(new JLabel("AI每手首位计算量(选填)"));
     contentPanel.add(textFirstPlayouts);
 
+    togglePlayerIsBlack();
     textFieldKomi.setEnabled(true);
 
     dialogPane.add(contentPanel, BorderLayout.CENTER);
@@ -135,7 +138,7 @@ public class NewAnaGameDialog extends JDialog {
     humanTextField.setEnabled(true);
     humanTextField.setText(GameInfo.DEFAULT_NAME_HUMAN_PLAYER);
     computerTextField.setEnabled(false);
-    computerTextField.setText(GameInfo.DEFAULT_NAME_CPU_PLAYER);
+    computerTextField.setText(Lizzie.leelaz.currentEnginename);
   }
 
   private void modifyHandicap() {
@@ -313,7 +316,7 @@ public class NewAnaGameDialog extends JDialog {
     textFieldKomi.setText(FORMAT_KOMI.format(gameInfo.getKomi()));
 
     // update player names
-    togglePlayerIsBlack();
+
   }
 
   public boolean playerIsBlack() {

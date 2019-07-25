@@ -364,10 +364,11 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         // return;
         // }
         if (e.isAltDown()) {
-          Lizzie.frame.menu.newGame();
-        } else {
           if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
           LizzieFrame.startNewGame();
+        } else {
+          if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+          Lizzie.frame.menu.newGame();
         }
         break;
       case VK_SPACE:
@@ -577,6 +578,19 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         // return;
         // }
         if (e.isAltDown()) {
+          if (!Lizzie.leelaz.isThinking) {
+            Lizzie.leelaz.sendCommand(
+                "time_settings 0 "
+                    + Lizzie.config
+                        .config
+                        .getJSONObject("leelaz")
+                        .getInt("max-game-thinking-time-seconds")
+                    + " 1");
+            Lizzie.frame.playerIsBlack = !Lizzie.board.getData().blackToPlay;
+            Lizzie.frame.isPlayingAgainstLeelaz = true;
+            Lizzie.leelaz.genmove((Lizzie.board.getData().blackToPlay ? "B" : "W"));
+          }
+        } else {
           Lizzie.frame.toolbar.txtAutoPlayTime.setText(
               Lizzie.config.config.getJSONObject("leelaz").getInt("max-game-thinking-time-seconds")
                   + "");
@@ -594,19 +608,6 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           Lizzie.frame.isAnaPlayingAgainstLeelaz = true;
           Lizzie.frame.toolbar.isAutoPlay = true;
           Lizzie.leelaz.ponder();
-        } else {
-          if (!Lizzie.leelaz.isThinking) {
-            Lizzie.leelaz.sendCommand(
-                "time_settings 0 "
-                    + Lizzie.config
-                        .config
-                        .getJSONObject("leelaz")
-                        .getInt("max-game-thinking-time-seconds")
-                    + " 1");
-            Lizzie.frame.playerIsBlack = !Lizzie.board.getData().blackToPlay;
-            Lizzie.frame.isPlayingAgainstLeelaz = true;
-            Lizzie.leelaz.genmove((Lizzie.board.getData().blackToPlay ? "B" : "W"));
-          }
         }
         break;
 
