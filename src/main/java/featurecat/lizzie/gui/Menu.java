@@ -1381,6 +1381,7 @@ public class Menu extends MenuBar {
     engineMenu = new JMenu("引擎 ", false);
     engineMenu.setText(" 引擎  ");
     engineMenu.setForeground(Color.BLACK);
+    headFont = new Font("", Font.BOLD, 15);
     engineMenu.setFont(headFont);
     this.add(engineMenu);
     for (int i = 0; i < engine.length; i++) {
