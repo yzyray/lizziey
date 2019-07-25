@@ -103,6 +103,9 @@ public class EnginePkConfig extends JDialog {
             txtresignSetting2.setEnabled(false);
             txtGameMIN.setEnabled(false);
             chkGameMIN.setEnabled(false);
+            chkRandomMove.setEnabled(false);
+            txtRandomMove.setEnabled(false);
+            txtRandomDiffWinrate.setEnabled(false);
           }
 
           @Override
@@ -112,6 +115,9 @@ public class EnginePkConfig extends JDialog {
             txtresignSetting2.setEnabled(true);
             txtGameMIN.setEnabled(true);
             chkGameMIN.setEnabled(true);
+            chkRandomMove.setEnabled(true);
+            txtRandomMove.setEnabled(true);
+            txtRandomDiffWinrate.setEnabled(true);
           }
         });
     ButtonGroup wrgroup = new ButtonGroup();
