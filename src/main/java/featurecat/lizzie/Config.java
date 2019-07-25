@@ -941,6 +941,9 @@ public class Config {
     }
     toolbarParameter.put(Lizzie.frame.toolbar.minGanmeMove);
     toolbarParameter.put(Lizzie.frame.toolbar.checkGameMinMove);
+    toolbarParameter.put(Lizzie.frame.toolbar.isRandomMove);
+    toolbarParameter.put(Lizzie.frame.toolbar.randomMove);
+    toolbarParameter.put(Lizzie.frame.toolbar.randomDiffWinrate);
     persistedUi.put("toolbar-parameter", toolbarParameter);
 
     JSONArray movecountPos = new JSONArray();

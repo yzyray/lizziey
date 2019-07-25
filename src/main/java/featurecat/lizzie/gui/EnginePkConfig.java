@@ -29,12 +29,16 @@ public class EnginePkConfig extends JDialog {
   JCheckBox chkExchange;
   JCheckBox chkGameMAX;
   JCheckBox chkGameMIN;
+  JCheckBox chkRandomMove;
+
+  JTextField txtRandomMove;
+  JTextField txtRandomDiffWinrate;
 
   public EnginePkConfig() {
     setType(Type.POPUP);
     setModal(true);
     setTitle("引擎对战设置");
-    setBounds(0, 0, 490, 300);
+    setBounds(0, 0, 550, 300);
     setResizable(false);
     setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     setLayout(null);
@@ -55,12 +59,29 @@ public class EnginePkConfig extends JDialog {
     txtresignSetting2.setBounds(160, 7, 35, 18);
     lblresignSetting3.setBounds(195, 2, 15, 25);
 
-    JLabel lblExchange = new JLabel("交换黑白");
-    chkExchange = new JCheckBox();
-    add(lblExchange);
+    chkExchange = new JCheckBox("交换黑白");
     add(chkExchange);
-    chkExchange.setBounds(220, 6, 20, 18);
-    lblExchange.setBounds(240, 2, 50, 25);
+    chkExchange.setBounds(210, 6, 75, 18);
+
+    chkRandomMove = new JCheckBox("随机落子:前");
+    add(chkRandomMove);
+    chkRandomMove.setBounds(283, 6, 88, 18);
+
+    txtRandomMove = new JTextField();
+    add(txtRandomMove);
+    txtRandomMove.setBounds(372, 7, 30, 18);
+
+    JLabel lblRandomWinrate = new JLabel("手,胜率距首位");
+    add(lblRandomWinrate);
+    lblRandomWinrate.setBounds(402, 6, 85, 18);
+
+    txtRandomDiffWinrate = new JTextField();
+    add(txtRandomDiffWinrate);
+    txtRandomDiffWinrate.setBounds(480, 7, 35, 18);
+
+    JLabel lblRandomWinrate2 = new JLabel("%");
+    add(lblRandomWinrate2);
+    lblRandomWinrate2.setBounds(515, 6, 15, 18);
 
     JLabel lblnameSetting = new JLabel("多盘对战棋谱保存文件夹名(一次有效):");
     txtnameSetting = new JTextField();
@@ -135,8 +156,8 @@ public class EnginePkConfig extends JDialog {
     JLabel lblHints = new JLabel("注:  设置最大手数后,超过手数的对局将被中止并保存,不记入比分");
     JLabel lblHints2 = new JLabel("       如出现双方pass则不计入比分,但会记录棋谱");
     JLabel lblHints3 = new JLabel("       genmove模式下,引擎强烈建议添加 --noponder参数,否则可能争用资源并且显示混乱");
-    JLabel lblHints4 = new JLabel("       在genmove模式下,使用 genmove命令落子,只能按时间落子,认输阈值和计算量");
-    JLabel lblHints5 = new JLabel("       只受引擎参数限制(-r,-p,-v),界面上的设置无效,且固定92手前不会认输");
+    JLabel lblHints4 = new JLabel("       genmove模式下,使用 genmove命令,只能按时间落子,认输阈值、计算量、随机落子");
+    JLabel lblHints5 = new JLabel("       只受引擎参数限制(-r,-p,-v,-m),界面上的设置无效,且固定92手前不会认输");
     JLabel lblHints6 = new JLabel("       建议使用分析模式对战,熟悉引擎参数的用户并希望低V测试可以考虑genmove模式");
     lblHints3.setForeground(Color.RED);
     add(lblHints);
@@ -145,11 +166,11 @@ public class EnginePkConfig extends JDialog {
     add(lblHints4);
     add(lblHints5);
     add(lblHints6);
-    lblHints.setBounds(5, 90, 450, 20);
-    lblHints2.setBounds(5, 110, 450, 20);
+    lblHints.setBounds(5, 90, 470, 20);
+    lblHints2.setBounds(5, 110, 470, 20);
     lblHints3.setBounds(5, 130, 470, 20);
-    lblHints4.setBounds(5, 150, 450, 20);
-    lblHints5.setBounds(5, 170, 450, 20);
+    lblHints4.setBounds(5, 150, 470, 20);
+    lblHints5.setBounds(5, 170, 470, 20);
     lblHints6.setBounds(5, 190, 470, 20);
 
     JButton okButton = new JButton("确认");
@@ -197,6 +218,13 @@ public class EnginePkConfig extends JDialog {
       chkGameMIN.setSelected(true);
     }
     txtGameMIN.setText(Lizzie.frame.toolbar.minGanmeMove + "");
+
+    if (Lizzie.frame.toolbar.isRandomMove) {
+      chkRandomMove.setSelected(true);
+    }
+    if (Lizzie.frame.toolbar.randomMove > 0)
+      txtRandomMove.setText(Lizzie.frame.toolbar.randomMove + "");
+    txtRandomDiffWinrate.setText(Lizzie.frame.toolbar.randomDiffWinrate + "");
   }
 
   private void applyChange() {
@@ -213,6 +241,15 @@ public class EnginePkConfig extends JDialog {
     Lizzie.frame.toolbar.isGenmove = rdoGenmove.isSelected();
     Lizzie.frame.toolbar.batchPkName = txtnameSetting.getText();
     Lizzie.frame.toolbar.exChange = chkExchange.isSelected();
+    Lizzie.frame.toolbar.isRandomMove = chkRandomMove.isSelected();
+    try {
+      Lizzie.frame.toolbar.randomMove = Integer.parseInt(txtRandomMove.getText());
+    } catch (NumberFormatException err) {
+    }
+    try {
+      Lizzie.frame.toolbar.randomDiffWinrate = Double.parseDouble(txtRandomDiffWinrate.getText());
+    } catch (NumberFormatException err) {
+    }
 
     Lizzie.frame.toolbar.setGenmove();
 

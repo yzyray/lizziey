@@ -86,6 +86,10 @@ public class BottomToolbar extends JPanel {
   public int pkResignMoveCounts = 2;
   public double pkResginWinrate = 10;
   public boolean isEnginePkBatch = false;
+
+  public boolean isRandomMove = false;
+  public int randomMove = 30;
+  public double randomDiffWinrate = 0.1;
   // public int EnginePkBatchNumber = 1;
   public int EnginePkBatchNumberNow = 1;
   public String batchPkName = "";
@@ -1365,7 +1369,7 @@ public class BottomToolbar extends JPanel {
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter") != null
-        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 44) {
+        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 47) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("toolbar-parameter");
       if (pos.getInt(0) > 0) {
         this.txtFirstAnaMove.setText(pos.getInt(0) + "");
@@ -1480,8 +1484,11 @@ public class BottomToolbar extends JPanel {
       if (pos.getInt(41) > 0) {
         this.txtAutoSub.setText(pos.getInt(41) + "");
       }
-      maxGanmeMove = pos.getInt(42);
-      checkGameMaxMove = pos.getBoolean(43);
+      minGanmeMove = pos.getInt(42);
+      checkGameMinMove = pos.getBoolean(43);
+      isRandomMove = pos.getBoolean(44);
+      randomMove = pos.getInt(45);
+      randomDiffWinrate = pos.getDouble(46);
       setOrder();
     }
     if (chkAutoSub.isSelected()) {

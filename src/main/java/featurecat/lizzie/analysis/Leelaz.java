@@ -1999,8 +1999,13 @@ if(bestMoves.isEmpty())
 						nameCmd();
 						return;
 					}
-
-					if (bestMoves.get(0).coordinate.equals("pass")) {
+					
+					MoveData playMove=null;
+					if(Lizzie.frame.toolbar.isRandomMove&&Lizzie.board.getHistory().getMoveNumber()<=Lizzie.frame.toolbar.randomMove)
+						playMove=this.randomBestmove(bestMoves, Lizzie.frame.toolbar.randomDiffWinrate);
+					else
+						playMove=bestMoves.get(0);
+					if (playMove.coordinate.equals("pass")) {
 						Optional<int[]> passStep = Optional.empty();
 						Optional<int[]> lastMove = Lizzie.board.getLastMove();
 						if (lastMove == passStep) {
@@ -2039,7 +2044,7 @@ if(bestMoves.isEmpty())
 						return;
 					}
 
-					int coords[] = Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
+					int coords[] = Lizzie.board.convertNameToCoordinates(playMove.coordinate);
 
 					// nameCmd();
 					if (!Lizzie.frame.toolbar.isSameEngine && this.currentEngineN == Lizzie.frame.toolbar.engineBlack
@@ -2110,7 +2115,12 @@ if(bestMoves.isEmpty())
 						return;
 					}
 
-					if (bestMoves.get(0).coordinate.equals("pass")) {
+					MoveData playMove=null;
+					if(Lizzie.frame.toolbar.isRandomMove&&Lizzie.board.getHistory().getMoveNumber()<=Lizzie.frame.toolbar.randomMove)
+						playMove=this.randomBestmove(bestMoves, Lizzie.frame.toolbar.randomDiffWinrate);
+					else
+						playMove=bestMoves.get(0);
+					if (playMove.coordinate.equals("pass")) {
 						Optional<int[]> passStep = Optional.empty();
 						Optional<int[]> lastMove = Lizzie.board.getLastMove();
 						if (lastMove == passStep) {
@@ -2148,7 +2158,7 @@ if(bestMoves.isEmpty())
 						return;
 					}
 
-					int coords[] = Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
+					int coords[] = Lizzie.board.convertNameToCoordinates(playMove.coordinate);
 
 					// nameCmd();
 					if (!Lizzie.frame.toolbar.isSameEngine && this.currentEngineN == Lizzie.frame.toolbar.engineBlack
@@ -2221,7 +2231,12 @@ if(bestMoves.isEmpty())
 						return;
 					}
 
-					if (bestMoves.get(0).coordinate.equals("pass")) {
+					MoveData playMove=null;
+					if(Lizzie.frame.toolbar.isRandomMove&&Lizzie.board.getHistory().getMoveNumber()<=Lizzie.frame.toolbar.randomMove)
+						playMove=this.randomBestmove(bestMoves, Lizzie.frame.toolbar.randomDiffWinrate);
+					else
+						playMove=bestMoves.get(0);
+					if (playMove.coordinate.equals("pass")) {
 
 						Optional<int[]> passStep = Optional.empty();
 						Optional<int[]> lastMove = Lizzie.board.getLastMove();
@@ -2260,7 +2275,7 @@ if(bestMoves.isEmpty())
 						return;
 					}
 
-					int coords[] = Lizzie.board.convertNameToCoordinates(bestMoves.get(0).coordinate);
+					int coords[] = Lizzie.board.convertNameToCoordinates(playMove.coordinate);
 
 					// nameCmd();
 					if (!Lizzie.frame.toolbar.isSameEngine && this.currentEngineN == Lizzie.frame.toolbar.engineBlack
