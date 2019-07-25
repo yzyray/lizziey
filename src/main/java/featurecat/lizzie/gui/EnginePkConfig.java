@@ -185,8 +185,8 @@ public class EnginePkConfig extends JDialog {
     add(cancelButton);
     okButton.setMargin(new Insets(0, 0, 0, 0));
     cancelButton.setMargin(new Insets(0, 0, 0, 0));
-    okButton.setBounds(100, 220, 50, 30);
-    cancelButton.setBounds(170, 220, 50, 30);
+    okButton.setBounds(200, 225, 50, 30);
+    cancelButton.setBounds(270, 225, 50, 30);
 
     okButton.addActionListener(
         new ActionListener() {
