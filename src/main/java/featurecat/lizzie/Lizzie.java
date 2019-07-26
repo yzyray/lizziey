@@ -11,11 +11,7 @@ import featurecat.lizzie.gui.LoadEngine;
 import featurecat.lizzie.gui.Message;
 import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Board;
-
-import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
@@ -59,7 +55,7 @@ public class Lizzie {
     board = new Board();
     frame = new LizzieFrame();
     gtpConsole = new GtpConsolePane(frame);
-    
+
     try {
       Lizzie.engineManager = new EngineManager(Lizzie.config, index);
     } catch (Exception e) {

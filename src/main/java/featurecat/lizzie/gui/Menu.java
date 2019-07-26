@@ -1507,10 +1507,18 @@ public class Menu extends MenuBar {
     black.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.frame.blackorwhite = 1;
-            black.setIcon(iconblack2);
-            white.setIcon(iconwhite);
-            blackwhite.setIcon(iconbh);
+            featurecat.lizzie.gui.Input.insert = 0;
+            if (Lizzie.frame.blackorwhite != 1) {
+              Lizzie.frame.blackorwhite = 1;
+              black.setIcon(iconblack2);
+              white.setIcon(iconwhite);
+              blackwhite.setIcon(iconbh);
+            } else {
+              Lizzie.frame.blackorwhite = 0;
+              black.setIcon(iconblack);
+              white.setIcon(iconwhite);
+              blackwhite.setIcon(iconbh);
+            }
           }
         });
     black.setFocusable(false);
@@ -1522,10 +1530,18 @@ public class Menu extends MenuBar {
     white.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.frame.blackorwhite = 2;
-            black.setIcon(iconblack);
-            white.setIcon(iconwhite2);
-            blackwhite.setIcon(iconbh);
+            featurecat.lizzie.gui.Input.insert = 0;
+            if (Lizzie.frame.blackorwhite != 2) {
+              Lizzie.frame.blackorwhite = 2;
+              black.setIcon(iconblack);
+              white.setIcon(iconwhite2);
+              blackwhite.setIcon(iconbh);
+            } else {
+              Lizzie.frame.blackorwhite = 0;
+              black.setIcon(iconblack);
+              white.setIcon(iconwhite);
+              blackwhite.setIcon(iconbh);
+            }
           }
         });
     white.setFocusable(false);
@@ -1536,12 +1552,19 @@ public class Menu extends MenuBar {
     blackwhite = new JButton(iconbh);
     blackwhite.addActionListener(
         new ActionListener() {
+
           public void actionPerformed(ActionEvent e) {
             featurecat.lizzie.gui.Input.insert = 0;
-            Lizzie.frame.blackorwhite = 0;
-            black.setIcon(iconblack);
-            white.setIcon(iconwhite);
-            blackwhite.setIcon(iconbh2);
+            if (blackwhite.getIcon() == iconbh) {
+              Lizzie.frame.blackorwhite = 0;
+              black.setIcon(iconblack);
+              white.setIcon(iconwhite);
+              blackwhite.setIcon(iconbh2);
+            } else {
+              black.setIcon(iconblack);
+              white.setIcon(iconwhite);
+              blackwhite.setIcon(iconbh);
+            }
           }
         });
     blackwhite.setFocusable(false);
