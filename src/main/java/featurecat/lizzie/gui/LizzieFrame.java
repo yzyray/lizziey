@@ -19,6 +19,8 @@ import featurecat.lizzie.rules.GIBParser;
 import featurecat.lizzie.rules.Movelist;
 import featurecat.lizzie.rules.SGFParser;
 import featurecat.lizzie.rules.Stone;
+import featurecat.lizzie.util.Utils;
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -2863,7 +2865,7 @@ public class LizzieFrame extends JFrame {
       }
     }
   }
-
+  
   public void doBranch(int moveTo) {
     if (moveTo > 0) {
       if (boardRenderer.isShowingNormalBoard()) {
@@ -2883,4 +2885,54 @@ public class LizzieFrame extends JFrame {
       }
     }
   }
+  
+  public void saveImage() {
+	    JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
+	    JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
+	    chooser.setAcceptAllFileFilterUsed(false);
+	    //    String writerNames[] = ImageIO.getWriterFormatNames();
+	    FileNameExtensionFilter filter1 = new FileNameExtensionFilter("*.png", "PNG");
+	    FileNameExtensionFilter filter2 = new FileNameExtensionFilter("*.jpg", "JPG", "JPEG");
+	    FileNameExtensionFilter filter3 = new FileNameExtensionFilter("*.gif", "GIF");
+	    FileNameExtensionFilter filter4 = new FileNameExtensionFilter("*.bmp", "BMP");
+	    chooser.addChoosableFileFilter(filter1);
+	    chooser.addChoosableFileFilter(filter2);
+	    chooser.addChoosableFileFilter(filter3);
+	    chooser.addChoosableFileFilter(filter4);
+	    chooser.setMultiSelectionEnabled(false);
+	    int result = chooser.showSaveDialog(null);
+	    if (result == JFileChooser.APPROVE_OPTION) {
+	      File file = chooser.getSelectedFile();
+	      if (file.exists()) {
+	        int ret =
+	            JOptionPane.showConfirmDialog(
+	                null,
+	                "文件已存在,是否覆盖?",
+	                "提示",
+	                JOptionPane.OK_CANCEL_OPTION);
+	        if (ret == JOptionPane.CANCEL_OPTION) {
+	          return;
+	        }
+	      }
+	      String ext =
+	          chooser.getFileFilter() instanceof FileNameExtensionFilter
+	              ? ((FileNameExtensionFilter) chooser.getFileFilter()).getExtensions()[0].toLowerCase()
+	              : "";
+	      if (!Utils.isBlank(ext)) {
+	        if (!file.getPath().toLowerCase().endsWith("." + ext)) {
+	          file = new File(file.getPath() + "." + ext);
+	        }
+	      }
+	      BufferedImage bImg =
+	          new BufferedImage(this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	      Graphics2D cg = bImg.createGraphics();
+	    
+	      this.mainPanel.paintAll(cg);
+	      try {
+	        ImageIO.write(bImg, ext, file);
+	      } catch (IOException e) {
+	        e.printStackTrace();
+	      }
+	    }
+	  }
 }

@@ -468,8 +468,14 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
       case VK_S:
         // stop the ponder
+    	  if(e.isAltDown())
+    	  {
+    		  Lizzie.frame.saveImage();
+    	  }
+    	  else {
         if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
         LizzieFrame.saveFile();
+    	  }
         break;
 
       case VK_O:
