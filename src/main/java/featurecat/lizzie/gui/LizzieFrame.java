@@ -20,7 +20,6 @@ import featurecat.lizzie.rules.Movelist;
 import featurecat.lizzie.rules.SGFParser;
 import featurecat.lizzie.rules.Stone;
 import featurecat.lizzie.util.Utils;
-
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -66,6 +65,7 @@ public class LizzieFrame extends JFrame {
     resourceBundle.getString("LizzieFrame.commands.mouseWheelScroll"),
     "滚轮单击|落鼠标指向变化图的第一步,后续步可滚动滚轮继续查看",
     "滚轮长按或R|快速回放鼠标指向的变化图",
+    "鼠标指向小棋盘|左键/右键点击可切换小棋盘变化图,滚轮可控制变化图前进后退",
     "逗号|落最佳一手,如果鼠标指向变化图则落子到变化图结束",
     "B|显示恶手列表",
     "U|显示AI选点列表",
@@ -80,8 +80,6 @@ public class LizzieFrame extends JFrame {
     resourceBundle.getString("LizzieFrame.commands.keyPeriod"),
     resourceBundle.getString("LizzieFrame.commands.keyA"),
     resourceBundle.getString("LizzieFrame.commands.keyM"),
-    resourceBundle.getString("LizzieFrame.commands.keyO"),
-    resourceBundle.getString("LizzieFrame.commands.keyS"),
     resourceBundle.getString("LizzieFrame.commands.keyAltC"),
     resourceBundle.getString("LizzieFrame.commands.keyAltV"),
     resourceBundle.getString("LizzieFrame.commands.keyF"),
@@ -542,9 +540,17 @@ public class LizzieFrame extends JFrame {
     Lizzie.leelaz.toggleGtpConsole();
     if (Lizzie.gtpConsole != null) {
       Lizzie.gtpConsole.setVisible(!Lizzie.gtpConsole.isVisible());
+      Lizzie.config.leelazConfig.putOpt("print-comms", Lizzie.gtpConsole.isVisible());
     } else {
       Lizzie.gtpConsole = new GtpConsolePane(this);
       Lizzie.gtpConsole.setVisible(true);
+      Lizzie.config.leelazConfig.putOpt("print-comms", true);
+    }
+    try {
+      Lizzie.config.save();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
   }
 
@@ -2865,7 +2871,7 @@ public class LizzieFrame extends JFrame {
       }
     }
   }
-  
+
   public void doBranch(int moveTo) {
     if (moveTo > 0) {
       if (boardRenderer.isShowingNormalBoard()) {
@@ -2885,54 +2891,51 @@ public class LizzieFrame extends JFrame {
       }
     }
   }
-  
+
   public void saveImage() {
-	    JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
-	    JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
-	    chooser.setAcceptAllFileFilterUsed(false);
-	    //    String writerNames[] = ImageIO.getWriterFormatNames();
-	    FileNameExtensionFilter filter1 = new FileNameExtensionFilter("*.png", "PNG");
-	    FileNameExtensionFilter filter2 = new FileNameExtensionFilter("*.jpg", "JPG", "JPEG");
-	    FileNameExtensionFilter filter3 = new FileNameExtensionFilter("*.gif", "GIF");
-	    FileNameExtensionFilter filter4 = new FileNameExtensionFilter("*.bmp", "BMP");
-	    chooser.addChoosableFileFilter(filter1);
-	    chooser.addChoosableFileFilter(filter2);
-	    chooser.addChoosableFileFilter(filter3);
-	    chooser.addChoosableFileFilter(filter4);
-	    chooser.setMultiSelectionEnabled(false);
-	    int result = chooser.showSaveDialog(null);
-	    if (result == JFileChooser.APPROVE_OPTION) {
-	      File file = chooser.getSelectedFile();
-	      if (file.exists()) {
-	        int ret =
-	            JOptionPane.showConfirmDialog(
-	                null,
-	                "文件已存在,是否覆盖?",
-	                "提示",
-	                JOptionPane.OK_CANCEL_OPTION);
-	        if (ret == JOptionPane.CANCEL_OPTION) {
-	          return;
-	        }
-	      }
-	      String ext =
-	          chooser.getFileFilter() instanceof FileNameExtensionFilter
-	              ? ((FileNameExtensionFilter) chooser.getFileFilter()).getExtensions()[0].toLowerCase()
-	              : "";
-	      if (!Utils.isBlank(ext)) {
-	        if (!file.getPath().toLowerCase().endsWith("." + ext)) {
-	          file = new File(file.getPath() + "." + ext);
-	        }
-	      }
-	      BufferedImage bImg =
-	          new BufferedImage(this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
-	      Graphics2D cg = bImg.createGraphics();
-	    
-	      this.mainPanel.paintAll(cg);
-	      try {
-	        ImageIO.write(bImg, ext, file);
-	      } catch (IOException e) {
-	        e.printStackTrace();
-	      }
-	    }
-	  }
+    JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
+    JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
+    chooser.setAcceptAllFileFilterUsed(false);
+    //    String writerNames[] = ImageIO.getWriterFormatNames();
+    FileNameExtensionFilter filter1 = new FileNameExtensionFilter("*.png", "PNG");
+    FileNameExtensionFilter filter2 = new FileNameExtensionFilter("*.jpg", "JPG", "JPEG");
+    FileNameExtensionFilter filter3 = new FileNameExtensionFilter("*.gif", "GIF");
+    FileNameExtensionFilter filter4 = new FileNameExtensionFilter("*.bmp", "BMP");
+    chooser.addChoosableFileFilter(filter1);
+    chooser.addChoosableFileFilter(filter2);
+    chooser.addChoosableFileFilter(filter3);
+    chooser.addChoosableFileFilter(filter4);
+    chooser.setMultiSelectionEnabled(false);
+    int result = chooser.showSaveDialog(null);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      File file = chooser.getSelectedFile();
+      if (file.exists()) {
+        int ret =
+            JOptionPane.showConfirmDialog(null, "文件已存在,是否覆盖?", "提示", JOptionPane.OK_CANCEL_OPTION);
+        if (ret == JOptionPane.CANCEL_OPTION) {
+          return;
+        }
+      }
+      String ext =
+          chooser.getFileFilter() instanceof FileNameExtensionFilter
+              ? ((FileNameExtensionFilter) chooser.getFileFilter()).getExtensions()[0].toLowerCase()
+              : "";
+      if (!Utils.isBlank(ext)) {
+        if (!file.getPath().toLowerCase().endsWith("." + ext)) {
+          file = new File(file.getPath() + "." + ext);
+        }
+      }
+      BufferedImage bImg =
+          new BufferedImage(
+              this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+      Graphics2D cg = bImg.createGraphics();
+
+      this.mainPanel.paintAll(cg);
+      try {
+        ImageIO.write(bImg, ext, file);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
 }

@@ -41,7 +41,7 @@ public class Menu extends MenuBar {
     headFont = new Font("", Font.PLAIN, 12);
     // onlyboard = Lizzie.config.uiConfig.optBoolean("only-board", false);
 
-    final JMenu fileMenu = new JMenu(" 文件  ");     
+    final JMenu fileMenu = new JMenu(" 文件  ");
     fileMenu.setForeground(Color.BLACK);
     fileMenu.setFont(headFont);
     setPreferredSize(new Dimension(100, 18));
@@ -49,27 +49,26 @@ public class Menu extends MenuBar {
     final JMenuItem openItem = new JMenuItem("打开棋谱(O)");
     openItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openItem);
-    
+
     final JMenuItem openUrlItem = new JMenuItem("打开在线链接(Q)");
     openUrlItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openUrlItem);
-    
 
     final JMenuItem saveItem = new JMenuItem();
     saveItem.setText("保存棋谱(S)");
     saveItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(saveItem);
-    
+
     final JMenuItem saveImage = new JMenuItem();
     saveImage.setText("保存截图(Alt+S)");
     saveImage.addActionListener(
-            new ActionListener() {
+        new ActionListener() {
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                	Lizzie.frame.saveImage();
-                }
-              });
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.saveImage();
+          }
+        });
     fileMenu.add(saveImage);
 
     fileMenu.addSeparator();
@@ -139,7 +138,6 @@ public class Menu extends MenuBar {
             Lizzie.board.resumePreviousGame();
           }
         });
-
 
     final JMenuItem exitItem = new JMenuItem();
     exitItem.setText("强制退出");
@@ -1866,8 +1864,12 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("自动分")) {
-        Input.shouldDisableAnalysis = false;
-        Lizzie.board.toggleAnalysis();
+        StartAnaDialog newgame = new StartAnaDialog();
+        newgame.setVisible(true);
+        if (newgame.isCancelled()) {
+          Lizzie.frame.toolbar.resetAutoAna();
+          return;
+        }
         return;
       }
 
