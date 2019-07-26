@@ -12,6 +12,7 @@
     5,
     10
   ],
+  "ui-font-name": "Cambria Math",
   "minimum-blunder-bar-width": 3,
   "blunder-bar-color": [
     255,
@@ -38,9 +39,15 @@
     255,
     200
   ],
-  "board-image": "board.png",
-  "background-image": "background (2).jpg",
-  "show-comment-node-color": true,
+  "board-image": "board7.jpg",
+  "scoremean-line-color": [
+    255,
+    0,
+    255
+  ],
+  "font-name": "Arial Black",
+  "background-image": "background2.png",
+  "show-comment-node-color": false,
   "comment-font-color": [
     255,
     255,
