@@ -1226,7 +1226,7 @@ public class BoardRenderer {
                         g,
                         suggestionX,
                         suggestionY + stoneRadius * 4 / 9,
-                        LizzieFrame.uiFont,
+                        LizzieFrame.winrateFont,
                         Lizzie.frame.getPlayoutsString(move.playouts),
                         (float) (stoneRadius * 1.0),
                         stoneRadius * 1.6);
@@ -1279,7 +1279,7 @@ public class BoardRenderer {
                         g,
                         suggestionX,
                         suggestionY + stoneRadius * 1 / 16,
-                        LizzieFrame.uiFont,
+                        LizzieFrame.winrateFont,
                         Lizzie.frame.getPlayoutsString(move.playouts),
                         (float) (stoneRadius * 0.8),
                         stoneRadius * 1.4);
@@ -1303,7 +1303,7 @@ public class BoardRenderer {
                         g,
                         suggestionX,
                         suggestionY + stoneRadius * 12 / 16,
-                        LizzieFrame.uiFont,
+                        LizzieFrame.winrateFont,
                         String.format("%.1f", score),
                         (float) (stoneRadius * 0.75),
                         stoneRadius * 1.3);
@@ -1384,7 +1384,7 @@ public class BoardRenderer {
                         g,
                         suggestionX,
                         suggestionY + stoneRadius * 4 / 9,
-                        LizzieFrame.uiFont,
+                        LizzieFrame.winrateFont,
                         Lizzie.frame.getPlayoutsString(move.playouts),
                         (float) (stoneRadius * 1.0),
                         stoneRadius * 1.6);
@@ -1393,7 +1393,7 @@ public class BoardRenderer {
                         g,
                         suggestionX,
                         suggestionY,
-                        LizzieFrame.uiFont,
+                        LizzieFrame.winrateFont,
                         Lizzie.frame.getPlayoutsString(move.playouts),
                         (float) (stoneRadius * 2),
                         stoneRadius * 2);

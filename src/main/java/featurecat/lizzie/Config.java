@@ -410,6 +410,11 @@ public class Config {
     } else {
       allowMoveNumber = (allowMoveNumber == 0 ? -1 : 0);
     }
+    Lizzie.config.uiConfig.put("allow-move-number", allowMoveNumber);
+    try {
+      Lizzie.config.save();
+    } catch (IOException es) {
+    }
   }
 
   public void toggleNodeColorMode() {
