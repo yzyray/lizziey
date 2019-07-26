@@ -884,6 +884,71 @@ public class LizzieFrame extends JFrame {
     }
   }
 
+  public void openFileWithAna() {
+    boolean ponder = false;
+    if (Lizzie.leelaz.isPondering()) {
+      ponder = true;
+      Lizzie.leelaz.togglePonder();
+    }
+    boolean onTop = false;
+    JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
+    JFrame frame = new JFrame();
+    FileDialog fileDialog = new FileDialog(frame, "选择棋谱");
+    if (this.isAlwaysOnTop()) {
+      this.setAlwaysOnTop(false);
+      fileDialog.setAlwaysOnTop(true);
+      onTop = true;
+    }
+
+    fileDialog.setLocationRelativeTo(null);
+    fileDialog.setDirectory(filesystem.getString("last-folder"));
+    fileDialog.setFile("*.sgf;*.gib;*.SGF;*.GIB;");
+
+    fileDialog.setMultipleMode(true);
+    fileDialog.setMode(0);
+    fileDialog.setVisible(true);
+
+    File[] files = fileDialog.getFiles();
+    if (onTop) this.setAlwaysOnTop(true);
+    if (files.length > 0) {
+      isBatchAna = true;
+      BatchAnaNum = 0;
+      Batchfiles = files;
+      loadFile(files[0]);
+      toolbar.chkAnaAutoSave.setSelected(true);
+      toolbar.chkAnaAutoSave.setEnabled(false);
+
+      Lizzie.frame.toolbarHeight = 70;
+      toolbar.detail.setIcon(toolbar.iconDown);
+      Lizzie.frame.toolbar.setVisible(true);
+      Lizzie.frame.mainPanel.setBounds(
+          0,
+          0,
+          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
+          Lizzie.frame.getHeight()
+              - Lizzie.frame.getJMenuBar().getHeight()
+              - Lizzie.frame.getInsets().top
+              - Lizzie.frame.getInsets().bottom
+              - Lizzie.frame.toolbarHeight);
+      Lizzie.frame.toolbar.setBounds(
+          0,
+          Lizzie.frame.getHeight()
+              - Lizzie.frame.getJMenuBar().getHeight()
+              - Lizzie.frame.getInsets().top
+              - Lizzie.frame.getInsets().bottom
+              - Lizzie.frame.toolbarHeight,
+          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
+          Lizzie.frame.toolbarHeight);
+    }
+    // 打开分析界面
+    StartAnaDialog newgame = new StartAnaDialog();
+    newgame.setVisible(true);
+    if (newgame.isCancelled()) {
+      toolbar.resetAutoAna();
+      return;
+    }
+  }
+
   public static void loadFile(File file) {
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     if (!(file.getPath().endsWith(".sgf") || file.getPath().endsWith(".gib"))) {

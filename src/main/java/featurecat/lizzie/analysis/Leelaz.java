@@ -1130,21 +1130,28 @@ public class Leelaz {
 if(bestMoves.isEmpty())
 	return;
 			if (Lizzie.frame.toolbar.startAutoAna) {
+				setResponseUpToDate();
 				Lizzie.frame.toolbar.startAutoAna = false;
 				if (Lizzie.frame.toolbar.firstMove != -1) {
 
 					// while (Lizzie.board.previousMove());
-					Timer timer = new Timer();
-					timer.schedule(new TimerTask() {
-						public void run() {
+//					Timer timer = new Timer();
+//					timer.schedule(new TimerTask() {
+//						public void run() {
 							Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);
 							ponder();
 							Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);
 							Lizzie.frame.toolbar.isAutoAna = true;
-							this.cancel();
-						}
-					}, 50);
-
+//							this.cancel();
+//						}
+//					}, 50);
+//					try {
+//						Thread.sleep(60);
+						setResponseUpToDate();
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
 				}
 				if (!Lizzie.board.getHistory().getNext().isPresent()) {
 					Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
@@ -1191,7 +1198,19 @@ if(bestMoves.isEmpty())
 					} catch (NumberFormatException err) {
 					}
 				}
-
+				if(Lizzie.board.getHistory().isBlacksTurn()&&!Lizzie.frame.toolbar.chkAnaBlack.isSelected())
+				{
+					Lizzie.board.nextMove();
+					analysed = true;
+					return;
+				}
+				if(!Lizzie.board.getHistory().isBlacksTurn()&&!Lizzie.frame.toolbar.chkAnaWhite.isSelected())
+				{
+					Lizzie.board.nextMove();
+					analysed = true;
+					return;
+				}
+				
 				if (firstPlayouts > 0) {
 					if (bestMoves.get(0).playouts >= firstPlayouts) {
 						Lizzie.board.nextMove();

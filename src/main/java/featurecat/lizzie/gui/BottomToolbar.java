@@ -102,6 +102,8 @@ public class BottomToolbar extends JPanel {
   public JCheckBox chkAnaPlayouts;
   public JCheckBox chkAnaFirstPlayouts;
   public JCheckBox chkAnaAutoSave;
+  public JCheckBox chkAnaBlack;
+  public JCheckBox chkAnaWhite;
 
   public JCheckBox chkShowBlack;
   public JCheckBox chkShowWhite;
@@ -230,7 +232,7 @@ public class BottomToolbar extends JPanel {
     heatMap = new JButton("策略网络");
     backMain = new JButton("返回主分支");
     setMain = new JButton("设为主分支");
-    batchOpen = new JButton("批量打开");
+    batchOpen = new JButton("批量分析");
     refresh = new JButton("刷新");
     tryPlay = new JButton("试下");
     komi = new JButton("贴目");
@@ -370,7 +372,7 @@ public class BottomToolbar extends JPanel {
     batchOpen.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.frame.openFileAll();
+            Lizzie.frame.openFileWithAna();
           }
         });
 
@@ -657,16 +659,41 @@ public class BottomToolbar extends JPanel {
           }
         });
     anaPanel.add(lblchkAutoAnalyse);
-    chkAutoAnalyse.setBounds(5, 1, 20, 18);
-    lblchkAutoAnalyse.setBounds(25, 0, 60, 20);
+    chkAutoAnalyse.setBounds(1, 1, 20, 18);
+    lblchkAutoAnalyse.setBounds(21, 0, 60, 20);
+    chkAnaBlack = new JCheckBox("黑");
+    chkAnaWhite = new JCheckBox("白");
+    chkAnaBlack.setFocusable(false);
+    chkAnaWhite.setFocusable(false);
+    chkAnaBlack.setSelected(true);
+    chkAnaWhite.setSelected(true);
+    chkAnaBlack.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD
+            setTxtUnfocuse();
+          }
+        });
+    chkAnaWhite.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD
+            setTxtUnfocuse();
+          }
+        });
+    anaPanel.add(chkAnaBlack);
+    anaPanel.add(chkAnaWhite);
+    chkAnaBlack.setBounds(68, 1, 40, 20);
 
     lblAnaMove = new JLabel("手数:");
-    lblAnaMove.setBounds(78, 0, 40, 20);
+    lblAnaMove.setBounds(108, 0, 40, 20);
     anaPanel.add(lblAnaMove);
 
     txtFirstAnaMove = new JTextField();
     anaPanel.add(txtFirstAnaMove);
-    txtFirstAnaMove.setBounds(108, 2, 37, 18);
+    txtFirstAnaMove.setBounds(138, 2, 30, 18);
 
     txtFirstAnaMove.addFocusListener(
         new FocusListener() {
@@ -686,12 +713,12 @@ public class BottomToolbar extends JPanel {
         });
 
     lblAnaMoveAnd = new JLabel("到");
-    lblAnaMoveAnd.setBounds(147, 0, 15, 20);
+    lblAnaMoveAnd.setBounds(170, 0, 15, 20);
     anaPanel.add(lblAnaMoveAnd);
 
     txtLastAnaMove = new JTextField();
     anaPanel.add(txtLastAnaMove);
-    txtLastAnaMove.setBounds(162, 2, 38, 18);
+    txtLastAnaMove.setBounds(185, 2, 30, 18);
 
     txtLastAnaMove.addFocusListener(
         new FocusListener() {
@@ -709,6 +736,58 @@ public class BottomToolbar extends JPanel {
             // 获得焦点执行的代码
           }
         });
+    lblAnaFirstPlayouts = new JLabel("首位计算量:");
+    chkAnaFirstPlayouts = new JCheckBox();
+    chkAnaFirstPlayouts.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD
+            setTxtUnfocuse();
+          }
+        });
+
+    anaPanel.add(chkAnaFirstPlayouts);
+    anaPanel.add(lblAnaFirstPlayouts);
+    chkAnaFirstPlayouts.setBounds(215, 1, 20, 18);
+    lblAnaFirstPlayouts.setBounds(234, 0, 80, 20);
+    txtAnaFirstPlayouts = new JTextField();
+    anaPanel.add(txtAnaFirstPlayouts);
+    txtAnaFirstPlayouts.setBounds(298, 2, 45, 18);
+
+    chkAnaAutoSave = new JCheckBox();
+    anaPanel.add(chkAnaAutoSave);
+    chkAnaAutoSave.setBounds(1, 22, 20, 20);
+    lblAnaAutoSave = new JLabel("自动保存");
+    anaPanel.add(lblAnaAutoSave);
+    lblAnaAutoSave.setBounds(21, 22, 50, 20);
+    chkAnaAutoSave.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD
+            setTxtUnfocuse();
+          }
+        });
+
+    chkAnaWhite.setBounds(68, 22, 40, 20);
+    chkAnaPlayouts = new JCheckBox();
+    chkAnaPlayouts.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD
+            setTxtUnfocuse();
+          }
+        });
+    lbltxtAnaPlayouts = new JLabel("总计算量:");
+    anaPanel.add(chkAnaPlayouts);
+    anaPanel.add(lbltxtAnaPlayouts);
+    chkAnaPlayouts.setBounds(104, 22, 20, 20);
+    lbltxtAnaPlayouts.setBounds(124, 22, 80, 20);
+    txtAnaPlayouts = new JTextField();
+    anaPanel.add(txtAnaPlayouts);
+    txtAnaPlayouts.setBounds(175, 23, 50, 18);
 
     chkAnaTime = new JCheckBox();
     lbltxtAnaTime = new JLabel("按时间(秒):");
@@ -724,62 +803,11 @@ public class BottomToolbar extends JPanel {
 
     anaPanel.add(chkAnaTime);
     anaPanel.add(lbltxtAnaTime);
-    chkAnaTime.setBounds(205, 1, 20, 18);
-    lbltxtAnaTime.setBounds(225, 0, 80, 20);
+    chkAnaTime.setBounds(230, 22, 20, 20);
+    lbltxtAnaTime.setBounds(250, 22, 80, 20);
     txtAnaTime = new JTextField();
     anaPanel.add(txtAnaTime);
-    txtAnaTime.setBounds(290, 2, 50, 18);
-
-    chkAnaAutoSave = new JCheckBox();
-    anaPanel.add(chkAnaAutoSave);
-    chkAnaAutoSave.setBounds(5, 22, 20, 20);
-    lblAnaAutoSave = new JLabel("自动保存");
-    anaPanel.add(lblAnaAutoSave);
-    lblAnaAutoSave.setBounds(25, 22, 50, 20);
-    chkAnaAutoSave.addActionListener(
-        new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            // TBD
-            setTxtUnfocuse();
-          }
-        });
-
-    chkAnaPlayouts = new JCheckBox();
-    chkAnaPlayouts.addActionListener(
-        new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            // TBD
-            setTxtUnfocuse();
-          }
-        });
-    lbltxtAnaPlayouts = new JLabel("总计算量:");
-    anaPanel.add(chkAnaPlayouts);
-    anaPanel.add(lbltxtAnaPlayouts);
-    chkAnaPlayouts.setBounds(75, 22, 20, 20);
-    lbltxtAnaPlayouts.setBounds(95, 22, 80, 20);
-    txtAnaPlayouts = new JTextField();
-    anaPanel.add(txtAnaPlayouts);
-    txtAnaPlayouts.setBounds(150, 23, 50, 18);
-
-    chkAnaFirstPlayouts = new JCheckBox();
-    chkAnaFirstPlayouts.addActionListener(
-        new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            // TBD
-            setTxtUnfocuse();
-          }
-        });
-    lblAnaFirstPlayouts = new JLabel("首位计算量:");
-    anaPanel.add(chkAnaFirstPlayouts);
-    anaPanel.add(lblAnaFirstPlayouts);
-    chkAnaFirstPlayouts.setBounds(205, 22, 20, 20);
-    lblAnaFirstPlayouts.setBounds(225, 22, 80, 20);
-    txtAnaFirstPlayouts = new JTextField();
-    anaPanel.add(txtAnaFirstPlayouts);
-    txtAnaFirstPlayouts.setBounds(290, 23, 50, 18);
+    txtAnaTime.setBounds(310, 23, 33, 18);
 
     chkAutoPlay = new JCheckBox();
     chkAutoPlay.addActionListener(
@@ -1369,7 +1397,7 @@ public class BottomToolbar extends JPanel {
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter") != null
-        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 47) {
+        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 49) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("toolbar-parameter");
       if (pos.getInt(0) > 0) {
         this.txtFirstAnaMove.setText(pos.getInt(0) + "");
@@ -1489,6 +1517,8 @@ public class BottomToolbar extends JPanel {
       isRandomMove = pos.getBoolean(44);
       randomMove = pos.getInt(45);
       randomDiffWinrate = pos.getDouble(46);
+      chkAnaBlack.setSelected(pos.getBoolean(47));
+      chkAnaWhite.setSelected(pos.getBoolean(48));
       setOrder();
     }
     if (chkAutoSub.isSelected()) {
@@ -2357,7 +2387,28 @@ public class BottomToolbar extends JPanel {
     //    }
   }
 
-  private void startAutoAna() {
+  public void resetAutoAna() {
+    chkAnaBlack.setText("黑");
+    chkAnaWhite.setText("白");
+    txtFirstAnaMove.setBounds(138, 2, 30, 18);
+    txtLastAnaMove.setBounds(185, 2, 30, 18);
+    txtAnaFirstPlayouts.setBounds(298, 2, 45, 18);
+    chkAnaWhite.setBounds(68, 22, 40, 20);
+    chkAnaBlack.setBounds(68, 1, 40, 20);
+    txtAnaTime.setBounds(310, 23, 33, 18);
+    chkAnaAutoSave.setBounds(1, 22, 20, 20);
+    txtAnaPlayouts.setBounds(175, 23, 50, 18);
+    anaPanel.add(txtFirstAnaMove);
+    anaPanel.add(txtLastAnaMove);
+    anaPanel.add(txtAnaFirstPlayouts);
+    anaPanel.add(chkAnaWhite);
+    anaPanel.add(chkAnaBlack);
+    anaPanel.add(txtAnaTime);
+    anaPanel.add(chkAnaAutoSave);
+    anaPanel.add(txtAnaPlayouts);
+  }
+
+  public void startAutoAna() {
     isAutoAna = true;
     startAutoAna = true;
     Lizzie.board.clearBoardStat();

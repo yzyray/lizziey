@@ -1074,6 +1074,11 @@ public class Menu extends MenuBar {
     autoanItem.addActionListener(new ItemListeneryzy());
     analyMenu.add(autoanItem);
 
+    final JMenuItem batchana = new JMenuItem("批量分析(Alt+O)");
+    batchana.addActionListener(new ItemListeneryzy());
+    analyMenu.add(batchana);
+    analyMenu.addSeparator();
+
     final JMenuItem heatItem = new JMenuItem();
     heatItem.setText("策略网络(H)");
     heatItem.addActionListener(new ItemListeneryzy());
@@ -2073,7 +2078,7 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("批量")) {
-        Lizzie.frame.openFileAll();
+        Lizzie.frame.openFileWithAna();
         return;
       }
       if (menuItem.getText().startsWith("停一")) {
