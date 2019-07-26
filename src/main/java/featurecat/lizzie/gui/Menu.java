@@ -5,6 +5,7 @@ import featurecat.lizzie.analysis.GameInfo;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public class Menu extends MenuBar {
   JMenuItem restartZen;
   JMenuItem config;
   JMenuItem moreconfig;
+  JButton black;
+  JButton white;
+  JButton blackwhite;
   Message msg;
   // private boolean onlyboard = false;
 
@@ -1176,7 +1180,7 @@ public class Menu extends MenuBar {
     editMenu.setFont(headFont);
     this.add(editMenu);
 
-    ImageIcon iconblack = new ImageIcon();
+    ImageIcon  iconblack = new ImageIcon();
     try {
       iconblack.setImage(
           ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/smallblack.png")));
@@ -1225,6 +1229,18 @@ public class Menu extends MenuBar {
     bhItem.addActionListener(new ItemListeneryzy());
     editMenu.add(bhItem);
     bhItem.setIcon(iconbh);
+    
+    final JMenuItem openEditToolbar = new JMenuItem();
+    openEditToolbar.setText("显示落子工具");
+    editMenu.add(openEditToolbar);
+
+    openEditToolbar.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+         //  Lizzie.frame.openEditToolbar();
+          }
+        });
+    
     editMenu.addSeparator();
 
     final JMenuItem insertbItem = new JMenuItem();
@@ -1245,6 +1261,8 @@ public class Menu extends MenuBar {
     bhisItem.addActionListener(new ItemListeneryzy());
     editMenu.add(bhisItem);
 
+
+   
     editMenu.addSeparator();
 
     final JCheckBoxMenuItem allowdrag = new JCheckBoxMenuItem();
@@ -1444,6 +1462,41 @@ public class Menu extends MenuBar {
     //            Lizzie.frame.openMoreEngineDialog();
     //          }
     //        });
+    black = new JButton(iconblack);
+    black.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                	 Lizzie.frame.blackorwhite = 1;
+                }
+              });
+    black.setFocusable(false);
+    black.setMargin(new Insets(0, 0, 0, 0));
+    this.add(black);
+    
+    
+    white = new JButton(iconwhite);
+    white.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                	Lizzie.frame.blackorwhite = 2;
+                }
+              });
+    white.setFocusable(false);
+    white.setMargin(new Insets(0, 0, 0, 0));
+    this.add(white);
+    
+    
+    blackwhite = new JButton(iconbh);
+    blackwhite.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                	 featurecat.lizzie.gui.Input.insert = 0;
+                     Lizzie.frame.blackorwhite = 0;
+                }
+              });
+    blackwhite.setFocusable(false);
+    blackwhite.setMargin(new Insets(0, -2, 0, -2));
+    this.add(blackwhite);
   }
 
   public void updateEngineMenuone() {

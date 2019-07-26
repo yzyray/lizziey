@@ -110,7 +110,7 @@ public class LizzieFrame extends JFrame {
   public static WinrateGraph winrateGraph;
   public static Menu menu;
   public static BottomToolbar toolbar;
-
+ // public static EditToolbar editToolbar;
   public Optional<List<String>> variationOpt;
 
   public static boolean urlSgf = false;
@@ -223,10 +223,12 @@ public class LizzieFrame extends JFrame {
     winrateGraph = new WinrateGraph();
     toolbar = new BottomToolbar();
     menu = new Menu();
+   
     // MenuTest menu = new MenuTest();
     // add(menu);
     // this.setJMenuBar(menu);
     // this.setVisible(true);
+  
     this.setAlwaysOnTop(Lizzie.config.mainsalwaysontop);
     setMinimumSize(new Dimension(640, 400));
     boolean persisted = Lizzie.config.persistedUi != null;
@@ -271,6 +273,7 @@ public class LizzieFrame extends JFrame {
     getContentPane().add(toolbar);
     getContentPane().setLayout(null);
     setJMenuBar(menu);
+   
     // menu.add(Box.createRigidArea(new Dimension(600, 10)));
     // menu.setVisible(true);
     mainPanel.setFocusable(true);
@@ -419,6 +422,7 @@ public class LizzieFrame extends JFrame {
     mainPanel.addMouseMotionListener(input);
     toolbar.addMouseWheelListener(input);
     addInput();
+  
   }
 
   public void addInput() {
@@ -454,6 +458,22 @@ public class LizzieFrame extends JFrame {
     OnlineDialog onlineDialog = new OnlineDialog();
     onlineDialog.setVisible(true);
   }
+  
+//  public void openEditToolbar() {
+//	  editToolbar = new EditToolbar(this);
+//	  editToolbar.setVisible(true);
+//	  if((mainPanel.getWidth()/2-30)<400)
+//		  editToolbar.setLocation(this.getX()+400,this.getY()+ this.getInsets().top);  
+//	  else
+//	  editToolbar.setLocation(this.getX()+mainPanel.getWidth()/2-30,this.getY()+ this.getInsets().top);
+//	  }
+//  public void resetEditToolbarLocation(){
+//	  if((mainPanel.getWidth()/2-30)<400)
+//		  editToolbar.setLocation(this.getX()+400,this.getY()+ this.getInsets().top);  
+//	  else
+//	  editToolbar.setLocation(this.getX()+mainPanel.getWidth()/2-30,this.getY()+ this.getInsets().top);
+//	  }
+
 
   public static void openConfigDialog() {
     ConfigDialog configDialog = new ConfigDialog();
