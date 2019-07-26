@@ -39,6 +39,12 @@ public class Menu extends MenuBar {
   JButton white;
   JButton blackwhite;
   Message msg;
+  ImageIcon iconblack;
+  ImageIcon iconblack2;
+  ImageIcon iconwhite;
+  ImageIcon iconwhite2;
+  ImageIcon iconbh;
+  ImageIcon iconbh2;
   // private boolean onlyboard = false;
 
   public Menu() {
@@ -1179,8 +1185,17 @@ public class Menu extends MenuBar {
     editMenu.setForeground(Color.BLACK);
     editMenu.setFont(headFont);
     this.add(editMenu);
+    iconblack2 = new ImageIcon();
+    try {
+      iconblack2.setImage(
+          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/smallblack2.png")));
+      // ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 
-    ImageIcon  iconblack = new ImageIcon();
+    iconblack = new ImageIcon();
     try {
       iconblack.setImage(
           ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/smallblack.png")));
@@ -1190,7 +1205,17 @@ public class Menu extends MenuBar {
       e.printStackTrace();
     }
 
-    ImageIcon iconwhite = new ImageIcon();
+    iconwhite2 = new ImageIcon();
+    try {
+      iconwhite2.setImage(
+          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/smallwhite4.png")));
+      // ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/smallwhite.png"));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    iconwhite = new ImageIcon();
     try {
       iconwhite.setImage(
           ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/smallwhite.png")));
@@ -1200,7 +1225,16 @@ public class Menu extends MenuBar {
       e.printStackTrace();
     }
 
-    ImageIcon iconbh = new ImageIcon();
+    iconbh2 = new ImageIcon();
+    try {
+      // iconbh.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
+      iconbh2.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/hb2.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    iconbh = new ImageIcon();
     try {
       // iconbh.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
       iconbh.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/hb.png")));
@@ -1229,18 +1263,25 @@ public class Menu extends MenuBar {
     bhItem.addActionListener(new ItemListeneryzy());
     editMenu.add(bhItem);
     bhItem.setIcon(iconbh);
-    
-    final JMenuItem openEditToolbar = new JMenuItem();
+
+    final JCheckBoxMenuItem openEditToolbar = new JCheckBoxMenuItem();
     openEditToolbar.setText("显示落子工具");
     editMenu.add(openEditToolbar);
 
     openEditToolbar.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-         //  Lizzie.frame.openEditToolbar();
+            Lizzie.config.showEditbar = !Lizzie.config.showEditbar;
+            Lizzie.config.uiConfig.put("show-edit-bar", Lizzie.config.showEditbar);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            toggleShowEditbar(Lizzie.config.showEditbar);
           }
         });
-    
+
     editMenu.addSeparator();
 
     final JMenuItem insertbItem = new JMenuItem();
@@ -1261,8 +1302,6 @@ public class Menu extends MenuBar {
     bhisItem.addActionListener(new ItemListeneryzy());
     editMenu.add(bhisItem);
 
-
-   
     editMenu.addSeparator();
 
     final JCheckBoxMenuItem allowdrag = new JCheckBoxMenuItem();
@@ -1302,6 +1341,8 @@ public class Menu extends MenuBar {
           public void menuSelected(MenuEvent e) {
             if (Lizzie.config.allowDrageDoubleClick) allowdrag.setState(true);
             else allowdrag.setState(false);
+            if (Lizzie.config.showEditbar) openEditToolbar.setState(true);
+            else openEditToolbar.setState(false);
           }
 
           @Override
@@ -1464,39 +1505,50 @@ public class Menu extends MenuBar {
     //        });
     black = new JButton(iconblack);
     black.addActionListener(
-            new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                	 Lizzie.frame.blackorwhite = 1;
-                }
-              });
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.blackorwhite = 1;
+            black.setIcon(iconblack2);
+            white.setIcon(iconwhite);
+            blackwhite.setIcon(iconbh);
+          }
+        });
     black.setFocusable(false);
     black.setMargin(new Insets(0, 0, 0, 0));
     this.add(black);
-    
-    
+    black.setToolTipText("落黑子");
+
     white = new JButton(iconwhite);
     white.addActionListener(
-            new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                	Lizzie.frame.blackorwhite = 2;
-                }
-              });
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.blackorwhite = 2;
+            black.setIcon(iconblack);
+            white.setIcon(iconwhite2);
+            blackwhite.setIcon(iconbh);
+          }
+        });
     white.setFocusable(false);
     white.setMargin(new Insets(0, 0, 0, 0));
     this.add(white);
-    
-    
+    white.setToolTipText("落白子");
+
     blackwhite = new JButton(iconbh);
     blackwhite.addActionListener(
-            new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                	 featurecat.lizzie.gui.Input.insert = 0;
-                     Lizzie.frame.blackorwhite = 0;
-                }
-              });
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            featurecat.lizzie.gui.Input.insert = 0;
+            Lizzie.frame.blackorwhite = 0;
+            black.setIcon(iconblack);
+            white.setIcon(iconwhite);
+            blackwhite.setIcon(iconbh2);
+          }
+        });
     blackwhite.setFocusable(false);
     blackwhite.setMargin(new Insets(0, -2, 0, -2));
     this.add(blackwhite);
+    blackwhite.setToolTipText("交替落子");
+    toggleShowEditbar(Lizzie.config.showEditbar);
   }
 
   public void updateEngineMenuone() {
@@ -1735,6 +1787,12 @@ public class Menu extends MenuBar {
     Lizzie.leelaz.ponder();
   }
 
+  public void toggleShowEditbar(boolean show) {
+    this.black.setVisible(show);
+    this.white.setVisible(show);
+    this.blackwhite.setVisible(show);
+  }
+
   class ItemListeneryzy implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       JMenuItem menuItem = (JMenuItem) e.getSource();
@@ -1871,6 +1929,9 @@ public class Menu extends MenuBar {
       if (menuItem.getText().startsWith("交替落")) {
         featurecat.lizzie.gui.Input.insert = 0;
         Lizzie.frame.blackorwhite = 0;
+        black.setIcon(iconblack);
+        white.setIcon(iconwhite);
+        blackwhite.setIcon(iconbh2);
         return;
       }
       if (menuItem.getText().startsWith("插入黑")) {
@@ -1883,10 +1944,16 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("落黑")) {
         Lizzie.frame.blackorwhite = 1;
+        black.setIcon(iconblack2);
+        white.setIcon(iconwhite);
+        blackwhite.setIcon(iconbh);
         return;
       }
       if (menuItem.getText().startsWith("落白")) {
         Lizzie.frame.blackorwhite = 2;
+        black.setIcon(iconblack);
+        white.setIcon(iconwhite2);
+        blackwhite.setIcon(iconbh);
         return;
       }
 
