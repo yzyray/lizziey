@@ -419,6 +419,12 @@ public class EngineManager {
     }
   }
 
+  public void killThisEngines() {
+    engineList.get(currentEngineNo).normalQuit();
+    isEmpty = true;
+    Lizzie.leelaz.clearBestMoves();
+  }
+
   //  private void saveTimeoutFile() {
   //    File file = new File("");
   //    String courseFile = "";

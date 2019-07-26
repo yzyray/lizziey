@@ -2848,7 +2848,10 @@ if(bestMoves.isEmpty())
 			return bestMoves;
 		}
 	}
-
+	public void clearBestMoves() {
+		bestMoves = new ArrayList<>();
+	}
+	
 	// public Optional<String> getDynamicKomi() {
 	// if (Float.isNaN(dynamicKomi) || Float.isNaN(dynamicOppKomi)) {
 	// return Optional.empty();

@@ -29,6 +29,7 @@ public class Menu extends MenuBar {
   public static MenuBar menuBar;
   JMenuItem closeall;
   JMenuItem forcecloseall;
+  JMenuItem closeThis;
   JMenuItem closeother;
   JMenuItem restartZen;
   JMenuItem config;
@@ -1389,6 +1390,18 @@ public class Menu extends MenuBar {
     closeEngine.setText("关闭引擎");
     engineMenu.add(closeEngine);
 
+    closeThis = new JMenuItem();
+    closeThis.setText("关闭当前引擎");
+
+    closeThis.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.engineManager.killThisEngines();
+            engineMenu.setText("未加载引擎");
+          }
+        });
+    closeEngine.add(closeThis);
+
     closeother = new JMenuItem();
     closeother.setText("关闭当前以外引擎");
     // aboutItem.setMnemonic('A');
@@ -1517,9 +1530,11 @@ public class Menu extends MenuBar {
             });
         engineMenu.addSeparator();
         engineMenu.add(closeEngine);
+        closeEngine.add(closeThis);
+        closeEngine.add(closeother);
         closeEngine.add(closeall);
         closeEngine.add(forcecloseall);
-        closeEngine.add(closeother);
+
         engineMenu.add(restartZen);
         //  engineMenu.addSeparator();
         //  engineMenu.add(config);
@@ -1539,9 +1554,10 @@ public class Menu extends MenuBar {
     }
     engineMenu.addSeparator();
     engineMenu.add(closeEngine);
+    closeEngine.add(closeThis);
+    closeEngine.add(closeother);
     closeEngine.add(closeall);
     closeEngine.add(forcecloseall);
-    closeEngine.add(closeother);
     engineMenu.add(restartZen);
     // engineMenu.addSeparator();
     // engineMenu.add(config);
