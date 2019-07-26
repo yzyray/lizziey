@@ -564,7 +564,7 @@ public class ConfigDialog extends JDialog {
     engineTab.add(lblMaxsuggestionmoves);
 
     JLabel lblMaxsuggestionmovesnums =
-        new JLabel(resourceBundle.getString("LizzieConfig.title.numbers"));
+        new JLabel(resourceBundle.getString("LizzieConfig.title.moves"));
     lblMaxsuggestionmovesnums.setBounds(538, 440, 82, 16);
     engineTab.add(lblMaxsuggestionmovesnums);
 
@@ -641,7 +641,7 @@ public class ConfigDialog extends JDialog {
     engineTab.add(txtlimitBranchLength);
 
     JLabel lblShowLcbWinrate =
-        new JLabel(resourceBundle.getString("LizzieConfig.title.showlcbwinrate"));
+        new JLabel(resourceBundle.getString("LizzieConfig.title.showLcbWinrate"));
     lblShowLcbWinrate.setBounds(331, 555, 157, 16);
     engineTab.add(lblShowLcbWinrate);
 

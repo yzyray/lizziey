@@ -39,10 +39,8 @@ public class Config {
   public boolean showrect = true;
   public boolean showlcbcolor = true;
   public boolean fastChange = true;
-  public boolean showKataGoScoreMean = true;
   public boolean showKataGoBoardScoreMean = false;
   public boolean kataGoScoreMeanAlwaysBlack = false;
-  public boolean kataGoNotShowWinrate = false;
   public boolean scoreMeanWinrateGraphBoard = false;
   public boolean showKataGoEstimate = false;
   public boolean allowDrageDoubleClick = true;
@@ -60,6 +58,9 @@ public class Config {
   public boolean startMaximized = true;
   public boolean loadZen = false;
   public boolean showSuggestionVaritions = true;
+  public boolean showWinrateInSuggestion = true;
+  public boolean showPlayoutsInSuggestion = true;
+  public boolean showScoremeanInSuggestion = true;
 
   public JSONObject config;
   public JSONObject leelazConfig;
@@ -83,6 +84,7 @@ public class Config {
   public Color commentBackgroundColor = null;
   public Color winrateLineColor = null;
   public Color winrateMissLineColor = null;
+  public Color scoreMeanLineColor = null;
   public Color blunderBarColor = null;
   public boolean solidStoneIndicator = false;
   public boolean showCommentNodeColor = true;
@@ -274,13 +276,13 @@ public class Config {
     showVariationGraph = uiConfig.getBoolean("show-variation-graph");
     showComment = uiConfig.optBoolean("show-comment", true);
     showCaptured = uiConfig.getBoolean("show-captured");
-    showKataGoScoreMean = uiConfig.optBoolean("show-katago-scoremean", true);
+    // showKataGoScoreMean = uiConfig.optBoolean("show-katago-scoremean", true);
     showKataGoBoardScoreMean = uiConfig.optBoolean("show-katago-boardscoremean", false);
     kataGoScoreMeanAlwaysBlack = uiConfig.optBoolean("katago-scoremean-alwaysblack", false);
     showHeat = uiConfig.optBoolean("show-heat", false);
     showHeatAfterCalc = uiConfig.optBoolean("show-heat-aftercalc", false);
     showMoveNumberFromOne = uiConfig.optBoolean("movenumber-from-one", false);
-    kataGoNotShowWinrate = uiConfig.optBoolean("katago-notshow-winrate", false);
+    // kataGoNotShowWinrate = uiConfig.optBoolean("katago-notshow-winrate", false);
     showKataGoEstimate = uiConfig.optBoolean("show-katago-estimate", false);
     scoreMeanWinrateGraphBoard = uiConfig.optBoolean("scoremean-winrategraph-board", false);
     showSuggestionOrder = uiConfig.optBoolean("show-suggestion-order", true);
@@ -297,6 +299,9 @@ public class Config {
     // handicapInsteadOfWinrate =
     // uiConfig.getBoolean("handicap-instead-of-winrate");
     // showDynamicKomi = uiConfig.getBoolean("show-dynamic-komi");
+      showWinrateInSuggestion = uiConfig.optBoolean("show-winrate-in-suggestion", true);
+     showPlayoutsInSuggestion = uiConfig.optBoolean("show-playouts-in-suggestion", true);
+      showScoremeanInSuggestion = uiConfig.optBoolean("show-scoremean-in-suggestion", true);
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);
     suggestionsalwaysontop = uiConfig.optBoolean("suggestions-always-ontop", false);
@@ -337,6 +342,7 @@ public class Config {
     commentFontColor = theme.commentFontColor();
     commentBackgroundColor = theme.commentBackgroundColor();
     winrateLineColor = theme.winrateLineColor();
+    scoreMeanLineColor = theme.scoreMeanLineColor();
     winrateMissLineColor = theme.winrateMissLineColor();
     blunderBarColor = theme.blunderBarColor();
     solidStoneIndicator = theme.solidStoneIndicator();

@@ -684,8 +684,19 @@ public class SubBoardRenderer {
     List<String> variation = suggestedMove.get().variation;
     Branch branch = null;
     if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove)
-      branch = new Branch(Lizzie.board, variation, true);
-    else branch = new Branch(Lizzie.board, variation, reverseBestmoves);
+      branch =
+          new Branch(
+              Lizzie.board,
+              variation,
+              true,
+              this.displayedBranchLength > 0 ? displayedBranchLength : 199);
+    else
+      branch =
+          new Branch(
+              Lizzie.board,
+              variation,
+              reverseBestmoves,
+              this.displayedBranchLength > 0 ? displayedBranchLength : 199);
     branchOpt = Optional.of(branch);
     variationOpt = Optional.of(variation);
     showingBranch = true;

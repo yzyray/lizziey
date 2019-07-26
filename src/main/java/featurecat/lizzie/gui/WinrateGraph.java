@@ -653,7 +653,7 @@ public class WinrateGraph {
               if (lastscoreMean > -500) {
                 // Color lineColor = g.getColor();
                 Stroke previousStroke = g.getStroke();
-                g.setColor(Color.magenta.brighter());
+                g.setColor(Lizzie.config.scoreMeanLineColor);
                 g.setStroke(new BasicStroke(1));
                 g.drawLine(
                     posx + (lastOkMove * width / numMoves),
@@ -719,7 +719,7 @@ public class WinrateGraph {
               if (lastscoreMean > -500) {
                 // Color lineColor = g.getColor();
                 Stroke previousStroke = g.getStroke();
-                g.setColor(Color.magenta.brighter());
+                g.setColor(Lizzie.config.scoreMeanLineColor);
                 g.setStroke(new BasicStroke(1));
                 g.drawLine(
                     posx + (lastOkMove * width / numMoves),
@@ -790,7 +790,7 @@ public class WinrateGraph {
             if (lastscoreMean > -500) {
               // Color lineColor = g.getColor();
               Stroke previousStroke = g.getStroke();
-              g.setColor(Color.magenta.brighter());
+              g.setColor(Lizzie.config.scoreMeanLineColor);
               if (!node.isMainTrunk()) {
                 g.setStroke(dashed);
               } else g.setStroke(new BasicStroke(1));
