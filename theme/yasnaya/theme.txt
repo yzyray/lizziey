@@ -47,7 +47,7 @@
   ],
   "font-name": "Arial Black",
   "background-image": "background2.png",
-  "show-comment-node-color": false,
+  "show-comment-node-color": true,
   "comment-font-color": [
     255,
     255,
