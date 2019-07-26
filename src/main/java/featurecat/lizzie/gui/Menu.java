@@ -1296,12 +1296,12 @@ public class Menu extends MenuBar {
 
           }
         });
-    
+
     final JMenu settings = new JMenu(" 设置  ");
     settings.setForeground(Color.BLACK);
     settings.setFont(headFont);
     this.add(settings);
-    
+
     final JMenuItem engine = new JMenuItem("引擎");
     settings.add(engine);
 
@@ -1311,27 +1311,27 @@ public class Menu extends MenuBar {
             Lizzie.frame.openConfigDialog();
           }
         });
-    
+
     final JMenuItem moreengine = new JMenuItem("更多引擎");
     settings.add(moreengine);
 
     moreengine.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-        	  Lizzie.frame.openMoreEngineDialog();
+            Lizzie.frame.openMoreEngineDialog();
           }
         });
-    
-//    final JMenuItem ui = new JMenuItem("界面");
-//    settings.add(ui);
-//
-//    ui.addActionListener(
-//        new ActionListener() {
-//          public void actionPerformed(ActionEvent e) {
-//            Lizzie.frame.openConfigDialog2(0);
-//          }
-//        });
-    
+
+    //    final JMenuItem ui = new JMenuItem("界面");
+    //    settings.add(ui);
+    //
+    //    ui.addActionListener(
+    //        new ActionListener() {
+    //          public void actionPerformed(ActionEvent e) {
+    //            Lizzie.frame.openConfigDialog2(0);
+    //          }
+    //        });
+
     final JMenuItem theme = new JMenuItem("主题");
     settings.add(theme);
 
@@ -1412,25 +1412,25 @@ public class Menu extends MenuBar {
     // aboutItem.setMnemonic('A');
     restartZen.addActionListener(new ItemListeneryzy());
     engineMenu.add(restartZen);
-//    engineMenu.addSeparator();
+    //    engineMenu.addSeparator();
 
-//    config = new JMenuItem();
-//    config.setText("设置");
-//    config.addActionListener(new ItemListeneryzy());
-//    engineMenu.add(config);
+    //    config = new JMenuItem();
+    //    config.setText("设置");
+    //    config.addActionListener(new ItemListeneryzy());
+    //    engineMenu.add(config);
 
-//    moreconfig = new JMenuItem();
-//    moreconfig.setText("更多引擎设置");
-//    engineMenu.add(moreconfig);
-//    moreconfig.addActionListener(
-//        new ActionListener() {
-//
-//          @Override
-//          public void actionPerformed(ActionEvent e) {
-//            // TODO Auto-generated method stub
-//            Lizzie.frame.openMoreEngineDialog();
-//          }
-//        });
+    //    moreconfig = new JMenuItem();
+    //    moreconfig.setText("更多引擎设置");
+    //    engineMenu.add(moreconfig);
+    //    moreconfig.addActionListener(
+    //        new ActionListener() {
+    //
+    //          @Override
+    //          public void actionPerformed(ActionEvent e) {
+    //            // TODO Auto-generated method stub
+    //            Lizzie.frame.openMoreEngineDialog();
+    //          }
+    //        });
   }
 
   public void updateEngineMenuone() {
@@ -1521,9 +1521,9 @@ public class Menu extends MenuBar {
         closeEngine.add(forcecloseall);
         closeEngine.add(closeother);
         engineMenu.add(restartZen);
-      //  engineMenu.addSeparator();
-      //  engineMenu.add(config);
-      //  engineMenu.add(moreconfig);
+        //  engineMenu.addSeparator();
+        //  engineMenu.add(config);
+        //  engineMenu.add(moreconfig);
         return;
       } else {
         engine[i].setText("引擎" + (i + 1) + ":" + engineDt.name);
@@ -1543,9 +1543,9 @@ public class Menu extends MenuBar {
     closeEngine.add(forcecloseall);
     closeEngine.add(closeother);
     engineMenu.add(restartZen);
-   // engineMenu.addSeparator();
-   // engineMenu.add(config);
- //   engineMenu.add(moreconfig);
+    // engineMenu.addSeparator();
+    // engineMenu.add(config);
+    //   engineMenu.add(moreconfig);
   }
 
   public void changeEngineIcon(int index, int mode) {

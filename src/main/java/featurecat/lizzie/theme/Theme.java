@@ -2,6 +2,7 @@ package featurecat.lizzie.theme;
 
 import static java.io.File.separator;
 
+import featurecat.lizzie.Lizzie;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -21,8 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
-import featurecat.lizzie.Lizzie;
 
 /** Theme Allow to load the external image & theme config */
 public class Theme {
@@ -54,36 +53,35 @@ public class Theme {
       }
     }
   }
-  
-  
 
   private String getImagePathByKey(String key) {
-	    return config.optString(key);
-	  }
-  
+    return config.optString(key);
+  }
+
   public String backgroundPath() {
-	    return getImagePathByKey("background-image");
-	  }
-  
+    return getImagePathByKey("background-image");
+  }
+
   public int stoneIndicatorType() {
-	    String key = "stone-indicator-type";
-	    return config.optInt(key, uiConfig.optInt(key, 1));
-	  }
-  
+    String key = "stone-indicator-type";
+    return config.optInt(key, uiConfig.optInt(key, 1));
+  }
+
   public String blackStonePath() {
-	    return getImagePathByKey("black-stone-image");
-	  }
+    return getImagePathByKey("black-stone-image");
+  }
 
-	  public String whiteStonePath() {
-	    return getImagePathByKey("white-stone-image");
-	  }
+  public String whiteStonePath() {
+    return getImagePathByKey("white-stone-image");
+  }
 
-	  public String boardPath() {
-	    return getImagePathByKey("board-image");
-	  }
-	  public Color scoreMeanLineColor() {
-		    return getColorByKey("scoremean-line-color", Color.MAGENTA.brighter());
-		  }
+  public String boardPath() {
+    return getImagePathByKey("board-image");
+  }
+
+  public Color scoreMeanLineColor() {
+    return getColorByKey("scoremean-line-color", Color.MAGENTA.brighter());
+  }
 
   public Theme(String themeName) {
     this.uiConfig = Lizzie.config.uiConfig;
@@ -100,7 +98,7 @@ public class Theme {
       }
     }
   }
-  
+
   public BufferedImage blackStone() {
     if (blackStoneCached == null) {
       blackStoneCached = getImageByKey("black-stone-image", "black.png", "black0.png");
@@ -292,45 +290,45 @@ public class Theme {
     }
     return image;
   }
-  
+
   public void save() {
-	    try {
-	      File file = new File(this.path + this.configFile);
-	      file.createNewFile();
+    try {
+      File file = new File(this.path + this.configFile);
+      file.createNewFile();
 
-	      FileOutputStream fp = new FileOutputStream(file);
-	      OutputStreamWriter writer = new OutputStreamWriter(fp);
+      FileOutputStream fp = new FileOutputStream(file);
+      OutputStreamWriter writer = new OutputStreamWriter(fp);
 
-	      Iterator<String> keys = config.keys();
-	      while (keys.hasNext()) {
-	        String key = keys.next();
-	        Object value = config.get(key);
-	        if (value == null || (value instanceof String && ((String) value).trim().isEmpty())) {
-	          keys.remove();
-	        }
-	      }
+      Iterator<String> keys = config.keys();
+      while (keys.hasNext()) {
+        String key = keys.next();
+        Object value = config.get(key);
+        if (value == null || (value instanceof String && ((String) value).trim().isEmpty())) {
+          keys.remove();
+        }
+      }
 
-	      writer.write(config.toString(2));
+      writer.write(config.toString(2));
 
-	      writer.close();
-	      fp.close();
-	    } catch (IOException e) {
-	      e.printStackTrace();
-	    }
-	  }
-  
+      writer.close();
+      fp.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   public static JSONArray color2Array(Color c) {
-	    JSONArray a = new JSONArray("[]");
-	    if (c != null) {
-	      a.put(c.getRed());
-	      a.put(c.getGreen());
-	      a.put(c.getBlue());
-	      if (c.getAlpha() != 255) {
-	        a.put(c.getAlpha());
-	      }
-	    }
-	    return a;
-	  }
+    JSONArray a = new JSONArray("[]");
+    if (c != null) {
+      a.put(c.getRed());
+      a.put(c.getGreen());
+      a.put(c.getBlue());
+      if (c.getAlpha() != 255) {
+        a.put(c.getAlpha());
+      }
+    }
+    return a;
+  }
 
   private int getIntByKey(String key, int defaultValue) {
     return config.optInt(key, uiConfig.optInt(key, defaultValue));

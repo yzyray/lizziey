@@ -299,9 +299,9 @@ public class Config {
     // handicapInsteadOfWinrate =
     // uiConfig.getBoolean("handicap-instead-of-winrate");
     // showDynamicKomi = uiConfig.getBoolean("show-dynamic-komi");
-      showWinrateInSuggestion = uiConfig.optBoolean("show-winrate-in-suggestion", true);
-     showPlayoutsInSuggestion = uiConfig.optBoolean("show-playouts-in-suggestion", true);
-      showScoremeanInSuggestion = uiConfig.optBoolean("show-scoremean-in-suggestion", true);
+    showWinrateInSuggestion = uiConfig.optBoolean("show-winrate-in-suggestion", true);
+    showPlayoutsInSuggestion = uiConfig.optBoolean("show-playouts-in-suggestion", true);
+    showScoremeanInSuggestion = uiConfig.optBoolean("show-scoremean-in-suggestion", true);
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);
     suggestionsalwaysontop = uiConfig.optBoolean("suggestions-always-ontop", false);

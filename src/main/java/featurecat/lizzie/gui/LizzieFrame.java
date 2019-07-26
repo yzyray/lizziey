@@ -459,12 +459,12 @@ public class LizzieFrame extends JFrame {
     ConfigDialog configDialog = new ConfigDialog();
     configDialog.setVisible(true);
   }
-  
+
   public static void openConfigDialog2(int index) {
-	    ConfigDialog2 configDialog2 = new ConfigDialog2();	 
-	    configDialog2.switchTab(index);
-	    configDialog2.setVisible(true);
-	  }
+    ConfigDialog2 configDialog2 = new ConfigDialog2();
+    configDialog2.switchTab(index);
+    configDialog2.setVisible(true);
+  }
 
   public static void openMoreEngineDialog() {
     JDialog moreEngines;
