@@ -939,13 +939,13 @@ public class LizzieFrame extends JFrame {
               - Lizzie.frame.toolbarHeight,
           Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
           Lizzie.frame.toolbarHeight);
-    }
-    // 打开分析界面
-    StartAnaDialog newgame = new StartAnaDialog();
-    newgame.setVisible(true);
-    if (newgame.isCancelled()) {
-      toolbar.resetAutoAna();
-      return;
+      // 打开分析界面
+      StartAnaDialog newgame = new StartAnaDialog();
+      newgame.setVisible(true);
+      if (newgame.isCancelled()) {
+        toolbar.resetAutoAna();
+        return;
+      }
     }
   }
 
