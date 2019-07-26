@@ -25,15 +25,27 @@ public class WinrateGraph {
     final Paint gradient =
         new GradientPaint(
             new Point2D.Float(posx, posy),
-            new Color(120, 120, 120, 180),
+            new Color(0, 0, 0, 150),
             new Point2D.Float(posx, posy + height),
-            new Color(185, 185, 185, 185));
+            new Color(255, 255, 255, 150));
     final Paint borderGradient =
         new GradientPaint(
             new Point2D.Float(posx, posy),
             new Color(0, 0, 0, 150),
             new Point2D.Float(posx, posy + height),
             new Color(255, 255, 255, 150));
+    //    final Paint gradient =
+    //        new GradientPaint(
+    //            new Point2D.Float(posx, posy),
+    //            new Color(120, 120, 120, 180),
+    //            new Point2D.Float(posx, posy + height),
+    //            new Color(185, 185, 185, 185));
+    //    final Paint borderGradient =
+    //        new GradientPaint(
+    //            new Point2D.Float(posx, posy),
+    //            new Color(0, 0, 0, 150),
+    //            new Point2D.Float(posx, posy + height),
+    //            new Color(255, 255, 255, 150));
 
     Paint original = g.getPaint();
     g.setPaint(gradient);

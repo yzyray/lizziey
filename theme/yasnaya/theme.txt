@@ -12,7 +12,7 @@
     5,
     10
   ],
-  "ui-font-name": "Cambria Math",
+  "ui-font-name": "微软雅黑",
   "minimum-blunder-bar-width": 3,
   "blunder-bar-color": [
     255,
@@ -45,7 +45,7 @@
     0,
     255
   ],
-  "font-name": "Arial Black",
+  "font-name": "Arial Unicode MS",
   "background-image": "background2.png",
   "show-comment-node-color": true,
   "comment-font-color": [
