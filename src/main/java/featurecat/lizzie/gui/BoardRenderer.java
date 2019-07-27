@@ -224,7 +224,7 @@ public class BoardRenderer {
         x
             + boardWidth / 2
             - black.replaceAll(regex, "12").length() * stoneRadius / 3
-            - stoneRadius * 3 / 2,
+            - stoneRadius * 5 / 3,
         y - scaledMarginHeight + stoneRadius + boardHeight + stoneRadius * 3 / 5,
         Lizzie.frame.uiFont,
         black,
