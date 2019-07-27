@@ -87,7 +87,7 @@ public class Leelaz {
 	public boolean isLoaded = false;
 	private boolean isCheckingVersion;
 	private boolean isCheckingName;
-
+private boolean startAutoAna=false;
 	// for Multiple Engine
 	public String engineCommand;
 	private List<String> commands;
@@ -1130,21 +1130,16 @@ public class Leelaz {
 if(bestMoves.isEmpty())
 	return;
 			if (Lizzie.frame.toolbar.startAutoAna) {
-				
-				if (Lizzie.frame.toolbar.firstMove != -1&&Lizzie.board.getHistory().getMoveNumber()!=Lizzie.frame.toolbar.firstMove-1) {
-					// while (Lizzie.board.previousMove());
-//										Timer timer = new Timer();
-//					timer.schedule(new TimerTask() {
-//						public void run() {
-							Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);
-							//setResponseUpToDate();	
-							//Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);
-							//Lizzie.frame.toolbar.isAutoAna = true;
-//							this.cancel();							
-//						}
-//					}, 50);
+				startAutoAna=true;
+				if (startAutoAna&&Lizzie.frame.toolbar.firstMove != -1) {			
+					Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);	
+					startAutoAna=false;
+				}
+				if(Lizzie.board.getHistory().getMoveNumber()!=Lizzie.frame.toolbar.firstMove-1)
+				{
 					return;
 				}
+				startAutoAna=false;
 				Lizzie.frame.toolbar.startAutoAna = false;				
 				ponder();
 				setResponseUpToDate();	
@@ -1162,6 +1157,7 @@ if(bestMoves.isEmpty())
 					isClosing = false;
 				}
 			}
+			
 			if (isClosing)
 				return;
 			if (Lizzie.board.getHistory().getNext().isPresent()) {
@@ -2396,6 +2392,7 @@ if(bestMoves.isEmpty())
 							parseLine(line.toString());
 						} catch (Exception e) {
 						}
+						if(!bestMoves.isEmpty())
 						notifyAutoAna();					
 					}
 					if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
