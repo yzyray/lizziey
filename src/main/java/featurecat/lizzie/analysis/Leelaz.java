@@ -1130,18 +1130,34 @@ public boolean startAutoAna=false;
 		if (Lizzie.frame.toolbar.isAutoAna) {
 
 			if (Lizzie.frame.toolbar.startAutoAna) {
-				
-				if (startAutoAna&&Lizzie.frame.toolbar.firstMove != -1) {			
-					Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);	
+				setResponseUpToDate();	
+				if (startAutoAna&&Lizzie.frame.toolbar.firstMove != -1) {		
+					 Timer timer = new Timer();
+				      timer.schedule(
+				          new TimerTask() {
+				            public void run() {
+				            	Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);
+				            	ponder();
+								setResponseUpToDate();	
+				              this.cancel();
+				            }
+				          },
+				          50);
+					
 					startAutoAna=false;
 				}
 				if(Lizzie.board.getHistory().getMoveNumber()!=Lizzie.frame.toolbar.firstMove-1)
 				{
+					try {
+						Thread.sleep(50);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					return;
 				}
 				Lizzie.frame.toolbar.startAutoAna = false;				
-				ponder();
-				setResponseUpToDate();	
+				
 				if (!Lizzie.board.getHistory().getNext().isPresent()) {
 					Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
 					togglePonder();
