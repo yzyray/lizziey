@@ -289,6 +289,22 @@ public class Menu extends MenuBar {
     appentComment.addActionListener(new ItemListeneryzy());
     viewMenu.add(appentComment);
 
+    final JCheckBoxMenuItem showname = new JCheckBoxMenuItem("棋盘下方显示黑白名字");
+    showname.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.showName = !Lizzie.config.showName;
+            Lizzie.config.uiConfig.put("show-name", Lizzie.config.showName);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    viewMenu.add(showname);
+
     final JCheckBoxMenuItem alwaysontop = new JCheckBoxMenuItem();
     alwaysontop.setText("总在最前");
     alwaysontop.addActionListener(new ItemListeneryzy());
@@ -879,6 +895,8 @@ public class Menu extends MenuBar {
               showHeat.setState(false);
               showHeatAfterCalc.setState(false);
             }
+            if (Lizzie.config.showName) showname.setState(true);
+            else showname.setState(false);
           }
 
           @Override

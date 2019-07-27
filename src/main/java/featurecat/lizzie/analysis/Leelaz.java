@@ -1130,29 +1130,24 @@ public class Leelaz {
 if(bestMoves.isEmpty())
 	return;
 			if (Lizzie.frame.toolbar.startAutoAna) {
-				setResponseUpToDate();
-				Lizzie.frame.toolbar.startAutoAna = false;
-				if (Lizzie.frame.toolbar.firstMove != -1) {
-
+				
+				if (Lizzie.frame.toolbar.firstMove != -1&&Lizzie.board.getHistory().getMoveNumber()!=Lizzie.frame.toolbar.firstMove-1) {
 					// while (Lizzie.board.previousMove());
-//					Timer timer = new Timer();
+//										Timer timer = new Timer();
 //					timer.schedule(new TimerTask() {
 //						public void run() {
 							Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);
-							ponder();
-							Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);
-							Lizzie.frame.toolbar.isAutoAna = true;
-//							this.cancel();
+							//setResponseUpToDate();	
+							//Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);
+							//Lizzie.frame.toolbar.isAutoAna = true;
+//							this.cancel();							
 //						}
 //					}, 50);
-//					try {
-//						Thread.sleep(60);
-						setResponseUpToDate();
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
+					return;
 				}
+				Lizzie.frame.toolbar.startAutoAna = false;				
+				ponder();
+				setResponseUpToDate();	
 				if (!Lizzie.board.getHistory().getNext().isPresent()) {
 					Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
 					togglePonder();
@@ -2554,7 +2549,7 @@ if(bestMoves.isEmpty())
 
 	public void setResponseUpToDate() {
 		// Use >= instead of == for avoiding hang-up, though it cannot happen
-		currentCmdNum = cmdNumber - 1;
+		currentCmdNum = cmdNumber-1 ;
 	}
 
 	/**

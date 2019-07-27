@@ -1892,15 +1892,17 @@ public class LizzieFrame extends JFrame {
       } else {
         if (!komi.equals("7.5")) text = text + "贴目:" + komi;
       }
-      if (toolbar.isEnginePk) {
-        text =
-            text
-                + " 黑:"
-                + Lizzie.engineManager.engineList.get(toolbar.engineBlack).currentEnginename
-                + " 白:"
-                + Lizzie.engineManager.engineList.get(toolbar.engineWhite).currentEnginename;
-      } else {
-        text = text + playerTitle;
+      if (!Lizzie.config.showName) {
+        if (toolbar.isEnginePk) {
+          text =
+              text
+                  + " 黑:"
+                  + Lizzie.engineManager.engineList.get(toolbar.engineBlack).currentEnginename
+                  + " 白:"
+                  + Lizzie.engineManager.engineList.get(toolbar.engineWhite).currentEnginename;
+        } else {
+          text = text + playerTitle;
+        }
       }
       text =
           text

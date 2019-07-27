@@ -103,6 +103,7 @@ public class BoardRenderer {
 
     // Stopwatch timer = new Stopwatch();
     drawGoban(g);
+    if (Lizzie.config.showName) drawName(g);
     // timer.lap("background");
     drawStones();
     // timer.lap("stones");
@@ -197,13 +198,54 @@ public class BoardRenderer {
     setLocation(x + (boardWidth0 - boardWidth) / 2, y + (boardHeight0 - boardHeight) / 2);
   }
 
+  private void drawName(Graphics2D g0) {
+    g0.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g0.setColor(Color.BLACK);
+    g0.fillOval(
+        x + boardWidth / 2 - stoneRadius,
+        y - scaledMarginHeight + stoneRadius + boardHeight,
+        stoneRadius,
+        stoneRadius);
+    g0.setColor(Color.WHITE);
+    g0.fillOval(
+        x + boardWidth / 2,
+        y - scaledMarginHeight + stoneRadius + boardHeight,
+        stoneRadius,
+        stoneRadius);
+    String black = Lizzie.board.getHistory().getGameInfo().getPlayerBlack();
+    if (black.length() > 20) black = black.substring(0, 20);
+    String white = Lizzie.board.getHistory().getGameInfo().getPlayerWhite();
+    if (white.length() > 20) white = white.substring(0, 20);
+    g0.setColor(Color.BLACK);
+    String regex = "[\u4e00-\u9fa5]";
+
+    drawStringBold(
+        g0,
+        x
+            + boardWidth / 2
+            - black.replaceAll(regex, "12").length() * stoneRadius / 3
+            - stoneRadius * 3 / 2,
+        y - scaledMarginHeight + stoneRadius + boardHeight + stoneRadius * 3 / 5,
+        Lizzie.frame.uiFont,
+        black,
+        stoneRadius,
+        stoneRadius * black.replaceAll(regex, "12").length() / 2);
+    g0.setColor(Color.WHITE);
+    drawStringBold(
+        g0,
+        x + boardWidth / 2 + stoneRadius * 4,
+        y - scaledMarginHeight + stoneRadius + boardHeight + stoneRadius * 3 / 5,
+        Lizzie.frame.uiFont,
+        white,
+        stoneRadius,
+        stoneRadius * white.replaceAll(regex, "12").length() / 2);
+  }
   /**
    * Draw the green background and go board with lines. We cache the image for a performance boost.
    */
   private void drawGoban(Graphics2D g0) {
-    int width = Lizzie.frame.getWidth();
-    int height = Lizzie.frame.getHeight();
-
+    int width = Lizzie.frame.mainPanel.getWidth();
+    int height = Lizzie.frame.mainPanel.getHeight();
     // Draw the cached background image if frame size changes
     if (cachedBackgroundImage.getWidth() != width
         || cachedBackgroundImage.getHeight() != height
@@ -277,14 +319,15 @@ public class BoardRenderer {
               Board.asName(i),
               stoneRadius * 4 / 5,
               stoneRadius);
-          drawString(
-              g,
-              x + scaledMarginWidth + squareWidth * i,
-              y - scaledMarginHeight * 4 / 10 + boardHeight,
-              Lizzie.frame.uiFont,
-              Board.asName(i),
-              stoneRadius * 4 / 5,
-              stoneRadius);
+          if (!Lizzie.config.showName)
+            drawString(
+                g,
+                x + scaledMarginWidth + squareWidth * i,
+                y - scaledMarginHeight * 4 / 10 + boardHeight,
+                Lizzie.frame.uiFont,
+                Board.asName(i),
+                stoneRadius * 4 / 5,
+                stoneRadius);
         }
         for (int i = 0; i < Board.boardHeight; i++) {
           drawString(
@@ -1496,7 +1539,10 @@ public class BoardRenderer {
 
     // decrease boardLength until the availableLength will result in square board
     // intersections
-    double marginWidth = (showCoordinates ? 0.045 : 0.025) / Board.boardWidth * 19.0;
+    double marginWidth =
+        (Lizzie.config.showName ? 0.055 : showCoordinates ? 0.045 : 0.025)
+            / Board.boardWidth
+            * 19.0;
     boardWidth++;
     do {
       boardWidth--;
@@ -1508,7 +1554,10 @@ public class BoardRenderer {
     int squareWidth = 0;
     int squareHeight = 0;
     if (Board.boardWidth != Board.boardHeight) {
-      double marginHeight = (showCoordinates ? 0.045 : 0.03) / Board.boardHeight * 19.0;
+      double marginHeight =
+          (Lizzie.config.showName ? 0.055 : showCoordinates ? 0.045 : 0.03)
+              / Board.boardHeight
+              * 19.0;
       boardHeight++;
       do {
         boardHeight--;
@@ -1953,6 +2002,17 @@ public class BoardRenderer {
       float maximumFontHeight,
       double maximumFontWidth) {
     drawString(g, x, y, fontBase, Font.PLAIN, string, maximumFontHeight, maximumFontWidth, 0);
+  }
+
+  private void drawStringBold(
+      Graphics2D g,
+      int x,
+      int y,
+      Font fontBase,
+      String string,
+      float maximumFontHeight,
+      double maximumFontWidth) {
+    drawString(g, x, y, fontBase, Font.BOLD, string, maximumFontHeight, maximumFontWidth, 0);
   }
 
   /** @return a font with kerning enabled */

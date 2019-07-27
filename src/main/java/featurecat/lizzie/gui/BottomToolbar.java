@@ -88,8 +88,8 @@ public class BottomToolbar extends JPanel {
   public boolean isEnginePkBatch = false;
 
   public boolean isRandomMove = false;
-  public int randomMove = 30;
-  public double randomDiffWinrate = 0.1;
+  public int randomMove = 16;
+  public double randomDiffWinrate = 0.3;
   // public int EnginePkBatchNumber = 1;
   public int EnginePkBatchNumberNow = 1;
   public String batchPkName = "";

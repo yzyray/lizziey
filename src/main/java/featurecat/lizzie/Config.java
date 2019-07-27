@@ -61,7 +61,8 @@ public class Config {
   public boolean showWinrateInSuggestion = true;
   public boolean showPlayoutsInSuggestion = true;
   public boolean showScoremeanInSuggestion = true;
-  public boolean showEditbar = false;
+  public boolean showEditbar = true;
+  public boolean showName = true;
 
   public JSONObject config;
   public JSONObject leelazConfig;
@@ -303,7 +304,8 @@ public class Config {
     showWinrateInSuggestion = uiConfig.optBoolean("show-winrate-in-suggestion", true);
     showPlayoutsInSuggestion = uiConfig.optBoolean("show-playouts-in-suggestion", true);
     showScoremeanInSuggestion = uiConfig.optBoolean("show-scoremean-in-suggestion", true);
-    showEditbar = uiConfig.optBoolean("show-edit-bar", false);
+    showName = uiConfig.optBoolean("show-name", true);
+    showEditbar = uiConfig.optBoolean("show-edit-bar", true);
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);
     suggestionsalwaysontop = uiConfig.optBoolean("suggestions-always-ontop", false);
