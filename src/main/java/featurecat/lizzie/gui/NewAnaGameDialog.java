@@ -43,7 +43,7 @@ public class NewAnaGameDialog extends JDialog {
   private JCheckBox chkPonder;
 
   private boolean cancelled = true;
-  private GameInfo gameInfo;
+  private GameInfo gameInfo = new GameInfo();
 
   public NewAnaGameDialog() {
     initComponents();
@@ -176,8 +176,13 @@ public class NewAnaGameDialog extends JDialog {
       // validate data
       String playerBlack = textFieldBlack.getText();
       String playerWhite = textFieldWhite.getText();
-      double komi = FORMAT_KOMI.parse(textFieldKomi.getText()).doubleValue();
-      int handicap = FORMAT_HANDICAP.parse(textFieldHandicap.getText()).intValue();
+      double komi = 7.5;
+      int handicap = 0;
+      try {
+        komi = FORMAT_KOMI.parse(textFieldKomi.getText()).doubleValue();
+        handicap = FORMAT_HANDICAP.parse(textFieldHandicap.getText()).intValue();
+      } catch (Exception e) {
+      }
 
       // apply new values
       gameInfo.setPlayerBlack(playerBlack);
@@ -236,7 +241,7 @@ public class NewAnaGameDialog extends JDialog {
         placeHandicap(handicap);
       }
 
-    } catch (ParseException e) {
+    } catch (Exception e) {
       // hide input mistakes.
     }
   }

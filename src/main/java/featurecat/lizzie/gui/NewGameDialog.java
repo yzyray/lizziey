@@ -40,7 +40,7 @@ public class NewGameDialog extends JDialog {
   private JCheckBox chkPonder;
 
   private boolean cancelled = true;
-  private GameInfo gameInfo;
+  private GameInfo gameInfo = new GameInfo();
 
   public NewGameDialog() {
     initComponents();
@@ -111,10 +111,12 @@ public class NewGameDialog extends JDialog {
     contentPanel.add(textTime);
     contentPanel.add(new JLabel("AI是否后台思考"));
     contentPanel.add(chkPonder);
-    togglePlayerIsBlack();
 
     textFieldKomi.setEnabled(true);
-
+    textFieldBlack.setText(GameInfo.DEFAULT_NAME_HUMAN_PLAYER);
+    textFieldBlack.setEditable(true);
+    textFieldWhite.setText(Lizzie.leelaz.currentEnginename);
+    textFieldWhite.setEditable(false);
     dialogPane.add(contentPanel, BorderLayout.CENTER);
   }
 
@@ -125,6 +127,7 @@ public class NewGameDialog extends JDialog {
     humanTextField.setEnabled(true);
     humanTextField.setText(GameInfo.DEFAULT_NAME_HUMAN_PLAYER);
     computerTextField.setEnabled(false);
+    String a = Lizzie.leelaz.currentEnginename;
     computerTextField.setText(Lizzie.leelaz.currentEnginename);
   }
 
@@ -163,9 +166,13 @@ public class NewGameDialog extends JDialog {
       // validate data
       String playerBlack = textFieldBlack.getText();
       String playerWhite = textFieldWhite.getText();
-      double komi = FORMAT_KOMI.parse(textFieldKomi.getText()).doubleValue();
-      int handicap = FORMAT_HANDICAP.parse(textFieldHandicap.getText()).intValue();
-
+      double komi = 7.5;
+      int handicap = 0;
+      try {
+        komi = FORMAT_KOMI.parse(textFieldKomi.getText()).doubleValue();
+        handicap = FORMAT_HANDICAP.parse(textFieldHandicap.getText()).intValue();
+      } catch (Exception e) {
+      }
       // apply new values
       gameInfo.setPlayerBlack(playerBlack);
       gameInfo.setPlayerWhite(playerWhite);

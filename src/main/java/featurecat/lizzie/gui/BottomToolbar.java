@@ -2410,6 +2410,7 @@ public class BottomToolbar extends JPanel {
 
   public void startAutoAna() {
     isAutoAna = true;
+    Lizzie.leelaz.startAutoAna = true;
     startAutoAna = true;
     Lizzie.board.clearBoardStat();
     Lizzie.leelaz.ponder();

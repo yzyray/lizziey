@@ -87,7 +87,7 @@ public class Leelaz {
 	public boolean isLoaded = false;
 	private boolean isCheckingVersion;
 	private boolean isCheckingName;
-private boolean startAutoAna=false;
+public boolean startAutoAna=false;
 	// for Multiple Engine
 	public String engineCommand;
 	private List<String> commands;
@@ -1118,6 +1118,7 @@ private boolean startAutoAna=false;
 		}
 	    Lizzie.board.clearBoardStat();
 		Lizzie.frame.toolbar.isAutoAna = true;
+		startAutoAna=true;
 		Lizzie.frame.toolbar.startAutoAna = true;
 		Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);
 		if (!Lizzie.leelaz.isPondering())
@@ -1127,10 +1128,9 @@ private boolean startAutoAna=false;
 
 	private void notifyAutoAna() {
 		if (Lizzie.frame.toolbar.isAutoAna) {
-if(bestMoves.isEmpty())
-	return;
+
 			if (Lizzie.frame.toolbar.startAutoAna) {
-				startAutoAna=true;
+				
 				if (startAutoAna&&Lizzie.frame.toolbar.firstMove != -1) {			
 					Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);	
 					startAutoAna=false;
@@ -1139,7 +1139,6 @@ if(bestMoves.isEmpty())
 				{
 					return;
 				}
-				startAutoAna=false;
 				Lizzie.frame.toolbar.startAutoAna = false;				
 				ponder();
 				setResponseUpToDate();	
