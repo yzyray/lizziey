@@ -223,8 +223,8 @@ public class BoardRenderer {
         g0,
         x
             + boardWidth / 2
-            - black.replaceAll(regex, "12").length() * stoneRadius / 3
-            - stoneRadius * 5 / 3,
+            - black.replaceAll(regex, "12").length() * stoneRadius * 3 / 10
+            - stoneRadius * 5 / 4,
         y - scaledMarginHeight + stoneRadius + boardHeight + stoneRadius * 3 / 5,
         Lizzie.frame.uiFont,
         black,
@@ -233,7 +233,10 @@ public class BoardRenderer {
     g0.setColor(Color.WHITE);
     drawStringBold(
         g0,
-        x + boardWidth / 2 + stoneRadius * 4,
+        x
+            + boardWidth / 2
+            + white.replaceAll(regex, "12").length() * stoneRadius * 3 / 10
+            + stoneRadius * 5 / 4,
         y - scaledMarginHeight + stoneRadius + boardHeight + stoneRadius * 3 / 5,
         Lizzie.frame.uiFont,
         white,
