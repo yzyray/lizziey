@@ -211,18 +211,33 @@ public class BoardRenderer {
       return;
     }
     emptyName = false;
-    g0.setColor(Color.BLACK);
-    g0.fillOval(
-        x + boardWidth / 2 - stoneRadius,
-        y - scaledMarginHeight + stoneRadius + boardHeight,
-        stoneRadius,
-        stoneRadius);
-    g0.setColor(Color.WHITE);
-    g0.fillOval(
-        x + boardWidth / 2,
-        y - scaledMarginHeight + stoneRadius + boardHeight,
-        stoneRadius,
-        stoneRadius);
+    if (Lizzie.board.getHistory().isBlacksTurn()) {
+      g0.setColor(Color.WHITE);
+      g0.fillOval(
+          x + boardWidth / 2 - stoneRadius * 1 / 5,
+          y - scaledMarginHeight + stoneRadius + boardHeight,
+          stoneRadius,
+          stoneRadius);
+      g0.setColor(Color.BLACK);
+      g0.fillOval(
+          x + boardWidth / 2 - stoneRadius * 4 / 5,
+          y - scaledMarginHeight + stoneRadius + boardHeight,
+          stoneRadius,
+          stoneRadius);
+    } else {
+      g0.setColor(Color.BLACK);
+      g0.fillOval(
+          x + boardWidth / 2 - stoneRadius * 4 / 5,
+          y - scaledMarginHeight + stoneRadius + boardHeight,
+          stoneRadius,
+          stoneRadius);
+      g0.setColor(Color.WHITE);
+      g0.fillOval(
+          x + boardWidth / 2 - stoneRadius * 1 / 5,
+          y - scaledMarginHeight + stoneRadius + boardHeight,
+          stoneRadius,
+          stoneRadius);
+    }
     g0.setColor(Color.BLACK);
     String regex = "[\u4e00-\u9fa5]";
 
