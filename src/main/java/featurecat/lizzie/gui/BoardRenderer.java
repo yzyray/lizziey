@@ -42,6 +42,7 @@ public class BoardRenderer {
   private int x, y;
   private int boardWidth, boardHeight;
   private int shadowRadius;
+  private static boolean emptyName = false;
 
   private JSONObject uiConfig, uiPersist;
   private int scaledMarginWidth, availableWidth, squareWidth, stoneRadius;
@@ -200,6 +201,16 @@ public class BoardRenderer {
 
   private void drawName(Graphics2D g0) {
     g0.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+    String black = Lizzie.board.getHistory().getGameInfo().getPlayerBlack();
+    if (black.length() > 20) black = black.substring(0, 20);
+    String white = Lizzie.board.getHistory().getGameInfo().getPlayerWhite();
+    if (white.length() > 20) white = white.substring(0, 20);
+    if (black.equals("") && white.contentEquals("")) {
+      emptyName = true;
+      return;
+    }
+    emptyName = false;
     g0.setColor(Color.BLACK);
     g0.fillOval(
         x + boardWidth / 2 - stoneRadius,
@@ -212,10 +223,6 @@ public class BoardRenderer {
         y - scaledMarginHeight + stoneRadius + boardHeight,
         stoneRadius,
         stoneRadius);
-    String black = Lizzie.board.getHistory().getGameInfo().getPlayerBlack();
-    if (black.length() > 20) black = black.substring(0, 20);
-    String white = Lizzie.board.getHistory().getGameInfo().getPlayerWhite();
-    if (white.length() > 20) white = white.substring(0, 20);
     g0.setColor(Color.BLACK);
     String regex = "[\u4e00-\u9fa5]";
 
@@ -322,7 +329,7 @@ public class BoardRenderer {
               Board.asName(i),
               stoneRadius * 4 / 5,
               stoneRadius);
-          if (!Lizzie.config.showName)
+          if (!Lizzie.config.showName || emptyName)
             drawString(
                 g,
                 x + scaledMarginWidth + squareWidth * i,
@@ -1543,7 +1550,7 @@ public class BoardRenderer {
     // decrease boardLength until the availableLength will result in square board
     // intersections
     double marginWidth =
-        (Lizzie.config.showName ? 0.055 : showCoordinates ? 0.045 : 0.025)
+        (Lizzie.config.showName && !emptyName ? 0.055 : showCoordinates ? 0.045 : 0.025)
             / Board.boardWidth
             * 19.0;
     boardWidth++;
@@ -1558,7 +1565,7 @@ public class BoardRenderer {
     int squareHeight = 0;
     if (Board.boardWidth != Board.boardHeight) {
       double marginHeight =
-          (Lizzie.config.showName ? 0.055 : showCoordinates ? 0.045 : 0.03)
+          (Lizzie.config.showName && !emptyName ? 0.055 : showCoordinates ? 0.045 : 0.03)
               / Board.boardHeight
               * 19.0;
       boardHeight++;
