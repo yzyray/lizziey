@@ -245,7 +245,7 @@ public class BoardRenderer {
         g0,
         x
             + boardWidth / 2
-            - black.replaceAll(regex, "12").length() * stoneRadius * 3 / 10
+            - black.replaceAll(regex, "12").length() * stoneRadius / 4
             - stoneRadius * 5 / 4,
         y - scaledMarginHeight + stoneRadius + boardHeight + stoneRadius * 3 / 5,
         Lizzie.frame.uiFont,
@@ -257,7 +257,7 @@ public class BoardRenderer {
         g0,
         x
             + boardWidth / 2
-            + white.replaceAll(regex, "12").length() * stoneRadius * 3 / 10
+            + white.replaceAll(regex, "12").length() * stoneRadius / 4
             + stoneRadius * 5 / 4,
         y - scaledMarginHeight + stoneRadius + boardHeight + stoneRadius * 3 / 5,
         Lizzie.frame.uiFont,
