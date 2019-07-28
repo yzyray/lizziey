@@ -894,25 +894,6 @@ public class LizzieFrame extends JFrame {
 
       Lizzie.frame.toolbarHeight = 70;
       toolbar.detail.setIcon(toolbar.iconDown);
-      Lizzie.frame.toolbar.setVisible(true);
-      Lizzie.frame.mainPanel.setBounds(
-          0,
-          0,
-          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
-          Lizzie.frame.getHeight()
-              - Lizzie.frame.getJMenuBar().getHeight()
-              - Lizzie.frame.getInsets().top
-              - Lizzie.frame.getInsets().bottom
-              - Lizzie.frame.toolbarHeight);
-      Lizzie.frame.toolbar.setBounds(
-          0,
-          Lizzie.frame.getHeight()
-              - Lizzie.frame.getJMenuBar().getHeight()
-              - Lizzie.frame.getInsets().top
-              - Lizzie.frame.getInsets().bottom
-              - Lizzie.frame.toolbarHeight,
-          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
-          Lizzie.frame.toolbarHeight);
     }
     if (ponder) {
       Lizzie.leelaz.ponder();
@@ -954,26 +935,6 @@ public class LizzieFrame extends JFrame {
       toolbar.chkAnaAutoSave.setEnabled(false);
 
       Lizzie.frame.toolbarHeight = 70;
-      toolbar.detail.setIcon(toolbar.iconDown);
-      Lizzie.frame.toolbar.setVisible(true);
-      Lizzie.frame.mainPanel.setBounds(
-          0,
-          0,
-          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
-          Lizzie.frame.getHeight()
-              - Lizzie.frame.getJMenuBar().getHeight()
-              - Lizzie.frame.getInsets().top
-              - Lizzie.frame.getInsets().bottom
-              - Lizzie.frame.toolbarHeight);
-      Lizzie.frame.toolbar.setBounds(
-          0,
-          Lizzie.frame.getHeight()
-              - Lizzie.frame.getJMenuBar().getHeight()
-              - Lizzie.frame.getInsets().top
-              - Lizzie.frame.getInsets().bottom
-              - Lizzie.frame.toolbarHeight,
-          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
-          Lizzie.frame.toolbarHeight);
       // 打开分析界面
       StartAnaDialog newgame = new StartAnaDialog();
       newgame.setVisible(true);
