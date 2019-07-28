@@ -1813,13 +1813,13 @@ public class Menu extends MenuBar {
 
   public void newGame() {
     Lizzie.frame.isPlayingAgainstLeelaz = false;
-    GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
+    // GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
     NewAnaGameDialog newgame = new NewAnaGameDialog();
     // newgame.setGameInfo(gameInfo);
     newgame.setVisible(true);
     newgame.dispose();
     if (newgame.isCancelled()) return;
-
+    GameInfo gameInfo = newgame.gameInfo;
     Lizzie.board.getHistory().setGameInfo(gameInfo);
     Lizzie.leelaz.sendCommand("komi " + gameInfo.getKomi());
     Lizzie.frame.komi = gameInfo.getKomi() + "";

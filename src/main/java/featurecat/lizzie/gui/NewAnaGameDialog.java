@@ -43,7 +43,7 @@ public class NewAnaGameDialog extends JDialog {
   private JCheckBox chkPonder;
 
   private boolean cancelled = true;
-  private GameInfo gameInfo = new GameInfo();
+  public GameInfo gameInfo = new GameInfo();
 
   public NewAnaGameDialog() {
     initComponents();

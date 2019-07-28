@@ -725,7 +725,7 @@ public class LizzieFrame extends JFrame {
   }
 
   public static void startNewGame() {
-    GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
+    // GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 
     NewGameDialog newGameDialog = new NewGameDialog();
     // newGameDialog.setGameInfo(gameInfo);
@@ -735,6 +735,7 @@ public class LizzieFrame extends JFrame {
     if (newGameDialog.isCancelled()) return;
     Lizzie.frame.isAnaPlayingAgainstLeelaz = false;
     Lizzie.board.clear();
+    GameInfo gameInfo = newGameDialog.gameInfo;
     Lizzie.board.getHistory().setGameInfo(gameInfo);
     Lizzie.leelaz.sendCommand("komi " + gameInfo.getKomi());
     Lizzie.frame.komi = gameInfo.getKomi() + "";
