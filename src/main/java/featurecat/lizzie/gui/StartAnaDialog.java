@@ -175,7 +175,7 @@ public class StartAnaDialog extends JDialog {
           }
         },
         300);
-
+    Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);
     Lizzie.frame.removeInput();
 
     cancelled = false;

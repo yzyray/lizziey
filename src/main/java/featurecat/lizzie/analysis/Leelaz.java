@@ -1131,7 +1131,8 @@ public boolean startAutoAna=false;
 
 			if (Lizzie.frame.toolbar.startAutoAna) {
 				setResponseUpToDate();	
-				if (startAutoAna&&Lizzie.frame.toolbar.firstMove != -1) {		
+				if(Lizzie.frame.toolbar.firstMove != -1) {
+				if (startAutoAna) {		
 					 Timer timer = new Timer();
 				      timer.schedule(
 				          new TimerTask() {
@@ -1155,6 +1156,7 @@ public boolean startAutoAna=false;
 						e.printStackTrace();
 					}
 					return;
+				}
 				}
 				Lizzie.frame.toolbar.startAutoAna = false;				
 				
