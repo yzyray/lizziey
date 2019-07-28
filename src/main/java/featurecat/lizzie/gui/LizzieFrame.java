@@ -2562,7 +2562,12 @@ public class LizzieFrame extends JFrame {
     String comment = Lizzie.board.getHistory().getData().comment;
     int fontSize = (int) (min(getWidth() * 0.6, getHeight()) * 0.0225);
     if (Lizzie.config.showLargeSubBoard() || Lizzie.config.showLargeWinrate()) {
-      fontSize = (int) (min(getWidth() * 0.4, getHeight()) * 0.0225);
+      fontSize =
+          (int)
+              (min(
+                      (getWidth() > 1.75 * getHeight() ? 1.75 * getHeight() : getWidth()) * 0.43,
+                      getHeight())
+                  * 0.0225);
     }
     // if (Lizzie.config.commentFontSize > 0) {
     // fontSize = Lizzie.config.commentFontSize;
