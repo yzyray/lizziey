@@ -217,11 +217,11 @@ public class Menu extends MenuBar {
     final JMenu moveMenu = new JMenu("手数(M)");
     viewMenu.add(moveMenu);
 
-    final JMenu panel = new JMenu("面板");
-    viewMenu.add(panel);
-
     final JMenu Suggestions = new JMenu("推荐点");
     viewMenu.add(Suggestions);
+
+    final JMenu panel = new JMenu("面板");
+    viewMenu.add(panel);
 
     viewMenu.addSeparator();
 
