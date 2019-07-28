@@ -202,12 +202,12 @@ public class LizzieFrame extends JFrame {
       // Font.TRUETYPE_FONT,
       //
       // Thread.currentThread().getContextClassLoader().getResourceAsStream("fonts/MSYH.TTC"));
-      winrateFont =
-          Font.createFont(
-              Font.TRUETYPE_FONT,
-              Thread.currentThread()
-                  .getContextClassLoader()
-                  .getResourceAsStream("fonts/OpenSans-Semibold.ttf"));
+      winrateFont = new Font("微软雅黑", Font.PLAIN, 12);
+      Font.createFont(
+          Font.TRUETYPE_FONT,
+          Thread.currentThread()
+              .getContextClassLoader()
+              .getResourceAsStream("fonts/OpenSans-Semibold.ttf"));
     } catch (IOException | FontFormatException e) {
       e.printStackTrace();
     }

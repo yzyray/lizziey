@@ -336,7 +336,7 @@ public class Config {
     analyzeUpdateIntervalCentisec =
         config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec");
     if (theme.fontName() != null) fontName = theme.fontName();
-    else fontName = "黑体";
+    else fontName = "微软雅黑";
 
     if (theme.uiFontName() != null) uiFontName = theme.uiFontName();
 

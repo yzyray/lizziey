@@ -4,6 +4,7 @@ import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.rules.BoardHistoryNode;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.Optional;
 
 public class WinrateGraph {
@@ -21,18 +22,18 @@ public class WinrateGraph {
     // maxcoreMean = 30.0;
 
     // draw background rectangle
-    //    final Paint gradient =
-    //        new GradientPaint(
-    //            new Point2D.Float(posx, posy),
-    //            new Color(120, 120, 120, 180),
-    //            new Point2D.Float(posx, posy + height),
-    //            new Color(185, 185, 185, 185));
-    //    final Paint borderGradient =
-    //        new GradientPaint(
-    //            new Point2D.Float(posx, posy),
-    //            new Color(0, 0, 0, 150),
-    //            new Point2D.Float(posx, posy + height),
-    //            new Color(255, 255, 255, 150));
+    final Paint gradient =
+        new GradientPaint(
+            new Point2D.Float(posx, posy),
+            new Color(120, 120, 120, 180),
+            new Point2D.Float(posx, posy + height),
+            new Color(185, 185, 185, 185));
+    final Paint borderGradient =
+        new GradientPaint(
+            new Point2D.Float(posx, posy),
+            new Color(0, 0, 0, 150),
+            new Point2D.Float(posx, posy + height),
+            new Color(255, 255, 255, 150));
     //    final Paint gradient =
     //        new GradientPaint(
     //            new Point2D.Float(posx, posy),
@@ -46,10 +47,10 @@ public class WinrateGraph {
     //            new Point2D.Float(posx, posy + height),
     //            new Color(255, 255, 255, 150));
 
-    //    Paint original = g.getPaint();
-    //    g.setPaint(gradient);
+    Paint original = g.getPaint();
+    g.setPaint(gradient);
 
-    //    g.fillRect(posx, posy, width, height);
+    g.fillRect(posx, posy, width, height);
 
     // draw border
     int strokeRadius = Lizzie.config.showBorder ? 3 : 1;
@@ -62,14 +63,14 @@ public class WinrateGraph {
           width - 2 * strokeRadius,
           height - 2 * strokeRadius);
     } else {
-      //      g.drawLine(
-      //          posx + strokeRadius,
-      //          posy + strokeRadius,
-      //          posx - strokeRadius + width,
-      //          posy + strokeRadius);
+      g.drawLine(
+          posx + strokeRadius,
+          posy + strokeRadius,
+          posx - strokeRadius + width,
+          posy + strokeRadius);
     }
 
-    // g.setPaint(original);
+    g.setPaint(original);
 
     // record parameters (before resizing) for calculating moveNumber
     origParams[0] = posx;
