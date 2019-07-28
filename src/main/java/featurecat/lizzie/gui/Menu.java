@@ -925,7 +925,7 @@ public class Menu extends MenuBar {
     gameMenu.add(contgames);
 
     final JMenuItem enginePk = new JMenuItem();
-    enginePk.setText("引擎对局");
+    enginePk.setText("引擎对局(Alt+E)");
 
     enginePk.addActionListener(
         new ActionListener() {

@@ -3,6 +3,7 @@ package featurecat.lizzie.gui;
 import static java.awt.event.KeyEvent.*;
 
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.analysis.GameInfo;
 import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.SwingUtilities;
@@ -285,6 +286,35 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
     switch (e.getKeyCode()) {
       case VK_E:
+        if (e.isAltDown()) {
+          if (Lizzie.frame.toolbar.isEnginePk) {
+            Message msg = new Message();
+            msg.setMessage("请等待当前引擎对战结束,或使用详细工具栏引擎对战面板中的[终止]按钮中断对战");
+            msg.setVisible(true);
+            return;
+          }
+          Lizzie.frame.toolbar.enginePkBlack.setEnabled(true);
+          Lizzie.frame.toolbar.enginePkWhite.setEnabled(true);
+          NewEngineGameDialog engineGame = new NewEngineGameDialog();
+          GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
+          engineGame.setGameInfo(gameInfo);
+          engineGame.setVisible(true);
+          Lizzie.frame.toolbar.resetEnginePk();
+          if (engineGame.isCancelled()) {
+            Lizzie.frame.toolbar.chkenginePk.setSelected(false);
+            Lizzie.frame.toolbar.enginePkBlack.setEnabled(false);
+            Lizzie.frame.toolbar.enginePkWhite.setEnabled(false);
+            return;
+          }
+
+          Lizzie.board.getHistory().setGameInfo(gameInfo);
+          Lizzie.leelaz.sendCommand("komi " + gameInfo.getKomi());
+          Lizzie.frame.komi = gameInfo.getKomi() + "";
+
+          Lizzie.frame.toolbar.chkenginePk.setSelected(true);
+          Lizzie.frame.toolbar.isEnginePk = true;
+          Lizzie.frame.toolbar.startEnginePk();
+        }
         Lizzie.frame.toggleGtpConsole();
         break;
       case VK_RIGHT:
