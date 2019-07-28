@@ -52,7 +52,7 @@ public class NewEngineGameDialog extends JDialog {
       ResourceBundle.getBundle("l10n.DisplayStrings");
 
   private void initComponents() {
-    setMinimumSize(new Dimension(310, 280));
+    setMinimumSize(new Dimension(330, 280));
     setResizable(false);
     setTitle("引擎对战");
     setModal(true);
