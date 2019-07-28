@@ -228,7 +228,7 @@ public class BottomToolbar extends JPanel {
     forward1 = new JButton(">");
     openfile = new JButton("打开");
     kataEstimate = new JButton("Kata评估");
-    analyse = new JButton("分析|暂停");
+    analyse = new JButton("分析");
     heatMap = new JButton("策略网络");
     backMain = new JButton("返回主分支");
     setMain = new JButton("设为主分支");
@@ -2710,16 +2710,16 @@ public class BottomToolbar extends JPanel {
 
     if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
       if (boardmid + 364 > w) boardmid = w - 364;
-      if (boardmid - 601 < 0) boardmid = 601;
+      if (boardmid - 576 < 0) boardmid = 576;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(true);
-      kataEstimate.setBounds(boardmid - 582, 0, 60, 26);
-      batchOpen.setBounds(boardmid - 523, 0, 60, 26);
-      openfile.setBounds(boardmid - 464, 0, 40, 26);
-      savefile.setBounds(boardmid - 425, 0, 40, 26);
-      komi.setBounds(boardmid - 386, 0, 40, 26);
-      refresh.setBounds(boardmid - 347, 0, 40, 26);
-      analyse.setBounds(boardmid - 308, 0, 65, 26);
+      kataEstimate.setBounds(boardmid - 557, 0, 60, 26);
+      batchOpen.setBounds(boardmid - 498, 0, 60, 26);
+      openfile.setBounds(boardmid - 439, 0, 40, 26);
+      savefile.setBounds(boardmid - 400, 0, 40, 26);
+      komi.setBounds(boardmid - 361, 0, 40, 26);
+      refresh.setBounds(boardmid - 322, 0, 40, 26);
+      analyse.setBounds(boardmid - 283, 0, 40, 26);
       tryPlay.setBounds(boardmid - 244, 0, 40, 26);
       setMain.setBounds(boardmid - 205, 0, 70, 26);
       backMain.setBounds(boardmid - 136, 0, 70, 26);
@@ -2736,15 +2736,15 @@ public class BottomToolbar extends JPanel {
       gotomove.setBounds(boardmid + 313, 0, 35, 26);
     } else {
       if (boardmid + 364 > w) boardmid = w - 364;
-      if (boardmid - 542 < 0) boardmid = 542;
+      if (boardmid - 517 < 0) boardmid = 517;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(false);
-      batchOpen.setBounds(boardmid - 523, 0, 60, 26);
-      openfile.setBounds(boardmid - 464, 0, 40, 26);
-      savefile.setBounds(boardmid - 425, 0, 40, 26);
-      komi.setBounds(boardmid - 386, 0, 40, 26);
-      refresh.setBounds(boardmid - 347, 0, 40, 26);
-      analyse.setBounds(boardmid - 308, 0, 65, 26);
+      batchOpen.setBounds(boardmid - 498, 0, 60, 26);
+      openfile.setBounds(boardmid - 439, 0, 40, 26);
+      savefile.setBounds(boardmid - 400, 0, 40, 26);
+      komi.setBounds(boardmid - 361, 0, 40, 26);
+      refresh.setBounds(boardmid - 322, 0, 40, 26);
+      analyse.setBounds(boardmid - 283, 0, 40, 26);
       tryPlay.setBounds(boardmid - 244, 0, 40, 26);
       setMain.setBounds(boardmid - 205, 0, 70, 26);
       backMain.setBounds(boardmid - 136, 0, 70, 26);
@@ -2809,16 +2809,16 @@ public class BottomToolbar extends JPanel {
     int w = Lizzie.frame.getWidth();
     if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
       if (boardmid + 364 > w) boardmid = w - 364;
-      if (boardmid - 601 < 0) boardmid = 601;
+      if (boardmid - 576 < 0) boardmid = 576;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(true);
-      kataEstimate.setBounds(boardmid - 582, 0, 60, 26);
-      batchOpen.setBounds(boardmid - 523, 0, 60, 26);
-      openfile.setBounds(boardmid - 464, 0, 40, 26);
-      savefile.setBounds(boardmid - 425, 0, 40, 26);
-      komi.setBounds(boardmid - 386, 0, 40, 26);
-      refresh.setBounds(boardmid - 347, 0, 40, 26);
-      analyse.setBounds(boardmid - 308, 0, 65, 26);
+      kataEstimate.setBounds(boardmid - 557, 0, 60, 26);
+      batchOpen.setBounds(boardmid - 498, 0, 60, 26);
+      openfile.setBounds(boardmid - 439, 0, 40, 26);
+      savefile.setBounds(boardmid - 400, 0, 40, 26);
+      komi.setBounds(boardmid - 361, 0, 40, 26);
+      refresh.setBounds(boardmid - 322, 0, 40, 26);
+      analyse.setBounds(boardmid - 283, 0, 40, 26);
       tryPlay.setBounds(boardmid - 244, 0, 40, 26);
       setMain.setBounds(boardmid - 205, 0, 70, 26);
       backMain.setBounds(boardmid - 136, 0, 70, 26);
@@ -2835,15 +2835,15 @@ public class BottomToolbar extends JPanel {
       gotomove.setBounds(boardmid + 313, 0, 35, 26);
     } else {
       if (boardmid + 364 > w) boardmid = w - 364;
-      if (boardmid - 542 < 0) boardmid = 542;
+      if (boardmid - 517 < 0) boardmid = 517;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(false);
-      batchOpen.setBounds(boardmid - 523, 0, 60, 26);
-      openfile.setBounds(boardmid - 464, 0, 40, 26);
-      savefile.setBounds(boardmid - 425, 0, 40, 26);
-      komi.setBounds(boardmid - 386, 0, 40, 26);
-      refresh.setBounds(boardmid - 347, 0, 40, 26);
-      analyse.setBounds(boardmid - 308, 0, 65, 26);
+      batchOpen.setBounds(boardmid - 498, 0, 60, 26);
+      openfile.setBounds(boardmid - 439, 0, 40, 26);
+      savefile.setBounds(boardmid - 400, 0, 40, 26);
+      komi.setBounds(boardmid - 361, 0, 40, 26);
+      refresh.setBounds(boardmid - 322, 0, 40, 26);
+      analyse.setBounds(boardmid - 283, 0, 40, 26);
       tryPlay.setBounds(boardmid - 244, 0, 40, 26);
       setMain.setBounds(boardmid - 205, 0, 70, 26);
       backMain.setBounds(boardmid - 136, 0, 70, 26);

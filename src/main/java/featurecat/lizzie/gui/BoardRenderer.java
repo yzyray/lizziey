@@ -218,6 +218,7 @@ public class BoardRenderer {
           y - scaledMarginHeight + stoneRadius + boardHeight,
           stoneRadius,
           stoneRadius);
+
       g0.setColor(Color.BLACK);
       g0.fillOval(
           x + boardWidth / 2 - stoneRadius * 4 / 5,

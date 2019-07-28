@@ -519,6 +519,7 @@ public class EngineManager {
     // this.currentEngineNo = index;
     // Lizzie.leelaz.notPondering();
     Lizzie.board.restoreMoveNumberPonder(index, mv);
+    newEng.setResponseUpToDate();
     // Lizzie.leelaz.Pondering();
   }
 
@@ -553,6 +554,7 @@ public class EngineManager {
     // this.currentEngineNo = index;
     // Lizzie.leelaz.notPondering();
     Lizzie.board.restoreMoveNumber(index, mv);
+    newEng.setResponseUpToDate();
     Lizzie.frame.boardRenderer.removecountblock();
     if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
     // Lizzie.leelaz.Pondering();
@@ -608,7 +610,7 @@ public class EngineManager {
           if (!Lizzie.config.fastChange) {
             curEng.normalQuit();
           } else {
-            curEng.sendCommand("version");
+            curEng.sendCommand("name");
           }
         } catch (Exception e) {
           e.printStackTrace();
@@ -655,7 +657,7 @@ public class EngineManager {
       this.currentEngineNo = index;
       featurecat.lizzie.gui.Menu.engineMenu.setText(
           "引擎" + (currentEngineNo + 1) + ": " + engineList.get(currentEngineNo).currentEnginename);
-
+      newEng.setResponseUpToDate();
     } catch (IOException e) {
       e.printStackTrace();
     }

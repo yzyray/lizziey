@@ -16,7 +16,7 @@ public class Manual extends JDialog {
   public Manual() {
     setType(Type.POPUP);
     setTitle("人工干预");
-    setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
+    setAlwaysOnTop(true);
     setBounds(0, 0, 155, 175);
     getContentPane().setLayout(new BorderLayout());
     JPanel buttonPane = new JPanel();

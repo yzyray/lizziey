@@ -1752,6 +1752,7 @@ public class Board implements LeelazListener {
   }
 
   public boolean goToMoveNumber(int moveNumber) {
+
     return goToMoveNumberHelper(moveNumber, false);
   }
 
@@ -1768,6 +1769,7 @@ public class Board implements LeelazListener {
   }
 
   public boolean goToMoveNumberHelper(int moveNumber, boolean withinBranch) {
+    if (Lizzie.frame.toolbar.isEnginePk) return false;
     int delta = moveNumber - history.getMoveNumber();
     boolean moved = false;
     for (int i = 0; i < Math.abs(delta); i++) {
@@ -1893,6 +1895,7 @@ public class Board implements LeelazListener {
    * @return void
    */
   public void moveToAnyPosition(BoardHistoryNode targetNode) {
+    if (Lizzie.frame.toolbar.isEnginePk) return;
     List<Integer> targetParents = new ArrayList<Integer>();
     List<Integer> sourceParents = new ArrayList<Integer>();
 
