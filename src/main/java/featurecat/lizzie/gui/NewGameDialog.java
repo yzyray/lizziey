@@ -90,7 +90,7 @@ public class NewGameDialog extends JDialog {
     textFieldKomi = new JFormattedTextField(FORMAT_KOMI);
     textFieldKomi.setText("7.5");
     textFieldHandicap = new JFormattedTextField(FORMAT_HANDICAP);
-    textFieldKomi.setText("0");
+    textFieldHandicap.setText("0");
     textFieldHandicap.addPropertyChangeListener(evt -> modifyHandicap());
     textTime = new JTextField();
     textTime.setText(
