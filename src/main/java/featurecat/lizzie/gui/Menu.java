@@ -369,7 +369,7 @@ public class Menu extends MenuBar {
     final JMenu tool = new JMenu("工具栏设置");
     viewMenu.add(tool);
 
-    final JCheckBoxMenuItem toolMenu = new JCheckBoxMenuItem("简略工具栏"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem toolMenu = new JCheckBoxMenuItem("基本工具栏"); // 创建“字体”子菜单
     tool.add(toolMenu); // 添加到“编辑”菜单
     toolMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
@@ -2244,7 +2244,7 @@ public class Menu extends MenuBar {
 
         return;
       }
-      if (menuItem.getText().startsWith("简略")) {
+      if (menuItem.getText().startsWith("基本")) {
         int nowHeight = Lizzie.frame.toolbarHeight;
         Lizzie.frame.toolbarHeight = 26;
         Lizzie.frame.toolbar.setVisible(true);
