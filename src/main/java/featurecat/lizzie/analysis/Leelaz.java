@@ -841,7 +841,7 @@ public boolean startAutoAna=false;
 					} catch (Exception ex) {
 					}
 				}
-				if (line.startsWith("winrate:")) {
+				if (line.contains("winrate:")) {
 					isheatmap = false;
 					String[] params = line.trim().split(" ");
 					// heatwinrate = Double.valueOf(params[1]);
