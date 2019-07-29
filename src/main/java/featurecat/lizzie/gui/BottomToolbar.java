@@ -56,6 +56,8 @@ public class BottomToolbar extends JPanel {
   JButton refresh;
   JButton tryPlay;
   JButton komi;
+  JButton move;
+  JButton coords;
   public SetKomi setkomi;
 
   int savedbroadmid;
@@ -236,6 +238,8 @@ public class BottomToolbar extends JPanel {
     refresh = new JButton("刷新");
     tryPlay = new JButton("试下");
     komi = new JButton("贴目");
+    move = new JButton("手数");
+    coords = new JButton("坐标");
     iconUp = new ImageIcon();
     try {
       iconUp.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/up.png")));
@@ -273,6 +277,8 @@ public class BottomToolbar extends JPanel {
     add(refresh);
     add(tryPlay);
     add(komi);
+    add(move);
+    add(coords);
     firstButton.setFocusable(false);
     lastButton.setFocusable(false);
     clearButton.setFocusable(false);
@@ -294,6 +300,8 @@ public class BottomToolbar extends JPanel {
     refresh.setFocusable(false);
     tryPlay.setFocusable(false);
     komi.setFocusable(false);
+    move.setFocusable(false);
+    coords.setFocusable(false);
 
     firstButton.setMargin(new Insets(0, 0, 0, 0));
     lastButton.setMargin(new Insets(0, 0, 0, 0));
@@ -316,6 +324,8 @@ public class BottomToolbar extends JPanel {
     refresh.setMargin(new Insets(0, 0, 0, 0));
     tryPlay.setMargin(new Insets(0, 0, 0, 0));
     komi.setMargin(new Insets(0, 0, 0, 0));
+    coords.setMargin(new Insets(0, 0, 0, 0));
+    move.setMargin(new Insets(0, 0, 0, 0));
     // NumberFormat nf = NumberFormat.getNumberInstance();
 
     // nf.setGroupingUsed(false);
@@ -367,6 +377,20 @@ public class BottomToolbar extends JPanel {
           public void actionPerformed(ActionEvent e) {
             setkomi = new SetKomi();
             setkomi.setVisible(true);
+          }
+        });
+    move.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.toggleShowMoveNumber();
+            Lizzie.frame.refresh();
+          }
+        });
+    coords.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.toggleCoordinates();
+            Lizzie.frame.refresh();
           }
         });
     batchOpen.addActionListener(
@@ -2709,7 +2733,7 @@ public class BottomToolbar extends JPanel {
     int w = Lizzie.frame.getWidth();
 
     if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
-      if (boardmid + 364 > w) boardmid = w - 364;
+      if (boardmid + 432 > w) boardmid = w - 432;
       if (boardmid - 576 < 0) boardmid = 576;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(true);
@@ -2734,8 +2758,10 @@ public class BottomToolbar extends JPanel {
       heatMap.setBounds(boardmid + 225, 0, 60, 26);
       txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
       gotomove.setBounds(boardmid + 313, 0, 35, 26);
+      move.setBounds(boardmid + 347, 0, 35, 26);
+      coords.setBounds(boardmid + 381, 0, 35, 26);
     } else {
-      if (boardmid + 364 > w) boardmid = w - 364;
+      if (boardmid + 432 > w) boardmid = w - 432;
       if (boardmid - 517 < 0) boardmid = 517;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(false);
@@ -2759,6 +2785,8 @@ public class BottomToolbar extends JPanel {
       heatMap.setBounds(boardmid + 225, 0, 60, 26);
       txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
       gotomove.setBounds(boardmid + 313, 0, 35, 26);
+      move.setBounds(boardmid + 347, 0, 35, 26);
+      coords.setBounds(boardmid + 381, 0, 35, 26);
     }
   }
 
@@ -2808,7 +2836,7 @@ public class BottomToolbar extends JPanel {
     int boardmid = savedbroadmid;
     int w = Lizzie.frame.getWidth();
     if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
-      if (boardmid + 364 > w) boardmid = w - 364;
+      if (boardmid + 432 > w) boardmid = w - 432;
       if (boardmid - 576 < 0) boardmid = 576;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(true);
@@ -2833,8 +2861,10 @@ public class BottomToolbar extends JPanel {
       heatMap.setBounds(boardmid + 225, 0, 60, 26);
       txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
       gotomove.setBounds(boardmid + 313, 0, 35, 26);
+      move.setBounds(boardmid + 347, 0, 35, 26);
+      coords.setBounds(boardmid + 381, 0, 35, 26);
     } else {
-      if (boardmid + 364 > w) boardmid = w - 364;
+      if (boardmid + 432 > w) boardmid = w - 432;
       if (boardmid - 517 < 0) boardmid = 517;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(false);
@@ -2858,6 +2888,8 @@ public class BottomToolbar extends JPanel {
       heatMap.setBounds(boardmid + 225, 0, 60, 26);
       txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
       gotomove.setBounds(boardmid + 313, 0, 35, 26);
+      move.setBounds(boardmid + 347, 0, 35, 26);
+      coords.setBounds(boardmid + 381, 0, 35, 26);
     }
   }
 }

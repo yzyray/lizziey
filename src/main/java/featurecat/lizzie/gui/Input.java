@@ -679,7 +679,11 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           Lizzie.frame.openAvoidMoveDialog();
         } else {
           shouldDisableAnalysis = false;
-          Lizzie.board.toggleAnalysis();
+          StartAnaDialog newgame = new StartAnaDialog();
+          newgame.setVisible(true);
+          if (newgame.isCancelled()) {
+            Lizzie.frame.toolbar.resetAutoAna();
+          }
         }
         break;
         // this is copyed from https://github.com/zsalch/lizzie/tree/n_avoiddialog
