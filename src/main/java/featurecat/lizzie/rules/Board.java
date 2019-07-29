@@ -51,6 +51,8 @@ public class Board implements LeelazListener {
   public boolean isPkBoardKataB = false;
   public boolean isPkBoardKataW = false;
   public boolean isKataBoard = false;
+  public boolean hasStartStone = false;
+  public ArrayList<Movelist> startStonelist = new ArrayList<Movelist>();;
 
   // Save the node for restore move when in the branch
   private Optional<BoardHistoryNode> saveNode;
@@ -295,7 +297,7 @@ public class Board implements LeelazListener {
     // System.out.println("保存board");
     tempmovelist = getmovelist();
     // temphistory = history;
-    clear();
+    clearForSavelist();
     setlist();
   }
 
@@ -677,6 +679,33 @@ public class Board implements LeelazListener {
     }
     movelist.remove(movelist.size() - 1);
     return movelist;
+  }
+
+  public void addStartList() {
+    Optional<BoardHistoryNode> node = history.getCurrentHistoryNode().now();
+    Optional<int[]> passstep = Optional.empty();
+    if (node.isPresent()) {
+      Optional<int[]> lastMove = node.get().getData().lastMove;
+      if (lastMove == passstep) {
+        Movelist move = new Movelist();
+        move.ispass = true;
+        move.isblack = node.get().getData().lastMoveColor.isBlack();
+        startStonelist.add(move);
+        node = node.get().previous();
+      } else {
+        if (lastMove.isPresent()) {
+
+          int[] n = lastMove.get();
+          Movelist move = new Movelist();
+          move.x = n[0];
+          move.y = n[1];
+          move.ispass = false;
+          move.isblack = node.get().getData().lastMoveColor.isBlack();
+          move.movenum = node.get().getData().moveNumber;
+          startStonelist.add(move);
+        }
+      }
+    }
   }
 
   public ArrayList<Movelist> getmovelist() {
@@ -1644,7 +1673,19 @@ public class Board implements LeelazListener {
   public void restoreMoveNumber(int index, ArrayList<Movelist> mv) {
     // while (previousMove()) ;
     int lenth = mv.size();
-
+    if (Lizzie.board.hasStartStone) {
+      int lenth2 = startStonelist.size();
+      for (int i = 0; i < lenth2; i++) {
+        Movelist move = startStonelist.get(lenth2 - 1 - i);
+        String color = move.isblack ? "b" : "w";
+        if (!move.ispass) {
+          Lizzie.engineManager
+              .engineList
+              .get(index)
+              .sendCommand("play " + color + " " + convertCoordinatesToName(move.x, move.y));
+        }
+      }
+    }
     for (int i = 0; i < lenth; i++) {
       Movelist move = mv.get(lenth - 1 - i);
       if (!move.ispass) {
@@ -2039,6 +2080,28 @@ public class Board implements LeelazListener {
     Lizzie.frame.resetTitle();
     Lizzie.frame.clear();
     Lizzie.frame.winrateGraph.maxcoreMean = 30;
+    hasStartStone = false;
+    startStonelist = new ArrayList<Movelist>();
+    mvnumber = new int[boardHeight * boardWidth];
+    movelistwr.clear();
+    cleanedittemp();
+    initialize();
+    isPkBoard = false;
+    isPkBoardKataB = false;
+    isPkBoardKataW = false;
+    isKataBoard = false;
+    Lizzie.leelaz.sendCommand("komi " + Lizzie.leelaz.komi);
+    Lizzie.board.getHistory().getGameInfo().resetAll();
+    Lizzie.frame.komi = Lizzie.leelaz.komi + "";
+    Lizzie.frame.boardRenderer.removecountblock();
+    if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
+  }
+
+  public void clearForSavelist() {
+    Lizzie.leelaz.clear();
+    Lizzie.frame.resetTitle();
+    Lizzie.frame.clear();
+    Lizzie.frame.winrateGraph.maxcoreMean = 30;
     mvnumber = new int[boardHeight * boardWidth];
     movelistwr.clear();
     cleanedittemp();
@@ -2057,6 +2120,8 @@ public class Board implements LeelazListener {
   public void clearforpk() {
     // Lizzie.leelaz.clear();
     Lizzie.frame.winrateGraph.maxcoreMean = 30;
+    hasStartStone = false;
+    startStonelist = new ArrayList<Movelist>();
     Lizzie.frame.resetTitle();
     Lizzie.frame.clear();
     isKataBoard = false;

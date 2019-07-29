@@ -62,6 +62,7 @@ public class SGFParser {
     }
 
     boolean returnValue = parse(value);
+
     Lizzie.board.isLoadingFile = false;
     if (!oriEmpty) Lizzie.engineManager.isEmpty = false;
     return returnValue;
@@ -174,6 +175,7 @@ public class SGFParser {
         moveStart = false,
         addPassForMove = true;
     boolean inProp = false;
+
     String tag = "";
     StringBuilder tagBuilder = new StringBuilder();
     StringBuilder tagContentBuilder = new StringBuilder();
@@ -256,6 +258,7 @@ public class SGFParser {
           // We got tag, we can parse this tag now.
           if (tag.equals("B") || tag.equals("W")) {
             moveStart = true;
+
             addPassForMove = true;
             int[] move = convertSgfPosToCoord(tagContent);
             // Save the step count
@@ -321,8 +324,8 @@ public class SGFParser {
             Stone color = tag.equals("AB") ? Stone.BLACK : Stone.WHITE;
             // if (moveStart) {
             // add to node properties
-            moveStart = true;
-            addPassForMove = true;
+            // moveStart = true;
+            // addPassForMove = true;
             int[] move2 = convertSgfPosToCoord(tagContent);
             // Save the step count
             subTreeStepMap.put(subTreeDepth, subTreeStepMap.get(subTreeDepth) + 1);
@@ -331,6 +334,11 @@ public class SGFParser {
               Lizzie.board.pass(color, false, false);
             } else {
               Lizzie.board.place(move2[0], move2[1], color, false);
+            }
+            if (!moveStart) {
+              Lizzie.board.hasStartStone = true;
+              Lizzie.board.addStartList();
+              Lizzie.board.flatten();
             }
             // Lizzie.board.place(move[0], move[1], color);
             //              Lizzie.board.addNodeProperty(tag, tagContent);
@@ -355,7 +363,7 @@ public class SGFParser {
             //              } else {
             //                Lizzie.board.place(move[0], move[1], color);
             //              }
-            //              Lizzie.board.flatten();
+            //
             //            }
             Lizzie.engineManager.isEmpty = true;
           } else if (tag.equals("PB")) {
