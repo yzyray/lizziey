@@ -33,7 +33,7 @@ public class SGFParser {
     // Lizzie.board.getHistory().getCurrentHistoryNode().getData().setPlayouts(0);
     // Lizzie.board.getHistory().getCurrentHistoryNode().getData().bestMoves.clear();
     // Lizzie.board=new Board();
-     oriEmpty = false;
+    oriEmpty = false;
     Lizzie.board.isLoadingFile = true;
     Lizzie.board.clear();
     if (Lizzie.engineManager.isEmpty) {

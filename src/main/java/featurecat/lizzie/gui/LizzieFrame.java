@@ -279,50 +279,47 @@ public class LizzieFrame extends JFrame {
           @Override
           public boolean importData(JComponent comp, Transferable t) {
             try {
-              Object o = t.getTransferData(DataFlavor.javaFileListFlavor);              
+              Object o = t.getTransferData(DataFlavor.javaFileListFlavor);
               String filepath = o.toString();
               if (filepath.startsWith("[")) {
-                  filepath = filepath.substring(1);
+                filepath = filepath.substring(1);
               }
               if (filepath.endsWith("]")) {
-                  filepath = filepath.substring(0, filepath.length() - 1);
+                filepath = filepath.substring(0, filepath.length() - 1);
               }
-              String[] filePaths =filepath.split(",");
-              if(filePaths.length==1) {
-              if (!(filepath.endsWith(".sgf") || filepath.endsWith(".gib"))) {
-                return false;
-              }
-              File file = new File(filepath);
-              loadFile(file);
-              return true;
-              }
-              else if(filePaths.length>1)
-              {
-            	  File files[]=new File[filePaths.length];
-            	  for(int i=0;i<filePaths.length;i++)
-            	  {
-            		  files[i]= new File(filePaths[i]);
-            	  }
-            	  isBatchAna = true;
-                  BatchAnaNum = 0;
-                  Batchfiles = files;
-                  loadFile(files[0]);
-                  toolbar.chkAnaAutoSave.setSelected(true);
-                  toolbar.chkAnaAutoSave.setEnabled(false);
+              String[] filePaths = filepath.split(", ");
+              if (filePaths.length == 1) {
+                if (!(filepath.endsWith(".sgf") || filepath.endsWith(".gib"))) {
+                  return false;
+                }
+                File file = new File(filepath);
+                loadFile(file);
+                return true;
+              } else if (filePaths.length > 1) {
+                File files[] = new File[filePaths.length];
+                for (int i = 0; i < filePaths.length; i++) {
+                  files[i] = new File(filePaths[i]);
+                }
+                isBatchAna = true;
+                BatchAnaNum = 0;
+                Batchfiles = files;
+                loadFile(files[0]);
+                toolbar.chkAnaAutoSave.setSelected(true);
+                toolbar.chkAnaAutoSave.setEnabled(false);
 
-                  Lizzie.frame.toolbarHeight = 70;
-                  // 打开分析界面
-                  StartAnaDialog newgame = new StartAnaDialog();
-                  newgame.setVisible(true);
-                  if (newgame.isCancelled()) {
-                    toolbar.resetAutoAna();
-                    return true;
-                  }
+                Lizzie.frame.toolbarHeight = 70;
+                // 打开分析界面
+                StartAnaDialog newgame = new StartAnaDialog();
+                newgame.setVisible(true);
+                if (newgame.isCancelled()) {
+                  toolbar.resetAutoAna();
+                  return true;
+                }
               }
             } catch (Exception e) {
               e.printStackTrace();
             }
-            
+
             return false;
           }
 
