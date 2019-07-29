@@ -500,7 +500,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         // stop the ponder
         if (e.isShiftDown()) {
           Lizzie.frame.saveImage(
-              Lizzie.frame.grx, Lizzie.frame.gry, Lizzie.frame.grw, Lizzie.frame.grh);
+              Lizzie.frame.grx,
+              (int) (Lizzie.frame.gry * 0.95),
+              (int) (Lizzie.frame.grw * 1.03),
+              (int) (Lizzie.frame.grh * 1.1));
         } else {
           if (e.isAltDown()) {
             Lizzie.frame.saveImage();
