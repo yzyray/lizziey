@@ -386,6 +386,11 @@ public class SGFParser {
                 tagContent = "7.5";
               }
               Lizzie.board.getHistory().getGameInfo().setKomi(Double.parseDouble(tagContent));
+              if (Lizzie.leelaz.isLoaded) {
+                Lizzie.engineManager.isEmpty = false;
+                Lizzie.leelaz.sendCommand("komi " + Double.parseDouble(tagContent));
+                Lizzie.engineManager.isEmpty = true;
+              }
             } catch (NumberFormatException e) {
               e.printStackTrace();
             }
