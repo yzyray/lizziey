@@ -26,13 +26,14 @@ public class SGFParser {
   private static boolean islzFirst = false;
   private static boolean islzFirst2 = true;
   private static boolean islzloaded = false;
+  static boolean oriEmpty = false;
 
   public static boolean load(String filename) throws IOException {
     // Clear the board
     // Lizzie.board.getHistory().getCurrentHistoryNode().getData().setPlayouts(0);
     // Lizzie.board.getHistory().getCurrentHistoryNode().getData().bestMoves.clear();
     // Lizzie.board=new Board();
-    boolean oriEmpty = false;
+     oriEmpty = false;
     Lizzie.board.isLoadingFile = true;
     Lizzie.board.clear();
     if (Lizzie.engineManager.isEmpty) {
@@ -386,7 +387,7 @@ public class SGFParser {
                 tagContent = "7.5";
               }
               Lizzie.board.getHistory().getGameInfo().setKomi(Double.parseDouble(tagContent));
-              if (Lizzie.leelaz.isLoaded) {
+              if (!oriEmpty) {
                 Lizzie.engineManager.isEmpty = false;
                 Lizzie.leelaz.sendCommand("komi " + Double.parseDouble(tagContent));
                 Lizzie.engineManager.isEmpty = true;
