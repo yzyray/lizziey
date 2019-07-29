@@ -171,7 +171,7 @@ public class WinrateGraph {
       if (Lizzie.board.getHistory().getCurrentHistoryNode() != Lizzie.board.getHistory().getEnd()) {
         Font f = new Font("", Font.BOLD, 12);
         g.setFont(f);
-        g.drawString(moveNumString, x, posy + height - margin);
+        g.drawString(moveNumString, x+width/90, posy + height - margin);
       }
       while (node.previous().isPresent() && node.previous().get().previous().isPresent()) {
         double wr = 50;
@@ -328,7 +328,7 @@ public class WinrateGraph {
             // int mx = x - posx < width / 2 ? x + margin : x - mw - margin;
             Font f = new Font("", Font.BOLD, 12);
             g.setFont(f);
-            g.drawString(moveNumString, x, posy + height - margin);
+            g.drawString(moveNumString, x+width/90, posy + height - margin);
             g.setStroke(previousStroke);
           }
           if (playouts > 0) {
@@ -473,7 +473,7 @@ public class WinrateGraph {
                 != Lizzie.board.getHistory().getEnd()) {
               Font f = new Font("", Font.BOLD, 12);
               g.setFont(f);
-              g.drawString(moveNumString, x, posy + height - margin);
+              g.drawString(moveNumString, x+width/90, posy + height - margin);
             }
             g.setStroke(previousStroke);
           }

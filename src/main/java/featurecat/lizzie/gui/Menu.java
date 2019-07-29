@@ -1897,7 +1897,7 @@ public class Menu extends MenuBar {
         Lizzie.frame.toggleheatmap();
         return;
       }
-      if (menuItem.getText().startsWith("胜率面板")) {
+      if (menuItem.getText().startsWith("胜率图")) {
         Lizzie.config.toggleShowWinrate();
         return;
       }

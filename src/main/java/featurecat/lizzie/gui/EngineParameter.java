@@ -37,6 +37,7 @@ public class EngineParameter extends JDialog {
     setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
     setModal(true);
     setType(Type.POPUP);
+    setAlwaysOnTop(true);
     setModalityType(ModalityType.APPLICATION_MODAL);
     setBounds(100, 100, 680, 660);
     getContentPane().setLayout(new BorderLayout());

@@ -470,6 +470,7 @@ public class Config {
 
   public void toggleShowVariationGraph() {
     this.showVariationGraph = !this.showVariationGraph;
+    Lizzie.frame.refreshBackground();
     Lizzie.config.uiConfig.put("show-variation-graph", showVariationGraph);
     try {
       Lizzie.config.save();
@@ -493,6 +494,7 @@ public class Config {
   public void toggleShowComment() {
     this.showComment = !this.showComment;
     Lizzie.config.uiConfig.put("show-comment", showComment);
+    Lizzie.frame.refreshBackground();
     try {
       Lizzie.config.save();
     } catch (IOException e) {
@@ -553,6 +555,7 @@ public class Config {
 
   public void toggleShowSubBoard() {
     showSubBoard = !showSubBoard;
+    Lizzie.frame.refreshBackground();
     try {
       Lizzie.config.uiConfig.put("show-subboard", showSubBoard);
       Lizzie.config.save();

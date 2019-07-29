@@ -1367,10 +1367,20 @@ public class LizzieFrame extends JFrame {
             drawContainer(backgroundG.get(), contx, conty, contw * 2, conth);
           } else drawContainer(backgroundG.get(), contx, conty, contw, conth);
         }
-
-        if (Lizzie.config.showVariationGraph || Lizzie.config.showComment) {
-          drawContainer(backgroundG.get(), vx, vy, vw, vh);
+     	if(!Lizzie.config.showLargeSubBoard() && !Lizzie.config.showLargeWinrate())
+       	{
+     		if((!Lizzie.config.showSubBoard&&Lizzie.config.showComment)||(Lizzie.config.showSubBoard&&!Lizzie.config.showComment))
+       		treeh=vh;
+       	}
+        if (Lizzie.config.showVariationGraph ) {
+        	 drawContainer(backgroundG.get(), vx, vy, vw, treeh);
         }
+//        {
+      
+//          drawContainer(backgroundG.get(), vx, vy, vw, vh);
+//        	else if(Lizzie.config.showComment)
+//        		  drawContainer(backgroundG.get(), vx, vy, vw, vh);
+//        }
       }
 
       if (Lizzie.config.showCaptured) drawCaptured(g, capx, capy, capw, caph, isSmallCap);
@@ -1406,6 +1416,11 @@ public class LizzieFrame extends JFrame {
           // drawContainer(backgroundG.get(), vx, vy, vw, vh);
           // }
           if (Lizzie.config.showVariationGraph) {
+        		if(!Lizzie.config.showLargeSubBoard() && !Lizzie.config.showLargeWinrate())
+               	{
+             		if((!Lizzie.config.showSubBoard&&Lizzie.config.showComment)||(Lizzie.config.showSubBoard&&!Lizzie.config.showComment))
+               		treeh=vh;
+               	}
             if (isSmallCap) {
               variationTree.drawsmall(g, treex, treey, treew, treeh);
             } else variationTree.draw(g, treex, treey, treew, treeh);
