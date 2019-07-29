@@ -106,7 +106,7 @@ public class StartAnaDialog extends JDialog {
     contentPanel.add(Lizzie.frame.toolbar.chkAnaBlack);
     contentPanel.add(new JLabel("分析白棋"));
     contentPanel.add(Lizzie.frame.toolbar.chkAnaWhite);
-    contentPanel.add(new JLabel("自动保存棋谱"));
+    contentPanel.add(new JLabel("自动保存胜率图"));
     contentPanel.add(Lizzie.frame.toolbar.chkAnaAutoSave);
 
     dialogPane.add(contentPanel, BorderLayout.CENTER);

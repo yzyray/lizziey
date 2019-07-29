@@ -298,7 +298,12 @@ public class LizzieFrame extends JFrame {
                   return false;
                 }
                 File file = new File(filepath);
+                File files[] = new File[1];
+                files[0]=file;
                 loadFile(file);
+                isBatchAna = true;
+                BatchAnaNum = 0;
+                Batchfiles = files;
                 return true;
               } else if (filePaths.length > 1) {
                 File files[] = new File[filePaths.length];
@@ -309,8 +314,8 @@ public class LizzieFrame extends JFrame {
                 BatchAnaNum = 0;
                 Batchfiles = files;
                 loadFile(files[0]);
-                toolbar.chkAnaAutoSave.setSelected(true);
-                toolbar.chkAnaAutoSave.setEnabled(false);
+                // toolbar.chkAnaAutoSave.setSelected(true);
+                // toolbar.chkAnaAutoSave.setEnabled(false);
 
                 Lizzie.frame.toolbarHeight = 70;
                 // 打开分析界面
@@ -954,8 +959,8 @@ public class LizzieFrame extends JFrame {
       BatchAnaNum = 0;
       Batchfiles = files;
       loadFile(files[0]);
-      toolbar.chkAnaAutoSave.setSelected(true);
-      toolbar.chkAnaAutoSave.setEnabled(false);
+      //  toolbar.chkAnaAutoSave.setSelected(true);
+      //  toolbar.chkAnaAutoSave.setEnabled(false);
 
       Lizzie.frame.toolbarHeight = 70;
       toolbar.detail.setIcon(toolbar.iconDown);
@@ -996,8 +1001,8 @@ public class LizzieFrame extends JFrame {
       BatchAnaNum = 0;
       Batchfiles = files;
       loadFile(files[0]);
-      toolbar.chkAnaAutoSave.setSelected(true);
-      toolbar.chkAnaAutoSave.setEnabled(false);
+      // toolbar.chkAnaAutoSave.setSelected(true);
+      // toolbar.chkAnaAutoSave.setEnabled(false);
 
       Lizzie.frame.toolbarHeight = 70;
       // 打开分析界面

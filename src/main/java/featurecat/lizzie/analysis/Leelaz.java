@@ -971,6 +971,14 @@ public boolean startAutoAna=false;
 			}
 			try {
 				SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+				
+				if(Lizzie.frame.toolbar.chkAnaAutoSave.isSelected())
+				{
+					
+						String autoSavePng= courseFile + "\\" + "AutoSave" + "\\" + df + ".png";	
+						Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng);
+					
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -999,6 +1007,13 @@ public boolean startAutoAna=false;
 			File autoSaveFile = new File(filename);
 			try {
 				SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+				if(Lizzie.frame.toolbar.chkAnaAutoSave.isSelected())
+				{
+					
+						String autoSavePng=  path + "\\" + fileOtherName + "_已分析_"+df+".png";
+						Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng);
+					
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -2544,7 +2559,7 @@ public boolean startAutoAna=false;
 			togglePonder();
 
 			Lizzie.frame.addInput();
-			if (!isSaving && Lizzie.frame.toolbar.chkAnaAutoSave.isSelected() && analysed) {
+			if (!isSaving &&  analysed) {
 				isSaving = true;
 				saveAndLoad();				
 			} else {
