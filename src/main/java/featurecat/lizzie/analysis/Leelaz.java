@@ -976,7 +976,7 @@ public boolean startAutoAna=false;
 				{
 					
 						String autoSavePng= courseFile + "\\" + "AutoSave" + "\\" + df + ".png";	
-						Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng);
+						Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng);
 					
 				}
 			} catch (IOException e) {
@@ -1011,7 +1011,7 @@ public boolean startAutoAna=false;
 				{
 					
 						String autoSavePng=  path + "\\" + fileOtherName + "_已分析_"+df+".png";
-						Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng);
+						Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng);
 					
 				}
 			} catch (IOException e) {
@@ -1114,7 +1114,7 @@ public boolean startAutoAna=false;
 					autoSavePng = courseFile + "\\" + "PkAutoSave" + "\\" + df + ".png";
 				}
 
-				Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng);
+				Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -1137,7 +1137,7 @@ public boolean startAutoAna=false;
 							autoSavePng2 = courseFile + "\\" + "PkAutoSave" + "\\" + df + ".png";
 						}
 
-						Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng2);
+						Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng2);
 					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -1897,7 +1897,7 @@ public boolean startAutoAna=false;
 					autoSavePng =courseFile + "\\" + "PkAutoSave" + "\\" + "双Pass对局" + sf + ".png";
 				}
 
-				Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng);
+				Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng);
 			}
 		
 		} catch (IOException e) {
@@ -1921,7 +1921,7 @@ public boolean startAutoAna=false;
 									+ "双Pass对局" + sf + ".png";
 						}
 
-						Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng2);
+						Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng2);
 					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -2000,7 +2000,7 @@ public boolean startAutoAna=false;
 						autoSavePng =courseFile + "\\" + "PkAutoSave" + "\\" +df	+ "_超手数对局_" + sf + ".png";
 					}
 
-					Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng);
+					Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng);
 				}
 		    } catch (IOException e) {
 		      // TODO Auto-generated catch block
@@ -2023,7 +2023,7 @@ public boolean startAutoAna=false;
 									+df+ "_超手数对局_" + sf + ".png";
 						}
 
-						Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng2);
+						Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng2);
 					}		         
 		        } catch (IOException e1) {
 		          // TODO Auto-generated catch block

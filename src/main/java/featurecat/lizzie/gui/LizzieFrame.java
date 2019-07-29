@@ -189,6 +189,11 @@ public class LizzieFrame extends JFrame {
   public int grw;
   public int grh;
 
+  public int statx;
+  public int staty;
+  public int statw;
+  public int stath;
+
   public boolean isTrying = false;
   ArrayList<Movelist> tryMoveList;
   String tryString;
@@ -1102,10 +1107,10 @@ public class LizzieFrame extends JFrame {
 
       // move statistics (winrate bar)
       // boardX equals width of space on each side
-      int statx = capx;
-      int staty = capy + caph;
-      int statw = capw;
-      int stath = maxSize / 10;
+      statx = capx;
+      staty = capy + caph;
+      statw = capw;
+      stath = maxSize / 10;
 
       // winrate graph
       grx = statx;
@@ -3008,6 +3013,8 @@ public class LizzieFrame extends JFrame {
   }
 
   public void saveImage(int x, int y, int width, int height) {
+    boolean oriShowName = Lizzie.config.showName;
+    Lizzie.config.showName = false;
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
     chooser.setAcceptAllFileFilterUsed(false);
@@ -3063,10 +3070,12 @@ public class LizzieFrame extends JFrame {
         e.printStackTrace();
       }
     }
+    Lizzie.config.showName = oriShowName;
   }
 
   public void saveImage(int x, int y, int width, int height, String path) {
-
+    boolean oriShowName = Lizzie.config.showName;
+    Lizzie.config.showName = false;
     File file = new File(path);
 
     BufferedImage bImg =
@@ -3091,5 +3100,6 @@ public class LizzieFrame extends JFrame {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    Lizzie.config.showName = oriShowName;
   }
 }

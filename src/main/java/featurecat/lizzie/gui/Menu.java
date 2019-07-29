@@ -90,10 +90,10 @@ public class Menu extends MenuBar {
           @Override
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.saveImage(
-                Lizzie.frame.grx,
-                (int) (Lizzie.frame.gry * 0.95),
+                Lizzie.frame.statx,
+                Lizzie.frame.staty,
                 (int) (Lizzie.frame.grw * 1.03),
-                (int) (Lizzie.frame.grh * 1.1));
+                Lizzie.frame.grh + Lizzie.frame.stath);
           }
         });
     fileMenu.add(saveWinrate);
