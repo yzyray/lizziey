@@ -26,6 +26,7 @@ public class EngineManager {
   Timer timer;
   Timer timer2;
   Timer timer3;
+  // Timer timer5;
   // Timer timer4;
 
   public EngineManager(Config config, int index) throws JSONException, IOException {
@@ -83,6 +84,7 @@ public class EngineManager {
       engineList.add(e);
     }
     currentEngineNo = index;
+
     if (index == -1) {
       Lizzie.leelaz = new Leelaz("");
       Lizzie.leelaz.isLoaded = true;
@@ -91,6 +93,19 @@ public class EngineManager {
       featurecat.lizzie.gui.Menu.engineMenu.setText("未加载引擎");
       isEmpty = true;
       Lizzie.frame.addInput();
+      //      timer5 =
+      //  	        new Timer(
+      //  	            1000,
+      //  	            new ActionListener() {
+      //  	              public void actionPerformed(ActionEvent evt) {
+      //  	            	  Lizzie.board.setForceRefresh(true);
+      //  	                  stopTimer5();
+      //  	                try {
+      //  	                } catch (Exception e) {
+      //  	                }
+      //  	              }
+      //  	            });
+      //  	    timer5.start();
     } else if (!isEmpty) {
       try {
         featurecat.lizzie.gui.Menu.engineMenu.setText(
@@ -337,6 +352,12 @@ public class EngineManager {
 
     }
   }
+
+  //  private void stopTimer5()
+  //  {  timer5.stop();
+  //  timer5 = null;
+  //
+  //  }
 
   public void updateEngines() {
     ArrayList<EngineData> engineData = getEngineData();

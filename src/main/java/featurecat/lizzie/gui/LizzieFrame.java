@@ -184,6 +184,16 @@ public class LizzieFrame extends JFrame {
   public InputSubboard input2 = new InputSubboard();
   public boolean noInput = true;
 
+  public int grx;
+  public int gry;
+  public int grw;
+  public int grh;
+
+  public int statx;
+  public int staty;
+  public int statw;
+  public int stath;
+
   public boolean isTrying = false;
   ArrayList<Movelist> tryMoveList;
   String tryString;
@@ -273,6 +283,71 @@ public class LizzieFrame extends JFrame {
     getContentPane().add(toolbar);
     getContentPane().setLayout(null);
     setJMenuBar(menu);
+
+    mainPanel.setTransferHandler(
+        new TransferHandler() {
+          @Override
+          public boolean importData(JComponent comp, Transferable t) {
+            try {
+              Object o = t.getTransferData(DataFlavor.javaFileListFlavor);
+              String filepath = o.toString();
+              if (filepath.startsWith("[")) {
+                filepath = filepath.substring(1);
+              }
+              if (filepath.endsWith("]")) {
+                filepath = filepath.substring(0, filepath.length() - 1);
+              }
+              String[] filePaths = filepath.split(", ");
+              if (filePaths.length == 1) {
+                if (!(filepath.endsWith(".sgf") || filepath.endsWith(".gib"))) {
+                  return false;
+                }
+                File file = new File(filepath);
+                File files[] = new File[1];
+                files[0] = file;
+                loadFile(file);
+                isBatchAna = true;
+                BatchAnaNum = 0;
+                Batchfiles = files;
+                return true;
+              } else if (filePaths.length > 1) {
+                File files[] = new File[filePaths.length];
+                for (int i = 0; i < filePaths.length; i++) {
+                  files[i] = new File(filePaths[i]);
+                }
+                isBatchAna = true;
+                BatchAnaNum = 0;
+                Batchfiles = files;
+                loadFile(files[0]);
+                // toolbar.chkAnaAutoSave.setSelected(true);
+                // toolbar.chkAnaAutoSave.setEnabled(false);
+
+                Lizzie.frame.toolbarHeight = 70;
+                // 打开分析界面
+                StartAnaDialog newgame = new StartAnaDialog();
+                newgame.setVisible(true);
+                if (newgame.isCancelled()) {
+                  toolbar.resetAutoAna();
+                  return true;
+                }
+              }
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+
+            return false;
+          }
+
+          @Override
+          public boolean canImport(JComponent comp, DataFlavor[] flavors) {
+            for (int i = 0; i < flavors.length; i++) {
+              if (DataFlavor.javaFileListFlavor.equals(flavors[i])) {
+                return true;
+              }
+            }
+            return false;
+          }
+        });
 
     // menu.add(Box.createRigidArea(new Dimension(600, 10)));
     // menu.setVisible(true);
@@ -889,8 +964,8 @@ public class LizzieFrame extends JFrame {
       BatchAnaNum = 0;
       Batchfiles = files;
       loadFile(files[0]);
-      toolbar.chkAnaAutoSave.setSelected(true);
-      toolbar.chkAnaAutoSave.setEnabled(false);
+      //  toolbar.chkAnaAutoSave.setSelected(true);
+      //  toolbar.chkAnaAutoSave.setEnabled(false);
 
       Lizzie.frame.toolbarHeight = 70;
       toolbar.detail.setIcon(toolbar.iconDown);
@@ -931,8 +1006,8 @@ public class LizzieFrame extends JFrame {
       BatchAnaNum = 0;
       Batchfiles = files;
       loadFile(files[0]);
-      toolbar.chkAnaAutoSave.setSelected(true);
-      toolbar.chkAnaAutoSave.setEnabled(false);
+      // toolbar.chkAnaAutoSave.setSelected(true);
+      // toolbar.chkAnaAutoSave.setEnabled(false);
 
       Lizzie.frame.toolbarHeight = 70;
       // 打开分析界面
@@ -1032,16 +1107,16 @@ public class LizzieFrame extends JFrame {
 
       // move statistics (winrate bar)
       // boardX equals width of space on each side
-      int statx = capx;
-      int staty = capy + caph;
-      int statw = capw;
-      int stath = maxSize / 10;
+      statx = capx;
+      staty = capy + caph;
+      statw = capw;
+      stath = maxSize / 10;
 
       // winrate graph
-      int grx = statx;
-      int gry = staty + stath;
-      int grw = statw;
-      int grh = maxSize / 3;
+      grx = statx;
+      gry = staty + stath;
+      grw = statw;
+      grh = maxSize / 3;
 
       // variation tree container
       int vx = boardX + maxSize + panelMargin;
@@ -2613,7 +2688,10 @@ public class LizzieFrame extends JFrame {
     }
     // commentPane.setFont(font);
     comment = comment.replaceAll("(\r\n)|(\n)", "<br />").replaceAll(" ", "&nbsp;");
-    commentPane.setText(comment);
+    try {
+      commentPane.setText(comment);
+    } catch (Exception ex) {
+    }
     commentPane.setSize(w, h);
     createCommentImage(!comment.equals(this.cachedComment), w, h);
     commentRect = new Rectangle(x, y, scrollPane.getWidth(), scrollPane.getHeight());
@@ -2944,5 +3022,96 @@ public class LizzieFrame extends JFrame {
         e.printStackTrace();
       }
     }
+  }
+
+  public void saveImage(int x, int y, int width, int height) {
+    boolean oriShowName = Lizzie.config.showName;
+    Lizzie.config.showName = false;
+    JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
+    JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
+    chooser.setAcceptAllFileFilterUsed(false);
+    //    String writerNames[] = ImageIO.getWriterFormatNames();
+    FileNameExtensionFilter filter1 = new FileNameExtensionFilter("*.png", "PNG");
+    FileNameExtensionFilter filter2 = new FileNameExtensionFilter("*.jpg", "JPG", "JPEG");
+    FileNameExtensionFilter filter3 = new FileNameExtensionFilter("*.gif", "GIF");
+    FileNameExtensionFilter filter4 = new FileNameExtensionFilter("*.bmp", "BMP");
+    chooser.addChoosableFileFilter(filter1);
+    chooser.addChoosableFileFilter(filter2);
+    chooser.addChoosableFileFilter(filter3);
+    chooser.addChoosableFileFilter(filter4);
+    chooser.setMultiSelectionEnabled(false);
+    int result = chooser.showSaveDialog(null);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      File file = chooser.getSelectedFile();
+      if (file.exists()) {
+        int ret =
+            JOptionPane.showConfirmDialog(null, "文件已存在,是否覆盖?", "提示", JOptionPane.OK_CANCEL_OPTION);
+        if (ret == JOptionPane.CANCEL_OPTION) {
+          return;
+        }
+      }
+      String ext =
+          chooser.getFileFilter() instanceof FileNameExtensionFilter
+              ? ((FileNameExtensionFilter) chooser.getFileFilter()).getExtensions()[0].toLowerCase()
+              : "";
+      if (!Utils.isBlank(ext)) {
+        if (!file.getPath().toLowerCase().endsWith("." + ext)) {
+          file = new File(file.getPath() + "." + ext);
+        }
+      }
+      BufferedImage bImg =
+          new BufferedImage(
+              this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+      Graphics2D cg = bImg.createGraphics();
+
+      this.mainPanel.paintAll(cg);
+
+      // 截取图片
+      Rectangle rect = new Rectangle(x, y, width, height);
+      BufferedImage areaImage = bImg.getSubimage(rect.x, rect.y, rect.width, rect.height);
+      // 新建一个40*40的Image
+      BufferedImage buffImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+      buffImg
+          .getGraphics()
+          .drawImage(
+              areaImage.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+
+      try {
+        ImageIO.write(buffImg, ext, file);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    Lizzie.config.showName = oriShowName;
+  }
+
+  public void saveImage(int x, int y, int width, int height, String path) {
+    boolean oriShowName = Lizzie.config.showName;
+    Lizzie.config.showName = false;
+    File file = new File(path);
+
+    BufferedImage bImg =
+        new BufferedImage(
+            this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    Graphics2D cg = bImg.createGraphics();
+
+    this.mainPanel.paintAll(cg);
+
+    // 截取图片
+    Rectangle rect = new Rectangle(x, y, width, height);
+    BufferedImage areaImage = bImg.getSubimage(rect.x, rect.y, rect.width, rect.height);
+    // 新建一个40*40的Image
+    BufferedImage buffImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    buffImg
+        .getGraphics()
+        .drawImage(
+            areaImage.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+
+    try {
+      ImageIO.write(buffImg, "png", file);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    Lizzie.config.showName = oriShowName;
   }
 }

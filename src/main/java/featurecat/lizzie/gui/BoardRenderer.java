@@ -43,6 +43,7 @@ public class BoardRenderer {
   private int boardWidth, boardHeight;
   private int shadowRadius;
   private static boolean emptyName = false;
+  private static boolean changedName = false;
 
   private JSONObject uiConfig, uiPersist;
   private int scaledMarginWidth, availableWidth, squareWidth, stoneRadius;
@@ -207,7 +208,10 @@ public class BoardRenderer {
     String white = Lizzie.board.getHistory().getGameInfo().getPlayerWhite();
     if (white.length() > 20) white = white.substring(0, 20);
     if (black.equals("") && white.contentEquals("")) {
-      emptyName = true;
+      if (!emptyName) {
+        emptyName = true;
+        changedName = true;
+      }
       return;
     }
     if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isEnginePkBatch) {
@@ -218,6 +222,10 @@ public class BoardRenderer {
         black = Lizzie.frame.toolbar.pkBlackWins + " " + black;
         white = white + " " + Lizzie.frame.toolbar.pkWhiteWins;
       }
+    }
+    if (emptyName) {
+      emptyName = false;
+      changedName = true;
     }
     emptyName = false;
     if (Lizzie.board.getHistory().isBlacksTurn()) {
@@ -289,8 +297,9 @@ public class BoardRenderer {
         || cachedX != x
         || cachedY != y
         || cachedBackgroundImageHasCoordinatesEnabled != showCoordinates()
+        || changedName
         || Lizzie.board.isForceRefresh()) {
-
+      changedName = false;
       cachedBoardWidth = boardWidth;
       cachedBoardHeight = boardHeight;
       Lizzie.board.setForceRefresh(false);

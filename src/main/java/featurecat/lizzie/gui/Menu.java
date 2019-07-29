@@ -82,6 +82,22 @@ public class Menu extends MenuBar {
         });
     fileMenu.add(saveImage);
 
+    final JMenuItem saveWinrate = new JMenuItem();
+    saveWinrate.setText("保存胜率图(Shift+S)");
+    saveWinrate.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.saveImage(
+                Lizzie.frame.statx,
+                Lizzie.frame.staty,
+                (int) (Lizzie.frame.grw * 1.03),
+                Lizzie.frame.grh + Lizzie.frame.stath);
+          }
+        });
+    fileMenu.add(saveWinrate);
+
     fileMenu.addSeparator();
     final JMenuItem copyItem = new JMenuItem();
     copyItem.setText("复制到剪贴板(Ctrl+C)");

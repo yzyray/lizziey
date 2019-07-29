@@ -498,11 +498,19 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
       case VK_S:
         // stop the ponder
-        if (e.isAltDown()) {
-          Lizzie.frame.saveImage();
+        if (e.isShiftDown()) {
+          Lizzie.frame.saveImage(
+              Lizzie.frame.statx,
+              Lizzie.frame.staty,
+              (int) (Lizzie.frame.grw * 1.03),
+              Lizzie.frame.grh + Lizzie.frame.stath);
         } else {
-          if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
-          LizzieFrame.saveFile();
+          if (e.isAltDown()) {
+            Lizzie.frame.saveImage();
+          } else {
+            if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+            LizzieFrame.saveFile();
+          }
         }
         break;
 
@@ -679,7 +687,11 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           Lizzie.frame.openAvoidMoveDialog();
         } else {
           shouldDisableAnalysis = false;
-          Lizzie.board.toggleAnalysis();
+          StartAnaDialog newgame = new StartAnaDialog();
+          newgame.setVisible(true);
+          if (newgame.isCancelled()) {
+            Lizzie.frame.toolbar.resetAutoAna();
+          }
         }
         break;
         // this is copyed from https://github.com/zsalch/lizzie/tree/n_avoiddialog
