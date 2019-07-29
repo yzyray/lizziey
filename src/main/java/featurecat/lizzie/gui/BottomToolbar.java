@@ -783,7 +783,7 @@ public class BottomToolbar extends JPanel {
     chkAnaAutoSave = new JCheckBox();
     anaPanel.add(chkAnaAutoSave);
     chkAnaAutoSave.setBounds(1, 22, 20, 20);
-    lblAnaAutoSave = new JLabel("自动保存");
+    lblAnaAutoSave = new JLabel("存胜率图");
     anaPanel.add(lblAnaAutoSave);
     lblAnaAutoSave.setBounds(21, 22, 50, 20);
     chkAnaAutoSave.addActionListener(

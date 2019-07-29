@@ -299,7 +299,7 @@ public class LizzieFrame extends JFrame {
                 }
                 File file = new File(filepath);
                 File files[] = new File[1];
-                files[0]=file;
+                files[0] = file;
                 loadFile(file);
                 isBatchAna = true;
                 BatchAnaNum = 0;
