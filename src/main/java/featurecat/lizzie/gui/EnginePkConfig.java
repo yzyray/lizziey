@@ -30,6 +30,7 @@ public class EnginePkConfig extends JDialog {
   JCheckBox chkGameMAX;
   JCheckBox chkGameMIN;
   JCheckBox chkRandomMove;
+  JCheckBox chkSaveWinrate;
 
   JTextField txtRandomMove;
   JTextField txtRandomDiffWinrate;
@@ -89,6 +90,10 @@ public class EnginePkConfig extends JDialog {
     add(txtnameSetting);
     lblnameSetting.setBounds(5, 22, 210, 25);
     txtnameSetting.setBounds(210, 27, 100, 18);
+
+    chkSaveWinrate = new JCheckBox("保存胜率图");
+    add(chkSaveWinrate);
+    chkSaveWinrate.setBounds(310, 24, 100, 20);
 
     rdoGenmove = new JRadioButton("genmove模式对战");
     rdoAna = new JRadioButton("分析模式对战");
@@ -231,6 +236,7 @@ public class EnginePkConfig extends JDialog {
     if (Lizzie.frame.toolbar.randomMove > 0)
       txtRandomMove.setText(Lizzie.frame.toolbar.randomMove + "");
     txtRandomDiffWinrate.setText(Lizzie.frame.toolbar.randomDiffWinrate + "");
+    if (Lizzie.frame.toolbar.enginePkSaveWinrate) chkSaveWinrate.setSelected(true);
   }
 
   private void applyChange() {
@@ -248,6 +254,7 @@ public class EnginePkConfig extends JDialog {
     Lizzie.frame.toolbar.batchPkName = txtnameSetting.getText();
     Lizzie.frame.toolbar.exChange = chkExchange.isSelected();
     Lizzie.frame.toolbar.isRandomMove = chkRandomMove.isSelected();
+    Lizzie.frame.toolbar.enginePkSaveWinrate = chkSaveWinrate.isSelected();
     try {
       Lizzie.frame.toolbar.randomMove = Integer.parseInt(txtRandomMove.getText());
     } catch (NumberFormatException err) {

@@ -961,6 +961,7 @@ public class Config {
     toolbarParameter.put(Lizzie.frame.toolbar.randomDiffWinrate);
     toolbarParameter.put(Lizzie.frame.toolbar.chkAnaBlack.isSelected());
     toolbarParameter.put(Lizzie.frame.toolbar.chkAnaWhite.isSelected());
+    toolbarParameter.put(Lizzie.frame.toolbar.enginePkSaveWinrate);
     persistedUi.put("toolbar-parameter", toolbarParameter);
 
     JSONArray movecountPos = new JSONArray();

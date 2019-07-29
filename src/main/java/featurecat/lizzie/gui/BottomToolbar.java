@@ -88,6 +88,7 @@ public class BottomToolbar extends JPanel {
   public int pkResignMoveCounts = 2;
   public double pkResginWinrate = 10;
   public boolean isEnginePkBatch = false;
+  public boolean enginePkSaveWinrate = false;
 
   public boolean isRandomMove = false;
   public int randomMove = 16;
@@ -1421,7 +1422,7 @@ public class BottomToolbar extends JPanel {
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter") != null
-        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 49) {
+        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 50) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("toolbar-parameter");
       if (pos.getInt(0) > 0) {
         this.txtFirstAnaMove.setText(pos.getInt(0) + "");
@@ -1543,6 +1544,7 @@ public class BottomToolbar extends JPanel {
       randomDiffWinrate = pos.getDouble(46);
       chkAnaBlack.setSelected(pos.getBoolean(47));
       chkAnaWhite.setSelected(pos.getBoolean(48));
+      enginePkSaveWinrate = pos.getBoolean(49);
       setOrder();
     }
     if (chkAutoSub.isSelected()) {

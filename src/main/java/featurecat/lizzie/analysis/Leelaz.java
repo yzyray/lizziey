@@ -1069,6 +1069,7 @@ public boolean startAutoAna=false;
 		}
 		df = df + "_" + sf;
 		// 增加如果已命名,则保存在命名的文件夹下
+		
 		File autoSaveFile;
 		File autoSaveFile2 = null;
 		if (Lizzie.frame.toolbar.isEnginePkBatch) {
@@ -1078,6 +1079,7 @@ public boolean startAutoAna=false;
 					courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.SF + "\\" + df + ".sgf");
 		} else {
 			autoSaveFile = new File(courseFile + "\\" + "PkAutoSave" + "\\" + df + ".sgf");
+			autoSaveFile2 = new File(courseFile + "\\" + "PkAutoSave" + "\\" + df + ".sgf");
 		}
 
 		File fileParent = autoSaveFile.getParentFile();
@@ -1086,6 +1088,19 @@ public boolean startAutoAna=false;
 		}
 		try {
 			SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+			if(Lizzie.frame.toolbar.enginePkSaveWinrate)
+			{
+				String autoSavePng;
+				if (Lizzie.frame.toolbar.isEnginePkBatch) {
+					autoSavePng = 
+							courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.batchPkName + "\\" + df + ".png";
+					
+				} else {
+					autoSavePng = courseFile + "\\" + "PkAutoSave" + "\\" + df + ".png";
+				}
+
+				Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng);
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			if (Lizzie.frame.toolbar.isEnginePkBatch) {
@@ -1095,6 +1110,20 @@ public boolean startAutoAna=false;
 						fileParent2.mkdirs();
 					}
 					SGFParser.save(Lizzie.board, autoSaveFile2.getPath());
+					
+					if(Lizzie.frame.toolbar.enginePkSaveWinrate)
+					{
+						
+						String autoSavePng2 = null;
+						if (Lizzie.frame.toolbar.isEnginePkBatch) {
+							autoSavePng2 = 
+									courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.SF + "\\" + df + ".png";
+						} else {
+							autoSavePng2 = courseFile + "\\" + "PkAutoSave" + "\\" + df + ".png";
+						}
+
+						Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng2);
+					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -1102,6 +1131,8 @@ public boolean startAutoAna=false;
 			}
 			e.printStackTrace();
 		}
+		
+		
 	}
 
 	private void loadAutoBatchFile() {
@@ -1822,17 +1853,38 @@ public boolean startAutoAna=false;
 		File autoSaveFile;
 		File autoSaveFile2 = null;
 		String sf = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		autoSaveFile = new File(courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.batchPkName + "\\"
-				+ "双Pass对局" + sf + ".sgf");
-		autoSaveFile2 = new File(
-				courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.SF + "\\" + "双Pass对局" + sf + ".sgf");
+		if (Lizzie.frame.toolbar.isEnginePkBatch) {
+			
+			autoSaveFile = new File(courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.batchPkName + "\\"
+					+ "双Pass对局" + sf + ".sgf");
+			autoSaveFile2 = new File(
+					courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.SF + "\\" + "双Pass对局" + sf + ".sgf");
 
+		} else {
+			autoSaveFile2 = new File(courseFile + "\\" + "PkAutoSave" + "\\" + "双Pass对局" + sf + ".sgf");
+			autoSaveFile = new File(courseFile + "\\" + "PkAutoSave" + "\\" + "双Pass对局" + sf + ".sgf");
+			
+		}
+	
 		File fileParent = autoSaveFile.getParentFile();
 		if (!fileParent.exists()) {
 			fileParent.mkdirs();
 		}
 		try {
 			SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+			if(Lizzie.frame.toolbar.enginePkSaveWinrate)
+			{
+				String autoSavePng;
+				if (Lizzie.frame.toolbar.isEnginePkBatch) {
+					autoSavePng = courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.batchPkName + "\\"
+							+ "双Pass对局" + sf + ".png";
+				} else {
+					autoSavePng =courseFile + "\\" + "PkAutoSave" + "\\" + "双Pass对局" + sf + ".png";
+				}
+
+				Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng);
+			}
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			if (Lizzie.frame.toolbar.isEnginePkBatch) {
@@ -1842,6 +1894,20 @@ public boolean startAutoAna=false;
 						fileParent2.mkdirs();
 					}
 					SGFParser.save(Lizzie.board, autoSaveFile2.getPath());
+					if(Lizzie.frame.toolbar.enginePkSaveWinrate)
+					{
+						
+						String autoSavePng2 = null;
+						if (Lizzie.frame.toolbar.isEnginePkBatch) {
+							autoSavePng2 = courseFile + "\\" + "PkAutoSave" + "\\" +  Lizzie.frame.toolbar.SF + "\\"
+									+ "双Pass对局" + sf + ".png";
+						} else {
+							autoSavePng2 = courseFile + "\\" + "PkAutoSave" +  "\\"
+									+ "双Pass对局" + sf + ".png";
+						}
+
+						Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng2);
+					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -1871,28 +1937,37 @@ public boolean startAutoAna=false;
 			}
 			df = df + "黑" + Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename + "_白"
 					+ Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename;
-		    autoSaveFile =
-		        new File(
-		            courseFile
-		                + "\\"
-		                + "PkAutoSave"
-		                + "\\"
-		                + Lizzie.frame.toolbar.batchPkName
-		                + "\\"
-		                +df+ "_超手数对局_"
-		                + sf
-		                + ".sgf");
-		    autoSaveFile2 =
-		        new File(
-		            courseFile
-		                + "\\"
-		                + "PkAutoSave"
-		                + "\\"
-		                + Lizzie.frame.toolbar.SF
-		                + "\\"
-		                +df  + "_超手数对局_"
-		                + sf
-		                + ".sgf");
+			if (Lizzie.frame.toolbar.isEnginePkBatch) {
+				
+				autoSaveFile =
+				        new File(
+				            courseFile
+				                + "\\"
+				                + "PkAutoSave"
+				                + "\\"
+				                + Lizzie.frame.toolbar.batchPkName
+				                + "\\"
+				                +df+ "_超手数对局_"
+				                + sf
+				                + ".sgf");
+			    autoSaveFile2 =
+				        new File(
+				            courseFile
+				                + "\\"
+				                + "PkAutoSave"
+				                + "\\"
+				                + Lizzie.frame.toolbar.SF
+				                + "\\"
+				                +df  + "_超手数对局_"
+				                + sf
+				                + ".sgf");
+			} else {
+				autoSaveFile2 = new File(courseFile + "\\" + "PkAutoSave" + "\\"  +df+ "_超手数对局_" + sf + ".sgf");
+				autoSaveFile = new File(courseFile + "\\" + "PkAutoSave" + "\\" +df+ "_超手数对局_"+ sf + ".sgf");
+				
+			}
+		
+		
 
 		    File fileParent = autoSaveFile.getParentFile();
 		    if (!fileParent.exists()) {
@@ -1900,6 +1975,18 @@ public boolean startAutoAna=false;
 		    }
 		    try {
 		      SGFParser.save(Lizzie.board, autoSaveFile.getPath());
+		      if(Lizzie.frame.toolbar.enginePkSaveWinrate)
+				{
+					String autoSavePng;
+					if (Lizzie.frame.toolbar.isEnginePkBatch) {
+						autoSavePng = courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.batchPkName + "\\"
+								+df	+ "_超手数对局_"  + sf + ".png";
+					} else {
+						autoSavePng =courseFile + "\\" + "PkAutoSave" + "\\" +df	+ "_超手数对局_" + sf + ".png";
+					}
+
+					Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng);
+				}
 		    } catch (IOException e) {
 		      // TODO Auto-generated catch block
 		      if (Lizzie.frame.toolbar.isEnginePkBatch) {
@@ -1909,6 +1996,20 @@ public boolean startAutoAna=false;
 		            fileParent2.mkdirs();
 		          }
 		          SGFParser.save(Lizzie.board, autoSaveFile2.getPath());
+		          if(Lizzie.frame.toolbar.enginePkSaveWinrate)
+					{
+						
+						String autoSavePng2 = null;
+						if (Lizzie.frame.toolbar.isEnginePkBatch) {
+							autoSavePng2 = courseFile + "\\" + "PkAutoSave" + "\\" +  Lizzie.frame.toolbar.SF + "\\"
+								+df	+ "_超手数对局_" + sf + ".png";
+						} else {
+							autoSavePng2 = courseFile + "\\" + "PkAutoSave" +  "\\"
+									+df+ "_超手数对局_" + sf + ".png";
+						}
+
+						Lizzie.frame.saveImage(Lizzie.frame.grx,(int)(Lizzie.frame.gry*0.95),(int)(Lizzie.frame.grw*1.03),(int)(Lizzie.frame.grh*1.1), autoSavePng2);
+					}		         
 		        } catch (IOException e1) {
 		          // TODO Auto-generated catch block
 		          e1.printStackTrace();
