@@ -45,6 +45,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -77,11 +79,13 @@ public class OnlineDialog extends JDialog {
   private WebSocketClient client;
   private Socket sio;
   private int type = 0;
+  private static boolean restart = false;
   private JFormattedTextField txtRefreshTime;
   private JLabel lblError;
   private int refreshTime;
   private JTextField txtUrl;
   private String ajaxUrl = "";
+  private static String ajaxUrl2 = "";
   private Map queryMap = null;
   private String query = "";
   private String whitePlayer = "";
@@ -153,9 +157,10 @@ public class OnlineDialog extends JDialog {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.urlSgf = false;
-            if (client != null && client.isOpen()) {
-              client.close();
-            }
+            
+//            if (client != null && client.isOpen()) {
+//              client.close();
+//            }
             setVisible(false);
           }
         });
@@ -262,8 +267,24 @@ public class OnlineDialog extends JDialog {
 
   private void applyChange() {
     //
-
-    type = checkUrl();
+		
+   
+    if( Lizzie.frame.urlSgf )
+    {
+    	 ajaxUrl2=txtUrl.getText();
+    	 type = checkUrl();
+    	Lizzie.frame.urlSgf=false;
+    	 if (type > 0) {
+    		 restart=true;    	
+    	      error(false);
+    	      setVisible(false);    	   
+    	    } else {
+    	      error(true);
+    	    }
+    	
+    }
+    else {
+    	 type = checkUrl();
     Lizzie.frame.urlSgf = true;
     if (type > 0) {
       error(false);
@@ -275,6 +296,7 @@ public class OnlineDialog extends JDialog {
       }
     } else {
       error(true);
+    }
     }
   }
 
@@ -535,29 +557,46 @@ public class OnlineDialog extends JDialog {
         });
 
     if (needSchedule) {
-      if (schedule == null || schedule.isCancelled() || schedule.isDone()) {
-        schedule =
-            online.scheduleAtFixedRate(
-                new Runnable() {
-                  @Override
-                  public void run() {
-                    if (!Lizzie.frame.urlSgf) {
-                      ajax.abort();
-                      //
-                      return;
-                    }
-                    try {
+    	Timer timer = new Timer();
+        timer.schedule(
+            new TimerTask() {
+              public void run() {
+            	  try {
                       ajax.open("GET", ajaxUrl, true);
                       ajax.send(params);
                     } catch (IOException e) {
                       e.printStackTrace();
                     }
-                  }
-                },
-                1,
-                refreshTime,
-                TimeUnit.SECONDS);
-      }
+//            	  if (!Lizzie.frame.urlSgf) {
+////                      ajax.abort();  
+////                      this.cancel();          
+////                      
+//                    }                
+              }
+            },
+            refreshTime*1000);
+//      if (schedule == null || schedule.isCancelled() || schedule.isDone()) {
+//        schedule =
+//            online.scheduleAtFixedRate(
+//                new Runnable() {
+//                  @Override
+//                  public void run() {
+//                    if (!Lizzie.frame.urlSgf) {
+//                      ajax.abort();                      
+//                      return;
+//                    }
+//                    try {
+//                      ajax.open("GET", ajaxUrl, true);
+//                      ajax.send(params);
+//                    } catch (IOException e) {
+//                      e.printStackTrace();
+//                    }
+//                  }
+//                },
+//                1,
+//                refreshTime,
+//                TimeUnit.SECONDS);
+//      }
     } else {
       try {
         ajax.open("GET", ajaxUrl, true);
@@ -807,6 +846,19 @@ public class OnlineDialog extends JDialog {
                     if (!Lizzie.frame.urlSgf) {
                       if (client != null && client.isOpen()) {
                         client.close();
+                        client=null;
+                        if(restart)
+                        {
+                        	Lizzie.frame.urlSgf=true;
+                        	restart=false;
+                        	txtUrl.setText(ajaxUrl2);
+                        	type = checkUrl();                        	
+                        	   try {
+                       	        proc();
+                       	      } catch (IOException | URISyntaxException e) {
+                       	        e.printStackTrace();
+                       	      }
+                        }
                       }
                       return;
                     }
