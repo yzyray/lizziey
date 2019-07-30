@@ -155,10 +155,10 @@ public class OnlineDialog extends JDialog {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.urlSgf = false;
-
-            //            if (client != null && client.isOpen()) {
-            //              client.close();
-            //            }
+            if (client != null && client.isOpen()) {
+              client.close();
+              client = null;
+            }
             setVisible(false);
           }
         });
@@ -265,25 +265,24 @@ public class OnlineDialog extends JDialog {
 
   private void applyChange() {
     //
-    if (Lizzie.frame.urlSgf) {   
-            if (client != null && client.isOpen()) {
-              client.close();
-              client = null;          
+    if (Lizzie.frame.urlSgf) {
+      if (client != null && client.isOpen()) {
+        client.close();
+        client = null;
       }
-    } 
-      type = checkUrl();
-      Lizzie.frame.urlSgf = true;
-      if (type > 0) {
-        error(false);
-        setVisible(false);
-        try {
-          proc();
-        } catch (IOException | URISyntaxException e) {
-          e.printStackTrace();
-        }
-      } else {
-        error(true);
-      
+    }
+    type = checkUrl();
+    Lizzie.frame.urlSgf = true;
+    if (type > 0) {
+      error(false);
+      setVisible(false);
+      try {
+        proc();
+      } catch (IOException | URISyntaxException e) {
+        e.printStackTrace();
+      }
+    } else {
+      error(true);
     }
   }
 
@@ -830,7 +829,7 @@ public class OnlineDialog extends JDialog {
                 new Runnable() {
                   @Override
                   public void run() {
-                   
+
                     if (client.isOpen()) {
                       byte[] req2 =
                           req2(
