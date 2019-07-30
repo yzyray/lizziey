@@ -453,42 +453,51 @@ public class OnlineDialog extends JDialog {
     try {
       BoardHistoryList liveNode = SGFParser.parseSgf(sgf);
       if (liveNode != null) {
-        int diffMove = Lizzie.board.getHistory().sync(liveNode);
-        if (diffMove >= 0) {
-          Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
-          while (Lizzie.board.nextMove()) ;
-        }
-        if (live != null) {
-          blackPlayer = live.optString("BlackPlayer");
-          whitePlayer = live.optString("WhitePlayer");
-        }
-        if (Utils.isBlank(blackPlayer)) {
-          Pattern spb =
-              Pattern.compile("(?s).*?(\\\"BlackPlayer\\\":\\\")([^\"]+)(\\\",\\\")(?s).*");
-          Matcher smb = spb.matcher(data);
-          if (smb.matches() && smb.groupCount() >= 2) {
-            blackPlayer = smb.group(2);
+        blackPlayer = liveNode.getGameInfo().getPlayerBlack();
+        whitePlayer = liveNode.getGameInfo().getPlayerWhite();
+        double komi = liveNode.getGameInfo().getKomi();
+        if (liveNode != null) {
+          int diffMove = Lizzie.board.getHistory().sync(liveNode);
+          if (diffMove >= 0) {
+            Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
+            while (Lizzie.board.nextMove()) ;
           }
-        }
-        if (Utils.isBlank(whitePlayer)) {
-          Pattern spw =
-              Pattern.compile("(?s).*?(\\\"WhitePlayer\\\":\\\")([^\\\"]+)(\\\",\\\")(?s).*");
-          Matcher smw = spw.matcher(data);
-          if (smw.matches() && smw.groupCount() >= 2) {
-            whitePlayer = smw.group(2);
+          if (live != null) {
+            blackPlayer = live.optString("BlackPlayer");
+            whitePlayer = live.optString("WhitePlayer");
           }
-        }
-        Lizzie.frame.setPlayers(whitePlayer, blackPlayer);
-        if (live != null && "3".equals(live.optString("Status"))) {
-          if (schedule != null && !schedule.isCancelled() && !schedule.isDone()) {
-            schedule.cancel(false);
+          if (Utils.isBlank(blackPlayer)) {
+            Pattern spb =
+                Pattern.compile("(?s).*?(\\\"BlackPlayer\\\":\\\")([^\"]+)(\\\",\\\")(?s).*");
+            Matcher smb = spb.matcher(data);
+            if (smb.matches() && smb.groupCount() >= 2) {
+              blackPlayer = smb.group(2);
+            }
           }
-          String result = live.optString("GameResult");
-          if (!Utils.isBlank(result)) {
-            Lizzie.board.getHistory().getData().comment =
-                result + "\n" + Lizzie.board.getHistory().getData().comment;
-            Lizzie.board.previousMove();
-            Lizzie.board.nextMove();
+          if (Utils.isBlank(whitePlayer)) {
+            Pattern spw =
+                Pattern.compile("(?s).*?(\\\"WhitePlayer\\\":\\\")([^\\\"]+)(\\\",\\\")(?s).*");
+            Matcher smw = spw.matcher(data);
+            if (smw.matches() && smw.groupCount() >= 2) {
+              whitePlayer = smw.group(2);
+            }
+          }
+          Lizzie.frame.setPlayers(whitePlayer, blackPlayer);
+          Lizzie.board.getHistory().getGameInfo().setPlayerBlack(blackPlayer);
+          Lizzie.board.getHistory().getGameInfo().setPlayerWhite(whitePlayer);
+          Lizzie.board.getHistory().getGameInfo().setKomi(komi);
+          Lizzie.leelaz.komi(komi);
+          if (live != null && "3".equals(live.optString("Status"))) {
+            if (schedule != null && !schedule.isCancelled() && !schedule.isDone()) {
+              schedule.cancel(false);
+            }
+            String result = live.optString("GameResult");
+            if (!Utils.isBlank(result)) {
+              Lizzie.board.getHistory().getData().comment =
+                  result + "\n" + Lizzie.board.getHistory().getData().comment;
+              Lizzie.board.previousMove();
+              Lizzie.board.nextMove();
+            }
           }
         }
       } else {
@@ -966,6 +975,8 @@ public class OnlineDialog extends JDialog {
                         ? a308.optString("AAA225")
                         : a308.optString("AAA224"));
             Lizzie.frame.setPlayers(whitePlayer, blackPlayer);
+            Lizzie.board.getHistory().getGameInfo().setPlayerBlack(blackPlayer);
+            Lizzie.board.getHistory().getGameInfo().setPlayerWhite(whitePlayer);
           } else {
             break;
           }
@@ -980,6 +991,8 @@ public class OnlineDialog extends JDialog {
           whitePlayer = blackPlayer;
           blackPlayer = t;
           Lizzie.frame.setPlayers(whitePlayer, blackPlayer);
+          Lizzie.board.getHistory().getGameInfo().setPlayerBlack(blackPlayer);
+          Lizzie.board.getHistory().getGameInfo().setPlayerWhite(whitePlayer);
         } else if (f.type == 7005) {
           long uid = f.line.optLong("AAA303");
           int num = f.line.optInt("AAA102");
@@ -2160,6 +2173,8 @@ public class OnlineDialog extends JDialog {
       }
     }
     Lizzie.frame.setPlayers(whitePlayer, blackPlayer);
+    Lizzie.board.getHistory().getGameInfo().setPlayerBlack(blackPlayer);
+    Lizzie.board.getHistory().getGameInfo().setPlayerWhite(whitePlayer);
   }
 
   private void channel() {

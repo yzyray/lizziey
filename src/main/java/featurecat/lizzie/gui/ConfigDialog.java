@@ -1334,7 +1334,8 @@ public class ConfigDialog extends JDialog {
     }
     if (rdonorect.isSelected()) {
       Lizzie.config.showrect = false;
-      Lizzie.frame.boardRenderer.removeblock();
+      if (Lizzie.frame != null && Lizzie.frame.boardRenderer != null)
+        Lizzie.frame.boardRenderer.removeblock();
       return false;
     }
     return true;

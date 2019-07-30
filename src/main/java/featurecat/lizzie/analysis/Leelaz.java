@@ -2472,6 +2472,14 @@ public boolean startAutoAna=false;
 
 		}
 	}
+	
+	  public void komi(double komi) {
+		    synchronized (this) {
+		      sendCommand("komi " + (komi == 0.0 ? "0" : komi));		     
+		      Lizzie.board.clearbestmovesafter(Lizzie.board.getHistory().getStart());
+		      if (isPondering) ponder();
+		    }
+		  }
 
 	public void nameCmdfornoponder() {
 		canGetGenmoveInfo = false;

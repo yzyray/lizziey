@@ -2091,7 +2091,7 @@ public class Board implements LeelazListener {
     isPkBoardKataW = false;
     isKataBoard = false;
     Lizzie.leelaz.sendCommand("komi " + Lizzie.leelaz.komi);
-    Lizzie.board.getHistory().getGameInfo().resetAll();
+    if (!Lizzie.frame.urlSgf) Lizzie.board.getHistory().getGameInfo().resetAll();
     Lizzie.frame.komi = Lizzie.leelaz.komi + "";
     Lizzie.frame.boardRenderer.removecountblock();
     if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
