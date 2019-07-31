@@ -98,6 +98,7 @@ public class OnlineDialog extends JDialog {
   private int boardSize = 19;
   private long userId = -1000000;
   private long roomId = 0;
+  static AjaxHttpRequest ajax;
   private String channel = "";
   private Map<Integer, Map<Integer, JSONObject>> branchs =
       new HashMap<Integer, Map<Integer, JSONObject>>();
@@ -538,7 +539,7 @@ public class OnlineDialog extends JDialog {
   public void refresh(String format, int num, boolean needSchedule, boolean decode)
       throws IOException {
     Map params = new HashMap();
-    final AjaxHttpRequest ajax = new AjaxHttpRequest();
+    ajax = new AjaxHttpRequest();
 
     ajax.setReadyStateChangeListener(
         new AjaxHttpRequest.ReadyStateChangeListener() {
@@ -2421,22 +2422,9 @@ public class OnlineDialog extends JDialog {
           }
         });
   }
-  //  public void stop() {
-  //	  Lizzie.frame.urlSgf=false;
-  //	  if (client != null && client.isOpen()) {
-  //	        client.close();
-  //	        client = null;
-  //	      }
-  //  }
 
   public void applyChangeWeb(String url) {
     //
-    if (Lizzie.frame.urlSgf) {
-      if (client != null && client.isOpen()) {
-        client.close();
-        client = null;
-      }
-    }
     txtUrl.setText(url);
     type = checkUrl();
     Lizzie.frame.urlSgf = true;

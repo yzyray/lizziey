@@ -13,7 +13,7 @@ public class Message extends JDialog {
     setType(Type.POPUP);
     setTitle("消息提醒");
     setAlwaysOnTop(true);
-
+    setLocationByPlatform(true);
     lblmessage = new JLabel("", JLabel.CENTER);
     this.add(lblmessage);
     try {

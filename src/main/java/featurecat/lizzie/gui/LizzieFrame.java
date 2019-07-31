@@ -190,6 +190,9 @@ public class LizzieFrame extends JFrame {
   public Input input = new Input();
   public InputSubboard input2 = new InputSubboard();
   public boolean noInput = true;
+  private long startSyncTime = System.currentTimeMillis();
+  private boolean isSyncing = false;
+  private boolean firstIsSyncing = true;
 
   public int grx;
   public int gry;
@@ -3158,8 +3161,36 @@ public class LizzieFrame extends JFrame {
                     if (onlineDialog != null) {
                       onlineDialog.dispose();
                     }
+                    if (isSyncing && System.currentTimeMillis() - startSyncTime < 2000) {
+                      if (firstIsSyncing) firstIsSyncing = false;
+                      else return;
+                      Timer timer = new Timer();
+                      timer.schedule(
+                          new TimerTask() {
+                            public void run() {
+                              onlineDialog = new OnlineDialog();
+                              onlineDialog.applyChangeWeb(popupParams.getURL());
+                              startSyncTime = System.currentTimeMillis();
+                              isSyncing = false;
+                              firstIsSyncing = true;
+                              this.cancel();
+                            }
+                          },
+                          2000);
+                      return;
+                    }
+
+                    if (System.currentTimeMillis() - startSyncTime < 1000) {
+                      isSyncing = true;
+                      onlineDialog = new OnlineDialog();
+                      onlineDialog.applyChangeWeb(popupParams.getURL());
+                      startSyncTime = System.currentTimeMillis();
+                      return;
+                    }
+                    isSyncing = false;
                     onlineDialog = new OnlineDialog();
                     onlineDialog.applyChangeWeb(popupParams.getURL());
+                    startSyncTime = System.currentTimeMillis();
                   }
                 };
             Thread thread = new Thread(runnable);
@@ -3215,6 +3246,7 @@ public class LizzieFrame extends JFrame {
           @Override
           public void actionPerformed(ActionEvent e) {
             // TBD未完成
+
             onlineDialog.dispose();
           }
         });
