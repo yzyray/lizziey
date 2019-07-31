@@ -538,7 +538,8 @@ public class LizzieFrame extends JFrame {
   }
 
   public void openOnlineDialog() {
-    OnlineDialog onlineDialog = new OnlineDialog();
+	  if(onlineDialog==null)
+     onlineDialog = new OnlineDialog();
     // onlineDialog.applyChangeWeb("https://home.yikeweiqi.com/#/live/room/20595/1/18748590");
     onlineDialog.setVisible(true);
   }
