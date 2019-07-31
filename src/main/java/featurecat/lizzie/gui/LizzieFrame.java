@@ -1911,10 +1911,11 @@ public class LizzieFrame extends JFrame {
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g.setColor(Color.WHITE);
 
-    if (width / 3 < height)
-      setPanelFont(g, (int) min((width * 0.1), (min(width, height * 0.4) * 0.2)));
-    else setPanelFont(g, (int) (min(width, height) * 0.2));
-
+    if (!Lizzie.config.showName) {
+      if (width / 3 < height)
+        setPanelFont(g, (int) min((width * 0.1), (min(width, height * 0.4) * 0.2)));
+      else setPanelFont(g, (int) (min(width, height) * 0.2));
+    } else setPanelFont(g, (int) (min(width, height) * 0.2));
     // Last move
     // validLastWinrate && validWinrate
     if (true) {
