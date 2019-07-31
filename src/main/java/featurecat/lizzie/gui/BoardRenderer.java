@@ -232,30 +232,30 @@ public class BoardRenderer {
     if (Lizzie.board.getHistory().isBlacksTurn()) {
       g0.setColor(Color.WHITE);
       g0.fillOval(
-          x + boardWidth / 2 - stoneRadius * 1 / 8,
+          x + boardWidth / 2 - stoneRadius * 1 / 5,
           y - scaledMarginHeight + stoneRadius + boardHeight,
-          stoneRadius * 5 / 4,
-          stoneRadius * 5 / 4);
+          stoneRadius,
+          stoneRadius);
 
       g0.setColor(Color.BLACK);
       g0.fillOval(
-          x + boardWidth / 2 - stoneRadius * 7 / 8,
+          x + boardWidth / 2 - stoneRadius * 4 / 5,
           y - scaledMarginHeight + stoneRadius + boardHeight,
-          stoneRadius * 5 / 4,
-          stoneRadius * 5 / 4);
+          stoneRadius,
+          stoneRadius);
     } else {
       g0.setColor(Color.BLACK);
       g0.fillOval(
-          x + boardWidth / 2 - stoneRadius * 7 / 8,
+          x + boardWidth / 2 - stoneRadius * 4 / 5,
           y - scaledMarginHeight + stoneRadius + boardHeight,
-          stoneRadius * 5 / 4,
-          stoneRadius * 5 / 4);
+          stoneRadius,
+          stoneRadius);
       g0.setColor(Color.WHITE);
       g0.fillOval(
-          x + boardWidth / 2 - stoneRadius * 1 / 8,
+          x + boardWidth / 2 - stoneRadius * 1 / 5,
           y - scaledMarginHeight + stoneRadius + boardHeight,
-          stoneRadius * 5 / 4,
-          stoneRadius * 5 / 4);
+          stoneRadius,
+          stoneRadius);
     }
     g0.setColor(Color.BLACK);
     String regex = "[\u4e00-\u9fa5]";
@@ -284,14 +284,14 @@ public class BoardRenderer {
         stoneRadius,
         stoneRadius * white.replaceAll(regex, "12").length() / 2);
 
-    drawStringBoard(
-        g0,
-        x + boardWidth / 2 + stoneRadius * 2 / 13,
-        y - scaledMarginHeight + stoneRadius * 13 / 8 + boardHeight,
-        Lizzie.frame.uiFont,
-        "7.5",
-        stoneRadius * 13 / 8,
-        stoneRadius * 13 / 8);
+    //    drawStringBoard(
+    //        g0,
+    //        x + boardWidth / 2 + stoneRadius * 2 / 13,
+    //        y - scaledMarginHeight + stoneRadius * 13 / 8 + boardHeight,
+    //        Lizzie.frame.uiFont,
+    //        Lizzie.board.getHistory().getGameInfo().getKomi() + "",
+    //        stoneRadius * 13 / 8,
+    //        stoneRadius * 13 / 8);
   }
   /**
    * Draw the green background and go board with lines. We cache the image for a performance boost.

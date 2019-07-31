@@ -515,16 +515,16 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_O:
-    	  if(e.isShiftDown())
-    	  {   
-    	  Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live");}
-    	  else {
-        Lizzie.frame.noautocounting();
-        Lizzie.frame.openFileAll();}
+        if (e.isShiftDown()) {
+          Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live", 0, 0);
+        } else {
+          Lizzie.frame.noautocounting();
+          Lizzie.frame.openFileAll();
+        }
         break;
 
       case VK_V:
-    	 // Lizzie.frame.getBowserUrl();
+        // Lizzie.frame.getBowserUrl();
         if (controlIsPressed(e)) {
           // if (isinsertmode) {
           // return;
