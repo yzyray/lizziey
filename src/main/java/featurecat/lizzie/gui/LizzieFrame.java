@@ -39,6 +39,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
@@ -1915,7 +1916,11 @@ public class LizzieFrame extends JFrame {
       if (width / 3 < height)
         setPanelFont(g, (int) min((width * 0.1), (min(width, height * 0.4) * 0.2)));
       else setPanelFont(g, (int) (min(width, height) * 0.2));
-    } else setPanelFont(g, (int) (min(width, height) * 0.2));
+    } else {
+      if (width / 3 < height)
+        setPanelFont(g, (int) min((width * 0.15), (min(width, height * 0.4) * 0.3)));
+      else setPanelFont(g, (int) (min(width, height) * 0.25));
+    }
     // Last move
     // validLastWinrate && validWinrate
     if (true) {
@@ -1971,8 +1976,11 @@ public class LizzieFrame extends JFrame {
               + " "
               + resourceBundle.getString("LizzieFrame.display.lastMove")
               + String.format(": %.1f%%", 100 - lastWR - curWR);
-      g.drawString(
-          text, posX + 2 * strokeRadius, posY + height - 2 * strokeRadius); // - font.getSize());
+      drawString(g, posX, posY + height * 17 / 20, uiFont, Font.PLAIN, text, height / 4, width, 0);
+      // int posX, int posY, int width, int height)
+      //      g.drawString(
+      //          text, posX + 2 * strokeRadius, posY + height - 2 * strokeRadius); // -
+      // font.getSize());
     } else {
       // I think it's more elegant to just not display anything when we don't have
       // valid data --dfannius
@@ -3096,6 +3104,49 @@ public class LizzieFrame extends JFrame {
       }
     }
     Lizzie.config.showName = oriShowName;
+  }
+
+  private Font makeFont(Font fontBase, int style) {
+    Font font = fontBase.deriveFont(style, 100);
+    Map<TextAttribute, Object> atts = new HashMap<>();
+    atts.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
+    return font.deriveFont(atts);
+  }
+
+  private void drawString(
+      Graphics2D g,
+      int x,
+      int y,
+      Font fontBase,
+      int style,
+      String string,
+      float maximumFontHeight,
+      double maximumFontWidth,
+      int aboveOrBelow) {
+
+    Font font = makeFont(fontBase, style);
+
+    // set maximum size of font
+    FontMetrics fm = g.getFontMetrics(font);
+    font = font.deriveFont((float) (font.getSize2D() * maximumFontWidth / fm.stringWidth(string)));
+    font = font.deriveFont(min(maximumFontHeight, font.getSize()));
+    g.setFont(font);
+    fm = g.getFontMetrics(font);
+    int height = fm.getAscent() - fm.getDescent();
+    int verticalOffset;
+    if (aboveOrBelow == -1) {
+      verticalOffset = height / 2;
+    } else if (aboveOrBelow == 1) {
+      verticalOffset = -height / 2;
+    } else {
+      verticalOffset = 0;
+    }
+
+    // bounding box for debugging
+    // g.drawRect(x-(int)maximumFontWidth/2, y - height/2 + verticalOffset,
+    // (int)maximumFontWidth,
+    // height+verticalOffset );
+    g.drawString(string, x, y + height / 2 + verticalOffset);
   }
 
   //  public String urlClimb(String url) throws Exception{
