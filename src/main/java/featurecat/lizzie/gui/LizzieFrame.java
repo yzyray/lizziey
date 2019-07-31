@@ -3208,14 +3208,5 @@ public class LizzieFrame extends JFrame {
       frame.add(toolBar, BorderLayout.PAGE_START);
     //  frame.add(back);
   }
-  
-  
-    
-  
-  public void getBowserUrl() {
-	 String a= browser.getURL();
-	 int b =0;
-  }
-
 
 }
