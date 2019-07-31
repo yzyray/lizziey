@@ -538,8 +538,7 @@ public class LizzieFrame extends JFrame {
   }
 
   public void openOnlineDialog() {
-	  if(onlineDialog==null)
-     onlineDialog = new OnlineDialog();
+    if (onlineDialog == null) onlineDialog = new OnlineDialog();
     // onlineDialog.applyChangeWeb("https://home.yikeweiqi.com/#/live/room/20595/1/18748590");
     onlineDialog.setVisible(true);
   }
@@ -3196,7 +3195,7 @@ public class LizzieFrame extends JFrame {
           @Override
           public void actionPerformed(ActionEvent e) {
             // TBD未完成
-            browser.loadURL(browser.getURL());
+            browser.loadURL(thisUrl.getText());
           }
         });
     JToolBar toolBar = new JToolBar("地址栏");

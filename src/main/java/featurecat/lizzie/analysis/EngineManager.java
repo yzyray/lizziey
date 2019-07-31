@@ -440,6 +440,14 @@ public class EngineManager {
     }
   }
 
+  public void killOtherEngines(int engineBlack, int engineWhite) {
+    for (int i = 0; i < engineList.size(); i++) {
+      if (engineList.get(i).isStarted()) {
+        if (i != engineBlack && i != engineWhite) engineList.get(i).normalQuit();
+      }
+    }
+  }
+
   public void killThisEngines() {
     engineList.get(currentEngineNo).normalQuit();
     isEmpty = true;

@@ -2475,6 +2475,7 @@ public class BottomToolbar extends JPanel {
   }
 
   public void startEnginePk() {
+    if (Lizzie.engineManager.isEmpty) Lizzie.engineManager.isEmpty = false;
     timeb = -1;
     timew = -1;
     if (isGenmove) {
@@ -2552,6 +2553,7 @@ public class BottomToolbar extends JPanel {
     featurecat.lizzie.gui.Menu.engineMenu.setEnabled(false);
     analyse.setEnabled(false);
     Lizzie.frame.setResult("");
+    Lizzie.engineManager.killOtherEngines(engineBlack, engineWhite);
     if (Lizzie.engineManager.currentEngineNo == engineWhite
         || Lizzie.engineManager.currentEngineNo == engineBlack) {
       Lizzie.leelaz.nameCmd();
