@@ -1320,9 +1320,12 @@ public class SGFParser {
           if (!inTag) {
             if (isMultiGo) {
               // Restore to the variation node
-              int varStep = subTreeStepMap.get(subTreeDepth);
-              for (int s = 0; s < varStep; s++) {
-                history.previous();
+              try {
+                int varStep = subTreeStepMap.get(subTreeDepth);
+                for (int s = 0; s < varStep; s++) {
+                  history.previous();
+                }
+              } catch (Exception e) {
               }
             }
             subTreeDepth -= 1;

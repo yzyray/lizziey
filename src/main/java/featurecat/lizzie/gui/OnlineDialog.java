@@ -838,7 +838,6 @@ public class OnlineDialog extends JDialog {
                 new Runnable() {
                   @Override
                   public void run() {
-
                     if (client.isOpen()) {
                       byte[] req2 =
                           req2(
@@ -2422,6 +2421,13 @@ public class OnlineDialog extends JDialog {
           }
         });
   }
+  //  public void stop() {
+  //	  Lizzie.frame.urlSgf=false;
+  //	  if (client != null && client.isOpen()) {
+  //	        client.close();
+  //	        client = null;
+  //	      }
+  //  }
 
   public void applyChangeWeb(String url) {
     //

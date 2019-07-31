@@ -227,6 +227,7 @@ public class BoardRenderer {
     if (emptyName) {
       emptyName = false;
       changedName = true;
+      Lizzie.frame.refresh();
     }
     emptyName = false;
     if (Lizzie.board.getHistory().isBlacksTurn()) {

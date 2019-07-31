@@ -206,7 +206,7 @@ public class LizzieFrame extends JFrame {
   String tryString;
   String titleBeforeTrying;
   Browser browser;
-  OnlineDialog onlineDialog;
+  static OnlineDialog onlineDialog;
 
   // boolean lastponder = true;
 
@@ -536,7 +536,8 @@ public class LizzieFrame extends JFrame {
   }
 
   public void openOnlineDialog() {
-    if (onlineDialog == null) onlineDialog = new OnlineDialog();
+    if (onlineDialog != null) onlineDialog.dispose();
+    onlineDialog = new OnlineDialog();
     // onlineDialog.applyChangeWeb("https://home.yikeweiqi.com/#/live/room/20595/1/18748590");
     onlineDialog.setVisible(true);
   }
@@ -3154,9 +3155,10 @@ public class LizzieFrame extends JFrame {
                 new Runnable() {
                   public void run() {
                     // bowser(popupParams.getURL(), 50, 50);
-                    if (onlineDialog == null) {
-                      onlineDialog = new OnlineDialog();
+                    if (onlineDialog != null) {
+                      onlineDialog.dispose();
                     }
+                    onlineDialog = new OnlineDialog();
                     onlineDialog.applyChangeWeb(popupParams.getURL());
                   }
                 };
@@ -3196,8 +3198,9 @@ public class LizzieFrame extends JFrame {
       e1.printStackTrace();
     }
 
-    JButton back = new JButton("刷新");
-    back.addActionListener(
+    JButton refresh = new JButton("刷新");
+    refresh.setFocusable(false);
+    refresh.addActionListener(
         new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
@@ -3205,12 +3208,24 @@ public class LizzieFrame extends JFrame {
             browser.loadURL(thisUrl.getText());
           }
         });
+    JButton stop = new JButton("停止同步");
+    stop.setFocusable(false);
+    stop.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD未完成
+            onlineDialog.dispose();
+          }
+        });
     JToolBar toolBar = new JToolBar("地址栏");
     toolBar.setBorderPainted(false);
     thisUrl.setText(url);
     toolBar.add(thisUrl);
-    toolBar.add(back);
-    back.setFocusable(false);
+    toolBar.add(refresh);
+    toolBar.addSeparator();
+    toolBar.add(stop);
+
     view.requestFocus();
     frame.add(toolBar, BorderLayout.PAGE_START);
     toolBar.setVisible(false);
