@@ -33,6 +33,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
@@ -209,6 +211,7 @@ public class LizzieFrame extends JFrame {
   String tryString;
   String titleBeforeTrying;
   Browser browser;
+  JTextField thisUrl;
   // boolean lastponder = true;
 
   static {
@@ -3144,32 +3147,70 @@ public class LizzieFrame extends JFrame {
     Lizzie.config.showName = oriShowName;
   }
   
-  public void bowser() {
-	 
-	  final String url = "https://home.yikeweiqi.com/#/live";  
+  public void bowser(String url) {
       final String title = "直播"; 
+       thisUrl=new JTextField();
        browser = new Browser();  
        browser.setPopupHandler(new PopupHandler() {
     	   @Override
-    	   public PopupContainer handlePopup(PopupParams popupParams) {
-    	   browser.loadURL(popupParams.getURL());
+    	   public PopupContainer handlePopup(PopupParams popupParams) {    		  
+    	  // browser.loadURL(popupParams.getURL());
+    	 //  thisUrl.setText(popupParams.getURL());
+    	     Runnable runnable =
+    	             new Runnable() {
+    	               public void run() {
+    	            	   bowser(popupParams.getURL());
+    	               }
+    	             };
+    	         Thread thread = new Thread(runnable);
+    	         thread.start();
+    	  
     	   return null;
     	   }
     	   });
       BrowserView view = new BrowserView(browser);  
-      
+      JPanel viewPanel=new JPanel();
       JFrame frame = new JFrame();  
     //禁用close功能
       //frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);        
       //不显示标题栏,最大化,最小化,退出按钮
      // frame.setUndecorated(true);  
-      frame.setSize(400, 600);
+      frame.setSize(1360, 760);
       frame.add(view, BorderLayout.CENTER);  
       //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  
       frame.setLocationByPlatform(true);  
       frame.setVisible(true);  
       browser.loadURL(url);  
+      try {
+		frame.setIconImage(ImageIO.read(MovelistFrame.class.getResourceAsStream("/assets/logo.png")));
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+      
+      JButton back=new JButton("返回弈客直播");
+      back.addActionListener(
+    	        new ActionListener() {
+    	            @Override
+    	            public void actionPerformed(ActionEvent e) {
+    	              // TBD未完成
+    	            	browser.loadURL(url);  
+    	            	
+    	            }
+    	          });
+      JToolBar toolBar = new JToolBar("地址栏");
+      toolBar.setBorderPainted(false);
+      thisUrl.setText(url);
+     // toolBar.add(back);
+      toolBar.add(thisUrl); 
+      back.setFocusable(false);
+      view.requestFocus();
+      frame.add(toolBar, BorderLayout.PAGE_START);
+    //  frame.add(back);
   }
+  
+  
+    
   
   public void getBowserUrl() {
 	 String a= browser.getURL();
