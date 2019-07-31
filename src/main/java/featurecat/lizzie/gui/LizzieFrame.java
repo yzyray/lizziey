@@ -206,6 +206,7 @@ public class LizzieFrame extends JFrame {
   String tryString;
   String titleBeforeTrying;
   Browser browser;
+  OnlineDialog onlineDialog;
 
   // boolean lastponder = true;
 
@@ -538,6 +539,7 @@ public class LizzieFrame extends JFrame {
 
   public void openOnlineDialog() {
     OnlineDialog onlineDialog = new OnlineDialog();
+    // onlineDialog.applyChangeWeb("https://home.yikeweiqi.com/#/live/room/20595/1/18748590");
     onlineDialog.setVisible(true);
   }
 
@@ -3141,7 +3143,7 @@ public class LizzieFrame extends JFrame {
   }
 
   public void bowser(String url, int x, int y) {
-    final String title = "直播";
+    final String title = "弈客直播";
     JTextField thisUrl = new JTextField();
     browser = new Browser();
     browser.setPopupHandler(
@@ -3153,7 +3155,11 @@ public class LizzieFrame extends JFrame {
             Runnable runnable =
                 new Runnable() {
                   public void run() {
-                    bowser(popupParams.getURL(), 50, 50);
+                    // bowser(popupParams.getURL(), 50, 50);
+                    if (onlineDialog == null) {
+                      onlineDialog = new OnlineDialog();
+                    }
+                    onlineDialog.applyChangeWeb(popupParams.getURL());
                   }
                 };
             Thread thread = new Thread(runnable);
@@ -3170,6 +3176,7 @@ public class LizzieFrame extends JFrame {
     // 不显示标题栏,最大化,最小化,退出按钮
     // frame.setUndecorated(true);
     frame.setSize(1000, 600);
+    frame.setTitle(title);
     frame.add(view, BorderLayout.CENTER);
     // frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     frame.setLocation(x, y);

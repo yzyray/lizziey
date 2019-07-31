@@ -2423,6 +2423,29 @@ public class OnlineDialog extends JDialog {
         });
   }
 
+  public void applyChangeWeb(String url) {
+    //
+    if (Lizzie.frame.urlSgf) {
+      if (client != null && client.isOpen()) {
+        client.close();
+        client = null;
+      }
+    }
+    txtUrl.setText(url);
+    type = checkUrl();
+    Lizzie.frame.urlSgf = true;
+    if (type > 0) {
+      setVisible(false);
+      try {
+        proc();
+      } catch (IOException | URISyntaxException e) {
+        e.printStackTrace();
+      }
+    } else {
+      // error(true);
+    }
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(
         () -> {
