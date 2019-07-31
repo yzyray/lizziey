@@ -248,14 +248,14 @@ public class BoardRenderer {
       g0.fillOval(
           x + boardWidth / 2 - stoneRadius * 4 / 5,
           y - scaledMarginHeight + stoneRadius + boardHeight,
-          stoneRadius*5/4,
-          stoneRadius*5/4);
+          stoneRadius * 5 / 4,
+          stoneRadius * 5 / 4);
       g0.setColor(Color.WHITE);
       g0.fillOval(
           x + boardWidth / 2 - stoneRadius * 1 / 5,
           y - scaledMarginHeight + stoneRadius + boardHeight,
-          stoneRadius*5/4,
-          stoneRadius*5/4);
+          stoneRadius * 5 / 4,
+          stoneRadius * 5 / 4);
     }
     g0.setColor(Color.BLACK);
     String regex = "[\u4e00-\u9fa5]";
@@ -283,8 +283,14 @@ public class BoardRenderer {
         white,
         stoneRadius,
         stoneRadius * white.replaceAll(regex, "12").length() / 2);
-    drawStringBoard(g0,x + boardWidth / 2 ,
-            y - scaledMarginHeight + stoneRadius*3/2 + boardHeight,Lizzie.frame.uiFont,"7.5", stoneRadius*3/2, stoneRadius*3/2);
+    drawStringBoard(
+        g0,
+        x + boardWidth / 2,
+        y - scaledMarginHeight + stoneRadius * 3 / 2 + boardHeight,
+        Lizzie.frame.uiFont,
+        "7.5",
+        stoneRadius * 3 / 2,
+        stoneRadius * 3 / 2);
   }
   /**
    * Draw the green background and go board with lines. We cache the image for a performance boost.
@@ -1885,9 +1891,8 @@ public class BoardRenderer {
   /** Draw texture image */
   public void drawTextureImage(
       Graphics2D g, BufferedImage img, int x, int y, int width, int height) {
-     paint =
-        new TexturePaint(img, new Rectangle(0, 0, img.getWidth(), img.getHeight()));
-    g.setPaint(paint); 
+    paint = new TexturePaint(img, new Rectangle(0, 0, img.getWidth(), img.getHeight()));
+    g.setPaint(paint);
     g.fill(new Rectangle(x, y, width, height));
   }
 
@@ -2061,20 +2066,18 @@ public class BoardRenderer {
       double maximumFontWidth) {
     drawString(g, x, y, fontBase, Font.BOLD, string, maximumFontHeight, maximumFontWidth, 0);
   }
-  
+
   private void drawStringBoard(
-	      Graphics2D g,
-	      int x,
-	      int y,
-	      Font fontBase,
-	      String string,
-	      float maximumFontHeight,
-	      double maximumFontWidth) {
-	  g.setPaint(paint); 
-	    drawString(g, x, y, fontBase, Font.BOLD, string, maximumFontHeight, maximumFontWidth, 0);
-	  }
-  
- 
+      Graphics2D g,
+      int x,
+      int y,
+      Font fontBase,
+      String string,
+      float maximumFontHeight,
+      double maximumFontWidth) {
+    g.setPaint(paint);
+    drawString(g, x, y, fontBase, Font.BOLD, string, maximumFontHeight, maximumFontWidth, 0);
+  }
 
   /** @return a font with kerning enabled */
   private Font makeFont(Font fontBase, int style) {

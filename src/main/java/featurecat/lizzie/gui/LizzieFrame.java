@@ -7,6 +7,13 @@ import static java.lang.Math.min;
 import static java.lang.Math.round;
 
 import com.jhlabs.image.GaussianFilter;
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.PopupContainer;
+import com.teamdev.jxbrowser.chromium.PopupHandler;
+import com.teamdev.jxbrowser.chromium.PopupParams;
+import com.teamdev.jxbrowser.chromium.ba;
+import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
 import featurecat.lizzie.analysis.Leelaz;
@@ -34,6 +41,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
@@ -198,7 +208,7 @@ public class LizzieFrame extends JFrame {
   ArrayList<Movelist> tryMoveList;
   String tryString;
   String titleBeforeTrying;
-
+  Browser browser;
   // boolean lastponder = true;
 
   static {
@@ -3101,6 +3111,8 @@ public class LizzieFrame extends JFrame {
   //	    connection.disconnect(); //销毁连接
   //	    return sb.toString(); //返回抓取的数据(注意,这里是抓取了访问的网站的全部数据)
   //	}
+  
+ 
 
   public void saveImage(int x, int y, int width, int height, String path) {
     boolean oriShowName = Lizzie.config.showName;
@@ -3131,4 +3143,38 @@ public class LizzieFrame extends JFrame {
     }
     Lizzie.config.showName = oriShowName;
   }
+  
+  public void bowser() {
+	 
+	  final String url = "https://home.yikeweiqi.com/#/live";  
+      final String title = "直播"; 
+       browser = new Browser();  
+       browser.setPopupHandler(new PopupHandler() {
+    	   @Override
+    	   public PopupContainer handlePopup(PopupParams popupParams) {
+    	   browser.loadURL(popupParams.getURL());
+    	   return null;
+    	   }
+    	   });
+      BrowserView view = new BrowserView(browser);  
+      
+      JFrame frame = new JFrame();  
+    //禁用close功能
+      //frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);        
+      //不显示标题栏,最大化,最小化,退出按钮
+     // frame.setUndecorated(true);  
+      frame.setSize(400, 600);
+      frame.add(view, BorderLayout.CENTER);  
+      //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);  
+      frame.setLocationByPlatform(true);  
+      frame.setVisible(true);  
+      browser.loadURL(url);  
+  }
+  
+  public void getBowserUrl() {
+	 String a= browser.getURL();
+	 int b =0;
+  }
+
+
 }

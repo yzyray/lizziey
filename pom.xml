@@ -13,9 +13,10 @@
 			to copy filtered resources, i.e. build is platform dependent!" -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	
+	
 
 	<build>
-	
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -84,6 +85,8 @@
 		</plugins>
 	</build>
 
+
+
 	<dependencies>	
 
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
@@ -92,6 +95,28 @@
 			<artifactId>json</artifactId>
 			<version>20180130</version>
 		</dependency>
+		
+ <dependency>
+  <groupId>com.teamdev.jxbrowser</groupId>
+  <artifactId>license</artifactId>
+  <version>6.21</version>
+</dependency>
+		
+				 <dependency>
+  <groupId>com.teamdev.jxbrowser</groupId>
+  <artifactId>jxbrowser</artifactId>
+  <version>6.21</version>
+</dependency>
+		 <dependency>
+  <groupId>com.teamdev.jxbrowser</groupId>
+  <artifactId>jxbrowser-win64</artifactId>
+  <version>6.21</version>
+</dependency>
+     <dependency>
+  <groupId>com.teamdev.jxbrowser</groupId>
+  <artifactId>jxbrowser-win32</artifactId>
+  <version>6.21</version>
+</dependency>
 
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
@@ -123,9 +148,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.25</version>
-        </dependency>
-        
-     
+        </dependency>     
         
         <dependency>
             <groupId>org.java-websocket</groupId>

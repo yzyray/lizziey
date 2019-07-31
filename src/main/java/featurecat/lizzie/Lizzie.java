@@ -11,11 +11,21 @@ import featurecat.lizzie.gui.LoadEngine;
 import featurecat.lizzie.gui.Message;
 import featurecat.lizzie.gui.MovelistFrame;
 import featurecat.lizzie.rules.Board;
+
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.math.BigInteger;
+
 import javax.swing.*;
 import org.json.JSONException;
+
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.ba;
+import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 /** Main class. */
 public class Lizzie {
@@ -47,7 +57,7 @@ public class Lizzie {
     } else {
       loadEngine = LoadEngine.createBadmovesDialog();
       loadEngine.setVisible(true);
-    }
+    }    
   }
 
   public static void start(int index) {
@@ -196,5 +206,24 @@ public class Lizzie {
     //      }
     //   }
     System.exit(0);
+  }
+  
+ 
+  static {
+      try {
+          Field e = ba.class.getDeclaredField("e");
+          e.setAccessible(true);
+          Field f = ba.class.getDeclaredField("f");
+          f.setAccessible(true);
+          Field modifersField = Field.class.getDeclaredField("modifiers");
+          modifersField.setAccessible(true);
+          modifersField.setInt(e, e.getModifiers() & ~Modifier.FINAL);
+          modifersField.setInt(f, f.getModifiers() & ~Modifier.FINAL);
+          e.set(null, new BigInteger("1"));
+          f.set(null, new BigInteger("1"));
+          modifersField.setAccessible(false);
+      } catch (Exception e1) {
+          e1.printStackTrace();
+      }
   }
 }
