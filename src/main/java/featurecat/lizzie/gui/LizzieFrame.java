@@ -242,12 +242,10 @@ public class LizzieFrame extends JFrame {
     winrateGraph = new WinrateGraph();
     toolbar = new BottomToolbar();
     menu = new Menu();
-
     // MenuTest menu = new MenuTest();
     // add(menu);
     // this.setJMenuBar(menu);
     // this.setVisible(true);
-
     this.setAlwaysOnTop(Lizzie.config.mainsalwaysontop);
     setMinimumSize(new Dimension(640, 400));
     boolean persisted = Lizzie.config.persistedUi != null;
@@ -287,7 +285,7 @@ public class LizzieFrame extends JFrame {
             paintMianPanel(g);
           }
         };
-
+    mainPanel.enableInputMethods(false);
     getContentPane().add(mainPanel);
     getContentPane().add(toolbar);
     getContentPane().setLayout(null);
@@ -3181,6 +3179,15 @@ public class LizzieFrame extends JFrame {
     // frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     frame.setLocation(x, y);
     frame.setVisible(true);
+    frame.addWindowListener(
+        new WindowAdapter() {
+          public void windowClosing(WindowEvent e) {
+            frame.setVisible(false);
+            frame.dispose();
+            browser.dispose();
+          }
+        });
+
     browser.loadURL(url);
     try {
       frame.setIconImage(ImageIO.read(MovelistFrame.class.getResourceAsStream("/assets/logo.png")));
