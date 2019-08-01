@@ -1438,6 +1438,16 @@ public class Menu extends MenuBar {
           }
         });
 
+    final JMenuItem yikeGame = new JMenuItem("弈客大厅");
+    live.add(yikeGame);
+
+    yikeGame.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.bowser("https://home.yikeweiqi.com/#/game");
+          }
+        });
+
     final JCheckBoxMenuItem openHtmlOnLive = new JCheckBoxMenuItem("同步时跳转网页");
     openHtmlOnLive.addActionListener(
         new ActionListener() {
