@@ -3155,6 +3155,9 @@ public class LizzieFrame extends JFrame {
     FontMetrics fm = g.getFontMetrics(font);
     font = font.deriveFont((float) (font.getSize2D() * maximumFontWidth / fm.stringWidth(string)));
     font = font.deriveFont(min(maximumFontHeight, font.getSize()));
+    if (font.getSize() > 18) {
+      font = new Font(font.getName(), font.getStyle(), (int) (font.getSize() * 0.9));
+    }
     g.setFont(font);
     fm = g.getFontMetrics(font);
     int height = fm.getAscent() - fm.getDescent();
