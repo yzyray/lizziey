@@ -563,8 +563,7 @@ public class ConfigDialog extends JDialog {
     lblMaxsuggestionmoves.setBounds(331, 440, 157, 16);
     engineTab.add(lblMaxsuggestionmoves);
 
-    JLabel lblMaxsuggestionmovesnums =
-        new JLabel("个");
+    JLabel lblMaxsuggestionmovesnums = new JLabel("个");
     lblMaxsuggestionmovesnums.setBounds(538, 440, 82, 16);
     engineTab.add(lblMaxsuggestionmovesnums);
 
