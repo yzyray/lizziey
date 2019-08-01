@@ -35,6 +35,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
@@ -3354,18 +3356,32 @@ public class LizzieFrame extends JFrame {
 
     ImageIcon iconLeft = new ImageIcon();
     try {
-    	iconLeft.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/left.png")));
+      iconLeft.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/left.png")));
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
     ImageIcon iconRight = new ImageIcon();
     try {
-    	iconRight.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/right.png")));
+      iconRight.setImage(
+          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/right.png")));
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+
+    thisUrl.addKeyListener(
+        new KeyAdapter() {
+          public void keyPressed(KeyEvent e) {
+            if (e.getKeyChar() == KeyEvent.VK_ENTER) // 按回车键执行相应操作;
+            {
+              browser.loadURL(thisUrl.getText());
+              if (!thisUrl.getText().equals(url)) {
+                syncOnline(thisUrl.getText());
+              }
+            }
+          }
+        });
     JButton backward = new JButton(iconLeft);
     backward.setFocusable(false);
     backward.addActionListener(
