@@ -1323,7 +1323,7 @@ public class BoardRenderer {
                         suggestionY - stoneRadius * 1 / 9,
                         LizzieFrame.winrateFont,
                         Font.PLAIN,
-                        String.format("%.1f", score),
+                        Lizzie.frame.getPlayoutsString(move.playouts),
                         stoneRadius,
                         stoneRadius * 1.6,
                         1);
@@ -1335,7 +1335,7 @@ public class BoardRenderer {
                         suggestionX,
                         suggestionY + stoneRadius * 4 / 9,
                         LizzieFrame.winrateFont,
-                        Lizzie.frame.getPlayoutsString(move.playouts),
+                        String.format("%.1f", score),
                         (float) (stoneRadius * 1.0),
                         stoneRadius * 1.6);
                   } else {
@@ -1438,7 +1438,7 @@ public class BoardRenderer {
                         suggestionY - stoneRadius * 1 / 9,
                         LizzieFrame.winrateFont,
                         Font.PLAIN,
-                        String.format("%.1f", score),
+                        text,
                         stoneRadius,
                         stoneRadius * 1.6,
                         1);
@@ -1450,7 +1450,7 @@ public class BoardRenderer {
                         suggestionX,
                         suggestionY + stoneRadius * 4 / 9,
                         LizzieFrame.winrateFont,
-                        text,
+                        String.format("%.1f", score),
                         (float) (stoneRadius * 1.0),
                         stoneRadius * 1.6);
                   }
