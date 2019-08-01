@@ -516,7 +516,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_O:
         if (e.isShiftDown()) {
-          Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live");
+          Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live", "弈客直播");
         } else {
           Lizzie.frame.noautocounting();
           Lizzie.frame.openFileAll();

@@ -3281,8 +3281,7 @@ public class LizzieFrame extends JFrame {
     startSyncTime = System.currentTimeMillis();
   }
 
-  public void bowser(String url) {
-    final String title = "弈客直播";
+  public void bowser(String url, String title) {
     JTextField thisUrl = new JTextField();
 
     urlList = new ArrayList<String>();

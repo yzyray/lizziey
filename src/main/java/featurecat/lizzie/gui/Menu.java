@@ -1434,7 +1434,7 @@ public class Menu extends MenuBar {
     yikeLive.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live");
+            Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live", "弈客直播");
           }
         });
 
@@ -1444,7 +1444,7 @@ public class Menu extends MenuBar {
     yikeGame.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.frame.bowser("https://home.yikeweiqi.com/#/game");
+            Lizzie.frame.bowser("https://home.yikeweiqi.com/#/game", "弈客大厅");
           }
         });
 

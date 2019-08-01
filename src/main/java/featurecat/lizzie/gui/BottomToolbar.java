@@ -376,7 +376,7 @@ public class BottomToolbar extends JPanel {
     liveButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live");
+            Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live", "弈客直播");
           }
         });
 
