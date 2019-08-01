@@ -1428,7 +1428,7 @@ public class Menu extends MenuBar {
     live.setFont(headFont);
     this.add(live);
 
-    final JMenuItem yikeLive = new JMenuItem("弈客直播");
+    final JMenuItem yikeLive = new JMenuItem("弈客直播(Shift+O)");
     live.add(yikeLive);
 
     yikeLive.addActionListener(
