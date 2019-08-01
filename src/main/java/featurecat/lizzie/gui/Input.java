@@ -60,10 +60,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       }
 
     } else if (e.getButton() == MouseEvent.BUTTON3) // right click
-    // undo();
-
     {
-      Lizzie.frame.openRightClickMenu(e.getX(), e.getY());
+      if (!Lizzie.frame.openRightClickMenu(e.getX(), e.getY())) undo();
     }
 
     Lizzie.frame.toolbar.setTxtUnfocuse();

@@ -619,16 +619,16 @@ public class LizzieFrame extends JFrame {
     Avoidmoves.setVisible(true);
   }
 
-  public void openRightClickMenu(int x, int y) {
+  public boolean openRightClickMenu(int x, int y) {
     Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinates(x, y);
 
     if (!boardCoordinates.isPresent()) {
 
-      return;
+      return false;
     }
     if (isPlayingAgainstLeelaz) {
 
-      return;
+      return true;
     }
     if (Lizzie.leelaz.isPondering()) {
       Lizzie.leelaz.sendCommand("name");
@@ -650,7 +650,7 @@ public class LizzieFrame extends JFrame {
             }
           },
           50);
-      return;
+      return true;
     } else {
       RightClickMenu.Store(x, y);
       Timer timer = new Timer();
@@ -663,6 +663,7 @@ public class LizzieFrame extends JFrame {
           },
           50);
     }
+    return true;
   }
 
   public void showmenu(int x, int y) {
