@@ -3352,7 +3352,21 @@ public class LizzieFrame extends JFrame {
       e1.printStackTrace();
     }
 
-    JButton backward = new JButton("后退");
+    ImageIcon iconLeft = new ImageIcon();
+    try {
+    	iconLeft.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/left.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    ImageIcon iconRight = new ImageIcon();
+    try {
+    	iconRight.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/right.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    JButton backward = new JButton(iconLeft);
     backward.setFocusable(false);
     backward.addActionListener(
         new ActionListener() {
@@ -3370,7 +3384,7 @@ public class LizzieFrame extends JFrame {
           }
         });
 
-    JButton forward = new JButton("前进");
+    JButton forward = new JButton(iconRight);
     forward.setFocusable(false);
     forward.addActionListener(
         new ActionListener() {
@@ -3440,9 +3454,7 @@ public class LizzieFrame extends JFrame {
     JToolBar toolBar = new JToolBar("地址栏");
     toolBar.setBorderPainted(false);
     toolBar.add(backward);
-    toolBar.addSeparator();
     toolBar.add(forward);
-    toolBar.addSeparator();
     toolBar.add(back);
 
     toolBar.add(thisUrl);
