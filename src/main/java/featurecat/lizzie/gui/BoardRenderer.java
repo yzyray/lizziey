@@ -374,10 +374,10 @@ public class BoardRenderer {
               Board.asName(i),
               stoneRadius * 4 / 5,
               stoneRadius);
-        	  if (!Lizzie.config.showNameInBoard
-                      || Lizzie.board != null
-                          && (Lizzie.board.getHistory().getGameInfo().getPlayerWhite().equals("")
-                              && Lizzie.board.getHistory().getGameInfo().getPlayerBlack().equals("")))
+          if (!Lizzie.config.showNameInBoard
+              || Lizzie.board != null
+                  && (Lizzie.board.getHistory().getGameInfo().getPlayerWhite().equals("")
+                      && Lizzie.board.getHistory().getGameInfo().getPlayerBlack().equals("")))
             drawString(
                 g,
                 x + scaledMarginWidth + squareWidth * i,
@@ -984,26 +984,32 @@ public class BoardRenderer {
     float greenHue = Color.RGBtoHSB(0, 255, 0, null)[0];
     float cyanHue = Color.RGBtoHSB(0, 255, 255, null)[0];
 
-    if (Lizzie.frame.isheatmap) {
-      int maxPolicy = 0;
+    if (Lizzie.frame.isheatmap && !Lizzie.leelaz.getBestMoves().isEmpty()) {
+      Double maxPolicy = 0.0;
       int minPolicy = 0;
-      for (Integer heat : Lizzie.leelaz.heatcount) {
-        if (heat > maxPolicy) maxPolicy = heat;
+      for (int n = 0; n < Lizzie.leelaz.getBestMoves().size(); n++) {
+        if (Lizzie.leelaz.getBestMoves().get(n).policy > maxPolicy)
+          maxPolicy = Lizzie.leelaz.getBestMoves().get(n).policy;
       }
-      for (int i = 0; i < Lizzie.leelaz.heatcount.size(); i++) {
-        if (Lizzie.leelaz.heatcount.get(i) > 0) {
-          int y1 = i / Lizzie.board.boardWidth;
-          int x1 = i % Lizzie.board.boardWidth;
+      for (int i = 0; i < Lizzie.leelaz.getBestMoves().size(); i++) {
+        MoveData bestmove = Lizzie.leelaz.getBestMoves().get(i);
+        int y1 = 0;
+        int x1 = 0;
+        Optional<int[]> coord = Board.asCoordinates(bestmove.coordinate);
+        if (coord.isPresent()) {
+          x1 = coord.get()[0];
+          y1 = coord.get()[1];
+
           int suggestionX = x + scaledMarginWidth + squareWidth * x1;
           int suggestionY = y + scaledMarginHeight + squareHeight * y1;
-          double percent = ((double) Lizzie.leelaz.heatcount.get(i)) / maxPolicy;
+          double percent = bestmove.policy / maxPolicy;
 
           // g.setColor(Color.BLACK);
           // g.fillRect(stoneX - stoneRadius / 2, stoneY - stoneRadius / 2, stoneRadius,
           // stoneRadius);
 
           float hue;
-          if (Lizzie.leelaz.heatcount.get(i) == maxPolicy) {
+          if (bestmove.policy == maxPolicy) {
             hue = cyanHue;
           } else {
             double fraction;
@@ -1034,7 +1040,8 @@ public class BoardRenderer {
             g.setColor(color);
             fillCircle(g, suggestionX, suggestionY, stoneRadius);
 
-            String text = String.format("%.1f", ((double) Lizzie.leelaz.heatcount.get(i)) / 10);
+            String text =
+                String.format("%.1f", ((double) Lizzie.leelaz.getBestMoves().get(i).policy));
             g.setColor(Color.WHITE);
             drawString(
                 g,
@@ -1597,8 +1604,12 @@ public class BoardRenderer {
 
     // decrease boardLength until the availableLength will result in square board
     // intersections
-    double marginWidth =(Board.boardWidth < 3 ?0.04:
-        (Lizzie.config.showNameInBoard && !emptyName ? 0.055 : showCoordinates ? 0.045 : 0.025))
+    double marginWidth =
+        (Board.boardWidth < 3
+                ? 0.04
+                : (Lizzie.config.showNameInBoard && !emptyName
+                    ? 0.055
+                    : showCoordinates ? 0.045 : 0.025))
             / Board.boardWidth
             * 19.0;
     boardWidth++;
@@ -1612,9 +1623,13 @@ public class BoardRenderer {
     int squareWidth = 0;
     int squareHeight = 0;
     if (Board.boardWidth != Board.boardHeight) {
-      double marginHeight =(Board.boardWidth < 3 ?0.04:
-          (Lizzie.config.showNameInBoard && !emptyName ? 0.055 : showCoordinates ? 0.045 : 0.03)
-              / Board.boardHeight)
+      double marginHeight =
+          (Board.boardWidth < 3
+                  ? 0.04
+                  : (Lizzie.config.showNameInBoard && !emptyName
+                          ? 0.055
+                          : showCoordinates ? 0.045 : 0.03)
+                      / Board.boardHeight)
               * 19.0;
       boardHeight++;
       do {

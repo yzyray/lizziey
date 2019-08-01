@@ -100,15 +100,47 @@ public class Menu extends MenuBar {
 
     fileMenu.addSeparator();
     final JMenuItem copyItem = new JMenuItem();
-    copyItem.setText("复制到剪贴板(Ctrl+C)");
-    copyItem.addActionListener(new ItemListeneryzy());
+    copyItem.setText("复制棋谱到剪贴板(Ctrl+C)");
     fileMenu.add(copyItem);
+    copyItem.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.frame.copySgf();
+          }
+        });
+
+    final JMenuItem copyBoard = new JMenuItem("复制主棋盘到剪贴板(Shift+C)");
+    fileMenu.add(copyBoard);
+    copyBoard.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.frame.savePicToClipboard(
+                Lizzie.frame.boardX,
+                Lizzie.frame.boardY,
+                Lizzie.frame.maxSize,
+                Lizzie.frame.maxSize);
+          }
+        });
 
     final JMenuItem pasteItem = new JMenuItem();
-    pasteItem.setText("从剪贴板粘贴(Ctrl+V)");
-    pasteItem.addActionListener(new ItemListeneryzy());
+    pasteItem.setText("从剪贴板粘贴棋谱(Ctrl+V)");
     fileMenu.add(pasteItem);
     fileMenu.addSeparator();
+    pasteItem.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.frame.pasteSgf();
+          }
+        });
 
     //    if (menuItem.getText().startsWith("打开关闭前")) {
     //        Lizzie.board.resumePreviousGame();
@@ -1391,6 +1423,56 @@ public class Menu extends MenuBar {
           }
         });
 
+    final JMenu live = new JMenu(" 直播  ");
+    live.setForeground(Color.BLACK);
+    live.setFont(headFont);
+    this.add(live);
+
+    final JMenuItem yikeLive = new JMenuItem("弈客直播");
+    live.add(yikeLive);
+
+    yikeLive.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live");
+          }
+        });
+
+    final JCheckBoxMenuItem openHtmlOnLive = new JCheckBoxMenuItem("同步时跳转网页");
+    openHtmlOnLive.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.openHtmlOnLive = !Lizzie.config.openHtmlOnLive;
+            Lizzie.config.uiConfig.put("open-html-onlive", Lizzie.config.openHtmlOnLive);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    live.add(openHtmlOnLive);
+
+    live.addMenuListener(
+        new MenuListener() {
+
+          public void menuSelected(MenuEvent e) {
+            if (Lizzie.config.openHtmlOnLive) openHtmlOnLive.setState(true);
+            else openHtmlOnLive.setState(false);
+          }
+
+          @Override
+          public void menuDeselected(MenuEvent e) {
+            // TODO Auto-generated method stub
+          }
+
+          @Override
+          public void menuCanceled(MenuEvent e) {
+            // TODO Auto-generated method stub
+
+          }
+        });
+
     final JMenu settings = new JMenu(" 设置  ");
     settings.setForeground(Color.BLACK);
     settings.setFont(headFont);
@@ -1415,16 +1497,6 @@ public class Menu extends MenuBar {
             Lizzie.frame.openMoreEngineDialog();
           }
         });
-
-    //    final JMenuItem ui = new JMenuItem("界面");
-    //    settings.add(ui);
-    //
-    //    ui.addActionListener(
-    //        new ActionListener() {
-    //          public void actionPerformed(ActionEvent e) {
-    //            Lizzie.frame.openConfigDialog2(0);
-    //          }
-    //        });
 
     final JMenuItem theme = new JMenuItem("主题");
     settings.add(theme);
@@ -2170,14 +2242,7 @@ public class Menu extends MenuBar {
         Input.nextBranch();
         return;
       }
-      if (menuItem.getText().startsWith("复制到")) {
-        Lizzie.frame.copySgf();
-        return;
-      }
-      if (menuItem.getText().startsWith("从剪贴")) {
-        Lizzie.frame.pasteSgf();
-        return;
-      }
+
       if (menuItem.getText().startsWith("精简")) {
 
         if (Lizzie.config.showSubBoard) Lizzie.config.toggleShowSubBoard();

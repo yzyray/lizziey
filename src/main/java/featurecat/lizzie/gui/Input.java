@@ -516,7 +516,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_O:
         if (e.isShiftDown()) {
-          Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live", 0, 0);
+          Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live");
         } else {
           Lizzie.frame.noautocounting();
           Lizzie.frame.openFileAll();
@@ -610,7 +610,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_C:
-        if (controlIsPressed(e)) {
+        if (e.isShiftDown()) {
+          Lizzie.frame.savePicToClipboard(
+              Lizzie.frame.boardX, Lizzie.frame.boardY, Lizzie.frame.maxSize, Lizzie.frame.maxSize);
+        } else if (controlIsPressed(e)) {
           Lizzie.frame.copySgf();
         } else {
           Lizzie.config.toggleCoordinates();

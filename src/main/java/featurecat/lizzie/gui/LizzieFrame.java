@@ -194,8 +194,8 @@ public class LizzieFrame extends JFrame {
   private long startSyncTime = System.currentTimeMillis();
   private boolean isSyncing = false;
   private boolean firstIsSyncing = true;
-  
-  private boolean isSavingImage=false;
+
+  private boolean isSavingImage = false;
 
   public int grx;
   public int gry;
@@ -206,6 +206,15 @@ public class LizzieFrame extends JFrame {
   public int staty;
   public int statw;
   public int stath;
+
+  public int boardX;
+  public int boardY;
+  public int maxSize;
+
+  public int bowserX = -5;
+  public int bowserY = 0;
+  public int bowserWidth = 1240;
+  public int bowserHeight = 750;
 
   public boolean isTrying = false;
   ArrayList<Movelist> tryMoveList;
@@ -265,14 +274,17 @@ public class LizzieFrame extends JFrame {
     }
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("main-window-position") != null
-        && Lizzie.config.persistedUi.optJSONArray("main-window-position").length() >= 4) {
+        && Lizzie.config.persistedUi.optJSONArray("main-window-position").length() == 9) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("main-window-position");
       this.setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
+      this.toolbarHeight = pos.getInt(4);
+      this.bowserX = pos.getInt(5);
+      this.bowserY = pos.getInt(6);
+      this.bowserWidth = pos.getInt(7);
+      this.bowserHeight = pos.getInt(8);
       this.BoardPositionProportion =
           Lizzie.config.persistedUi.optInt("board-postion-propotion", this.BoardPositionProportion);
-      if (Lizzie.config.persistedUi.optJSONArray("main-window-position").length() == 5) {
-        this.toolbarHeight = pos.getInt(4);
-      }
+
     } else {
       setSize(1360, 850);
       setLocationRelativeTo(null); // Start centered, needs to be called *after* setSize...
@@ -282,7 +294,18 @@ public class LizzieFrame extends JFrame {
 
     } else if (persisted && Lizzie.config.persistedUi.getBoolean("window-maximized")) {
       setExtendedState(Frame.MAXIMIZED_BOTH);
-      JSONArray pos = Lizzie.config.persistedUi.getJSONArray("main-window-position");
+      if (persisted
+          && Lizzie.config.persistedUi.optJSONArray("main-window-position") != null
+          && Lizzie.config.persistedUi.optJSONArray("main-window-position").length() == 5) {
+        JSONArray pos = Lizzie.config.persistedUi.getJSONArray("main-window-position");
+        this.toolbarHeight = pos.getInt(0);
+        this.bowserX = pos.getInt(1);
+        this.bowserY = pos.getInt(2);
+        this.bowserWidth = pos.getInt(3);
+        this.bowserHeight = pos.getInt(4);
+      }
+      this.BoardPositionProportion =
+          Lizzie.config.persistedUi.optInt("board-postion-propotion", this.BoardPositionProportion);
     }
     mainPanel =
         new JPanel(true) {
@@ -855,7 +878,7 @@ public class LizzieFrame extends JFrame {
 
     GameInfoDialog gameInfoDialog = new GameInfoDialog();
     gameInfoDialog.setGameInfo(gameInfo);
-    gameInfoDialog.setVisible(true);    
+    gameInfoDialog.setVisible(true);
     gameInfoDialog.dispose();
   }
 
@@ -1108,10 +1131,10 @@ public class LizzieFrame extends JFrame {
       boolean noSubBoard = !Lizzie.config.showSubBoard;
       boolean noComment = !Lizzie.config.showComment;
       // board
-      int maxSize = (int) (min(width - leftInset - rightInset, height - topInset - bottomInset));
+      maxSize = (int) (min(width - leftInset - rightInset, height - topInset - bottomInset));
       maxSize = max(maxSize, max(Board.boardWidth, Board.boardHeight) + 5);
-      int boardX = (width - maxSize) / 8 * BoardPositionProportion;
-      int boardY = topInset + (height - topInset - bottomInset - maxSize) / 2;
+      boardX = (width - maxSize) / 8 * BoardPositionProportion;
+      boardY = topInset + (height - topInset - bottomInset - maxSize) / 2;
 
       int panelMargin = (int) (maxSize * 0.02);
 
@@ -1974,18 +1997,20 @@ public class LizzieFrame extends JFrame {
           text = text + playerTitle;
         }
       }
-      if(!isSavingImage||!Lizzie.leelaz.isKatago)
-      { text =
-          text
-              + " "
-              + resourceBundle.getString("LizzieFrame.display.lastMove")
-              + String.format(": %.1f%%", 100 - lastWR - curWR);
-      drawString(g, posX, posY + height * 17 / 20, uiFont, Font.PLAIN, text, height / 4, width, 0);}
+      if (!isSavingImage || !Lizzie.leelaz.isKatago) {
+        text =
+            text
+                + " "
+                + resourceBundle.getString("LizzieFrame.display.lastMove")
+                + String.format(": %.1f%%", 100 - lastWR - curWR);
+        drawString(
+            g, posX, posY + height * 17 / 20, uiFont, Font.PLAIN, text, height / 4, width, 0);
+      }
       // int posX, int posY, int width, int height)
       //      g.drawString(
       //          text, posX + 2 * strokeRadius, posY + height - 2 * strokeRadius); // -
       // font.getSize());
-    } 
+    }
 
     if (validWinrate || validLastWinrate) {
       int maxBarwidth = (int) (width);
@@ -2915,18 +2940,16 @@ public class LizzieFrame extends JFrame {
 
   public void toggleheatmap() {
     if (!isheatmap) {
-      Lizzie.leelaz.isheatmap = true;
+      // Lizzie.leelaz.isheatmap = true;
       isheatmap = true;
       // if (!Lizzie.leelaz.isPondering()) lastponder = false;
       // else {
       // lastponder = true;
       // }
       //
-      Lizzie.leelaz.sendCommand("heatmap");
       if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.ponder();
     } else {
       isheatmap = false;
-      Lizzie.leelaz.heatcount.clear();
       // if (lastponder) Lizzie.leelaz.ponder();
     }
   }
@@ -3045,7 +3068,7 @@ public class LizzieFrame extends JFrame {
 
   public void saveImage(int x, int y, int width, int height) {
     boolean oriShowName = Lizzie.config.showNameInBoard;
-    isSavingImage=true;
+    isSavingImage = true;
     Lizzie.config.showNameInBoard = false;
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
@@ -3103,7 +3126,7 @@ public class LizzieFrame extends JFrame {
       }
     }
     Lizzie.config.showNameInBoard = oriShowName;
-    isSavingImage=false;
+    isSavingImage = false;
   }
 
   private Font makeFont(Font fontBase, int style) {
@@ -3142,34 +3165,13 @@ public class LizzieFrame extends JFrame {
       verticalOffset = 0;
     }
 
-    // bounding box for debugging
-    // g.drawRect(x-(int)maximumFontWidth/2, y - height/2 + verticalOffset,
-    // (int)maximumFontWidth,
-    // height+verticalOffset );
-    g.drawString(string, x, y + height / 2 + verticalOffset);    
+    g.drawString(string, x, y + height / 2 + verticalOffset);
   }
 
-  //  public String urlClimb(String url) throws Exception{
-  //	    URL getUrl =new URL(url); //创建URl连接
-  //	    HttpURLConnection connection = (HttpURLConnection) getUrl.openConnection(); //建立连接
-  //	    connection.connect(); //打开连接
-  //	    BufferedReader reader = new BufferedReader(new
-  // InputStreamReader(connection.getInputStream(), "utf-8")); //创建输入流并设置编码
-  //	    StringBuffer sb = new StringBuffer();
-  //	    String lines = null;
-  //	    while ((lines = reader.readLine()) != null) {
-  //	        lines = new String(lines.getBytes(), "utf-8"); //读取流的一行,设置编码
-  //	        sb = sb.append(lines + "\n");
-  //	    }
-  //	    reader.close(); //关闭流
-  //	    connection.disconnect(); //销毁连接
-  //	    return sb.toString(); //返回抓取的数据(注意,这里是抓取了访问的网站的全部数据)
-  //	}
-
   public void saveImage(int x, int y, int width, int height, String path) {
-    boolean oriShowName = Lizzie.config.showNameInBoard;    
+    boolean oriShowName = Lizzie.config.showNameInBoard;
     Lizzie.config.showNameInBoard = false;
-    isSavingImage=true;
+    isSavingImage = true;
     File file = new File(path);
 
     BufferedImage bImg =
@@ -3195,53 +3197,93 @@ public class LizzieFrame extends JFrame {
       e.printStackTrace();
     }
     Lizzie.config.showNameInBoard = oriShowName;
-    isSavingImage=false;
+    isSavingImage = false;
   }
-  
+
+  public void savePicToClipboard(int x, int y, int width, int height) {
+    BufferedImage bImg =
+        new BufferedImage(
+            this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    Graphics2D cg = bImg.createGraphics();
+
+    this.mainPanel.paintAll(cg);
+
+    // 截取图片
+    Rectangle rect = new Rectangle(x, y, width, height);
+    BufferedImage areaImage = bImg.getSubimage(rect.x, rect.y, rect.width, rect.height);
+    // 新建一个40*40的Image
+    BufferedImage buffImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    buffImg
+        .getGraphics()
+        .drawImage(
+            areaImage.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+    setClipboardImage(buffImg);
+  }
+
+  protected static void setClipboardImage(final Image image) {
+    Transferable trans =
+        new Transferable() {
+          public DataFlavor[] getTransferDataFlavors() {
+            return new DataFlavor[] {DataFlavor.imageFlavor};
+          }
+
+          public boolean isDataFlavorSupported(DataFlavor flavor) {
+            return DataFlavor.imageFlavor.equals(flavor);
+          }
+
+          public Object getTransferData(DataFlavor flavor)
+              throws UnsupportedFlavorException, IOException {
+            if (isDataFlavorSupported(flavor)) return image;
+            throw new UnsupportedFlavorException(flavor);
+          }
+        };
+    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(trans, null);
+  }
+
   private void syncOnline(String url) {
-	  if (onlineDialog != null) {
-          onlineDialog.dispose();
-        }
-        if (isSyncing && System.currentTimeMillis() - startSyncTime < 2000) {
-          if (firstIsSyncing) firstIsSyncing = false;
-          else return;
-          Timer timer = new Timer();
-          timer.schedule(
-              new TimerTask() {
-                public void run() {
-                  onlineDialog = new OnlineDialog();
-                  onlineDialog.applyChangeWeb(url);                           
-                  startSyncTime = System.currentTimeMillis();
-                  isSyncing = false;
-                  firstIsSyncing = true;
-                  this.cancel();
-                }
-              },
-              2000);
-          return;
-        }
+    if (onlineDialog != null) {
+      onlineDialog.dispose();
+    }
+    if (isSyncing && System.currentTimeMillis() - startSyncTime < 2000) {
+      if (firstIsSyncing) firstIsSyncing = false;
+      else return;
+      Timer timer = new Timer();
+      timer.schedule(
+          new TimerTask() {
+            public void run() {
+              onlineDialog = new OnlineDialog();
+              onlineDialog.applyChangeWeb(url);
+              startSyncTime = System.currentTimeMillis();
+              isSyncing = false;
+              firstIsSyncing = true;
+              this.cancel();
+            }
+          },
+          2000);
+      return;
+    }
 
-        if (System.currentTimeMillis() - startSyncTime < 1000) {
-          isSyncing = true;
-          onlineDialog = new OnlineDialog();
-          onlineDialog.applyChangeWeb(url);
-          startSyncTime = System.currentTimeMillis();
-          return;
-        }
-        isSyncing = false;
-        onlineDialog = new OnlineDialog();
-        onlineDialog.applyChangeWeb(url);
-        startSyncTime = System.currentTimeMillis();
+    if (System.currentTimeMillis() - startSyncTime < 1000) {
+      isSyncing = true;
+      onlineDialog = new OnlineDialog();
+      onlineDialog.applyChangeWeb(url);
+      startSyncTime = System.currentTimeMillis();
+      return;
+    }
+    isSyncing = false;
+    onlineDialog = new OnlineDialog();
+    onlineDialog.applyChangeWeb(url);
+    startSyncTime = System.currentTimeMillis();
   }
 
-  public void bowser(String url, int x, int y) {
+  public void bowser(String url) {
     final String title = "弈客直播";
-    JTextField thisUrl = new JTextField();   
-    
-    	urlList=new ArrayList<String>();
-    	urlList.add(url);
-    	 urlIndex=0;
-    
+    JTextField thisUrl = new JTextField();
+
+    urlList = new ArrayList<String>();
+    urlList.add(url);
+    urlIndex = 0;
+
     browser = new Browser();
     browser.setPopupHandler(
         new PopupHandler() {
@@ -3252,13 +3294,13 @@ public class LizzieFrame extends JFrame {
             Runnable runnable =
                 new Runnable() {
                   public void run() {
-                	  if(Lizzie.config.openHtmlOnLive)
-                	  {   browser.loadURL(popupParams.getURL());
-                	  thisUrl.setText(popupParams.getURL());
-                     urlList.add(popupParams.getURL());
-                     urlIndex=urlList.size()-1;
-                	  }                  
-                	  syncOnline(popupParams.getURL());
+                    if (Lizzie.config.openHtmlOnLive) {
+                      browser.loadURL(popupParams.getURL());
+                      thisUrl.setText(popupParams.getURL());
+                      urlList.add(popupParams.getURL());
+                      urlIndex = urlList.size() - 1;
+                    }
+                    syncOnline(popupParams.getURL());
                   }
                 };
             Thread thread = new Thread(runnable);
@@ -3271,20 +3313,36 @@ public class LizzieFrame extends JFrame {
     JPanel viewPanel = new JPanel();
     JFrame frame = new JFrame();
 
-    frame.setSize(1240, 750);
+    frame.setSize(bowserWidth, bowserHeight);
     frame.setTitle(title);
     frame.add(view, BorderLayout.CENTER);
-    frame.setLocation(x-5, y);
+    frame.setLocation(bowserX, bowserY);
     frame.setVisible(true);
     frame.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
+            bowserX = frame.getX();
+            bowserY = frame.getY();
+            bowserWidth = frame.getWidth();
+            bowserHeight = frame.getHeight();
             frame.setVisible(false);
             frame.dispose();
             browser.dispose();
           }
         });
+    frame.addComponentListener(
+        new ComponentAdapter() {
+          @Override
+          public void componentResized(ComponentEvent e) {
+            bowserWidth = frame.getWidth();
+            bowserHeight = frame.getHeight();
+          }
 
+          public void componentMoved(ComponentEvent e) {
+            bowserX = frame.getX();
+            bowserY = frame.getY();
+          }
+        });
     browser.loadURL(url);
     thisUrl.setText(url);
     try {
@@ -3293,7 +3351,7 @@ public class LizzieFrame extends JFrame {
       // TODO Auto-generated catch block
       e1.printStackTrace();
     }
-    
+
     JButton backward = new JButton("后退");
     backward.setFocusable(false);
     backward.addActionListener(
@@ -3301,23 +3359,17 @@ public class LizzieFrame extends JFrame {
           @Override
           public void actionPerformed(ActionEvent e) {
             // TBD未完成
-        	    if(urlIndex>0)
-        	    {        	    	
-        	    	urlIndex=urlIndex-1;        	    	
-        	    	browser.loadURL(urlList.get(urlIndex));
-                    thisUrl.setText(urlList.get(urlIndex));
-                    if(urlList.get(urlIndex)!=url)
-                    {
-                    	  syncOnline(urlList.get(urlIndex));
-                    }
-        	    }
-        	 
-            
+            if (urlIndex > 0) {
+              urlIndex = urlIndex - 1;
+              browser.loadURL(urlList.get(urlIndex));
+              thisUrl.setText(urlList.get(urlIndex));
+              if (urlList.get(urlIndex) != url) {
+                syncOnline(urlList.get(urlIndex));
+              }
+            }
           }
         });
 
-   
-    
     JButton forward = new JButton("前进");
     forward.setFocusable(false);
     forward.addActionListener(
@@ -3325,16 +3377,14 @@ public class LizzieFrame extends JFrame {
           @Override
           public void actionPerformed(ActionEvent e) {
             // TBD未完成
-        	  if(urlIndex<urlList.size()-1)
-      	    {        	    	
-      	    	urlIndex=urlIndex+1;        	    	
-      	    	browser.loadURL(urlList.get(urlIndex));
-                  thisUrl.setText(urlList.get(urlIndex));
-                  if(urlList.get(urlIndex)!=url)
-                  {
-                	  syncOnline(urlList.get(urlIndex));
-                  }
-      	    }
+            if (urlIndex < urlList.size() - 1) {
+              urlIndex = urlIndex + 1;
+              browser.loadURL(urlList.get(urlIndex));
+              thisUrl.setText(urlList.get(urlIndex));
+              if (urlList.get(urlIndex) != url) {
+                syncOnline(urlList.get(urlIndex));
+              }
+            }
           }
         });
     JButton refresh = new JButton("刷新");
@@ -3346,9 +3396,8 @@ public class LizzieFrame extends JFrame {
             // TBD未完成
             browser.loadURL(browser.getURL());
             thisUrl.setText(browser.getURL());
-            if(!browser.getURL().equals(url))
-            {
-            	  syncOnline(browser.getURL());
+            if (!browser.getURL().equals(url)) {
+              syncOnline(browser.getURL());
             }
           }
         });
@@ -3360,9 +3409,8 @@ public class LizzieFrame extends JFrame {
           public void actionPerformed(ActionEvent e) {
             // TBD未完成
             browser.loadURL(thisUrl.getText());
-            if(!thisUrl.getText().equals(url))
-            {
-            	 syncOnline(thisUrl.getText());
+            if (!thisUrl.getText().equals(url)) {
+              syncOnline(thisUrl.getText());
             }
           }
         });
@@ -3384,18 +3432,18 @@ public class LizzieFrame extends JFrame {
         new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
-        	  // TBD
-            onlineDialog.dispose();
+            // TBD
+
+            onlineDialog.stopSync();
           }
         });
     JToolBar toolBar = new JToolBar("地址栏");
     toolBar.setBorderPainted(false);
-    if(Lizzie.config.openHtmlOnLive)
-    {toolBar.add(backward);
+    toolBar.add(backward);
     toolBar.addSeparator();
     toolBar.add(forward);
     toolBar.addSeparator();
-    toolBar.add(back);}
+    toolBar.add(back);
 
     toolBar.add(thisUrl);
     toolBar.add(load);

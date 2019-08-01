@@ -102,9 +102,9 @@ public boolean startAutoAna=false;
 	// dynamic komi and opponent komi as reported by dynamic-komi version of leelaz
 	private float dynamicKomi = Float.NaN;
 	private float dynamicOppKomi = Float.NaN;
-	public boolean isheatmap = false;
+	
 	public int version = -1;
-	public ArrayList<Integer> heatcount = new ArrayList<Integer>();
+//	public ArrayList<Integer> heatcount = new ArrayList<Integer>();
 	public String currentEnginename = "";
 	boolean analysed = false;
 	private boolean isSaving = false;
@@ -830,24 +830,24 @@ public boolean startAutoAna=false;
 				}
 
 			}
-			if (isheatmap) {
-				if (line.startsWith(" ") || Character.isDigit(line.charAt(0))) {
-					try {
-						String[] params = line.trim().split("\\s+");
-						if (params.length == Lizzie.board.boardWidth) {
-							for (int i = 0; i < params.length; i++)
-								heatcount.add(Integer.parseInt(params[i]));
-						}
-					} catch (Exception ex) {
-					}
-				}
-				if (line.contains("winrate:")) {
-					isheatmap = false;
-					String[] params = line.trim().split(" ");
-					// heatwinrate = Double.valueOf(params[1]);
-					Lizzie.frame.refresh();
-				}
-			}
+//			if (isheatmap) {
+//				if (line.startsWith(" ") || Character.isDigit(line.charAt(0))) {
+//					try {
+//						String[] params = line.trim().split("\\s+");
+//						if (params.length == Lizzie.board.boardWidth) {
+//							for (int i = 0; i < params.length; i++)
+//								heatcount.add(Integer.parseInt(params[i]));
+//						}
+//					} catch (Exception ex) {
+//					}
+//				}
+//				if (line.contains("winrate:")) {
+//					isheatmap = false;
+//					String[] params = line.trim().split(" ");
+//					// heatwinrate = Double.valueOf(params[1]);
+//					Lizzie.frame.refresh();
+//				}
+//			}
 		}else  if (line.startsWith("=") || line.startsWith("?")) {
 			currentCmdNum = currentCmdNum+ 1;			
 	if(currentCmdNum>cmdNumber-1)
@@ -2886,10 +2886,10 @@ public boolean startAutoAna=false;
 			return;
 		isPondering = true;
 		startPonderTime = System.currentTimeMillis();
-		if (Lizzie.frame.isheatmap) {
-			Lizzie.leelaz.heatcount.clear();
-			// Lizzie.frame.isheatmap = false;
-		}
+//		if (Lizzie.frame.isheatmap) {
+//			Lizzie.leelaz.heatcount.clear();
+//			// Lizzie.frame.isheatmap = false;
+//		}
 		if (!Lizzie.config.playponder && Lizzie.frame.isPlayingAgainstLeelaz) {
 			return;
 		}
@@ -2916,10 +2916,10 @@ public boolean startAutoAna=false;
 	public void pkponder() {
 		isPondering = true;
 		startPonderTime = System.currentTimeMillis();
-		if (Lizzie.frame.isheatmap) {
-			Lizzie.leelaz.heatcount.clear();
-			// Lizzie.frame.isheatmap = false;
-		}
+//		if (Lizzie.frame.isheatmap) {
+//			Lizzie.leelaz.heatcount.clear();
+//			// Lizzie.frame.isheatmap = false;
+//		}
 		
 			if (this.isKatago) {
 				if (Lizzie.config.showKataGoEstimate)
@@ -2935,10 +2935,10 @@ public boolean startAutoAna=false;
 
 	public void ponderwithavoid() {
 		isPondering = true;
-		if (Lizzie.frame.isheatmap) {
-			Lizzie.leelaz.heatcount.clear();
-			// Lizzie.frame.isheatmap = false;
-		}
+//		if (Lizzie.frame.isheatmap) {
+//			Lizzie.leelaz.heatcount.clear();
+//			// Lizzie.frame.isheatmap = false;
+//		}
 		if (!Lizzie.config.playponder && Lizzie.frame.isPlayingAgainstLeelaz) {
 			return;
 		}

@@ -58,6 +58,7 @@ public class BottomToolbar extends JPanel {
   JButton komi;
   JButton move;
   JButton coords;
+  JButton liveButton;
   public SetKomi setkomi;
 
   int savedbroadmid;
@@ -219,6 +220,7 @@ public class BottomToolbar extends JPanel {
     this.setBackground(hsbColor);
 
     setLayout(null);
+    liveButton = new JButton("直播");
     clearButton = new JButton("清空棋盘");
     firstButton = new JButton("|<");
     lastButton = new JButton(">|");
@@ -257,6 +259,7 @@ public class BottomToolbar extends JPanel {
     }
     detail = new JButton("");
 
+    add(liveButton);
     add(clearButton);
     add(lastButton);
     add(firstButton);
@@ -303,6 +306,7 @@ public class BottomToolbar extends JPanel {
     komi.setFocusable(false);
     move.setFocusable(false);
     coords.setFocusable(false);
+    liveButton.setFocusable(false);
 
     firstButton.setMargin(new Insets(0, 0, 0, 0));
     lastButton.setMargin(new Insets(0, 0, 0, 0));
@@ -327,6 +331,7 @@ public class BottomToolbar extends JPanel {
     komi.setMargin(new Insets(0, 0, 0, 0));
     coords.setMargin(new Insets(0, 0, 0, 0));
     move.setMargin(new Insets(0, 0, 0, 0));
+    liveButton.setMargin(new Insets(0, 0, 0, 0));
     // NumberFormat nf = NumberFormat.getNumberInstance();
 
     // nf.setGroupingUsed(false);
@@ -367,6 +372,14 @@ public class BottomToolbar extends JPanel {
             Lizzie.frame.refresh();
           }
         });
+
+    liveButton.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live");
+          }
+        });
+
     tryPlay.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -2738,8 +2751,9 @@ public class BottomToolbar extends JPanel {
 
     if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
       if (boardmid + 432 > w) boardmid = w - 432;
-      if (boardmid - 576 < 0) boardmid = 576;
+      if (boardmid - 615 < 0) boardmid = 615;
       detail.setBounds(0, 0, 20, 26);
+      liveButton.setBounds(boardmid - 596, 0, 40, 26);
       kataEstimate.setVisible(true);
       kataEstimate.setBounds(boardmid - 557, 0, 60, 26);
       batchOpen.setBounds(boardmid - 498, 0, 60, 26);
@@ -2766,9 +2780,10 @@ public class BottomToolbar extends JPanel {
       coords.setBounds(boardmid + 381, 0, 35, 26);
     } else {
       if (boardmid + 432 > w) boardmid = w - 432;
-      if (boardmid - 517 < 0) boardmid = 517;
+      if (boardmid - 556 < 0) boardmid = 556;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(false);
+      liveButton.setBounds(boardmid - 537, 0, 40, 26);
       batchOpen.setBounds(boardmid - 498, 0, 60, 26);
       openfile.setBounds(boardmid - 439, 0, 40, 26);
       savefile.setBounds(boardmid - 400, 0, 40, 26);
@@ -2841,8 +2856,9 @@ public class BottomToolbar extends JPanel {
     int w = Lizzie.frame.getWidth();
     if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
       if (boardmid + 432 > w) boardmid = w - 432;
-      if (boardmid - 576 < 0) boardmid = 576;
+      if (boardmid - 615 < 0) boardmid = 615;
       detail.setBounds(0, 0, 20, 26);
+      liveButton.setBounds(boardmid - 596, 0, 40, 26);
       kataEstimate.setVisible(true);
       kataEstimate.setBounds(boardmid - 557, 0, 60, 26);
       batchOpen.setBounds(boardmid - 498, 0, 60, 26);
@@ -2869,9 +2885,10 @@ public class BottomToolbar extends JPanel {
       coords.setBounds(boardmid + 381, 0, 35, 26);
     } else {
       if (boardmid + 432 > w) boardmid = w - 432;
-      if (boardmid - 517 < 0) boardmid = 517;
+      if (boardmid - 556 < 0) boardmid = 556;
       detail.setBounds(0, 0, 20, 26);
       kataEstimate.setVisible(false);
+      liveButton.setBounds(boardmid - 537, 0, 40, 26);
       batchOpen.setBounds(boardmid - 498, 0, 60, 26);
       openfile.setBounds(boardmid - 439, 0, 40, 26);
       savefile.setBounds(boardmid - 400, 0, 40, 26);

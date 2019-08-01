@@ -437,7 +437,7 @@ public class Board implements LeelazListener {
       Lizzie.leelaz.boardSize(boardWidth, boardHeight);
       forceRefresh = true;
       forceRefresh2 = true;
-    }   
+    }
   }
 
   public void open(int width, int height) {
@@ -1122,7 +1122,6 @@ public class Board implements LeelazListener {
   public void place(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
     Lizzie.frame.boardRenderer.removedrawmovestone();
     Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
-    if (Lizzie.frame.isheatmap) Lizzie.frame.toggleheatmap();
     if (Lizzie.frame.iscounting) {
       Lizzie.frame.boardRenderer.removecountblock();
       Lizzie.countResults.button.setText("形式判断");
@@ -1249,7 +1248,6 @@ public class Board implements LeelazListener {
   public void placeForManul(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
     Lizzie.frame.boardRenderer.removedrawmovestone();
     Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
-    if (Lizzie.frame.isheatmap) Lizzie.frame.toggleheatmap();
     if (Lizzie.frame.iscounting) {
       Lizzie.frame.boardRenderer.removecountblock();
       Lizzie.countResults.button.setText("形式判断");
@@ -1593,7 +1591,6 @@ public class Board implements LeelazListener {
     Lizzie.frame.subBoardRenderer.bestmovesNum = 0;
     Lizzie.frame.boardRenderer.removedrawmovestone();
     Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
-    if (Lizzie.frame.isheatmap) Lizzie.frame.toggleheatmap();
     if (Lizzie.frame.iscounting) {
       Lizzie.frame.boardRenderer.removecountblock();
       Lizzie.countResults.button.setText("形式判断");

@@ -99,6 +99,8 @@ public class OnlineDialog extends JDialog {
   private long userId = -1000000;
   private long roomId = 0;
   static AjaxHttpRequest ajax;
+  static boolean isStoped = false;
+  static Timer timer;
   private String channel = "";
   private Map<Integer, Map<Integer, JSONObject>> branchs =
       new HashMap<Integer, Map<Integer, JSONObject>>();
@@ -155,12 +157,7 @@ public class OnlineDialog extends JDialog {
     quitButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.frame.urlSgf = false;
-            if (client != null && client.isOpen()) {
-              client.close();
-              client = null;
-            }
-            setVisible(false);
+            stopSync();
           }
         });
     buttonPane.add(quitButton);
@@ -273,6 +270,7 @@ public class OnlineDialog extends JDialog {
       }
     }
     type = checkUrl();
+    isStoped = false;
     Lizzie.frame.urlSgf = true;
     if (type > 0) {
       error(false);
@@ -308,10 +306,10 @@ public class OnlineDialog extends JDialog {
   }
 
   private void error(boolean e) {
-	  if(Lizzie.frame.browser==null||Lizzie.frame.browser.isDisposed())
-	  { lblError.setVisible(e);    
-    setVisible(true);
-	  }
+    if (!isStoped && (Lizzie.frame.browser == null || Lizzie.frame.browser.isDisposed())) {
+      lblError.setVisible(e);
+      setVisible(true);
+    }
   }
 
   private int checkUrl() {
@@ -403,6 +401,38 @@ public class OnlineDialog extends JDialog {
     done = false;
     history = null;
     Lizzie.board.clear();
+    switch (type) {
+      case 1:
+        req2();
+        break;
+      case 2:
+        refresh("(?s).*?(\\\"Content\\\":\\\")(.+)(\\\",\\\")(?s).*");
+        break;
+      case 3:
+        req();
+        break;
+      case 4:
+        req0();
+        break;
+      case 99:
+        get();
+        break;
+      default:
+        break;
+    }
+  }
+
+  private void procNoClear() throws IOException, URISyntaxException {
+    refreshTime = Utils.txtFieldValue(txtRefreshTime);
+    refreshTime = (refreshTime > 0 ? refreshTime : 10);
+    // if (!online.isShutdown()) {
+    // online.shutdown();
+    // }
+    if (schedule != null && !schedule.isCancelled() && !schedule.isDone()) {
+      schedule.cancel(false);
+    }
+    done = false;
+    history = null;
     switch (type) {
       case 1:
         req2();
@@ -555,10 +585,14 @@ public class OnlineDialog extends JDialog {
         });
 
     if (needSchedule) {
-      Timer timer = new Timer();
+      timer = new Timer();
       timer.schedule(
           new TimerTask() {
             public void run() {
+              if (!Lizzie.frame.urlSgf) {
+                ajax.abort();
+                timer.cancel();
+              }
               try {
                 ajax.open("GET", ajaxUrl, true);
                 ajax.send(params);
@@ -841,6 +875,11 @@ public class OnlineDialog extends JDialog {
                 new Runnable() {
                   @Override
                   public void run() {
+                    if (!Lizzie.frame.urlSgf) {
+                      online.shutdown();
+                      schedule.cancel(true);
+                      return;
+                    }
                     if (client.isOpen()) {
                       byte[] req2 =
                           req2(
@@ -2423,6 +2462,28 @@ public class OnlineDialog extends JDialog {
             }
           }
         });
+  }
+
+  public void stopSync() {
+    Lizzie.frame.urlSgf = false;
+    isStoped = true;
+    if (client != null && client.isOpen()) {
+      client.close();
+      client = null;
+    }
+    txtUrl.setText("");
+    type = checkUrl();
+    try {
+      procNoClear();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (URISyntaxException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    setVisible(false);
+    Lizzie.frame.onlineDialog.dispose();
   }
 
   public void applyChangeWeb(String url) {

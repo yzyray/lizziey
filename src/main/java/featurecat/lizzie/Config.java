@@ -63,7 +63,7 @@ public class Config {
   public boolean showScoremeanInSuggestion = true;
   public boolean showEditbar = false;
   public boolean showNameInBoard = true;
-  public boolean openHtmlOnLive = true;
+  public boolean openHtmlOnLive = false;
 
   public JSONObject config;
   public JSONObject leelazConfig;
@@ -306,6 +306,7 @@ public class Config {
     showPlayoutsInSuggestion = uiConfig.optBoolean("show-playouts-in-suggestion", true);
     showScoremeanInSuggestion = uiConfig.optBoolean("show-scoremean-in-suggestion", true);
     showNameInBoard = uiConfig.optBoolean("show-name-in-board", true);
+    openHtmlOnLive = uiConfig.optBoolean("open-html-onlive", false);
     showEditbar = uiConfig.optBoolean("show-edit-bar", false);
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);
@@ -743,8 +744,16 @@ public class Config {
       mainPos.put(Lizzie.frame.getWidth());
       mainPos.put(Lizzie.frame.getHeight());
       mainPos.put(Lizzie.frame.toolbarHeight);
+      mainPos.put(Lizzie.frame.bowserX);
+      mainPos.put(Lizzie.frame.bowserY);
+      mainPos.put(Lizzie.frame.bowserWidth);
+      mainPos.put(Lizzie.frame.bowserHeight);
     } else {
       mainPos.put(Lizzie.frame.toolbarHeight);
+      mainPos.put(Lizzie.frame.bowserX);
+      mainPos.put(Lizzie.frame.bowserY);
+      mainPos.put(Lizzie.frame.bowserWidth);
+      mainPos.put(Lizzie.frame.bowserHeight);
     }
     persistedUi.put("main-window-position", mainPos);
     JSONArray gtpPos = new JSONArray();
