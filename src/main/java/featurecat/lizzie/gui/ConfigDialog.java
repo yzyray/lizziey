@@ -564,7 +564,7 @@ public class ConfigDialog extends JDialog {
     engineTab.add(lblMaxsuggestionmoves);
 
     JLabel lblMaxsuggestionmovesnums =
-        new JLabel(resourceBundle.getString("LizzieConfig.title.moves"));
+        new JLabel("个");
     lblMaxsuggestionmovesnums.setBounds(538, 440, 82, 16);
     engineTab.add(lblMaxsuggestionmovesnums);
 
