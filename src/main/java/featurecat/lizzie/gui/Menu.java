@@ -1478,7 +1478,7 @@ public class Menu extends MenuBar {
     settings.setFont(headFont);
     this.add(settings);
 
-    final JMenuItem engine = new JMenuItem("引擎");
+    final JMenuItem engine = new JMenuItem("引擎(Ctrl+X)");
     settings.add(engine);
 
     engine.addActionListener(
