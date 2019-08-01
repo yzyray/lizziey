@@ -106,7 +106,7 @@ public class BoardRenderer {
 
     // Stopwatch timer = new Stopwatch();
     drawGoban(g);
-    if (Lizzie.config.showName) drawName(g);
+    if (Lizzie.config.showNameInBoard) drawName(g);
     // timer.lap("background");
     drawStones();
     // timer.lap("stones");
@@ -374,7 +374,10 @@ public class BoardRenderer {
               Board.asName(i),
               stoneRadius * 4 / 5,
               stoneRadius);
-          if (!Lizzie.config.showName || emptyName)
+        	  if (!Lizzie.config.showNameInBoard
+                      || Lizzie.board != null
+                          && (Lizzie.board.getHistory().getGameInfo().getPlayerWhite().equals("")
+                              && Lizzie.board.getHistory().getGameInfo().getPlayerBlack().equals("")))
             drawString(
                 g,
                 x + scaledMarginWidth + squareWidth * i,
@@ -1594,8 +1597,8 @@ public class BoardRenderer {
 
     // decrease boardLength until the availableLength will result in square board
     // intersections
-    double marginWidth =
-        (Lizzie.config.showName && !emptyName ? 0.055 : showCoordinates ? 0.045 : 0.025)
+    double marginWidth =(Board.boardWidth < 3 ?0.04:
+        (Lizzie.config.showNameInBoard && !emptyName ? 0.055 : showCoordinates ? 0.045 : 0.025))
             / Board.boardWidth
             * 19.0;
     boardWidth++;
@@ -1609,9 +1612,9 @@ public class BoardRenderer {
     int squareWidth = 0;
     int squareHeight = 0;
     if (Board.boardWidth != Board.boardHeight) {
-      double marginHeight =
-          (Lizzie.config.showName && !emptyName ? 0.055 : showCoordinates ? 0.045 : 0.03)
-              / Board.boardHeight
+      double marginHeight =(Board.boardWidth < 3 ?0.04:
+          (Lizzie.config.showNameInBoard && !emptyName ? 0.055 : showCoordinates ? 0.045 : 0.03)
+              / Board.boardHeight)
               * 19.0;
       boardHeight++;
       do {

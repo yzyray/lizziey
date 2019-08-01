@@ -194,6 +194,8 @@ public class LizzieFrame extends JFrame {
   private long startSyncTime = System.currentTimeMillis();
   private boolean isSyncing = false;
   private boolean firstIsSyncing = true;
+  
+  private boolean isSavingImage=false;
 
   public int grx;
   public int gry;
@@ -209,7 +211,9 @@ public class LizzieFrame extends JFrame {
   ArrayList<Movelist> tryMoveList;
   String tryString;
   String titleBeforeTrying;
-  Browser browser;
+  public Browser browser;
+  ArrayList<String> urlList;
+  int urlIndex;
   static OnlineDialog onlineDialog;
 
   // boolean lastponder = true;
@@ -851,8 +855,7 @@ public class LizzieFrame extends JFrame {
 
     GameInfoDialog gameInfoDialog = new GameInfoDialog();
     gameInfoDialog.setGameInfo(gameInfo);
-    gameInfoDialog.setVisible(true);
-
+    gameInfoDialog.setVisible(true);    
     gameInfoDialog.dispose();
   }
 
@@ -1912,7 +1915,7 @@ public class LizzieFrame extends JFrame {
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g.setColor(Color.WHITE);
 
-    if (!Lizzie.config.showName) {
+    if (!Lizzie.config.showNameInBoard) {
       if (width / 3 < height)
         setPanelFont(g, (int) min((width * 0.1), (min(width, height * 0.4) * 0.2)));
       else setPanelFont(g, (int) (min(width, height) * 0.2));
@@ -1959,7 +1962,7 @@ public class LizzieFrame extends JFrame {
       } else {
         if (!komi.equals("7.5")) text = text + "贴目:" + komi;
       }
-      if (!Lizzie.config.showName) {
+      if (!Lizzie.config.showNameInBoard) {
         if (toolbar.isEnginePk) {
           text =
               text
@@ -1971,23 +1974,18 @@ public class LizzieFrame extends JFrame {
           text = text + playerTitle;
         }
       }
-      text =
+      if(!isSavingImage||!Lizzie.leelaz.isKatago)
+      { text =
           text
               + " "
               + resourceBundle.getString("LizzieFrame.display.lastMove")
               + String.format(": %.1f%%", 100 - lastWR - curWR);
-      drawString(g, posX, posY + height * 17 / 20, uiFont, Font.PLAIN, text, height / 4, width, 0);
+      drawString(g, posX, posY + height * 17 / 20, uiFont, Font.PLAIN, text, height / 4, width, 0);}
       // int posX, int posY, int width, int height)
       //      g.drawString(
       //          text, posX + 2 * strokeRadius, posY + height - 2 * strokeRadius); // -
       // font.getSize());
-    } else {
-      // I think it's more elegant to just not display anything when we don't have
-      // valid data --dfannius
-      // g.drawString(resourceBundle.getString("LizzieFrame.display.lastMove") + ":
-      // ?%",
-      // posX + 2 * strokeRadius, posY + height - 2 * strokeRadius);
-    }
+    } 
 
     if (validWinrate || validLastWinrate) {
       int maxBarwidth = (int) (width);
@@ -3046,8 +3044,9 @@ public class LizzieFrame extends JFrame {
   }
 
   public void saveImage(int x, int y, int width, int height) {
-    boolean oriShowName = Lizzie.config.showName;
-    Lizzie.config.showName = false;
+    boolean oriShowName = Lizzie.config.showNameInBoard;
+    isSavingImage=true;
+    Lizzie.config.showNameInBoard = false;
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
     chooser.setAcceptAllFileFilterUsed(false);
@@ -3103,7 +3102,8 @@ public class LizzieFrame extends JFrame {
         e.printStackTrace();
       }
     }
-    Lizzie.config.showName = oriShowName;
+    Lizzie.config.showNameInBoard = oriShowName;
+    isSavingImage=false;
   }
 
   private Font makeFont(Font fontBase, int style) {
@@ -3146,7 +3146,7 @@ public class LizzieFrame extends JFrame {
     // g.drawRect(x-(int)maximumFontWidth/2, y - height/2 + verticalOffset,
     // (int)maximumFontWidth,
     // height+verticalOffset );
-    g.drawString(string, x, y + height / 2 + verticalOffset);
+    g.drawString(string, x, y + height / 2 + verticalOffset);    
   }
 
   //  public String urlClimb(String url) throws Exception{
@@ -3167,8 +3167,9 @@ public class LizzieFrame extends JFrame {
   //	}
 
   public void saveImage(int x, int y, int width, int height, String path) {
-    boolean oriShowName = Lizzie.config.showName;
-    Lizzie.config.showName = false;
+    boolean oriShowName = Lizzie.config.showNameInBoard;    
+    Lizzie.config.showNameInBoard = false;
+    isSavingImage=true;
     File file = new File(path);
 
     BufferedImage bImg =
@@ -3193,12 +3194,54 @@ public class LizzieFrame extends JFrame {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    Lizzie.config.showName = oriShowName;
+    Lizzie.config.showNameInBoard = oriShowName;
+    isSavingImage=false;
+  }
+  
+  private void syncOnline(String url) {
+	  if (onlineDialog != null) {
+          onlineDialog.dispose();
+        }
+        if (isSyncing && System.currentTimeMillis() - startSyncTime < 2000) {
+          if (firstIsSyncing) firstIsSyncing = false;
+          else return;
+          Timer timer = new Timer();
+          timer.schedule(
+              new TimerTask() {
+                public void run() {
+                  onlineDialog = new OnlineDialog();
+                  onlineDialog.applyChangeWeb(url);                           
+                  startSyncTime = System.currentTimeMillis();
+                  isSyncing = false;
+                  firstIsSyncing = true;
+                  this.cancel();
+                }
+              },
+              2000);
+          return;
+        }
+
+        if (System.currentTimeMillis() - startSyncTime < 1000) {
+          isSyncing = true;
+          onlineDialog = new OnlineDialog();
+          onlineDialog.applyChangeWeb(url);
+          startSyncTime = System.currentTimeMillis();
+          return;
+        }
+        isSyncing = false;
+        onlineDialog = new OnlineDialog();
+        onlineDialog.applyChangeWeb(url);
+        startSyncTime = System.currentTimeMillis();
   }
 
   public void bowser(String url, int x, int y) {
     final String title = "弈客直播";
-    JTextField thisUrl = new JTextField();
+    JTextField thisUrl = new JTextField();   
+    
+    	urlList=new ArrayList<String>();
+    	urlList.add(url);
+    	 urlIndex=0;
+    
     browser = new Browser();
     browser.setPopupHandler(
         new PopupHandler() {
@@ -3209,40 +3252,13 @@ public class LizzieFrame extends JFrame {
             Runnable runnable =
                 new Runnable() {
                   public void run() {
-                    // bowser(popupParams.getURL(), 50, 50);
-                    if (onlineDialog != null) {
-                      onlineDialog.dispose();
-                    }
-                    if (isSyncing && System.currentTimeMillis() - startSyncTime < 2000) {
-                      if (firstIsSyncing) firstIsSyncing = false;
-                      else return;
-                      Timer timer = new Timer();
-                      timer.schedule(
-                          new TimerTask() {
-                            public void run() {
-                              onlineDialog = new OnlineDialog();
-                              onlineDialog.applyChangeWeb(popupParams.getURL());
-                              startSyncTime = System.currentTimeMillis();
-                              isSyncing = false;
-                              firstIsSyncing = true;
-                              this.cancel();
-                            }
-                          },
-                          2000);
-                      return;
-                    }
-
-                    if (System.currentTimeMillis() - startSyncTime < 1000) {
-                      isSyncing = true;
-                      onlineDialog = new OnlineDialog();
-                      onlineDialog.applyChangeWeb(popupParams.getURL());
-                      startSyncTime = System.currentTimeMillis();
-                      return;
-                    }
-                    isSyncing = false;
-                    onlineDialog = new OnlineDialog();
-                    onlineDialog.applyChangeWeb(popupParams.getURL());
-                    startSyncTime = System.currentTimeMillis();
+                	  if(Lizzie.config.openHtmlOnLive)
+                	  {   browser.loadURL(popupParams.getURL());
+                	  thisUrl.setText(popupParams.getURL());
+                     urlList.add(popupParams.getURL());
+                     urlIndex=urlList.size()-1;
+                	  }                  
+                	  syncOnline(popupParams.getURL());
                   }
                 };
             Thread thread = new Thread(runnable);
@@ -3254,15 +3270,11 @@ public class LizzieFrame extends JFrame {
     BrowserView view = new BrowserView(browser);
     JPanel viewPanel = new JPanel();
     JFrame frame = new JFrame();
-    // 禁用close功能
-    // frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-    // 不显示标题栏,最大化,最小化,退出按钮
-    // frame.setUndecorated(true);
-    frame.setSize(1000, 600);
+
+    frame.setSize(1240, 750);
     frame.setTitle(title);
     frame.add(view, BorderLayout.CENTER);
-    // frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    frame.setLocation(x, y);
+    frame.setLocation(x-5, y);
     frame.setVisible(true);
     frame.addWindowListener(
         new WindowAdapter() {
@@ -3274,13 +3286,57 @@ public class LizzieFrame extends JFrame {
         });
 
     browser.loadURL(url);
+    thisUrl.setText(url);
     try {
       frame.setIconImage(ImageIO.read(MovelistFrame.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e1) {
       // TODO Auto-generated catch block
       e1.printStackTrace();
     }
+    
+    JButton backward = new JButton("后退");
+    backward.setFocusable(false);
+    backward.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD未完成
+        	    if(urlIndex>0)
+        	    {        	    	
+        	    	urlIndex=urlIndex-1;        	    	
+        	    	browser.loadURL(urlList.get(urlIndex));
+                    thisUrl.setText(urlList.get(urlIndex));
+                    if(urlList.get(urlIndex)!=url)
+                    {
+                    	  syncOnline(urlList.get(urlIndex));
+                    }
+        	    }
+        	 
+            
+          }
+        });
 
+   
+    
+    JButton forward = new JButton("前进");
+    forward.setFocusable(false);
+    forward.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD未完成
+        	  if(urlIndex<urlList.size()-1)
+      	    {        	    	
+      	    	urlIndex=urlIndex+1;        	    	
+      	    	browser.loadURL(urlList.get(urlIndex));
+                  thisUrl.setText(urlList.get(urlIndex));
+                  if(urlList.get(urlIndex)!=url)
+                  {
+                	  syncOnline(urlList.get(urlIndex));
+                  }
+      	    }
+          }
+        });
     JButton refresh = new JButton("刷新");
     refresh.setFocusable(false);
     refresh.addActionListener(
@@ -3288,7 +3344,38 @@ public class LizzieFrame extends JFrame {
           @Override
           public void actionPerformed(ActionEvent e) {
             // TBD未完成
+            browser.loadURL(browser.getURL());
+            thisUrl.setText(browser.getURL());
+            if(!browser.getURL().equals(url))
+            {
+            	  syncOnline(browser.getURL());
+            }
+          }
+        });
+    JButton load = new JButton("加载");
+    load.setFocusable(false);
+    load.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD未完成
             browser.loadURL(thisUrl.getText());
+            if(!thisUrl.getText().equals(url))
+            {
+            	 syncOnline(thisUrl.getText());
+            }
+          }
+        });
+
+    JButton back = new JButton("返回大厅");
+    back.setFocusable(false);
+    back.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TBD未完成
+            browser.loadURL(url);
+            thisUrl.setText(url);
           }
         });
     JButton stop = new JButton("停止同步");
@@ -3297,15 +3384,22 @@ public class LizzieFrame extends JFrame {
         new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
-            // TBD未完成
-
+        	  // TBD
             onlineDialog.dispose();
           }
         });
     JToolBar toolBar = new JToolBar("地址栏");
     toolBar.setBorderPainted(false);
-    thisUrl.setText(url);
+    if(Lizzie.config.openHtmlOnLive)
+    {toolBar.add(backward);
+    toolBar.addSeparator();
+    toolBar.add(forward);
+    toolBar.addSeparator();
+    toolBar.add(back);}
+
     toolBar.add(thisUrl);
+    toolBar.add(load);
+    toolBar.addSeparator();
     toolBar.add(refresh);
     toolBar.addSeparator();
     toolBar.add(stop);

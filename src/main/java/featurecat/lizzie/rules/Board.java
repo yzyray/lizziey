@@ -437,7 +437,7 @@ public class Board implements LeelazListener {
       Lizzie.leelaz.boardSize(boardWidth, boardHeight);
       forceRefresh = true;
       forceRefresh2 = true;
-    }
+    }   
   }
 
   public void open(int width, int height) {

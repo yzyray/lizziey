@@ -214,7 +214,7 @@ public class OnlineDialog extends JDialog {
               private DocumentFilter filter = new DigitOnlyFilter();
             });
     txtRefreshTime.setBounds(69, 109, 36, 20);
-    txtRefreshTime.setText("5");
+    txtRefreshTime.setText("1");
     buttonPane.add(txtRefreshTime);
     txtRefreshTime.setColumns(10);
     JLabel lblPrompt1 = new JLabel(resourceBundle.getString("OnlineDialog.lblPrompt1.text"));
@@ -308,8 +308,10 @@ public class OnlineDialog extends JDialog {
   }
 
   private void error(boolean e) {
-    lblError.setVisible(e);
+	  if(Lizzie.frame.browser==null||Lizzie.frame.browser.isDisposed())
+	  { lblError.setVisible(e);    
     setVisible(true);
+	  }
   }
 
   private int checkUrl() {

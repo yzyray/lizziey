@@ -310,8 +310,8 @@ public class Menu extends MenuBar {
         new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
-            Lizzie.config.showName = !Lizzie.config.showName;
-            Lizzie.config.uiConfig.put("show-name", Lizzie.config.showName);
+            Lizzie.config.showNameInBoard = !Lizzie.config.showNameInBoard;
+            Lizzie.config.uiConfig.put("show-name-in-board", Lizzie.config.showNameInBoard);
             try {
               Lizzie.config.save();
             } catch (IOException es) {
@@ -911,7 +911,7 @@ public class Menu extends MenuBar {
               showHeat.setState(false);
               showHeatAfterCalc.setState(false);
             }
-            if (Lizzie.config.showName) showname.setState(true);
+            if (Lizzie.config.showNameInBoard) showname.setState(true);
             else showname.setState(false);
           }
 
