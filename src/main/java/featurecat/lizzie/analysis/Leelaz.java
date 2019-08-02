@@ -2716,7 +2716,7 @@ public boolean startAutoAna=false;
 			if (Lizzie.frame.isPlayingAgainstLeelaz)
 				bestMovesPrevious = new ArrayList<>();
 			if (isPondering && !Lizzie.frame.isPlayingAgainstLeelaz)
-				ponder();
+				ponder2();
 		}
 	}
 
@@ -2882,6 +2882,38 @@ public boolean startAutoAna=false;
 
 	/** This initializes leelaz's pondering mode at its current position */
 	public void ponder() {
+		if(isZen)
+			return;
+		isPondering = true;
+		startPonderTime = System.currentTimeMillis();
+//		if (Lizzie.frame.isheatmap) {
+//			Lizzie.leelaz.heatcount.clear();
+//			// Lizzie.frame.isheatmap = false;
+//		}
+		if (!Lizzie.config.playponder && Lizzie.frame.isPlayingAgainstLeelaz) {
+			return;
+		}
+		int currentmove = Lizzie.board.getcurrentmovenumber();
+		if (featurecat.lizzie.gui.RightClickMenu.isKeepForcing) {
+			featurecat.lizzie.gui.RightClickMenu.voidanalyze();
+		} else {
+			featurecat.lizzie.gui.RightClickMenu.allowcoords = "";
+			featurecat.lizzie.gui.RightClickMenu.avoidcoords = "";
+			featurecat.lizzie.gui.RightClickMenu.move = 0;
+			featurecat.lizzie.gui.RightClickMenu.isforcing = false;
+			if (this.isKatago) {
+				if (Lizzie.config.showKataGoEstimate)
+					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec + " ownership true");
+				else
+					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+			} else {
+				sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+			} // until it responds to this, incoming
+				// ponder results are obsolete
+		}
+	}
+	
+	public void ponder2() {
 		if(isZen)
 			return;
 		isPondering = true;

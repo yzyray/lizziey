@@ -1200,8 +1200,10 @@ public class BoardRenderer {
             int suggestionY = y + scaledMarginHeight + squareHeight * coords[1];
 
             float hue;
+            float hue2;
             if (isBestMove) {
               hue = cyanHue;
+              hue2 = cyanHue;
             } else {
               double fraction;
 
@@ -1214,7 +1216,7 @@ public class BoardRenderer {
               } else { // yellow to green
                 fraction = 1 - Math.sqrt(2 - fraction) / 2;
               }
-
+              hue2 = fraction > 0.5 ? cyanHue : redHue;
               hue = redHue + (greenHue - redHue) * (float) fraction;
             }
 
@@ -1318,7 +1320,7 @@ public class BoardRenderer {
               }
 
               // number++;
-              Color maxColor = reverseColor(hsbColor, (int) alpha);
+              Color maxColor = reverseColor(Color.getHSBColor(hue2, 1, 1), (int) alpha);
               if ((Lizzie.leelaz.isKatago || Lizzie.board.isKataBoard)
                   && Lizzie.config.showScoremeanInSuggestion) {
                 if (!Lizzie.config.showWinrateInSuggestion) {
