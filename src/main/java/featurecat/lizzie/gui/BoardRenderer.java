@@ -1317,7 +1317,7 @@ public class BoardRenderer {
               }
 
               // number++;
-              Color maxColor = reverseColor(hsbColor);
+              Color maxColor = reverseColor(hsbColor, (int) alpha);
               if ((Lizzie.leelaz.isKatago || Lizzie.board.isKataBoard)
                   && Lizzie.config.showScoremeanInSuggestion) {
                 if (!Lizzie.config.showWinrateInSuggestion) {
@@ -1564,15 +1564,18 @@ public class BoardRenderer {
     }
   }
 
-  private Color reverseColor(Color color) {
+  private Color reverseColor(Color color, int alpha) {
     // System.out.println("color=="+color);
     int r = color.getRed();
     int g = color.getGreen();
     int b = color.getBlue();
     int r_ = 255 - r;
-    int g_ = 255 - g;
-    int b_ = 255 - b;
+    int g_ = (255 - g) * 400 / alpha;
+    if (g_ > 255) g_ = 255;
+    int b_ = (255 - b) * 400 / alpha;
+    if (b_ > 255) b_ = 255;
     Color newColor = new Color(r_, g_, b_);
+
     // System.out.println("newColor=="+newColor);
     return newColor;
   }
@@ -2080,6 +2083,8 @@ public class BoardRenderer {
     FontMetrics fm = g.getFontMetrics(font);
     font = font.deriveFont((float) (font.getSize2D() * maximumFontWidth / fm.stringWidth(string)));
     font = font.deriveFont(min(maximumFontHeight, font.getSize()));
+    //    if(font.getSize()<15)
+    //    	font=new Font(font.getName(),Font.BOLD,font.getSize());
     g.setFont(font);
     fm = g.getFontMetrics(font);
     int height = fm.getAscent() - fm.getDescent();
