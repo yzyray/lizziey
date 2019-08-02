@@ -2355,6 +2355,13 @@ public class ConfigDialog2 extends JDialog {
         theme.config.put("font-name", cmbFontName.getSelectedItem());
         theme.config.put("ui-font-name", cmbUiFontName.getSelectedItem());
         theme.config.put("winrate-font-name", cmbWinrateFontName.getSelectedItem());
+        if (theme.uiFontName() != null) {
+          Lizzie.frame.uiFont = new Font(theme.uiFontName(), Font.PLAIN, 12);
+        }
+        if (theme.winrateFontName() != null) {
+          Lizzie.frame.winrateFont = new Font(theme.winrateFontName(), Font.PLAIN, 12);
+        }
+
         theme.config.put("background-image", txtBackgroundPath.getText().trim());
         theme.config.put("board-image", txtBoardPath.getText().trim());
         theme.config.put("black-stone-image", txtBlackStonePath.getText().trim());
