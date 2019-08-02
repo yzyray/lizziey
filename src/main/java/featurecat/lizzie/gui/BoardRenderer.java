@@ -1317,7 +1317,7 @@ public class BoardRenderer {
               }
 
               // number++;
-              Color maxColor = color2Contrary2(color);
+              Color maxColor = reverseColor(hsbColor);
               if ((Lizzie.leelaz.isKatago || Lizzie.board.isKataBoard)
                   && Lizzie.config.showScoremeanInSuggestion) {
                 if (!Lizzie.config.showWinrateInSuggestion) {
@@ -1564,29 +1564,18 @@ public class BoardRenderer {
     }
   }
 
-  private int cC(int c) {
-    int cc = 255 - c;
-    if (cc > 64 && cc < 128) cc -= 64;
-    else if (cc >= 128 && cc < 192) cc += 64;
-    return cc;
+  private Color reverseColor(Color color) {
+    // System.out.println("color=="+color);
+    int r = color.getRed();
+    int g = color.getGreen();
+    int b = color.getBlue();
+    int r_ = 255 - r;
+    int g_ = 255 - g;
+    int b_ = 255 - b;
+    Color newColor = new Color(r_, g_, b_);
+    // System.out.println("newColor=="+newColor);
+    return newColor;
   }
-
-  private Color color2Contrary2(Color color) {
-    return new Color(cC(color.getRed()), cC(color.getGreen()), cC(color.getBlue()));
-  }
-
-  //  private Color reverseColor(Color color) {
-  //    // System.out.println("color=="+color);
-  //    int r = color.getRed();
-  //    int g = color.getGreen();
-  //    int b = color.getBlue();
-  //    int r_ = 255 - r;
-  //    int g_ = 255 - g;
-  //    int b_ = 255 - b;
-  //    Color newColor = new Color(r_, g_, b_);
-  //    // System.out.println("newColor=="+newColor);
-  //    return newColor;
-  //  }
 
   private void drawWoodenBoard(Graphics2D g) {
     if (uiConfig.getBoolean("fancy-board")) {
