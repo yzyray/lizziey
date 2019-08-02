@@ -650,7 +650,7 @@ public class WinrateGraph {
 
             double curscoreMean = 0;
             try {
-              curscoreMean = node.getData().bestMoves.get(0).scoreMean;
+              curscoreMean = node.getData().scoreMean;
             } catch (Exception ex) {
             }
 
@@ -685,7 +685,7 @@ public class WinrateGraph {
           } else {
             double curscoreMean = 0;
             try {
-              curscoreMean = node.previous().get().getData().bestMoves.get(0).scoreMean;
+              curscoreMean = node.previous().get().getData().scoreMean;
             } catch (Exception ex) {
             }
             if (Lizzie.frame.toolbar.isEnginePk && curscoreMean != 0) {
@@ -718,7 +718,7 @@ public class WinrateGraph {
         while (node.previous().isPresent() && node.previous().get().previous().isPresent()) {
           if (!node.getData().blackToPlay && !node.getData().bestMoves.isEmpty()) {
 
-            double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
+            double curscoreMean = node.getData().scoreMean;
 
             if (Math.abs(curscoreMean) > maxcoreMean) maxcoreMean = Math.abs(curscoreMean);
 
@@ -751,7 +751,7 @@ public class WinrateGraph {
           } else {
             double curscoreMean = 0;
             try {
-              curscoreMean = node.previous().get().getData().bestMoves.get(0).scoreMean;
+              curscoreMean = node.previous().get().getData().scoreMean;
             } catch (Exception ex) {
             }
             if (Lizzie.frame.toolbar.isEnginePk && curscoreMean != 0) {
@@ -784,7 +784,7 @@ public class WinrateGraph {
       while (node.previous().isPresent()) {
         if (!node.getData().bestMoves.isEmpty()) {
 
-          double curscoreMean = node.getData().bestMoves.get(0).scoreMean;
+          double curscoreMean = node.getData().scoreMean;
 
           if (!node.getData().blackToPlay) {
             curscoreMean = -curscoreMean;

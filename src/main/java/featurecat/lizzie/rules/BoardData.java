@@ -201,6 +201,12 @@ public class BoardData {
 			this.playouts = playouts;
 		//}
 	}
+	
+	public void setScoreMean(double scoreMean) {
+		//if (playouts > this.playouts || isChanged) {
+			this.scoreMean = scoreMean;
+		//}
+	}
 
 	public void setPlayoutsForce(int playouts) {
 		this.playouts = playouts;

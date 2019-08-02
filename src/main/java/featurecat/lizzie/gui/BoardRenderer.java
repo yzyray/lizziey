@@ -873,18 +873,19 @@ public class BoardRenderer {
         int stoneY = y + scaledMarginHeight + squareHeight * lastMove[1];
 
         // Set color to the opposite color of whatever is on the board
-        boolean isWhite = board.getStones()[Board.getIndex(lastMove[0], lastMove[1])].isWhite();
-        // g.setColor(Lizzie.board.getData().blackToPlay ? Color.BLACK : Color.WHITE);
-        g.setColor(Color.red);
+        // boolean isWhite = board.getStones()[Board.getIndex(lastMove[0], lastMove[1])].isWhite();
 
         switch (Lizzie.config.stoneIndicatorType) {
           case 0:
+            g.setColor(Color.red);
             drawCircle2(g, stoneX, stoneY, lastMoveMarkerRadius);
             break;
           case 1:
+            g.setColor(Lizzie.board.getData().blackToPlay ? Color.BLACK : Color.WHITE);
             drawCircle(g, stoneX, stoneY, lastMoveMarkerRadius);
             break;
           case 2:
+            g.setColor(Lizzie.board.getData().blackToPlay ? Color.BLACK : Color.WHITE);
             fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
             break;
         }

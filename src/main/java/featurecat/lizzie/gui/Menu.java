@@ -1894,7 +1894,8 @@ public class Menu extends MenuBar {
   public void changeicon() {
 
     for (int i = 0; i < 21; i++) {
-      if (!Lizzie.engineManager.engineList.get(i).isStarted())
+      if (i < Lizzie.engineManager.engineList.size()
+          && !Lizzie.engineManager.engineList.get(i).isStarted())
         featurecat.lizzie.gui.Menu.engine[i].setIcon(null);
       else if (featurecat.lizzie.gui.Menu.engine[i].getIcon() != null
           && featurecat.lizzie.gui.Menu.engine[i].getIcon() != featurecat.lizzie.gui.Menu.stop) {
