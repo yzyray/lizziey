@@ -89,7 +89,9 @@ public class Config {
   public Color winrateMissLineColor = null;
   public Color scoreMeanLineColor = null;
   public Color blunderBarColor = null;
+  public float bestMoveColor;
   public boolean solidStoneIndicator = false;
+  public int stoneIndicatorType = 1; // 0: non, 1: circle, 2: solid
   public boolean showCommentNodeColor = true;
   public boolean badmovesalwaysontop = false;
   public boolean mainsalwaysontop = false;
@@ -349,6 +351,10 @@ public class Config {
     commentBackgroundColor = theme.commentBackgroundColor();
     winrateLineColor = theme.winrateLineColor();
     scoreMeanLineColor = theme.scoreMeanLineColor();
+    Color bestColor = theme.bestMoveColor();
+    stoneIndicatorType = theme.stoneIndicatorType();
+    bestMoveColor =
+        Color.RGBtoHSB(bestColor.getRed(), bestColor.getGreen(), bestColor.getBlue(), null)[0];
     winrateMissLineColor = theme.winrateMissLineColor();
     blunderBarColor = theme.blunderBarColor();
     solidStoneIndicator = theme.solidStoneIndicator();

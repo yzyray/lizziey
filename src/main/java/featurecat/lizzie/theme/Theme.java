@@ -64,7 +64,7 @@ public class Theme {
 
   public int stoneIndicatorType() {
     String key = "stone-indicator-type";
-    return config.optInt(key, uiConfig.optInt(key, 1));
+    return config.optInt(key, uiConfig.optInt(key, 0));
   }
 
   public String blackStonePath() {
@@ -214,6 +214,10 @@ public class Theme {
   /** The color of the blunder bar */
   public Color blunderBarColor() {
     return getColorByKey("blunder-bar-color", new Color(255, 0, 0, 150));
+  }
+
+  public Color bestMoveColor() {
+    return getColorByKey("best-move-color", Color.CYAN);
   }
 
   /** The threshold list of the blunder winrate */

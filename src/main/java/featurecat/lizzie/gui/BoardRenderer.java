@@ -877,14 +877,33 @@ public class BoardRenderer {
         // g.setColor(Lizzie.board.getData().blackToPlay ? Color.BLACK : Color.WHITE);
         g.setColor(Color.red);
 
-        if (Lizzie.config.solidStoneIndicator) {
-          // Use a solid circle instead of
-          fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
-        } else {
-          // fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.70));
-          drawCircle2(g, stoneX, stoneY, lastMoveMarkerRadius);
-          // 需要恢复的
+        switch (Lizzie.config.stoneIndicatorType) {
+          case 0:
+            drawCircle2(g, stoneX, stoneY, lastMoveMarkerRadius);
+            break;
+          case 1:
+            drawCircle(g, stoneX, stoneY, lastMoveMarkerRadius);
+            break;
+          case 2:
+            fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
+            break;
         }
+        //        if (Lizzie.config.stoneIndicatorType == 2) {
+        //            // Use a solid circle instead of
+        //            fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
+        //          } else if (Lizzie.config.stoneIndicatorType == 0) {
+        //          } else {
+        //            drawCircle2(g, stoneX, stoneY, lastMoveMarkerRadius);
+        //          }
+
+        //        if (Lizzie.config.solidStoneIndicator) {
+        //          // Use a solid circle instead of
+        //          fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.65));
+        //        } else {
+        //          // fillCircle(g, stoneX, stoneY, (int) (lastMoveMarkerRadius * 0.70));
+        //          drawCircle2(g, stoneX, stoneY, lastMoveMarkerRadius);
+        //          // 需要恢复的
+        //        }
       }
 
       return;
@@ -982,7 +1001,7 @@ public class BoardRenderer {
     float alphaFactor = 5.0f;
     float redHue = Color.RGBtoHSB(255, 0, 0, null)[0];
     float greenHue = Color.RGBtoHSB(0, 255, 0, null)[0];
-    float cyanHue = Color.RGBtoHSB(0, 255, 255, null)[0];
+    float cyanHue = Lizzie.config.bestMoveColor;
 
     if (Lizzie.frame.isheatmap && !Lizzie.leelaz.getBestMoves().isEmpty()) {
       Double maxPolicy = 0.0;
