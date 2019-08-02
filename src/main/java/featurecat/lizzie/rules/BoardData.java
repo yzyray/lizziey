@@ -161,6 +161,9 @@ public class BoardData {
 				Lizzie.leelaz.scoreMean = moves.get(0).scoreMean;
 				Lizzie.leelaz.scoreStdev = moves.get(0).scoreStdev;
 			}
+			else {
+				
+			}
 		}
 		
 	}

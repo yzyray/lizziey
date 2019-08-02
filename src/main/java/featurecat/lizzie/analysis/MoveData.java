@@ -174,6 +174,7 @@ public class MoveData {
         if (key.equals("scoreMean")) {
           // support 0.16 0.15
           result.scoreMean = Double.parseDouble(value);
+          Lizzie.board.isKataBoard = true;
         }
       }
     }

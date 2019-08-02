@@ -122,7 +122,7 @@ public class SGFParser {
         Integer.parseInt(
             line1[2].replaceAll("k", "00").replaceAll("m", "00000").replaceAll("[^0-9]", ""));
     Lizzie.board.getData().setPlayouts(numPlayouts);
-    if (line1.length >= 3) {
+    if (line1.length >= 4) {
       double scoreMean = Double.parseDouble(line1[3]);
       Lizzie.board.getData().setScoreMean(scoreMean);
     }
@@ -319,7 +319,7 @@ public class SGFParser {
                           .replaceAll("m", "00000")
                           .replaceAll("[^0-9]", ""));
               Lizzie.board.getData().setPlayouts(numPlayouts);
-              if (line1.length >= 3) {
+              if (line1.length >= 4) {
                 double scoreMean = Double.parseDouble(line1[3]);
                 Lizzie.board.getData().setScoreMean(scoreMean);
               }
