@@ -193,9 +193,9 @@ public class LizzieFrame extends JFrame {
   public Input input = new Input();
   public InputSubboard input2 = new InputSubboard();
   public boolean noInput = true;
-  private long startSyncTime = System.currentTimeMillis();
-  private boolean isSyncing = false;
-  private boolean firstIsSyncing = true;
+  //  private long startSyncTime = System.currentTimeMillis();
+  //  private boolean isSyncing = false;
+  //  private boolean firstIsSyncing = true;
 
   private boolean isSavingImage = false;
 
@@ -225,7 +225,7 @@ public class LizzieFrame extends JFrame {
   public Browser browser;
   ArrayList<String> urlList;
   int urlIndex;
-  static OnlineDialog onlineDialog;
+  static OnlineDialog onlineDialog = new OnlineDialog();;
 
   // boolean lastponder = true;
 
@@ -569,8 +569,8 @@ public class LizzieFrame extends JFrame {
   }
 
   public void openOnlineDialog() {
-    if (onlineDialog != null) onlineDialog.dispose();
-    onlineDialog = new OnlineDialog();
+    //  if (onlineDialog != null) onlineDialog.dispose();
+    //  onlineDialog = new OnlineDialog();
     // onlineDialog.applyChangeWeb("https://home.yikeweiqi.com/#/live/room/20595/1/18748590");
     onlineDialog.setVisible(true);
   }
@@ -3247,39 +3247,40 @@ public class LizzieFrame extends JFrame {
   }
 
   private void syncOnline(String url) {
-    if (onlineDialog != null) {
-      onlineDialog.dispose();
-    }
-    if (isSyncing && System.currentTimeMillis() - startSyncTime < 2000) {
-      if (firstIsSyncing) firstIsSyncing = false;
-      else return;
-      Timer timer = new Timer();
-      timer.schedule(
-          new TimerTask() {
-            public void run() {
-              onlineDialog = new OnlineDialog();
-              onlineDialog.applyChangeWeb(url);
-              startSyncTime = System.currentTimeMillis();
-              isSyncing = false;
-              firstIsSyncing = true;
-              this.cancel();
-            }
-          },
-          2000);
-      return;
-    }
-
-    if (System.currentTimeMillis() - startSyncTime < 1000) {
-      isSyncing = true;
-      onlineDialog = new OnlineDialog();
-      onlineDialog.applyChangeWeb(url);
-      startSyncTime = System.currentTimeMillis();
-      return;
-    }
-    isSyncing = false;
-    onlineDialog = new OnlineDialog();
     onlineDialog.applyChangeWeb(url);
-    startSyncTime = System.currentTimeMillis();
+    //    if (onlineDialog != null) {
+    //      onlineDialog.dispose();
+    //    }
+    //    if (isSyncing && System.currentTimeMillis() - startSyncTime < 2000) {
+    //      if (firstIsSyncing) firstIsSyncing = false;
+    //      else return;
+    //      Timer timer = new Timer();
+    //      timer.schedule(
+    //          new TimerTask() {
+    //            public void run() {
+    //              //    onlineDialog = new OnlineDialog();
+    //              onlineDialog.applyChangeWeb(url);
+    //              startSyncTime = System.currentTimeMillis();
+    //              isSyncing = false;
+    //              firstIsSyncing = true;
+    //              this.cancel();
+    //            }
+    //          },
+    //          2000);
+    //      return;
+    //    }
+    //
+    //    if (System.currentTimeMillis() - startSyncTime < 1000) {
+    //      isSyncing = true;
+    //      // onlineDialog = new OnlineDialog();
+    //      onlineDialog.applyChangeWeb(url);
+    //      startSyncTime = System.currentTimeMillis();
+    //      return;
+    //    }
+    //    isSyncing = false;
+    //    //  onlineDialog = new OnlineDialog();
+    //    onlineDialog.applyChangeWeb(url);
+    //       startSyncTime = System.currentTimeMillis();
   }
 
   public void bowser(String url, String title) {

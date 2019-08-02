@@ -1260,7 +1260,7 @@ public class BottomToolbar extends JPanel {
     lblengineBlack.setBounds(75, 0, 15, 20);
     UI ui = new UI();
     enginePkBlack.setUI(ui);
-    ((Popup) ui.getPopup()).setDisplaySize(200, 100);
+    ((Popup) ui.getPopup()).setDisplaySize(200, 200);
 
     lblenginePkResult = new JLabel("0:0");
     enginePkPanel.add(lblenginePkResult);
@@ -1273,7 +1273,7 @@ public class BottomToolbar extends JPanel {
 
     UI ui2 = new UI();
     enginePkWhite.setUI(ui2);
-    ((Popup) ui2.getPopup()).setDisplaySize(200, 100);
+    ((Popup) ui2.getPopup()).setDisplaySize(200, 200);
 
     lblengineWhite = new JLabel("白:");
     enginePkPanel.add(lblengineWhite);

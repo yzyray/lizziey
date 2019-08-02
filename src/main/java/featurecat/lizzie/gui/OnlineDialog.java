@@ -2216,6 +2216,15 @@ public class OnlineDialog extends JDialog {
     Lizzie.frame.setPlayers(whitePlayer, blackPlayer);
     Lizzie.board.getHistory().getGameInfo().setPlayerBlack(blackPlayer);
     Lizzie.board.getHistory().getGameInfo().setPlayerWhite(whitePlayer);
+    Timer timer = new Timer();
+    timer.schedule(
+        new TimerTask() {
+          public void run() {
+            Lizzie.frame.refresh();
+            this.cancel();
+          }
+        },
+        100);
   }
 
   private void channel() {
@@ -2264,7 +2273,10 @@ public class OnlineDialog extends JDialog {
           addBranch(d);
           break;
         case 2:
-          addComment(d, true);
+          try {
+            addComment(d, true);
+          } catch (Exception ex) {
+          }
           break;
       }
     }
@@ -2272,7 +2284,7 @@ public class OnlineDialog extends JDialog {
   }
 
   void sync() {
-    while (history.previous().isPresent()) ;
+    while (history != null && history.previous().isPresent()) ;
     int diffMove = Lizzie.board.getHistory().sync(history);
     if (diffMove >= 0) {
       Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
@@ -2467,10 +2479,10 @@ public class OnlineDialog extends JDialog {
   public void stopSync() {
     Lizzie.frame.urlSgf = false;
     isStoped = true;
-    if (client != null && client.isOpen()) {
-      client.close();
-      client = null;
-    }
+    //    if (client != null && client.isOpen()) {
+    //      client.close();
+    //      client = null;
+    //    }
     txtUrl.setText("");
     type = checkUrl();
     try {
@@ -2483,7 +2495,7 @@ public class OnlineDialog extends JDialog {
       e.printStackTrace();
     }
     setVisible(false);
-    Lizzie.frame.onlineDialog.dispose();
+    //  Lizzie.frame.onlineDialog.dispose();
   }
 
   public void applyChangeWeb(String url) {
