@@ -492,7 +492,7 @@ public class Menu extends MenuBar {
     Suggestions.add(showsuggorder);
 
     final JCheckBoxMenuItem showsuggred = new JCheckBoxMenuItem();
-    showsuggred.setText("最高胜率-计算量-目差 显示为红色");
+    showsuggred.setText("最高胜率-计算量-目差 反色显示");
     showsuggred.addActionListener(
         new ActionListener() {
 

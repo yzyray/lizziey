@@ -1,8 +1,14 @@
 {
   "comment-font-size": 0,
+  "best-move-color": [
+    0,
+    255,
+    255
+  ],
   "white-stone-image": "white1.png",
   "black-stone-image": "black1.png",
   "shadow-size": 55,
+  "stone-indicator-type": 0,
   "solid-stone-indicator": true,
   "blunder-winrate-thresholds": [
     -30,

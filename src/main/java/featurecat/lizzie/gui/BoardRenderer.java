@@ -1247,6 +1247,7 @@ public class BoardRenderer {
             // !Lizzie.config.colorByWinrateInsteadOfVisits && (isBestMove ||
             // hasMaxWinrate);
             // if (!branchOpt.isPresent() || (ringedMove && isMouseOver)) {
+
             if (!branchOpt.isPresent() || (isMouseOver)) {
               int strokeWidth = 1;
               // if (ringedMove) {
@@ -1256,7 +1257,7 @@ public class BoardRenderer {
               // g.setColor(color.darker());
               // strokeWidth = 1;
               // } else {
-              // g.setColor(Color.RED);
+              // g.setColor(maxColor);
               // }
               // } else {
               // g.setColor(Color.BLUE);
@@ -1316,6 +1317,7 @@ public class BoardRenderer {
               }
 
               // number++;
+              Color maxColor = color2Contrary2(color);
               if ((Lizzie.leelaz.isKatago || Lizzie.board.isKataBoard)
                   && Lizzie.config.showScoremeanInSuggestion) {
                 if (!Lizzie.config.showWinrateInSuggestion) {
@@ -1335,7 +1337,7 @@ public class BoardRenderer {
                   Color oriColor = g.getColor();
                   if (Lizzie.config.showPlayoutsInSuggestion) {
                     if (Lizzie.config.showSuggestionMaxRed && move.scoreMean == maxScoreMean)
-                      g.setColor(Color.RED);
+                      g.setColor(maxColor);
                     drawString(
                         g,
                         suggestionX,
@@ -1348,7 +1350,7 @@ public class BoardRenderer {
                         1);
                     if (Lizzie.config.showSuggestionMaxRed) g.setColor(oriColor);
                     if (Lizzie.config.showSuggestionMaxRed && move.playouts == maxPlayouts)
-                      g.setColor(Color.RED);
+                      g.setColor(maxColor);
                     drawString(
                         g,
                         suggestionX,
@@ -1359,7 +1361,7 @@ public class BoardRenderer {
                         stoneRadius * 1.6);
                   } else {
                     if (Lizzie.config.showSuggestionMaxRed && move.scoreMean == maxScoreMean)
-                      g.setColor(Color.RED);
+                      g.setColor(maxColor);
                     drawString(
                         g,
                         suggestionX,
@@ -1375,7 +1377,7 @@ public class BoardRenderer {
 
                   Color oriColor = g.getColor();
                   if (Lizzie.config.showPlayoutsInSuggestion) {
-                    if (Lizzie.config.showSuggestionMaxRed && hasMaxWinrate) g.setColor(Color.RED);
+                    if (Lizzie.config.showSuggestionMaxRed && hasMaxWinrate) g.setColor(maxColor);
                     if (roundedWinrate < 10) {
                       drawString(
                           g,
@@ -1401,7 +1403,7 @@ public class BoardRenderer {
                     }
                     if (Lizzie.config.showSuggestionMaxRed) g.setColor(oriColor);
                     if (Lizzie.config.showSuggestionMaxRed && move.playouts == maxPlayouts)
-                      g.setColor(Color.RED);
+                      g.setColor(maxColor);
                     drawString(
                         g,
                         suggestionX,
@@ -1425,7 +1427,7 @@ public class BoardRenderer {
                       }
                     }
                     if (Lizzie.config.showSuggestionMaxRed && move.scoreMean == maxScoreMean)
-                      g.setColor(Color.RED);
+                      g.setColor(maxColor);
                     drawString(
                         g,
                         suggestionX,
@@ -1450,7 +1452,7 @@ public class BoardRenderer {
                       }
                     }
                     if (Lizzie.config.showSuggestionMaxRed && move.scoreMean == maxScoreMean)
-                      g.setColor(Color.RED);
+                      g.setColor(maxColor);
                     drawString(
                         g,
                         suggestionX,
@@ -1463,7 +1465,7 @@ public class BoardRenderer {
                         1);
                     if (Lizzie.config.showSuggestionMaxRed) g.setColor(oriColor);
                     if (Lizzie.config.showSuggestionMaxRed && move.playouts == maxPlayouts)
-                      g.setColor(Color.RED);
+                      g.setColor(maxColor);
                     drawString(
                         g,
                         suggestionX,
@@ -1479,7 +1481,7 @@ public class BoardRenderer {
                 Color oriColor = g.getColor();
                 if (Lizzie.config.showWinrateInSuggestion) {
 
-                  if (Lizzie.config.showSuggestionMaxRed && hasMaxWinrate) g.setColor(Color.RED);
+                  if (Lizzie.config.showSuggestionMaxRed && hasMaxWinrate) g.setColor(maxColor);
                   if (Lizzie.config.showPlayoutsInSuggestion) {
                     drawString(
                         g,
@@ -1505,7 +1507,7 @@ public class BoardRenderer {
                 if (Lizzie.config.showPlayoutsInSuggestion) {
                   if (Lizzie.config.showSuggestionMaxRed) g.setColor(oriColor);
                   if (Lizzie.config.showSuggestionMaxRed && move.playouts == maxPlayouts)
-                    g.setColor(Color.RED);
+                    g.setColor(maxColor);
                   if (Lizzie.config.showWinrateInSuggestion) {
                     drawString(
                         g,
@@ -1561,6 +1563,30 @@ public class BoardRenderer {
               });
     }
   }
+
+  private int cC(int c) {
+    int cc = 255 - c;
+    if (cc > 64 && cc < 128) cc -= 64;
+    else if (cc >= 128 && cc < 192) cc += 64;
+    return cc;
+  }
+
+  private Color color2Contrary2(Color color) {
+    return new Color(cC(color.getRed()), cC(color.getGreen()), cC(color.getBlue()));
+  }
+
+  //  private Color reverseColor(Color color) {
+  //    // System.out.println("color=="+color);
+  //    int r = color.getRed();
+  //    int g = color.getGreen();
+  //    int b = color.getBlue();
+  //    int r_ = 255 - r;
+  //    int g_ = 255 - g;
+  //    int b_ = 255 - b;
+  //    Color newColor = new Color(r_, g_, b_);
+  //    // System.out.println("newColor=="+newColor);
+  //    return newColor;
+  //  }
 
   private void drawWoodenBoard(Graphics2D g) {
     if (uiConfig.getBoolean("fancy-board")) {
