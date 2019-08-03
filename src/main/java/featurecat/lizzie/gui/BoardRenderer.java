@@ -1411,7 +1411,7 @@ public class BoardRenderer {
                     drawString(
                         g,
                         suggestionX,
-                        suggestionY + stoneRadius * 1 / 16,
+                        suggestionY + stoneRadius * 1 / 10,
                         LizzieFrame.winrateFont,
                         Lizzie.frame.getPlayoutsString(move.playouts),
                         (float) (stoneRadius * 0.8),
