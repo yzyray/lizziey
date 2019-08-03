@@ -2092,7 +2092,7 @@ public class LizzieFrame extends JFrame {
     g.setColor(Color.white);
 
     // Draw black and white "stone"
-    int diam = height / 3;
+    int diam = min(width / 2, height) / 3;
     int smallDiam = diam / 2;
     int bdiam = diam, wdiam = diam;
     if (Lizzie.board.inScoreMode() || iscounting) {
@@ -2165,8 +2165,8 @@ public class LizzieFrame extends JFrame {
     int bw = g.getFontMetrics().stringWidth(bval);
     int ww = g.getFontMetrics().stringWidth(wval);
     boolean largeSubBoard = Lizzie.config.showLargeSubBoard();
-    int bx = (largeSubBoard ? diam : -bw / 2);
-    int wx = (largeSubBoard ? bx : -ww / 2);
+    int bx = (largeSubBoard ? width / 12 : -bw / 2);
+    int wx = (largeSubBoard ? width / 12 : -ww / 2);
 
     g.drawString(bval, posX + width / 4 + bx, posY + height * 7 / 8);
     g.drawString(wval, posX + width * 3 / 4 + wx, posY + height * 7 / 8);
