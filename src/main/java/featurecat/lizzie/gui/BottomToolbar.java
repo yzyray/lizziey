@@ -3015,10 +3015,12 @@ public class BottomToolbar extends JPanel {
         clearButton.setBounds(529, 0, 60, 26);
         countButton.setBounds(588, 0, 60, 26);
         heatMap.setBounds(647, 0, 60, 26);
-        txtMoveNumber.setBounds(707, 1, 28, 24);
-        gotomove.setBounds(735, 0, 35, 26);
-        move.setBounds(769, 0, 35, 26);
-        coords.setBounds(803, 0, 35, 26);
+
+        move.setBounds(706, 0, 35, 26);
+        coords.setBounds(740, 0, 35, 26);
+
+        txtMoveNumber.setBounds(775, 1, 28, 24);
+        gotomove.setBounds(803, 0, 35, 26);
 
         firstButton.setBounds(837, 0, 30, 26);
         backward10.setBounds(866, 0, 30, 26);
@@ -3051,10 +3053,12 @@ public class BottomToolbar extends JPanel {
         clearButton.setBounds(470, 0, 60, 26);
         countButton.setBounds(529, 0, 60, 26);
         heatMap.setBounds(588, 0, 60, 26);
-        txtMoveNumber.setBounds(648, 1, 28, 24);
-        gotomove.setBounds(676, 0, 35, 26);
-        move.setBounds(710, 0, 35, 26);
-        coords.setBounds(744, 0, 35, 26);
+
+        move.setBounds(647, 0, 35, 26);
+        coords.setBounds(681, 0, 35, 26);
+
+        txtMoveNumber.setBounds(716, 1, 28, 24);
+        gotomove.setBounds(744, 0, 35, 26);
 
         firstButton.setBounds(778, 0, 30, 26);
         backward10.setBounds(807, 0, 30, 26);
