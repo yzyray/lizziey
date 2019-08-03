@@ -2932,19 +2932,23 @@ public class BottomToolbar extends JPanel {
         tryPlay.setBounds(w - 678, 0, 40, 26);
         setMain.setBounds(w - 639, 0, 70, 26);
         backMain.setBounds(w - 570, 0, 70, 26);
-        firstButton.setBounds(w - 501, 0, 30, 26);
-        backward10.setBounds(w - 472, 0, 30, 26);
-        backward1.setBounds(w - 443, 0, 30, 26);
-        forward1.setBounds(w - 414, 0, 30, 26);
-        forward10.setBounds(w - 385, 0, 30, 26);
-        lastButton.setBounds(w - 356, 0, 30, 26);
-        clearButton.setBounds(w - 327, 0, 60, 26);
-        countButton.setBounds(w - 268, 0, 60, 26);
-        heatMap.setBounds(w - 209, 0, 60, 26);
-        txtMoveNumber.setBounds(w - 149, 1, 28, 24);
-        gotomove.setBounds(w - 121, 0, 35, 26);
-        move.setBounds(w - 87, 0, 35, 26);
-        coords.setBounds(w - 53, 0, 35, 26);
+
+        clearButton.setBounds(w - 501, 0, 60, 26);
+        countButton.setBounds(w - 442, 0, 60, 26);
+        heatMap.setBounds(w - 383, 0, 60, 26);
+
+        move.setBounds(w - 324, 0, 35, 26);
+        coords.setBounds(w - 290, 0, 35, 26);
+
+        txtMoveNumber.setBounds(w - 255, 1, 28, 24);
+        gotomove.setBounds(w - 227, 0, 35, 26);
+        firstButton.setBounds(w - 193, 0, 30, 26);
+        backward10.setBounds(w - 164, 0, 30, 26);
+        backward1.setBounds(w - 135, 0, 30, 26);
+        forward1.setBounds(w - 106, 0, 30, 26);
+        forward10.setBounds(w - 77, 0, 30, 26);
+        lastButton.setBounds(w - 48, 0, 30, 26);
+
       } else {
         if (w < 961) {
           buttonPane.setBounds(38, 0, w - 19, 26);
@@ -2965,19 +2969,22 @@ public class BottomToolbar extends JPanel {
         tryPlay.setBounds(w - 678, 0, 40, 26);
         setMain.setBounds(w - 639, 0, 70, 26);
         backMain.setBounds(w - 570, 0, 70, 26);
-        firstButton.setBounds(w - 501, 0, 30, 26);
-        backward10.setBounds(w - 472, 0, 30, 26);
-        backward1.setBounds(w - 443, 0, 30, 26);
-        forward1.setBounds(w - 414, 0, 30, 26);
-        forward10.setBounds(w - 385, 0, 30, 26);
-        lastButton.setBounds(w - 356, 0, 30, 26);
-        clearButton.setBounds(w - 327, 0, 60, 26);
-        countButton.setBounds(w - 268, 0, 60, 26);
-        heatMap.setBounds(w - 209, 0, 60, 26);
-        txtMoveNumber.setBounds(w - 149, 1, 28, 24);
-        gotomove.setBounds(w - 121, 0, 35, 26);
-        move.setBounds(w - 87, 0, 35, 26);
-        coords.setBounds(w - 53, 0, 35, 26);
+
+        clearButton.setBounds(w - 501, 0, 60, 26);
+        countButton.setBounds(w - 442, 0, 60, 26);
+        heatMap.setBounds(w - 383, 0, 60, 26);
+
+        move.setBounds(w - 324, 0, 35, 26);
+        coords.setBounds(w - 290, 0, 35, 26);
+
+        txtMoveNumber.setBounds(w - 255, 1, 28, 24);
+        gotomove.setBounds(w - 227, 0, 35, 26);
+        firstButton.setBounds(w - 193, 0, 30, 26);
+        backward10.setBounds(w - 164, 0, 30, 26);
+        backward1.setBounds(w - 135, 0, 30, 26);
+        forward1.setBounds(w - 106, 0, 30, 26);
+        forward10.setBounds(w - 77, 0, 30, 26);
+        lastButton.setBounds(w - 48, 0, 30, 26);
       }
     } else {
       leftMove.setVisible(false);
@@ -3004,19 +3011,21 @@ public class BottomToolbar extends JPanel {
         tryPlay.setBounds(352, 0, 40, 26);
         setMain.setBounds(391, 0, 70, 26);
         backMain.setBounds(460, 0, 70, 26);
-        firstButton.setBounds(529, 0, 30, 26);
-        backward10.setBounds(558, 0, 30, 26);
-        backward1.setBounds(587, 0, 30, 26);
-        forward1.setBounds(616, 0, 30, 26);
-        forward10.setBounds(645, 0, 30, 26);
-        lastButton.setBounds(674, 0, 30, 26);
-        clearButton.setBounds(703, 0, 60, 26);
-        countButton.setBounds(762, 0, 60, 26);
-        heatMap.setBounds(821, 0, 60, 26);
-        txtMoveNumber.setBounds(881, 1, 28, 24);
-        gotomove.setBounds(909, 0, 35, 26);
-        move.setBounds(943, 0, 35, 26);
-        coords.setBounds(977, 0, 35, 26);
+
+        clearButton.setBounds(529, 0, 60, 26);
+        countButton.setBounds(588, 0, 60, 26);
+        heatMap.setBounds(647, 0, 60, 26);
+        txtMoveNumber.setBounds(707, 1, 28, 24);
+        gotomove.setBounds(735, 0, 35, 26);
+        move.setBounds(769, 0, 35, 26);
+        coords.setBounds(803, 0, 35, 26);
+
+        firstButton.setBounds(837, 0, 30, 26);
+        backward10.setBounds(866, 0, 30, 26);
+        backward1.setBounds(895, 0, 30, 26);
+        forward1.setBounds(924, 0, 30, 26);
+        forward10.setBounds(953, 0, 30, 26);
+        lastButton.setBounds(982, 0, 30, 26);
       } else {
         if (w < 961) {
           buttonPane.setBounds(19, 0, w - 39, 26);
@@ -3038,19 +3047,21 @@ public class BottomToolbar extends JPanel {
         tryPlay.setBounds(293, 0, 40, 26);
         setMain.setBounds(332, 0, 70, 26);
         backMain.setBounds(401, 0, 70, 26);
-        firstButton.setBounds(470, 0, 30, 26);
-        backward10.setBounds(499, 0, 30, 26);
-        backward1.setBounds(528, 0, 30, 26);
-        forward1.setBounds(557, 0, 30, 26);
-        forward10.setBounds(586, 0, 30, 26);
-        lastButton.setBounds(615, 0, 30, 26);
-        clearButton.setBounds(644, 0, 60, 26);
-        countButton.setBounds(703, 0, 60, 26);
-        heatMap.setBounds(762, 0, 60, 26);
-        txtMoveNumber.setBounds(822, 1, 28, 24);
-        gotomove.setBounds(850, 0, 35, 26);
-        move.setBounds(884, 0, 35, 26);
-        coords.setBounds(918, 0, 35, 26);
+
+        clearButton.setBounds(470, 0, 60, 26);
+        countButton.setBounds(529, 0, 60, 26);
+        heatMap.setBounds(588, 0, 60, 26);
+        txtMoveNumber.setBounds(648, 1, 28, 24);
+        gotomove.setBounds(676, 0, 35, 26);
+        move.setBounds(710, 0, 35, 26);
+        coords.setBounds(744, 0, 35, 26);
+
+        firstButton.setBounds(778, 0, 30, 26);
+        backward10.setBounds(807, 0, 30, 26);
+        backward1.setBounds(836, 0, 30, 26);
+        forward1.setBounds(865, 0, 30, 26);
+        forward10.setBounds(894, 0, 30, 26);
+        lastButton.setBounds(923, 0, 30, 26);
       }
     }
   }

@@ -880,31 +880,11 @@ public class SGFParser {
 
     double diff = curWR - lastWR;
     String lastMoveDiff = String.format("(%s%.1f%%)", diff >= 0 ? "+" : "-", Math.abs(diff));
-
-    String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
     boolean blackWinrate =
         !node.getData().blackToPlay || Lizzie.config.uiConfig.getBoolean("win-rate-always-black");
-    String nc =
-        String.format(
-            wf,
-            blackWinrate ? "黑" : "白",
-            String.format("%.1f%%", curWR),
-            lastMoveDiff,
-            engine,
-            playouts);
 
-    //    if (!data.comment.isEmpty()) {
-    //        // [^\\(\\)/]*
-    //        String wp =
-    //            "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\("
-    //                + engine
-    //                + " / [0-9\\.]*[kmKM]* 计算量\\)";
-    //        if (data.comment.matches("(?s).*" + wp + "(?s).*")) {
-    //          nc = data.comment.replaceAll(wp, nc);
-    //        } else {
-    //          nc = String.format("%s\n\n%s", nc, data.comment);
-    //        }
-    //      }
+    String wf = "";
+    String nc = "";
     if (node.getData().blackToPlay) {
 
       if (Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago) {
@@ -922,15 +902,31 @@ public class SGFParser {
             score = -score;
           }
         }
+        wf = "%s棋 胜率: %s %s\n目差: %s 局面复杂度: %s\n(%s / %s 计算量)";
         nc =
-            nc
-                + "\n目差: "
-                + String.format("%.1f", score)
-                + " 局面复杂度: "
-                + String.format(
+            String.format(
+                wf,
+                blackWinrate ? "黑" : "白",
+                String.format("%.1f%%", 100 - curWR),
+                lastMoveDiff,
+                String.format("%.1f", score),
+                String.format(
                     "%.1f",
                     Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite)
-                        .scoreStdev);
+                        .scoreStdev),
+                engine,
+                playouts);
+      } else {
+        wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
+
+        nc =
+            String.format(
+                wf,
+                blackWinrate ? "黑" : "白",
+                String.format("%.1f%%", curWR),
+                lastMoveDiff,
+                engine,
+                playouts);
       }
     } else {
       if (Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago) {
@@ -948,15 +944,32 @@ public class SGFParser {
             score = -score;
           }
         }
+        wf = "%s棋 胜率: %s %s\n目差: %s 局面复杂度: %s\n(%s / %s 计算量)";
         nc =
-            nc
-                + "\n目差: "
-                + String.format("%.1f", score)
-                + " 局面复杂度: "
-                + String.format(
+            String.format(
+                wf,
+                blackWinrate ? "黑" : "白",
+                String.format("%.1f%%", 100 - curWR),
+                lastMoveDiff,
+                String.format("%.1f", score),
+                String.format(
                     "%.1f",
                     Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack)
-                        .scoreStdev);
+                        .scoreStdev),
+                engine,
+                playouts);
+
+      } else {
+        wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
+
+        nc =
+            String.format(
+                wf,
+                blackWinrate ? "黑" : "白",
+                String.format("%.1f%%", curWR),
+                lastMoveDiff,
+                engine,
+                playouts);
       }
     }
     return nc;
@@ -1019,17 +1032,10 @@ public class SGFParser {
     if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() <= 2) {
       lastMoveDiff = "";
     }
-    String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
     boolean blackWinrate =
         !node.getData().blackToPlay || Lizzie.config.uiConfig.getBoolean("win-rate-always-black");
-    String nc =
-        String.format(
-            wf,
-            blackWinrate ? "黑" : "白",
-            String.format("%.1f%%", 100 - curWR),
-            lastMoveDiff,
-            engine,
-            playouts);
+    String nc = "";
+
     if (Lizzie.leelaz.isKatago) {
       double score = Lizzie.leelaz.scoreMean;
       if (Lizzie.board.getHistory().isBlacksTurn()) {
@@ -1044,20 +1050,54 @@ public class SGFParser {
           score = -score;
         }
       }
+      String wf = "%s棋 胜率: %s %s\n目差: %s 局面复杂度: %s\n(%s / %s 计算量)";
       nc =
-          nc
-              + "\n目差: "
-              + String.format("%.1f", score)
-              + " 局面复杂度: "
-              + String.format("%.1f", Lizzie.leelaz.scoreStdev);
+          String.format(
+              wf,
+              blackWinrate ? "黑" : "白",
+              String.format("%.1f%%", 100 - curWR),
+              lastMoveDiff,
+              String.format("%.1f", score),
+              String.format("%.1f", Lizzie.leelaz.scoreStdev),
+              engine,
+              playouts);
+    } else {
+      String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
+
+      nc =
+          String.format(
+              wf,
+              blackWinrate ? "黑" : "白",
+              String.format("%.1f%%", 100 - curWR),
+              lastMoveDiff,
+              engine,
+              playouts);
     }
+
+    //    if (Lizzie.leelaz.isKatago) {
+    //
+    //      nc =
+    //          nc
+    //              + "\n目差: "
+    //              + String.format("%.1f", score)
+    //              + " 局面复杂度: "
+    //              + String.format("%.1f", Lizzie.leelaz.scoreStdev);
+    //    }
     if (!data.comment.isEmpty()) {
       // [^\\(\\)/]*
-      String wp =
-          "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\("
-              + engine
-              + " / [0-9\\.]*[kmKM]* 计算量\\)";
-      if (Lizzie.leelaz.isKatago) wp = wp + "\n.*";
+      String wp = "";
+      if (!Lizzie.leelaz.isKatago) {
+        wp =
+            "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\("
+                + engine
+                + " / [0-9\\.]*[kmKM]* 计算量\\)";
+      } else {
+        wp =
+            "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n目差: [0-9\\.\\-+]* 局面复杂度: [0-9\\.\\-+]*\n\\("
+                + engine
+                + " / [0-9\\.]*[kmKM]* 计算量\\)";
+      }
+      // if (Lizzie.leelaz.isKatago) wp = wp + "\n.*";
       if (data.comment.matches("(?s).*" + wp + "(?s).*")) {
         nc = data.comment.replaceAll(wp, nc);
       } else {
