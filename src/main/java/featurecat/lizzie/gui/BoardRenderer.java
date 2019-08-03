@@ -1200,10 +1200,10 @@ public class BoardRenderer {
             int suggestionY = y + scaledMarginHeight + squareHeight * coords[1];
 
             float hue;
-            float hue2;
+            boolean hue2;
             if (isBestMove) {
               hue = cyanHue;
-              hue2 = cyanHue;
+              hue2 = true;
             } else {
               double fraction;
 
@@ -1216,7 +1216,7 @@ public class BoardRenderer {
               } else { // yellow to green
                 fraction = 1 - Math.sqrt(2 - fraction) / 2;
               }
-              hue2 = fraction > 0.5 ? cyanHue : redHue;
+              hue2 = fraction > 0.5 ? true : false;
               hue = redHue + (greenHue - redHue) * (float) fraction;
             }
 
@@ -1320,7 +1320,8 @@ public class BoardRenderer {
               }
 
               // number++;
-              Color maxColor = reverseColor(Color.getHSBColor(hue2, 1, 1), (int) alpha);
+              Color maxColor = hue2 ? Color.RED.brighter() : Color.CYAN;
+              // reverseColor(Color.getHSBColor(hue2, 1, 1), (int) alpha);
               if ((Lizzie.leelaz.isKatago || Lizzie.board.isKataBoard)
                   && Lizzie.config.showScoremeanInSuggestion) {
                 if (!Lizzie.config.showWinrateInSuggestion) {
@@ -1567,21 +1568,21 @@ public class BoardRenderer {
     }
   }
 
-  private Color reverseColor(Color color, int alpha) {
-    // System.out.println("color=="+color);
-    int r = color.getRed();
-    int g = color.getGreen();
-    int b = color.getBlue();
-    int r_ = 255 - r;
-    int g_ = (255 - g) * 400 / alpha;
-    if (g_ > 255) g_ = 255;
-    int b_ = (255 - b) * 400 / alpha;
-    if (b_ > 255) b_ = 255;
-    Color newColor = new Color(r_, g_, b_);
-
-    // System.out.println("newColor=="+newColor);
-    return newColor;
-  }
+  //  private Color reverseColor(Color color, int alpha) {
+  //    // System.out.println("color=="+color);
+  //    int r = color.getRed();
+  //    int g = color.getGreen();
+  //    int b = color.getBlue();
+  //    int r_ = 255 - r;
+  //    int g_ = (255 - g) * 400 / alpha;
+  //    if (g_ > 255) g_ = 255;
+  //    int b_ = (255 - b) * 400 / alpha;
+  //    if (b_ > 255) b_ = 255;
+  //    Color newColor = new Color(r_, g_, b_);
+  //
+  //    // System.out.println("newColor=="+newColor);
+  //    return newColor;
+  //  }
 
   private void drawWoodenBoard(Graphics2D g) {
     if (uiConfig.getBoolean("fancy-board")) {
