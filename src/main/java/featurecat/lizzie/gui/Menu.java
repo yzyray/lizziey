@@ -433,7 +433,7 @@ public class Menu extends MenuBar {
     tool.add(bigtoolConf);
     bigtoolConf.addActionListener(new ItemListeneryzy());
 
-    final JCheckBoxMenuItem subboard = new JCheckBoxMenuItem("小棋盘"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem subboard = new JCheckBoxMenuItem("小棋盘(Z)"); // 创建“字体”子菜单
     panel.add(subboard); // 添加到“编辑”菜单
     subboard.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 

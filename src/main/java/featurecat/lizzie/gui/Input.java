@@ -232,11 +232,11 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     Lizzie.config.showBestMovesTemporarily = false;
   }
 
-  private void toggleHints() {
-    Lizzie.config.toggleShowBranch();
-    Lizzie.config.showSubBoard =
-        Lizzie.config.showNextMoves = Lizzie.config.showBestMoves = Lizzie.config.showBranch;
-  }
+  //  private void toggleHints() {
+  //    Lizzie.config.toggleShowBranch();
+  //    Lizzie.config.showSubBoard =
+  //        Lizzie.config.showNextMoves = Lizzie.config.showBestMoves = Lizzie.config.showBranch;
+  //  }
 
   public static void nextBranch() {
     if (Lizzie.frame.isPlayingAgainstLeelaz) {
@@ -674,11 +674,12 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_Z:
-        if (e.isShiftDown()) {
-          toggleHints();
-        } else {
-          startTemporaryBoard();
-        }
+        //  if (e.isShiftDown()) {
+        Lizzie.config.toggleShowSubBoard();
+        // }
+        //        else {
+        //          startTemporaryBoard();
+        //        }
         break;
       case VK_Q:
         // Lizzie.frame.toggleAlwaysOntop();
