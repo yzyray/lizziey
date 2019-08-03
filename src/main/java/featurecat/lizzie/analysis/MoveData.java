@@ -125,7 +125,6 @@ public class MoveData {
         }
         if (key.equals("prior")) {
           result.policy = Double.parseDouble(value) * 100;
-          ;
         }
         if (key.equals("winrate")) {
           // support 0.16 0.15
@@ -139,7 +138,6 @@ public class MoveData {
         }
         if (key.equals("scoreStdev")) {
           result.scoreStdev = Double.parseDouble(value);
-          ;
         }
       }
     }
