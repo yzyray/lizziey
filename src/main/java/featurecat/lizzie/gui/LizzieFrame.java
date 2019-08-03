@@ -428,6 +428,7 @@ public class LizzieFrame extends JFrame {
               if (toolbarHeight == 70) {
                 toolbar.detail.setIcon(toolbar.iconDown);
               }
+              toolbar.reSetButtonLocation();
             } catch (Exception es) {
             }
           }
@@ -1469,7 +1470,7 @@ public class LizzieFrame extends JFrame {
 
       if (boardPos != boardX + maxSize / 2) {
         boardPos = boardX + maxSize / 2;
-        toolbar.setButtonLocation((int) (boardPos - 22));
+        //   toolbar.setButtonLocation((int) (boardPos - 22));
       }
       if (Lizzie.config.showWinrate && Lizzie.leelaz != null && Lizzie.leelaz.isLoaded()) {
         drawMoveStatistics(g, statx, staty, statw, stath);

@@ -47,7 +47,6 @@ public class BottomToolbar extends JPanel {
   JButton openfile;
   JButton savefile;
   public JButton analyse;
-  public JButton detail;
   JButton kataEstimate;
   JButton heatMap;
   JButton backMain;
@@ -59,9 +58,15 @@ public class BottomToolbar extends JPanel {
   JButton move;
   JButton coords;
   JButton liveButton;
+  JPanel buttonPane;
+  //  JPanel buttonPane2;
+
+  JButton rightMove;
+  JButton leftMove;
+  public JButton detail;
   public SetKomi setkomi;
 
-  int savedbroadmid;
+  // int savedbroadmid;
   JTextField txtMoveNumber;
   private int changeMoveNumber = 0;
   public boolean isAutoAna = false;
@@ -210,6 +215,7 @@ public class BottomToolbar extends JPanel {
 
   ImageIcon iconUp;
   ImageIcon iconDown;
+  public boolean rightMode = false;
 
   public BottomToolbar() {
     Color hsbColor =
@@ -220,6 +226,8 @@ public class BottomToolbar extends JPanel {
     this.setBackground(hsbColor);
 
     setLayout(null);
+    rightMove = new JButton(">");
+    leftMove = new JButton("<");
     liveButton = new JButton("直播");
     clearButton = new JButton("清空棋盘");
     firstButton = new JButton("|<");
@@ -243,7 +251,9 @@ public class BottomToolbar extends JPanel {
     komi = new JButton("贴目");
     move = new JButton("手数");
     coords = new JButton("坐标");
+
     iconUp = new ImageIcon();
+
     try {
       iconUp.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/up.png")));
     } catch (IOException e) {
@@ -259,30 +269,45 @@ public class BottomToolbar extends JPanel {
     }
     detail = new JButton("");
 
-    add(liveButton);
-    add(clearButton);
-    add(lastButton);
-    add(firstButton);
-    add(countButton);
-    add(forward10);
-    add(savefile);
-    add(backward10);
-    add(gotomove);
-    add(backward1);
-    add(forward1);
-    add(openfile);
-    add(kataEstimate);
-    add(analyse);
+    //    buttonPane2=new JPanel();
+    //    buttonPane2.setLayout(null);
+    //   this.add(buttonPane2);
+
+    buttonPane = new JPanel();
+    buttonPane.setLayout(null);
+    this.add(buttonPane);
+
+    add(rightMove);
+    add(leftMove);
     add(detail);
-    add(heatMap);
-    add(backMain);
-    add(setMain);
-    add(batchOpen);
-    add(refresh);
-    add(tryPlay);
-    add(komi);
-    add(move);
-    add(coords);
+    detail.setBounds(0, 0, 20, 26);
+    leftMove.setBounds(19, 0, 20, 26);
+    buttonPane.add(liveButton);
+    buttonPane.add(clearButton);
+    buttonPane.add(lastButton);
+    buttonPane.add(firstButton);
+    buttonPane.add(countButton);
+    buttonPane.add(forward10);
+    buttonPane.add(savefile);
+    buttonPane.add(backward10);
+    buttonPane.add(gotomove);
+    buttonPane.add(backward1);
+    buttonPane.add(forward1);
+    buttonPane.add(openfile);
+    buttonPane.add(kataEstimate);
+    buttonPane.add(analyse);
+    buttonPane.add(heatMap);
+    buttonPane.add(backMain);
+    buttonPane.add(setMain);
+    buttonPane.add(batchOpen);
+    buttonPane.add(refresh);
+    buttonPane.add(tryPlay);
+    buttonPane.add(komi);
+    buttonPane.add(move);
+    buttonPane.add(coords);
+
+    rightMove.setVisible(false);
+    leftMove.setVisible(false);
     firstButton.setFocusable(false);
     lastButton.setFocusable(false);
     clearButton.setFocusable(false);
@@ -307,6 +332,8 @@ public class BottomToolbar extends JPanel {
     move.setFocusable(false);
     coords.setFocusable(false);
     liveButton.setFocusable(false);
+    rightMove.setFocusable(false);
+    leftMove.setFocusable(false);
 
     firstButton.setMargin(new Insets(0, 0, 0, 0));
     lastButton.setMargin(new Insets(0, 0, 0, 0));
@@ -332,12 +359,14 @@ public class BottomToolbar extends JPanel {
     coords.setMargin(new Insets(0, 0, 0, 0));
     move.setMargin(new Insets(0, 0, 0, 0));
     liveButton.setMargin(new Insets(0, 0, 0, 0));
+    rightMove.setMargin(new Insets(0, 0, 0, 0));
+    leftMove.setMargin(new Insets(0, 0, 0, 0));
     // NumberFormat nf = NumberFormat.getNumberInstance();
 
     // nf.setGroupingUsed(false);
     // nf.setParseIntegerOnly(true);
     txtMoveNumber = new JTextField();
-    add(txtMoveNumber);
+    buttonPane.add(txtMoveNumber);
     txtMoveNumber.setColumns(3);
 
     txtMoveNumber.addKeyListener(
@@ -360,6 +389,24 @@ public class BottomToolbar extends JPanel {
 
           @Override
           public void keyTyped(KeyEvent e) {}
+        });
+
+    leftMove.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            rightMode = false;
+            setTxtUnfocuse();
+            reSetButtonLocation();
+          }
+        });
+
+    rightMove.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            rightMode = true;
+            setTxtUnfocuse();
+            reSetButtonLocation();
+          }
         });
 
     refresh.addActionListener(
@@ -1435,7 +1482,7 @@ public class BottomToolbar extends JPanel {
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter") != null
-        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 50) {
+        && Lizzie.config.persistedUi.optJSONArray("toolbar-parameter").length() == 51) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("toolbar-parameter");
       if (pos.getInt(0) > 0) {
         this.txtFirstAnaMove.setText(pos.getInt(0) + "");
@@ -1558,6 +1605,7 @@ public class BottomToolbar extends JPanel {
       chkAnaBlack.setSelected(pos.getBoolean(47));
       chkAnaWhite.setSelected(pos.getBoolean(48));
       enginePkSaveWinrate = pos.getBoolean(49);
+      rightMode = pos.getBoolean(50);
       setOrder();
     }
     if (chkAutoSub.isSelected()) {
@@ -2745,69 +2793,73 @@ public class BottomToolbar extends JPanel {
     }
   }
 
-  public void setButtonLocation(int boardmid) {
-    savedbroadmid = boardmid;
-    int w = Lizzie.frame.getWidth();
-
-    if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
-      if (boardmid + 432 > w) boardmid = w - 432;
-      if (boardmid - 615 < 0) boardmid = 615;
-      detail.setBounds(0, 0, 20, 26);
-      liveButton.setBounds(boardmid - 596, 0, 40, 26);
-      kataEstimate.setVisible(true);
-      kataEstimate.setBounds(boardmid - 557, 0, 60, 26);
-      batchOpen.setBounds(boardmid - 498, 0, 60, 26);
-      openfile.setBounds(boardmid - 439, 0, 40, 26);
-      savefile.setBounds(boardmid - 400, 0, 40, 26);
-      komi.setBounds(boardmid - 361, 0, 40, 26);
-      refresh.setBounds(boardmid - 322, 0, 40, 26);
-      analyse.setBounds(boardmid - 283, 0, 40, 26);
-      tryPlay.setBounds(boardmid - 244, 0, 40, 26);
-      setMain.setBounds(boardmid - 205, 0, 70, 26);
-      backMain.setBounds(boardmid - 136, 0, 70, 26);
-      firstButton.setBounds(boardmid - 67, 0, 30, 26);
-      backward10.setBounds(boardmid - 38, 0, 30, 26);
-      backward1.setBounds(boardmid - 9, 0, 30, 26);
-      forward1.setBounds(boardmid + 20, 0, 30, 26);
-      forward10.setBounds(boardmid + 49, 0, 30, 26);
-      lastButton.setBounds(boardmid + 78, 0, 30, 26);
-      clearButton.setBounds(boardmid + 107, 0, 60, 26);
-      countButton.setBounds(boardmid + 166, 0, 60, 26);
-      heatMap.setBounds(boardmid + 225, 0, 60, 26);
-      txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
-      gotomove.setBounds(boardmid + 313, 0, 35, 26);
-      move.setBounds(boardmid + 347, 0, 35, 26);
-      coords.setBounds(boardmid + 381, 0, 35, 26);
-    } else {
-      if (boardmid + 432 > w) boardmid = w - 432;
-      if (boardmid - 556 < 0) boardmid = 556;
-      detail.setBounds(0, 0, 20, 26);
-      kataEstimate.setVisible(false);
-      liveButton.setBounds(boardmid - 537, 0, 40, 26);
-      batchOpen.setBounds(boardmid - 498, 0, 60, 26);
-      openfile.setBounds(boardmid - 439, 0, 40, 26);
-      savefile.setBounds(boardmid - 400, 0, 40, 26);
-      komi.setBounds(boardmid - 361, 0, 40, 26);
-      refresh.setBounds(boardmid - 322, 0, 40, 26);
-      analyse.setBounds(boardmid - 283, 0, 40, 26);
-      tryPlay.setBounds(boardmid - 244, 0, 40, 26);
-      setMain.setBounds(boardmid - 205, 0, 70, 26);
-      backMain.setBounds(boardmid - 136, 0, 70, 26);
-      firstButton.setBounds(boardmid - 67, 0, 30, 26);
-      backward10.setBounds(boardmid - 38, 0, 30, 26);
-      backward1.setBounds(boardmid - 9, 0, 30, 26);
-      forward1.setBounds(boardmid + 20, 0, 30, 26);
-      forward10.setBounds(boardmid + 49, 0, 30, 26);
-      lastButton.setBounds(boardmid + 78, 0, 30, 26);
-      clearButton.setBounds(boardmid + 107, 0, 60, 26);
-      countButton.setBounds(boardmid + 166, 0, 60, 26);
-      heatMap.setBounds(boardmid + 225, 0, 60, 26);
-      txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
-      gotomove.setBounds(boardmid + 313, 0, 35, 26);
-      move.setBounds(boardmid + 347, 0, 35, 26);
-      coords.setBounds(boardmid + 381, 0, 35, 26);
-    }
-  }
+  //  public void setButtonLocation(int boardmid) {
+  //    savedbroadmid = boardmid;
+  //    int w = Lizzie.frame.mainPanel.getWidth();
+  //
+  //    if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
+  //      if (boardmid + 416 > w) boardmid = w - 416;
+  //      if (boardmid - 615 < 0) {boardmid = 615;
+  //	  rightMove.setVisible(true);
+  //	  rightMove.setBounds(w-20,0 , 20, 26);}
+  //      detail.setBounds(0, 0, 20, 26);
+  //      liveButton.setBounds(boardmid - 596, 0, 40, 26);
+  //      kataEstimate.setVisible(true);
+  //      kataEstimate.setBounds(boardmid - 557, 0, 60, 26);
+  //      batchOpen.setBounds(boardmid - 498, 0, 60, 26);
+  //      openfile.setBounds(boardmid - 439, 0, 40, 26);
+  //      savefile.setBounds(boardmid - 400, 0, 40, 26);
+  //      komi.setBounds(boardmid - 361, 0, 40, 26);
+  //      refresh.setBounds(boardmid - 322, 0, 40, 26);
+  //      analyse.setBounds(boardmid - 283, 0, 40, 26);
+  //      tryPlay.setBounds(boardmid - 244, 0, 40, 26);
+  //      setMain.setBounds(boardmid - 205, 0, 70, 26);
+  //      backMain.setBounds(boardmid - 136, 0, 70, 26);
+  //      firstButton.setBounds(boardmid - 67, 0, 30, 26);
+  //      backward10.setBounds(boardmid - 38, 0, 30, 26);
+  //      backward1.setBounds(boardmid - 9, 0, 30, 26);
+  //      forward1.setBounds(boardmid + 20, 0, 30, 26);
+  //      forward10.setBounds(boardmid + 49, 0, 30, 26);
+  //      lastButton.setBounds(boardmid + 78, 0, 30, 26);
+  //      clearButton.setBounds(boardmid + 107, 0, 60, 26);
+  //      countButton.setBounds(boardmid + 166, 0, 60, 26);
+  //      heatMap.setBounds(boardmid + 225, 0, 60, 26);
+  //      txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
+  //      gotomove.setBounds(boardmid + 313, 0, 35, 26);
+  //      move.setBounds(boardmid + 347, 0, 35, 26);
+  //      coords.setBounds(boardmid + 381, 0, 35, 26);
+  //    } else {
+  //      if (boardmid + 416 > w) boardmid = w - 416;
+  //      if (boardmid - 556 < 0) {boardmid = 556;
+  //	  rightMove.setVisible(true);
+  //	  rightMove.setBounds(w-20,0 , 20, 26);}
+  //      detail.setBounds(0, 0, 20, 26);
+  //      kataEstimate.setVisible(false);
+  //      liveButton.setBounds(boardmid - 537, 0, 40, 26);
+  //      batchOpen.setBounds(boardmid - 498, 0, 60, 26);
+  //      openfile.setBounds(boardmid - 439, 0, 40, 26);
+  //      savefile.setBounds(boardmid - 400, 0, 40, 26);
+  //      komi.setBounds(boardmid - 361, 0, 40, 26);
+  //      refresh.setBounds(boardmid - 322, 0, 40, 26);
+  //      analyse.setBounds(boardmid - 283, 0, 40, 26);
+  //      tryPlay.setBounds(boardmid - 244, 0, 40, 26);
+  //      setMain.setBounds(boardmid - 205, 0, 70, 26);
+  //      backMain.setBounds(boardmid - 136, 0, 70, 26);
+  //      firstButton.setBounds(boardmid - 67, 0, 30, 26);
+  //      backward10.setBounds(boardmid - 38, 0, 30, 26);
+  //      backward1.setBounds(boardmid - 9, 0, 30, 26);
+  //      forward1.setBounds(boardmid + 20, 0, 30, 26);
+  //      forward10.setBounds(boardmid + 49, 0, 30, 26);
+  //      lastButton.setBounds(boardmid + 78, 0, 30, 26);
+  //      clearButton.setBounds(boardmid + 107, 0, 60, 26);
+  //      countButton.setBounds(boardmid + 166, 0, 60, 26);
+  //      heatMap.setBounds(boardmid + 225, 0, 60, 26);
+  //      txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
+  //      gotomove.setBounds(boardmid + 313, 0, 35, 26);
+  //      move.setBounds(boardmid + 347, 0, 35, 26);
+  //      coords.setBounds(boardmid + 381, 0, 35, 26);
+  //    }
+  //  }
 
   public void resetEnginePk() {
     enginePkPanel.add(chkenginePkPlayouts);
@@ -2852,65 +2904,154 @@ public class BottomToolbar extends JPanel {
   }
 
   public void reSetButtonLocation() {
-    int boardmid = savedbroadmid;
-    int w = Lizzie.frame.getWidth();
-    if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
-      if (boardmid + 432 > w) boardmid = w - 432;
-      if (boardmid - 615 < 0) boardmid = 615;
-      detail.setBounds(0, 0, 20, 26);
-      liveButton.setBounds(boardmid - 596, 0, 40, 26);
-      kataEstimate.setVisible(true);
-      kataEstimate.setBounds(boardmid - 557, 0, 60, 26);
-      batchOpen.setBounds(boardmid - 498, 0, 60, 26);
-      openfile.setBounds(boardmid - 439, 0, 40, 26);
-      savefile.setBounds(boardmid - 400, 0, 40, 26);
-      komi.setBounds(boardmid - 361, 0, 40, 26);
-      refresh.setBounds(boardmid - 322, 0, 40, 26);
-      analyse.setBounds(boardmid - 283, 0, 40, 26);
-      tryPlay.setBounds(boardmid - 244, 0, 40, 26);
-      setMain.setBounds(boardmid - 205, 0, 70, 26);
-      backMain.setBounds(boardmid - 136, 0, 70, 26);
-      firstButton.setBounds(boardmid - 67, 0, 30, 26);
-      backward10.setBounds(boardmid - 38, 0, 30, 26);
-      backward1.setBounds(boardmid - 9, 0, 30, 26);
-      forward1.setBounds(boardmid + 20, 0, 30, 26);
-      forward10.setBounds(boardmid + 49, 0, 30, 26);
-      lastButton.setBounds(boardmid + 78, 0, 30, 26);
-      clearButton.setBounds(boardmid + 107, 0, 60, 26);
-      countButton.setBounds(boardmid + 166, 0, 60, 26);
-      heatMap.setBounds(boardmid + 225, 0, 60, 26);
-      txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
-      gotomove.setBounds(boardmid + 313, 0, 35, 26);
-      move.setBounds(boardmid + 347, 0, 35, 26);
-      coords.setBounds(boardmid + 381, 0, 35, 26);
+
+    int w = Lizzie.frame.mainPanel.getWidth();
+
+    if (rightMode) {
+      rightMove.setVisible(false);
+      if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
+
+        if (w < 1020) {
+          buttonPane.setBounds(38, 0, w - 19, 26);
+          leftMove.setVisible(true);
+          w = w - 19;
+        } else {
+          buttonPane.setBounds(19, 0, w - 19, 26);
+          leftMove.setVisible(false);
+        }
+
+        liveButton.setBounds(w - 1030, 0, 40, 26);
+        kataEstimate.setVisible(true);
+        kataEstimate.setBounds(w - 991, 0, 60, 26);
+        batchOpen.setBounds(w - 932, 0, 60, 26);
+        openfile.setBounds(w - 873, 0, 40, 26);
+        savefile.setBounds(w - 834, 0, 40, 26);
+        komi.setBounds(w - 795, 0, 40, 26);
+        refresh.setBounds(w - 756, 0, 40, 26);
+        analyse.setBounds(w - 717, 0, 40, 26);
+        tryPlay.setBounds(w - 678, 0, 40, 26);
+        setMain.setBounds(w - 639, 0, 70, 26);
+        backMain.setBounds(w - 570, 0, 70, 26);
+        firstButton.setBounds(w - 501, 0, 30, 26);
+        backward10.setBounds(w - 472, 0, 30, 26);
+        backward1.setBounds(w - 443, 0, 30, 26);
+        forward1.setBounds(w - 414, 0, 30, 26);
+        forward10.setBounds(w - 385, 0, 30, 26);
+        lastButton.setBounds(w - 356, 0, 30, 26);
+        clearButton.setBounds(w - 327, 0, 60, 26);
+        countButton.setBounds(w - 268, 0, 60, 26);
+        heatMap.setBounds(w - 209, 0, 60, 26);
+        txtMoveNumber.setBounds(w - 149, 1, 28, 24);
+        gotomove.setBounds(w - 121, 0, 35, 26);
+        move.setBounds(w - 87, 0, 35, 26);
+        coords.setBounds(w - 53, 0, 35, 26);
+      } else {
+        if (w < 961) {
+          buttonPane.setBounds(38, 0, w - 19, 26);
+          leftMove.setVisible(true);
+          w = w - 19;
+        } else {
+          buttonPane.setBounds(19, 0, w - 19, 26);
+          leftMove.setVisible(false);
+        }
+        kataEstimate.setVisible(false);
+        liveButton.setBounds(w - 971, 0, 40, 26);
+        batchOpen.setBounds(w - 932, 0, 60, 26);
+        openfile.setBounds(w - 873, 0, 40, 26);
+        savefile.setBounds(w - 834, 0, 40, 26);
+        komi.setBounds(w - 795, 0, 40, 26);
+        refresh.setBounds(w - 756, 0, 40, 26);
+        analyse.setBounds(w - 717, 0, 40, 26);
+        tryPlay.setBounds(w - 678, 0, 40, 26);
+        setMain.setBounds(w - 639, 0, 70, 26);
+        backMain.setBounds(w - 570, 0, 70, 26);
+        firstButton.setBounds(w - 501, 0, 30, 26);
+        backward10.setBounds(w - 472, 0, 30, 26);
+        backward1.setBounds(w - 443, 0, 30, 26);
+        forward1.setBounds(w - 414, 0, 30, 26);
+        forward10.setBounds(w - 385, 0, 30, 26);
+        lastButton.setBounds(w - 356, 0, 30, 26);
+        clearButton.setBounds(w - 327, 0, 60, 26);
+        countButton.setBounds(w - 268, 0, 60, 26);
+        heatMap.setBounds(w - 209, 0, 60, 26);
+        txtMoveNumber.setBounds(w - 149, 1, 28, 24);
+        gotomove.setBounds(w - 121, 0, 35, 26);
+        move.setBounds(w - 87, 0, 35, 26);
+        coords.setBounds(w - 53, 0, 35, 26);
+      }
     } else {
-      if (boardmid + 432 > w) boardmid = w - 432;
-      if (boardmid - 556 < 0) boardmid = 556;
-      detail.setBounds(0, 0, 20, 26);
-      kataEstimate.setVisible(false);
-      liveButton.setBounds(boardmid - 537, 0, 40, 26);
-      batchOpen.setBounds(boardmid - 498, 0, 60, 26);
-      openfile.setBounds(boardmid - 439, 0, 40, 26);
-      savefile.setBounds(boardmid - 400, 0, 40, 26);
-      komi.setBounds(boardmid - 361, 0, 40, 26);
-      refresh.setBounds(boardmid - 322, 0, 40, 26);
-      analyse.setBounds(boardmid - 283, 0, 40, 26);
-      tryPlay.setBounds(boardmid - 244, 0, 40, 26);
-      setMain.setBounds(boardmid - 205, 0, 70, 26);
-      backMain.setBounds(boardmid - 136, 0, 70, 26);
-      firstButton.setBounds(boardmid - 67, 0, 30, 26);
-      backward10.setBounds(boardmid - 38, 0, 30, 26);
-      backward1.setBounds(boardmid - 9, 0, 30, 26);
-      forward1.setBounds(boardmid + 20, 0, 30, 26);
-      forward10.setBounds(boardmid + 49, 0, 30, 26);
-      lastButton.setBounds(boardmid + 78, 0, 30, 26);
-      clearButton.setBounds(boardmid + 107, 0, 60, 26);
-      countButton.setBounds(boardmid + 166, 0, 60, 26);
-      heatMap.setBounds(boardmid + 225, 0, 60, 26);
-      txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
-      gotomove.setBounds(boardmid + 313, 0, 35, 26);
-      move.setBounds(boardmid + 347, 0, 35, 26);
-      coords.setBounds(boardmid + 381, 0, 35, 26);
+      leftMove.setVisible(false);
+      if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
+
+        if (w < 1020) {
+          buttonPane.setBounds(19, 0, w - 39, 26);
+          rightMove.setVisible(true);
+          rightMove.setBounds(w - 20, 0, 20, 26);
+        } else {
+          buttonPane.setBounds(19, 0, w - 19, 26);
+          rightMove.setVisible(false);
+        }
+
+        liveButton.setBounds(0, 0, 40, 26);
+        kataEstimate.setVisible(true);
+        kataEstimate.setBounds(39, 0, 60, 26);
+        batchOpen.setBounds(98, 0, 60, 26);
+        openfile.setBounds(157, 0, 40, 26);
+        savefile.setBounds(196, 0, 40, 26);
+        komi.setBounds(235, 0, 40, 26);
+        refresh.setBounds(274, 0, 40, 26);
+        analyse.setBounds(313, 0, 40, 26);
+        tryPlay.setBounds(352, 0, 40, 26);
+        setMain.setBounds(391, 0, 70, 26);
+        backMain.setBounds(460, 0, 70, 26);
+        firstButton.setBounds(529, 0, 30, 26);
+        backward10.setBounds(558, 0, 30, 26);
+        backward1.setBounds(587, 0, 30, 26);
+        forward1.setBounds(616, 0, 30, 26);
+        forward10.setBounds(645, 0, 30, 26);
+        lastButton.setBounds(674, 0, 30, 26);
+        clearButton.setBounds(703, 0, 60, 26);
+        countButton.setBounds(762, 0, 60, 26);
+        heatMap.setBounds(821, 0, 60, 26);
+        txtMoveNumber.setBounds(881, 1, 28, 24);
+        gotomove.setBounds(909, 0, 35, 26);
+        move.setBounds(943, 0, 35, 26);
+        coords.setBounds(977, 0, 35, 26);
+      } else {
+        if (w < 961) {
+          buttonPane.setBounds(19, 0, w - 39, 26);
+          rightMove.setVisible(true);
+          rightMove.setBounds(w - 20, 0, 20, 26);
+        } else {
+          buttonPane.setBounds(19, 0, w - 19, 26);
+          rightMove.setVisible(false);
+        }
+
+        kataEstimate.setVisible(false);
+        liveButton.setBounds(0, 0, 40, 26);
+        batchOpen.setBounds(39, 0, 60, 26);
+        openfile.setBounds(98, 0, 40, 26);
+        savefile.setBounds(137, 0, 40, 26);
+        komi.setBounds(176, 0, 40, 26);
+        refresh.setBounds(215, 0, 40, 26);
+        analyse.setBounds(254, 0, 40, 26);
+        tryPlay.setBounds(293, 0, 40, 26);
+        setMain.setBounds(332, 0, 70, 26);
+        backMain.setBounds(401, 0, 70, 26);
+        firstButton.setBounds(470, 0, 30, 26);
+        backward10.setBounds(499, 0, 30, 26);
+        backward1.setBounds(528, 0, 30, 26);
+        forward1.setBounds(557, 0, 30, 26);
+        forward10.setBounds(586, 0, 30, 26);
+        lastButton.setBounds(615, 0, 30, 26);
+        clearButton.setBounds(644, 0, 60, 26);
+        countButton.setBounds(703, 0, 60, 26);
+        heatMap.setBounds(762, 0, 60, 26);
+        txtMoveNumber.setBounds(822, 1, 28, 24);
+        gotomove.setBounds(850, 0, 35, 26);
+        move.setBounds(884, 0, 35, 26);
+        coords.setBounds(918, 0, 35, 26);
+      }
     }
   }
 }
