@@ -64,6 +64,7 @@ public class Config {
   public boolean showEditbar = false;
   public boolean showNameInBoard = true;
   public boolean openHtmlOnLive = false;
+  public boolean readKomi = false;
 
   public JSONObject config;
   public JSONObject leelazConfig;
@@ -309,6 +310,7 @@ public class Config {
     showScoremeanInSuggestion = uiConfig.optBoolean("show-scoremean-in-suggestion", true);
     showNameInBoard = uiConfig.optBoolean("show-name-in-board", true);
     openHtmlOnLive = uiConfig.optBoolean("open-html-onlive", false);
+    readKomi = uiConfig.optBoolean("read-komi", false);
     showEditbar = uiConfig.optBoolean("show-edit-bar", false);
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);

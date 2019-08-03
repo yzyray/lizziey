@@ -399,18 +399,20 @@ public class SGFParser {
               Lizzie.board.isKataBoard = true;
             }
           } else if (tag.equals("KM")) {
-            try {
-              if (tagContent.trim().isEmpty()) {
-                tagContent = "7.5";
+            if (Lizzie.config.readKomi) {
+              try {
+                if (tagContent.trim().isEmpty()) {
+                  tagContent = "7.5";
+                }
+                Lizzie.board.getHistory().getGameInfo().setKomi(Double.parseDouble(tagContent));
+                if (Lizzie.engineManager.currentEngineNo >= 0) {
+                  Lizzie.engineManager.isEmpty = false;
+                  Lizzie.leelaz.sendCommand("komi " + Double.parseDouble(tagContent));
+                  Lizzie.engineManager.isEmpty = true;
+                }
+              } catch (NumberFormatException e) {
+                e.printStackTrace();
               }
-              Lizzie.board.getHistory().getGameInfo().setKomi(Double.parseDouble(tagContent));
-              if (Lizzie.engineManager.currentEngineNo >= 0) {
-                Lizzie.engineManager.isEmpty = false;
-                Lizzie.leelaz.sendCommand("komi " + Double.parseDouble(tagContent));
-                Lizzie.engineManager.isEmpty = true;
-              }
-            } catch (NumberFormatException e) {
-              e.printStackTrace();
             }
           } else {
             if (moveStart) {
@@ -648,6 +650,7 @@ public class SGFParser {
 
   /** Generate node with variations */
   public static void appendComment() {
+    if (!Lizzie.leelaz.isLoaded()) return;
     if (Lizzie.board.getHistory().getCurrentHistoryNode().getData().getPlayouts() > 0) {
       Lizzie.board.getHistory().getData().comment =
           formatCommentOne(Lizzie.board.getHistory().getCurrentHistoryNode());
@@ -726,31 +729,14 @@ public class SGFParser {
    */
   private static String formatComment(BoardHistoryNode node) {
     BoardData data = node.getData();
-    String engine = Lizzie.leelaz.currentEnginename;
-    // if (Lizzie.frame.toolbar.isEnginePk) {
-    // if (node.getData().blackToPlay) {
-    // engine =
-    //
-    // Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename;
-    // } else {
-    // engine =
-    //
-    // Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename;
-    // }
-    //
-    // } else {
-    // engine
-    // }
-    // Playouts
+    String engine = Lizzie.leelaz.currentEnginename.replaceAll("\\(|\\)|\\[|\\]", "");
+
     String playouts = Lizzie.frame.getPlayoutsString(data.getPlayouts());
 
     // Last winrate
     Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
     boolean validLastWinrate = false;
-    // if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 3) {
-    // lastNode = node.previous().get().previous().flatMap(n ->
-    // Optional.of(n.getData()));
-    // }
+
     double lastWR = validLastWinrate ? lastNode.get().getWinrate() : 50;
     if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() > 2) {
       lastWR = 100 - lastWR;
@@ -791,33 +777,93 @@ public class SGFParser {
     // if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() <= 3) {
     // lastMoveDiff = "";
     // }
-    String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
+    //    String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
     boolean blackWinrate =
         !node.getData().blackToPlay || Lizzie.config.uiConfig.getBoolean("win-rate-always-black");
-    String nc =
-        String.format(
-            wf,
-            blackWinrate ? "黑" : "白",
-            String.format("%.1f%%", 100 - curWR),
-            lastMoveDiff,
-            engine,
-            playouts);
+    String nc = "";
+    //        String.format(
+    //            wf,
+    //           blackWinrate ? "黑" : "白",
+    //            String.format("%.1f%%", 100 - curWR),
+    //            lastMoveDiff,
+    //            engine,
+    //            playouts);
+
+    if (Lizzie.leelaz.isKatago) {
+      double score = node.getData().scoreMean;
+      if (Lizzie.board.getHistory().isBlacksTurn()) {
+        if (Lizzie.config.showKataGoBoardScoreMean) {
+          score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
+        }
+      } else {
+        if (Lizzie.config.showKataGoBoardScoreMean) {
+          score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
+        }
+        if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
+          score = -score;
+        }
+      }
+      String wf = "%s棋 胜率: %s %s\n目差: %s 局面复杂度: %s\n(%s / %s 计算量)";
+      nc =
+          String.format(
+              wf,
+              blackWinrate ? "黑" : "白",
+              String.format("%.1f%%", 100 - curWR),
+              lastMoveDiff,
+              String.format("%.1f", score),
+              String.format("%.1f", Lizzie.leelaz.scoreStdev),
+              engine,
+              playouts);
+    } else {
+      String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
+
+      nc =
+          String.format(
+              wf,
+              blackWinrate ? "黑" : "白",
+              String.format("%.1f%%", 100 - curWR),
+              lastMoveDiff,
+              engine,
+              playouts);
+    }
 
     if (!data.comment.isEmpty()) {
-      // String wp =
-      // "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\([^\\(\\)/]* \\/
-      // [0-9\\.]*[kmKM]*
-      // 计算量\\)";
-      String wp =
-          "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\("
-              + engine
-              + " / [0-9\\.]*[kmKM]* 计算量\\)";
+      // [^\\(\\)/]*
+      String wp = "";
+      if (!Lizzie.leelaz.isKatago) {
+        wp =
+            "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\("
+                + engine
+                + " / [0-9\\.]*[kmKM]* 计算量\\)";
+      } else {
+        wp =
+            "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n目差: [0-9\\.\\-+]* 局面复杂度: [0-9\\.\\-+]*\n\\("
+                + engine
+                + " / [0-9\\.]*[kmKM]* 计算量\\)";
+      }
+      // if (Lizzie.leelaz.isKatago) wp = wp + "\n.*";
       if (data.comment.matches("(?s).*" + wp + "(?s).*")) {
         nc = data.comment.replaceAll(wp, nc);
       } else {
         nc = String.format("%s\n\n%s", nc, data.comment);
       }
     }
+
+    //    if (!data.comment.isEmpty()) {
+    //      // String wp =
+    //      // "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\([^\\(\\)/]* \\/
+    //      // [0-9\\.]*[kmKM]*
+    //      // 计算量\\)";
+    //      String wp =
+    //          "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\("
+    //              + engine
+    //              + " / [0-9\\.]*[kmKM]* 计算量\\)";
+    //      if (data.comment.matches("(?s).*" + wp + "(?s).*")) {
+    //        nc = data.comment.replaceAll(wp, nc);
+    //      } else {
+    //        nc = String.format("%s\n\n%s", nc, data.comment);
+    //      }
+    //    }
     return nc;
   }
 
@@ -977,9 +1023,7 @@ public class SGFParser {
 
   private static String formatCommentOne(BoardHistoryNode node) {
     BoardData data = node.getData();
-    String engine = "";
-
-    engine = Lizzie.leelaz.currentEnginename.replaceAll("\\(|\\)|\\[|\\]", "");
+    String engine = Lizzie.leelaz.currentEnginename.replaceAll("\\(|\\)|\\[|\\]", "");
 
     // Playouts
     String playouts = "";
@@ -1074,15 +1118,6 @@ public class SGFParser {
               playouts);
     }
 
-    //    if (Lizzie.leelaz.isKatago) {
-    //
-    //      nc =
-    //          nc
-    //              + "\n目差: "
-    //              + String.format("%.1f", score)
-    //              + " 局面复杂度: "
-    //              + String.format("%.1f", Lizzie.leelaz.scoreStdev);
-    //    }
     if (!data.comment.isEmpty()) {
       // [^\\(\\)/]*
       String wp = "";
@@ -1470,7 +1505,7 @@ public class SGFParser {
           } else if (tag.equals("KM")) {
             try {
               if (tagContent.trim().isEmpty()) {
-                tagContent = "0.0";
+                tagContent = "7.5";
               }
               history.getGameInfo().setKomi(Double.parseDouble(tagContent));
             } catch (NumberFormatException e) {
@@ -1699,7 +1734,7 @@ public class SGFParser {
           } else if (tag.equals("KM")) {
             try {
               if (tagContent.trim().isEmpty()) {
-                tagContent = "0.0";
+                tagContent = "7.5";
               }
               history.getGameInfo().setKomi(Double.parseDouble(tagContent));
             } catch (NumberFormatException e) {

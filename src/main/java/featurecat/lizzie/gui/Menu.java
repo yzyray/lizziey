@@ -61,6 +61,25 @@ public class Menu extends MenuBar {
     openItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openItem);
 
+    final JCheckBoxMenuItem readKomi = new JCheckBoxMenuItem();
+    readKomi.setText("自动保存棋谱(每10秒)");
+    readKomi.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.config.readKomi = !Lizzie.config.readKomi;
+            Lizzie.config.uiConfig.put("read-komi", Lizzie.config.readKomi);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    fileMenu.add(readKomi);
+
     final JMenuItem openUrlItem = new JMenuItem("打开在线链接(Q)");
     openUrlItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openUrlItem);
@@ -223,6 +242,8 @@ public class Menu extends MenuBar {
             if (Lizzie.config.uiConfig.optInt("autosave-interval-seconds", -1) > 0)
               autoSave.setState(true);
             else autoSave.setState(false);
+            if (Lizzie.config.readKomi) readKomi.setState(true);
+            else readKomi.setState(false);
           }
 
           @Override

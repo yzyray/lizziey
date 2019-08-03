@@ -901,7 +901,7 @@ public class LizzieFrame extends JFrame {
       if (file.exists()) {
         int ret =
             JOptionPane.showConfirmDialog(
-                null,
+                Lizzie.frame,
                 resourceBundle.getString("LizzieFrame.prompt.sgfExists"),
                 "Warning",
                 JOptionPane.OK_CANCEL_OPTION);
@@ -916,11 +916,9 @@ public class LizzieFrame extends JFrame {
         SGFParser.save(Lizzie.board, file.getPath());
         filesystem.put("last-folder", file.getParent());
       } catch (IOException err) {
-        JOptionPane.showConfirmDialog(
-            null,
-            resourceBundle.getString("LizzieFrame.prompt.failedTosaveFile"),
-            "Error",
-            JOptionPane.ERROR);
+        Message msg = new Message();
+        msg.setMessage("保存失败");
+        msg.setVisible(true);
       }
     }
   }
