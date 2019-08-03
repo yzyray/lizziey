@@ -1986,9 +1986,9 @@ public class LizzieFrame extends JFrame {
       }
       if (Lizzie.leelaz.isColorEngine) {
         text = text + "阶段:" + Lizzie.leelaz.stage + " 贴目:" + Lizzie.leelaz.komi;
-      } else {
-        if (!komi.equals("7.5")) text = text + "贴目:" + komi;
-      }
+      } // else {
+      //  if (!komi.equals("7.5")) text = text + "贴目:" + komi;
+      //  }
       if (!Lizzie.config.showNameInBoard) {
         if (toolbar.isEnginePk) {
           text =
@@ -2060,6 +2060,7 @@ public class LizzieFrame extends JFrame {
   private void drawCaptured(
       Graphics2D g, int posX, int posY, int width, int height, boolean isSmallCap) {
     // Draw border
+    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g.setColor(new Color(0, 0, 0, 130));
     g.fillRect(posX, posY, width, height);
 
@@ -2124,7 +2125,7 @@ public class LizzieFrame extends JFrame {
       g.setColor((Lizzie.leelaz != null && Lizzie.leelaz.isPondering()) ? Color.GREEN : Color.RED);
       g.fillOval(
           posX - strokeRadius + width / 2 - statusDiam / 2,
-          posY + height * 3 / 10 + (diam - statusDiam) / 2,
+          posY + height * 2 / 13 + (diam - statusDiam) / 2,
           statusDiam,
           statusDiam);
     } else {
@@ -2148,7 +2149,12 @@ public class LizzieFrame extends JFrame {
     }
     // Draw captures
     String bval = "", wval = "";
-    if (isSmallCap) setPanelFont(g, (float) (min(width * 0.3, height) * 0.40));
+    if (isSmallCap)
+      setPanelFont(
+          g,
+          (float) (min(width * 0.4, height) * 0.30) > 18
+              ? 18
+              : (float) (min(width * 0.4, height) * 0.30));
     else setPanelFont(g, (float) (height * 0.18));
     if (Lizzie.board.inScoreMode()) {
       double score[] = Lizzie.board.getScore(Lizzie.board.scoreStones());
@@ -2171,6 +2177,13 @@ public class LizzieFrame extends JFrame {
 
     g.drawString(bval, posX + width / 4 + bx, posY + height * 7 / 8);
     g.drawString(wval, posX + width * 3 / 4 + wx, posY + height * 7 / 8);
+
+    // Komi
+    String komi =
+        GameInfoDialog.FORMAT_KOMI.format(Lizzie.board.getHistory().getGameInfo().getKomi());
+    int kw = g.getFontMetrics().stringWidth(komi);
+    // g.setFont(new Font(g.getFont().getName(),Font.BOLD,g.getFont().getSize()));
+    g.drawString(komi, posX - strokeRadius + width / 2 - kw / 2, posY + height * 7 / 8);
   }
 
   private void setPanelFont(Graphics2D g, float size) {
@@ -3157,8 +3170,8 @@ public class LizzieFrame extends JFrame {
     FontMetrics fm = g.getFontMetrics(font);
     font = font.deriveFont((float) (font.getSize2D() * maximumFontWidth / fm.stringWidth(string)));
     font = font.deriveFont(min(maximumFontHeight, font.getSize()));
-    if (font.getSize() > 19) {
-      font = new Font(font.getName(), font.getStyle(), (int) (font.getSize() * 0.85));
+    if (font.getSize() > 20) {
+      font = new Font(font.getName(), font.getStyle(), 20);
     }
     g.setFont(font);
     fm = g.getFontMetrics(font);

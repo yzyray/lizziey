@@ -346,7 +346,7 @@ public class WinrateGraph {
             // g.setColor(Color.BLACK);
             else g.setColor(Lizzie.config.winrateMissLineColor);
 
-            if (lastOkMove > 0) {
+            if (lastOkMove > 0 && Math.abs(movenum - lastOkMove) < 25) {
               if (Lizzie.config.showBlunderBar) {
                 Color lineColor = g.getColor();
                 g.setColor(Lizzie.config.blunderBarColor);
@@ -488,7 +488,7 @@ public class WinrateGraph {
             // wr = lastWr;
             // }
 
-            if (lastOkMove > 0) {
+            if (lastOkMove > 0 && Math.abs(movenum - lastOkMove) < 25) {
               if (Lizzie.config.showBlunderBar) {
                 // Color lineColor = g.getColor();
                 g.setColor(Lizzie.config.blunderBarColor);
@@ -726,7 +726,7 @@ public class WinrateGraph {
               curmovenum = movenum;
               drawcurscoreMean = curscoreMean;
             }
-            if (lastOkMove > 0) {
+            if (lastOkMove > 0 && Math.abs(movenum - lastOkMove) < 25) {
 
               if (lastscoreMean > -500) {
                 // Color lineColor = g.getColor();
@@ -797,7 +797,7 @@ public class WinrateGraph {
             curmovenum = movenum;
             drawcurscoreMean = curscoreMean;
           }
-          if (lastOkMove > 0) {
+          if (lastOkMove > 0 && Math.abs(movenum - lastOkMove) < 25) {
 
             if (lastscoreMean > -500) {
               // Color lineColor = g.getColor();
