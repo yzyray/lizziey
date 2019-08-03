@@ -804,6 +804,12 @@ public class SGFParser {
         }
       }
       String wf = "%s棋 胜率: %s %s\n目差: %s 局面复杂度: %s\n(%s / %s 计算量)";
+      double scoreStdev = 0;
+      try {
+        if (!node.getData().bestMoves.isEmpty())
+          scoreStdev = node.getData().bestMoves.get(0).scoreStdev;
+      } catch (Exception ex) {
+      }
       nc =
           String.format(
               wf,
@@ -811,7 +817,7 @@ public class SGFParser {
               String.format("%.1f%%", 100 - curWR),
               lastMoveDiff,
               String.format("%.1f", score),
-              String.format("%.1f", Lizzie.leelaz.scoreStdev),
+              String.format("%.1f", scoreStdev),
               engine,
               playouts);
     } else {
