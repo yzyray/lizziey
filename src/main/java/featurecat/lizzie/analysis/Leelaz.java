@@ -2736,6 +2736,27 @@ public boolean startAutoAna=false;
 				ponder2();
 		}
 	}
+	
+	public void playMoveNoPonder(Stone color, String move) {
+		synchronized (this) {
+			String colorString;
+			switch (color) {
+			case BLACK:
+				colorString = "B";
+				break;
+			case WHITE:
+				colorString = "W";
+				break;
+			default:
+				throw new IllegalArgumentException("The stone color must be B or W, but was " + color.toString());
+			}
+			sendCommand("play " + colorString + " " + move);
+			Lizzie.frame.subBoardRenderer.reverseBestmoves = true;
+			Lizzie.frame.boardRenderer.reverseBestmoves = true;
+			// bestMoves = new ArrayList<>();
+		}
+		}	
+	
 
 	public void playMoveNoPonder(String colorString, String move) {
 		synchronized (this) {
@@ -2746,6 +2767,8 @@ public boolean startAutoAna=false;
 			// bestMoves = new ArrayList<>();
 		}
 		}	
+	
+	
 
 	public void playMovePonder(String colorString, String move) {
 		

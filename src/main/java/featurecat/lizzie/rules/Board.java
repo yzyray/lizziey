@@ -1359,7 +1359,23 @@ public class Board implements LeelazListener {
         Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
         Lizzie.leelaz.genmove((Lizzie.board.getData().blackToPlay ? "W" : "B"));
       } else if (!Lizzie.frame.isPlayingAgainstLeelaz && !Lizzie.leelaz.isInputCommand) {
-        Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
+        Lizzie.frame.toolbar.isPkStop = true;
+        Lizzie.engineManager
+            .engineList
+            .get(Lizzie.frame.toolbar.engineWhite)
+            .playMoveNoPonder(color, convertCoordinatesToName(x, y));
+        Lizzie.engineManager
+            .engineList
+            .get(Lizzie.frame.toolbar.engineBlack)
+            .playMoveNoPonder(color, convertCoordinatesToName(x, y));
+        if (getHistory().isBlacksTurn()) {
+          Lizzie.leelaz = Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
+        } else {
+          Lizzie.leelaz = Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
+        }
+        Lizzie.leelaz.played = false;
+        Lizzie.leelaz.ponder();
+        Lizzie.frame.toolbar.isPkStop = false;
       }
 
       // update history with this coordinate

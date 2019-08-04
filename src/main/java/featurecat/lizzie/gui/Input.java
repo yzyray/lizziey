@@ -24,15 +24,16 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     if (Lizzie.frame.processPressOnSub(e)) {
       return;
     }
+    if (Lizzie.frame.toolbar.isEnginePk) {
+      if (e.getButton() == MouseEvent.BUTTON1) Lizzie.frame.onClickedForManul(e.getX(), e.getY());
+      return;
+    }
     if (SwingUtilities.isMiddleMouseButton(e)) {
 
       Lizzie.frame.replayBranchByWheel();
     }
     if (e.getButton() == MouseEvent.BUTTON1) // left click
     {
-      if (Lizzie.frame.toolbar.isEnginePk) {
-        Lizzie.frame.onClickedForManul(e.getX(), e.getY());
-      }
       if (e.getClickCount() == 2
           && !Lizzie.frame.isTrying
           && !Lizzie.frame.urlSgf
