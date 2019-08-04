@@ -1371,6 +1371,26 @@ public class Menu extends MenuBar {
 
     editMenu.addSeparator();
 
+    final JMenuItem delete = new JMenuItem("删除(Delete)");
+    editMenu.add(delete);
+    delete.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.board.deleteMove();
+          }
+        });
+
+    final JMenuItem deleteBranch = new JMenuItem("删除分支(Shift+Delete)");
+    editMenu.add(deleteBranch);
+    deleteBranch.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.board.deleteBranch();
+          }
+        });
+
+    editMenu.addSeparator();
+
     final JMenuItem insertbItem = new JMenuItem();
     insertbItem.setText("插入黑子");
     // aboutItem.setMnemonic('A');
