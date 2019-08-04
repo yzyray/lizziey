@@ -79,6 +79,8 @@ public class BottomToolbar extends JPanel {
   public int timeb = -1;
   public int timew = -1;
 
+  public int doublePassGame = 0;
+  public int maxMoveGame = 0;
   public int maxGanmeMove = 360;
   public boolean checkGameMaxMove = false;
 
@@ -2584,6 +2586,8 @@ public class BottomToolbar extends JPanel {
 
     Lizzie.frame.isPlayingAgainstLeelaz = false;
     btnStartPk.setText("终止");
+    btnEnginePkStop.setText("暂停");
+    isPkStop = false;
     Lizzie.frame.removeInput();
     EnginePkBatchNumberNow = 1;
     isEnginePkBatch = chkenginePkBatch.isSelected();
@@ -2629,6 +2633,8 @@ public class BottomToolbar extends JPanel {
         Lizzie.engineManager.switchEngine(engineBlack);
       }
     }
+    doublePassGame = 0;
+    maxMoveGame = 0;
     if (!isGenmove) {
       // 分析模式对战
       if (checkGameMinMove) {

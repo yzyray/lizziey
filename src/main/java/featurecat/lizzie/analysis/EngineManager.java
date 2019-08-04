@@ -557,8 +557,10 @@ public class EngineManager {
     // Lizzie.board.saveMoveNumber();
     Leelaz newEng = engineList.get(index);
     newEng.played = false;
+    newEng.outOfMoveNum = false;
     newEng.blackResignMoveCounts = 0;
     newEng.whiteResignMoveCounts = 0;
+    newEng.doublePass = false;
     newEng.resigned = false;
     newEng.isResigning = false;
     newEng.width = Lizzie.board.boardWidth;

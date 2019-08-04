@@ -100,8 +100,8 @@ public boolean startAutoAna=false;
 	ArrayList<Double> tempcount = new ArrayList<Double>();
 
 	// dynamic komi and opponent komi as reported by dynamic-komi version of leelaz
-	private float dynamicKomi = Float.NaN;
-	private float dynamicOppKomi = Float.NaN;
+//	private float dynamicKomi = Float.NaN;
+//	private float dynamicOppKomi = Float.NaN;
 	
 	public int version = -1;
 //	public ArrayList<Integer> heatcount = new ArrayList<Integer>();
@@ -1307,6 +1307,7 @@ public boolean startAutoAna=false;
 			saveTimeoutFile();
 		}
 		else {
+			if(!doublePass&&!outOfMoveNum) {
 		if (this.currentEngineN == Lizzie.frame.toolbar.engineBlack) {
 			// 白胜
 			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
@@ -1330,11 +1331,10 @@ public boolean startAutoAna=false;
 				Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
 			else
 				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
-		}
+		}}
 		if (Lizzie.frame.toolbar.AutosavePk || Lizzie.frame.toolbar.isEnginePkBatch) {
 			if (doublePass) {
-				savePassFile();
-				doublePass = false;
+				savePassFile();				
 			} else {
 				savePkFile();
 			}
@@ -1352,6 +1352,7 @@ public boolean startAutoAna=false;
 //				if (Lizzie.frame.toolbar.checkGameTime) {
 //					Lizzie.engineManager.gameTime = System.currentTimeMillis();
 //				}
+				
 				Lizzie.frame.setResult("");
 				if (Lizzie.frame.toolbar.exChange)
 				// if(false)
@@ -1477,10 +1478,15 @@ public boolean startAutoAna=false;
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				  msg=new Message();
-	             msg.setMessage( "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
-							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在"+courseFile+"\\PkAutoSave");
-	             msg.setVisible(true);
+					  msg=new Message();
+					  String passandMove="";
+					  if(Lizzie.frame.toolbar.doublePassGame>0)
+						  passandMove=passandMove+"双方Pass局数 "+Lizzie.frame.toolbar.doublePassGame;
+					  if(Lizzie.frame.toolbar.maxMoveGame>0)
+						  passandMove=passandMove+"超最大手数局数  "+Lizzie.frame.toolbar.maxMoveGame;
+		              msg.setMessage( "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
+								+ Lizzie.frame.toolbar.pkWhiteWins +" "+passandMove+ "棋谱保存在"+courseFile+"\\PkAutoSave");
+		              msg.setVisible(true);
             	}
 
 			}
@@ -1512,14 +1518,18 @@ public boolean startAutoAna=false;
 			String jg = "对战已结束，";
 			if(Lizzie.frame.toolbar.checkGameMaxMove&&Lizzie.board.getHistory().getMoveNumber() > Lizzie.frame.toolbar.maxGanmeMove)
 				jg=jg+"超过手数限制";
-			else {
+			else 
+			if(doublePass)
+			{
+				jg=jg+"双方Pass无法判断胜负";
+			}else {
 			if (currentEngineN == Lizzie.frame.toolbar.engineBlack) {
 				// df=df+"_白胜";				
 				jg = jg + "白胜";
 			} else {
 				jg = jg + "黑胜";
 			}
-			}
+			}			
 			if (Lizzie.frame.toolbar.AutosavePk) {
 				File file = new File("");
 				String courseFile = "";
@@ -1566,7 +1576,9 @@ public boolean startAutoAna=false;
 		{
 			saveTimeoutFile();
 		}
-		else {	if (blackResignMoveCounts >= Lizzie.frame.toolbar.pkResignMoveCounts) {
+		else {	
+			if(!outOfMoveNum&&!doublePass) {
+			if (blackResignMoveCounts >= Lizzie.frame.toolbar.pkResignMoveCounts) {
 			// df=df+"_白胜";
 
 			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
@@ -1594,12 +1606,11 @@ public boolean startAutoAna=false;
 				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
 
 		}
-	
+			}
 
 		 if (Lizzie.frame.toolbar.AutosavePk || Lizzie.frame.toolbar.isEnginePkBatch) {
 			if (doublePass) {
-				savePassFile();
-				doublePass = false;
+				savePassFile();				
 			} else {
 				savePkFile();
 			}
@@ -1788,8 +1799,13 @@ public boolean startAutoAna=false;
 						e.printStackTrace();
 					}
 				  msg=new Message();
+				  String passandMove="";
+				  if(Lizzie.frame.toolbar.doublePassGame>0)
+					  passandMove=passandMove+"双方Pass局数 "+Lizzie.frame.toolbar.doublePassGame;
+				  if(Lizzie.frame.toolbar.maxMoveGame>0)
+					  passandMove=passandMove+"超最大手数局数  "+Lizzie.frame.toolbar.maxMoveGame;
 	              msg.setMessage( "批量对战已结束,比分为" + Lizzie.frame.toolbar.pkBlackWins + ":"
-							+ Lizzie.frame.toolbar.pkWhiteWins + "棋谱保存在"+courseFile+"\\PkAutoSave");
+							+ Lizzie.frame.toolbar.pkWhiteWins +" "+passandMove+ "棋谱保存在"+courseFile+"\\PkAutoSave");
 	              msg.setVisible(true);
             	}
 				
@@ -1857,6 +1873,7 @@ public boolean startAutoAna=false;
 	}
 
 	private void savePassFile() {
+		Lizzie.frame.toolbar.doublePassGame=Lizzie.frame.toolbar.doublePassGame+1;
 		File file = new File("");
 		String courseFile = "";
 		try {
@@ -1932,8 +1949,8 @@ public boolean startAutoAna=false;
 		}
 	}
 
-	 private void saveTimeoutFile() {
-		 outOfMoveNum=false;
+	 private void saveTimeoutFile() {		 
+		 Lizzie.frame.toolbar.maxMoveGame=Lizzie.frame.toolbar.maxMoveGame+1;
 		    File file = new File("");
 		    String courseFile = "";
 		    try {

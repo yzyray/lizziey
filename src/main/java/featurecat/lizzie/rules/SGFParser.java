@@ -5,7 +5,6 @@ import static java.util.Arrays.asList;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
 import featurecat.lizzie.analysis.Leelaz;
-import featurecat.lizzie.analysis.MoveData;
 import featurecat.lizzie.util.EncodingDetector;
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -653,7 +652,7 @@ public class SGFParser {
     if (!Lizzie.leelaz.isLoaded()) return;
     if (Lizzie.board.getHistory().getCurrentHistoryNode().getData().getPlayouts() > 0) {
       Lizzie.board.getHistory().getData().comment =
-          formatCommentOne(Lizzie.board.getHistory().getCurrentHistoryNode());
+          formatComment(Lizzie.board.getHistory().getCurrentHistoryNode());
     }
   }
 
@@ -791,7 +790,7 @@ public class SGFParser {
 
     if (Lizzie.leelaz.isKatago) {
       double score = node.getData().scoreMean;
-      if (Lizzie.board.getHistory().isBlacksTurn()) {
+      if (node.getData().blackToPlay) {
         if (Lizzie.config.showKataGoBoardScoreMean) {
           score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
         }
@@ -942,18 +941,18 @@ public class SGFParser {
       if (Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).isKatago) {
         double score =
             Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).scoreMean;
-        if (Lizzie.board.getHistory().isBlacksTurn()) {
-          if (Lizzie.config.showKataGoBoardScoreMean) {
-            score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
-          }
-        } else {
-          if (Lizzie.config.showKataGoBoardScoreMean) {
-            score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
-          }
-          if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
-            score = -score;
-          }
+        //        if (Lizzie.board.getHistory().isBlacksTurn()) {
+        //          if (Lizzie.config.showKataGoBoardScoreMean) {
+        //            score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
+        //          }
+        //        } else {
+        if (Lizzie.config.showKataGoBoardScoreMean) {
+          score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
         }
+        if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
+          score = -score;
+        }
+        //     }
         wf = "%s棋 胜率: %s %s\n目差: %s 局面复杂度: %s\n(%s / %s 计算量)";
         nc =
             String.format(
@@ -984,18 +983,18 @@ public class SGFParser {
       if (Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isKatago) {
         double score =
             Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).scoreMean;
-        if (Lizzie.board.getHistory().isBlacksTurn()) {
-          if (Lizzie.config.showKataGoBoardScoreMean) {
-            score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
-          }
-        } else {
-          if (Lizzie.config.showKataGoBoardScoreMean) {
-            score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
-          }
-          if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
-            score = -score;
-          }
+        //      if (Lizzie.board.getHistory().isBlacksTurn()) {
+        if (Lizzie.config.showKataGoBoardScoreMean) {
+          score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
         }
+        //        } else {
+        //          if (Lizzie.config.showKataGoBoardScoreMean) {
+        //            score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
+        //          }
+        //          if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
+        //            score = -score;
+        //          }
+        //        }
         wf = "%s棋 胜率: %s %s\n目差: %s 局面复杂度: %s\n(%s / %s 计算量)";
         nc =
             String.format(
@@ -1027,127 +1026,135 @@ public class SGFParser {
     return nc;
   }
 
-  private static String formatCommentOne(BoardHistoryNode node) {
-    BoardData data = node.getData();
-    String engine = Lizzie.leelaz.currentEnginename.replaceAll("\\(|\\)|\\[|\\]", "");
-
-    // Playouts
-    String playouts = "";
-
-    playouts =
-        Lizzie.frame.getPlayoutsString(
-            MoveData.getPlayouts(Lizzie.board.getHistory().getData().bestMoves));
-
-    // Last winrate
-
-    Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
-    boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
-
-    double lastWR = validLastWinrate ? lastNode.get().getWinrate() : 50;
-
-    // Current winrate
-    boolean validWinrate = (data.getPlayouts() > 0);
-    double curWR;
-
-    if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black")) {
-      curWR = validWinrate ? data.getWinrate() : lastWR;
-    } else {
-      curWR = validWinrate ? data.getWinrate() : 100 - lastWR;
-    }
-
-    String curWinrate = "";
-    if (Lizzie.config.handicapInsteadOfWinrate) {
-      curWinrate = String.format("%.2f", Leelaz.winrateToHandicap(100 - curWR));
-    } else {
-      curWinrate = String.format("%.1f%%", 100 - curWR);
-    }
-
-    // Last move difference winrate
-    String lastMoveDiff = "";
-    if (validLastWinrate && validWinrate) {
-      if (Lizzie.config.handicapInsteadOfWinrate) {
-        double currHandicapedWR = Leelaz.winrateToHandicap(100 - curWR);
-        double lastHandicapedWR = Leelaz.winrateToHandicap(lastWR);
-        lastMoveDiff = String.format(": %.2f", currHandicapedWR - lastHandicapedWR);
-      } else {
-        double diff;
-        if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black")) {
-          diff = lastWR - curWR;
-        } else {
-          diff = 100 - lastWR - curWR;
-        }
-        lastMoveDiff = String.format("(%s%.1f%%)", diff >= 0 ? "+" : "-", Math.abs(diff));
-      }
-    }
-    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() <= 2) {
-      lastMoveDiff = "";
-    }
-    boolean blackWinrate =
-        !node.getData().blackToPlay || Lizzie.config.uiConfig.getBoolean("win-rate-always-black");
-    String nc = "";
-
-    if (Lizzie.leelaz.isKatago) {
-      double score = Lizzie.leelaz.scoreMean;
-      if (Lizzie.board.getHistory().isBlacksTurn()) {
-        if (Lizzie.config.showKataGoBoardScoreMean) {
-          score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
-        }
-      } else {
-        if (Lizzie.config.showKataGoBoardScoreMean) {
-          score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
-        }
-        if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
-          score = -score;
-        }
-      }
-      String wf = "%s棋 胜率: %s %s\n目差: %s 局面复杂度: %s\n(%s / %s 计算量)";
-      nc =
-          String.format(
-              wf,
-              blackWinrate ? "黑" : "白",
-              String.format("%.1f%%", 100 - curWR),
-              lastMoveDiff,
-              String.format("%.1f", score),
-              String.format("%.1f", Lizzie.leelaz.scoreStdev),
-              engine,
-              playouts);
-    } else {
-      String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
-
-      nc =
-          String.format(
-              wf,
-              blackWinrate ? "黑" : "白",
-              String.format("%.1f%%", 100 - curWR),
-              lastMoveDiff,
-              engine,
-              playouts);
-    }
-
-    if (!data.comment.isEmpty()) {
-      // [^\\(\\)/]*
-      String wp = "";
-      if (!Lizzie.leelaz.isKatago) {
-        wp =
-            "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\("
-                + engine
-                + " / [0-9\\.]*[kmKM]* 计算量\\)";
-      } else {
-        wp =
-            "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n目差: [0-9\\.\\-+]* 局面复杂度: [0-9\\.\\-+]*\n\\("
-                + engine
-                + " / [0-9\\.]*[kmKM]* 计算量\\)";
-      }
-      // if (Lizzie.leelaz.isKatago) wp = wp + "\n.*";
-      if (data.comment.matches("(?s).*" + wp + "(?s).*")) {
-        nc = data.comment.replaceAll(wp, nc);
-      } else {
-        nc = String.format("%s\n\n%s", nc, data.comment);
-      }
-    }
-
-    return nc;
-  }
+  //  private static String formatCommentOne(BoardHistoryNode node) {
+  //    BoardData data = node.getData();
+  //    String engine = Lizzie.leelaz.currentEnginename.replaceAll("\\(|\\)|\\[|\\]", "");
+  //
+  //    // Playouts
+  //    String playouts = "";
+  //
+  //    playouts =
+  //        Lizzie.frame.getPlayoutsString(
+  //            MoveData.getPlayouts(Lizzie.board.getHistory().getData().bestMoves));
+  //
+  //    // Last winrate
+  //
+  //    Optional<BoardData> lastNode = node.previous().flatMap(n -> Optional.of(n.getData()));
+  //    boolean validLastWinrate = lastNode.map(d -> d.getPlayouts() > 0).orElse(false);
+  //
+  //    double lastWR = validLastWinrate ? lastNode.get().getWinrate() : 50;
+  //
+  //    // Current winrate
+  //    boolean validWinrate = (data.getPlayouts() > 0);
+  //    double curWR;
+  //
+  //    if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black")) {
+  //      curWR = validWinrate ? data.getWinrate() : lastWR;
+  //    } else {
+  //      curWR = validWinrate ? data.getWinrate() : 100 - lastWR;
+  //    }
+  //
+  //    String curWinrate = "";
+  //    if (Lizzie.config.handicapInsteadOfWinrate) {
+  //      curWinrate = String.format("%.2f", Leelaz.winrateToHandicap(100 - curWR));
+  //    } else {
+  //      curWinrate = String.format("%.1f%%", 100 - curWR);
+  //    }
+  //
+  //    // Last move difference winrate
+  //    String lastMoveDiff = "";
+  //    if (validLastWinrate && validWinrate) {
+  //      if (Lizzie.config.handicapInsteadOfWinrate) {
+  //        double currHandicapedWR = Leelaz.winrateToHandicap(100 - curWR);
+  //        double lastHandicapedWR = Leelaz.winrateToHandicap(lastWR);
+  //        lastMoveDiff = String.format(": %.2f", currHandicapedWR - lastHandicapedWR);
+  //      } else {
+  //        double diff;
+  //        if (Lizzie.config.uiConfig.getBoolean("win-rate-always-black")) {
+  //          diff = lastWR - curWR;
+  //        } else {
+  //          diff = 100 - lastWR - curWR;
+  //        }
+  //        lastMoveDiff = String.format("(%s%.1f%%)", diff >= 0 ? "+" : "-", Math.abs(diff));
+  //      }
+  //    }
+  //    if (Lizzie.frame.toolbar.isEnginePk && node.moveNumberOfNode() <= 2) {
+  //      lastMoveDiff = "";
+  //    }
+  //    boolean blackWinrate =
+  //        !node.getData().blackToPlay ||
+  // Lizzie.config.uiConfig.getBoolean("win-rate-always-black");
+  //    String nc = "";
+  //
+  //    if (Lizzie.leelaz.isKatago) {
+  //      double score = node.getData().scoreMean;
+  //      if (node.getData().blackToPlay) {
+  //        if (Lizzie.config.showKataGoBoardScoreMean) {
+  //          score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
+  //        }
+  //      } else {
+  //        if (Lizzie.config.showKataGoBoardScoreMean) {
+  //          score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
+  //        }
+  //        if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
+  //          score = -score;
+  //        }
+  //      }
+  //      String wf = "%s棋 胜率: %s %s\n目差: %s 局面复杂度: %s\n(%s / %s 计算量)";
+  //      double scoreStdev = 0;
+  //      try {
+  //        if (!node.getData().bestMoves.isEmpty())
+  //          scoreStdev = node.getData().bestMoves.get(0).scoreStdev;
+  //      } catch (Exception ex) {
+  //      }
+  //      nc =
+  //          String.format(
+  //              wf,
+  //              blackWinrate ? "黑" : "白",
+  //              String.format("%.1f%%", 100 - curWR),
+  //              lastMoveDiff,
+  //              String.format("%.1f", score),
+  //              String.format("%.1f", scoreStdev),
+  //              engine,
+  //              playouts);
+  //    } else {
+  //      String wf = "%s棋 胜率: %s %s\n(%s / %s 计算量)";
+  //
+  //      nc =
+  //          String.format(
+  //              wf,
+  //              blackWinrate ? "黑" : "白",
+  //              String.format("%.1f%%", 100 - curWR),
+  //              lastMoveDiff,
+  //              engine,
+  //              playouts);
+  //    }
+  //
+  //    if (!data.comment.isEmpty()) {
+  //      // [^\\(\\)/]*
+  //      String wp = "";
+  //      if (!Lizzie.leelaz.isKatago) {
+  //        wp =
+  //            "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n\\("
+  //                + engine
+  //                + " / [0-9\\.]*[kmKM]* 计算量\\)";
+  //      } else {
+  //        wp =
+  //            "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n目差: [0-9\\.\\-+]* 局面复杂度:
+  // [0-9\\.\\-+]*\n\\("
+  //                + engine
+  //                + " / [0-9\\.]*[kmKM]* 计算量\\)";
+  //      }
+  //      // if (Lizzie.leelaz.isKatago) wp = wp + "\n.*";
+  //      if (data.comment.matches("(?s).*" + wp + "(?s).*")) {
+  //        nc = data.comment.replaceAll(wp, nc);
+  //      } else {
+  //        nc = String.format("%s\n\n%s", nc, data.comment);
+  //      }
+  //    }
+  //
+  //    return nc;
+  //  }
 
   /** Format Comment with following format: <Winrate> <Playouts> */
   private static String formatNodeData(BoardHistoryNode node) {
