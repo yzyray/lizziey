@@ -1605,9 +1605,6 @@ public class LizzieFrame extends JFrame {
     // bs.show();
     g0.drawImage(cachedBackground, 0, 0, null);
     g0.drawImage(cachedImage, 0, 0, null);
-    if (showControls) {
-      drawControls();
-    }
   }
 
   /**
