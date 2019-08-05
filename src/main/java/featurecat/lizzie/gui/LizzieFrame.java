@@ -599,6 +599,7 @@ public class LizzieFrame extends JFrame {
   }
 
   public static void openConfigDialog2(int index) {
+    if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
     ConfigDialog2 configDialog2 = new ConfigDialog2();
     configDialog2.switchTab(index);
     configDialog2.setVisible(true);

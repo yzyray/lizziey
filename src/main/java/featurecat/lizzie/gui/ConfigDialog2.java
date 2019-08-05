@@ -2587,7 +2587,7 @@ public class ConfigDialog2 extends JDialog {
               this.cancel();
             }
           },
-          100);
+          150);
     }
   }
 }
