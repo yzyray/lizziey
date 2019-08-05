@@ -1008,7 +1008,6 @@ public class LizzieFrame extends JFrame {
       //  toolbar.chkAnaAutoSave.setSelected(true);
       //  toolbar.chkAnaAutoSave.setEnabled(false);
 
-      Lizzie.frame.toolbarHeight = 70;
       toolbar.detail.setIcon(toolbar.iconDown);
     }
     if (ponder) {
@@ -1049,8 +1048,23 @@ public class LizzieFrame extends JFrame {
       loadFile(files[0]);
       // toolbar.chkAnaAutoSave.setSelected(true);
       // toolbar.chkAnaAutoSave.setEnabled(false);
-
+      int heightM = 70 - Lizzie.frame.toolbarHeight;
       Lizzie.frame.toolbarHeight = 70;
+      Lizzie.frame.toolbar.detail.setIcon(Lizzie.frame.toolbar.iconDown);
+      Lizzie.frame.mainPanel.setBounds(
+          Lizzie.frame.mainPanel.getX(),
+          Lizzie.frame.mainPanel.getY(),
+          Lizzie.frame.mainPanel.getWidth(),
+          Lizzie.frame.mainPanel.getHeight() - heightM);
+      Lizzie.frame.toolbar.setBounds(
+          0,
+          Lizzie.frame.getHeight()
+              - Lizzie.frame.getJMenuBar().getHeight()
+              - Lizzie.frame.getInsets().top
+              - Lizzie.frame.getInsets().bottom
+              - Lizzie.frame.toolbarHeight,
+          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
+          Lizzie.frame.toolbarHeight);
       // 打开分析界面
       StartAnaDialog newgame = new StartAnaDialog();
       newgame.setVisible(true);
@@ -1756,11 +1770,13 @@ public class LizzieFrame extends JFrame {
   /** Display the controls */
   void drawControls() {
     // userAlreadyKnowsAboutCommandString = true;
-
+    if (showControls) {
+      return;
+    }
     cachedImage = new BufferedImage(mainPanel.getWidth(), mainPanel.getHeight(), TYPE_INT_ARGB);
 
     // redraw background
-    createBackground(mainPanel.getWidth(), mainPanel.getHeight());
+    // createBackground(mainPanel.getWidth(), mainPanel.getHeight());
 
     List<String> commandsToShow = new ArrayList<>(Arrays.asList(commands));
     // if (Lizzie.leelaz.getDynamicKomi().isPresent()) {
@@ -1786,10 +1802,10 @@ public class LizzieFrame extends JFrame {
     int commandsY =
         top + min((mainPanel.getHeight() - top) / 2 - boxHeight / 2, mainPanel.getHeight() - top);
 
-    BufferedImage result = new BufferedImage(boxWidth, boxHeight, TYPE_INT_ARGB);
-    filter10.filter(
-        cachedBackground.getSubimage(commandsX, commandsY, boxWidth, boxHeight), result);
-    g.drawImage(result, commandsX, commandsY, null);
+    //    BufferedImage result = new BufferedImage(boxWidth, boxHeight, TYPE_INT_ARGB);
+    //    filter10.filter(
+    //        cachedBackground.getSubimage(commandsX, commandsY, boxWidth, boxHeight), result);
+    //    g.drawImage(result, commandsX, commandsY, null);
 
     g.setColor(new Color(0, 0, 0, 130));
     g.fillRect(commandsX, commandsY, boxWidth, boxHeight);
@@ -1826,7 +1842,7 @@ public class LizzieFrame extends JFrame {
       g.drawString(split[1], verticalLineX + strokeRadius * 4, font.getSize() + lineOffset);
       lineOffset += lineHeight;
     }
-
+    showControls = true;
     refreshBackground();
   }
 

@@ -954,6 +954,9 @@ public boolean startAutoAna=false;
 
 	private void saveAndLoad() {
 		if (!Lizzie.frame.isBatchAna) {
+			if(!analysed) {
+				return;
+			}
 			File file = new File("");
 			String courseFile = "";
 			try {
@@ -985,15 +988,14 @@ public boolean startAutoAna=false;
 			}
 			isSaving = false;
 
-			if (analysed)
-			{
+			
 				if(msg==null||!msg.isVisible())
             	{	
 				  msg=new Message();
             msg.setMessage("自动分析已完毕,棋谱保存在"+courseFile+ "\\" + "AutoSave");
             msg.setVisible(true);
             	}
-			}
+			
 			
 			return;
 		} else {
@@ -1022,7 +1024,11 @@ public boolean startAutoAna=false;
 				Timer timer = new Timer();
 				timer.schedule(new TimerTask() {
 					public void run() {
-						loadAutoBatchFile();						
+						loadAutoBatchFile();		
+						if(Lizzie.board.getHistory().getEnd().getData().moveNumber==0)
+							{if (Lizzie.frame.Batchfiles.length > (Lizzie.frame.BatchAnaNum + 1))
+									loadAutoBatchFile();		}						
+							Lizzie.leelaz.ponder();
 						this.cancel();
 					}
 				}, 300);
@@ -1166,9 +1172,7 @@ public boolean startAutoAna=false;
 		Lizzie.frame.toolbar.isAutoAna = true;
 		startAutoAna=true;
 		Lizzie.frame.toolbar.startAutoAna = true;
-		Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);
-		if (!Lizzie.leelaz.isPondering())
-			Lizzie.leelaz.togglePonder();
+		Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);		
 		isSaving = false;
 	}
 
@@ -1176,6 +1180,19 @@ public boolean startAutoAna=false;
 		if (Lizzie.frame.toolbar.isAutoAna) {
 
 			if (Lizzie.frame.toolbar.startAutoAna) {
+				if (!Lizzie.board.getHistory().getNext().isPresent()) {
+					Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
+					//togglePonder();
+					Lizzie.frame.toolbar.isAutoAna = false;
+					Lizzie.frame.addInput();
+					if (Lizzie.frame.isBatchAna) {						
+						closeAutoAna();				
+					}
+					return;
+				} else {
+					analysed = false;
+					isClosing = false;
+				}
 				setResponseUpToDate();	
 				if(Lizzie.frame.toolbar.firstMove != -1) {
 				if (startAutoAna) {		
@@ -1206,19 +1223,7 @@ public boolean startAutoAna=false;
 				}
 				Lizzie.frame.toolbar.startAutoAna = false;				
 				
-				if (!Lizzie.board.getHistory().getNext().isPresent()) {
-					Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
-					togglePonder();
-					Lizzie.frame.toolbar.isAutoAna = false;
-					Lizzie.frame.addInput();
-					if (Lizzie.frame.isBatchAna) {						
-						closeAutoAna();				
-					}
-					return;
-				} else {
-					analysed = false;
-					isClosing = false;
-				}
+				
 			}
 			
 			if (isClosing)
@@ -2584,7 +2589,7 @@ public boolean startAutoAna=false;
 			togglePonder();
 
 			Lizzie.frame.addInput();
-			if (!isSaving &&  analysed) {
+			if (!isSaving) {
 				isSaving = true;
 				saveAndLoad();				
 			} else {

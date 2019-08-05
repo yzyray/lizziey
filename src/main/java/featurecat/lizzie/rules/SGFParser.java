@@ -791,18 +791,14 @@ public class SGFParser {
     if (Lizzie.leelaz.isKatago) {
       double score = node.getData().scoreMean;
       if (node.getData().blackToPlay) {
-        if (Lizzie.config.showKataGoBoardScoreMean) {
-          score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
-        }
+
+        score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
+
       } else {
-        if (Lizzie.config.showKataGoBoardScoreMean) {
-          score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
-        }
-        if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
-          score = -score;
-        }
+
+        score = -score + Lizzie.board.getHistory().getGameInfo().getKomi();
       }
-      String wf = "%s棋 胜率: %s %s\n目差: %s 局面复杂度: %s\n(%s / %s 计算量)";
+      String wf = "%s棋 胜率: %s %s\n盘面: %s 局面复杂度: %s\n(%s / %s 计算量)";
       double scoreStdev = 0;
       try {
         if (!node.getData().bestMoves.isEmpty())
@@ -842,7 +838,7 @@ public class SGFParser {
                 + " / [0-9\\.]*[kmKM]* 计算量\\)";
       } else {
         wp =
-            "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n目差: [0-9\\.\\-+]* 局面复杂度: [0-9\\.\\-+]*\n\\("
+            "(黑棋 |白棋 )胜率: [0-9\\.\\-]+%* \\(*[0-9.\\-+]*%*\\)*\n盘面: [0-9\\.\\-+]* 局面复杂度: [0-9\\.\\-+]*\n\\("
                 + engine
                 + " / [0-9\\.]*[kmKM]* 计算量\\)";
       }
@@ -946,14 +942,11 @@ public class SGFParser {
         //            score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
         //          }
         //        } else {
-        if (Lizzie.config.showKataGoBoardScoreMean) {
-          score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
-        }
-        if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
-          score = -score;
-        }
+
+        score = -score + Lizzie.board.getHistory().getGameInfo().getKomi();
+
         //     }
-        wf = "%s棋 胜率: %s %s\n目差: %s 局面复杂度: %s\n(%s / %s 计算量)";
+        wf = "%s棋 胜率: %s %s\n盘面: %s 局面复杂度: %s\n(%s / %s 计算量)";
         nc =
             String.format(
                 wf,
@@ -984,9 +977,9 @@ public class SGFParser {
         double score =
             Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).scoreMean;
         //      if (Lizzie.board.getHistory().isBlacksTurn()) {
-        if (Lizzie.config.showKataGoBoardScoreMean) {
-          score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
-        }
+
+        score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
+
         //        } else {
         //          if (Lizzie.config.showKataGoBoardScoreMean) {
         //            score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
@@ -995,7 +988,7 @@ public class SGFParser {
         //            score = -score;
         //          }
         //        }
-        wf = "%s棋 胜率: %s %s\n目差: %s 局面复杂度: %s\n(%s / %s 计算量)";
+        wf = "%s棋 胜率: %s %s\n盘面: %s 局面复杂度: %s\n(%s / %s 计算量)";
         nc =
             String.format(
                 wf,
