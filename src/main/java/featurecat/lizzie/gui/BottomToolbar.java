@@ -1359,8 +1359,8 @@ public class BottomToolbar extends JPanel {
     enginePkPanel.add(lblenginePkFirstPlayputs);
     enginePkPanel.add(chkenginePkFirstPlayputs);
     enginePkPanel.add(txtenginePkFirstPlayputs);
-    chkenginePkFirstPlayputs.setBounds(248, 23, 20, 18);
-    lblenginePkFirstPlayputs.setBounds(268, 22, 90, 18);
+    chkenginePkFirstPlayputs.setBounds(250, 23, 20, 18);
+    lblenginePkFirstPlayputs.setBounds(269, 22, 90, 18);
     txtenginePkFirstPlayputs.setBounds(350, 24, 50, 18);
     lblenginePkFirstPlayputsWhite = new JLabel("白:");
     txtenginePkFirstPlayputsWhite = new JTextField();
