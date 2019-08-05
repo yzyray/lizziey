@@ -2583,11 +2583,11 @@ public class ConfigDialog2 extends JDialog {
       timer.schedule(
           new TimerTask() {
             public void run() {
-              tabbedPane.repaint();
+              tabbedPane.updateUI();
               this.cancel();
             }
           },
-          300);
+          100);
     }
   }
 }
