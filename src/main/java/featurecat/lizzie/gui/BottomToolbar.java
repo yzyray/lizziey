@@ -29,8 +29,10 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import org.json.JSONArray;
 
@@ -422,10 +424,30 @@ public class BottomToolbar extends JPanel {
           }
         });
 
-    liveButton.addActionListener(
+    JPopupMenu yike = new JPopupMenu();
+    JMenuItem yikeLive = new JMenuItem("弈客直播");
+    yikeLive.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live", "弈客直播");
+          }
+        });
+    yike.add(yikeLive);
+
+    JMenuItem yikeRoom = new JMenuItem("弈客大厅");
+    yikeRoom.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.bowser("https://home.yikeweiqi.com/#/game", "弈客大厅");
+          }
+        });
+    yike.add(yikeRoom);
+
+    liveButton.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            // Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live", "弈客直播");
+            yike.show(Lizzie.frame.toolbar, liveButton.getX() + 10, liveButton.getY() - 50);
           }
         });
 
