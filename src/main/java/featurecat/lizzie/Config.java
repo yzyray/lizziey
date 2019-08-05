@@ -418,6 +418,7 @@ public class Config {
   }
 
   public void toggleShowMoveNumber() {
+    onlyLastMoveNumber = 1;
     if (this.onlyLastMoveNumber > 0) {
       allowMoveNumber =
           (allowMoveNumber == -1 ? onlyLastMoveNumber : (allowMoveNumber == 0 ? -1 : 0));
