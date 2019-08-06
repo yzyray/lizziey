@@ -3546,6 +3546,15 @@ public class LizzieFrame extends JFrame {
                   }
                   maxMvNum = moveNumber;
                 }
+                BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
+                if (node.getData().comment.equals("") && node.variations.size() > 0)
+                  //                	if(!node.variations.get(0).getData().comment.equals(""))
+                  //
+                  //	node.getData().comment=node.variations.get(0).getData().comment;
+                  //	else
+                  if (node.variations.size() > 1
+                      && !node.variations.get(1).getData().comment.equals(""))
+                    node.getData().comment = node.variations.get(1).getData().comment;
                 Lizzie.frame.refresh();
                 if (!urlSgf) {
                   timer.stop();
