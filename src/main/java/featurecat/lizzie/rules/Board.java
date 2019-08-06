@@ -1120,6 +1120,31 @@ public class Board implements LeelazListener {
   }
 
   public void place(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
+
+    if (Lizzie.frame.urlSgf) {
+      newBranch = true;
+      //  changeMove=true;
+      BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
+      for (int i = 0; i < node.variations.size(); i++) {
+        Optional<int[]> nodeCoords = node.variations.get(i).getData().lastMove;
+
+        if (nodeCoords.isPresent()) {
+          int[] coords = nodeCoords.get();
+          if (coords[0] == x && coords[1] == y) {
+            newBranch = false;
+            // changeMove=false;
+          }
+        }
+      }
+      if (newBranch
+          && Lizzie.board.getHistory().getCurrentHistoryNode()
+              == Lizzie.board.getHistory().getMainEnd()) {
+        Lizzie.board.getHistory().pass(color, false, true);
+        Lizzie.board.getHistory().previous();
+        Lizzie.board.getHistory().place(x, y, color, true);
+        return;
+      }
+    }
     Lizzie.frame.boardRenderer.removedrawmovestone();
     Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
     if (Lizzie.frame.iscounting) {

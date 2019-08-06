@@ -401,6 +401,7 @@ public class OnlineDialog extends JDialog {
     done = false;
     history = null;
     Lizzie.board.clear();
+    Lizzie.frame.syncLiveBoardStat();
     switch (type) {
       case 1:
         req2();
@@ -492,8 +493,8 @@ public class OnlineDialog extends JDialog {
         if (liveNode != null) {
           int diffMove = Lizzie.board.getHistory().sync(liveNode);
           if (diffMove >= 0) {
-            Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
-            while (Lizzie.board.nextMove()) ;
+            //    Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
+            //     while (Lizzie.board.nextMove()) ;
           }
           if (live != null) {
             blackPlayer = live.optString("BlackPlayer");
@@ -1156,8 +1157,8 @@ public class OnlineDialog extends JDialog {
       while (history.previous().isPresent()) ;
       int diffMove = Lizzie.board.getHistory().sync(history);
       if (diffMove >= 0) {
-        Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
-        while (Lizzie.board.nextMove()) {}
+        //  Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
+        //  while (Lizzie.board.nextMove()) {}
       }
       while (history.next(true).isPresent()) ;
     }
@@ -2190,8 +2191,8 @@ public class OnlineDialog extends JDialog {
     if (history != null) {
       int diffMove = Lizzie.board.getHistory().sync(history);
       if (diffMove >= 0) {
-        Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
-        while (Lizzie.board.nextMove()) ;
+        //   Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
+        //   while (Lizzie.board.nextMove()) ;
       }
       if ("3".equals(info.optString("status"))) {
         sio.close();
@@ -2220,7 +2221,7 @@ public class OnlineDialog extends JDialog {
     timer.schedule(
         new TimerTask() {
           public void run() {
-            Lizzie.frame.refresh();
+            // Lizzie.frame.refresh();
             this.cancel();
           }
         },
@@ -2287,8 +2288,8 @@ public class OnlineDialog extends JDialog {
     while (history != null && history.previous().isPresent()) ;
     int diffMove = Lizzie.board.getHistory().sync(history);
     if (diffMove >= 0) {
-      Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
-      while (Lizzie.board.nextMove()) ;
+      //   Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
+      //   while (Lizzie.board.nextMove()) ;
     }
   }
 

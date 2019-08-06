@@ -167,7 +167,7 @@ public class BoardHistoryNode {
           // variations.set(i, variations.get(0));
           // variations.set(0, currentNext);
           // }
-          if (i != 0 && changeMove) {
+          if (i != 0 && changeMove && !Lizzie.frame.urlSgf) {
             break;
           }
           return variations.get(i);

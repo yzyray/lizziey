@@ -124,6 +124,9 @@ public class LizzieFrame extends JFrame {
   public Optional<List<String>> variationOpt;
 
   public static boolean urlSgf = false;
+  int maxMvNum;
+  boolean firstSync = false;
+  javax.swing.Timer timer;
   public static Font uiFont;
   public static Font winrateFont;
   public boolean isshowrightmenu;
@@ -3515,5 +3518,33 @@ public class LizzieFrame extends JFrame {
     toolBar.setVisible(false);
     toolBar.setVisible(true);
     //  frame.add(back);
+  }
+
+  public void syncLiveBoardStat() {
+    maxMvNum = 0;
+    firstSync = true;
+    timer =
+        new javax.swing.Timer(
+            500,
+            new ActionListener() {
+              public void actionPerformed(ActionEvent evt) {
+                int moveNumber = Lizzie.board.getHistory().getEnd().getData().moveNumber;
+                if (moveNumber > maxMvNum || (firstSync && moveNumber > 0)) {
+                  firstSync = false;
+                  if (Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()
+                      && Lizzie.board.getHistory().getCurrentHistoryNode().getData().moveNumber
+                          == maxMvNum) Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
+                  maxMvNum = moveNumber;
+                }
+                try {
+                } catch (Exception e) {
+                }
+                if (!urlSgf) {
+                  timer.stop();
+                  timer = null;
+                }
+              }
+            });
+    timer.start();
   }
 }
