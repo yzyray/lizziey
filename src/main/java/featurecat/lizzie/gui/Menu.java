@@ -1504,12 +1504,30 @@ public class Menu extends MenuBar {
         });
     live.add(openHtmlOnLive);
 
+    final JCheckBoxMenuItem alwaysGo = new JCheckBoxMenuItem("总是跳转到最新一步");
+    alwaysGo.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.alwaysGotoLastOnLive = !Lizzie.config.alwaysGotoLastOnLive;
+            Lizzie.config.uiConfig.put(
+                "always-gotolast-onlive", Lizzie.config.alwaysGotoLastOnLive);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    live.add(alwaysGo);
+
     live.addMenuListener(
         new MenuListener() {
 
           public void menuSelected(MenuEvent e) {
             if (Lizzie.config.openHtmlOnLive) openHtmlOnLive.setState(true);
             else openHtmlOnLive.setState(false);
+            if (Lizzie.config.alwaysGotoLastOnLive) alwaysGo.setState(true);
+            else alwaysGo.setState(false);
           }
 
           @Override

@@ -283,6 +283,7 @@ public class OnlineDialog extends JDialog {
     } else {
       error(true);
     }
+    Lizzie.frame.syncLiveBoardStat();
   }
 
   private class DigitOnlyFilter extends DocumentFilter {
@@ -401,7 +402,6 @@ public class OnlineDialog extends JDialog {
     done = false;
     history = null;
     Lizzie.board.clear();
-    Lizzie.frame.syncLiveBoardStat();
     switch (type) {
       case 1:
         req2();
@@ -600,36 +600,10 @@ public class OnlineDialog extends JDialog {
               } catch (IOException e) {
                 e.printStackTrace();
               }
-              //            	  if (!Lizzie.frame.urlSgf) {
-              ////                      ajax.abort();
-              ////                      this.cancel();
-              ////
-              //                    }
             }
           },
           refreshTime * 1000);
-      //      if (schedule == null || schedule.isCancelled() || schedule.isDone()) {
-      //        schedule =
-      //            online.scheduleAtFixedRate(
-      //                new Runnable() {
-      //                  @Override
-      //                  public void run() {
-      //                    if (!Lizzie.frame.urlSgf) {
-      //                      ajax.abort();
-      //                      return;
-      //                    }
-      //                    try {
-      //                      ajax.open("GET", ajaxUrl, true);
-      //                      ajax.send(params);
-      //                    } catch (IOException e) {
-      //                      e.printStackTrace();
-      //                    }
-      //                  }
-      //                },
-      //                1,
-      //                refreshTime,
-      //                TimeUnit.SECONDS);
-      //      }
+
     } else {
       try {
         ajax.open("GET", ajaxUrl, true);

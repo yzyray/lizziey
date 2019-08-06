@@ -1121,9 +1121,12 @@ public class Board implements LeelazListener {
 
   public void place(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
 
-    if (Lizzie.frame.urlSgf) {
-      newBranch = true;
-      //  changeMove=true;
+    if (Lizzie.frame.urlSgf
+        && Lizzie.board.getHistory().getCurrentHistoryNode()
+            == Lizzie.board.getHistory().getMainEnd()) {
+      //      newBranch = true;
+      //      //  changeMove=true;
+      boolean hasVairation = false;
       BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
       for (int i = 0; i < node.variations.size(); i++) {
         Optional<int[]> nodeCoords = node.variations.get(i).getData().lastMove;
@@ -1131,18 +1134,15 @@ public class Board implements LeelazListener {
         if (nodeCoords.isPresent()) {
           int[] coords = nodeCoords.get();
           if (coords[0] == x && coords[1] == y) {
-            newBranch = false;
+            hasVairation = true;
             // changeMove=false;
           }
         }
       }
-      if (newBranch
-          && Lizzie.board.getHistory().getCurrentHistoryNode()
-              == Lizzie.board.getHistory().getMainEnd()) {
+      if (!hasVairation) {
         Lizzie.board.getHistory().pass(color, false, true);
         Lizzie.board.getHistory().previous();
         Lizzie.board.getHistory().place(x, y, color, true);
-        return;
       }
     }
     Lizzie.frame.boardRenderer.removedrawmovestone();
@@ -1264,7 +1264,8 @@ public class Board implements LeelazListener {
       }
 
       // update history with this coordinate
-      history.addOrGoto(newState, newBranch, changeMove);
+      if (Lizzie.frame.urlSgf) history.addOrGoto2(newState, newBranch, changeMove);
+      else history.addOrGoto(newState, newBranch, changeMove);
 
       Lizzie.frame.repaint();
     }
@@ -3278,6 +3279,11 @@ public class Board implements LeelazListener {
     goToMoveNumber(currentMoveNumber);
 
     return true;
+  }
+
+  public void setKomi(double komi) {
+    getHistory().getGameInfo().setKomi(komi);
+    Lizzie.leelaz.komi(komi);
   }
 
   public boolean iscoordsempty(int x, int y) {

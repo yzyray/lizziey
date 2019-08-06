@@ -3277,6 +3277,7 @@ public class LizzieFrame extends JFrame {
 
   private void syncOnline(String url) {
     onlineDialog.applyChangeWeb(url);
+    syncLiveBoardStat();
     //    if (onlineDialog != null) {
     //      onlineDialog.dispose();
     //    }
@@ -3496,7 +3497,6 @@ public class LizzieFrame extends JFrame {
           @Override
           public void actionPerformed(ActionEvent e) {
             // TBD
-
             onlineDialog.stopSync();
           }
         });
@@ -3523,22 +3523,30 @@ public class LizzieFrame extends JFrame {
   public void syncLiveBoardStat() {
     maxMvNum = 0;
     firstSync = true;
+    if (timer != null) {
+      timer.stop();
+      timer = null;
+    }
     timer =
         new javax.swing.Timer(
             500,
             new ActionListener() {
               public void actionPerformed(ActionEvent evt) {
-                int moveNumber = Lizzie.board.getHistory().getEnd().getData().moveNumber;
+                int moveNumber = Lizzie.board.getHistory().getMainEnd().getData().moveNumber;
                 if (moveNumber > maxMvNum || (firstSync && moveNumber > 0)) {
                   firstSync = false;
-                  if (Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()
-                      && Lizzie.board.getHistory().getCurrentHistoryNode().getData().moveNumber
-                          == maxMvNum) Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
+                  if ((Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()
+                          && Lizzie.board.getHistory().getCurrentHistoryNode().getData().moveNumber
+                              == maxMvNum)
+                      || Lizzie.config.alwaysGotoLastOnLive) {
+                    if (Lizzie.board.undoToChildOfPreviousWithVariation()) {
+                      Lizzie.board.previousMove();
+                    }
+                    Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
+                  }
                   maxMvNum = moveNumber;
                 }
-                try {
-                } catch (Exception e) {
-                }
+                Lizzie.frame.refresh();
                 if (!urlSgf) {
                   timer.stop();
                   timer = null;

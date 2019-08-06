@@ -100,6 +100,10 @@ public class BoardHistoryList {
     head = head.addOrGoto(data, newBranch);
   }
 
+  public void addOrGoto2(BoardData data, boolean newBranch, boolean changeMove) {
+    head = head.addOrGoto2(data, newBranch, changeMove);
+  }
+
   public void addOrGoto(BoardData data, boolean newBranch, boolean changeMove) {
     head = head.addOrGoto(data, newBranch, changeMove);
   }
@@ -561,8 +565,8 @@ public class BoardHistoryList {
         }
       }
       prev = node;
-      node = node.next().map(n -> n).orElse(null);
-      newNode = newNode.next().map(n -> n).orElse(null);
+      node = node.next(true).map(n -> n).orElse(null);
+      newNode = newNode.next(true).map(n -> n).orElse(null);
     }
 
     return diffMoveNo;
