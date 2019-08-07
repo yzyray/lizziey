@@ -3562,12 +3562,18 @@ public class LizzieFrame extends JFrame {
               public void actionPerformed(ActionEvent evt) {
                 int moveNumber = Lizzie.board.getHistory().getMainEnd().getData().moveNumber;
                 if (moveNumber > maxMvNum || (firstSync && moveNumber > 0)) {
-                  firstSync = false;
-                  if ((Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()
-                          && Lizzie.board.getHistory().getCurrentHistoryNode().getData().moveNumber
-                              == maxMvNum)
+
+                  if (((Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()
+                              && Lizzie.board
+                                      .getHistory()
+                                      .getCurrentHistoryNode()
+                                      .getData()
+                                      .moveNumber
+                                  == maxMvNum)
+                          || firstSync)
                       || Lizzie.config.alwaysGotoLastOnLive) {
-                    if (Lizzie.board.undoToChildOfPreviousWithVariation()) {
+                    firstSync = false;
+                    while (!Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()) {
                       Lizzie.board.previousMove();
                     }
                     Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);

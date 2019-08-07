@@ -2296,7 +2296,7 @@ public class Menu extends MenuBar {
         return;
       }
 
-      if (menuItem.getText().startsWith("返回主分支")) {
+      if (menuItem.getText().startsWith("返回上一分支")) {
         if (Lizzie.board.undoToChildOfPreviousWithVariation()) {
           Lizzie.board.previousMove();
         }
