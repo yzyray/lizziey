@@ -226,6 +226,7 @@ public class LizzieFrame extends JFrame {
   String tryString;
   String titleBeforeTrying;
   public Browser browser;
+  JFrame frame;
   ArrayList<String> urlList;
   int urlIndex;
   static OnlineDialog onlineDialog = new OnlineDialog();;
@@ -3319,8 +3320,17 @@ public class LizzieFrame extends JFrame {
     urlList = new ArrayList<String>();
     urlList.add(url);
     urlIndex = 0;
-
-    browser = new Browser();
+if(browser!=null&&!browser.isDisposed())
+{
+	browser.loadURL(url);	
+	frame.setTitle(title);
+	frame.setVisible(true);
+	return;
+	}
+else
+{   browser = new Browser();
+browser.loadURL(url);
+}
     browser.setPopupHandler(
         new PopupHandler() {
           @Override
@@ -3347,7 +3357,7 @@ public class LizzieFrame extends JFrame {
         });
     BrowserView view = new BrowserView(browser);
     JPanel viewPanel = new JPanel();
-    JFrame frame = new JFrame();
+     frame = new JFrame();
 
     frame.setSize(bowserWidth, bowserHeight);
     frame.setTitle(title);
@@ -3378,8 +3388,7 @@ public class LizzieFrame extends JFrame {
             bowserX = frame.getX();
             bowserY = frame.getY();
           }
-        });
-    browser.loadURL(url);
+        });   
     thisUrl.setText(url);
     try {
       frame.setIconImage(ImageIO.read(MovelistFrame.class.getResourceAsStream("/assets/logo.png")));
