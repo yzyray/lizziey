@@ -2122,6 +2122,21 @@ public class Menu extends MenuBar {
         if (Lizzie.frame.isPlayingAgainstLeelaz) {
           Lizzie.frame.isPlayingAgainstLeelaz = false;
           Lizzie.leelaz.isThinking = false;
+          Lizzie.leelaz.togglePonder();
+        }
+        if (Lizzie.frame.toolbar.isAutoAna) {
+          Lizzie.frame.toolbar.isAutoAna = false;
+          Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
+        }
+        if (Lizzie.frame.isAnaPlayingAgainstLeelaz) {
+          Lizzie.frame.isAnaPlayingAgainstLeelaz = false;
+          Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
+          Lizzie.frame.toolbar.isAutoPlay = false;
+          Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
+          Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
+          Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
+          Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
+          Lizzie.leelaz.togglePonder();
         }
         Lizzie.leelaz.togglePonder();
         return;

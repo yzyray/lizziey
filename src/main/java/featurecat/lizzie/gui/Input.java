@@ -405,6 +405,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           Lizzie.leelaz.isThinking = false;
           Lizzie.leelaz.togglePonder();
         }
+        if (Lizzie.frame.toolbar.isAutoAna) {
+          Lizzie.frame.toolbar.isAutoAna = false;
+          Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
+        }
         if (Lizzie.frame.isAnaPlayingAgainstLeelaz) {
           Lizzie.frame.isAnaPlayingAgainstLeelaz = false;
           Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
