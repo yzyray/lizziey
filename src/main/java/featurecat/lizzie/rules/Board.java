@@ -2111,7 +2111,7 @@ public class Board implements LeelazListener {
     isPkBoardKataB = false;
     isPkBoardKataW = false;
     isKataBoard = false;
-    resetbestmoves(history.getStart());
+    clearbestmovesafter(history.getStart());
   }
 
   /** Clears all history and starts over from empty board. */
