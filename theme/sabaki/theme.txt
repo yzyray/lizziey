@@ -26,10 +26,9 @@
     178
   ],
   "comment-background-color": [
-    0,
-    0,
-    0,
-    200
+    102,
+    102,
+    102
   ],
   "winrate-stroke-width": 2,
   "comment-node-color": [
