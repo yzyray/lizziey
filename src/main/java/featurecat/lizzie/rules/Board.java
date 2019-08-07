@@ -1143,6 +1143,7 @@ public class Board implements LeelazListener {
         Lizzie.board.getHistory().pass(color, false, true);
         Lizzie.board.getHistory().previous();
         Lizzie.board.getHistory().place(x, y, color, true);
+        Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
       }
     }
     Lizzie.frame.boardRenderer.removedrawmovestone();
