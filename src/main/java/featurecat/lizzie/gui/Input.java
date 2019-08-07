@@ -81,11 +81,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       if (nowheelPress) {
         nowheelPress = false;
       } else {
-
         int moveNumber = Lizzie.board.getcurrentmovenumber();
-        if (Lizzie.frame.playCurrentVariation()) {
-
+        if (Lizzie.frame.playCurrentVariation2()) {
           Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
+          if (Lizzie.engineManager.currentEngineNo >= 0) Lizzie.engineManager.isEmpty = false;
           if (Lizzie.board.getHistory().getCurrentHistoryNode().hasVariations()) {
             try {
               Lizzie.board.place(

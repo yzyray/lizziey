@@ -2371,6 +2371,21 @@ public class LizzieFrame extends JFrame {
     }
   }
 
+  public boolean playCurrentVariation2() {
+    if (Lizzie.engineManager.currentEngineNo >= 0) Lizzie.engineManager.isEmpty = true;
+    if (Lizzie.config.showSuggestionVaritions) {
+      boardRenderer.variationOpt.ifPresent(vs -> vs.forEach(placeVariation));
+      if (!boardRenderer.variationOpt.isPresent())
+        if (Lizzie.engineManager.currentEngineNo >= 0) Lizzie.engineManager.isEmpty = false;
+      return boardRenderer.variationOpt.isPresent();
+    } else {
+      variationOpt.ifPresent(vs -> vs.forEach(placeVariation));
+      if (!variationOpt.isPresent())
+        if (Lizzie.engineManager.currentEngineNo >= 0) Lizzie.engineManager.isEmpty = false;
+      return variationOpt.isPresent();
+    }
+  }
+
   public boolean isMouseOverSuggestions() {
     List<MoveData> bestMoves = Lizzie.board.getHistory().getData().bestMoves;
     for (int i = 0; i < bestMoves.size(); i++) {
@@ -2722,8 +2737,14 @@ public class LizzieFrame extends JFrame {
   }
 
   private void drawComment(Graphics2D g, int x, int y, int w, int h) {
-
-    String comment = Lizzie.board.getHistory().getData().comment;
+    String comment = "";
+    if (urlSgf) {
+      BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
+      if (node.variations.size() > 1 && !node.variations.get(1).getData().comment.equals(""))
+        comment = node.getData().comment + "  " + node.variations.get(1).getData().comment;
+    } else {
+      comment = Lizzie.board.getHistory().getData().comment;
+    }
     int fontSize = (int) (min(getWidth() * 0.6, getHeight()) * 0.0225);
     if (Lizzie.config.showLargeSubBoard() || Lizzie.config.showLargeWinrate()) {
       fontSize =
@@ -2870,7 +2891,7 @@ public class LizzieFrame extends JFrame {
     if (replaySteps <= 0) return; // Bad steps or no branch
     int oriBranchLength = boardRenderer.getDisplayedBranchLength();
     isReplayVariation = true;
-    if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+    //  if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
     Runnable runnable =
         new Runnable() {
           public void run() {
@@ -2898,7 +2919,7 @@ public class LizzieFrame extends JFrame {
             }
             boardRenderer.setDisplayedBranchLength(oriBranchLength);
             isReplayVariation = false;
-            if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+            //  if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
           }
         };
     Thread thread = new Thread(runnable);
@@ -3320,17 +3341,15 @@ public class LizzieFrame extends JFrame {
     urlList = new ArrayList<String>();
     urlList.add(url);
     urlIndex = 0;
-if(browser!=null&&!browser.isDisposed())
-{
-	browser.loadURL(url);	
-	frame.setTitle(title);
-	frame.setVisible(true);
-	return;
-	}
-else
-{   browser = new Browser();
-browser.loadURL(url);
-}
+    if (browser != null && !browser.isDisposed()) {
+      browser.loadURL(url);
+      frame.setTitle(title);
+      frame.setVisible(true);
+      return;
+    } else {
+      browser = new Browser();
+      browser.loadURL(url);
+    }
     browser.setPopupHandler(
         new PopupHandler() {
           @Override
@@ -3357,7 +3376,7 @@ browser.loadURL(url);
         });
     BrowserView view = new BrowserView(browser);
     JPanel viewPanel = new JPanel();
-     frame = new JFrame();
+    frame = new JFrame();
 
     frame.setSize(bowserWidth, bowserHeight);
     frame.setTitle(title);
@@ -3388,7 +3407,7 @@ browser.loadURL(url);
             bowserX = frame.getX();
             bowserY = frame.getY();
           }
-        });   
+        });
     thisUrl.setText(url);
     try {
       frame.setIconImage(ImageIO.read(MovelistFrame.class.getResourceAsStream("/assets/logo.png")));
@@ -3555,15 +3574,20 @@ browser.loadURL(url);
                   }
                   maxMvNum = moveNumber;
                 }
-                BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
-                if (node.getData().comment.equals("") && node.variations.size() > 0)
-                  //                	if(!node.variations.get(0).getData().comment.equals(""))
-                  //
-                  //	node.getData().comment=node.variations.get(0).getData().comment;
-                  //	else
-                  if (node.variations.size() > 1
-                      && !node.variations.get(1).getData().comment.equals(""))
-                    node.getData().comment = node.variations.get(1).getData().comment;
+                //                BoardHistoryNode node =
+                // Lizzie.board.getHistory().getCurrentHistoryNode();
+                //                if (node.getData().comment.equals("") && node.variations.size() >
+                // 0)
+                //                  //
+                //	if(!node.variations.get(0).getData().comment.equals(""))
+                //                  //
+                //                  //
+                //	node.getData().comment=node.variations.get(0).getData().comment;
+                //                  //	else
+                //                  if (node.variations.size() > 1
+                //                      && !node.variations.get(1).getData().comment.equals(""))
+                //                    node.getData().comment =
+                // node.variations.get(1).getData().comment;
                 Lizzie.frame.refresh();
                 if (!urlSgf) {
                   timer.stop();
