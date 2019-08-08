@@ -1001,7 +1001,7 @@ public class OnlineDialog extends JDialog {
             Lizzie.frame.setPlayers(whitePlayer, blackPlayer);
             Lizzie.board.getHistory().getGameInfo().setPlayerBlack(blackPlayer);
             Lizzie.board.getHistory().getGameInfo().setPlayerWhite(whitePlayer);
-            if (handicap > 0) Lizzie.board.getHistory().getGameInfo().setHandicap(handicap);
+            Lizzie.board.getHistory().getGameInfo().setHandicap(handicap);
 
             if (size == 19) {
               switch (handicap) {
@@ -1086,14 +1086,16 @@ public class OnlineDialog extends JDialog {
           Lizzie.board.getHistory().getGameInfo().setPlayerWhite(whitePlayer);
         } else if (f.type == 7005) {
           long uid = f.line.optLong("AAA303");
-          int num = f.line.optInt("AAA102") + Lizzie.board.getHistory().getGameInfo().getHandicap();
+          int handicap = Lizzie.board.getHistory().getGameInfo().getHandicap();
+          int num = f.line.optInt("AAA102") + handicap;
           if (num == 0) {
             num = history.getData().moveNumber + 1;
           }
-          Stone color =
-              (num - history.getData().moveNumber) % 2 == 0
-                  ? history.getLastMoveColor()
-                  : (history.getLastMoveColor() == Stone.WHITE ? Stone.BLACK : Stone.WHITE);
+          Stone color;
+          if (handicap > 0)
+            color = history.getLastMoveColor() == Stone.WHITE ? Stone.BLACK : Stone.WHITE;
+          else color = (num % 2 != 0) ? Stone.BLACK : Stone.WHITE;
+
           if (uid > 0) {
             if (Stone.BLACK.equals(color)) {
               buid = uid;
