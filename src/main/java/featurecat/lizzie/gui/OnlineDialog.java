@@ -129,6 +129,7 @@ public class OnlineDialog extends JDialog {
   public OnlineDialog() {
     setTitle(resourceBundle.getString("OnlineDialog.title.config"));
     setModalityType(ModalityType.APPLICATION_MODAL);
+    setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     setType(Type.POPUP);
     setBounds(100, 100, 790, 207);
     try {

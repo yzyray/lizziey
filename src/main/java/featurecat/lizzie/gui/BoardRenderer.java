@@ -1563,7 +1563,7 @@ public class BoardRenderer {
                           ? new BasicStroke(2.5f)
                           : new BasicStroke(3.0f));
                 drawCircle(g, moveX, moveY, stoneRadius + 2); // Slightly outside best move circle
-                if (first) g.setStroke(new BasicStroke(1.8f));
+                if (first) g.setStroke(new BasicStroke(1.3f));
               });
     }
   }

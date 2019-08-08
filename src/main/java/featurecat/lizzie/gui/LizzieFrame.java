@@ -229,7 +229,8 @@ public class LizzieFrame extends JFrame {
   JFrame frame;
   ArrayList<String> urlList;
   int urlIndex;
-  static OnlineDialog onlineDialog = new OnlineDialog();;
+  static OnlineDialog onlineDialog;
+  // = new OnlineDialog();;
 
   // boolean lastponder = true;
 
@@ -574,7 +575,7 @@ public class LizzieFrame extends JFrame {
   }
 
   public void openOnlineDialog() {
-    //  if (onlineDialog != null) onlineDialog.dispose();
+    if (onlineDialog == null) onlineDialog = new OnlineDialog();
     //  onlineDialog = new OnlineDialog();
     // onlineDialog.applyChangeWeb("https://home.yikeweiqi.com/#/live/room/20595/1/18748590");
     onlineDialog.setVisible(true);
@@ -1496,15 +1497,22 @@ public class LizzieFrame extends JFrame {
       boardRenderer.setBoardLength(maxSize, maxSize);
       boardRenderer.setupSizeParameters();
       boardRenderer.draw(g);
+      if (!Lizzie.config.showLargeSubBoard() && !Lizzie.config.showLargeWinrate()) {
+        // treeh = vh/2;
+        if (Lizzie.config.showSubBoard && Lizzie.config.showComment) {
+          treeh = treeh + vh / 2 - subBoardLength;
+          subBoardY = subBoardY + vh / 2 - subBoardLength;
+        }
+      }
       if (backgroundG.isPresent()) {
         if (Lizzie.config.showWinrate) {
           if (isSmallCap) {
             drawContainer(backgroundG.get(), contx, conty, contw * 2, conth);
           } else drawContainer(backgroundG.get(), contx, conty, contw, conth);
         }
-        if (!Lizzie.config.showLargeSubBoard() && !Lizzie.config.showLargeWinrate()) {
-          treeh = vh;
-        }
+        //        if (!Lizzie.config.showLargeSubBoard() && !Lizzie.config.showLargeWinrate()) {
+        //          treeh = vh;
+        //        }
         if (Lizzie.config.showVariationGraph) {
           drawContainer(backgroundG.get(), vx, vy, vw, treeh);
         }
@@ -2742,6 +2750,9 @@ public class LizzieFrame extends JFrame {
       BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
       if (node.variations.size() > 1 && !node.variations.get(1).getData().comment.equals(""))
         comment = node.getData().comment + "  " + node.variations.get(1).getData().comment;
+      else {
+        comment = Lizzie.board.getHistory().getData().comment;
+      }
     } else {
       comment = Lizzie.board.getHistory().getData().comment;
     }
@@ -3298,6 +3309,7 @@ public class LizzieFrame extends JFrame {
   }
 
   private void syncOnline(String url) {
+    if (onlineDialog == null) onlineDialog = new OnlineDialog();
     onlineDialog.applyChangeWeb(url);
     syncLiveBoardStat();
     //    if (onlineDialog != null) {
@@ -3525,7 +3537,7 @@ public class LizzieFrame extends JFrame {
           @Override
           public void actionPerformed(ActionEvent e) {
             // TBD
-            onlineDialog.stopSync();
+            if (onlineDialog != null) onlineDialog.stopSync();
           }
         });
     JToolBar toolBar = new JToolBar("地址栏");
