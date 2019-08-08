@@ -491,7 +491,12 @@ public class OnlineDialog extends JDialog {
         blackPlayer = liveNode.getGameInfo().getPlayerBlack();
         whitePlayer = liveNode.getGameInfo().getPlayerWhite();
         double komi = liveNode.getGameInfo().getKomi();
+        int handicap = liveNode.getGameInfo().getHandicap();
         if (liveNode != null) {
+          komi = live.optDouble("komi", komi);
+          handicap = live.optInt("handicap", handicap);
+          blackPlayer = live.optString("BlackPlayer", blackPlayer);
+          whitePlayer = live.optString("WhitePlayer", whitePlayer);
           int diffMove = Lizzie.board.getHistory().sync(liveNode);
           if (diffMove >= 0) {
             //    Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
@@ -521,6 +526,7 @@ public class OnlineDialog extends JDialog {
           Lizzie.board.getHistory().getGameInfo().setPlayerBlack(blackPlayer);
           Lizzie.board.getHistory().getGameInfo().setPlayerWhite(whitePlayer);
           Lizzie.board.getHistory().getGameInfo().setKomi(komi);
+          Lizzie.board.getHistory().getGameInfo().setHandicap(handicap);
           Lizzie.leelaz.komi(komi);
           if (live != null && "3".equals(live.optString("Status"))) {
             if (schedule != null && !schedule.isCancelled() && !schedule.isDone()) {
@@ -973,6 +979,7 @@ public class OnlineDialog extends JDialog {
         // ""));
         if (f.type == 20032) {
           int size = ((JSONObject) f.line.opt("AAA307")).optInt("AAA16");
+          int handicap = ((JSONObject) f.line.opt("AAA307")).optInt("AAA4");
           if (size > 0) {
             boardSize = size;
             Lizzie.board.reopen(boardSize, boardSize);
@@ -994,6 +1001,73 @@ public class OnlineDialog extends JDialog {
             Lizzie.frame.setPlayers(whitePlayer, blackPlayer);
             Lizzie.board.getHistory().getGameInfo().setPlayerBlack(blackPlayer);
             Lizzie.board.getHistory().getGameInfo().setPlayerWhite(whitePlayer);
+            if (handicap > 0) Lizzie.board.getHistory().getGameInfo().setHandicap(handicap);
+
+            if (size == 19) {
+              switch (handicap) {
+                case 2:
+                  history.place(15, 3, Stone.BLACK, false, false);
+                  history.place(3, 15, Stone.BLACK, false, false);
+                  break;
+                case 3:
+                  history.place(3, 3, Stone.BLACK);
+                  history.place(15, 3, Stone.BLACK);
+                  history.place(3, 15, Stone.BLACK);
+                  break;
+                case 4:
+                  history.place(3, 3, Stone.BLACK);
+                  history.place(3, 15, Stone.BLACK);
+                  history.place(15, 3, Stone.BLACK);
+                  history.place(15, 15, Stone.BLACK);
+                  break;
+                case 5:
+                  history.place(3, 3, Stone.BLACK);
+                  history.place(3, 15, Stone.BLACK);
+                  history.place(15, 3, Stone.BLACK);
+                  history.place(15, 15, Stone.BLACK);
+                  history.place(9, 9, Stone.BLACK);
+                  break;
+                case 6:
+                  history.place(3, 3, Stone.BLACK);
+                  history.place(3, 15, Stone.BLACK);
+                  history.place(15, 3, Stone.BLACK);
+                  history.place(15, 15, Stone.BLACK);
+                  history.place(3, 9, Stone.BLACK);
+                  history.place(15, 9, Stone.BLACK);
+                  break;
+                case 7:
+                  history.place(3, 3, Stone.BLACK);
+                  history.place(3, 15, Stone.BLACK);
+                  history.place(15, 3, Stone.BLACK);
+                  history.place(15, 15, Stone.BLACK);
+                  history.place(3, 9, Stone.BLACK);
+                  history.place(15, 9, Stone.BLACK);
+                  history.place(9, 9, Stone.BLACK);
+                  break;
+                case 8:
+                  history.place(3, 3, Stone.BLACK);
+                  history.place(3, 15, Stone.BLACK);
+                  history.place(15, 3, Stone.BLACK);
+                  history.place(15, 15, Stone.BLACK);
+                  history.place(9, 3, Stone.BLACK);
+                  history.place(9, 15, Stone.BLACK);
+                  history.place(3, 9, Stone.BLACK);
+                  history.place(15, 9, Stone.BLACK);
+                  break;
+                case 9:
+                  history.place(3, 3, Stone.BLACK);
+                  history.place(3, 15, Stone.BLACK);
+                  history.place(15, 3, Stone.BLACK);
+                  history.place(15, 15, Stone.BLACK);
+                  history.place(9, 3, Stone.BLACK);
+                  history.place(9, 15, Stone.BLACK);
+                  history.place(3, 9, Stone.BLACK);
+                  history.place(15, 9, Stone.BLACK);
+                  history.place(9, 9, Stone.BLACK);
+                  break;
+              }
+            }
+
           } else {
             break;
           }
@@ -1012,11 +1086,14 @@ public class OnlineDialog extends JDialog {
           Lizzie.board.getHistory().getGameInfo().setPlayerWhite(whitePlayer);
         } else if (f.type == 7005) {
           long uid = f.line.optLong("AAA303");
-          int num = f.line.optInt("AAA102");
+          int num = f.line.optInt("AAA102") + Lizzie.board.getHistory().getGameInfo().getHandicap();
           if (num == 0) {
             num = history.getData().moveNumber + 1;
           }
-          Stone color = (num % 2 != 0) ? Stone.BLACK : Stone.WHITE;
+          Stone color =
+              (num - history.getData().moveNumber) % 2 == 0
+                  ? history.getLastMoveColor()
+                  : (history.getLastMoveColor() == Stone.WHITE ? Stone.BLACK : Stone.WHITE);
           if (uid > 0) {
             if (Stone.BLACK.equals(color)) {
               buid = uid;
@@ -2164,6 +2241,11 @@ public class OnlineDialog extends JDialog {
     whitePlayer = info.optString("whiteName");
     history = SGFParser.parseSgf(info.optString("sgf"));
     if (history != null) {
+      double komi = info.optDouble("komi", history.getGameInfo().getKomi());
+      int handicap = info.optInt("handicap", history.getGameInfo().getHandicap());
+      Lizzie.board.getHistory().getGameInfo().setKomi(komi);
+      Lizzie.board.getHistory().getGameInfo().setHandicap(handicap);
+      Lizzie.leelaz.komi(komi);
       int diffMove = Lizzie.board.getHistory().sync(history);
       if (diffMove >= 0) {
         //   Lizzie.board.goToMoveNumberBeyondBranch(diffMove > 0 ? diffMove - 1 : 0);
@@ -2361,9 +2443,12 @@ public class OnlineDialog extends JDialog {
       int[] c = new int[2];
       c[0] = m.optInt("x");
       c[1] = m.optInt("y");
-      Stone color = (move % 2 != 0) ? Stone.BLACK : Stone.WHITE;
       boolean changeMove = false;
       while (history.next(true).isPresent()) ;
+      Stone color =
+          (move - history.getData().moveNumber) % 2 == 0
+              ? history.getLastMoveColor()
+              : (history.getLastMoveColor() == Stone.WHITE ? Stone.BLACK : Stone.WHITE);
       if (move <= history.getMoveNumber()) {
         int cur = history.getMoveNumber();
         for (int i = move; i <= cur; i++) {

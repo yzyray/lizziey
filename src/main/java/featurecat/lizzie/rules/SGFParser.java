@@ -1494,15 +1494,17 @@ public class SGFParser {
               }
               history.addNodeProperty(tag, tagContent);
               if (move != null) {
-                history.addStone(move[0], move[1], color);
+                // history.addStone(move[0], move[1], color);
+                history.place(move[0], move[1], color);
               }
             } else {
               if (move == null) {
                 history.pass(color);
               } else {
+                //     history.place(move[0], move[1], color, false);
                 history.place(move[0], move[1], color);
               }
-              history.flatten();
+              //  history.flatten();
             }
           } else if (tag.equals("PB")) {
             blackPlayer = tagContent;
@@ -1723,7 +1725,8 @@ public class SGFParser {
               }
               history.addNodeProperty(tag, tagContent);
               if (move != null) {
-                history.addStone(move[0], move[1], color);
+                // history.addStone(move[0], move[1], color);
+                history.place(move[0], move[1], color);
               }
             } else {
               if (move == null) {
@@ -1731,7 +1734,7 @@ public class SGFParser {
               } else {
                 history.place(move[0], move[1], color);
               }
-              history.flatten();
+              // history.flatten();
             }
           } else if (tag.equals("PB")) {
             blackPlayer = tagContent;
