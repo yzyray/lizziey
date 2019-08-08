@@ -159,7 +159,7 @@ public class Theme {
 
   /** The size of the shadow */
   public int shadowSize() {
-    return getIntByKey("shadow-size", 90);
+    return getIntByKey("shadow-size", 55);
   }
 
   /** The stroke width of the winrate line */
