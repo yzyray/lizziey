@@ -266,7 +266,7 @@ public class Config {
 
     theme = new Theme(uiConfig);
 
-   // showBorder = uiConfig.optBoolean("show-border", false);
+    // showBorder = uiConfig.optBoolean("show-border", false);
     showMoveNumber = uiConfig.getBoolean("show-move-number");
     onlyLastMoveNumber = uiConfig.optInt("only-last-move-number");
 

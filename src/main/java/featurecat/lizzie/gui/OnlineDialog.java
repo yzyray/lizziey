@@ -539,6 +539,8 @@ public class OnlineDialog extends JDialog {
             if (!Utils.isBlank(result)) {
               Lizzie.board.getHistory().getEnd().getData().comment =
                   result + "\n" + Lizzie.board.getHistory().getEnd().getData().comment;
+              Lizzie.frame.setResult(result);
+              Lizzie.board.getHistory().getGameInfo().setResult(result);
               Lizzie.board.previousMove();
               Lizzie.board.nextMove();
             }
@@ -1207,6 +1209,8 @@ public class OnlineDialog extends JDialog {
           String result = result(f.type, f.line);
           while (history.next().isPresent()) ;
           history.getEnd().getData().comment = result + "\n" + history.getEnd().getData().comment;
+          Lizzie.frame.setResult(result);
+          Lizzie.board.getHistory().getGameInfo().setResult(result);
         }
       }
     }
@@ -2263,6 +2267,8 @@ public class OnlineDialog extends JDialog {
         if (!Utils.isBlank(result)) {
           Lizzie.board.getHistory().getEnd().getData().comment =
               result + "\n" + Lizzie.board.getHistory().getEnd().getData().comment;
+          Lizzie.frame.setResult(result);
+          Lizzie.board.getHistory().getGameInfo().setResult(result);
           Lizzie.board.previousMove();
           Lizzie.board.nextMove();
         }
@@ -2497,6 +2503,8 @@ public class OnlineDialog extends JDialog {
         while (Lizzie.board.getHistory().next().isPresent()) ;
         Lizzie.board.getHistory().getEnd().getData().comment =
             result + "\n" + Lizzie.board.getHistory().getEnd().getData().comment;
+        Lizzie.frame.setResult(result);
+        Lizzie.board.getHistory().getGameInfo().setResult(result);
         Lizzie.board.previousMove();
         Lizzie.board.nextMove();
       }
