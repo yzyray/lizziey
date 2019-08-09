@@ -1216,7 +1216,7 @@ public class BoardRenderer {
               } else { // yellow to green
                 fraction = 1 - Math.sqrt(2 - fraction) / 2;
               }
-              hue2 = fraction > 0.5 ? true : false;
+              hue2 = fraction > 0.42 ? true : false;
               hue = redHue + (greenHue - redHue) * (float) fraction;
             }
 
