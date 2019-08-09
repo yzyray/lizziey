@@ -271,7 +271,7 @@ public class LizzieFrame extends JFrame {
     // this.setJMenuBar(menu);
     // this.setVisible(true);
     this.setAlwaysOnTop(Lizzie.config.mainsalwaysontop);
-    setMinimumSize(new Dimension(640, 400));
+    setMinimumSize(new Dimension(520, 400));
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("winrate-graph") != null

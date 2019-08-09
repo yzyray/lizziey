@@ -263,7 +263,11 @@ public class VariationTree {
     curMove = Lizzie.board.getHistory().getCurrentHistoryNode();
 
     // Is current move a variation? If so, find top of variation
-    BoardHistoryNode top = curMove.findTop();
+    // 改为找初始顶点
+    BoardHistoryNode top = curMove;
+    while (top.previous().isPresent()) {
+      top = top.previous().get();
+    } // .findTop();
     int curposy = middleY - YSPACING * (curMove.getData().moveNumber - top.getData().moveNumber);
     // Go to very top of tree (visible in assigned area)
     BoardHistoryNode node = top;

@@ -365,6 +365,7 @@ public class Menu extends MenuBar {
           public void actionPerformed(ActionEvent e) {
             Lizzie.config.showNameInBoard = !Lizzie.config.showNameInBoard;
             Lizzie.config.uiConfig.put("show-name-in-board", Lizzie.config.showNameInBoard);
+            Lizzie.board.setForceRefresh(true);
             try {
               Lizzie.config.save();
             } catch (IOException es) {
