@@ -174,7 +174,7 @@ public class Theme {
 
   /** The font size of the comment */
   public int commentFontSize() {
-    return getIntByKey("comment-font-size", 3);
+    return getIntByKey("comment-font-size", 0);
   }
 
   /** The size of the shadow */

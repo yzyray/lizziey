@@ -2765,11 +2765,13 @@ public class LizzieFrame extends JFrame {
                       getHeight())
                   * 0.0225);
     }
-    // if (Lizzie.config.commentFontSize > 0) {
-    // fontSize = Lizzie.config.commentFontSize;
-    // } else if (fontSize < 12) {
-    // fontSize = 12;
-    // }
+    if (fontSize > 18) fontSize = 18;
+    else if (fontSize < 12) {
+      fontSize = 12;
+    }
+    //    if (Lizzie.config.commentFontSize > 0) {
+    //      fontSize = Lizzie.config.commentFontSize;
+    //    }
 
     if (Lizzie.config.commentFontSize != fontSize) {
       Lizzie.config.commentFontSize = fontSize;
