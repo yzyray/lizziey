@@ -1489,6 +1489,8 @@ public class Menu extends MenuBar {
             Lizzie.frame.bowser("https://home.yikeweiqi.com/#/game", "弈客大厅");
           }
         });
+    
+    live.addSeparator();
 
     final JCheckBoxMenuItem openHtmlOnLive = new JCheckBoxMenuItem("同步时跳转网页");
     openHtmlOnLive.addActionListener(
