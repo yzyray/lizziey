@@ -37,7 +37,7 @@ public class Config {
   public boolean showlcbwinrate = true;
   public boolean playponder = true;
   public boolean showrect = true;
-  public boolean showlcbcolor = true;
+  public boolean showlcbcolor = false;
   public boolean fastChange = true;
   public boolean showKataGoBoardScoreMean = false;
   public boolean kataGoScoreMeanAlwaysBlack = false;
@@ -334,7 +334,7 @@ public class Config {
     playponder = config.getJSONObject("leelaz").optBoolean("play-ponder", true);
     showrect = config.getJSONObject("leelaz").optBoolean("show-rect", true);
     loadZen = config.getJSONObject("leelaz").optBoolean("load-zen", false);
-    showlcbcolor = config.getJSONObject("leelaz").optBoolean("show-lcb-color", true);
+    showlcbcolor = config.getJSONObject("leelaz").optBoolean("show-lcb-color", false);
     fastChange = config.getJSONObject("leelaz").optBoolean("fast-engine-change", true);
     maxAnalyzeTimeMillis =
         60 * 1000 * config.getJSONObject("leelaz").getInt("max-analyze-time-minutes");
