@@ -1492,7 +1492,7 @@ public class Menu extends MenuBar {
     
     live.addSeparator();
 
-    final JCheckBoxMenuItem openHtmlOnLive = new JCheckBoxMenuItem("同步时跳转网页");
+    final JCheckBoxMenuItem openHtmlOnLive = new JCheckBoxMenuItem("跳转网页");
     openHtmlOnLive.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
