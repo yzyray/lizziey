@@ -16,6 +16,7 @@ import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.analysis.MoveData;
+import featurecat.lizzie.analysis.ReadBoard;
 import featurecat.lizzie.analysis.YaZenGtp;
 import featurecat.lizzie.rules.Board;
 import featurecat.lizzie.rules.BoardData;
@@ -174,6 +175,7 @@ public class LizzieFrame extends JFrame {
   private String cachedComment;
   private Rectangle commentRect;
   public YaZenGtp zen;
+  public ReadBoard readBoard;
   public boolean isheatmap = false;
   public boolean isMouseOver = false;
   // Show the playouts in the title
