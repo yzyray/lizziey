@@ -175,13 +175,18 @@ public class ReadBoard {
         played = true;
       }
     }
+    if (firstSync) {
+      Lizzie.board.flatten();
+      firstSync = false;
+    }
+    // 落最后一步
     if (played
-        && !firstSync
+        //  && !firstSync
         && !Lizzie.config.alwaysGotoLastOnLive
         && Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()
         && node != Lizzie.board.getHistory().getCurrentHistoryNode().previous().get()) {
       Lizzie.board.moveToAnyPosition(node);
-      firstSync = false;
+      // firstSync = false;
     }
     //	    if (played && Lizzie.config.alwaysGotoLastOnLive) {
     //	      int moveNumber = Lizzie.board.getHistory().getMainEnd().getData().moveNumber;
