@@ -2,6 +2,7 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
+import featurecat.lizzie.analysis.ReadBoard;
 import featurecat.lizzie.rules.Movelist;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -443,11 +444,25 @@ public class BottomToolbar extends JPanel {
         });
     yike.add(yikeRoom);
 
+    JMenuItem syncBoard = new JMenuItem("棋盘同步");
+    syncBoard.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            try {
+              Lizzie.frame.readBoard = new ReadBoard();
+            } catch (IOException e1) {
+              // TODO Auto-generated catch block
+              e1.printStackTrace();
+            }
+          }
+        });
+    yike.add(syncBoard);
+
     liveButton.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             // Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live", "弈客直播");
-            yike.show(Lizzie.frame.toolbar, liveButton.getX() + 10, liveButton.getY() - 50);
+            yike.show(Lizzie.frame.toolbar, liveButton.getX() + 10, liveButton.getY() - 72);
           }
         });
 

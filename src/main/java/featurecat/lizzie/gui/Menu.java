@@ -1163,6 +1163,7 @@ public class Menu extends MenuBar {
     final JMenuItem setMain = new JMenuItem();
     setMain.setText("设为主分支");
     gameMenu.add(setMain);
+    gameMenu.addSeparator();
 
     setMain.addActionListener(
         new ActionListener() {
@@ -1172,11 +1173,10 @@ public class Menu extends MenuBar {
         });
 
     final JMenuItem branchStart = new JMenuItem();
-    branchStart.setText("返回主分支(Ctrl+左)");
+    branchStart.setText("返回上一分支(Ctrl+左)");
     // aboutItem.setMnemonic('A');
     branchStart.addActionListener(new ItemListeneryzy());
     gameMenu.add(branchStart);
-    gameMenu.addSeparator();
 
     final JMenuItem firstItem = new JMenuItem();
     firstItem.setText("跳转到最前(Home)");
@@ -1491,7 +1491,7 @@ public class Menu extends MenuBar {
           }
         });
 
-    final JMenuItem readBoard = new JMenuItem("棋盘识别工具");
+    final JMenuItem readBoard = new JMenuItem("棋盘识别工具(Alt+O)");
     live.add(readBoard);
 
     readBoard.addActionListener(
@@ -1499,8 +1499,6 @@ public class Menu extends MenuBar {
           public void actionPerformed(ActionEvent e) {
             try {
               Lizzie.frame.readBoard = new ReadBoard();
-              // Lizzie.frame.urlSgf=true;
-              //   Lizzie.frame.syncLiveBoardStat();
             } catch (IOException es) {
               // TODO Auto-generated catch block
               es.printStackTrace();
@@ -1541,6 +1539,56 @@ public class Menu extends MenuBar {
         });
     live.add(alwaysGo);
 
+    final JMenu readBoardArg = new JMenu("识别工具默认选择");
+    live.add(readBoardArg);
+
+    final JCheckBoxMenuItem yehu = new JCheckBoxMenuItem("野狐");
+    yehu.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.readBoardArg1 = "0";
+            Lizzie.config.uiConfig.put("read-board-arg1", Lizzie.config.readBoardArg1);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    readBoardArg.add(yehu);
+
+    final JCheckBoxMenuItem yicheng = new JCheckBoxMenuItem("弈城");
+    yicheng.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.readBoardArg1 = "1";
+            Lizzie.config.uiConfig.put("read-board-arg1", Lizzie.config.readBoardArg1);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    readBoardArg.add(yicheng);
+
+    final JCheckBoxMenuItem other = new JCheckBoxMenuItem("其他");
+    other.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.readBoardArg1 = "2";
+            Lizzie.config.uiConfig.put("read-board-arg1", Lizzie.config.readBoardArg1);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    readBoardArg.add(other);
+
+    // readBoardArg1= uiConfig.optString("read-board-arg1"
+
     live.addMenuListener(
         new MenuListener() {
 
@@ -1549,6 +1597,21 @@ public class Menu extends MenuBar {
             else openHtmlOnLive.setState(false);
             if (Lizzie.config.alwaysGotoLastOnLive) alwaysGo.setState(true);
             else alwaysGo.setState(false);
+            if (Lizzie.config.readBoardArg1.equals("0")) {
+              yehu.setState(true);
+              yicheng.setState(false);
+              other.setState(false);
+            }
+            if (Lizzie.config.readBoardArg1.equals("1")) {
+              yicheng.setState(true);
+              yehu.setState(false);
+              other.setState(false);
+            }
+            if (Lizzie.config.readBoardArg1.equals("2")) {
+              other.setState(true);
+              yicheng.setState(false);
+              yehu.setState(false);
+            }
           }
 
           @Override
