@@ -2,7 +2,6 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
-import featurecat.lizzie.analysis.ReadBoard;
 import featurecat.lizzie.rules.Movelist;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -448,12 +447,7 @@ public class BottomToolbar extends JPanel {
     syncBoard.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            try {
-              Lizzie.frame.readBoard = new ReadBoard();
-            } catch (IOException e1) {
-              // TODO Auto-generated catch block
-              e1.printStackTrace();
-            }
+            Lizzie.frame.openBoardSync();
           }
         });
     yike.add(syncBoard);

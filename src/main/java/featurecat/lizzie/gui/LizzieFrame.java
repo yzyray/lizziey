@@ -611,6 +611,24 @@ public class LizzieFrame extends JFrame {
     configDialog.setVisible(true);
   }
 
+  public void openBoardSync() {
+    if (readBoard == null) {
+      try {
+        readBoard = new ReadBoard();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    } else {
+      try {
+        readBoard.shutdown();
+        readBoard = new ReadBoard();
+      } catch (Exception e) {
+        // Failed to save config
+      }
+    }
+  }
+
   public static void openConfigDialog2(int index) {
     if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
     ConfigDialog2 configDialog2 = new ConfigDialog2();

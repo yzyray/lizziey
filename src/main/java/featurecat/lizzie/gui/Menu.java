@@ -2,7 +2,6 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
-import featurecat.lizzie.analysis.ReadBoard;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -1497,12 +1496,7 @@ public class Menu extends MenuBar {
     readBoard.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            try {
-              Lizzie.frame.readBoard = new ReadBoard();
-            } catch (IOException es) {
-              // TODO Auto-generated catch block
-              es.printStackTrace();
-            }
+            Lizzie.frame.openBoardSync();
           }
         });
 

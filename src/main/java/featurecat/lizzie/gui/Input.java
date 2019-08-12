@@ -4,7 +4,6 @@ import static java.awt.event.KeyEvent.*;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
-import featurecat.lizzie.analysis.ReadBoard;
 import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.SwingUtilities;
@@ -519,12 +518,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_O:
         if (e.isAltDown()) {
-          try {
-            Lizzie.frame.readBoard = new ReadBoard();
-          } catch (IOException es) {
-            // TODO Auto-generated catch block
-            es.printStackTrace();
-          }
+
+          Lizzie.frame.openBoardSync();
+
         } else if (e.isShiftDown()) {
           Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live", "弈客直播");
         } else {
