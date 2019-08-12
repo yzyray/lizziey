@@ -1489,7 +1489,7 @@ public class Menu extends MenuBar {
             Lizzie.frame.bowser("https://home.yikeweiqi.com/#/game", "弈客大厅");
           }
         });
-    
+
     live.addSeparator();
 
     final JCheckBoxMenuItem openHtmlOnLive = new JCheckBoxMenuItem("跳转网页");
@@ -1577,6 +1577,16 @@ public class Menu extends MenuBar {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.openConfigDialog2(0);
+          }
+        });
+
+    final JMenuItem about = new JMenuItem("关于");
+    settings.add(about);
+
+    about.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.openConfigDialog2(1);
           }
         });
 

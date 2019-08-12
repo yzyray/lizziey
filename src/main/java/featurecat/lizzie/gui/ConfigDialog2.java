@@ -6,6 +6,7 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static java.lang.Math.max;
 
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.gui.LizzieFrame.HtmlKit;
 import featurecat.lizzie.rules.Board;
 import featurecat.lizzie.theme.Theme;
 import featurecat.lizzie.util.DigitOnlyFilter;
@@ -92,6 +93,8 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.InternationalFormatter;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.StyleSheet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -664,23 +667,29 @@ public class ConfigDialog2 extends JDialog {
 
     // About Tab
     aboutTab = new JPanel();
-    //   tabbedPane.addTab(resourceBundle.getString("LizzieConfig.title.about"), null, aboutTab,
-    // null);
+    tabbedPane.addTab(resourceBundle.getString("LizzieConfig.title.about"), null, aboutTab, null);
 
-    JLabel lblLizzieName = new JLabel("Lizzie " + Lizzie.lizzieVersion);
+    //    JLabel lblLizzieName = new JLabel("Lizzie " + "Yzy\u4FEE\u6539\u7248");
+    //    lblLizzieName.setFont(new Font("Tahoma", Font.BOLD, 24));
+    //    lblLizzieName.setHorizontalAlignment(SwingConstants.CENTER);
+
+    LinkLabel lblLizzieName = new LinkLabel("<html><b>Lizzie Yzy修改版</b></html>");
     lblLizzieName.setFont(new Font("Tahoma", Font.BOLD, 24));
-    lblLizzieName.setHorizontalAlignment(SwingConstants.CENTER);
+    // lblLizzieName.setHorizontalAlignment(SwingConstants.CENTER);
 
-    LinkLabel lblLizzieInfo = new LinkLabel(resourceBundle.getString("LizzieConfig.lizzie.info"));
+    LinkLabel lblLizzieInfo =
+        new LinkLabel(
+            "<html><b>Lizzie</b>是一个免费的开源围棋图形界面，允许用户使用类Leela Zero引擎实时分析棋局信息。<br /><br /><table><tr><td>作者:</td><td><a href=\"https://github.com/featurecat\">featurecat</a></td></tr><tr><td>源代码:</td><td><a href=\"https://github.com/featurecat/lizzie\">https://github.com/featurecat/lizzie</a></td></tr><tr><td>许可协议:</td><td><a href=\"https://github.com/featurecat/lizzie/blob/master/LICENSE.txt\">GPL-3.0</a></td></tr></table></html>");
     lblLizzieInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
-    LinkLabel lblContributorsTitle =
-        new LinkLabel(resourceBundle.getString("LizzieConfig.lizzie.contributorsTitle"));
-    lblContributorsTitle.setFont(new Font("Tahoma", Font.BOLD, 14));
+    LinkLabel lblOriginTitle = new LinkLabel("<html><b>修改信息</b></html>");
+    lblOriginTitle.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-    LinkLabel lblContributors =
-        new LinkLabel(resourceBundle.getString("LizzieConfig.lizzie.contributors"));
-    lblContributors.setFont(new Font("Tahoma", Font.PLAIN, 14));
+    LinkLabel lblOriginLizzieInfo =
+        new LinkLabel(
+            "<html>这是一个个人修改版的Lizzie<br /><br /><table><tr><td>修改者:</td><td><a href=\"https://github.com/yzyray\">yzyray</a></td></tr><tr><td>源代码:</td><td><a href=\"https://github.com/yzyray/lizziey\">https://github.com/yzyray/lizziey</a></td></tr></table></html>");
+
+    lblOriginLizzieInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
     GroupLayout gl = new GroupLayout(aboutTab);
     gl.setHorizontalGroup(
         gl.createParallelGroup(Alignment.LEADING)
@@ -699,17 +708,17 @@ public class ConfigDialog2 extends JDialog {
                             .addGroup(
                                 gl.createSequentialGroup()
                                     .addContainerGap()
-                                    .addComponent(lblContributorsTitle))
+                                    .addComponent(lblOriginTitle))
                             .addGroup(
                                 gl.createSequentialGroup()
                                     .addContainerGap()
                                     .addComponent(
-                                        lblContributors,
+                                        lblOriginLizzieInfo,
                                         GroupLayout.PREFERRED_SIZE,
                                         620,
                                         GroupLayout.PREFERRED_SIZE))
                             .addGroup(
-                                gl.createSequentialGroup().addGap(254).addComponent(lblLizzieName)))
+                                gl.createSequentialGroup().addGap(214).addComponent(lblLizzieName)))
                     .addContainerGap()));
     gl.setVerticalGroup(
         gl.createParallelGroup(Alignment.LEADING)
@@ -722,16 +731,15 @@ public class ConfigDialog2 extends JDialog {
                     .addComponent(
                         lblLizzieInfo, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(lblContributorsTitle)
+                    .addComponent(lblOriginTitle)
                     .addPreferredGap(ComponentPlacement.RELATED)
                     .addComponent(
-                        lblContributors,
+                        lblOriginLizzieInfo,
                         GroupLayout.PREFERRED_SIZE,
                         282,
                         GroupLayout.PREFERRED_SIZE)
                     .addGap(126)));
     aboutTab.setLayout(gl);
-
     // Engines
     txts =
         new JTextField[] {
@@ -2041,9 +2049,42 @@ public class ConfigDialog2 extends JDialog {
     public void actionPerformed(ActionEvent e) {}
   }
 
-  private class LinkLabel extends JEditorPane {
+  private class LinkLabel extends JTextPane {
     public LinkLabel(String text) {
-      super("text/html", text);
+      super();
+
+      HTMLDocument htmlDoc;
+      HtmlKit htmlKit;
+      StyleSheet htmlStyle;
+
+      htmlKit = new HtmlKit();
+      htmlDoc = (HTMLDocument) htmlKit.createDefaultDocument();
+      htmlStyle = htmlKit.getStyleSheet();
+      String style =
+          "body {background:"
+              + String.format(
+                  "%02x%02x%02x",
+                  Lizzie.config.commentBackgroundColor.getRed(),
+                  Lizzie.config.commentBackgroundColor.getGreen(),
+                  Lizzie.config.commentBackgroundColor.getBlue())
+              + "; color:#"
+              + String.format(
+                  "%02x%02x%02x",
+                  Lizzie.config.commentFontColor.getRed(),
+                  Lizzie.config.commentFontColor.getGreen(),
+                  Lizzie.config.commentFontColor.getBlue())
+              + "; font-family:"
+              + Lizzie.config.fontName
+              + ", Consolas, Menlo, Monaco, 'Ubuntu Mono', monospace;"
+              + (Lizzie.config.commentFontSize > 0
+                  ? "font-size:" + Lizzie.config.commentFontSize
+                  : "")
+              + "}";
+      htmlStyle.addRule(style);
+
+      setEditorKit(htmlKit);
+      setDocument(htmlDoc);
+      setText(text);
       setEditable(false);
       setOpaque(false);
       putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);

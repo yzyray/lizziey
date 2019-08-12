@@ -50,12 +50,11 @@ public class ReadBoard {
     startEngine(engineCommand, 0);
   }
 
-  
   public void startEngine(String engineCommand, int index) {
 
-	   List<String> commands= new ArrayList<String>();
-	   commands.add(engineCommand);
-	   commands.add("yzy");
+    List<String> commands = new ArrayList<String>();
+    commands.add(engineCommand);
+    commands.add("yzy");
 
     ProcessBuilder processBuilder = new ProcessBuilder(commands);
     processBuilder.redirectErrorStream(true);
@@ -68,7 +67,7 @@ public class ReadBoard {
         Lizzie.frame.setAlwaysOnTop(false);
         onTop = true;
       }
-      JOptionPane.showMessageDialog(null, "点目失败,请确认Lizzie目录下是否有YAZenGtop.exe和Zen.dll");
+      JOptionPane.showMessageDialog(null, "加载棋盘识别工具失败");
       if (onTop) Lizzie.frame.setAlwaysOnTop(true);
       return;
     }

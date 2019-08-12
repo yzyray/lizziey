@@ -3,7 +3,6 @@ package featurecat.lizzie;
 import com.teamdev.jxbrowser.chromium.ba;
 import featurecat.lizzie.analysis.EngineManager;
 import featurecat.lizzie.analysis.Leelaz;
-import featurecat.lizzie.analysis.ReadBoard;
 import featurecat.lizzie.analysis.YaZenGtp;
 import featurecat.lizzie.gui.AnalysisFrame;
 import featurecat.lizzie.gui.CountResults;
@@ -97,13 +96,13 @@ public class Lizzie {
             } else if (config.config.getJSONObject("ui").getBoolean("resume-previous-game")) {
               board.resumePreviousGame();
             }
-            try {
-				frame.readBoard=new ReadBoard();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
+            //            try {
+            //				frame.readBoard=new ReadBoard();
+            //			} catch (IOException e) {
+            //				// TODO Auto-generated catch block
+            //				e.printStackTrace();
+            //			}
+
             if (Lizzie.config.loadZen) {
               try {
                 frame.zen = new YaZenGtp();
