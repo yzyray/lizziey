@@ -2,7 +2,6 @@ package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.gui.CountResults;
-import featurecat.lizzie.rules.BoardHistoryList;
 import featurecat.lizzie.rules.BoardHistoryNode;
 import featurecat.lizzie.rules.Movelist;
 import featurecat.lizzie.rules.Stone;
@@ -131,76 +130,80 @@ public class ReadBoard {
       Lizzie.frame.refresh();
     }
   }
-  
-  private void syncBoardStones() {
-	    boolean played = false;	
-	    BoardHistoryNode node=Lizzie.board.getHistory().getCurrentHistoryNode();
-	    Stone[] stones = Lizzie.board.getHistory().getMainEnd().getData().stones;
-	    for (int i = 0; i < tempcount.size(); i++) {
-	      int m = tempcount.get(i);
-	      int y = i / 19;
-	      int x = i % 19;
-	      if (m == 1 && !stones[Lizzie.board.getIndex(x, y)].isBlack()) {
-	    	  if(!played)
-	    	    {	    		  
-	    		  while (Lizzie.board.previousMove()) ;
-	    	    while (Lizzie.board.nextMove()) ;}
-	        Lizzie.board.place(x, y, Stone.BLACK, true);	        
-	        played = true;
-	      }
-	      if (m == 2 && !stones[Lizzie.board.getIndex(x, y)].isWhite()) {
-	    	  if(!played)
-	    	    {while (Lizzie.board.previousMove()) ;
-	    	    while (Lizzie.board.nextMove()) ;}
-	    	  Lizzie.board.place(x, y, Stone.WHITE, true);
-	        played = true;
-	      }
-	    }
-	    if(played&&!Lizzie.config.alwaysGotoLastOnLive&&Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()&&node!=Lizzie.board.getHistory().getCurrentHistoryNode().previous().get())
-	    Lizzie.board.moveToAnyPosition(node);
-//	    if (played && Lizzie.config.alwaysGotoLastOnLive) { 
-//	      int moveNumber = Lizzie.board.getHistory().getMainEnd().getData().moveNumber;
-//	      Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
-//	      Lizzie.frame.refresh();
-//	    }
-	  }
 
-//  private void syncBoardStones() {
-//    boolean played = false;
-//    BoardHistoryNode node =Lizzie.board.getHistory().getCurrentHistoryNode();
-//    BoardHistoryList history = Lizzie.board.getHistory();
-//    while (history.previous().isPresent()) history.previous();
-//    while (history.next().isPresent()) history.getNext();
-//    Stone[] stones = Lizzie.board.getHistory().getMainEnd().getData().stones;
-//    for (int i = 0; i < tempcount.size(); i++) {
-//      int m = tempcount.get(i);
-//      int y = i / 19;
-//      int x = i % 19;
-//      if (m == 1 && !stones[Lizzie.board.getIndex(x, y)].isBlack()) {
-//        history.place(x, y, Stone.BLACK, true);
-//        //Lizzie.board.setHistory(history);
-//       if(node==history.getCurrentHistoryNode().previous().get())
-//        	Lizzie.leelaz.playMove(Stone.BLACK, Lizzie.board.convertCoordinatesToName(x, y));
-//        played = true;
-//         Lizzie.board.setHistory(history);
-//      }
-//      if (m == 2 && !stones[Lizzie.board.getIndex(x, y)].isWhite()) {
-//
-//        history.place(x, y, Stone.WHITE, true);
-//       // Lizzie.board.setHistory(history);
-//        if(node==history.getCurrentHistoryNode().previous().get())
-//        	Lizzie.leelaz.playMove(Stone.WHITE, Lizzie.board.convertCoordinatesToName(x, y));
-//        played = true;
-//        Lizzie.board.setHistory(history);
-//      }
-//    }
-//   
-////    if (played && Lizzie.config.alwaysGotoLastOnLive) { 
-////      int moveNumber = Lizzie.board.getHistory().getMainEnd().getData().moveNumber;
-////      Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
-////      Lizzie.frame.refresh();
-////    }
-//  }
+  private void syncBoardStones() {
+    boolean played = false;
+    BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
+    Stone[] stones = Lizzie.board.getHistory().getMainEnd().getData().stones;
+    for (int i = 0; i < tempcount.size(); i++) {
+      int m = tempcount.get(i);
+      int y = i / 19;
+      int x = i % 19;
+      if (m == 1 && !stones[Lizzie.board.getIndex(x, y)].isBlack()) {
+        if (!played) {
+          while (Lizzie.board.previousMove()) ;
+          while (Lizzie.board.nextMove()) ;
+        }
+        Lizzie.board.place(x, y, Stone.BLACK, true);
+        played = true;
+      }
+      if (m == 2 && !stones[Lizzie.board.getIndex(x, y)].isWhite()) {
+        if (!played) {
+          while (Lizzie.board.previousMove()) ;
+          while (Lizzie.board.nextMove()) ;
+        }
+        Lizzie.board.place(x, y, Stone.WHITE, true);
+        played = true;
+      }
+    }
+    if (played
+        && !Lizzie.config.alwaysGotoLastOnLive
+        && Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()
+        && node != Lizzie.board.getHistory().getCurrentHistoryNode().previous().get())
+      Lizzie.board.moveToAnyPosition(node);
+    //	    if (played && Lizzie.config.alwaysGotoLastOnLive) {
+    //	      int moveNumber = Lizzie.board.getHistory().getMainEnd().getData().moveNumber;
+    //	      Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
+    //	      Lizzie.frame.refresh();
+    //	    }
+  }
+
+  //  private void syncBoardStones() {
+  //    boolean played = false;
+  //    BoardHistoryNode node =Lizzie.board.getHistory().getCurrentHistoryNode();
+  //    BoardHistoryList history = Lizzie.board.getHistory();
+  //    while (history.previous().isPresent()) history.previous();
+  //    while (history.next().isPresent()) history.getNext();
+  //    Stone[] stones = Lizzie.board.getHistory().getMainEnd().getData().stones;
+  //    for (int i = 0; i < tempcount.size(); i++) {
+  //      int m = tempcount.get(i);
+  //      int y = i / 19;
+  //      int x = i % 19;
+  //      if (m == 1 && !stones[Lizzie.board.getIndex(x, y)].isBlack()) {
+  //        history.place(x, y, Stone.BLACK, true);
+  //        //Lizzie.board.setHistory(history);
+  //       if(node==history.getCurrentHistoryNode().previous().get())
+  //        	Lizzie.leelaz.playMove(Stone.BLACK, Lizzie.board.convertCoordinatesToName(x, y));
+  //        played = true;
+  //         Lizzie.board.setHistory(history);
+  //      }
+  //      if (m == 2 && !stones[Lizzie.board.getIndex(x, y)].isWhite()) {
+  //
+  //        history.place(x, y, Stone.WHITE, true);
+  //       // Lizzie.board.setHistory(history);
+  //        if(node==history.getCurrentHistoryNode().previous().get())
+  //        	Lizzie.leelaz.playMove(Stone.WHITE, Lizzie.board.convertCoordinatesToName(x, y));
+  //        played = true;
+  //        Lizzie.board.setHistory(history);
+  //      }
+  //    }
+  //
+  ////    if (played && Lizzie.config.alwaysGotoLastOnLive) {
+  ////      int moveNumber = Lizzie.board.getHistory().getMainEnd().getData().moveNumber;
+  ////      Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
+  ////      Lizzie.frame.refresh();
+  ////    }
+  //  }
 
   public void shutdown() {
     process.destroy();
