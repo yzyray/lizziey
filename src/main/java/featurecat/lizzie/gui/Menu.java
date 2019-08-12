@@ -2,6 +2,7 @@ package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.GameInfo;
+import featurecat.lizzie.analysis.ReadBoard;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -1487,6 +1488,23 @@ public class Menu extends MenuBar {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.bowser("https://home.yikeweiqi.com/#/game", "弈客大厅");
+          }
+        });
+
+    final JMenuItem readBoard = new JMenuItem("棋盘识别工具");
+    live.add(readBoard);
+
+    readBoard.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            try {
+              Lizzie.frame.readBoard = new ReadBoard();
+              // Lizzie.frame.urlSgf=true;
+              //   Lizzie.frame.syncLiveBoardStat();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+              es.printStackTrace();
+            }
           }
         });
 

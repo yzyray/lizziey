@@ -578,6 +578,12 @@ public class LizzieFrame extends JFrame {
 
   public void openOnlineDialog() {
     if (onlineDialog == null) onlineDialog = new OnlineDialog();
+    else {
+      try {
+        onlineDialog.stopSync();
+      } catch (Exception ex) {
+      }
+    }
     //  onlineDialog = new OnlineDialog();
     // onlineDialog.applyChangeWeb("https://home.yikeweiqi.com/#/live/room/20595/1/18748590");
     onlineDialog.setVisible(true);
@@ -3314,6 +3320,13 @@ public class LizzieFrame extends JFrame {
 
   private void syncOnline(String url) {
     if (onlineDialog == null) onlineDialog = new OnlineDialog();
+    else {
+      try {
+        onlineDialog.stopSync();
+      } catch (Exception ex) {
+      }
+    }
+
     onlineDialog.applyChangeWeb(url);
     syncLiveBoardStat();
     //    if (onlineDialog != null) {

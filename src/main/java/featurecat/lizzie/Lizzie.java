@@ -96,12 +96,6 @@ public class Lizzie {
             } else if (config.config.getJSONObject("ui").getBoolean("resume-previous-game")) {
               board.resumePreviousGame();
             }
-            //            try {
-            //				frame.readBoard=new ReadBoard();
-            //			} catch (IOException e) {
-            //				// TODO Auto-generated catch block
-            //				e.printStackTrace();
-            //			}
 
             if (Lizzie.config.loadZen) {
               try {
@@ -194,7 +188,12 @@ public class Lizzie {
     } catch (Exception e) {
       // Failed to save config
     }
-
+    if (frame.readBoard != null)
+      try {
+        frame.readBoard.shutdown();
+      } catch (Exception e) {
+        // Failed to save config
+      }
     //   if (leelaz != null) engineManager.forcekillAllEngines();
     //    if (Lizzie.frame.zen != null
     //        && Lizzie.frame.zen.process != null

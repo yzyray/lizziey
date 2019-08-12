@@ -65,7 +65,7 @@ public class Config {
   public boolean showNameInBoard = true;
   public boolean openHtmlOnLive = false;
   public boolean readKomi = false;
-  public boolean alwaysGotoLastOnLive = false;
+  public boolean alwaysGotoLastOnLive = true;
 
   public JSONObject config;
   public JSONObject leelazConfig;
@@ -312,7 +312,7 @@ public class Config {
     showNameInBoard = uiConfig.optBoolean("show-name-in-board", true);
     openHtmlOnLive = uiConfig.optBoolean("open-html-onlive", false);
     readKomi = uiConfig.optBoolean("read-komi", false);
-    alwaysGotoLastOnLive = uiConfig.optBoolean("always-gotolast-onlive", false);
+    alwaysGotoLastOnLive = uiConfig.optBoolean("always-gotolast-onlive", true);
     showEditbar = uiConfig.optBoolean("show-edit-bar", false);
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);

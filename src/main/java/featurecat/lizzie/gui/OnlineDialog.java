@@ -102,6 +102,8 @@ public class OnlineDialog extends JDialog {
   static boolean isStoped = false;
   static Timer timer;
   private String channel = "";
+  private boolean chineseFlag = false;
+  private int chineseRule = 1;
   private Map<Integer, Map<Integer, JSONObject>> branchs =
       new HashMap<Integer, Map<Integer, JSONObject>>();
   private Map<Integer, Map<Integer, JSONObject>> comments =
@@ -116,10 +118,10 @@ public class OnlineDialog extends JDialog {
     115
   };
   private byte[] b3 = {
-    104, 116, 116, 112, 58, 47, 47, 119, 101, 105, 113, 105, 46, 113, 113, 46, 99, 111, 109, 47,
-    111, 112, 101, 110, 113, 105, 112, 117, 47, 103, 101, 116, 113, 105, 112, 117, 63, 99, 97, 108,
-    108, 98, 97, 99, 107, 61, 106, 81, 117, 101, 114, 121, 49, 38, 103, 97, 109, 101, 99, 111, 100,
-    101, 61
+    104, 116, 116, 112, 115, 58, 47, 47, 119, 101, 105, 113, 105, 46, 113, 113, 46, 99, 111, 109,
+    47, 111, 112, 101, 110, 113, 105, 112, 117, 47, 103, 101, 116, 113, 105, 112, 117, 63, 99, 97,
+    108, 108, 98, 97, 99, 107, 61, 106, 81, 117, 101, 114, 121, 49, 38, 103, 97, 109, 101, 99, 111,
+    100, 101, 61
   };
   private byte[] c1 = {
     104, 116, 116, 112, 115, 58, 47, 47, 114, 116, 103, 97, 109, 101, 46, 121, 105, 107, 101, 119,
@@ -272,6 +274,8 @@ public class OnlineDialog extends JDialog {
     }
     type = checkUrl();
     isStoped = false;
+    chineseRule = 1;
+    chineseFlag = false;
     Lizzie.frame.urlSgf = true;
     if (type > 0) {
       error(false);
@@ -646,22 +650,25 @@ public class OnlineDialog extends JDialog {
           public void onReadyStateChange() {
             int readyState = ajax.getReadyState();
             if (readyState == AjaxHttpRequest.STATE_COMPLETE) {
-              String format =
-                  "(?s).*?\"ShowType\":([^,]+),\"ShowID\":([^,]+),\"CreateTime\":([^,]+),(?s).*";
+              String format = "jQuery[^\\(]*\\(((?s).*?)\\)";
               Pattern sp = Pattern.compile(format);
               Matcher sm = sp.matcher(ajax.getResponseText());
-              if (sm.matches() && sm.groupCount() == 3) {
+              if (sm.matches() && sm.groupCount() == 1) {
+                JSONObject o = new JSONObject(sm.group(1));
+                if (0 == o.optInt("result") && 0 == o.optInt("ResultID")) {
+                  chineseRule = 0;
+                }
                 List list = new ArrayList();
                 list.add("369");
                 queryMap.put("gameid", list);
                 list = new ArrayList();
-                list.add(sm.group(1));
+                list.add(o.optString("ShowType"));
                 queryMap.put("showtype", list);
                 list = new ArrayList();
-                list.add(sm.group(2));
+                list.add(o.optString("ShowID"));
                 queryMap.put("showid", list);
                 list = new ArrayList();
-                list.add(sm.group(3));
+                list.add(o.optString("CreateTime"));
                 queryMap.put("createtime", list);
 
                 try {
@@ -1072,7 +1079,20 @@ public class OnlineDialog extends JDialog {
                   break;
               }
             }
-
+            double komi = Lizzie.board.getHistory().getGameInfo().getKomi();
+            int a4 = ((JSONObject) f.line.opt("AAA307")).optInt("AAA4");
+            int a5 = ((JSONObject) f.line.opt("AAA307")).optInt("AAA5");
+            int a10 = ((JSONObject) f.line.opt("AAA307")).optInt("AAA10");
+            if (0 == a4 && 0 == a5) {
+              komi = 6.5;
+            } else if (1 == a10 && 1 == chineseRule) {
+              chineseFlag = true;
+              komi = ((double) a5 / 100 * 2);
+            } else {
+              komi = ((double) a5 / 100);
+            }
+            Lizzie.board.getHistory().getGameInfo().setKomi(komi);
+            Lizzie.leelaz.komi(komi);
           } else {
             break;
           }
@@ -1258,7 +1278,7 @@ public class OnlineDialog extends JDialog {
           double b = w - I;
           String C = decimalToFraction(b);
           F =
-              true
+              chineseFlag
                   ? (0 != I ? "黑胜" + I + (Utils.isBlank(C) ? "" : "又" + C) + "子" : "黑胜" + C + "子")
                   : "黑胜" + w + "目";
         } else if (2 == i.optInt("AAA166")) {
@@ -1266,7 +1286,7 @@ public class OnlineDialog extends JDialog {
           double d = w - E;
           String D = decimalToFraction(d);
           F =
-              true
+              chineseFlag
                   ? (0 != E ? "白胜" + E + (Utils.isBlank(D) ? "" : "又" + D) + "子" : "白胜" + D + "子")
                   : "白胜" + w + "目";
         } else {
@@ -2563,7 +2583,8 @@ public class OnlineDialog extends JDialog {
     //      client = null;
     //    }
     txtUrl.setText("");
-    type = checkUrl();
+    checkUrl();
+    type = 1;
     try {
       procNoClear();
     } catch (IOException e) {
