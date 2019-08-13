@@ -1594,7 +1594,7 @@ public class Menu extends MenuBar {
         });
     readBoardArg.add(setTime);
 
-    final JCheckBoxMenuItem alwaysSyncBoardStat = new JCheckBoxMenuItem("强制保持棋盘一致(可能破坏历史手顺)");
+    final JCheckBoxMenuItem alwaysSyncBoardStat = new JCheckBoxMenuItem("回退时保持棋盘一致(可能破坏历史手顺)");
     alwaysSyncBoardStat.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
