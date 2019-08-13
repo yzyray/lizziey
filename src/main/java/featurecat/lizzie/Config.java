@@ -67,6 +67,7 @@ public class Config {
   public boolean readKomi = false;
   public boolean alwaysGotoLastOnLive = true;
   public String readBoardArg1 = "0";
+  public int readBoardArg2 = 2;
   public boolean alwaysSyncBoardStat = false;
 
   public JSONObject config;
@@ -317,6 +318,7 @@ public class Config {
     alwaysGotoLastOnLive = uiConfig.optBoolean("always-gotolast-onlive", true);
     alwaysSyncBoardStat = uiConfig.optBoolean("always-sync-boardstat", false);
     readBoardArg1 = uiConfig.optString("read-board-arg1", "0");
+    readBoardArg2 = uiConfig.optInt("read-board-arg2", 2);
     showEditbar = uiConfig.optBoolean("show-edit-bar", false);
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);

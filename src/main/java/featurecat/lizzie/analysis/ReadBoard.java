@@ -60,7 +60,7 @@ public class ReadBoard {
     commands.add(engineCommand);
     commands.add("yzy");
     commands.add(Lizzie.config.readBoardArg1);
-
+    commands.add(Lizzie.config.readBoardArg2 + "");
     ProcessBuilder processBuilder = new ProcessBuilder(commands);
     processBuilder.redirectErrorStream(true);
     try {

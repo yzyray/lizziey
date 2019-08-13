@@ -1536,7 +1536,7 @@ public class Menu extends MenuBar {
     final JMenu readBoardArg = new JMenu("识别工具选项");
     live.add(readBoardArg);
 
-    final JMenu defaultconf = new JMenu("默认选择");
+    final JMenu defaultconf = new JMenu("默认平台");
     readBoardArg.add(defaultconf);
 
     final JCheckBoxMenuItem yehu = new JCheckBoxMenuItem("野狐");
@@ -1583,6 +1583,16 @@ public class Menu extends MenuBar {
           }
         });
     defaultconf.add(other);
+
+    final JMenuItem setTime = new JMenuItem("设置持续同步间隔");
+    setTime.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            SetBoardSyncTime setBoardSyncTime = new SetBoardSyncTime();
+            setBoardSyncTime.setVisible(true);
+          }
+        });
+    readBoardArg.add(setTime);
 
     final JCheckBoxMenuItem alwaysSyncBoardStat = new JCheckBoxMenuItem("强制保持棋盘一致(可能破坏历史手顺)");
     alwaysSyncBoardStat.addActionListener(
