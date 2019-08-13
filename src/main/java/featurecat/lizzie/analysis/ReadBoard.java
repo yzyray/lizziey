@@ -154,7 +154,7 @@ public class ReadBoard {
       if (m == 1 && !stones[Lizzie.board.getIndex(x, y)].isBlack()) {
         if (stones[Lizzie.board.getIndex(x, y)].isWhite()) {
           Lizzie.board.clear();
-          syncBoardStones();
+          // syncBoardStones();
           return;
         }
         if (!played) {
@@ -170,7 +170,7 @@ public class ReadBoard {
       if (m == 2 && !stones[Lizzie.board.getIndex(x, y)].isWhite()) {
         if (stones[Lizzie.board.getIndex(x, y)].isBlack()) {
           Lizzie.board.clear();
-          syncBoardStones();
+          // syncBoardStones();
           return;
         }
         if (!played) {
@@ -186,7 +186,7 @@ public class ReadBoard {
       if (Lizzie.config.alwaysSyncBoardStat) {
         if (m == 0 && stones[Lizzie.board.getIndex(x, y)] != Stone.EMPTY) {
           Lizzie.board.clear();
-          syncBoardStones();
+          // syncBoardStones();
           return;
         }
       }
@@ -194,7 +194,7 @@ public class ReadBoard {
       if (m == 3 && !stones[Lizzie.board.getIndex(x, y)].isBlack()) {
         if (stones[Lizzie.board.getIndex(x, y)].isWhite()) {
           Lizzie.board.clear();
-          syncBoardStones();
+          // syncBoardStones();
           return;
         }
         holdLastMove = true;
@@ -205,7 +205,7 @@ public class ReadBoard {
       if (m == 4 && !stones[Lizzie.board.getIndex(x, y)].isWhite()) {
         if (stones[Lizzie.board.getIndex(x, y)].isBlack()) {
           Lizzie.board.clear();
-          syncBoardStones();
+          // syncBoardStones();
           return;
         }
         holdLastMove = true;
