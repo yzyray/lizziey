@@ -1533,8 +1533,11 @@ public class Menu extends MenuBar {
         });
     live.add(alwaysGo);
 
-    final JMenu readBoardArg = new JMenu("识别工具默认选择");
+    final JMenu readBoardArg = new JMenu("识别工具选项");
     live.add(readBoardArg);
+
+    final JMenu defaultconf = new JMenu("默认选择");
+    readBoardArg.add(defaultconf);
 
     final JCheckBoxMenuItem yehu = new JCheckBoxMenuItem("野狐");
     yehu.addActionListener(
@@ -1549,7 +1552,7 @@ public class Menu extends MenuBar {
             }
           }
         });
-    readBoardArg.add(yehu);
+    defaultconf.add(yehu);
 
     final JCheckBoxMenuItem yicheng = new JCheckBoxMenuItem("弈城");
     yicheng.addActionListener(
@@ -1564,7 +1567,7 @@ public class Menu extends MenuBar {
             }
           }
         });
-    readBoardArg.add(yicheng);
+    defaultconf.add(yicheng);
 
     final JCheckBoxMenuItem other = new JCheckBoxMenuItem("其他");
     other.addActionListener(
@@ -1579,7 +1582,22 @@ public class Menu extends MenuBar {
             }
           }
         });
-    readBoardArg.add(other);
+    defaultconf.add(other);
+
+    final JCheckBoxMenuItem alwaysSyncBoardStat = new JCheckBoxMenuItem("强制保持棋盘一致(可能破坏历史手顺)");
+    alwaysSyncBoardStat.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.alwaysSyncBoardStat = !Lizzie.config.alwaysSyncBoardStat;
+            Lizzie.config.uiConfig.put("always-sync-boardstat", Lizzie.config.alwaysSyncBoardStat);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    readBoardArg.add(alwaysSyncBoardStat);
 
     // readBoardArg1= uiConfig.optString("read-board-arg1"
 
@@ -1606,6 +1624,8 @@ public class Menu extends MenuBar {
               yicheng.setState(false);
               yehu.setState(false);
             }
+            if (Lizzie.config.alwaysSyncBoardStat) alwaysSyncBoardStat.setState(true);
+            else alwaysSyncBoardStat.setState(false);
           }
 
           @Override

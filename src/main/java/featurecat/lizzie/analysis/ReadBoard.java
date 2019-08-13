@@ -3,7 +3,6 @@ package featurecat.lizzie.analysis;
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.gui.CountResults;
 import featurecat.lizzie.rules.BoardHistoryNode;
-import featurecat.lizzie.rules.Movelist;
 import featurecat.lizzie.rules.Stone;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -11,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.swing.JOptionPane;
@@ -21,14 +22,14 @@ public class ReadBoard {
   private BufferedInputStream inputStream;
   private BufferedOutputStream outputStream;
 
-  public boolean gtpConsole;
+  // public boolean gtpConsole;
 
-  private boolean isLoaded = false;
+  // private boolean isLoaded = false;
 
   private String engineCommand;
   // private List<String> commands;
   private int cmdNumber;
-  private int currentCmdNum;
+  // private int currentCmdNum;
   private ArrayDeque<String> cmdQueue;
   private ScheduledExecutorService executor;
   public String currentEnginename = "";
@@ -46,10 +47,10 @@ public class ReadBoard {
   public ReadBoard() throws IOException {
 
     cmdNumber = 1;
-    currentCmdNum = 0;
+    // currentCmdNum = 0;
     cmdQueue = new ArrayDeque<>();
-    gtpConsole = true;
-    engineCommand = "ceshidm.exe";
+    //  gtpConsole = true;
+    engineCommand = "readboard.exe";
     startEngine(engineCommand, 0);
   }
 
@@ -113,31 +114,37 @@ public class ReadBoard {
   }
 
   private void parseLine(String line) {
-    //  synchronized (this) {
-    if (Lizzie.gtpConsole.isVisible()) Lizzie.gtpConsole.addLineforce(line);
+    synchronized (this) {
+      if (Lizzie.gtpConsole.isVisible()) Lizzie.gtpConsole.addLineforce(line);
 
-    if (line.startsWith("re=")) {
+      if (line.startsWith("re=")) {
 
-      String[] params = line.substring(3, line.length() - 2).split(",");
-      if (params.length == 19) {
-        for (int i = 0; i < params.length; i++) tempcount.add(Integer.parseInt(params[i]));
+        String[] params = line.substring(3, line.length() - 2).split(",");
+        if (params.length == 19) {
+          for (int i = 0; i < params.length; i++) tempcount.add(Integer.parseInt(params[i]));
+        }
       }
-    }
-    if (line.startsWith("end")) {
-      syncBoardStones();
-      tempcount = new ArrayList<Integer>();
-    }
-    if (line.startsWith("clear")) {
-      Lizzie.board.clear();
-      Lizzie.frame.refresh();
-    }
-    if (line.startsWith("start")) {
-      this.firstSync = true;
+      if (line.startsWith("end")) {
+        syncBoardStones();
+        tempcount = new ArrayList<Integer>();
+      }
+      if (line.startsWith("clear")) {
+        Lizzie.board.clear();
+        Lizzie.frame.refresh();
+      }
+      if (line.startsWith("start")) {
+        this.firstSync = true;
+      }
     }
   }
 
   private void syncBoardStones() {
     boolean played = false;
+    boolean holdLastMove = false;
+    int lastX = 0;
+    int lastY = 0;
+    int playedMove = 0;
+    boolean isLastBlack = false;
     BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
     Stone[] stones = Lizzie.board.getHistory().getMainEnd().getData().stones;
     for (int i = 0; i < tempcount.size(); i++) {
@@ -158,6 +165,7 @@ public class ReadBoard {
         }
         Lizzie.board.place(x, y, Stone.BLACK, true);
         played = true;
+        playedMove = playedMove + 1;
       }
       if (m == 2 && !stones[Lizzie.board.getIndex(x, y)].isWhite()) {
         if (stones[Lizzie.board.getIndex(x, y)].isBlack()) {
@@ -173,21 +181,74 @@ public class ReadBoard {
         }
         Lizzie.board.place(x, y, Stone.WHITE, true);
         played = true;
+        playedMove = playedMove + 1;
+      }
+      if (Lizzie.config.alwaysSyncBoardStat) {
+        if (m == 0 && stones[Lizzie.board.getIndex(x, y)] != Stone.EMPTY) {
+          Lizzie.board.clear();
+          syncBoardStones();
+          return;
+        }
+      }
+
+      if (m == 3 && !stones[Lizzie.board.getIndex(x, y)].isBlack()) {
+        if (stones[Lizzie.board.getIndex(x, y)].isWhite()) {
+          Lizzie.board.clear();
+          syncBoardStones();
+          return;
+        }
+        holdLastMove = true;
+        lastX = x;
+        lastY = y;
+        isLastBlack = true;
+      }
+      if (m == 4 && !stones[Lizzie.board.getIndex(x, y)].isWhite()) {
+        if (stones[Lizzie.board.getIndex(x, y)].isBlack()) {
+          Lizzie.board.clear();
+          syncBoardStones();
+          return;
+        }
+        holdLastMove = true;
+        lastX = x;
+        lastY = y;
+        isLastBlack = false;
       }
     }
     if (firstSync) {
       Lizzie.board.flatten();
-      firstSync = false;
     }
     // 落最后一步
+    if (holdLastMove) {
+      if (!played) {
+        while (!Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()) {
+          Lizzie.board.previousMove();
+        }
+        while (Lizzie.board.nextMove()) ;
+      }
+      Lizzie.board.place(lastX, lastY, isLastBlack ? Stone.BLACK : Stone.WHITE, true);
+      played = true;
+    }
     if (played
-        //  && !firstSync
         && !Lizzie.config.alwaysGotoLastOnLive
+        && !Lizzie.config.alwaysSyncBoardStat
         && Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()
         && node != Lizzie.board.getHistory().getCurrentHistoryNode().previous().get()) {
       Lizzie.board.moveToAnyPosition(node);
-      // firstSync = false;
     }
+    if (firstSync) {
+      firstSync = false;
+      Lizzie.board.previousMove();
+      Timer timer = new Timer();
+      timer.schedule(
+          new TimerTask() {
+            public void run() {
+              while (Lizzie.board.nextMove()) ;
+              this.cancel();
+            }
+          },
+          100);
+    }
+
     //	    if (played && Lizzie.config.alwaysGotoLastOnLive) {
     //	      int moveNumber = Lizzie.board.getHistory().getMainEnd().getData().moveNumber;
     //	      Lizzie.board.goToMoveNumberBeyondBranch(moveNumber);
@@ -252,11 +313,11 @@ public class ReadBoard {
       return;
     }
     String command = cmdQueue.removeFirst();
-    sendCommandToZen(command);
+    sendCommandTo(command);
     // }
   }
 
-  private void sendCommandToZen(String command) {
+  private void sendCommandTo(String command) {
     // System.out.printf("> %d %s\n", cmdNumber, command);
     try {
       Lizzie.gtpConsole.addZenCommand(command, cmdNumber);
@@ -269,51 +330,5 @@ public class ReadBoard {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  private void playmove(int x, int y, boolean isblack) {
-    String coordsname = Lizzie.board.convertCoordinatesToName(x, y);
-    String color = isblack ? "b" : "w";
-
-    sendCommand("play" + " " + color + " " + coordsname);
-  }
-
-  public void syncboradstat() {
-    sendCommand("clear_board");
-    sendCommand("boardsize " + Lizzie.board.boardWidth);
-    cmdNumber = 1;
-    ArrayList<Movelist> movelist = Lizzie.board.getmovelist();
-    int lenth = movelist.size();
-    for (int i = 0; i < lenth; i++) {
-      Movelist move = movelist.get(lenth - 1 - i);
-      if (!move.ispass) {
-        playmove(move.x, move.y, move.isblack);
-      }
-    }
-  }
-
-  public void countStones() {
-    if (numberofcount > 5) {
-      noread = true;
-      cmdQueue.clear();
-      Lizzie.frame.noautocounting();
-      return;
-    }
-    numberofcount++;
-    tempcount.clear();
-    blackEatCount = 0;
-    whiteEatCount = 0;
-    blackPrisonerCount = 0;
-    whitePrisonerCount = 0;
-    sendCommand("territory_statistics territory");
-    //
-    sendCommand("score_statistics");
-  }
-
-  private void reautocounting() {
-    Lizzie.frame.isAutocounting = true;
-    syncboradstat();
-    countStones();
-    Lizzie.countResults.isAutocounting = true;
   }
 }
