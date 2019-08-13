@@ -102,8 +102,11 @@ public class Board implements LeelazListener {
   }
 
   public static int[] getCoord(int index) {
-    int y = index / Board.boardWidth;
-    int x = index % Board.boardWidth;
+    //    int y = index / Board.boardWidth;
+    //    int x = index % Board.boardWidth;
+    //    return new int[] {x, y};
+    int y = index % Board.boardHeight;
+    int x = (index - y) / Board.boardHeight;
     return new int[] {x, y};
   }
 
@@ -1499,7 +1502,7 @@ public class Board implements LeelazListener {
                 blackToPlay,
                 zobrist,
                 0,
-                new int[Board.boardWidth * Board.boardHeight],
+                new int[boardWidth * boardHeight],
                 0,
                 0,
                 0.0,
