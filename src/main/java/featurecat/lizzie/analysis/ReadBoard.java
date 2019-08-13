@@ -215,6 +215,8 @@ public class ReadBoard {
       }
     }
     if (firstSync) {
+      Lizzie.board.hasStartStone = true;
+      Lizzie.board.addStartListAll();
       Lizzie.board.flatten();
     }
     // 落最后一步

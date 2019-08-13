@@ -708,6 +708,38 @@ public class Board implements LeelazListener {
     }
   }
 
+  public void addStartListAll() {
+    Optional<BoardHistoryNode> node = history.getCurrentHistoryNode().now();
+    Optional<int[]> passstep = Optional.empty();
+    while (node.isPresent()) {
+      Optional<int[]> lastMove = node.get().getData().lastMove;
+      if (lastMove == passstep) {
+        Movelist move = new Movelist();
+        move.ispass = true;
+        move.isblack = node.get().getData().lastMoveColor.isBlack();
+        startStonelist.add(move);
+        node = node.get().previous();
+      } else {
+        if (lastMove.isPresent()) {
+
+          int[] n = lastMove.get();
+          Movelist move = new Movelist();
+          move.x = n[0];
+          move.y = n[1];
+          move.ispass = false;
+          move.isblack = node.get().getData().lastMoveColor.isBlack();
+          move.movenum = node.get().getData().moveNumber;
+          startStonelist.add(move);
+        }
+      }
+      try {
+        node = node.get().previous();
+      } catch (Exception e) {
+        break;
+      }
+    }
+  }
+
   public ArrayList<Movelist> getmovelist() {
     ArrayList<Movelist> movelist = new ArrayList<Movelist>();
 
