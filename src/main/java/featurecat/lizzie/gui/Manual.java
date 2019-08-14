@@ -12,7 +12,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 public class Manual extends JDialog {
-	 boolean isMannul=false;
+  boolean isMannul = false;
+
   public Manual() {
     setType(Type.POPUP);
     setTitle("人工干预");
@@ -35,21 +36,20 @@ public class Manual extends JDialog {
           }
         });
 
-    buttonPane.add(playNow);   
+    buttonPane.add(playNow);
     JButton manualOne = new JButton("允许人工落子");
     manualOne.setBounds(10, 35, 120, 29);
     manualOne.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-        	  if(!isMannul)
-            {Lizzie.frame.addInput();
-            manualOne.setText("关闭人工落子");
+            if (!isMannul) {
+              Lizzie.frame.addInput();
+              manualOne.setText("关闭人工落子");
+            } else {
+              Lizzie.frame.removeInput();
+              manualOne.setText("允许人工落子");
             }
-        	  else
-        	  {Lizzie.frame.removeInput();
-        		  manualOne.setText("允许人工落子");
-        	  }
-        	  isMannul=!isMannul;
+            isMannul = !isMannul;
           }
         });
     buttonPane.add(manualOne);

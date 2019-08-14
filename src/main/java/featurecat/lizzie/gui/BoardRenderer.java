@@ -806,16 +806,22 @@ public class BoardRenderer {
   }
 
   private Optional<MoveData> mouseOveredMove() {
-	  if(!bestMoves.isEmpty())
-    return bestMoves.subList(0, Lizzie.config.limitMaxSuggestion>0&&Lizzie.config.limitMaxSuggestion<bestMoves.size()?Lizzie.config.limitMaxSuggestion:bestMoves.size())
-        .stream()
-        .filter(
-            move ->
-                Board.asCoordinates(move.coordinate)
-                    .map(c -> Lizzie.frame.isMouseOver(c[0], c[1]))
-                    .orElse(false))
-        .findFirst();
-	return Optional.empty();
+    if (!bestMoves.isEmpty())
+      return bestMoves
+          .subList(
+              0,
+              Lizzie.config.limitMaxSuggestion > 0
+                      && Lizzie.config.limitMaxSuggestion < bestMoves.size()
+                  ? Lizzie.config.limitMaxSuggestion
+                  : bestMoves.size())
+          .stream()
+          .filter(
+              move ->
+                  Board.asCoordinates(move.coordinate)
+                      .map(c -> Lizzie.frame.isMouseOver(c[0], c[1]))
+                      .orElse(false))
+          .findFirst();
+    return Optional.empty();
   }
 
   private Optional<MoveData> getBestMove() {

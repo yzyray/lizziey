@@ -1913,6 +1913,77 @@ public class Menu extends MenuBar {
     headFont = new Font("", Font.BOLD, 15);
     engineMenu.setFont(headFont);
     this.add(engineMenu);
+
+    black = new JButton(iconblack);
+    black.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            featurecat.lizzie.gui.Input.insert = 0;
+            if (Lizzie.frame.blackorwhite != 1) {
+              Lizzie.frame.blackorwhite = 1;
+              black.setIcon(iconblack2);
+              white.setIcon(iconwhite);
+              blackwhite.setIcon(iconbh);
+            } else {
+              Lizzie.frame.blackorwhite = 0;
+              black.setIcon(iconblack);
+              white.setIcon(iconwhite);
+              blackwhite.setIcon(iconbh);
+            }
+          }
+        });
+    black.setFocusable(false);
+    black.setMargin(new Insets(0, 0, 0, 0));
+    this.add(black);
+    black.setToolTipText("落黑子");
+
+    white = new JButton(iconwhite);
+    white.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            featurecat.lizzie.gui.Input.insert = 0;
+            if (Lizzie.frame.blackorwhite != 2) {
+              Lizzie.frame.blackorwhite = 2;
+              black.setIcon(iconblack);
+              white.setIcon(iconwhite2);
+              blackwhite.setIcon(iconbh);
+            } else {
+              Lizzie.frame.blackorwhite = 0;
+              black.setIcon(iconblack);
+              white.setIcon(iconwhite);
+              blackwhite.setIcon(iconbh);
+            }
+          }
+        });
+    white.setFocusable(false);
+    white.setMargin(new Insets(0, 0, 0, 0));
+    this.add(white);
+    white.setToolTipText("落白子");
+
+    blackwhite = new JButton(iconbh);
+    blackwhite.addActionListener(
+        new ActionListener() {
+
+          public void actionPerformed(ActionEvent e) {
+            featurecat.lizzie.gui.Input.insert = 0;
+            if (blackwhite.getIcon() == iconbh) {
+              Lizzie.frame.blackorwhite = 0;
+              black.setIcon(iconblack);
+              white.setIcon(iconwhite);
+              blackwhite.setIcon(iconbh2);
+            } else {
+              black.setIcon(iconblack);
+              white.setIcon(iconwhite);
+              blackwhite.setIcon(iconbh);
+            }
+          }
+        });
+    blackwhite.setFocusable(false);
+    blackwhite.setMargin(new Insets(0, -2, 0, -2));
+    this.add(blackwhite);
+    blackwhite.setToolTipText("交替落子");
+    toggleShowEditbar(Lizzie.config.showEditbar);
+
     for (int i = 0; i < engine.length; i++) {
       try {
         engineMenu.remove(engine[i]);
