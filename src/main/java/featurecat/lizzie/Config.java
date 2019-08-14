@@ -65,7 +65,7 @@ public class Config {
   public boolean showNameInBoard = true;
   public boolean openHtmlOnLive = false;
   public boolean readKomi = false;
-  public boolean alwaysGotoLastOnLive = true;
+  public boolean alwaysGotoLastOnLive = false;
   public String readBoardArg1 = "0";
   public int readBoardArg2 = 2;
   public boolean alwaysSyncBoardStat = false;
@@ -315,7 +315,7 @@ public class Config {
     showNameInBoard = uiConfig.optBoolean("show-name-in-board", true);
     openHtmlOnLive = uiConfig.optBoolean("open-html-onlive", false);
     readKomi = uiConfig.optBoolean("read-komi", false);
-    alwaysGotoLastOnLive = uiConfig.optBoolean("always-gotolast-onlive", true);
+    alwaysGotoLastOnLive = uiConfig.optBoolean("always-gotolast-onlive", false);
     alwaysSyncBoardStat = uiConfig.optBoolean("always-sync-boardstat", false);
     readBoardArg1 = uiConfig.optString("read-board-arg1", "0");
     readBoardArg2 = uiConfig.optInt("read-board-arg2", 2);
