@@ -2275,11 +2275,6 @@ public class LizzieFrame extends JFrame {
         featurecat.lizzie.gui.Input.Draggedmode = true;
       }
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
-      if (Lizzie.frame.syncBoard) {
-        if (blackorwhite == 0) Lizzie.board.placeBranch(coords[0], coords[1]);
-        if (blackorwhite == 1) Lizzie.board.placeBranch(coords[0], coords[1], Stone.BLACK);
-        if (blackorwhite == 2) Lizzie.board.placeBranch(coords[0], coords[1], Stone.WHITE);
-      }
       if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay)) {
         if (!isAnaPlayingAgainstLeelaz
             || !Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected()

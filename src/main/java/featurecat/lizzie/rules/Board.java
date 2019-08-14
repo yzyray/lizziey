@@ -918,8 +918,8 @@ public class Board implements LeelazListener {
     placeForManul(x, y, color, false);
   }
 
-  public void placeBranch(int x, int y, Stone color) {
-    placeBranch(x, y, color, false);
+  public void placeForSync(int x, int y, Stone color) {
+    placeForSync(x, y, color, false);
   }
 
   public void place(int x, int y, Stone color) {
@@ -930,8 +930,8 @@ public class Board implements LeelazListener {
     placeForManul(x, y, color, newBranch, false);
   }
 
-  public void placeBranch(int x, int y, Stone color, boolean newBranch) {
-    placeBranch(x, y, color, newBranch, false);
+  public void placeForSync(int x, int y, Stone color, boolean newBranch) {
+    placeForSync(x, y, color, newBranch, false);
   }
 
   public void place(int x, int y, Stone color, boolean newBranch) {
@@ -1182,7 +1182,7 @@ public class Board implements LeelazListener {
       //      }
       if (!isValid(x, y) || (history.getStones()[getIndex(x, y)] != Stone.EMPTY && !newBranch))
         return;
-      if (Lizzie.frame.urlSgf
+      if ((Lizzie.frame.urlSgf || Lizzie.frame.syncBoard)
           && Lizzie.board.getHistory().getCurrentHistoryNode()
               == Lizzie.board.getHistory().getMainEnd()) {
         //      newBranch = true;
@@ -1314,7 +1314,7 @@ public class Board implements LeelazListener {
     }
   }
 
-  public void placeBranch(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
+  public void placeForSync(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
 
     Lizzie.frame.boardRenderer.removedrawmovestone();
     Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
@@ -1328,30 +1328,6 @@ public class Board implements LeelazListener {
     synchronized (this) {
       if (!isValid(x, y) || (history.getStones()[getIndex(x, y)] != Stone.EMPTY && !newBranch))
         return;
-      if (Lizzie.board.getHistory().getCurrentHistoryNode()
-          == Lizzie.board.getHistory().getMainEnd()) {
-        //      newBranch = true;
-        //      //  changeMove=true;
-        boolean hasVairation = false;
-        BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
-        for (int i = 0; i < node.variations.size(); i++) {
-          Optional<int[]> nodeCoords = node.variations.get(i).getData().lastMove;
-
-          if (nodeCoords.isPresent()) {
-            int[] coords = nodeCoords.get();
-            if (coords[0] == x && coords[1] == y) {
-              hasVairation = true;
-              // changeMove=false;
-            }
-          }
-        }
-        if (!hasVairation) {
-          Lizzie.board.getHistory().pass(color, false, true);
-          Lizzie.board.getHistory().previous();
-          Lizzie.board.getHistory().place(x, y, color, true);
-          Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
-        }
-      }
       try {
         mvnumber[getIndex(x, y)] = history.getCurrentHistoryNode().getData().moveNumber + 1;
       } catch (Exception ex) {
@@ -1617,8 +1593,8 @@ public class Board implements LeelazListener {
     place(x, y, history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
   }
 
-  public void placeBranch(int x, int y) {
-    placeBranch(x, y, history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
+  public void placeForSync(int x, int y) {
+    placeForSync(x, y, history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
   }
 
   public void placeForManul(int x, int y) {

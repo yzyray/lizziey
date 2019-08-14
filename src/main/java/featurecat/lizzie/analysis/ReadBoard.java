@@ -166,7 +166,7 @@ public class ReadBoard {
         if (!played) {
           Lizzie.board.moveToAnyPosition(node2);
         }
-        Lizzie.board.place(x, y, Stone.BLACK, true);
+        Lizzie.board.placeForSync(x, y, Stone.BLACK, true);
         if (node2.variations.get(0).isEndDummay()) {
           node2.variations.add(0, node2.variations.get(node2.variations.size() - 1));
           node2.variations.remove(1);
@@ -185,7 +185,7 @@ public class ReadBoard {
         if (!played) {
           Lizzie.board.moveToAnyPosition(node2);
         }
-        Lizzie.board.place(x, y, Stone.WHITE, true);
+        Lizzie.board.placeForSync(x, y, Stone.WHITE, true);
         if (node2.variations.get(0).isEndDummay()) {
           node2.variations.add(0, node2.variations.get(node2.variations.size() - 1));
           node2.variations.remove(1);
@@ -236,7 +236,7 @@ public class ReadBoard {
       if (!played) {
         Lizzie.board.moveToAnyPosition(node2);
       }
-      Lizzie.board.place(lastX, lastY, isLastBlack ? Stone.BLACK : Stone.WHITE, true);
+      Lizzie.board.placeForSync(lastX, lastY, isLastBlack ? Stone.BLACK : Stone.WHITE, true);
       if (node2.variations.get(0).isEndDummay()) {
         node2.variations.add(0, node2.variations.get(node2.variations.size() - 1));
         node2.variations.remove(1);
