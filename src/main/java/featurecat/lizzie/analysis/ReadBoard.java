@@ -96,7 +96,6 @@ public class ReadBoard {
         line.append((char) c);
 
         if ((c == '\n')) {
-
           parseLine(line.toString());
           line = new StringBuilder();
         }
@@ -135,6 +134,12 @@ public class ReadBoard {
       if (line.startsWith("start")) {
         this.firstSync = true;
       }
+      if (line.startsWith("sync")) {
+        Lizzie.frame.syncBoard = true;
+      }
+      if (line.startsWith("stopsync")) {
+        Lizzie.frame.syncBoard = false;
+      }
     }
   }
 
@@ -159,12 +164,14 @@ public class ReadBoard {
           return;
         }
         if (!played) {
-          while (!Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()) {
-            Lizzie.board.previousMove();
-          }
-          while (Lizzie.board.nextMove()) ;
+          Lizzie.board.moveToAnyPosition(node2);
         }
         Lizzie.board.place(x, y, Stone.BLACK, true);
+        if (node2.variations.get(0).isEndDummay()) {
+          node2.variations.add(0, node2.variations.get(node2.variations.size() - 1));
+          node2.variations.remove(1);
+          node2.variations.remove(node2.variations.size() - 1);
+        }
         played = true;
         playedMove = playedMove + 1;
       }
@@ -174,13 +181,16 @@ public class ReadBoard {
           // syncBoardStones();
           return;
         }
+
         if (!played) {
-          while (!Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()) {
-            Lizzie.board.previousMove();
-          }
-          while (Lizzie.board.nextMove()) ;
+          Lizzie.board.moveToAnyPosition(node2);
         }
         Lizzie.board.place(x, y, Stone.WHITE, true);
+        if (node2.variations.get(0).isEndDummay()) {
+          node2.variations.add(0, node2.variations.get(node2.variations.size() - 1));
+          node2.variations.remove(1);
+          node2.variations.remove(node2.variations.size() - 1);
+        }
         played = true;
         playedMove = playedMove + 1;
       }
@@ -222,13 +232,16 @@ public class ReadBoard {
     }
     // 落最后一步
     if (holdLastMove) {
+
       if (!played) {
-        while (!Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()) {
-          Lizzie.board.previousMove();
-        }
-        while (Lizzie.board.nextMove()) ;
+        Lizzie.board.moveToAnyPosition(node2);
       }
       Lizzie.board.place(lastX, lastY, isLastBlack ? Stone.BLACK : Stone.WHITE, true);
+      if (node2.variations.get(0).isEndDummay()) {
+        node2.variations.add(0, node2.variations.get(node2.variations.size() - 1));
+        node2.variations.remove(1);
+        node2.variations.remove(node2.variations.size() - 1);
+      }
       played = true;
     }
     if (played
@@ -297,6 +310,7 @@ public class ReadBoard {
   //  }
 
   public void shutdown() {
+    Lizzie.frame.syncBoard = false;
     process.destroy();
   }
 

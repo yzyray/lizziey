@@ -918,12 +918,20 @@ public class Board implements LeelazListener {
     placeForManul(x, y, color, false);
   }
 
+  public void placeBranch(int x, int y, Stone color) {
+    placeBranch(x, y, color, false);
+  }
+
   public void place(int x, int y, Stone color) {
     place(x, y, color, false);
   }
 
   public void placeForManul(int x, int y, Stone color, boolean newBranch) {
     placeForManul(x, y, color, newBranch, false);
+  }
+
+  public void placeBranch(int x, int y, Stone color, boolean newBranch) {
+    placeBranch(x, y, color, newBranch, false);
   }
 
   public void place(int x, int y, Stone color, boolean newBranch) {
@@ -1306,6 +1314,151 @@ public class Board implements LeelazListener {
     }
   }
 
+  public void placeBranch(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
+
+    Lizzie.frame.boardRenderer.removedrawmovestone();
+    Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
+    if (Lizzie.frame.iscounting) {
+      Lizzie.frame.boardRenderer.removecountblock();
+      Lizzie.countResults.button.setText("形式判断");
+      Lizzie.countResults.iscounted = false;
+      Lizzie.frame.iscounting = false;
+    }
+
+    synchronized (this) {
+      if (!isValid(x, y) || (history.getStones()[getIndex(x, y)] != Stone.EMPTY && !newBranch))
+        return;
+      if (Lizzie.board.getHistory().getCurrentHistoryNode()
+          == Lizzie.board.getHistory().getMainEnd()) {
+        //      newBranch = true;
+        //      //  changeMove=true;
+        boolean hasVairation = false;
+        BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
+        for (int i = 0; i < node.variations.size(); i++) {
+          Optional<int[]> nodeCoords = node.variations.get(i).getData().lastMove;
+
+          if (nodeCoords.isPresent()) {
+            int[] coords = nodeCoords.get();
+            if (coords[0] == x && coords[1] == y) {
+              hasVairation = true;
+              // changeMove=false;
+            }
+          }
+        }
+        if (!hasVairation) {
+          Lizzie.board.getHistory().pass(color, false, true);
+          Lizzie.board.getHistory().previous();
+          Lizzie.board.getHistory().place(x, y, color, true);
+          Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
+        }
+      }
+      try {
+        mvnumber[getIndex(x, y)] = history.getCurrentHistoryNode().getData().moveNumber + 1;
+      } catch (Exception ex) {
+      }
+      updateWinrate();
+      double nextWinrate = -100;
+      if (history.getData().winrate >= 0) nextWinrate = 100 - history.getData().winrate;
+
+      // check to see if this coordinate is being replayed in history
+      Optional<int[]> nextLast = history.getNext().flatMap(n -> n.lastMove);
+      if (nextLast.isPresent()
+          && nextLast.get()[0] == x
+          && nextLast.get()[1] == y
+          && !newBranch
+          && !changeMove) {
+        // this is the next coordinate in history. Just increment history so that we
+        // don't erase the
+        // redo's
+        history.next();
+
+        // should be opposite from the bottom case
+        if (Lizzie.frame.isPlayingAgainstLeelaz
+            && Lizzie.frame.playerIsBlack != getData().blackToPlay) {
+          Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
+          Lizzie.leelaz.genmove((Lizzie.board.getData().blackToPlay ? "W" : "B"));
+        } else if (!Lizzie.frame.isPlayingAgainstLeelaz && !Lizzie.frame.toolbar.isEnginePk) {
+          Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
+        }
+        return;
+      }
+
+      // load a copy of the data at the current node of history
+      Stone[] stones = history.getStones().clone();
+      Zobrist zobrist = history.getZobrist();
+      Optional<int[]> lastMove = Optional.of(new int[] {x, y});
+      int moveNumber = history.getMoveNumber() + 1;
+      int moveMNNumber =
+          history.getMoveMNNumber() > -1 && !newBranch ? history.getMoveMNNumber() + 1 : -1;
+      int[] moveNumberList =
+          newBranch && history.getNext(true).isPresent()
+              ? new int[Board.boardWidth * Board.boardHeight]
+              : history.getMoveNumberList().clone();
+      if (Lizzie.frame.isTrying) moveNumberList[Board.getIndex(x, y)] = -moveNumber;
+      else moveNumberList[Board.getIndex(x, y)] = moveMNNumber > -1 ? moveMNNumber : moveNumber;
+
+      // set the stone at (x, y) to color
+      stones[getIndex(x, y)] = color;
+      zobrist.toggleStone(x, y, color);
+
+      // remove enemy stones
+      int capturedStones = 0;
+      capturedStones += removeDeadChain(x + 1, y, color.opposite(), stones, zobrist);
+      capturedStones += removeDeadChain(x, y + 1, color.opposite(), stones, zobrist);
+      capturedStones += removeDeadChain(x - 1, y, color.opposite(), stones, zobrist);
+      capturedStones += removeDeadChain(x, y - 1, color.opposite(), stones, zobrist);
+
+      // check to see if the player made a suicidal coordinate
+      int isSuicidal = removeDeadChain(x, y, color, stones, zobrist);
+
+      for (int i = 0; i < Board.boardWidth * Board.boardHeight; i++) {
+        if (stones[i].equals(Stone.EMPTY)) {
+          moveNumberList[i] = 0;
+        }
+      }
+
+      int bc = history.getData().blackCaptures;
+      int wc = history.getData().whiteCaptures;
+      if (color.isBlack()) bc += capturedStones;
+      else wc += capturedStones;
+      BoardData newState =
+          new BoardData(
+              stones,
+              lastMove,
+              color,
+              color.equals(Stone.WHITE),
+              zobrist,
+              moveNumber,
+              moveNumberList,
+              bc,
+              wc,
+              nextWinrate,
+              0);
+      newState.moveMNNumber = moveMNNumber;
+      newState.dummy = false;
+
+      // don't make this coordinate if it is suicidal or violates superko
+      if (isSuicidal > 0 || history.violatesKoRule(newState)) return;
+
+      // update leelaz with board position
+      if (Lizzie.frame.isPlayingAgainstLeelaz
+          && Lizzie.frame.playerIsBlack == getData().blackToPlay) {
+        Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
+        Lizzie.leelaz.genmove((Lizzie.board.getData().blackToPlay ? "W" : "B"));
+      } else if (!Lizzie.frame.isPlayingAgainstLeelaz
+          && !Lizzie.leelaz.isInputCommand
+          && !Lizzie.frame.toolbar.isEnginePk) {
+        Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
+      }
+
+      // update history with this coordinate
+      if (Lizzie.frame.urlSgf) history.addOrGoto2(newState, newBranch, changeMove);
+      else history.addOrGoto(newState, newBranch, changeMove);
+
+      Lizzie.frame.repaint();
+    }
+  }
+
   public void placeForManul(int x, int y, Stone color, boolean newBranch, boolean changeMove) {
     Lizzie.frame.boardRenderer.removedrawmovestone();
     Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
@@ -1462,6 +1615,10 @@ public class Board implements LeelazListener {
    */
   public void place(int x, int y) {
     place(x, y, history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
+  }
+
+  public void placeBranch(int x, int y) {
+    placeBranch(x, y, history.isBlacksTurn() ? Stone.BLACK : Stone.WHITE);
   }
 
   public void placeForManul(int x, int y) {

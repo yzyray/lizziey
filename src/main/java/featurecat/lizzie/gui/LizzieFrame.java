@@ -125,6 +125,7 @@ public class LizzieFrame extends JFrame {
   public Optional<List<String>> variationOpt;
 
   public static boolean urlSgf = false;
+  public boolean syncBoard = false;
   int maxMvNum;
   boolean firstSync = false;
   javax.swing.Timer timer;
@@ -2274,6 +2275,11 @@ public class LizzieFrame extends JFrame {
         featurecat.lizzie.gui.Input.Draggedmode = true;
       }
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
+      if (Lizzie.frame.syncBoard) {
+        if (blackorwhite == 0) Lizzie.board.placeBranch(coords[0], coords[1]);
+        if (blackorwhite == 1) Lizzie.board.placeBranch(coords[0], coords[1], Stone.BLACK);
+        if (blackorwhite == 2) Lizzie.board.placeBranch(coords[0], coords[1], Stone.WHITE);
+      }
       if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay)) {
         if (!isAnaPlayingAgainstLeelaz
             || !Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected()
@@ -2619,7 +2625,7 @@ public class LizzieFrame extends JFrame {
         // Lizzie.board.updateComment();
       }
     }
-    if (Lizzie.config.appendWinrateToComment && !Lizzie.frame.urlSgf) {
+    if (Lizzie.config.appendWinrateToComment && !urlSgf) {
       long currentTime = System.currentTimeMillis();
 
       if (autoIntervalCom > 0 && currentTime - lastAutocomTime >= autoIntervalCom) {

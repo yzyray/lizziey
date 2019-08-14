@@ -316,6 +316,17 @@ public class BoardHistoryList {
     return e;
   }
 
+  public BoardHistoryNode getMainEndWithPass() {
+    BoardHistoryNode e = head;
+    while (e.previous().isPresent()) {
+      e = e.previous().get();
+    }
+    while (e.next(true).isPresent()) {
+      e = e.next(true).get();
+    }
+    return e;
+  }
+
   public void pass(Stone color) {
     pass(color, false, false, false);
   }
