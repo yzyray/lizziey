@@ -344,7 +344,7 @@ public class Menu extends MenuBar {
     moveMenu.add(alwaysone);
 
     final JCheckBoxMenuItem subItem = new JCheckBoxMenuItem();
-    subItem.setText("放大小棋盘(Alt+V)");
+    subItem.setText("放大小棋盘(Alt+F)");
     subItem.addActionListener(new ItemListeneryzy());
     viewMenu.add(subItem);
 

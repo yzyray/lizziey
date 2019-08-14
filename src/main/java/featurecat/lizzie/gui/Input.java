@@ -794,10 +794,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         Lizzie.frame.repaint();
         break;
 
-      case VK_Z:
-        stopTemporaryBoard();
-        Lizzie.frame.repaint();
-        break;
+        // case VK_Z:
+        // stopTemporaryBoard();
+        // Lizzie.frame.repaint();
+        //  break;
 
       default:
     }
