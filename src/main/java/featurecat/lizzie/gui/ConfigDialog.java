@@ -114,6 +114,7 @@ public class ConfigDialog extends JDialog {
   private JSONObject leelazConfig;
   private JTextField txtBoardSize;
   private JRadioButton rdoBoardSizeOther;
+  private JCheckBox chkShowNoSugg;
 
   public ConfigDialog() {
     if (Lizzie.frame != null) setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
@@ -560,15 +561,15 @@ public class ConfigDialog extends JDialog {
 
     JLabel lblMaxsuggestionmoves =
         new JLabel(resourceBundle.getString("LizzieConfig.title.maxSuggestionmoves"));
-    lblMaxsuggestionmoves.setBounds(331, 440, 157, 16);
+    lblMaxsuggestionmoves.setBounds(331, 423, 157, 16);
     engineTab.add(lblMaxsuggestionmoves);
 
     JLabel lblMaxsuggestionmovesnums = new JLabel("个");
-    lblMaxsuggestionmovesnums.setBounds(538, 440, 82, 16);
+    lblMaxsuggestionmovesnums.setBounds(538, 423, 82, 16);
     engineTab.add(lblMaxsuggestionmovesnums);
 
     JLabel lblMaxsuggestionmovesnumshint = new JLabel("设置分析点显示数目,0为不限制");
-    lblMaxsuggestionmovesnumshint.setBounds(331, 465, 257, 16);
+    lblMaxsuggestionmovesnumshint.setBounds(331, 475, 257, 16);
     engineTab.add(lblMaxsuggestionmovesnumshint);
     lblMaxsuggestionmovesnumshint.setVisible(false);
     txtMaxsuggestionmoves =
@@ -581,7 +582,7 @@ public class ConfigDialog extends JDialog {
               private DocumentFilter filter = new DigitOnlyFilter();
             });
     txtMaxsuggestionmoves.setColumns(10);
-    txtMaxsuggestionmoves.setBounds(496, 435, 40, 26);
+    txtMaxsuggestionmoves.setBounds(496, 418, 40, 26);
     txtMaxsuggestionmoves.addFocusListener(
         new FocusListener() {
 
@@ -598,6 +599,13 @@ public class ConfigDialog extends JDialog {
           }
         });
     engineTab.add(txtMaxsuggestionmoves);
+
+    JLabel lblshowNoSugg = new JLabel("超过限制的选点依然显示推荐圈");
+    lblshowNoSugg.setBounds(331, 450, 257, 16);
+    engineTab.add(lblshowNoSugg);
+    chkShowNoSugg = new JCheckBox();
+    chkShowNoSugg.setBounds(500, 445, 40, 26);
+    engineTab.add(chkShowNoSugg);
 
     JLabel lbllimitBranchLength = new JLabel("分析点变化图最大手数");
     lbllimitBranchLength.setBounds(331, 500, 187, 16);
@@ -1057,6 +1065,7 @@ public class ConfigDialog extends JDialog {
     chkPrintEngineLog.setSelected(leelazConfig.getBoolean("print-comms"));
     curPath = (new File("")).getAbsoluteFile().toPath();
     osName = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
+    chkShowNoSugg.setSelected(Lizzie.config.showNoSuggCircle);
     setBoardSize();
     setShowLcbWinrate();
     setPonder();
@@ -1174,6 +1183,8 @@ public class ConfigDialog extends JDialog {
       leelazConfig.putOpt("fast-engine-change", getFastEngine());
       leelazConfig.putOpt("show-lcb-color", getShowLcbColor());
       leelazConfig.put("engine-command", txtEngine.getText().trim());
+      leelazConfig.put("show-nosugg-circle", chkShowNoSugg.isSelected());
+      Lizzie.config.showNoSuggCircle = chkShowNoSugg.isSelected();
       JSONArray preloads = new JSONArray();
       Arrays.asList(chkPreloads).forEach(t -> preloads.put(t.isSelected()));
       if (engData.size() > 10) {

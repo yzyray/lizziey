@@ -369,7 +369,7 @@ public boolean startAutoAna=false;
 	public List<MoveData> parseInfo(String line) {
 		List<MoveData> bestMoves = new ArrayList<>();
 		String[] variations = line.split(" info ");
-		int k = (Lizzie.config.limitMaxSuggestion > 0 ? Lizzie.config.limitMaxSuggestion : 361);
+		int k = (Lizzie.config.limitMaxSuggestion > 0&&!Lizzie.config.showNoSuggCircle ? Lizzie.config.limitMaxSuggestion : 361);
 		for (String var : variations) {
 			if (!var.trim().isEmpty()) {
 				bestMoves.add(MoveData.fromInfo(var));
@@ -385,7 +385,7 @@ public boolean startAutoAna=false;
 	public List<MoveData> parseInfoKatago(String line) {
 		List<MoveData> bestMoves = new ArrayList<>();
 		String[] variations = line.split(" info ");
-		int k = (Lizzie.config.limitMaxSuggestion > 0 ? Lizzie.config.limitMaxSuggestion : 361);
+		int k = (Lizzie.config.limitMaxSuggestion > 0&&!Lizzie.config.showNoSuggCircle ? Lizzie.config.limitMaxSuggestion : 361);
 		for (String var : variations) {
 			if (!var.trim().isEmpty()) {
 				bestMoves.add(MoveData.fromInfoKatago(var));

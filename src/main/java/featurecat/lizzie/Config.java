@@ -109,6 +109,7 @@ public class Config {
   public int boardPositionProportion = 4;
   public int limitBranchLength = 0;
   public int limitMaxSuggestion = 0;
+  public boolean showNoSuggCircle = true;
   public int limitbadmoves = 0;
   public int limitbadMeanmoves = 0;
   public int limitbadplayouts = 0;
@@ -331,6 +332,7 @@ public class Config {
     limitBranchLength = leelazConfig.optInt("limit-branch-length", 0);
     limitMaxSuggestion = leelazConfig.optInt("limit-max-suggestion", 0);
     limitbadmoves = leelazConfig.optInt("badmoves-winrate-limits", 0);
+    showNoSuggCircle = leelazConfig.optBoolean("show-nosugg-circle", true);
     limitbadMeanmoves = leelazConfig.optInt("badmoves-scoremean-limits", 0);
     limitbadplayouts = leelazConfig.optInt("badmoves-playouts-limits", 0);
     winrateStrokeWidth = theme.winrateStrokeWidth();
