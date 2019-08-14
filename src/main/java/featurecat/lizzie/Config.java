@@ -61,7 +61,7 @@ public class Config {
   public boolean showWinrateInSuggestion = true;
   public boolean showPlayoutsInSuggestion = true;
   public boolean showScoremeanInSuggestion = true;
-  public boolean showEditbar = false;
+  public boolean showEditbar = true;
   public boolean showNameInBoard = true;
   public boolean openHtmlOnLive = false;
   public boolean readKomi = false;
@@ -319,7 +319,7 @@ public class Config {
     alwaysSyncBoardStat = uiConfig.optBoolean("always-sync-boardstat", false);
     readBoardArg1 = uiConfig.optString("read-board-arg1", "0");
     readBoardArg2 = uiConfig.optInt("read-board-arg2", 1);
-    showEditbar = uiConfig.optBoolean("show-edit-bar", false);
+    showEditbar = uiConfig.optBoolean("show-edit-bar", true);
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);
     suggestionsalwaysontop = uiConfig.optBoolean("suggestions-always-ontop", false);
