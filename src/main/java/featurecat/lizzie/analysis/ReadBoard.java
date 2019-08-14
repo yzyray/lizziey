@@ -132,7 +132,7 @@ public class ReadBoard {
         Lizzie.frame.refresh();
       }
       if (line.startsWith("start")) {
-        this.firstSync = true;
+        Lizzie.board.clear();
       }
       if (line.startsWith("sync")) {
         Lizzie.frame.syncBoard = true;
