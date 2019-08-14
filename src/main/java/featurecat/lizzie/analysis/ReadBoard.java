@@ -146,6 +146,7 @@ public class ReadBoard {
     int playedMove = 0;
     boolean isLastBlack = false;
     BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
+    BoardHistoryNode node2 = Lizzie.board.getHistory().getMainEnd();
     Stone[] stones = Lizzie.board.getHistory().getMainEnd().getData().stones;
     for (int i = 0; i < tempcount.size(); i++) {
       int m = tempcount.get(i);
@@ -234,7 +235,7 @@ public class ReadBoard {
         && !Lizzie.config.alwaysGotoLastOnLive
         && !Lizzie.config.alwaysSyncBoardStat
         && Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()
-        && node != Lizzie.board.getHistory().getCurrentHistoryNode().previous().get()) {
+        && node != node2) {
       Lizzie.board.moveToAnyPosition(node);
     }
     if (firstSync) {
