@@ -78,6 +78,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       return;
     }
     if (SwingUtilities.isMiddleMouseButton(e)) {
+      if (Lizzie.frame.syncBoard) return;
       if (nowheelPress) {
         nowheelPress = false;
       } else {
