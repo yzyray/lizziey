@@ -30,7 +30,7 @@ public class SetBoardSyncTime extends JDialog {
 
   public SetBoardSyncTime() {
     setType(Type.POPUP);
-    setTitle("设置持续同步时间间隔");
+    setTitle("设置持续同步间隔");
     setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     setBounds(0, 0, 300, 130);
     getContentPane().setLayout(new BorderLayout());
@@ -54,7 +54,7 @@ public class SetBoardSyncTime extends JDialog {
     NumberFormat nf = NumberFormat.getIntegerInstance();
     nf.setGroupingUsed(false);
 
-    JLabel lblChangeTo = new JLabel("设置持续同步时间间隔(秒)：");
+    JLabel lblChangeTo = new JLabel("设置持续同步间隔(毫秒)：");
     lblChangeTo.setBounds(40, 24, 155, 20);
     buttonPane.add(lblChangeTo);
     lblChangeTo.setHorizontalAlignment(SwingConstants.LEFT);
