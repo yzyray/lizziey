@@ -2553,6 +2553,25 @@ public class BottomToolbar extends JPanel {
     startAutoAna = true;
     Lizzie.board.clearBoardStat();
     Lizzie.leelaz.ponder();
+    int heightM = 70 - Lizzie.frame.toolbarHeight;
+    if (heightM != 0) {
+      Lizzie.frame.toolbarHeight = 70;
+      Lizzie.frame.toolbar.detail.setIcon(Lizzie.frame.toolbar.iconDown);
+      Lizzie.frame.mainPanel.setBounds(
+          Lizzie.frame.mainPanel.getX(),
+          Lizzie.frame.mainPanel.getY(),
+          Lizzie.frame.mainPanel.getWidth(),
+          Lizzie.frame.mainPanel.getHeight() - heightM);
+      Lizzie.frame.toolbar.setBounds(
+          0,
+          Lizzie.frame.getHeight()
+              - Lizzie.frame.getJMenuBar().getHeight()
+              - Lizzie.frame.getInsets().top
+              - Lizzie.frame.getInsets().bottom
+              - Lizzie.frame.toolbarHeight,
+          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
+          Lizzie.frame.toolbarHeight);
+    }
   }
 
   private void checkMove() {

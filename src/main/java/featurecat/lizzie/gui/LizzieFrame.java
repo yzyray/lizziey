@@ -370,7 +370,7 @@ public class LizzieFrame extends JFrame {
                 // toolbar.chkAnaAutoSave.setSelected(true);
                 // toolbar.chkAnaAutoSave.setEnabled(false);
 
-                Lizzie.frame.toolbarHeight = 70;
+                // Lizzie.frame.toolbarHeight = 70;
                 // 打开分析界面
                 StartAnaDialog newgame = new StartAnaDialog();
                 newgame.setVisible(true);
@@ -1041,7 +1041,7 @@ public class LizzieFrame extends JFrame {
       //  toolbar.chkAnaAutoSave.setSelected(true);
       //  toolbar.chkAnaAutoSave.setEnabled(false);
 
-      toolbar.detail.setIcon(toolbar.iconDown);
+      //  toolbar.detail.setIcon(toolbar.iconDown);
     }
     if (ponder) {
       Lizzie.leelaz.ponder();
@@ -1081,23 +1081,6 @@ public class LizzieFrame extends JFrame {
       loadFile(files[0]);
       // toolbar.chkAnaAutoSave.setSelected(true);
       // toolbar.chkAnaAutoSave.setEnabled(false);
-      int heightM = 70 - Lizzie.frame.toolbarHeight;
-      Lizzie.frame.toolbarHeight = 70;
-      Lizzie.frame.toolbar.detail.setIcon(Lizzie.frame.toolbar.iconDown);
-      Lizzie.frame.mainPanel.setBounds(
-          Lizzie.frame.mainPanel.getX(),
-          Lizzie.frame.mainPanel.getY(),
-          Lizzie.frame.mainPanel.getWidth(),
-          Lizzie.frame.mainPanel.getHeight() - heightM);
-      Lizzie.frame.toolbar.setBounds(
-          0,
-          Lizzie.frame.getHeight()
-              - Lizzie.frame.getJMenuBar().getHeight()
-              - Lizzie.frame.getInsets().top
-              - Lizzie.frame.getInsets().bottom
-              - Lizzie.frame.toolbarHeight,
-          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
-          Lizzie.frame.toolbarHeight);
       // 打开分析界面
       StartAnaDialog newgame = new StartAnaDialog();
       newgame.setVisible(true);
