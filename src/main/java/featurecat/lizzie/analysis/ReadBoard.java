@@ -101,7 +101,10 @@ public class ReadBoard {
         line.append((char) c);
 
         if ((c == '\n')) {
-          parseLine(line.toString());
+          try {
+            parseLine(line.toString());
+          } catch (Exception ex) {
+          }
           line = new StringBuilder();
         }
       }
@@ -113,7 +116,7 @@ public class ReadBoard {
       // System.exit(-1);
     } catch (IOException e) {
       e.printStackTrace();
-      System.exit(-1);
+      // System.exit(-1);
     }
   }
 
@@ -159,6 +162,10 @@ public class ReadBoard {
   }
 
   private void syncBoardStones() {
+    if (tempcount.size() > Lizzie.board.boardWidth * Lizzie.board.boardWidth) {
+      tempcount = new ArrayList<Integer>();
+      return;
+    }
     boolean played = false;
     boolean holdLastMove = false;
     int lastX = 0;
