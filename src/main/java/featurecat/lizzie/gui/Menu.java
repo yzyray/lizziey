@@ -1569,8 +1569,8 @@ public class Menu extends MenuBar {
         });
     defaultconf.add(yicheng);
 
-    final JCheckBoxMenuItem other = new JCheckBoxMenuItem("其他");
-    other.addActionListener(
+    final JCheckBoxMenuItem xinlang = new JCheckBoxMenuItem("新浪");
+    xinlang.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.config.readBoardArg1 = "2";
@@ -1582,7 +1582,37 @@ public class Menu extends MenuBar {
             }
           }
         });
+    defaultconf.add(xinlang);
+
+    final JCheckBoxMenuItem other = new JCheckBoxMenuItem("其他");
+    other.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.readBoardArg1 = "3";
+            Lizzie.config.uiConfig.put("read-board-arg1", Lizzie.config.readBoardArg1);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
     defaultconf.add(other);
+
+    final JCheckBoxMenuItem noticeLast = new JCheckBoxMenuItem("识别最后一手(关闭可加速,但首次同步后轮谁下可能错误)");
+    noticeLast.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.readBoardArg3 = !Lizzie.config.readBoardArg3;
+            Lizzie.config.uiConfig.put("read-board-arg3", Lizzie.config.readBoardArg3);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    readBoardArg.add(noticeLast);
 
     final JMenuItem setTime = new JMenuItem("设置持续同步间隔");
     setTime.addActionListener(
@@ -1636,6 +1666,8 @@ public class Menu extends MenuBar {
             }
             if (Lizzie.config.alwaysSyncBoardStat) alwaysSyncBoardStat.setState(true);
             else alwaysSyncBoardStat.setState(false);
+            if (Lizzie.config.readBoardArg3) noticeLast.setState(true);
+            else noticeLast.setState(false);
           }
 
           @Override

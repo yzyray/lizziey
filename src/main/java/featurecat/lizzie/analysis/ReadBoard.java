@@ -61,6 +61,11 @@ public class ReadBoard {
     commands.add("yzy");
     commands.add(Lizzie.config.readBoardArg1);
     commands.add(Lizzie.config.readBoardArg2 + "");
+    if (Lizzie.config.readBoardArg3) {
+      commands.add("0");
+    } else {
+      commands.add("1");
+    }
     ProcessBuilder processBuilder = new ProcessBuilder(commands);
     processBuilder.redirectErrorStream(true);
     try {
@@ -119,7 +124,7 @@ public class ReadBoard {
       if (line.startsWith("re=")) {
 
         String[] params = line.substring(3, line.length() - 2).split(",");
-        if (params.length == 19) {
+        if (params.length == Lizzie.board.boardWidth) {
           for (int i = 0; i < params.length; i++) tempcount.add(Integer.parseInt(params[i]));
         }
       }
@@ -132,7 +137,17 @@ public class ReadBoard {
         Lizzie.frame.refresh();
       }
       if (line.startsWith("start")) {
-        Lizzie.board.clear();
+        String[] params = line.trim().split(" ");
+        if (params.length == 3) {
+          int boardWidth = Integer.parseInt(params[1]);
+          if (boardWidth != Lizzie.board.boardWidth || boardWidth != Lizzie.board.boardHeight) {
+            Lizzie.board.reopen(boardWidth, boardWidth);
+          } else {
+            Lizzie.board.clear();
+          }
+        } else {
+          Lizzie.board.clear();
+        }
       }
       if (line.startsWith("sync")) {
         Lizzie.frame.syncBoard = true;
@@ -155,8 +170,8 @@ public class ReadBoard {
     Stone[] stones = Lizzie.board.getHistory().getMainEnd().getData().stones;
     for (int i = 0; i < tempcount.size(); i++) {
       int m = tempcount.get(i);
-      int y = i / 19;
-      int x = i % 19;
+      int y = i / Lizzie.board.boardWidth;
+      int x = i % Lizzie.board.boardWidth;
       if (m == 1 && !stones[Lizzie.board.getIndex(x, y)].isBlack()) {
         if (stones[Lizzie.board.getIndex(x, y)].isWhite()) {
           Lizzie.board.clear();
