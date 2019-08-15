@@ -35,7 +35,7 @@ public class Board implements LeelazListener {
   public ArrayList<Movelist> tempmovelist2;
   public ArrayList<Movelist> tempallmovelist;
   public ArrayList<Movelistwr> movelistwr = new ArrayList<Movelistwr>();
-  public ArrayList<Movelistwr> movelistwrbefore;
+  // public ArrayList<Movelistwr> movelistwrbefore;
 
   private static final String alphabet = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
 
@@ -52,7 +52,7 @@ public class Board implements LeelazListener {
   public boolean isPkBoardKataW = false;
   public boolean isKataBoard = false;
   public boolean hasStartStone = false;
-  public ArrayList<Movelist> startStonelist = new ArrayList<Movelist>();;
+  public ArrayList<Movelist> startStonelist = new ArrayList<Movelist>();
 
   // Save the node for restore move when in the branch
   private Optional<BoardHistoryNode> saveNode;
@@ -409,6 +409,7 @@ public class Board implements LeelazListener {
 
   public void setlist(ArrayList<Movelist> list) {
     // System.out.println("恢复board不恢复branch");
+
     setmovelist(list);
   }
 
@@ -634,12 +635,30 @@ public class Board implements LeelazListener {
   }
 
   public void setmovelist(ArrayList<Movelist> movelist) {
+
     while (previousMove()) ;
+    if (Lizzie.board.hasStartStone) {
+      int lenth2 = startStonelist.size();
+      for (int i = 0; i < lenth2; i++) {
+        Movelist move = startStonelist.get(lenth2 - 1 - i);
+        String color = move.isblack ? "b" : "w";
+        if (!move.ispass) {
+          placeinsert(move.x, move.y, move.isblack ? Stone.BLACK : Stone.WHITE);
+          try {
+            mvnumber[getIndex(move.x, move.y)] = i + 1;
+          } catch (Exception ex) {
+          }
+        }
+      }
+      Lizzie.board.hasStartStone = false;
+      startStonelist = new ArrayList<Movelist>();
+    }
+
     int lenth = movelist.size();
     for (int i = 0; i < lenth; i++) {
       Movelist move = movelist.get(lenth - 1 - i);
       if (!move.ispass) {
-        placeinsert(move.x, move.y, move.isblack ? Stone.BLACK : Stone.WHITE);
+        place(move.x, move.y, move.isblack ? Stone.BLACK : Stone.WHITE);
         try {
           mvnumber[getIndex(move.x, move.y)] = i + 1;
         } catch (Exception ex) {
@@ -648,6 +667,7 @@ public class Board implements LeelazListener {
         passinsert(move.isblack ? Stone.BLACK : Stone.WHITE, false);
       }
     }
+
     // placeinsert(int x, int y, Stone color);
 
   }
@@ -745,7 +765,6 @@ public class Board implements LeelazListener {
 
   public ArrayList<Movelist> getmovelist() {
     ArrayList<Movelist> movelist = new ArrayList<Movelist>();
-
     Optional<BoardHistoryNode> node = history.getCurrentHistoryNode().now();
     Optional<int[]> passstep = Optional.empty();
     while (node.isPresent()) {
@@ -771,7 +790,6 @@ public class Board implements LeelazListener {
         }
       }
     }
-    movelist.remove(movelist.size() - 1);
     return movelist;
   }
 

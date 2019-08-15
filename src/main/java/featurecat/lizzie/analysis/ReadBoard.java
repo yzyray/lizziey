@@ -247,7 +247,7 @@ public class ReadBoard {
         isLastBlack = false;
       }
     }
-    if (firstSync) {
+    if (firstSync && played) {
       Lizzie.board.hasStartStone = true;
       Lizzie.board.addStartListAll();
       Lizzie.board.flatten();

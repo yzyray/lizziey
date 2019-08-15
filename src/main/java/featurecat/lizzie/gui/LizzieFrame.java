@@ -2254,8 +2254,9 @@ public class LizzieFrame extends JFrame {
       startcoords[1] = coords[1];
       draggedstone = Lizzie.board.getstonestat(coords);
       if (draggedstone == Stone.BLACK || draggedstone == Stone.WHITE) {
-        draggedmovenumer = Lizzie.board.getmovenumber(coords);
-        featurecat.lizzie.gui.Input.Draggedmode = true;
+        draggedmovenumer = Lizzie.board.moveNumberByCoord(coords);
+        if (draggedmovenumer > 0) featurecat.lizzie.gui.Input.Draggedmode = true;
+        else return;
       }
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
       if (!isPlayingAgainstLeelaz || (playerIsBlack == Lizzie.board.getData().blackToPlay)) {
@@ -3000,6 +3001,8 @@ public class LizzieFrame extends JFrame {
           return;
         }
         int currentmovenumber = Lizzie.board.getcurrentmovenumber();
+        if (Lizzie.board.hasStartStone)
+          currentmovenumber = currentmovenumber + Lizzie.board.startStonelist.size() - 1;
         Lizzie.board.savelistforeditmode();
         Lizzie.board.editmovelist(
             Lizzie.board.tempallmovelist, draggedmovenumer, coords[0], coords[1]);

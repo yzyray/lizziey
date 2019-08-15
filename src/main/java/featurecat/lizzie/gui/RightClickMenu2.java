@@ -81,14 +81,18 @@ public class RightClickMenu2 extends JPopupMenu {
 		Optional<int[]> boardCoordinates = Lizzie.frame.boardRenderer.convertScreenToCoordinates(mousex, mousey);
 		if (boardCoordinates.isPresent()) {
 			int[] coords = boardCoordinates.get();
-			int draggedmovenumer = Lizzie.board.getmovenumber(coords);
-
+			int draggedmovenumer = Lizzie.board.moveNumberByCoord(coords);
+			if(draggedmovenumer<=0)
+			{
+				return;
+			}
 			int currentmovenumber = Lizzie.board.getcurrentmovenumber();
+			if(Lizzie.board.hasStartStone)currentmovenumber=currentmovenumber+Lizzie.board.startStonelist.size()-1;
 			Lizzie.board.savelistforeditmode();
 			Lizzie.board.editmovelistswitch(Lizzie.board.tempallmovelist, draggedmovenumer);
 			Lizzie.board.clearforedit();
-			Lizzie.board.setlist(Lizzie.board.tempallmovelist);
-			Lizzie.board.goToMoveNumber(currentmovenumber);
+			Lizzie.board.setlist(Lizzie.board.tempallmovelist);			
+			Lizzie.board.goToMoveNumber(currentmovenumber);			
 		}
 	}
 
@@ -96,17 +100,24 @@ public class RightClickMenu2 extends JPopupMenu {
 		Optional<int[]> boardCoordinates = Lizzie.frame.boardRenderer.convertScreenToCoordinates(mousex, mousey);
 		if (boardCoordinates.isPresent()) {
 			int[] coords = boardCoordinates.get();
-			int draggedmovenumer = Lizzie.board.getmovenumber(coords);
+			int draggedmovenumer = Lizzie.board.moveNumberByCoord(coords);
+			if(draggedmovenumer<=0)
+			{
+				return;
+			}
 			int currentmovenumber = Lizzie.board.getcurrentmovenumber();
+			if(Lizzie.board.hasStartStone)currentmovenumber=currentmovenumber+Lizzie.board.startStonelist.size()-1;
 			Lizzie.board.savelistforeditmode();
 			Lizzie.board.editmovelistdelete(Lizzie.board.tempallmovelist, draggedmovenumer);
 			Lizzie.board.clearforedit();
 			Lizzie.board.setlist(Lizzie.board.tempallmovelist);
-			Lizzie.board.goToMoveNumber(currentmovenumber);
-			for (int i = 0; i < Lizzie.board.movelistwrbefore.size(); i++) {
-				Lizzie.board.movelistwr = new ArrayList<Movelistwr>();
-				Lizzie.board.movelistwr.add(Lizzie.board.movelistwrbefore.get(i));
-			}
+			
+				Lizzie.board.goToMoveNumber(currentmovenumber);
+			
+//			for (int i = 0; i < Lizzie.board.movelistwrbefore.size(); i++) {
+//				Lizzie.board.movelistwr = new ArrayList<Movelistwr>();
+//				Lizzie.board.movelistwr.add(Lizzie.board.movelistwrbefore.get(i));
+//			}
 		}
 	}
 

@@ -229,6 +229,12 @@ public class YaZenGtp {
     sendCommand("boardsize " + Lizzie.board.boardWidth);
     cmdNumber = 1;
     ArrayList<Movelist> movelist = Lizzie.board.getmovelist();
+
+    if (Lizzie.board.hasStartStone) {
+      for (int i = 0; i < Lizzie.board.startStonelist.size(); i++) {
+        movelist.add(Lizzie.board.startStonelist.get(i));
+      }
+    }
     int lenth = movelist.size();
     for (int i = 0; i < lenth; i++) {
       Movelist move = movelist.get(lenth - 1 - i);
