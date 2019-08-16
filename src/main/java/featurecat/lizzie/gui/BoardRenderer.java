@@ -1311,11 +1311,7 @@ public class BoardRenderer {
               } else {
                 text = String.format("%.1f", roundedWinrate);
               }
-              if (Lizzie.config.showSuggestionOrder
-                  && number
-                      < (Lizzie.config.limitMaxSuggestion < 10
-                          ? Lizzie.config.limitMaxSuggestion
-                          : 10)) {
+              if (Lizzie.config.showSuggestionOrder && number < 10) {
                 Color oriColor = g.getColor();
                 g.setColor(Color.ORANGE);
                 g.fillRect(
