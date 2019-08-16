@@ -1945,6 +1945,9 @@ public class Menu extends MenuBar {
     headFont = new Font("", Font.BOLD, 15);
     engineMenu.setFont(headFont);
     this.add(engineMenu);
+    this.remove(black);
+    this.remove(white);
+    this.remove(blackwhite);
 
     black = new JButton(iconblack);
     black.addActionListener(
