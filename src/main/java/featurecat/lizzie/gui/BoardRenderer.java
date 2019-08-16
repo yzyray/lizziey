@@ -1314,8 +1314,8 @@ public class BoardRenderer {
               if (Lizzie.config.showSuggestionOrder
                   && number
                       < ((Lizzie.config.limitMaxSuggestion > 0
-                              && Lizzie.config.limitMaxSuggestion < 10)
-                          ? Lizzie.config.limitMaxSuggestion
+                              && Lizzie.config.limitMaxSuggestion < 9)
+                          ? Lizzie.config.limitMaxSuggestion + 1
                           : 10)) {
                 Color oriColor = g.getColor();
                 g.setColor(Color.ORANGE);
