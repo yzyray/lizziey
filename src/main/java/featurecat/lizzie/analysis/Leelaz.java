@@ -1585,12 +1585,15 @@ public boolean startAutoAna=false;
 			if(!outOfMoveNum&&!doublePass) {
 			if (blackResignMoveCounts >= Lizzie.frame.toolbar.pkResignMoveCounts) {
 			// df=df+"_白胜";
-
+				if(Lizzie.frame.toolbar.exChange) {
 			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
 				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
-
 			else
 				Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+				}
+				else {
+					Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+				}
 			GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 			gameInfo.setResult("白("
 					+ Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename + ")胜");
@@ -1598,17 +1601,20 @@ public boolean startAutoAna=false;
 					+ Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename + ")胜");
 		} else {
 			// df=df+"_黑胜";
-
+			if(Lizzie.frame.toolbar.exChange) {
+			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
+				Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+			else
+				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
+			}
+			else {
+				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
+			}
 			GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 			gameInfo.setResult("黑("
 					+ Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename + ")胜");
 			Lizzie.frame.setResult("黑("
 					+ Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename + ")胜");
-
-			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
-				Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
-			else
-				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
 
 		}
 			}

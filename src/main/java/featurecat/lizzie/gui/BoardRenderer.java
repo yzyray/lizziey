@@ -216,14 +216,20 @@ public class BoardRenderer {
       return;
     }
     if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isEnginePkBatch) {
-      if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0) {
-        black = Lizzie.frame.toolbar.pkWhiteWins + " " + black;
-        white = white + " " + Lizzie.frame.toolbar.pkBlackWins;
+      if (Lizzie.frame.toolbar.exChange) {
+        if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0) {
+          black = Lizzie.frame.toolbar.pkWhiteWins + " " + black;
+          white = white + " " + Lizzie.frame.toolbar.pkBlackWins;
+        } else {
+          black = Lizzie.frame.toolbar.pkBlackWins + " " + black;
+          white = white + " " + Lizzie.frame.toolbar.pkWhiteWins;
+        }
       } else {
         black = Lizzie.frame.toolbar.pkBlackWins + " " + black;
         white = white + " " + Lizzie.frame.toolbar.pkWhiteWins;
       }
     }
+
     if (emptyName) {
       emptyName = false;
       changedName = true;
