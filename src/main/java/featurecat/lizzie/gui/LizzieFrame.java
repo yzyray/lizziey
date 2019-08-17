@@ -975,7 +975,7 @@ public class LizzieFrame extends JFrame {
 
     fileDialog.setLocationRelativeTo(null);
     fileDialog.setDirectory(filesystem.getString("last-folder"));
-    fileDialog.setFile("*.sgf;*.gib;*.SGF;*.GIB;");
+    fileDialog.setFile("*.sgf;*.gib;*.SGF;*.GIB");
 
     fileDialog.setMultipleMode(false);
     fileDialog.setMode(0);
@@ -1025,7 +1025,7 @@ public class LizzieFrame extends JFrame {
 
     fileDialog.setLocationRelativeTo(null);
     fileDialog.setDirectory(filesystem.getString("last-folder"));
-    fileDialog.setFile("*.sgf;*.gib;*.SGF;*.GIB;");
+    fileDialog.setFile("*.sgf;*.gib;*.SGF;*.GIB");
 
     fileDialog.setMultipleMode(true);
     fileDialog.setMode(0);
@@ -1066,7 +1066,7 @@ public class LizzieFrame extends JFrame {
 
     fileDialog.setLocationRelativeTo(null);
     fileDialog.setDirectory(filesystem.getString("last-folder"));
-    fileDialog.setFile("*.sgf;*.gib;*.SGF;*.GIB;");
+    fileDialog.setFile("*.sgf;*.gib;*.SGF;*.GIB");
 
     fileDialog.setMultipleMode(true);
     fileDialog.setMode(0);
