@@ -790,6 +790,7 @@ public class Board implements LeelazListener {
         }
       }
     }
+    movelist.remove(movelist.size() - 1);
     return movelist;
   }
 
