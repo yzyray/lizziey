@@ -88,6 +88,7 @@ public class BoardRenderer {
   private int maxAlpha = 240;
   int number = 1;
   TexturePaint paint;
+  private int suggestionsOutOfNumberTime = 0;
 
   public BoardRenderer(boolean isMainBoard) {
     uiConfig = Lizzie.config.uiConfig;
@@ -1011,6 +1012,12 @@ public class BoardRenderer {
    * Draw all of Leelaz's suggestions as colored stones with winrate/playout statistics overlayed
    */
   private void drawLeelazSuggestions(Graphics2D g) {
+    if (bestMoves.size() > 30) {
+      suggestionsOutOfNumberTime = suggestionsOutOfNumberTime + 1;
+      if (suggestionsOutOfNumberTime < (bestMoves.size() / 30) + 2) {
+        return;
+      }
+    }
     int minAlpha = 32;
     float winrateHueFactor = 0.9f;
     float alphaFactor = 5.0f;
