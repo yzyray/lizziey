@@ -122,6 +122,31 @@ public class Config {
   private final String defaultGtpConsoleStyle =
       "body {background:#000000; color:#d0d0d0; font-family:Consolas, Menlo, Monaco, 'Ubuntu Mono', monospace; margin:4px;} .command {color:#ffffff;font-weight:bold;} .winrate {color:#ffffff;font-weight:bold;} .coord {color:#ffffff;font-weight:bold;}";
 
+  public boolean firstButton = true;
+  public boolean lastButton = true;
+  public boolean clearButton = true;
+  public boolean countButton = true;
+  public boolean forward10 = true;
+  public boolean backward10 = true;
+  public boolean forward1 = true;
+  public boolean gotomove = true;
+  public boolean backward1 = true;
+  public boolean openfile = true;
+  public boolean savefile = true;
+  public boolean analyse = true;
+  public boolean kataEstimate = true;
+  public boolean heatMap = true;
+  public boolean backMain = true;
+  public boolean setMain = true;
+  public boolean batchOpen = true;
+  public boolean refresh = true;
+  public boolean tryPlay = true;
+  public boolean komi = true;
+  public boolean move = true;
+  public boolean coords = true;
+  public boolean liveButton = true;
+  public boolean badMoves = true;
+
   private JSONObject loadAndMergeConfig(
       JSONObject defaultCfg, String fileName, boolean needValidation) throws IOException {
     File file = new File(fileName);
@@ -337,6 +362,32 @@ public class Config {
     showNoSuggCircle = leelazConfig.optBoolean("show-nosugg-circle", true);
     limitbadMeanmoves = leelazConfig.optInt("badmoves-scoremean-limits", 0);
     limitbadplayouts = leelazConfig.optInt("badmoves-playouts-limits", 0);
+
+    firstButton = uiConfig.optBoolean("firstButton", true);
+    lastButton = uiConfig.optBoolean("lastButton", true);
+    clearButton = uiConfig.optBoolean("clearButton", true);
+    countButton = uiConfig.optBoolean("countButton", true);
+    forward10 = uiConfig.optBoolean("forward10", true);
+    backward10 = uiConfig.optBoolean("backward10", true);
+    forward1 = uiConfig.optBoolean("forward1", true);
+    gotomove = uiConfig.optBoolean("gotomove", true);
+    backward1 = uiConfig.optBoolean("backward1", true);
+    openfile = uiConfig.optBoolean("openfile", true);
+    savefile = uiConfig.optBoolean("savefile", true);
+    analyse = uiConfig.optBoolean("analyse", true);
+    kataEstimate = uiConfig.optBoolean("kataEstimate", true);
+    heatMap = uiConfig.optBoolean("heatMap", true);
+    backMain = uiConfig.optBoolean("backMain", true);
+    setMain = uiConfig.optBoolean("setMain", true);
+    batchOpen = uiConfig.optBoolean("batchOpen", true);
+    refresh = uiConfig.optBoolean("refresh", true);
+    tryPlay = uiConfig.optBoolean("tryPlay", true);
+    komi = uiConfig.optBoolean("komi", true);
+    move = uiConfig.optBoolean("move", true);
+    coords = uiConfig.optBoolean("coords", true);
+    liveButton = uiConfig.optBoolean("liveButton", true);
+    badMoves = uiConfig.optBoolean("badMoves", true);
+
     winrateStrokeWidth = theme.winrateStrokeWidth();
     minimumBlunderBarWidth = theme.minimumBlunderBarWidth();
     shadowSize = theme.shadowSize();

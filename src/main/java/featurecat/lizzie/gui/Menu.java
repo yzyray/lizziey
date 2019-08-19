@@ -436,25 +436,6 @@ public class Menu extends MenuBar {
     final JMenu winrate = new JMenu("胜率图设置");
     viewMenu.add(winrate);
 
-    final JMenu tool = new JMenu("工具栏设置");
-    viewMenu.add(tool);
-
-    final JCheckBoxMenuItem toolMenu = new JCheckBoxMenuItem("基本工具栏"); // 创建“字体”子菜单
-    tool.add(toolMenu); // 添加到“编辑”菜单
-    toolMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
-
-    final JCheckBoxMenuItem bigtoolMenu = new JCheckBoxMenuItem("详细工具栏");
-    tool.add(bigtoolMenu);
-    bigtoolMenu.addActionListener(new ItemListeneryzy());
-
-    final JCheckBoxMenuItem closeTool = new JCheckBoxMenuItem("关闭工具栏"); // 创建“字体”子菜单
-    tool.add(closeTool); // 添加到“编辑”菜单
-    closeTool.addActionListener(new ItemListeneryzy()); // 添加动作监听器 viewMenu.addSeparator();
-
-    final JMenuItem bigtoolConf = new JMenuItem("设置详细工具栏顺序");
-    tool.add(bigtoolConf);
-    bigtoolConf.addActionListener(new ItemListeneryzy());
-
     final JCheckBoxMenuItem subboard = new JCheckBoxMenuItem("小棋盘(Z)"); // 创建“字体”子菜单
     panel.add(subboard); // 添加到“编辑”菜单
     subboard.addActionListener(new ItemListeneryzy()); // 添加动作监听器
@@ -862,12 +843,6 @@ public class Menu extends MenuBar {
             if (Lizzie.config.uiConfig.optBoolean("mains-always-ontop", false))
               alwaysontop.setState(true);
             else alwaysontop.setState(false);
-            if (Lizzie.frame.toolbarHeight == 26) toolMenu.setState(true);
-            else toolMenu.setState(false);
-            if (Lizzie.frame.toolbarHeight == 70) bigtoolMenu.setState(true);
-            else bigtoolMenu.setState(false);
-            if (Lizzie.frame.toolbarHeight == 0) closeTool.setState(true);
-            else closeTool.setState(false);
 
             if (Lizzie.config.showSubBoard) subboard.setState(true);
             else subboard.setState(false);
@@ -1668,6 +1643,394 @@ public class Menu extends MenuBar {
             else alwaysSyncBoardStat.setState(false);
             if (Lizzie.config.readBoardArg3) noticeLast.setState(true);
             else noticeLast.setState(false);
+          }
+
+          @Override
+          public void menuDeselected(MenuEvent e) {
+            // TODO Auto-generated method stub
+          }
+
+          @Override
+          public void menuCanceled(MenuEvent e) {
+            // TODO Auto-generated method stub
+
+          }
+        });
+    final JMenu toolbar = new JMenu(" 工具栏  ");
+    toolbar.setForeground(Color.BLACK);
+    toolbar.setFont(headFont);
+    this.add(toolbar);
+
+    final JCheckBoxMenuItem toolMenu = new JCheckBoxMenuItem("基本工具栏"); // 创建“字体”子菜单
+    toolbar.add(toolMenu); // 添加到“编辑”菜单
+    toolMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
+
+    final JCheckBoxMenuItem bigtoolMenu = new JCheckBoxMenuItem("详细工具栏");
+    toolbar.add(bigtoolMenu);
+    bigtoolMenu.addActionListener(new ItemListeneryzy());
+
+    final JCheckBoxMenuItem closeTool = new JCheckBoxMenuItem("关闭工具栏"); // 创建“字体”子菜单
+    toolbar.add(closeTool); // 添加到“编辑”菜单
+    closeTool.addActionListener(new ItemListeneryzy()); // 添加动作监听器 viewMenu.addSeparator();
+
+    final JMenuItem bigtoolConf = new JMenuItem("设置详细工具栏顺序");
+    toolbar.add(bigtoolConf);
+    bigtoolConf.addActionListener(new ItemListeneryzy());
+
+    toolbar.addSeparator();
+
+    final JMenu chooseButton = new JMenu("自定义显示按钮");
+    toolbar.add(chooseButton);
+
+    final JCheckBoxMenuItem liveButton = new JCheckBoxMenuItem("直播");
+    chooseButton.add(liveButton);
+    liveButton.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.liveButton = !Lizzie.config.liveButton;
+            Lizzie.config.uiConfig.put("liveButton", Lizzie.config.liveButton);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem kataEstimateButton = new JCheckBoxMenuItem("Kata评估");
+    chooseButton.add(kataEstimateButton);
+    kataEstimateButton.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.kataEstimate = !Lizzie.config.kataEstimate;
+            Lizzie.config.uiConfig.put("kataEstimate", Lizzie.config.kataEstimate);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem batchOpen = new JCheckBoxMenuItem("批量分析");
+    chooseButton.add(batchOpen);
+    batchOpen.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.batchOpen = !Lizzie.config.batchOpen;
+            Lizzie.config.uiConfig.put("batchOpen", Lizzie.config.batchOpen);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem openfile = new JCheckBoxMenuItem("打开");
+    chooseButton.add(openfile);
+    openfile.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.openfile = !Lizzie.config.openfile;
+            Lizzie.config.uiConfig.put("openfile", Lizzie.config.openfile);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem savefile = new JCheckBoxMenuItem("保存");
+    chooseButton.add(savefile);
+    savefile.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.savefile = !Lizzie.config.savefile;
+            Lizzie.config.uiConfig.put("savefile", Lizzie.config.savefile);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem komi = new JCheckBoxMenuItem("贴目");
+    chooseButton.add(komi);
+    komi.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.komi = !Lizzie.config.komi;
+            Lizzie.config.uiConfig.put("komi", Lizzie.config.komi);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem refresh = new JCheckBoxMenuItem("刷新");
+    chooseButton.add(refresh);
+    refresh.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.refresh = !Lizzie.config.refresh;
+            Lizzie.config.uiConfig.put("refresh", Lizzie.config.refresh);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem analyse = new JCheckBoxMenuItem("分析");
+    chooseButton.add(analyse);
+    analyse.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.analyse = !Lizzie.config.analyse;
+            Lizzie.config.uiConfig.put("analyse", Lizzie.config.analyse);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem tryPlay = new JCheckBoxMenuItem("试下");
+    chooseButton.add(tryPlay);
+    tryPlay.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.tryPlay = !Lizzie.config.tryPlay;
+            Lizzie.config.uiConfig.put("tryPlay", Lizzie.config.tryPlay);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem setMainButton = new JCheckBoxMenuItem("设为主分支");
+    chooseButton.add(setMainButton);
+    setMainButton.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.setMain = !Lizzie.config.setMain;
+            Lizzie.config.uiConfig.put("setMain", Lizzie.config.setMain);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem backMain = new JCheckBoxMenuItem("返回主分支");
+    chooseButton.add(backMain);
+    backMain.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.backMain = !Lizzie.config.backMain;
+            Lizzie.config.uiConfig.put("backMain", Lizzie.config.backMain);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem clearButton = new JCheckBoxMenuItem("清空棋盘");
+    chooseButton.add(clearButton);
+    clearButton.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.clearButton = !Lizzie.config.clearButton;
+            Lizzie.config.uiConfig.put("clearButton", Lizzie.config.clearButton);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem countButton = new JCheckBoxMenuItem("形势判断");
+    chooseButton.add(countButton);
+    countButton.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.countButton = !Lizzie.config.countButton;
+            Lizzie.config.uiConfig.put("countButton", Lizzie.config.countButton);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem heatMap = new JCheckBoxMenuItem("策略网络");
+    chooseButton.add(heatMap);
+    heatMap.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.heatMap = !Lizzie.config.heatMap;
+            Lizzie.config.uiConfig.put("heatMap", Lizzie.config.heatMap);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem badMoves = new JCheckBoxMenuItem("恶手列表");
+    chooseButton.add(badMoves);
+    badMoves.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.badMoves = !Lizzie.config.badMoves;
+            Lizzie.config.uiConfig.put("badMoves", Lizzie.config.badMoves);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem move = new JCheckBoxMenuItem("手数");
+    chooseButton.add(move);
+    move.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.move = !Lizzie.config.move;
+            Lizzie.config.uiConfig.put("move", Lizzie.config.move);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem coords = new JCheckBoxMenuItem("坐标");
+    chooseButton.add(coords);
+    coords.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.coords = !Lizzie.config.coords;
+            Lizzie.config.uiConfig.put("coords", Lizzie.config.coords);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    chooseButton.addMenuListener(
+        new MenuListener() {
+
+          public void menuSelected(MenuEvent e) {
+
+            if (Lizzie.config.liveButton) liveButton.setState(true);
+            else liveButton.setState(false);
+            if (Lizzie.config.kataEstimate) kataEstimateButton.setState(true);
+            else kataEstimateButton.setState(false);
+            if (Lizzie.config.batchOpen) batchOpen.setState(true);
+            else batchOpen.setState(false);
+            if (Lizzie.config.openfile) openfile.setState(true);
+            else openfile.setState(false);
+            if (Lizzie.config.savefile) savefile.setState(true);
+            else savefile.setState(false);
+            if (Lizzie.config.komi) komi.setState(true);
+            else komi.setState(false);
+
+            if (Lizzie.config.refresh) refresh.setState(true);
+            else refresh.setState(false);
+            if (Lizzie.config.analyse) analyse.setState(true);
+            else analyse.setState(false);
+            if (Lizzie.config.tryPlay) tryPlay.setState(true);
+            else tryPlay.setState(false);
+            if (Lizzie.config.setMain) setMainButton.setState(true);
+            else setMainButton.setState(false);
+            if (Lizzie.config.backMain) backMain.setState(true);
+            else backMain.setState(false);
+
+            if (Lizzie.config.clearButton) clearButton.setState(true);
+            else clearButton.setState(false);
+            if (Lizzie.config.countButton) countButton.setState(true);
+            else countButton.setState(false);
+            if (Lizzie.config.heatMap) heatMap.setState(true);
+            else heatMap.setState(false);
+            if (Lizzie.config.badMoves) badMoves.setState(true);
+            else badMoves.setState(false);
+            if (Lizzie.config.move) move.setState(true);
+            else move.setState(false);
+            if (Lizzie.config.coords) coords.setState(true);
+            else coords.setState(false);
+          }
+
+          @Override
+          public void menuDeselected(MenuEvent e) {
+            // TODO Auto-generated method stub
+          }
+
+          @Override
+          public void menuCanceled(MenuEvent e) {
+            // TODO Auto-generated method stub
+
+          }
+        });
+
+    live.addMenuListener(
+        new MenuListener() {
+
+          public void menuSelected(MenuEvent e) {
+            if (Lizzie.frame.toolbarHeight == 26) toolMenu.setState(true);
+            else toolMenu.setState(false);
+            if (Lizzie.frame.toolbarHeight == 70) bigtoolMenu.setState(true);
+            else bigtoolMenu.setState(false);
+            if (Lizzie.frame.toolbarHeight == 0) closeTool.setState(true);
+            else closeTool.setState(false);
+            if (Lizzie.config.liveButton) liveButton.setState(true);
+            else liveButton.setState(false);
+            if (Lizzie.config.kataEstimate) kataEstimateButton.setState(true);
+            else kataEstimateButton.setState(false);
+            if (Lizzie.config.batchOpen) batchOpen.setState(true);
+            else batchOpen.setState(false);
+            if (Lizzie.config.openfile) openfile.setState(true);
+            else openfile.setState(false);
+            if (Lizzie.config.savefile) savefile.setState(true);
+            else savefile.setState(false);
+            if (Lizzie.config.komi) komi.setState(true);
+            else komi.setState(false);
           }
 
           @Override

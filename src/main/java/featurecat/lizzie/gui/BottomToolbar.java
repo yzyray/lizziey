@@ -60,6 +60,8 @@ public class BottomToolbar extends JPanel {
   JButton move;
   JButton coords;
   JButton liveButton;
+  JButton badMoves;
+
   JPanel buttonPane;
   //  JPanel buttonPane2;
 
@@ -230,8 +232,9 @@ public class BottomToolbar extends JPanel {
     this.setBackground(hsbColor);
 
     setLayout(null);
-    rightMove = new JButton(">");
-    leftMove = new JButton("<");
+    rightMove = new JButton("》");
+    leftMove = new JButton("《");
+    badMoves = new JButton("恶手列表");
     liveButton = new JButton("直播");
     clearButton = new JButton("清空棋盘");
     firstButton = new JButton("|<");
@@ -287,6 +290,7 @@ public class BottomToolbar extends JPanel {
     detail.setBounds(0, 0, 20, 26);
     leftMove.setBounds(19, 0, 20, 26);
     buttonPane.add(liveButton);
+    buttonPane.add(badMoves);
     buttonPane.add(clearButton);
     buttonPane.add(lastButton);
     buttonPane.add(firstButton);
@@ -338,7 +342,9 @@ public class BottomToolbar extends JPanel {
     liveButton.setFocusable(false);
     rightMove.setFocusable(false);
     leftMove.setFocusable(false);
+    badMoves.setFocusable(false);
 
+    badMoves.setMargin(new Insets(0, 0, 0, 0));
     firstButton.setMargin(new Insets(0, 0, 0, 0));
     lastButton.setMargin(new Insets(0, 0, 0, 0));
     clearButton.setMargin(new Insets(0, 0, 0, 0));
@@ -365,11 +371,40 @@ public class BottomToolbar extends JPanel {
     liveButton.setMargin(new Insets(0, 0, 0, 0));
     rightMove.setMargin(new Insets(0, 0, 0, 0));
     leftMove.setMargin(new Insets(0, 0, 0, 0));
+
+    badMoves.setSize(60, 26);
+    liveButton.setSize(40, 26);
+    kataEstimate.setSize(60, 26);
+    batchOpen.setSize(60, 26);
+    openfile.setSize(40, 26);
+    savefile.setSize(40, 26);
+    komi.setSize(40, 26);
+    refresh.setSize(40, 26);
+    analyse.setSize(40, 26);
+    tryPlay.setSize(40, 26);
+    setMain.setSize(70, 26);
+    backMain.setSize(70, 26);
+
+    clearButton.setSize(60, 26);
+    countButton.setSize(60, 26);
+    heatMap.setSize(60, 26);
+
+    move.setSize(35, 26);
+    coords.setSize(35, 26);
+
+    gotomove.setSize(35, 26);
+    firstButton.setSize(30, 26);
+    backward10.setSize(30, 26);
+    backward1.setSize(30, 26);
+    forward1.setSize(30, 26);
+    forward10.setSize(30, 26);
+    lastButton.setSize(30, 26);
     // NumberFormat nf = NumberFormat.getNumberInstance();
 
     // nf.setGroupingUsed(false);
     // nf.setParseIntegerOnly(true);
     txtMoveNumber = new JTextField();
+    txtMoveNumber.setSize(28, 24);
     buttonPane.add(txtMoveNumber);
     txtMoveNumber.setColumns(3);
 
@@ -457,6 +492,13 @@ public class BottomToolbar extends JPanel {
           public void actionPerformed(ActionEvent e) {
             // Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live", "弈客直播");
             yike.show(Lizzie.frame.toolbar, liveButton.getX() + 10, liveButton.getY() - 72);
+          }
+        });
+
+    badMoves.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.toggleBadMoves();
           }
         });
 
@@ -2978,169 +3020,290 @@ public class BottomToolbar extends JPanel {
     enginePkPanel.add(chkenginePkContinue);
   }
 
+  public int setLocation(int w) {
+
+    if (lastButton.isVisible()) {
+      w = w - (lastButton.getWidth() - 1);
+      lastButton.setLocation(w, 0);
+    }
+    if (forward10.isVisible()) {
+      w = w - (forward10.getWidth() - 1);
+      forward10.setLocation(w, 0);
+    }
+    if (forward1.isVisible()) {
+      w = w - (forward1.getWidth() - 1);
+      forward1.setLocation(w, 0);
+    }
+    if (backward1.isVisible()) {
+      w = w - (backward1.getWidth() - 1);
+      backward1.setLocation(w, 0);
+    }
+    if (backward10.isVisible()) {
+      w = w - (backward10.getWidth() - 1);
+      backward10.setLocation(w, 0);
+    }
+    if (firstButton.isVisible()) {
+      w = w - (firstButton.getWidth() - 1);
+      firstButton.setLocation(w, 0);
+    }
+    if (gotomove.isVisible()) {
+      w = w - (gotomove.getWidth() - 1);
+      gotomove.setLocation(w, 0);
+    }
+    if (txtMoveNumber.isVisible()) {
+      w = w - (txtMoveNumber.getWidth() - 1);
+      txtMoveNumber.setLocation(w, 1);
+    }
+    if (coords.isVisible()) {
+      w = w - (coords.getWidth() - 1);
+      coords.setLocation(w, 0);
+    }
+    if (move.isVisible()) {
+      w = w - (move.getWidth() - 1);
+      move.setLocation(w, 0);
+    }
+    if (badMoves.isVisible()) {
+      w = w - (badMoves.getWidth() - 1);
+      badMoves.setLocation(w, 0);
+    }
+    if (heatMap.isVisible()) {
+      w = w - (heatMap.getWidth() - 1);
+      heatMap.setLocation(w, 0);
+    }
+    if (countButton.isVisible()) {
+      w = w - (countButton.getWidth() - 1);
+      countButton.setLocation(w, 0);
+    }
+    if (clearButton.isVisible()) {
+      w = w - (clearButton.getWidth() - 1);
+      clearButton.setLocation(w, 0);
+    }
+    if (backMain.isVisible()) {
+      w = w - (backMain.getWidth() - 1);
+      backMain.setLocation(w, 0);
+    }
+    if (setMain.isVisible()) {
+      w = w - (setMain.getWidth() - 1);
+      setMain.setLocation(w, 0);
+    }
+    if (tryPlay.isVisible()) {
+      w = w - (tryPlay.getWidth() - 1);
+      tryPlay.setLocation(w, 0);
+    }
+    if (analyse.isVisible()) {
+      w = w - (analyse.getWidth() - 1);
+      analyse.setLocation(w, 0);
+    }
+    if (refresh.isVisible()) {
+      w = w - (refresh.getWidth() - 1);
+      refresh.setLocation(w, 0);
+    }
+    if (komi.isVisible()) {
+      w = w - (komi.getWidth() - 1);
+      komi.setLocation(w, 0);
+    }
+    if (savefile.isVisible()) {
+      w = w - (savefile.getWidth() - 1);
+      savefile.setLocation(w, 0);
+    }
+    if (openfile.isVisible()) {
+      w = w - (openfile.getWidth() - 1);
+      openfile.setLocation(w, 0);
+    }
+    if (batchOpen.isVisible()) {
+      w = w - (batchOpen.getWidth() - 1);
+      batchOpen.setLocation(w, 0);
+    }
+    if (kataEstimate.isVisible()) {
+      w = w - (kataEstimate.getWidth() - 1);
+      kataEstimate.setLocation(w, 0);
+    }
+    if (liveButton.isVisible()) {
+      w = w - (liveButton.getWidth() - 1);
+      liveButton.setLocation(w, 0);
+    }
+    return w;
+  }
+
+  private void setButtonVisiable() {
+    if (Lizzie.config.liveButton) liveButton.setVisible(true);
+    else liveButton.setVisible(false);
+    if (Lizzie.config.kataEstimate) kataEstimate.setVisible(true);
+    else kataEstimate.setVisible(false);
+    if (Lizzie.config.batchOpen) batchOpen.setVisible(true);
+    else batchOpen.setVisible(false);
+    if (Lizzie.config.openfile) openfile.setVisible(true);
+    else openfile.setVisible(false);
+    if (Lizzie.config.savefile) savefile.setVisible(true);
+    else savefile.setVisible(false);
+    if (Lizzie.config.komi) komi.setVisible(true);
+    else komi.setVisible(false);
+
+    if (Lizzie.config.refresh) refresh.setVisible(true);
+    else refresh.setVisible(false);
+    if (Lizzie.config.analyse) analyse.setVisible(true);
+    else analyse.setVisible(false);
+    if (Lizzie.config.tryPlay) tryPlay.setVisible(true);
+    else tryPlay.setVisible(false);
+    if (Lizzie.config.setMain) setMain.setVisible(true);
+    else setMain.setVisible(false);
+    if (Lizzie.config.backMain) backMain.setVisible(true);
+    else backMain.setVisible(false);
+
+    if (Lizzie.config.clearButton) clearButton.setVisible(true);
+    else clearButton.setVisible(false);
+    if (Lizzie.config.countButton) countButton.setVisible(true);
+    else countButton.setVisible(false);
+    if (Lizzie.config.heatMap) heatMap.setVisible(true);
+    else heatMap.setVisible(false);
+    if (Lizzie.config.badMoves) badMoves.setVisible(true);
+    else badMoves.setVisible(false);
+    if (Lizzie.config.move) move.setVisible(true);
+    else move.setVisible(false);
+    if (Lizzie.config.coords) coords.setVisible(true);
+    else coords.setVisible(false);
+  }
+
   public void reSetButtonLocation() {
-
+    setButtonVisiable();
     int w = Lizzie.frame.mainPanel.getWidth();
-
+    if (Lizzie.leelaz == null || !Lizzie.leelaz.isKatago) {
+      kataEstimate.setVisible(false);
+    } else if (Lizzie.config.kataEstimate) {
+      kataEstimate.setVisible(true);
+    }
     if (rightMode) {
       rightMove.setVisible(false);
-      if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
 
-        if (w < 1020) {
-          buttonPane.setBounds(38, 0, w - 19, 26);
-          leftMove.setVisible(true);
-          w = w - 19;
-        } else {
-          buttonPane.setBounds(19, 0, w - 19, 26);
-          leftMove.setVisible(false);
-        }
+      w = setLocation(w - 19);
 
-        liveButton.setBounds(w - 1030, 0, 40, 26);
-        kataEstimate.setVisible(true);
-        kataEstimate.setBounds(w - 991, 0, 60, 26);
-        batchOpen.setBounds(w - 932, 0, 60, 26);
-        openfile.setBounds(w - 873, 0, 40, 26);
-        savefile.setBounds(w - 834, 0, 40, 26);
-        komi.setBounds(w - 795, 0, 40, 26);
-        refresh.setBounds(w - 756, 0, 40, 26);
-        analyse.setBounds(w - 717, 0, 40, 26);
-        tryPlay.setBounds(w - 678, 0, 40, 26);
-        setMain.setBounds(w - 639, 0, 70, 26);
-        backMain.setBounds(w - 570, 0, 70, 26);
-
-        clearButton.setBounds(w - 501, 0, 60, 26);
-        countButton.setBounds(w - 442, 0, 60, 26);
-        heatMap.setBounds(w - 383, 0, 60, 26);
-
-        move.setBounds(w - 324, 0, 35, 26);
-        coords.setBounds(w - 290, 0, 35, 26);
-
-        txtMoveNumber.setBounds(w - 255, 1, 28, 24);
-        gotomove.setBounds(w - 227, 0, 35, 26);
-        firstButton.setBounds(w - 193, 0, 30, 26);
-        backward10.setBounds(w - 164, 0, 30, 26);
-        backward1.setBounds(w - 135, 0, 30, 26);
-        forward1.setBounds(w - 106, 0, 30, 26);
-        forward10.setBounds(w - 77, 0, 30, 26);
-        lastButton.setBounds(w - 48, 0, 30, 26);
-
+      if (w < 0) {
+        buttonPane.setBounds(38, 0, Lizzie.frame.mainPanel.getWidth(), 26);
+        leftMove.setVisible(true);
+        w = Lizzie.frame.mainPanel.getWidth();
+        setLocation(w - 38);
       } else {
-        if (w < 961) {
-          buttonPane.setBounds(38, 0, w - 19, 26);
-          leftMove.setVisible(true);
-          w = w - 19;
-        } else {
-          buttonPane.setBounds(19, 0, w - 19, 26);
-          leftMove.setVisible(false);
-        }
-        kataEstimate.setVisible(false);
-        liveButton.setBounds(w - 971, 0, 40, 26);
-        batchOpen.setBounds(w - 932, 0, 60, 26);
-        openfile.setBounds(w - 873, 0, 40, 26);
-        savefile.setBounds(w - 834, 0, 40, 26);
-        komi.setBounds(w - 795, 0, 40, 26);
-        refresh.setBounds(w - 756, 0, 40, 26);
-        analyse.setBounds(w - 717, 0, 40, 26);
-        tryPlay.setBounds(w - 678, 0, 40, 26);
-        setMain.setBounds(w - 639, 0, 70, 26);
-        backMain.setBounds(w - 570, 0, 70, 26);
-
-        clearButton.setBounds(w - 501, 0, 60, 26);
-        countButton.setBounds(w - 442, 0, 60, 26);
-        heatMap.setBounds(w - 383, 0, 60, 26);
-
-        move.setBounds(w - 324, 0, 35, 26);
-        coords.setBounds(w - 290, 0, 35, 26);
-
-        txtMoveNumber.setBounds(w - 255, 1, 28, 24);
-        gotomove.setBounds(w - 227, 0, 35, 26);
-        firstButton.setBounds(w - 193, 0, 30, 26);
-        backward10.setBounds(w - 164, 0, 30, 26);
-        backward1.setBounds(w - 135, 0, 30, 26);
-        forward1.setBounds(w - 106, 0, 30, 26);
-        forward10.setBounds(w - 77, 0, 30, 26);
-        lastButton.setBounds(w - 48, 0, 30, 26);
+        buttonPane.setBounds(19, 0, Lizzie.frame.mainPanel.getWidth(), 26);
+        leftMove.setVisible(false);
       }
+
     } else {
       leftMove.setVisible(false);
-      if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
 
-        if (w < 1020) {
-          buttonPane.setBounds(19, 0, w - 39, 26);
-          rightMove.setVisible(true);
-          rightMove.setBounds(w - 20, 0, 20, 26);
-        } else {
-          buttonPane.setBounds(19, 0, w - 19, 26);
-          rightMove.setVisible(false);
-        }
+      int x = 0;
+      if (liveButton.isVisible()) {
+        liveButton.setLocation(x, 0);
+        x = x + liveButton.getWidth() - 1;
+      }
+      if (kataEstimate.isVisible()) {
+        kataEstimate.setLocation(x, 0);
+        x = x + kataEstimate.getWidth() - 1;
+      }
+      if (batchOpen.isVisible()) {
+        batchOpen.setLocation(x, 0);
+        x = x + batchOpen.getWidth() - 1;
+      }
+      if (openfile.isVisible()) {
+        openfile.setLocation(x, 0);
+        x = x + openfile.getWidth() - 1;
+      }
+      if (savefile.isVisible()) {
+        savefile.setLocation(x, 0);
+        x = x + savefile.getWidth() - 1;
+      }
+      if (komi.isVisible()) {
+        komi.setLocation(x, 0);
+        x = x + komi.getWidth() - 1;
+      }
+      if (refresh.isVisible()) {
+        refresh.setLocation(x, 0);
+        x = x + refresh.getWidth() - 1;
+      }
+      if (analyse.isVisible()) {
+        analyse.setLocation(x, 0);
+        x = x + analyse.getWidth() - 1;
+      }
+      if (tryPlay.isVisible()) {
+        tryPlay.setLocation(x, 0);
+        x = x + tryPlay.getWidth() - 1;
+      }
+      if (setMain.isVisible()) {
+        setMain.setLocation(x, 0);
+        x = x + setMain.getWidth() - 1;
+      }
+      if (backMain.isVisible()) {
+        backMain.setLocation(x, 0);
+        x = x + backMain.getWidth() - 1;
+      }
 
-        liveButton.setBounds(0, 0, 40, 26);
-        kataEstimate.setVisible(true);
-        kataEstimate.setBounds(39, 0, 60, 26);
-        batchOpen.setBounds(98, 0, 60, 26);
-        openfile.setBounds(157, 0, 40, 26);
-        savefile.setBounds(196, 0, 40, 26);
-        komi.setBounds(235, 0, 40, 26);
-        refresh.setBounds(274, 0, 40, 26);
-        analyse.setBounds(313, 0, 40, 26);
-        tryPlay.setBounds(352, 0, 40, 26);
-        setMain.setBounds(391, 0, 70, 26);
-        backMain.setBounds(460, 0, 70, 26);
+      if (clearButton.isVisible()) {
+        clearButton.setLocation(x, 0);
+        x = x + clearButton.getWidth() - 1;
+      }
+      if (countButton.isVisible()) {
+        countButton.setLocation(x, 0);
+        x = x + countButton.getWidth() - 1;
+      }
+      if (heatMap.isVisible()) {
+        heatMap.setLocation(x, 0);
+        x = x + heatMap.getWidth() - 1;
+      }
+      if (badMoves.isVisible()) {
+        badMoves.setLocation(x, 0);
+        x = x + badMoves.getWidth() - 1;
+      }
 
-        clearButton.setBounds(529, 0, 60, 26);
-        countButton.setBounds(588, 0, 60, 26);
-        heatMap.setBounds(647, 0, 60, 26);
+      if (move.isVisible()) {
+        move.setLocation(x, 0);
+        x = x + move.getWidth() - 1;
+      }
+      if (coords.isVisible()) {
+        coords.setLocation(x, 0);
+        x = x + coords.getWidth() - 1;
+      }
 
-        move.setBounds(706, 0, 35, 26);
-        coords.setBounds(740, 0, 35, 26);
+      if (txtMoveNumber.isVisible()) {
+        txtMoveNumber.setLocation(x, 1);
+        x = x + txtMoveNumber.getWidth() - 1;
+      }
 
-        txtMoveNumber.setBounds(775, 1, 28, 24);
-        gotomove.setBounds(803, 0, 35, 26);
+      if (gotomove.isVisible()) {
+        gotomove.setLocation(x, 0);
+        x = x + gotomove.getWidth() - 1;
+      }
 
-        firstButton.setBounds(837, 0, 30, 26);
-        backward10.setBounds(866, 0, 30, 26);
-        backward1.setBounds(895, 0, 30, 26);
-        forward1.setBounds(924, 0, 30, 26);
-        forward10.setBounds(953, 0, 30, 26);
-        lastButton.setBounds(982, 0, 30, 26);
+      if (firstButton.isVisible()) {
+        firstButton.setLocation(x, 0);
+        x = x + firstButton.getWidth() - 1;
+      }
+      if (backward10.isVisible()) {
+        backward10.setLocation(x, 0);
+        x = x + backward10.getWidth() - 1;
+      }
+      if (backward1.isVisible()) {
+        backward1.setLocation(x, 0);
+        x = x + backward1.getWidth() - 1;
+      }
+      if (forward1.isVisible()) {
+        forward1.setLocation(x, 0);
+        x = x + forward1.getWidth() - 1;
+      }
+      if (forward10.isVisible()) {
+        forward10.setLocation(x, 0);
+        x = x + forward10.getWidth() - 1;
+      }
+      if (lastButton.isVisible()) {
+        lastButton.setLocation(x, 0);
+        x = x + lastButton.getWidth() - 1;
+      }
+
+      if (w < x + 9) {
+        buttonPane.setBounds(19, 0, w - 39, 26);
+        rightMove.setVisible(true);
+        rightMove.setBounds(w - 20, 0, 20, 26);
       } else {
-        if (w < 961) {
-          buttonPane.setBounds(19, 0, w - 39, 26);
-          rightMove.setVisible(true);
-          rightMove.setBounds(w - 20, 0, 20, 26);
-        } else {
-          buttonPane.setBounds(19, 0, w - 19, 26);
-          rightMove.setVisible(false);
-        }
-
-        kataEstimate.setVisible(false);
-        liveButton.setBounds(0, 0, 40, 26);
-        batchOpen.setBounds(39, 0, 60, 26);
-        openfile.setBounds(98, 0, 40, 26);
-        savefile.setBounds(137, 0, 40, 26);
-        komi.setBounds(176, 0, 40, 26);
-        refresh.setBounds(215, 0, 40, 26);
-        analyse.setBounds(254, 0, 40, 26);
-        tryPlay.setBounds(293, 0, 40, 26);
-        setMain.setBounds(332, 0, 70, 26);
-        backMain.setBounds(401, 0, 70, 26);
-
-        clearButton.setBounds(470, 0, 60, 26);
-        countButton.setBounds(529, 0, 60, 26);
-        heatMap.setBounds(588, 0, 60, 26);
-
-        move.setBounds(647, 0, 35, 26);
-        coords.setBounds(681, 0, 35, 26);
-
-        txtMoveNumber.setBounds(716, 1, 28, 24);
-        gotomove.setBounds(744, 0, 35, 26);
-
-        firstButton.setBounds(778, 0, 30, 26);
-        backward10.setBounds(807, 0, 30, 26);
-        backward1.setBounds(836, 0, 30, 26);
-        forward1.setBounds(865, 0, 30, 26);
-        forward10.setBounds(894, 0, 30, 26);
-        lastButton.setBounds(923, 0, 30, 26);
+        buttonPane.setBounds(19, 0, w - 19, 26);
+        rightMove.setVisible(false);
       }
     }
   }
