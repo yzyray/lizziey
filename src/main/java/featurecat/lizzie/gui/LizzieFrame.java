@@ -2641,7 +2641,7 @@ public class LizzieFrame extends JFrame {
       return;
     }
     StringBuilder sb = new StringBuilder(DEFAULT_TITLE);
-    sb.append(playerTitle);
+
     if (Lizzie.leelaz.isKatago) {
 
       double score = Lizzie.leelaz.scoreMean;
@@ -2665,12 +2665,12 @@ public class LizzieFrame extends JFrame {
               + String.format("%.1f", Lizzie.leelaz.getWinrateStats().maxWinrate)
               + " "
               + Lizzie.frame.getPlayoutsString(Lizzie.leelaz.getWinrateStats().totalPlayouts));
-
+    sb.append(visitsString);
+    sb.append(playerTitle);
     sb.append(resultTitle);
     if (Lizzie.leelaz.engineCommand().length() < 100)
       sb.append(" [" + Lizzie.leelaz.engineCommand() + "]");
     else sb.append(" [" + Lizzie.leelaz.engineCommand().substring(0, 100) + "...]");
-    sb.append(visitsString);
     setTitle(sb.toString());
   }
 
