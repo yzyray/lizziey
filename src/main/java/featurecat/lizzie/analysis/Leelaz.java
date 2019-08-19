@@ -3104,7 +3104,7 @@ public boolean startAutoAna=false;
 	 * available, win rate is negative and playouts is 0.
 	 */
 	public WinrateStats getWinrateStats() {
-		WinrateStats stats = new WinrateStats(-100, 0);
+		WinrateStats stats = new WinrateStats(0, 0);
 
 		if (!bestMoves.isEmpty()) {
 			// we should match the Leelaz UCTNode get_eval, which is a weighted average

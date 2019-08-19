@@ -2641,7 +2641,7 @@ public class LizzieFrame extends JFrame {
       return;
     }
     StringBuilder sb = new StringBuilder(DEFAULT_TITLE);
-
+    sb.append("[");
     if (Lizzie.leelaz.isKatago) {
 
       double score = Lizzie.leelaz.scoreMean;
@@ -2657,14 +2657,14 @@ public class LizzieFrame extends JFrame {
           score = -score;
         }
       }
-      sb.append(" " + String.format("%.1f", score));
+      sb.append(String.format("%.1f", score) + " ");
     }
     if (Lizzie.leelaz != null)
       sb.append(
-          " "
-              + String.format("%.1f", Lizzie.leelaz.getWinrateStats().maxWinrate)
+          String.format("%.1f", Lizzie.leelaz.getWinrateStats().maxWinrate)
               + " "
               + Lizzie.frame.getPlayoutsString(Lizzie.leelaz.getWinrateStats().totalPlayouts));
+    sb.append("]");
     sb.append(visitsString);
     sb.append(playerTitle);
     sb.append(resultTitle);
