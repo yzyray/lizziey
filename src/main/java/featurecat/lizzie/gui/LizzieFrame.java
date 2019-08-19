@@ -2657,8 +2657,15 @@ public class LizzieFrame extends JFrame {
           score = -score;
         }
       }
-      sb.append(" 目差: " + String.format("%.1f", score));
+      sb.append(" " + String.format("%.1f", score));
     }
+    if (Lizzie.leelaz != null)
+      sb.append(
+          " "
+              + String.format("%.1f", Lizzie.leelaz.getWinrateStats().maxWinrate)
+              + " "
+              + Lizzie.frame.getPlayoutsString(Lizzie.leelaz.getWinrateStats().totalPlayouts));
+
     sb.append(resultTitle);
     if (Lizzie.leelaz.engineCommand().length() < 100)
       sb.append(" [" + Lizzie.leelaz.engineCommand() + "]");
