@@ -999,8 +999,8 @@ public boolean startAutoAna=false;
 			
 			return;
 		} else {
-			String name = Lizzie.frame.Batchfiles[Lizzie.frame.BatchAnaNum].getName();
-			String path = Lizzie.frame.Batchfiles[Lizzie.frame.BatchAnaNum].getParent();
+			String name = Lizzie.frame.Batchfiles.get(Lizzie.frame.BatchAnaNum).getName();
+			String path = Lizzie.frame.Batchfiles.get(Lizzie.frame.BatchAnaNum).getParent();
 			String df = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());			
 			String prefix=name.substring(name.lastIndexOf("."));
 					      int num=prefix.length();		      
@@ -1020,13 +1020,13 @@ public boolean startAutoAna=false;
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if (Lizzie.frame.Batchfiles.length > (Lizzie.frame.BatchAnaNum + 1)) {
+			if (Lizzie.frame.Batchfiles.size() > (Lizzie.frame.BatchAnaNum + 1)) {
 				Timer timer = new Timer();
 				timer.schedule(new TimerTask() {
 					public void run() {
 						loadAutoBatchFile();		
 						if(Lizzie.board.getHistory().getEnd().getData().moveNumber==0)
-							{if (Lizzie.frame.Batchfiles.length > (Lizzie.frame.BatchAnaNum + 1))
+							{if (Lizzie.frame.Batchfiles.size() > (Lizzie.frame.BatchAnaNum + 1))
 									loadAutoBatchFile();		}						
 							Lizzie.leelaz.ponder();
 						this.cancel();
@@ -1152,14 +1152,15 @@ public boolean startAutoAna=false;
 			}
 			e.printStackTrace();
 		}
-		
-		
 	}
 
 	private void loadAutoBatchFile() {
 		// sendCommand("clear_board");
 		Lizzie.frame.BatchAnaNum = Lizzie.frame.BatchAnaNum + 1;
-		LizzieFrame.loadFile(Lizzie.frame.Batchfiles[Lizzie.frame.BatchAnaNum]);
+		if(Lizzie.frame.analysisTable!=null&&Lizzie.frame.analysisTable.frame.isVisible())
+			{Lizzie.frame.analysisTable.refreshTable();
+			}
+		LizzieFrame.loadFile(Lizzie.frame.Batchfiles.get(Lizzie.frame.BatchAnaNum));
 		try {
 			Lizzie.frame.toolbar.firstMove = Integer.parseInt(Lizzie.frame.toolbar.txtFirstAnaMove.getText());
 		} catch (Exception ex) {
@@ -1180,7 +1181,7 @@ public boolean startAutoAna=false;
 		if (Lizzie.frame.toolbar.isAutoAna) {
 
 			if (Lizzie.frame.toolbar.startAutoAna) {
-				if (!Lizzie.board.getHistory().getNext().isPresent()) {
+				if ((Lizzie.frame.toolbar.firstMove == -1||Lizzie.frame.toolbar.firstMove>=Lizzie.board.getHistory().getMainEnd().getData().moveNumber)&&!Lizzie.board.getHistory().getNext().isPresent()) {
 					Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
 					//togglePonder();
 					Lizzie.frame.toolbar.isAutoAna = false;
@@ -2589,11 +2590,7 @@ public boolean startAutoAna=false;
 
 	private void closeAutoAna() {
 		if (!isClosing) {
-			Lizzie.frame.toolbar.isAutoAna = false;
-			isClosing = true;
-			Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
-			togglePonder();
-
+			Lizzie.frame.toolbar.stopAutoAna();
 			Lizzie.frame.addInput();
 			if (!isSaving) {
 				isSaving = true;

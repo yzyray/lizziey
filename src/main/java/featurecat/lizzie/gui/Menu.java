@@ -1197,6 +1197,15 @@ public class Menu extends MenuBar {
     final JMenuItem batchana = new JMenuItem("批量分析(Alt+O)");
     batchana.addActionListener(new ItemListeneryzy());
     analyMenu.add(batchana);
+
+    final JMenuItem batchTable = new JMenuItem("批量分析进度表");
+    analyMenu.add(batchTable);
+    analyMenu.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.openAnalysisTable();
+          }
+        });
     analyMenu.addSeparator();
 
     final JMenuItem heatItem = new JMenuItem();

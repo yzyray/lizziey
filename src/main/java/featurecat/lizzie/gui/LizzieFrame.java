@@ -144,7 +144,7 @@ public class LizzieFrame extends JFrame {
 
   public boolean isBatchAna = false;
   public int BatchAnaNum = -1;
-  public File[] Batchfiles;
+  public ArrayList<File> Batchfiles;
   public int[] suggestionclick = outOfBoundCoordinate;
   public int[] clickbadmove = outOfBoundCoordinate;
   public int[] mouseOverCoordinate = outOfBoundCoordinate;
@@ -199,6 +199,7 @@ public class LizzieFrame extends JFrame {
   public Input input = new Input();
   public InputSubboard input2 = new InputSubboard();
   public boolean noInput = true;
+  public AnalysisTable analysisTable;
   //  private long startSyncTime = System.currentTimeMillis();
   //  private boolean isSyncing = false;
   //  private boolean firstIsSyncing = true;
@@ -356,7 +357,10 @@ public class LizzieFrame extends JFrame {
                 loadFile(file);
                 isBatchAna = true;
                 BatchAnaNum = 0;
-                Batchfiles = files;
+                Batchfiles = new ArrayList<File>();
+                for (int i = 0; i < files.length; i++) {
+                  Batchfiles.add(files[i]);
+                }
                 return true;
               } else if (filePaths.length > 1) {
                 File files[] = new File[filePaths.length];
@@ -365,7 +369,10 @@ public class LizzieFrame extends JFrame {
                 }
                 isBatchAna = true;
                 BatchAnaNum = 0;
-                Batchfiles = files;
+                Batchfiles = new ArrayList<File>();
+                for (int i = 0; i < files.length; i++) {
+                  Batchfiles.add(files[i]);
+                }
                 loadFile(files[0]);
                 // toolbar.chkAnaAutoSave.setSelected(true);
                 // toolbar.chkAnaAutoSave.setEnabled(false);
@@ -610,6 +617,23 @@ public class LizzieFrame extends JFrame {
   public static void openConfigDialog() {
     ConfigDialog configDialog = new ConfigDialog();
     configDialog.setVisible(true);
+  }
+
+  public void openAnalysisTable() {
+    //	  if(!isBatchAna||Batchfiles.size()==0)
+    //		  return;
+    if (analysisTable == null) {
+      analysisTable = new AnalysisTable();
+      analysisTable.frame.setVisible(true);
+    } else {
+      analysisTable.frame.setVisible(true);
+      analysisTable.refreshTable();
+    }
+  }
+
+  public void closeAnalysisTable() {
+    if (analysisTable == null || !analysisTable.frame.isVisible()) return;
+    analysisTable.frame.setVisible(false);
   }
 
   public void openBoardSync() {
@@ -963,15 +987,9 @@ public class LizzieFrame extends JFrame {
       Lizzie.leelaz.togglePonder();
     }
 
-    boolean onTop = false;
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     // JFrame frame = new JFrame();
     FileDialog fileDialog = new FileDialog(this, "选择棋谱");
-    if (this.isAlwaysOnTop()) {
-      this.setAlwaysOnTop(false);
-      fileDialog.setAlwaysOnTop(true);
-      onTop = true;
-    }
 
     fileDialog.setLocationRelativeTo(this);
     fileDialog.setDirectory(filesystem.getString("last-folder"));
@@ -980,8 +998,6 @@ public class LizzieFrame extends JFrame {
     fileDialog.setMultipleMode(false);
     fileDialog.setMode(0);
     fileDialog.setVisible(true);
-
-    if (onTop) this.setAlwaysOnTop(true);
     //
     //    FileNameExtensionFilter filter = new FileNameExtensionFilter("*.sgf or *.gib", "SGF",
     // "GIB");
@@ -1013,15 +1029,10 @@ public class LizzieFrame extends JFrame {
       ponder = true;
       Lizzie.leelaz.togglePonder();
     }
-    boolean onTop = false;
+
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
-    // JFrame frame = new JFrame();
+
     FileDialog fileDialog = new FileDialog(this, "选择棋谱");
-    if (this.isAlwaysOnTop()) {
-      this.setAlwaysOnTop(false);
-      fileDialog.setAlwaysOnTop(true);
-      onTop = true;
-    }
 
     fileDialog.setLocationRelativeTo(this);
     fileDialog.setDirectory(filesystem.getString("last-folder"));
@@ -1032,11 +1043,14 @@ public class LizzieFrame extends JFrame {
     fileDialog.setVisible(true);
 
     File[] files = fileDialog.getFiles();
-    if (onTop) this.setAlwaysOnTop(true);
+
     if (files.length > 0) {
       isBatchAna = true;
       BatchAnaNum = 0;
-      Batchfiles = files;
+      Batchfiles = new ArrayList<File>();
+      for (int i = 0; i < files.length; i++) {
+        Batchfiles.add(files[i]);
+      }
       loadFile(files[0]);
       //  toolbar.chkAnaAutoSave.setSelected(true);
       //  toolbar.chkAnaAutoSave.setEnabled(false);
@@ -1054,15 +1068,9 @@ public class LizzieFrame extends JFrame {
       ponder = true;
       Lizzie.leelaz.togglePonder();
     }
-    boolean onTop = false;
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     // JFrame frame = new JFrame();
     FileDialog fileDialog = new FileDialog(this, "选择棋谱");
-    if (this.isAlwaysOnTop()) {
-      this.setAlwaysOnTop(false);
-      fileDialog.setAlwaysOnTop(true);
-      onTop = true;
-    }
 
     fileDialog.setLocationRelativeTo(this);
     fileDialog.setDirectory(filesystem.getString("last-folder"));
@@ -1073,11 +1081,13 @@ public class LizzieFrame extends JFrame {
     fileDialog.setVisible(true);
 
     File[] files = fileDialog.getFiles();
-    if (onTop) this.setAlwaysOnTop(true);
     if (files.length > 0) {
       isBatchAna = true;
       BatchAnaNum = 0;
-      Batchfiles = files;
+      Batchfiles = new ArrayList<File>();
+      for (int i = 0; i < files.length; i++) {
+        Batchfiles.add(files[i]);
+      }
       loadFile(files[0]);
       // toolbar.chkAnaAutoSave.setSelected(true);
       // toolbar.chkAnaAutoSave.setEnabled(false);

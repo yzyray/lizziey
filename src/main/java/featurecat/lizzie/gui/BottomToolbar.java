@@ -170,6 +170,7 @@ public class BottomToolbar extends JPanel {
   JLabel lblAutoPlayFirstPlayouts;
 
   JPanel anaPanel;
+  JButton start;
   JPanel autoPlayPanel;
   JPanel enginePkPanel;
 
@@ -780,7 +781,7 @@ public class BottomToolbar extends JPanel {
     anaPanel = new JPanel();
     anaPanel.setLayout(null);
     add(anaPanel);
-    anaPanel.setBounds(0, 26, 350, 44);
+    anaPanel.setBounds(0, 26, 400, 44);
     anaPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
     autoPlayPanel = new JPanel();
@@ -802,16 +803,7 @@ public class BottomToolbar extends JPanel {
         new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
-            try {
-              firstMove = Integer.parseInt(txtFirstAnaMove.getText().replace(" ", ""));
-            } catch (Exception ex) {
-              firstMove = -1;
-            }
-            try {
-              lastMove = Integer.parseInt(txtLastAnaMove.getText().replace(" ", ""));
-            } catch (Exception ex) {
-              lastMove = -1;
-            }
+
             if (chkAutoAnalyse.isSelected()) {
               Lizzie.leelaz.nameCmd();
               Timer timer = new Timer();
@@ -825,9 +817,7 @@ public class BottomToolbar extends JPanel {
                   300);
 
             } else {
-              isAutoAna = false;
-              startAutoAna = false;
-              if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+              stopAutoAna();
             }
             setTxtUnfocuse();
             //            if (chkAutoAnalyse.isSelected()) {
@@ -932,7 +922,38 @@ public class BottomToolbar extends JPanel {
     lblAnaFirstPlayouts.setBounds(234, 0, 80, 20);
     txtAnaFirstPlayouts = new JTextField();
     anaPanel.add(txtAnaFirstPlayouts);
-    txtAnaFirstPlayouts.setBounds(298, 2, 45, 18);
+    txtAnaFirstPlayouts.setBounds(298, 2, 42, 18);
+
+    start = new JButton("开始");
+    start.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            if (isAutoAna) {
+              start.setText("开始");
+              stopAutoAna();
+            } else {
+              start.setText("终止");
+              startAutoAna();
+            }
+          }
+        });
+    JButton stopGo = new JButton("暂停");
+    stopGo.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.leelaz.togglePonder();
+            if (Lizzie.leelaz.isPondering()) stopGo.setText("暂停");
+            else stopGo.setText("继续");
+          }
+        });
+    start.setMargin(new Insets(0, 0, 0, 0));
+    stopGo.setMargin(new Insets(0, 0, 0, 0));
+    start.setFocusable(false);
+    stopGo.setFocusable(false);
+    start.setBounds(340, 1, 30, 20);
+    stopGo.setBounds(369, 1, 30, 20);
+    anaPanel.add(start);
+    anaPanel.add(stopGo);
 
     chkAnaAutoSave = new JCheckBox();
     anaPanel.add(chkAnaAutoSave);
@@ -982,11 +1003,23 @@ public class BottomToolbar extends JPanel {
 
     anaPanel.add(chkAnaTime);
     anaPanel.add(lbltxtAnaTime);
-    chkAnaTime.setBounds(230, 22, 20, 20);
-    lbltxtAnaTime.setBounds(250, 22, 80, 20);
+    chkAnaTime.setBounds(225, 22, 20, 20);
+    lbltxtAnaTime.setBounds(245, 22, 80, 20);
     txtAnaTime = new JTextField();
     anaPanel.add(txtAnaTime);
-    txtAnaTime.setBounds(310, 23, 33, 18);
+    txtAnaTime.setBounds(305, 23, 25, 18);
+
+    JButton analysisTable = new JButton("批量进度表");
+    analysisTable.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.openAnalysisTable();
+          }
+        });
+    analysisTable.setMargin(new Insets(0, 0, 0, 0));
+    analysisTable.setBounds(330, 22, 69, 20);
+    analysisTable.setFocusable(false);
+    anaPanel.add(analysisTable);
 
     chkAutoPlay = new JCheckBox();
     chkAutoPlay.addActionListener(
@@ -1738,6 +1771,16 @@ public class BottomToolbar extends JPanel {
     setGenmove();
   }
 
+  public void stopAutoAna() {
+    // TODO Auto-generated method stub
+    isAutoAna = false;
+    startAutoAna = false;
+    if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+    // Lizzie.frame.closeAnalysisTable();
+    chkAutoAnalyse.setSelected(false);
+    start.setText("开始");
+  }
+
   public void setGenmove() {
     if (isGenmove) {
       this.chkenginePkFirstPlayputs.setEnabled(false);
@@ -1766,23 +1809,23 @@ public class BottomToolbar extends JPanel {
         && (enginePkOrder != autoPlayOrder)) {
       if ((anaPanelOrder < enginePkOrder) && (anaPanelOrder < autoPlayOrder)) {
         if (enginePkOrder < autoPlayOrder) {
-          anaPanel.setBounds(0, 26, 350, 44);
-          autoPlayPanel.setBounds(950, 26, 495, 44);
-          enginePkPanel.setBounds(350, 26, 600, 44);
+          anaPanel.setBounds(0, 26, 400, 44);
+          autoPlayPanel.setBounds(1000, 26, 495, 44);
+          enginePkPanel.setBounds(400, 26, 600, 44);
         } else {
-          anaPanel.setBounds(0, 26, 350, 44);
-          autoPlayPanel.setBounds(350, 26, 495, 44);
-          enginePkPanel.setBounds(845, 26, 600, 44);
+          anaPanel.setBounds(0, 26, 400, 44);
+          autoPlayPanel.setBounds(400, 26, 495, 44);
+          enginePkPanel.setBounds(895, 26, 600, 44);
         }
       }
 
       if ((enginePkOrder < anaPanelOrder) && (enginePkOrder < autoPlayOrder)) {
         if (anaPanelOrder < autoPlayOrder) {
-          anaPanel.setBounds(600, 26, 350, 44);
-          autoPlayPanel.setBounds(950, 26, 495, 44);
+          anaPanel.setBounds(600, 26, 400, 44);
+          autoPlayPanel.setBounds(1000, 26, 495, 44);
           enginePkPanel.setBounds(0, 26, 600, 44);
         } else {
-          anaPanel.setBounds(1095, 26, 350, 44);
+          anaPanel.setBounds(1095, 26, 400, 44);
           autoPlayPanel.setBounds(600, 26, 495, 44);
           enginePkPanel.setBounds(0, 26, 600, 44);
         }
@@ -1790,11 +1833,11 @@ public class BottomToolbar extends JPanel {
 
       if ((autoPlayOrder < anaPanelOrder) && (autoPlayOrder < enginePkOrder)) {
         if (anaPanelOrder < enginePkOrder) {
-          anaPanel.setBounds(495, 26, 350, 44);
+          anaPanel.setBounds(495, 26, 400, 44);
           autoPlayPanel.setBounds(0, 26, 495, 44);
-          enginePkPanel.setBounds(845, 26, 600, 44);
+          enginePkPanel.setBounds(895, 26, 600, 44);
         } else {
-          anaPanel.setBounds(1095, 26, 350, 44);
+          anaPanel.setBounds(1095, 26, 400, 44);
           autoPlayPanel.setBounds(0, 26, 495, 44);
           enginePkPanel.setBounds(495, 26, 600, 44);
         }
@@ -2590,6 +2633,17 @@ public class BottomToolbar extends JPanel {
   }
 
   public void startAutoAna() {
+    try {
+      firstMove = Integer.parseInt(txtFirstAnaMove.getText().replace(" ", ""));
+    } catch (Exception ex) {
+      firstMove = -1;
+    }
+    try {
+      lastMove = Integer.parseInt(txtLastAnaMove.getText().replace(" ", ""));
+    } catch (Exception ex) {
+      lastMove = -1;
+    }
+    chkAutoAnalyse.setSelected(true);
     isAutoAna = true;
     Lizzie.leelaz.startAutoAna = true;
     startAutoAna = true;
@@ -2614,6 +2668,10 @@ public class BottomToolbar extends JPanel {
           Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
           Lizzie.frame.toolbarHeight);
     }
+    if (Lizzie.frame.isBatchAna
+        && Lizzie.frame.Batchfiles != null
+        && Lizzie.frame.Batchfiles.size() > 1) Lizzie.frame.openAnalysisTable();
+    start.setText("终止");
   }
 
   private void checkMove() {
