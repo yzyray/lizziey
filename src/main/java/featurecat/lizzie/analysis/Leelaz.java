@@ -629,6 +629,7 @@ public boolean startAutoAna=false;
 					} else {
 						this.bestMoves = parseInfo(line.substring(5));
 					}
+					//在这里降低刷新
 					Lizzie.frame.refresh();
 					// don't follow the maxAnalyzeTime rule if we are in analysis mode
 					if ((!Lizzie.frame.toolbar.isEnginePk || !Lizzie.frame.toolbar.isAutoAna)
