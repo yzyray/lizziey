@@ -131,7 +131,7 @@ public boolean startAutoAna=false;
 	 Message msg;
 	public boolean playNow=false;
 	private boolean isZen=false;
-
+private int refreshNumber=0;
 	// private boolean isEstimating=true;
 	/**
 	 * Initializes the leelaz process and starts reading output
@@ -628,8 +628,20 @@ public boolean startAutoAna=false;
 						}
 					} else {
 						this.bestMoves = parseInfo(line.substring(5));
+					}				
+					if(bestMoves.size()>35)
+					{
+						if(refreshNumber<(bestMoves.size()/35+1))
+						{
+							refreshNumber=refreshNumber+1;
+						}
+						else
+						{
+							refreshNumber=0;
+							Lizzie.frame.refresh();
+						}
 					}
-					//在这里降低刷新
+					else
 					Lizzie.frame.refresh();
 					// don't follow the maxAnalyzeTime rule if we are in analysis mode
 					if ((!Lizzie.frame.toolbar.isEnginePk || !Lizzie.frame.toolbar.isAutoAna)
