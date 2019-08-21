@@ -281,6 +281,7 @@ public class OnlineDialog extends JDialog {
       error(false);
       setVisible(false);
       try {
+        Lizzie.frame.setResult("");
         proc();
       } catch (IOException | URISyntaxException e) {
         e.printStackTrace();
@@ -2606,6 +2607,7 @@ public class OnlineDialog extends JDialog {
     if (type > 0) {
       setVisible(false);
       try {
+        Lizzie.frame.setResult("");
         proc();
       } catch (IOException | URISyntaxException e) {
         e.printStackTrace();
