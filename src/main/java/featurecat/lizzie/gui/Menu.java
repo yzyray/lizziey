@@ -2099,6 +2099,42 @@ public class Menu extends MenuBar {
           }
         });
 
+    final JCheckBoxMenuItem sound = new JCheckBoxMenuItem("播放落子声");
+    settings.add(sound);
+
+    sound.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.playSound = !Lizzie.config.playSound;
+            Lizzie.config.uiConfig.put("play-sound", Lizzie.config.playSound);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+
+    settings.addMenuListener(
+        new MenuListener() {
+
+          public void menuSelected(MenuEvent e) {
+            if (Lizzie.config.playSound) sound.setState(true);
+            else sound.setState(false);
+          }
+
+          @Override
+          public void menuDeselected(MenuEvent e) {
+            // TODO Auto-generated method stub
+          }
+
+          @Override
+          public void menuCanceled(MenuEvent e) {
+            // TODO Auto-generated method stub
+
+          }
+        });
+
     engineMenu = new JMenu("引擎 ", false);
     engineMenu.setText(" 引擎  ");
     engineMenu.setForeground(Color.BLACK);

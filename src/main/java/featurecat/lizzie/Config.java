@@ -70,6 +70,7 @@ public class Config {
   public int readBoardArg2 = 300;
   public boolean readBoardArg3 = true;
   public boolean alwaysSyncBoardStat = false;
+  public boolean playSound = true;
 
   public JSONObject config;
   public JSONObject leelazConfig;
@@ -347,6 +348,7 @@ public class Config {
     readBoardArg1 = uiConfig.optString("read-board-arg1", "0");
     readBoardArg2 = uiConfig.optInt("read-board-arg2", 300);
     readBoardArg3 = uiConfig.optBoolean("read-board-arg3", true);
+    playSound = uiConfig.optBoolean("play-sound", true);
     showEditbar = uiConfig.optBoolean("show-edit-bar", true);
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);

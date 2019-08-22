@@ -8,9 +8,16 @@ import featurecat.lizzie.rules.BoardData;
 import featurecat.lizzie.rules.BoardHistoryNode;
 import java.awt.Color;
 import java.awt.FontMetrics;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.JTextField;
 
 public class Utils {
@@ -158,5 +165,44 @@ public class Utils {
     } catch (NumberFormatException e) {
       return "";
     }
+  }
+
+  public static void playVoiceFile() throws Exception {
+    if (!Lizzie.config.playSound || Lizzie.frame.playingSoundNums >= 4) return;
+    Lizzie.frame.playingSoundNums = Lizzie.frame.playingSoundNums + 1;
+    File file = new File("");
+    String courseFile = "";
+    try {
+      courseFile = file.getCanonicalPath();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    String filePath = courseFile + "\\" + "Stone.wav";
+    if (!filePath.equals("")) {
+      // Get audio input stream
+      AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
+      // Get audio coding object
+      AudioFormat audioFormat = audioInputStream.getFormat();
+      // Set data entry
+      DataLine.Info dataLineInfo =
+          new DataLine.Info(SourceDataLine.class, audioFormat, AudioSystem.NOT_SPECIFIED);
+      SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
+      sourceDataLine.open(audioFormat);
+      sourceDataLine.start();
+      // Read from the data sent to the mixer input stream
+      int count;
+      byte tempBuffer[] = new byte[1024];
+      while ((count = audioInputStream.read(tempBuffer, 0, tempBuffer.length)) != -1) {
+        if (count > 0) {
+          sourceDataLine.write(tempBuffer, 0, count);
+        }
+      }
+      // Empty the data buffer, and close the input
+      sourceDataLine.drain();
+      sourceDataLine.close();
+    }
+    Lizzie.frame.playingSoundNums = Lizzie.frame.playingSoundNums - 1;
+    return;
   }
 }

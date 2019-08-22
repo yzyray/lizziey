@@ -2,6 +2,7 @@ package featurecat.lizzie.rules;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.Leelaz;
+import featurecat.lizzie.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -203,6 +204,20 @@ public class BoardHistoryNode {
     // Lizzie.board.movelistwr.add(mv);
     // }
     // }
+    Runnable runnable =
+        new Runnable() {
+          public void run() {
+            try {
+              Utils.playVoiceFile();
+            } catch (Exception e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+          }
+        };
+    Thread thread = new Thread(runnable);
+    thread.start();
+
     Optional<BoardHistoryNode> next = next(true);
     boolean nextDummy = next.isPresent() && next.get().isEndDummay();
     if (!newBranch && nextDummy) {

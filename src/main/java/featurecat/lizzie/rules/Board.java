@@ -7,6 +7,7 @@ import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.Leelaz;
 import featurecat.lizzie.analysis.LeelazListener;
 import featurecat.lizzie.analysis.MoveData;
+import featurecat.lizzie.util.Utils;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -1829,7 +1830,19 @@ public class Board implements LeelazListener {
   }
   /** Goes to the next coordinate, thread safe */
   public boolean nextMove() {
-
+    Runnable runnable =
+        new Runnable() {
+          public void run() {
+            try {
+              Utils.playVoiceFile();
+            } catch (Exception e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+          }
+        };
+    Thread thread = new Thread(runnable);
+    thread.start();
     clearAfterMove();
     synchronized (this) {
       updateWinrate();

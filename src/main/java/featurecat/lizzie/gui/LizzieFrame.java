@@ -224,6 +224,7 @@ public class LizzieFrame extends JFrame {
   public int bowserY = 0;
   public int bowserWidth = 1240;
   public int bowserHeight = 750;
+  public int playingSoundNums = 0;
 
   public boolean isTrying = false;
   ArrayList<Movelist> tryMoveList;
