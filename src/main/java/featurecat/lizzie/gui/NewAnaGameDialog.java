@@ -11,6 +11,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,10 +32,11 @@ public class NewAnaGameDialog extends JDialog {
   private JPanel contentPanel = new JPanel();
   private JPanel buttonBar = new JPanel();
   private JButton okButton = new JButton();
+  JComboBox engine;
 
   private JCheckBox checkBoxPlayerIsBlack;
-  private JTextField textFieldBlack;
-  private JTextField textFieldWhite;
+ // private JTextField textFieldBlack;
+  //private JTextField textFieldWhite;
   private JTextField textFieldKomi;
   private JTextField textFieldHandicap;
   private JTextField textTime;
@@ -82,14 +84,14 @@ public class NewAnaGameDialog extends JDialog {
   }
 
   private void initContentPanel() {
-    GridLayout gridLayout = new GridLayout(9, 2, 4, 4);
+    GridLayout gridLayout = new GridLayout(8, 2, 4, 4);
     contentPanel.setLayout(gridLayout);
 
     checkBoxPlayerIsBlack =
         new JCheckBox(resourceBundle.getString("NewGameDialog.PlayBlack"), true);
-    checkBoxPlayerIsBlack.addChangeListener(evt -> togglePlayerIsBlack());
-    textFieldWhite = new JTextField();
-    textFieldBlack = new JTextField();
+   // checkBoxPlayerIsBlack.addChangeListener(evt -> togglePlayerIsBlack());
+   // textFieldWhite = new JTextField();
+ //   textFieldBlack = new JTextField();
     textFieldKomi = new JFormattedTextField(FORMAT_KOMI);
     textFieldKomi.setText("7.5");
     textFieldHandicap = new JFormattedTextField(FORMAT_HANDICAP);
@@ -108,10 +110,16 @@ public class NewAnaGameDialog extends JDialog {
 
     contentPanel.add(checkBoxPlayerIsBlack);
     contentPanel.add(PLACEHOLDER);
-    contentPanel.add(new JLabel(resourceBundle.getString("NewGameDialog.Black")));
-    contentPanel.add(textFieldBlack);
-    contentPanel.add(new JLabel(resourceBundle.getString("NewGameDialog.White")));
-    contentPanel.add(textFieldWhite);
+   // contentPanel.add(new JLabel(resourceBundle.getString("NewGameDialog.Black")));
+ //   contentPanel.add(textFieldBlack);
+     engine=new JComboBox();
+    ArrayList<EngineData> engineData = Lizzie.engineManager.getEngineData();
+    for (int i = 0; i < engineData.size(); i++) {
+        EngineData engineDt = engineData.get(i);
+       engine.addItem(engineDt.name);       
+      }
+    contentPanel.add(new JLabel("选择引擎"));
+    contentPanel.add(engine);
     contentPanel.add(new JLabel(resourceBundle.getString("NewGameDialog.Komi")));
     contentPanel.add(textFieldKomi);
     contentPanel.add(new JLabel("让子(仅支持19路棋盘)"));
@@ -125,21 +133,21 @@ public class NewAnaGameDialog extends JDialog {
     contentPanel.add(new JLabel("AI每手首位计算量(选填)"));
     contentPanel.add(textFirstPlayouts);
 
-    togglePlayerIsBlack();
+   // togglePlayerIsBlack();
     textFieldKomi.setEnabled(true);
 
     dialogPane.add(contentPanel, BorderLayout.CENTER);
   }
 
-  private void togglePlayerIsBlack() {
-    JTextField humanTextField = playerIsBlack() ? textFieldBlack : textFieldWhite;
-    JTextField computerTextField = playerIsBlack() ? textFieldWhite : textFieldBlack;
-
-    humanTextField.setEnabled(true);
-    humanTextField.setText(GameInfo.DEFAULT_NAME_HUMAN_PLAYER);
-    computerTextField.setEnabled(false);
-    computerTextField.setText(Lizzie.leelaz.currentEnginename);
-  }
+//  private void togglePlayerIsBlack() {
+//    JTextField humanTextField = playerIsBlack() ? textFieldBlack : textFieldWhite;
+//    JTextField computerTextField = playerIsBlack() ? textFieldWhite : textFieldBlack;
+//
+//    humanTextField.setEnabled(true);
+//    humanTextField.setText(GameInfo.DEFAULT_NAME_HUMAN_PLAYER);
+//    computerTextField.setEnabled(false);
+//    computerTextField.setText(Lizzie.leelaz.currentEnginename);
+//  }
 
   private void modifyHandicap() {
     try {
@@ -173,9 +181,7 @@ public class NewAnaGameDialog extends JDialog {
 
   public void apply() {
     try {
-      // validate data
-      String playerBlack = textFieldBlack.getText();
-      String playerWhite = textFieldWhite.getText();
+    Lizzie.engineManager.switchEngine(engine.getSelectedIndex());
       double komi = 7.5;
       int handicap = 0;
       try {
@@ -185,8 +191,8 @@ public class NewAnaGameDialog extends JDialog {
       }
 
       // apply new values
-      gameInfo.setPlayerBlack(playerBlack);
-      gameInfo.setPlayerWhite(playerWhite);
+      gameInfo.setPlayerBlack(playerIsBlack()?"我":engine.getSelectedItem().toString());
+      gameInfo.setPlayerWhite(playerIsBlack()?engine.getSelectedItem().toString():"我");
       gameInfo.setKomi(komi);
       gameInfo.setHandicap(handicap);
       Lizzie.config.playponder = chkPonder.isSelected();
@@ -315,8 +321,8 @@ public class NewAnaGameDialog extends JDialog {
   public void setGameInfo(GameInfo gameInfo) {
     this.gameInfo = gameInfo;
 
-    textFieldBlack.setText(gameInfo.getPlayerBlack());
-    textFieldWhite.setText(gameInfo.getPlayerWhite());
+   // textFieldBlack.setText(gameInfo.getPlayerBlack());
+   // textFieldWhite.setText(gameInfo.getPlayerWhite());
     textFieldHandicap.setText(FORMAT_HANDICAP.format(gameInfo.getHandicap()));
     textFieldKomi.setText(FORMAT_KOMI.format(gameInfo.getKomi()));
 
