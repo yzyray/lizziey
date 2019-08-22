@@ -50,7 +50,7 @@ public class ReadBoard {
     // currentCmdNum = 0;
     cmdQueue = new ArrayDeque<>();
     //  gtpConsole = true;
-    engineCommand = "readboard.exe";
+    engineCommand = "readboard\\readboard.exe";
     startEngine(engineCommand, 0);
   }
 

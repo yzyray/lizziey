@@ -195,7 +195,7 @@ public class Utils {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    String filePath = courseFile + "\\" + "Stone.wav";
+    String filePath = courseFile + "\\sound\\Stone.wav";
     if (!filePath.equals("")) {
       // Get audio input stream
       AudioInputStream audioInputStream = null;
@@ -204,7 +204,7 @@ public class Utils {
       } catch (Exception e) {
         Message msg;
         msg = new Message();
-        msg.setMessage("找不到 Stone.wav 文件");
+        msg.setMessage("找不到sound\\Stone.wav 文件");
         msg.setVisible(true);
         Lizzie.config.playSound = false;
         Lizzie.config.uiConfig.put("play-sound", Lizzie.config.playSound);
@@ -245,7 +245,7 @@ public class Utils {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    String filePath = courseFile + "\\" + "deadStone.wav";
+    String filePath = courseFile + "sound\\deadStone.wav";
     if (!filePath.equals("")) {
       // Get audio input stream
       AudioInputStream audioInputStream = null;
@@ -254,7 +254,7 @@ public class Utils {
       } catch (Exception e) {
         Message msg;
         msg = new Message();
-        msg.setMessage("找不到 deadStone.wav 文件");
+        msg.setMessage("找不到 \\sound\\deadStone.wav 文件");
         msg.setVisible(true);
         Lizzie.config.playSound = false;
         Lizzie.config.uiConfig.put("play-sound", Lizzie.config.playSound);
