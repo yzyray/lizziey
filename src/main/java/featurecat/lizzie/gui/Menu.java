@@ -2079,6 +2079,22 @@ public class Menu extends MenuBar {
           }
         });
 
+    final JCheckBoxMenuItem sound = new JCheckBoxMenuItem("播放落子声");
+    settings.add(sound);
+
+    sound.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.playSound = !Lizzie.config.playSound;
+            Lizzie.config.uiConfig.put("play-sound", Lizzie.config.playSound);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+
     final JMenuItem theme = new JMenuItem("主题");
     settings.add(theme);
 
@@ -2096,22 +2112,6 @@ public class Menu extends MenuBar {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             Lizzie.frame.openConfigDialog2(1);
-          }
-        });
-
-    final JCheckBoxMenuItem sound = new JCheckBoxMenuItem("播放落子声");
-    settings.add(sound);
-
-    sound.addActionListener(
-        new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            Lizzie.config.playSound = !Lizzie.config.playSound;
-            Lizzie.config.uiConfig.put("play-sound", Lizzie.config.playSound);
-            try {
-              Lizzie.config.save();
-            } catch (IOException es) {
-              // TODO Auto-generated catch block
-            }
           }
         });
 

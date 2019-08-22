@@ -4,6 +4,7 @@ import static java.lang.Math.round;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.analysis.Leelaz;
+import featurecat.lizzie.gui.Message;
 import featurecat.lizzie.rules.BoardData;
 import featurecat.lizzie.rules.BoardHistoryNode;
 import java.awt.Color;
@@ -181,7 +182,22 @@ public class Utils {
     String filePath = courseFile + "\\" + "Stone.wav";
     if (!filePath.equals("")) {
       // Get audio input stream
-      AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
+      AudioInputStream audioInputStream = null;
+      try {
+        audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
+      } catch (Exception e) {
+        Message msg;
+        msg = new Message();
+        msg.setMessage("找不到 Stone.wav 文件");
+        msg.setVisible(true);
+        Lizzie.config.playSound = false;
+        Lizzie.config.uiConfig.put("play-sound", Lizzie.config.playSound);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+      }
       // Get audio coding object
       AudioFormat audioFormat = audioInputStream.getFormat();
       // Set data entry
