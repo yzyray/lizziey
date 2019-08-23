@@ -164,6 +164,9 @@ public class LizzieFrame extends JFrame {
   private int boardPos = 0;
   public String komi = "7.5";
   double winRate;
+  double score;
+  double scoreOnStatic;
+  double scoreStdev;
   // private ChangeMoveDialog2 ChangeMoveDialog2 = new ChangeMoveDialog2();
 
   // Save the player title
@@ -2030,9 +2033,11 @@ public class LizzieFrame extends JFrame {
               score = -score;
             }
           }
-          text = text + "目差:" + String.format("%.1f", score);
-          text = text + " 复杂度:" + String.format("%.1f", Lizzie.leelaz.scoreStdev) + " ";
+          scoreOnStatic = score;
+          scoreStdev = Lizzie.leelaz.scoreStdev;
         }
+        text = text + "目差:" + String.format("%.1f", scoreOnStatic);
+        text = text + " 复杂度:" + String.format("%.1f", scoreStdev) + " ";
       }
       if (Lizzie.leelaz.isColorEngine) {
         text = text + "阶段:" + Lizzie.leelaz.stage + " 贴目:" + Lizzie.leelaz.komi;
@@ -2052,11 +2057,20 @@ public class LizzieFrame extends JFrame {
         }
       }
       if (!isSavingImage || !Lizzie.leelaz.isKatago) {
-        text =
-            text
-                + " "
-                + resourceBundle.getString("LizzieFrame.display.lastMove")
-                + String.format(": %.1f%%", 100 - lastWR - curWR);
+        double wr = 100 - lastWR - curWR;
+        if (wr >= 0) {
+          text =
+              text
+                  + " "
+                  + resourceBundle.getString("LizzieFrame.display.lastMove")
+                  + String.format(": +%.1f%%", wr);
+        } else {
+          text =
+              text
+                  + " "
+                  + resourceBundle.getString("LizzieFrame.display.lastMove")
+                  + String.format(": %.1f%%", wr);
+        }
         drawString(
             g, posX, posY + height * 17 / 20, uiFont, Font.PLAIN, text, height / 4, width, 0);
       }
@@ -2668,19 +2682,14 @@ public class LizzieFrame extends JFrame {
               + Lizzie.frame.getPlayoutsString(Lizzie.leelaz.getWinrateStats().totalPlayouts));
     }
     if (Lizzie.leelaz.isKatago) {
-
-      double score = Lizzie.leelaz.scoreMean;
-      if (Lizzie.board.getHistory().isBlacksTurn()) {
-        if (Lizzie.config.showKataGoBoardScoreMean) {
-          score = score + Lizzie.board.getHistory().getGameInfo().getKomi();
+      double scoreC = Lizzie.board.getHistory().getCurrentHistoryNode().getData().scoreMean;
+      if (scoreC != 0) {
+        if (Lizzie.board.getHistory().isBlacksTurn()) {
+          scoreC = scoreC + Lizzie.board.getHistory().getGameInfo().getKomi();
+        } else {
+          scoreC = -scoreC + Lizzie.board.getHistory().getGameInfo().getKomi();
         }
-      } else {
-        if (Lizzie.config.showKataGoBoardScoreMean) {
-          score = score - Lizzie.board.getHistory().getGameInfo().getKomi();
-        }
-        if (Lizzie.config.kataGoScoreMeanAlwaysBlack) {
-          score = -score;
-        }
+        score = scoreC;
       }
       sb.append(" " + String.format("%.1f", score));
     }
