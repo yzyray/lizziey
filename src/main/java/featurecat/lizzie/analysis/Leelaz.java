@@ -9,6 +9,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+
 //import featurecat.lizzie.rules.Board;
 import featurecat.lizzie.rules.BoardData;
 import featurecat.lizzie.rules.Movelist;
@@ -1166,6 +1168,73 @@ public boolean startAutoAna=false;
 			e.printStackTrace();
 		}
 	}
+	
+	private void savePkTxt(String settingB,String settingW,String settingAll,String resultB,String resultW,String resultOther) {
+		File file = new File("");
+		String courseFile = "";
+		try {
+			courseFile = file.getCanonicalPath();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// 增加如果已命名,则保存在命名的文件夹下		
+		File autoSaveFile;
+		File autoSaveFile2 = null;	
+			autoSaveFile = new File(
+					courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.batchPkName + "\\" + "结果" + ".txt");
+			autoSaveFile2 = new File(
+					courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.SF + "\\"  + "结果" + ".txt");		
+
+		File fileParent = autoSaveFile.getParentFile();
+		if (!fileParent.exists()) {
+			fileParent.mkdirs();
+		}
+		try {	
+			 PrintWriter pfp= new PrintWriter(autoSaveFile);
+			 pfp.print(settingAll);
+			 pfp.println();
+			 pfp.print(settingB);
+			 pfp.println();
+			 pfp.print(settingW);
+			 pfp.println();
+			 pfp.print(resultB);
+			 pfp.println();
+			 pfp.print(resultW);
+			 pfp.println();
+			 pfp.print(resultOther);
+			 pfp.println();
+			 pfp.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			
+				try {
+					File fileParent2 = autoSaveFile2.getParentFile();
+					if (!fileParent2.exists()) {
+						fileParent2.mkdirs();
+					}
+					 PrintWriter pfp= new PrintWriter(autoSaveFile);
+					 pfp.print(settingAll);
+					 pfp.println();
+					 pfp.print(settingB);
+					 pfp.println();
+					 pfp.print(settingW);
+					 pfp.println();
+					 pfp.print(resultB);
+					 pfp.println();
+					 pfp.print(resultW);
+					 pfp.println();
+					 pfp.print(resultOther);
+					 pfp.println();
+					 pfp.close();		
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					}			
+			e.printStackTrace();
+		}
+	}
 
 	private void loadAutoBatchFile() {
 		// sendCommand("clear_board");
@@ -1589,7 +1658,58 @@ public boolean startAutoAna=false;
 		isResigning = true;
 		resigned = false;
 		Lizzie.gtpConsole.addLine(currentEnginename + " 认输");
+		String settingB="黑方设置:";
+		String settingW="白方设置:";
+		String settingAll="其他设置:";
+		if(Lizzie.frame.toolbar.isEnginePkBatch)
+	    {	if(Lizzie.frame.toolbar.chkenginePkTime.isSelected())
+		{
+			settingB=settingB + " 时间:"+Lizzie.frame.toolbar.txtenginePkTime.getText()+"S";
+			settingW=settingW + " 时间:"+Lizzie.frame.toolbar.txtenginePkTimeWhite.getText()+"S";
+			}
+		if(Lizzie.frame.toolbar.chkenginePkPlayouts.isSelected())
+		{
+			settingB=settingB + " 总计算量:"+Lizzie.frame.toolbar.txtenginePkPlayputs.getText();
+			settingW=settingW + " 总计算量:"+Lizzie.frame.toolbar.txtenginePkPlayputsWhite.getText();
+			}
+		if(Lizzie.frame.toolbar.chkenginePkFirstPlayputs.isSelected())
+		{
+			settingB=settingB + " 首位计算量:"+Lizzie.frame.toolbar.txtenginePkFirstPlayputs.getText();
+			settingW=settingW + " 首位计算量:"+Lizzie.frame.toolbar.txtenginePkFirstPlayputsWhite.getText();
+			}
+		
+		settingAll=settingAll+" 认输阈值:连续"+Lizzie.frame.toolbar.pkResignMoveCounts +"手,胜率低于"+Lizzie.frame.toolbar.pkResginWinrate+"%";
+		
+		if(Lizzie.frame.toolbar.chkenginePkBatch.isSelected())
+		{
+			settingAll=settingAll + " 多盘:"+Lizzie.frame.toolbar.txtenginePkBatch.getText();
+			}
+		if(Lizzie.frame.toolbar.chkenginePkContinue.isSelected())
+		{
+			settingAll=settingAll + " 续弈: 是";
+			}
+		else {
+			settingAll=settingAll + " 续弈: 否";
+		}
+		if (Lizzie.frame.toolbar.exChange) {
+			settingAll=settingAll + " 交换黑白: 是";
+		    }
+		else {
+			settingAll=settingAll + " 交换黑白: 否";
+		}
+		
+		 if (Lizzie.frame.toolbar.checkGameMaxMove) {
+			 settingAll=settingAll + " 最大手数: "+Lizzie.frame.toolbar.maxGanmeMove;
+		    }
+		    if (Lizzie.frame.toolbar.checkGameMinMove) {
+		    	settingAll=settingAll + " 最小手数: "+Lizzie.frame.toolbar.minGanmeMove;
+		    }		 
 
+		    if (Lizzie.frame.toolbar.isRandomMove) {
+		    	settingAll=settingAll + " 随机落子: 前"+Lizzie.frame.toolbar.randomMove +"手,胜率距首位"+Lizzie.frame.toolbar.randomDiffWinrate + "%";
+			  }
+		    
+	    }    
 		Lizzie.board.updateComment();
 		if(outOfMoveNum)
 		{
@@ -1601,12 +1721,20 @@ public boolean startAutoAna=false;
 			// df=df+"_白胜";
 				if(Lizzie.frame.toolbar.exChange) {
 			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
-				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
+			{	Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
+			if(currentEngineN==Lizzie.frame.toolbar.engineWhite)Lizzie.frame.toolbar.pkBlackWinAsWhite = Lizzie.frame.toolbar.pkBlackWinAsWhite+1;
+			if(currentEngineN==Lizzie.frame.toolbar.engineBlack)Lizzie.frame.toolbar.pkWhiteWinAsWhite = Lizzie.frame.toolbar.pkWhiteWinAsWhite+1;
+			}
 			else
-				Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+			{	Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+			if(currentEngineN==Lizzie.frame.toolbar.engineBlack)Lizzie.frame.toolbar.pkBlackWinAsWhite = Lizzie.frame.toolbar.pkBlackWinAsWhite+1;
+			if(currentEngineN==Lizzie.frame.toolbar.engineWhite)Lizzie.frame.toolbar.pkWhiteWinAsWhite = Lizzie.frame.toolbar.pkWhiteWinAsWhite+1;
+			}
 				}
 				else {
 					Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+					if(currentEngineN==Lizzie.frame.toolbar.engineBlack)Lizzie.frame.toolbar.pkBlackWinAsWhite = Lizzie.frame.toolbar.pkBlackWinAsWhite+1;
+					if(currentEngineN==Lizzie.frame.toolbar.engineWhite)Lizzie.frame.toolbar.pkWhiteWinAsWhite = Lizzie.frame.toolbar.pkWhiteWinAsWhite+1;
 				}
 			GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 			gameInfo.setResult("白("
@@ -1617,12 +1745,20 @@ public boolean startAutoAna=false;
 			// df=df+"_黑胜";
 			if(Lizzie.frame.toolbar.exChange) {
 			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
-				Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+				{Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+				if(currentEngineN==Lizzie.frame.toolbar.engineWhite)Lizzie.frame.toolbar.pkBlackWinAsBlack = Lizzie.frame.toolbar.pkBlackWinAsBlack+1;
+				if(currentEngineN==Lizzie.frame.toolbar.engineBlack)Lizzie.frame.toolbar.pkWhiteWinAsBlack = Lizzie.frame.toolbar.pkWhiteWinAsBlack+1;
+				}
 			else
-				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
+				{Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
+				if(currentEngineN==Lizzie.frame.toolbar.engineBlack)Lizzie.frame.toolbar.pkBlackWinAsBlack = Lizzie.frame.toolbar.pkBlackWinAsBlack+1;
+				if(currentEngineN==Lizzie.frame.toolbar.engineWhite)Lizzie.frame.toolbar.pkWhiteWinAsBlack = Lizzie.frame.toolbar.pkWhiteWinAsBlack+1;
+				}
 			}
 			else {
 				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
+				if(currentEngineN==Lizzie.frame.toolbar.engineBlack)Lizzie.frame.toolbar.pkBlackWinAsBlack = Lizzie.frame.toolbar.pkBlackWinAsBlack+1;
+				if(currentEngineN==Lizzie.frame.toolbar.engineWhite)Lizzie.frame.toolbar.pkWhiteWinAsBlack = Lizzie.frame.toolbar.pkWhiteWinAsBlack+1;
 			}
 			GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 			gameInfo.setResult("黑("
@@ -1641,6 +1777,38 @@ public boolean startAutoAna=false;
 			}
 		}
 		}
+		if(Lizzie.frame.toolbar.isEnginePkBatch)
+		{
+			String resultB="";
+			String resultW="";
+			String resultOther="";
+			if(Lizzie.frame.toolbar.exChange) {
+				if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
+				{ 
+				resultB=resultB+"黑("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename+")胜:"+Lizzie.frame.toolbar.pkBlackWins + "局";
+				resultB=resultB+" 执黑胜"+Lizzie.frame.toolbar.pkWhiteWinAsBlack+"局 执白胜"+Lizzie.frame.toolbar.pkWhiteWinAsWhite+"局";
+				resultW="白("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+")胜:"+Lizzie.frame.toolbar.pkWhiteWins + "局";
+				resultW=resultW+" 执黑胜"+Lizzie.frame.toolbar.pkBlackWinAsBlack+"局 执白胜"+Lizzie.frame.toolbar.pkBlackWinAsWhite+"局";
+				}
+				else
+				{	 resultB="黑("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+")胜:"+Lizzie.frame.toolbar.pkBlackWins + "局";
+				resultB=resultB+" 执黑胜"+Lizzie.frame.toolbar.pkWhiteWinAsBlack+"局 执白胜"+Lizzie.frame.toolbar.pkWhiteWinAsWhite+"局";
+				resultW=resultW+"白("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename+")胜:"+Lizzie.frame.toolbar.pkWhiteWins + "局";			
+				resultW=resultW+" 执黑胜"+Lizzie.frame.toolbar.pkBlackWinAsBlack+"局 执白胜"+Lizzie.frame.toolbar.pkBlackWinAsWhite+"局";
+				}
+					}
+					else {
+						resultB="黑("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+")胜:"+Lizzie.frame.toolbar.pkBlackWins + "局";
+						resultB=resultB+" 执黑胜"+Lizzie.frame.toolbar.pkWhiteWinAsBlack+"局 执白胜"+Lizzie.frame.toolbar.pkWhiteWinAsWhite+"局";		
+						resultW=resultW+"白("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename+")胜:"+Lizzie.frame.toolbar.pkWhiteWins + "局";
+						resultW=resultW+" 执黑胜"+Lizzie.frame.toolbar.pkBlackWinAsBlack+"局 执白胜"+Lizzie.frame.toolbar.pkBlackWinAsWhite+"局";
+					}
+			
+			
+			resultOther=resultOther+"双pass"+Lizzie.frame.toolbar.doublePassGame+"局";
+			resultOther=resultOther+" 超手数"+Lizzie.frame.toolbar.maxMoveGame+"局";
+			savePkTxt(settingB,settingW,settingAll,resultB,resultW,resultOther);
+			}
 		if (Lizzie.frame.toolbar.isEnginePkBatch) {
 			int EnginePkBatchNumber = 1;
 			try {
@@ -1894,7 +2062,7 @@ public boolean startAutoAna=false;
              msg.setVisible(true);
         	}
 		}
-
+		
 	}
 
 	private void savePassFile() {

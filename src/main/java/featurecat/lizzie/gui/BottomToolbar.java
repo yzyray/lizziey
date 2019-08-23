@@ -80,6 +80,12 @@ public class BottomToolbar extends JPanel {
   public boolean startAutoAna = false;
   public int pkBlackWins = 0;
   public int pkWhiteWins = 0;
+
+  public int pkBlackWinAsBlack = 0;
+  public int pkBlackWinAsWhite = 0;
+  public int pkWhiteWinAsBlack = 0;
+  public int pkWhiteWinAsWhite = 0;
+
   public int timeb = -1;
   public int timew = -1;
 
@@ -2707,6 +2713,10 @@ public class BottomToolbar extends JPanel {
   }
 
   public void startEnginePk() {
+    pkBlackWinAsBlack = 0;
+    pkBlackWinAsWhite = 0;
+    pkWhiteWinAsBlack = 0;
+    pkWhiteWinAsWhite = 0;
     if (Lizzie.engineManager.isEmpty) Lizzie.engineManager.isEmpty = false;
     timeb = -1;
     timew = -1;
