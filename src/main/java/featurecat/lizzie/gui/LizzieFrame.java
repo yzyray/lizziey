@@ -586,16 +586,20 @@ public class LizzieFrame extends JFrame {
   }
 
   public void openOnlineDialog() {
-    if (onlineDialog == null) onlineDialog = new OnlineDialog();
-    else {
+    if (onlineDialog == null) {
+      onlineDialog = new OnlineDialog();
+      onlineDialog.setVisible(true);
+    } else {
       try {
         onlineDialog.stopSync();
+        onlineDialog.paste();
+        onlineDialog.setVisible(true);
       } catch (Exception ex) {
       }
     }
     //  onlineDialog = new OnlineDialog();
     // onlineDialog.applyChangeWeb("https://home.yikeweiqi.com/#/live/room/20595/1/18748590");
-    onlineDialog.setVisible(true);
+
   }
 
   //  public void openEditToolbar() {
@@ -3577,7 +3581,9 @@ public class LizzieFrame extends JFrame {
           @Override
           public void actionPerformed(ActionEvent e) {
             // TBD
-            if (onlineDialog != null) onlineDialog.stopSync();
+            if (onlineDialog != null) {
+              onlineDialog.stopSync();
+            }
           }
         });
     JToolBar toolBar = new JToolBar("地址栏");

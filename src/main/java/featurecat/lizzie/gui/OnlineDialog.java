@@ -246,6 +246,10 @@ public class OnlineDialog extends JDialog {
     txtUrl.selectAll();
 
     setLocationRelativeTo(getOwner());
+    paste();
+  }
+
+  public void paste() {
     String pastContent =
         Optional.ofNullable(Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null))
             .filter(cc -> cc.isDataFlavorSupported(DataFlavor.stringFlavor))
@@ -449,7 +453,7 @@ public class OnlineDialog extends JDialog {
         refresh("(?s).*?(\\\"Content\\\":\\\")(.+)(\\\",\\\")(?s).*");
         break;
       case 3:
-        req();
+        reqNoClear();
         break;
       case 4:
         req0();
@@ -602,7 +606,7 @@ public class OnlineDialog extends JDialog {
           }
         });
 
-    if (needSchedule) {
+    if (needSchedule && !isStoped) {
       timer = new Timer();
       timer.schedule(
           new TimerTask() {
@@ -698,6 +702,52 @@ public class OnlineDialog extends JDialog {
     }
   }
 
+  private void reqNoClear() throws URISyntaxException {
+    seqs = 0;
+    URI uri = new URI(new String(type == 3 ? b : b2));
+
+    if (client != null && client.isOpen()) {
+      client.close();
+    }
+    client =
+        new WebSocketClient(uri) {
+
+          public void onOpen(ServerHandshake arg0) {
+            byte[] req1 =
+                req1(
+                    90,
+                    ++seqs,
+                    23406,
+                    Utils.intOfMap(queryMap, "gameid"),
+                    Utils.intOfMap(queryMap, "showtype"),
+                    Utils.intOfMap(queryMap, "showid"),
+                    Utils.intOfMap(queryMap, "createtime"));
+            client.send(req1);
+          }
+
+          public void onMessage(String arg0) {
+            // System.out.println("socket message" + arg0);
+          }
+
+          public void onError(Exception arg0) {
+            // arg0.printStackTrace();
+            // System.out.println("socket error");
+          }
+
+          public void onClose(int arg0, String arg1, boolean arg2) {
+            // System.out.println("socket close:" + arg0 + ":" + arg1 + ":" + arg2);
+          }
+
+          public void onMessage(ByteBuffer bytes) {
+            // System.out.println("socket message ByteBuffer" +
+            // byteArrayToHexString(bytes.array()));
+            if (!isStoped) parseReq(bytes);
+          }
+        };
+
+    client.connect();
+  }
+
   private void req() throws URISyntaxException {
     seqs = 0;
     URI uri = new URI(new String(type == 3 ? b : b2));
@@ -738,7 +788,7 @@ public class OnlineDialog extends JDialog {
           public void onMessage(ByteBuffer bytes) {
             // System.out.println("socket message ByteBuffer" +
             // byteArrayToHexString(bytes.array()));
-            parseReq(bytes);
+            if (!isStoped) parseReq(bytes);
           }
         };
 
@@ -2584,7 +2634,7 @@ public class OnlineDialog extends JDialog {
     //    }
     txtUrl.setText("");
     checkUrl();
-    type = 1;
+    //  type = 1;
     try {
       procNoClear();
     } catch (IOException e) {
@@ -2600,6 +2650,7 @@ public class OnlineDialog extends JDialog {
 
   public void applyChangeWeb(String url) {
     //
+    isStoped = false;
     txtUrl.setText(url);
     type = checkUrl();
     Lizzie.frame.urlSgf = true;
