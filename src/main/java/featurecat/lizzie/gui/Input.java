@@ -724,7 +724,16 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           } catch (IOException es) {
             // TODO Auto-generated catch block
           }
-        } else Lizzie.frame.countstones();
+        } else {
+          if (Lizzie.frame.iscounting) {
+            Lizzie.frame.boardRenderer.removecountblock();
+            Lizzie.frame.repaint();
+            Lizzie.frame.iscounting = false;
+            Lizzie.countResults.setVisible(false);
+          } else {
+            Lizzie.frame.countstones();
+          }
+        }
         // if (!Lizzie.board.getHistory().getNext().isPresent()) {
         // Lizzie.board.setScoreMode(!Lizzie.board.inScoreMode());
         // }
@@ -823,13 +832,13 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       wheelWhen = e.getWhen();
       if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
       if (e.getWheelRotation() > 0) {
-        if (Lizzie.frame.isMouseOver) {
+        if (Lizzie.frame.boardRenderer.isShowingBranch()) {
           Lizzie.frame.doBranch(1);
         } else {
           redo();
         }
       } else if (e.getWheelRotation() < 0) {
-        if (Lizzie.frame.isMouseOver) {
+        if (Lizzie.frame.boardRenderer.isShowingBranch()) {
           Lizzie.frame.doBranch(-1);
         } else {
           undo();

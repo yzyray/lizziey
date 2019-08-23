@@ -2451,11 +2451,11 @@ public class LizzieFrame extends JFrame {
     coords.ifPresent(
         c -> {
           mouseOverCoordinate = c;
-          if (Lizzie.frame != null) {
-            Lizzie.frame.isMouseOver = boardRenderer.isShowingBranch();
-          }
           isReplayVariation = false;
         });
+    if (Lizzie.frame != null) {
+      Lizzie.frame.isMouseOver = boardRenderer.isShowingBranch();
+    }
     if (!isMouseOver) {
       clearMoved();
       repaint();
