@@ -2,6 +2,7 @@ package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.gui.CountResults;
+import featurecat.lizzie.gui.Message;
 import featurecat.lizzie.rules.BoardHistoryNode;
 import featurecat.lizzie.rules.Stone;
 import java.io.BufferedInputStream;
@@ -14,7 +15,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.swing.JOptionPane;
 
 public class ReadBoard {
   public Process process;
@@ -72,13 +72,10 @@ public class ReadBoard {
       process = processBuilder.start();
     } catch (IOException e) {
       // TODO Auto-generated catch block
-      boolean onTop = false;
-      if (Lizzie.frame.isAlwaysOnTop()) {
-        Lizzie.frame.setAlwaysOnTop(false);
-        onTop = true;
-      }
-      JOptionPane.showMessageDialog(null, "加载棋盘识别工具失败");
-      if (onTop) Lizzie.frame.setAlwaysOnTop(true);
+      Message msg = new Message();
+      msg.setMessage("加载棋盘识别工具失败,请检查目录下readboard文件夹文件夹内dm.dll,dmc.dll,readboard.exe等文件是否存在");
+      msg.setVisible(true);
+
       return;
     }
     initializeStreams();

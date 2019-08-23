@@ -2,6 +2,7 @@ package featurecat.lizzie.analysis;
 
 import featurecat.lizzie.Lizzie;
 import featurecat.lizzie.gui.CountResults;
+import featurecat.lizzie.gui.Message;
 import featurecat.lizzie.rules.Movelist;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -10,7 +11,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.swing.JOptionPane;
 
 public class YaZenGtp {
   public Process process;
@@ -59,14 +59,9 @@ public class YaZenGtp {
       process = processBuilder.start();
     } catch (IOException e) {
       // TODO Auto-generated catch block
-      boolean onTop = false;
-      if (Lizzie.frame.isAlwaysOnTop()) {
-        Lizzie.frame.setAlwaysOnTop(false);
-        onTop = true;
-      }
-      JOptionPane.showMessageDialog(null, "点目失败,请确认Lizzie目录下是否有YAZenGtop.exe和Zen.dll");
-      if (onTop) Lizzie.frame.setAlwaysOnTop(true);
-      return;
+      Message msg = new Message();
+      msg.setMessage("点目失败,请确认Lizzie目录下是否有YAZenGtop.exe和Zen.dll");
+      msg.setVisible(true);
     }
     initializeStreams();
 
