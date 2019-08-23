@@ -311,7 +311,7 @@ public class Utils {
       } catch (Exception e) {
         Message msg;
         msg = new Message();
-        msg.setMessage("找不到 sound\\deadStone.wav 文件");
+        msg.setMessage("找不到 sound\\deadStoneMore.wav 文件");
         msg.setVisible(true);
         Lizzie.config.playSound = false;
         Lizzie.config.uiConfig.put("play-sound", Lizzie.config.playSound);
