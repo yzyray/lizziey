@@ -163,6 +163,7 @@ public class LizzieFrame extends JFrame {
   private RightClickMenu2 RightClickMenu2 = new RightClickMenu2();
   private int boardPos = 0;
   public String komi = "7.5";
+  double winRate;
   // private ChangeMoveDialog2 ChangeMoveDialog2 = new ChangeMoveDialog2();
 
   // Save the player title
@@ -2655,8 +2656,17 @@ public class LizzieFrame extends JFrame {
     if (isTrying) {
       return;
     }
-    StringBuilder sb = new StringBuilder(DEFAULT_TITLE);
+    StringBuilder sb = new StringBuilder();
     sb.append("[");
+    if (Lizzie.leelaz != null) {
+      double winRateC = Lizzie.leelaz.getWinrateStats().maxWinrate;
+      if (!Lizzie.board.getHistory().isBlacksTurn()) winRateC = 100 - winRateC;
+      winRate = winRateC > -100 && winRateC < 100 ? winRateC : winRate;
+      sb.append(
+          String.format("%.1f", winRate)
+              + " "
+              + Lizzie.frame.getPlayoutsString(Lizzie.leelaz.getWinrateStats().totalPlayouts));
+    }
     if (Lizzie.leelaz.isKatago) {
 
       double score = Lizzie.leelaz.scoreMean;
@@ -2672,14 +2682,10 @@ public class LizzieFrame extends JFrame {
           score = -score;
         }
       }
-      sb.append(String.format("%.1f", score) + " ");
+      sb.append(" " + String.format("%.1f", score));
     }
-    if (Lizzie.leelaz != null)
-      sb.append(
-          String.format("%.1f", Lizzie.leelaz.getWinrateStats().maxWinrate)
-              + " "
-              + Lizzie.frame.getPlayoutsString(Lizzie.leelaz.getWinrateStats().totalPlayouts));
     sb.append("]");
+    sb.append(DEFAULT_TITLE);
     sb.append(visitsString);
     sb.append(playerTitle);
     sb.append(resultTitle);
