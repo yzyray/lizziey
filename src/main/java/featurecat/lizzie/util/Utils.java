@@ -173,11 +173,17 @@ public class Utils {
     Lizzie.frame.playingSoundNums = Lizzie.frame.playingSoundNums + 1;
     BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
     if (node.previous().isPresent()) {
-      if (node.getData().blackCaptures > node.previous().get().getData().blackCaptures
-          || node.getData().whiteCaptures > node.previous().get().getData().whiteCaptures)
-        playVoiceDeadStone();
-      else {
-        playVoiceStone();
+      if (node.getData().blackCaptures > node.previous().get().getData().blackCaptures) {
+        if (node.getData().blackCaptures - node.previous().get().getData().blackCaptures >= 3)
+          playVoiceDeadStoneMore();
+        else playVoiceDeadStone();
+      } else {
+        if (node.getData().whiteCaptures > node.previous().get().getData().whiteCaptures) {
+          if (node.getData().whiteCaptures - node.previous().get().getData().whiteCaptures >= 3)
+            playVoiceDeadStoneMore();
+          else playVoiceDeadStone();
+
+        } else playVoiceStone();
       }
     } else {
       playVoiceStone();
@@ -246,6 +252,57 @@ public class Utils {
       e.printStackTrace();
     }
     String filePath = courseFile + "\\sound\\deadStone.wav";
+    if (!filePath.equals("")) {
+      // Get audio input stream
+      AudioInputStream audioInputStream = null;
+      try {
+        audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
+      } catch (Exception e) {
+        Message msg;
+        msg = new Message();
+        msg.setMessage("找不到 sound\\deadStone.wav 文件");
+        msg.setVisible(true);
+        Lizzie.config.playSound = false;
+        Lizzie.config.uiConfig.put("play-sound", Lizzie.config.playSound);
+        try {
+          Lizzie.config.save();
+        } catch (IOException es) {
+          // TODO Auto-generated catch block
+        }
+      }
+      // Get audio coding object
+      AudioFormat audioFormat = audioInputStream.getFormat();
+      // Set data entry
+      DataLine.Info dataLineInfo =
+          new DataLine.Info(SourceDataLine.class, audioFormat, AudioSystem.NOT_SPECIFIED);
+      SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
+      sourceDataLine.open(audioFormat);
+      sourceDataLine.start();
+      // Read from the data sent to the mixer input stream
+      int count;
+      byte tempBuffer[] = new byte[1024];
+      while ((count = audioInputStream.read(tempBuffer, 0, tempBuffer.length)) != -1) {
+        if (count > 0) {
+          sourceDataLine.write(tempBuffer, 0, count);
+        }
+      }
+      // Empty the data buffer, and close the input
+      sourceDataLine.drain();
+      sourceDataLine.close();
+    }
+    return;
+  }
+
+  private static void playVoiceDeadStoneMore() throws Exception {
+    File file = new File("");
+    String courseFile = "";
+    try {
+      courseFile = file.getCanonicalPath();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    String filePath = courseFile + "\\sound\\deadStoneMore.wav";
     if (!filePath.equals("")) {
       // Get audio input stream
       AudioInputStream audioInputStream = null;

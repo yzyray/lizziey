@@ -1239,9 +1239,13 @@ public boolean startAutoAna=false;
 	private void loadAutoBatchFile() {
 		// sendCommand("clear_board");
 		Lizzie.frame.BatchAnaNum = Lizzie.frame.BatchAnaNum + 1;
+		try {
 		if(Lizzie.frame.analysisTable!=null&&Lizzie.frame.analysisTable.frame.isVisible())
 			{Lizzie.frame.analysisTable.refreshTable();
 			}
+		}
+		catch (Exception ex)
+		{}
 		LizzieFrame.loadFile(Lizzie.frame.Batchfiles.get(Lizzie.frame.BatchAnaNum));
 		try {
 			Lizzie.frame.toolbar.firstMove = Integer.parseInt(Lizzie.frame.toolbar.txtFirstAnaMove.getText());
