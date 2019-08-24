@@ -2068,7 +2068,7 @@ public class Menu extends MenuBar {
           }
         });
 
-    live.addMenuListener(
+    toolbar.addMenuListener(
         new MenuListener() {
 
           public void menuSelected(MenuEvent e) {
@@ -2078,18 +2078,6 @@ public class Menu extends MenuBar {
             else bigtoolMenu.setState(false);
             if (Lizzie.frame.toolbarHeight == 0) closeTool.setState(true);
             else closeTool.setState(false);
-            if (Lizzie.config.liveButton) liveButton.setState(true);
-            else liveButton.setState(false);
-            if (Lizzie.config.kataEstimate) kataEstimateButton.setState(true);
-            else kataEstimateButton.setState(false);
-            if (Lizzie.config.batchOpen) batchOpen.setState(true);
-            else batchOpen.setState(false);
-            if (Lizzie.config.openfile) openfile.setState(true);
-            else openfile.setState(false);
-            if (Lizzie.config.savefile) savefile.setState(true);
-            else savefile.setState(false);
-            if (Lizzie.config.komi) komi.setState(true);
-            else komi.setState(false);
           }
 
           @Override
