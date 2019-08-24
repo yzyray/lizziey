@@ -153,6 +153,7 @@ public class YaZenGtp {
                   blackpoint,
                   whitepoint);
               results.setVisible(true);
+              Lizzie.frame.setVisible(true);
               firstcount = false;
               numberofcount = 0;
             } else {
