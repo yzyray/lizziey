@@ -640,7 +640,8 @@ public class Board implements LeelazListener {
   }
 
   public void setmovelist(ArrayList<Movelist> movelist) {
-
+    boolean oriPlaySound = Lizzie.config.playSound;
+    Lizzie.config.playSound = false;
     while (previousMove()) ;
     if (Lizzie.board.hasStartStone) {
       int lenth2 = startStonelist.size();
@@ -672,9 +673,8 @@ public class Board implements LeelazListener {
         passinsert(move.isblack ? Stone.BLACK : Stone.WHITE, false);
       }
     }
-
+    Lizzie.config.playSound = oriPlaySound;
     // placeinsert(int x, int y, Stone color);
-
   }
 
   public ArrayList<Movelist> getallmovelist() {
