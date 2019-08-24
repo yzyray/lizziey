@@ -756,7 +756,7 @@ public class Config {
     ui.put("handicap-instead-of-winrate", false);
     ui.put("board-size", 19);
     ui.put("show-dynamic-komi", false);
-    ui.put("min-playout-ratio-for-stats", 0.0);
+    // ui.put("min-playout-ratio-for-stats", 0.0);
     ui.put("theme", "default");
     ui.put("only-last-move-number", 1);
     ui.put("new-move-number-in-branch", true);
