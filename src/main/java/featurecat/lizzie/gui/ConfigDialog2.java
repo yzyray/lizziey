@@ -165,6 +165,7 @@ public class ConfigDialog2 extends JDialog {
   public JCheckBox chkShowVariationGraph;
   public JCheckBox chkShowComment;
   public JCheckBox chkShowSubBoard;
+  public JCheckBox chkShowStatus;
   public JCheckBox chkShowCoordinates;
   public JRadioButton rdoShowMoveNumberNo;
   public JRadioButton rdoShowMoveNumberAll;
@@ -1009,6 +1010,22 @@ public class ConfigDialog2 extends JDialog {
     chkShowSubBoard.setBounds(170, 116, 57, 23);
     uiTab.add(chkShowSubBoard);
 
+    JLabel lblShowStatus = new JLabel("显示左下角状态");
+    lblShowStatus.setBounds(372, 119, 157, 16);
+    uiTab.add(lblShowStatus);
+    chkShowStatus = new JCheckBox("");
+    chkShowStatus.addChangeListener(
+        new ChangeListener() {
+          public void stateChanged(ChangeEvent e) {
+            if (chkShowStatus.isSelected() != Lizzie.config.showStatus) {
+              Lizzie.config.toggleShowStatus();
+              Lizzie.frame.refresh();
+            }
+          }
+        });
+    chkShowStatus.setBounds(536, 116, 57, 23);
+    uiTab.add(chkShowStatus);
+
     JLabel lblShowCoordinates =
         new JLabel(resourceBundle.getString("LizzieConfig.title.showCoordinates"));
     lblShowCoordinates.setBounds(6, 146, 157, 16);
@@ -1242,6 +1259,7 @@ public class ConfigDialog2 extends JDialog {
     chkShowVariationGraph.setSelected(Lizzie.config.showVariationGraph);
     chkShowComment.setSelected(Lizzie.config.showComment);
     chkShowSubBoard.setSelected(Lizzie.config.showSubBoard);
+    chkShowStatus.setSelected(Lizzie.config.showStatus);
     chkShowCoordinates.setSelected(Lizzie.config.showCoordinates);
     chkShowBlunderBar.setSelected(Lizzie.config.showBlunderBar);
     // chkDynamicWinrateGraphWidth.setSelected(Lizzie.config.dynamicWinrateGraphWidth);
@@ -2616,6 +2634,7 @@ public class ConfigDialog2 extends JDialog {
       Lizzie.config.showVariationGraph = chkShowVariationGraph.isSelected();
       Lizzie.config.showComment = chkShowComment.isSelected();
       Lizzie.config.showSubBoard = chkShowSubBoard.isSelected();
+      Lizzie.config.showStatus = chkShowStatus.isSelected();
       Lizzie.config.showCoordinates = chkShowCoordinates.isSelected();
       Lizzie.config.uiConfig.putOpt("show-captured", Lizzie.config.showCaptured);
       Lizzie.config.uiConfig.putOpt("show-winrate", Lizzie.config.showWinrate);
