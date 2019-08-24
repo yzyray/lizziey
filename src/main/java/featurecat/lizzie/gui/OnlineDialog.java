@@ -415,13 +415,13 @@ public class OnlineDialog extends JDialog {
     switch (type) {
       case 1:
       case 5:
-        req2();
+        req2(true);
         break;
       case 2:
         refresh("(?s).*?(\\\"Content\\\":\\\")(.+)(\\\",\\\")(?s).*");
         break;
       case 3:
-        req();
+        req(true);
         break;
       case 4:
         req0();
@@ -447,13 +447,13 @@ public class OnlineDialog extends JDialog {
     history = null;
     switch (type) {
       case 1:
-        req2();
+        req2(false);
         break;
       case 2:
         refresh("(?s).*?(\\\"Content\\\":\\\")(.+)(\\\",\\\")(?s).*");
         break;
       case 3:
-        reqNoClear();
+        req(false);
         break;
       case 4:
         req0();
@@ -677,7 +677,7 @@ public class OnlineDialog extends JDialog {
                 queryMap.put("createtime", list);
 
                 try {
-                  req();
+                  req(true);
                 } catch (URISyntaxException e) {
                   e.printStackTrace();
                 }
@@ -696,63 +696,17 @@ public class OnlineDialog extends JDialog {
 
   private void reReq() {
     try {
-      req();
+      req(true);
     } catch (URISyntaxException e) {
       e.printStackTrace();
     }
   }
 
-  private void reqNoClear() throws URISyntaxException {
+  private void req(boolean clear) throws URISyntaxException {
     seqs = 0;
     URI uri = new URI(new String(type == 3 ? b : b2));
 
-    if (client != null && client.isOpen()) {
-      client.close();
-    }
-    client =
-        new WebSocketClient(uri) {
-
-          public void onOpen(ServerHandshake arg0) {
-            byte[] req1 =
-                req1(
-                    90,
-                    ++seqs,
-                    23406,
-                    Utils.intOfMap(queryMap, "gameid"),
-                    Utils.intOfMap(queryMap, "showtype"),
-                    Utils.intOfMap(queryMap, "showid"),
-                    Utils.intOfMap(queryMap, "createtime"));
-            client.send(req1);
-          }
-
-          public void onMessage(String arg0) {
-            // System.out.println("socket message" + arg0);
-          }
-
-          public void onError(Exception arg0) {
-            // arg0.printStackTrace();
-            // System.out.println("socket error");
-          }
-
-          public void onClose(int arg0, String arg1, boolean arg2) {
-            // System.out.println("socket close:" + arg0 + ":" + arg1 + ":" + arg2);
-          }
-
-          public void onMessage(ByteBuffer bytes) {
-            // System.out.println("socket message ByteBuffer" +
-            // byteArrayToHexString(bytes.array()));
-            if (!isStoped) parseReq(bytes);
-          }
-        };
-
-    client.connect();
-  }
-
-  private void req() throws URISyntaxException {
-    seqs = 0;
-    URI uri = new URI(new String(type == 3 ? b : b2));
-
-    Lizzie.board.clear();
+    if (clear) Lizzie.board.clear();
     if (client != null && client.isOpen()) {
       client.close();
     }
@@ -2059,8 +2013,8 @@ public class OnlineDialog extends JDialog {
     return df.format(new Date());
   }
 
-  public void req2() throws URISyntaxException {
-    Lizzie.board.clear();
+  public void req2(boolean clear) throws URISyntaxException {
+    if (clear) Lizzie.board.clear();
     if (sio != null) {
       sio.close();
     }
