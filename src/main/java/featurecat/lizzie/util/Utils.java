@@ -17,7 +17,9 @@ import java.util.Optional;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.SourceDataLine;
 import javax.swing.JTextField;
 
@@ -175,24 +177,23 @@ public class Utils {
     if (node.previous().isPresent()) {
       if (node.getData().blackCaptures > node.previous().get().getData().blackCaptures) {
         if (node.getData().blackCaptures - node.previous().get().getData().blackCaptures >= 3)
-          playVoiceDeadStoneMore();
-        else playVoiceDeadStone();
+          playVoice("\\sound\\deadStoneMore.wav");
+        else playVoice("\\sound\\deadStone.wav");
       } else {
         if (node.getData().whiteCaptures > node.previous().get().getData().whiteCaptures) {
           if (node.getData().whiteCaptures - node.previous().get().getData().whiteCaptures >= 3)
-            playVoiceDeadStoneMore();
-          else playVoiceDeadStone();
-
-        } else playVoiceStone();
+            playVoice("\\sound\\deadStoneMore.wav");
+          else playVoice("\\sound\\deadStone.wav");
+        } else playVoice("\\sound\\Stone.wav");
       }
     } else {
-      playVoiceStone();
+      playVoice("\\sound\\Stone.wav");
     }
     Lizzie.frame.playingSoundNums = Lizzie.frame.playingSoundNums - 1;
     return;
   }
 
-  private static void playVoiceStone() throws Exception {
+  private static void playVoice(String wav) throws Exception {
     File file = new File("");
     String courseFile = "";
     try {
@@ -201,7 +202,7 @@ public class Utils {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    String filePath = courseFile + "\\sound\\Stone.wav";
+    String filePath = courseFile + wav;
     if (!filePath.equals("")) {
       // Get audio input stream
       AudioInputStream audioInputStream = null;
@@ -210,7 +211,7 @@ public class Utils {
       } catch (Exception e) {
         Message msg;
         msg = new Message();
-        msg.setMessage("找不到sound\\Stone.wav 文件");
+        msg.setMessage("找不到" + wav + "文件");
         msg.setVisible(true);
         Lizzie.config.playSound = false;
         Lizzie.config.uiConfig.put("play-sound", Lizzie.config.playSound);
@@ -220,6 +221,11 @@ public class Utils {
           // TODO Auto-generated catch block
         }
       }
+      Clip clip = AudioSystem.getClip();
+      clip.open(audioInputStream);
+      FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+      gainControl.setValue(-15.0f); // Reduce volume by 20 decibels.
+      clip.start();
       // Get audio coding object
       AudioFormat audioFormat = audioInputStream.getFormat();
       // Set data entry
@@ -240,107 +246,5 @@ public class Utils {
       sourceDataLine.drain();
       sourceDataLine.close();
     }
-  }
-
-  private static void playVoiceDeadStone() throws Exception {
-    File file = new File("");
-    String courseFile = "";
-    try {
-      courseFile = file.getCanonicalPath();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    String filePath = courseFile + "\\sound\\deadStone.wav";
-    if (!filePath.equals("")) {
-      // Get audio input stream
-      AudioInputStream audioInputStream = null;
-      try {
-        audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
-      } catch (Exception e) {
-        Message msg;
-        msg = new Message();
-        msg.setMessage("找不到 sound\\deadStone.wav 文件");
-        msg.setVisible(true);
-        Lizzie.config.playSound = false;
-        Lizzie.config.uiConfig.put("play-sound", Lizzie.config.playSound);
-        try {
-          Lizzie.config.save();
-        } catch (IOException es) {
-          // TODO Auto-generated catch block
-        }
-      }
-      // Get audio coding object
-      AudioFormat audioFormat = audioInputStream.getFormat();
-      // Set data entry
-      DataLine.Info dataLineInfo =
-          new DataLine.Info(SourceDataLine.class, audioFormat, AudioSystem.NOT_SPECIFIED);
-      SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
-      sourceDataLine.open(audioFormat);
-      sourceDataLine.start();
-      // Read from the data sent to the mixer input stream
-      int count;
-      byte tempBuffer[] = new byte[1024];
-      while ((count = audioInputStream.read(tempBuffer, 0, tempBuffer.length)) != -1) {
-        if (count > 0) {
-          sourceDataLine.write(tempBuffer, 0, count);
-        }
-      }
-      // Empty the data buffer, and close the input
-      sourceDataLine.drain();
-      sourceDataLine.close();
-    }
-    return;
-  }
-
-  private static void playVoiceDeadStoneMore() throws Exception {
-    File file = new File("");
-    String courseFile = "";
-    try {
-      courseFile = file.getCanonicalPath();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    String filePath = courseFile + "\\sound\\deadStoneMore.wav";
-    if (!filePath.equals("")) {
-      // Get audio input stream
-      AudioInputStream audioInputStream = null;
-      try {
-        audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
-      } catch (Exception e) {
-        Message msg;
-        msg = new Message();
-        msg.setMessage("找不到 sound\\deadStoneMore.wav 文件");
-        msg.setVisible(true);
-        Lizzie.config.playSound = false;
-        Lizzie.config.uiConfig.put("play-sound", Lizzie.config.playSound);
-        try {
-          Lizzie.config.save();
-        } catch (IOException es) {
-          // TODO Auto-generated catch block
-        }
-      }
-      // Get audio coding object
-      AudioFormat audioFormat = audioInputStream.getFormat();
-      // Set data entry
-      DataLine.Info dataLineInfo =
-          new DataLine.Info(SourceDataLine.class, audioFormat, AudioSystem.NOT_SPECIFIED);
-      SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
-      sourceDataLine.open(audioFormat);
-      sourceDataLine.start();
-      // Read from the data sent to the mixer input stream
-      int count;
-      byte tempBuffer[] = new byte[1024];
-      while ((count = audioInputStream.read(tempBuffer, 0, tempBuffer.length)) != -1) {
-        if (count > 0) {
-          sourceDataLine.write(tempBuffer, 0, count);
-        }
-      }
-      // Empty the data buffer, and close the input
-      sourceDataLine.drain();
-      sourceDataLine.close();
-    }
-    return;
   }
 }
