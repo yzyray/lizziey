@@ -1111,6 +1111,8 @@ public class LizzieFrame extends JFrame {
   }
 
   public static void loadFile(File file) {
+    boolean oriSound = Lizzie.config.playSound;
+    Lizzie.config.playSound = false;
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     if (!(file.getPath().endsWith(".sgf") || file.getPath().endsWith(".gib"))) {
       file = new File(file.getPath() + ".sgf");
@@ -1131,6 +1133,7 @@ public class LizzieFrame extends JFrame {
           JOptionPane.ERROR);
     }
     Lizzie.board.setMovelistAll();
+    Lizzie.config.playSound = oriSound;
   }
 
   private BufferedImage cachedImage;
