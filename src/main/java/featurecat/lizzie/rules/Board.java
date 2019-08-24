@@ -26,8 +26,10 @@ import javax.swing.*;
 import org.json.JSONException;
 
 public class Board implements LeelazListener {
-  public static int boardHeight = Lizzie.config.config.getJSONObject("ui").optInt("board-size", 19);
-  public static int boardWidth = Lizzie.config.config.getJSONObject("ui").optInt("board-size", 19);
+  public static int boardHeight =
+      19; // Lizzie.config.config.getJSONObject("ui").optInt("board-size", 19);
+  public static int boardWidth =
+      19; // Lizzie.config.config.getJSONObject("ui").optInt("board-size", 19);
   public int insertoricurrentMoveNumber = 0;
   public ArrayList<Integer> insertorimove = new ArrayList<Integer>();
   public ArrayList<Boolean> insertoriisblack = new ArrayList<Boolean>();
