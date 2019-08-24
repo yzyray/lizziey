@@ -2279,9 +2279,9 @@ public class ConfigDialog2 extends JDialog {
   //  }
 
   private void setBoardSize() {
-    int size = Lizzie.config.uiConfig.optInt("board-size", 19);
-    int width = Lizzie.config.uiConfig.optInt("board-width", size);
-    int height = Lizzie.config.uiConfig.optInt("board-height", size);
+    int size = Lizzie.board.boardWidth;
+    int width = Lizzie.board.boardWidth;
+    int height = Lizzie.board.boardHeight;
     size = width == height ? width : 0;
     txtBoardWidth.setEnabled(false);
     txtBoardHeight.setEnabled(false);
