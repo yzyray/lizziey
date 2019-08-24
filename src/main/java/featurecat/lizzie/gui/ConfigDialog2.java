@@ -159,6 +159,7 @@ public class ConfigDialog2 extends JDialog {
   public JRadioButton rdoBoardSize5;
   public JRadioButton rdoBoardSize4;
   public JCheckBox chkShowName;
+  public JCheckBox chkShowNoSuggCircle;
   //  public JFormattedTextField txtMinPlayoutRatioForStats;
   public JCheckBox chkShowCaptured;
   public JCheckBox chkShowWinrate;
@@ -1221,35 +1222,43 @@ public class ConfigDialog2 extends JDialog {
     uiTab.add(txtLimitBranchLength);
     txtLimitBranchLength.setColumns(10);
 
+    JLabel lblshowNoSuggCircle = new JLabel("超限制选点依然显示推荐圈");
+    lblshowNoSuggCircle.setBounds(6, 416, 163, 16);
+    uiTab.add(lblshowNoSuggCircle);
+    chkShowNoSuggCircle = new JCheckBox("");
+    chkShowNoSuggCircle.setBounds(170, 413, 57, 23);
+    uiTab.add(chkShowNoSuggCircle);
+
     JLabel lblSuggestionMoveInfo =
         new JLabel(resourceBundle.getString("LizzieConfig.title.suggestionMoveInfo"));
-    lblSuggestionMoveInfo.setBounds(6, 416, 163, 16);
+    lblSuggestionMoveInfo.setBounds(6, 443, 163, 16);
     uiTab.add(lblSuggestionMoveInfo);
     chkShowWinrateInSuggestion =
         new JCheckBox(resourceBundle.getString("LizzieConfig.title.showWinrateInSuggestion"));
-    chkShowWinrateInSuggestion.setBounds(170, 416, 100, 23);
+    chkShowWinrateInSuggestion.setBounds(170, 443, 100, 23);
     uiTab.add(chkShowWinrateInSuggestion);
     chkShowPlayoutsInSuggestion =
         new JCheckBox(resourceBundle.getString("LizzieConfig.title.showPlayoutsInSuggestion"));
-    chkShowPlayoutsInSuggestion.setBounds(270, 416, 100, 23);
+    chkShowPlayoutsInSuggestion.setBounds(270, 443, 100, 23);
     uiTab.add(chkShowPlayoutsInSuggestion);
     chkShowScoremeanInSuggestion =
         new JCheckBox(resourceBundle.getString("LizzieConfig.title.showScoremeanInSuggestion"));
-    chkShowScoremeanInSuggestion.setBounds(370, 416, 100, 23);
+    chkShowScoremeanInSuggestion.setBounds(370, 443, 100, 23);
     uiTab.add(chkShowScoremeanInSuggestion);
 
     JLabel lblGtpConsoleStyle =
         new JLabel(resourceBundle.getString("LizzieConfig.title.gtpConsoleStyle"));
-    lblGtpConsoleStyle.setBounds(6, 446, 157, 16);
+    lblGtpConsoleStyle.setBounds(6, 473, 157, 16);
     uiTab.add(lblGtpConsoleStyle);
     tpGtpConsoleStyle = new JTextPane();
-    tpGtpConsoleStyle.setBounds(170, 446, 460, 80);
+    tpGtpConsoleStyle.setBounds(170, 473, 460, 80);
     uiTab.add(tpGtpConsoleStyle);
 
     setBoardSize();
     setShowMoveNumber();
     setShowWinrateSide();
     chkShowName.setSelected(Lizzie.config.showNameInBoard);
+    chkShowNoSuggCircle.setSelected(Lizzie.config.showNoSuggCircle);
     chkAlwaysShowBlackWinrate.setSelected(
         Lizzie.config.uiConfig.getBoolean("win-rate-always-black"));
     chkAlwaysOnTop.setSelected(Lizzie.frame.isAlwaysOnTop());
@@ -2621,6 +2630,10 @@ public class ConfigDialog2 extends JDialog {
       Lizzie.config.uiConfig.put("board-height", size[1]);
       Lizzie.config.uiConfig.putOpt("show-name-in-board", chkShowName.isSelected());
       Lizzie.config.showNameInBoard = chkShowName.isSelected();
+
+      Lizzie.config.uiConfig.putOpt("show-nosugg-circle", chkShowNoSuggCircle.isSelected());
+      Lizzie.config.showNoSuggCircle = chkShowNoSuggCircle.isSelected();
+
       Lizzie.frame.setAlwaysOnTop(chkAlwaysOnTop.isSelected());
       Lizzie.config.uiConfig.put("mains-always-ontop", chkAlwaysOnTop.isSelected());
 
