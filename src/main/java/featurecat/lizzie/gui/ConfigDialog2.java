@@ -1130,7 +1130,7 @@ public class ConfigDialog2 extends JDialog {
     chkShowSuggLabel.setBounds(170, 278, 57, 23);
     uiTab.add(chkShowSuggLabel);
 
-    JLabel lblShowSuggReverseColor = new JLabel("最高胜率-计算量-目差 反色显示");
+    JLabel lblShowSuggReverseColor = new JLabel("最高 胜率-计算量-目差 反色");
     lblShowSuggReverseColor.setBounds(372, 281, 167, 16);
     uiTab.add(lblShowSuggReverseColor);
     chkShowSuggReverseColor = new JCheckBox("");
