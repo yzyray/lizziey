@@ -613,7 +613,7 @@ public class ConfigDialog extends JDialog {
     chkShowNoSugg.setBounds(500, 445, 40, 26);
     engineTab.add(chkShowNoSugg);
 
-    JLabel lbllimitBranchLength = new JLabel("分析点变化图最大手数");
+    JLabel lbllimitBranchLength = new JLabel("限制选点变化图手数");
     lbllimitBranchLength.setBounds(331, 500, 187, 16);
     engineTab.add(lbllimitBranchLength);
 
