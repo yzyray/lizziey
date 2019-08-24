@@ -442,6 +442,7 @@ public class Board implements LeelazListener {
       Zobrist.init();
       clear();
       Lizzie.leelaz.boardSize(boardWidth, boardHeight);
+      if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.ponder();
       forceRefresh = true;
       forceRefresh2 = true;
     }
