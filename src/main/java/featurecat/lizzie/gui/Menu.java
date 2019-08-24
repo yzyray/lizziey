@@ -2109,6 +2109,7 @@ public class Menu extends MenuBar {
 
     final JMenuItem moreengine = new JMenuItem("更多引擎");
     settings.add(moreengine);
+    settings.addSeparator();
 
     moreengine.addActionListener(
         new ActionListener() {
