@@ -71,6 +71,7 @@ public class Config {
   public boolean readBoardArg3 = true;
   public boolean alwaysSyncBoardStat = false;
   public boolean playSound = true;
+  public boolean noRefreshOnMouseMove = false;
 
   public JSONObject config;
   public JSONObject leelazConfig;
@@ -147,6 +148,7 @@ public class Config {
   public boolean coords = true;
   public boolean liveButton = true;
   public boolean badMoves = true;
+  public boolean autoPlay = true;
 
   private JSONObject loadAndMergeConfig(
       JSONObject defaultCfg, String fileName, boolean needValidation) throws IOException {
@@ -349,6 +351,7 @@ public class Config {
     readBoardArg2 = uiConfig.optInt("read-board-arg2", 300);
     readBoardArg3 = uiConfig.optBoolean("read-board-arg3", true);
     playSound = uiConfig.optBoolean("play-sound", true);
+    noRefreshOnMouseMove = uiConfig.optBoolean("norefresh-onmouse-move", false);
     showEditbar = uiConfig.optBoolean("show-edit-bar", true);
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);
@@ -387,6 +390,7 @@ public class Config {
     komi = uiConfig.optBoolean("komi", true);
     move = uiConfig.optBoolean("move", true);
     coords = uiConfig.optBoolean("coords", true);
+    autoPlay = uiConfig.optBoolean("autoPlay", true);
     liveButton = uiConfig.optBoolean("liveButton", true);
     badMoves = uiConfig.optBoolean("badMoves", true);
 

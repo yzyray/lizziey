@@ -2496,6 +2496,7 @@ public class LizzieFrame extends JFrame {
     if (Lizzie.frame != null) {
       Lizzie.frame.isMouseOver = false;
       boardRenderer.startNormalBoard();
+      boardRenderer.clearBranch();
     }
   }
 

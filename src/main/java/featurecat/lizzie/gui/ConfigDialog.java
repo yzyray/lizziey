@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.IntStream;
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -122,6 +123,11 @@ public class ConfigDialog extends JDialog {
     setModalityType(ModalityType.APPLICATION_MODAL);
     setType(Type.POPUP);
     setBounds(100, 100, 661, 787);
+    try {
+      setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     getContentPane().setLayout(new BorderLayout());
     JPanel buttonPane = new JPanel();
     buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -1061,7 +1067,7 @@ public class ConfigDialog extends JDialog {
     txtMaxGameThinkingTime.setText(
         String.valueOf(leelazConfig.getInt("max-game-thinking-time-seconds")));
     txtMaxsuggestionmoves.setText(String.valueOf(leelazConfig.getInt("limit-max-suggestion")));
-    txtlimitBranchLength.setText(String.valueOf(leelazConfig.getInt("limit-branch-length")));
+    txtlimitBranchLength.setText(String.valueOf(Lizzie.config.limitBranchLength));
     chkPrintEngineLog.setSelected(leelazConfig.getBoolean("print-comms"));
     curPath = (new File("")).getAbsoluteFile().toPath();
     osName = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);

@@ -148,18 +148,18 @@ public class ConfigDialog2 extends JDialog {
   private JRadioButton rdoLcb;
 
   // UI Tab
-  //  public JLabel lblBoardSign;
-  //  public JTextField txtBoardWidth;
-  //  public JTextField txtBoardHeight;
-  //  public JRadioButton rdoBoardSizeOther;
-  //  public JRadioButton rdoBoardSize19;
-  //  public JRadioButton rdoBoardSize13;
-  //  public JRadioButton rdoBoardSize9;
-  //  public JRadioButton rdoBoardSize7;
-  //  public JRadioButton rdoBoardSize5;
-  //  public JRadioButton rdoBoardSize4;
-  // public JCheckBox chkPanelUI;
-  // public JFormattedTextField txtMinPlayoutRatioForStats;
+  public JLabel lblBoardSign;
+  public JTextField txtBoardWidth;
+  public JTextField txtBoardHeight;
+  public JRadioButton rdoBoardSizeOther;
+  public JRadioButton rdoBoardSize19;
+  public JRadioButton rdoBoardSize13;
+  public JRadioButton rdoBoardSize9;
+  public JRadioButton rdoBoardSize7;
+  public JRadioButton rdoBoardSize5;
+  public JRadioButton rdoBoardSize4;
+  public JCheckBox chkShowName;
+  //  public JFormattedTextField txtMinPlayoutRatioForStats;
   public JCheckBox chkShowCaptured;
   public JCheckBox chkShowWinrate;
   public JCheckBox chkShowVariationGraph;
@@ -171,11 +171,22 @@ public class ConfigDialog2 extends JDialog {
   public JRadioButton rdoShowMoveNumberLast;
   public JTextField txtShowMoveNumber;
   public JCheckBox chkShowBlunderBar;
+
+  public JRadioButton rdoShowWinrateBlack;
+  public JRadioButton rdoShowWinrateBoth;
   //  public JCheckBox chkDynamicWinrateGraphWidth;
   public JCheckBox chkAppendWinrateToComment;
+  public JCheckBox chkShowSuggLabel;
+  public JCheckBox chkShowSuggReverseColor;
+  public JCheckBox chkShowVairationsOnMouse;
+  public JCheckBox chkShowVairationsOnMouseNoRefresh;
+
+  public JCheckBox chkAlwaysShowBlackWinrate;
+  public JCheckBox chkAlwaysOnTop;
+
   //  public JCheckBox chkHoldBestMovesToSgf;
   //  public JCheckBox chkShowBestMovesByHold;
-  public JCheckBox chkColorByWinrateInsteadOfVisits;
+  //  public JCheckBox chkColorByWinrateInsteadOfVisits;
   public JSlider sldBoardPositionProportion;
   public JTextField txtLimitBestMoveNum;
   public JTextField txtLimitBranchLength;
@@ -220,10 +231,16 @@ public class ConfigDialog2 extends JDialog {
   JTabbedPane tabbedPane;
 
   public ConfigDialog2() {
+    if (Lizzie.frame != null) setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     setTitle(resourceBundle.getString("LizzieConfig.title.config"));
     setModalityType(ModalityType.APPLICATION_MODAL);
     setType(Type.POPUP);
     setBounds(100, 100, 661, 716);
+    try {
+      setIconImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/logo.png")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     getContentPane().setLayout(new BorderLayout());
     JPanel buttonPane = new JPanel();
     buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -657,7 +674,7 @@ public class ConfigDialog2 extends JDialog {
     engineTab.add(chkPrintEngineLog);
 
     uiTab = new JPanel();
-    // tabbedPane.addTab(resourceBundle.getString("LizzieConfig.title.ui"), null, uiTab, null);
+    tabbedPane.addTab(resourceBundle.getString("LizzieConfig.title.ui"), null, uiTab, null);
     uiTab.setLayout(null);
 
     // Theme Tab
@@ -799,116 +816,115 @@ public class ConfigDialog2 extends JDialog {
     curPath = (new File("")).getAbsoluteFile().toPath();
     osName = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
     // setShowLcbWinrate();
-    //    JLabel lblBoardSize = new
-    // JLabel(resourceBundle.getString("LizzieConfig.title.boardSize"));
-    //    lblBoardSize.setBounds(6, 6, 67, 16);
-    //    lblBoardSize.setHorizontalAlignment(SwingConstants.LEFT);
-    //    uiTab.add(lblBoardSize);
-    //
-    //    rdoBoardSize19 = new JRadioButton("19x19");
-    //    rdoBoardSize19.setBounds(85, 2, 84, 23);
-    //    uiTab.add(rdoBoardSize19);
-    //
-    //    rdoBoardSize13 = new JRadioButton("13x13");
-    //    rdoBoardSize13.setBounds(170, 2, 84, 23);
-    //    uiTab.add(rdoBoardSize13);
-    //
-    //    rdoBoardSize9 = new JRadioButton("9x9");
-    //    rdoBoardSize9.setBounds(255, 2, 57, 23);
-    //    uiTab.add(rdoBoardSize9);
-    //
-    //    rdoBoardSize7 = new JRadioButton("7x7");
-    //    rdoBoardSize7.setBounds(325, 2, 67, 23);
-    //    uiTab.add(rdoBoardSize7);
-    //
-    //    rdoBoardSize5 = new JRadioButton("5x5");
-    //    rdoBoardSize5.setBounds(395, 2, 67, 23);
-    //    uiTab.add(rdoBoardSize5);
-    //
-    //    rdoBoardSize4 = new JRadioButton("4x4");
-    //    rdoBoardSize4.setBounds(460, 2, 60, 23);
-    //    uiTab.add(rdoBoardSize4);
-    //
-    //    rdoBoardSizeOther = new JRadioButton("");
-    //    rdoBoardSizeOther.addChangeListener(
-    //        new ChangeListener() {
-    //          public void stateChanged(ChangeEvent e) {
-    //            if (rdoBoardSizeOther.isSelected()) {
-    //              txtBoardWidth.setEnabled(true);
-    //              txtBoardHeight.setEnabled(true);
-    //            } else {
-    //              txtBoardWidth.setEnabled(false);
-    //              txtBoardHeight.setEnabled(false);
-    //            }
-    //          }
-    //        });
-    //    rdoBoardSizeOther.setBounds(524, 2, 27, 23);
-    //    uiTab.add(rdoBoardSizeOther);
-    //
-    //    ButtonGroup group = new ButtonGroup();
-    //    group.add(rdoBoardSize19);
-    //    group.add(rdoBoardSize13);
-    //    group.add(rdoBoardSize9);
-    //    group.add(rdoBoardSize7);
-    //    group.add(rdoBoardSize5);
-    //    group.add(rdoBoardSize4);
-    //    group.add(rdoBoardSizeOther);
-    //
-    //    nf.setGroupingUsed(false);
-    //    txtBoardWidth =
-    //        new JFormattedTextField(
-    //            new InternationalFormatter(nf) {
-    //              protected DocumentFilter getDocumentFilter() {
-    //                return filter;
-    //              }
-    //
-    //              private DocumentFilter filter = new DigitOnlyFilter();
-    //            });
-    //    txtBoardWidth.setBounds(551, 1, 38, 26);
-    //    uiTab.add(txtBoardWidth);
-    //    txtBoardWidth.setColumns(10);
-    //
-    //    lblBoardSign = new JLabel("x");
-    //    lblBoardSign.setBounds(591, 3, 26, 20);
-    //    uiTab.add(lblBoardSign);
-    //
-    //    txtBoardHeight =
-    //        new JFormattedTextField(
-    //            new InternationalFormatter(nf) {
-    //              protected DocumentFilter getDocumentFilter() {
-    //                return filter;
-    //              }
-    //
-    //              private DocumentFilter filter = new DigitOnlyFilter();
-    //            });
-    //    txtBoardHeight.setBounds(601, 1, 38, 26);
-    //    uiTab.add(txtBoardHeight);
-    //    txtBoardHeight.setColumns(10);
+    JLabel lblBoardSize = new JLabel(resourceBundle.getString("LizzieConfig.title.boardSize"));
+    lblBoardSize.setBounds(6, 6, 67, 16);
+    lblBoardSize.setHorizontalAlignment(SwingConstants.LEFT);
+    uiTab.add(lblBoardSize);
 
-    //    JLabel lblPanelUI = new JLabel(resourceBundle.getString("LizzieConfig.title.panelUI"));
-    //    lblPanelUI.setBounds(6, 38, 157, 16);
-    //    uiTab.add(lblPanelUI);
+    rdoBoardSize19 = new JRadioButton("19x19");
+    rdoBoardSize19.setBounds(85, 2, 84, 23);
+    uiTab.add(rdoBoardSize19);
 
-    //    chkPanelUI = new JCheckBox("");
-    //    chkPanelUI.setBounds(170, 35, 97, 23);
-    //    uiTab.add(chkPanelUI);
+    rdoBoardSize13 = new JRadioButton("13x13");
+    rdoBoardSize13.setBounds(170, 2, 84, 23);
+    uiTab.add(rdoBoardSize13);
 
-    //    JLabel lblMinPlayoutRatioForStats =
-    //        new JLabel(resourceBundle.getString("LizzieConfig.title.minPlayoutRatioForStats"));
-    //    lblMinPlayoutRatioForStats.setBounds(6, 362, 157, 16);
-    //    uiTab.add(lblMinPlayoutRatioForStats);
-    //    txtMinPlayoutRatioForStats =
-    //        new JFormattedTextField(
-    //            new InternationalFormatter() {
-    //              protected DocumentFilter getDocumentFilter() {
-    //                return filter;
-    //              }
+    rdoBoardSize9 = new JRadioButton("9x9");
+    rdoBoardSize9.setBounds(255, 2, 57, 23);
+    uiTab.add(rdoBoardSize9);
+
+    rdoBoardSize7 = new JRadioButton("7x7");
+    rdoBoardSize7.setBounds(325, 2, 67, 23);
+    uiTab.add(rdoBoardSize7);
+
+    rdoBoardSize5 = new JRadioButton("5x5");
+    rdoBoardSize5.setBounds(395, 2, 67, 23);
+    uiTab.add(rdoBoardSize5);
+
+    rdoBoardSize4 = new JRadioButton("4x4");
+    rdoBoardSize4.setBounds(460, 2, 60, 23);
+    uiTab.add(rdoBoardSize4);
+
+    rdoBoardSizeOther = new JRadioButton("");
+    rdoBoardSizeOther.addChangeListener(
+        new ChangeListener() {
+          public void stateChanged(ChangeEvent e) {
+            if (rdoBoardSizeOther.isSelected()) {
+              txtBoardWidth.setEnabled(true);
+              txtBoardHeight.setEnabled(true);
+            } else {
+              txtBoardWidth.setEnabled(false);
+              txtBoardHeight.setEnabled(false);
+            }
+          }
+        });
+    rdoBoardSizeOther.setBounds(524, 2, 27, 23);
+    uiTab.add(rdoBoardSizeOther);
+
+    ButtonGroup group = new ButtonGroup();
+    group.add(rdoBoardSize19);
+    group.add(rdoBoardSize13);
+    group.add(rdoBoardSize9);
+    group.add(rdoBoardSize7);
+    group.add(rdoBoardSize5);
+    group.add(rdoBoardSize4);
+    group.add(rdoBoardSizeOther);
+
+    nf.setGroupingUsed(false);
+    txtBoardWidth =
+        new JFormattedTextField(
+            new InternationalFormatter(nf) {
+              protected DocumentFilter getDocumentFilter() {
+                return filter;
+              }
+
+              private DocumentFilter filter = new DigitOnlyFilter();
+            });
+    txtBoardWidth.setBounds(551, 1, 38, 26);
+    uiTab.add(txtBoardWidth);
+    txtBoardWidth.setColumns(10);
+
+    lblBoardSign = new JLabel("x");
+    lblBoardSign.setBounds(591, 3, 26, 20);
+    uiTab.add(lblBoardSign);
+
+    txtBoardHeight =
+        new JFormattedTextField(
+            new InternationalFormatter(nf) {
+              protected DocumentFilter getDocumentFilter() {
+                return filter;
+              }
+
+              private DocumentFilter filter = new DigitOnlyFilter();
+            });
+    txtBoardHeight.setBounds(601, 1, 38, 26);
+    uiTab.add(txtBoardHeight);
+    txtBoardHeight.setColumns(10);
+
+    JLabel lblAlwaysOnTop = new JLabel("窗口总在最前");
+    lblAlwaysOnTop.setBounds(6, 38, 157, 16);
+    uiTab.add(lblAlwaysOnTop);
+    chkAlwaysOnTop = new JCheckBox("");
+    chkAlwaysOnTop.setBounds(170, 35, 97, 23);
+    uiTab.add(chkAlwaysOnTop);
+
+    //        JLabel lblMinPlayoutRatioForStats =
+    //            new
+    // JLabel(resourceBundle.getString("LizzieConfig.title.minPlayoutRatioForStats"));
+    //        lblMinPlayoutRatioForStats.setBounds(6, 362, 157, 16);
+    //        uiTab.add(lblMinPlayoutRatioForStats);
+    //        txtMinPlayoutRatioForStats =
+    //            new JFormattedTextField(
+    //                new InternationalFormatter() {
+    //                  protected DocumentFilter getDocumentFilter() {
+    //                    return filter;
+    //                  }
     //
-    //              private DocumentFilter filter = new DigitOnlyFilter("[^0-9\\.]++");
-    //            });
-    //    txtMinPlayoutRatioForStats.setColumns(10);
-    //    txtMinPlayoutRatioForStats.setBounds(170, 357, 52, 24);
-    //    uiTab.add(txtMinPlayoutRatioForStats);
+    //                  private DocumentFilter filter = new DigitOnlyFilter("[^0-9\\.]++");
+    //                });
+    //        txtMinPlayoutRatioForStats.setColumns(10);
+    //        txtMinPlayoutRatioForStats.setBounds(170, 357, 52, 24);
+    //        uiTab.add(txtMinPlayoutRatioForStats);
 
     JLabel lblShowCaptured =
         new JLabel(resourceBundle.getString("LizzieConfig.title.showCaptured"));
@@ -1066,13 +1082,21 @@ public class ConfigDialog2 extends JDialog {
     chkShowBlunderBar.setBounds(170, 197, 57, 23);
     uiTab.add(chkShowBlunderBar);
 
-    //    JLabel lblDynamicWinrateGraphWidth =
-    //        new JLabel(resourceBundle.getString("LizzieConfig.title.dynamicWinrateGraphWidth"));
-    //    lblDynamicWinrateGraphWidth.setBounds(6, 227, 157, 16);
-    //    uiTab.add(lblDynamicWinrateGraphWidth);
-    //    chkDynamicWinrateGraphWidth = new JCheckBox("");
-    //    chkDynamicWinrateGraphWidth.setBounds(170, 224, 57, 23);
-    //    uiTab.add(chkDynamicWinrateGraphWidth);
+    JLabel lblShowWinrateSide = new JLabel("胜率图视角");
+    lblShowWinrateSide.setBounds(6, 227, 157, 16);
+    uiTab.add(lblShowWinrateSide);
+
+    rdoShowWinrateBlack = new JRadioButton("黑方视角");
+    rdoShowWinrateBlack.setBounds(170, 227, 84, 23);
+    uiTab.add(rdoShowWinrateBlack);
+
+    rdoShowWinrateBoth = new JRadioButton("双方视角");
+    rdoShowWinrateBoth.setBounds(261, 227, 84, 23);
+    uiTab.add(rdoShowWinrateBoth);
+
+    ButtonGroup ShowWinratGroup = new ButtonGroup();
+    ShowWinratGroup.add(rdoShowWinrateBlack);
+    ShowWinratGroup.add(rdoShowWinrateBoth);
 
     JLabel lblAppendWinrateToComment =
         new JLabel(resourceBundle.getString("LizzieConfig.title.appendWinrateToComment"));
@@ -1082,29 +1106,33 @@ public class ConfigDialog2 extends JDialog {
     chkAppendWinrateToComment.setBounds(170, 251, 57, 23);
     uiTab.add(chkAppendWinrateToComment);
 
-    //    JLabel lblHoldBestMovesToSgf =
-    //        new JLabel(resourceBundle.getString("LizzieConfig.title.holdBestMovesToSgf"));
-    //    lblHoldBestMovesToSgf.setBounds(6, 281, 157, 16);
-    //    uiTab.add(lblHoldBestMovesToSgf);
-    //    chkHoldBestMovesToSgf = new JCheckBox("");
-    //    chkHoldBestMovesToSgf.setBounds(170, 278, 57, 23);
-    //    uiTab.add(chkHoldBestMovesToSgf);
-    //
-    //    JLabel lblShowBestMovesByHold =
-    //        new JLabel(resourceBundle.getString("LizzieConfig.title.showBestMovesByHold"));
-    //    lblShowBestMovesByHold.setBounds(372, 281, 157, 16);
-    //    uiTab.add(lblShowBestMovesByHold);
-    //    chkShowBestMovesByHold = new JCheckBox("");
-    //    chkShowBestMovesByHold.setBounds(536, 278, 57, 23);
-    //    uiTab.add(chkShowBestMovesByHold);
+    JLabel lblShowSuggLabel = new JLabel("显示推荐点右上方角标");
+    lblShowSuggLabel.setBounds(6, 281, 157, 16);
+    uiTab.add(lblShowSuggLabel);
+    chkShowSuggLabel = new JCheckBox("");
+    chkShowSuggLabel.setBounds(170, 278, 57, 23);
+    uiTab.add(chkShowSuggLabel);
 
-    JLabel lblColorByWinrateInsteadOfVisits =
-        new JLabel(resourceBundle.getString("LizzieConfig.title.colorByWinrateInsteadOfVisits"));
-    lblColorByWinrateInsteadOfVisits.setBounds(6, 308, 163, 16);
-    uiTab.add(lblColorByWinrateInsteadOfVisits);
-    chkColorByWinrateInsteadOfVisits = new JCheckBox("");
-    chkColorByWinrateInsteadOfVisits.setBounds(170, 305, 57, 23);
-    uiTab.add(chkColorByWinrateInsteadOfVisits);
+    JLabel lblShowSuggReverseColor = new JLabel("最高胜率-计算量-目差 反色显示");
+    lblShowSuggReverseColor.setBounds(372, 281, 167, 16);
+    uiTab.add(lblShowSuggReverseColor);
+    chkShowSuggReverseColor = new JCheckBox("");
+    chkShowSuggReverseColor.setBounds(536, 278, 57, 23);
+    uiTab.add(chkShowSuggReverseColor);
+
+    JLabel lblShowVairationsOnMouse = new JLabel("鼠标悬停显示变化图");
+    lblShowVairationsOnMouse.setBounds(6, 308, 163, 16);
+    uiTab.add(lblShowVairationsOnMouse);
+    chkShowVairationsOnMouse = new JCheckBox("");
+    chkShowVairationsOnMouse.setBounds(170, 305, 57, 23);
+    uiTab.add(chkShowVairationsOnMouse);
+
+    JLabel lblShowVairationsOnMouseNoRefresh = new JLabel("鼠标悬停显示变化图时不刷新");
+    lblShowVairationsOnMouseNoRefresh.setBounds(372, 308, 163, 16);
+    uiTab.add(lblShowVairationsOnMouseNoRefresh);
+    chkShowVairationsOnMouseNoRefresh = new JCheckBox("");
+    chkShowVairationsOnMouseNoRefresh.setBounds(536, 305, 57, 23);
+    uiTab.add(chkShowVairationsOnMouseNoRefresh);
 
     JLabel lblBoardPositionProportion =
         new JLabel(resourceBundle.getString("LizzieConfig.title.boardPositionProportion"));
@@ -1126,6 +1154,21 @@ public class ConfigDialog2 extends JDialog {
     sldBoardPositionProportion.setMaximum(8);
     sldBoardPositionProportion.setBounds(170, 333, 200, 28);
     uiTab.add(sldBoardPositionProportion);
+
+    JLabel showNameInboard = new JLabel("在棋盘下方显示黑白名字");
+    showNameInboard.setBounds(6, 362, 163, 16);
+    uiTab.add(showNameInboard);
+
+    chkShowName = new JCheckBox("");
+    chkShowName.setBounds(170, 359, 57, 23);
+    uiTab.add(chkShowName);
+
+    JLabel lblAlwaysShowBlackWinrate = new JLabel("总是显示黑胜率");
+    lblAlwaysShowBlackWinrate.setBounds(372, 362, 163, 16);
+    uiTab.add(lblAlwaysShowBlackWinrate);
+    chkAlwaysShowBlackWinrate = new JCheckBox("");
+    chkAlwaysShowBlackWinrate.setBounds(536, 359, 57, 23);
+    uiTab.add(chkAlwaysShowBlackWinrate);
 
     JLabel lblLimitBestMoveNum =
         new JLabel(resourceBundle.getString("LizzieConfig.title.limitBestMoveNum"));
@@ -1186,9 +1229,13 @@ public class ConfigDialog2 extends JDialog {
     tpGtpConsoleStyle.setBounds(170, 446, 460, 80);
     uiTab.add(tpGtpConsoleStyle);
 
-    // setBoardSize();
+    setBoardSize();
     setShowMoveNumber();
-    //   chkPanelUI.setSelected(Lizzie.config.panelUI);
+    setShowWinrateSide();
+    chkShowName.setSelected(Lizzie.config.showNameInBoard);
+    chkAlwaysShowBlackWinrate.setSelected(
+        Lizzie.config.uiConfig.getBoolean("win-rate-always-black"));
+    chkAlwaysOnTop.setSelected(Lizzie.frame.isAlwaysOnTop());
     // txtMinPlayoutRatioForStats.setText(String.valueOf(Lizzie.config.minPlayoutRatioForStats));
     chkShowCaptured.setSelected(Lizzie.config.showCaptured);
     chkShowWinrate.setSelected(Lizzie.config.showWinrate);
@@ -1199,9 +1246,13 @@ public class ConfigDialog2 extends JDialog {
     chkShowBlunderBar.setSelected(Lizzie.config.showBlunderBar);
     // chkDynamicWinrateGraphWidth.setSelected(Lizzie.config.dynamicWinrateGraphWidth);
     chkAppendWinrateToComment.setSelected(Lizzie.config.appendWinrateToComment);
+    chkShowSuggLabel.setSelected(Lizzie.config.showSuggestionOrder);
+    chkShowSuggReverseColor.setSelected(Lizzie.config.showSuggestionMaxRed);
+    chkShowVairationsOnMouse.setSelected(Lizzie.config.showSuggestionVaritions);
+    chkShowVairationsOnMouseNoRefresh.setSelected(Lizzie.config.noRefreshOnMouseMove);
     //  chkHoldBestMovesToSgf.setSelected(Lizzie.config.holdBestMovesToSgf);
     //  chkShowBestMovesByHold.setSelected(Lizzie.config.showBestMovesByHold);
-    chkColorByWinrateInsteadOfVisits.setSelected(Lizzie.config.colorByWinrateInsteadOfVisits);
+    // chkColorByWinrateInsteadOfVisits.setSelected(Lizzie.config.colorByWinrateInsteadOfVisits);
     sldBoardPositionProportion.setValue(Lizzie.config.boardPositionProportion);
     txtLimitBestMoveNum.setText(String.valueOf(Lizzie.config.limitMaxSuggestion));
     txtLimitBranchLength.setText(String.valueOf(Lizzie.config.limitBranchLength));
@@ -1924,15 +1975,8 @@ public class ConfigDialog2 extends JDialog {
   }
 
   private void applyChange() {
-    //    int[] size = getBoardSize();
-    //    Lizzie.board.reopen(size[0], size[1]);
-    //    try {
-    //      Lizzie.engineManager.refresh();
-    //    } catch (JSONException e) {
-    //      e.printStackTrace();
-    //    } catch (IOException e) {
-    //      e.printStackTrace();
-    //    }
+    int[] size = getBoardSize();
+    Lizzie.board.reopen(size[0], size[1]);
   }
 
   private Integer txtFieldIntValue(JTextField txt) {
@@ -2207,67 +2251,67 @@ public class ConfigDialog2 extends JDialog {
   //    return true;
   //  }
 
-  //  private void setBoardSize() {
-  //    int size = Lizzie.config.uiConfig.optInt("board-size", 19);
-  //    int width = Lizzie.config.uiConfig.optInt("board-width", size);
-  //    int height = Lizzie.config.uiConfig.optInt("board-height", size);
-  //    size = width == height ? width : 0;
-  //    txtBoardWidth.setEnabled(false);
-  //    txtBoardHeight.setEnabled(false);
-  //    switch (size) {
-  //      case 19:
-  //        rdoBoardSize19.setSelected(true);
-  //        break;
-  //      case 13:
-  //        rdoBoardSize13.setSelected(true);
-  //        break;
-  //      case 9:
-  //        rdoBoardSize9.setSelected(true);
-  //        break;
-  //      case 7:
-  //        rdoBoardSize7.setSelected(true);
-  //        break;
-  //      case 5:
-  //        rdoBoardSize5.setSelected(true);
-  //        break;
-  //      case 4:
-  //        rdoBoardSize4.setSelected(true);
-  //        break;
-  //      default:
-  //        txtBoardWidth.setText(String.valueOf(width));
-  //        txtBoardHeight.setText(String.valueOf(height));
-  //        rdoBoardSizeOther.setSelected(true);
-  //        txtBoardWidth.setEnabled(true);
-  //        txtBoardHeight.setEnabled(true);
-  //        break;
-  //    }
-  //  }
-  //
-  //  private int[] getBoardSize() {
-  //    if (rdoBoardSize19.isSelected()) {
-  //      return new int[] {19, 19};
-  //    } else if (rdoBoardSize13.isSelected()) {
-  //      return new int[] {13, 13};
-  //    } else if (rdoBoardSize9.isSelected()) {
-  //      return new int[] {9, 9};
-  //    } else if (rdoBoardSize7.isSelected()) {
-  //      return new int[] {7, 7};
-  //    } else if (rdoBoardSize5.isSelected()) {
-  //      return new int[] {5, 5};
-  //    } else if (rdoBoardSize4.isSelected()) {
-  //      return new int[] {4, 4};
-  //    } else {
-  //      int width = Integer.parseInt(txtBoardWidth.getText().trim());
-  //      if (width < 2) {
-  //        width = 19;
-  //      }
-  //      int height = Integer.parseInt(txtBoardHeight.getText().trim());
-  //      if (height < 2) {
-  //        height = 19;
-  //      }
-  //      return new int[] {width, height};
-  //    }
-  //  }
+  private void setBoardSize() {
+    int size = Lizzie.config.uiConfig.optInt("board-size", 19);
+    int width = Lizzie.config.uiConfig.optInt("board-width", size);
+    int height = Lizzie.config.uiConfig.optInt("board-height", size);
+    size = width == height ? width : 0;
+    txtBoardWidth.setEnabled(false);
+    txtBoardHeight.setEnabled(false);
+    switch (size) {
+      case 19:
+        rdoBoardSize19.setSelected(true);
+        break;
+      case 13:
+        rdoBoardSize13.setSelected(true);
+        break;
+      case 9:
+        rdoBoardSize9.setSelected(true);
+        break;
+      case 7:
+        rdoBoardSize7.setSelected(true);
+        break;
+      case 5:
+        rdoBoardSize5.setSelected(true);
+        break;
+      case 4:
+        rdoBoardSize4.setSelected(true);
+        break;
+      default:
+        txtBoardWidth.setText(String.valueOf(width));
+        txtBoardHeight.setText(String.valueOf(height));
+        rdoBoardSizeOther.setSelected(true);
+        txtBoardWidth.setEnabled(true);
+        txtBoardHeight.setEnabled(true);
+        break;
+    }
+  }
+
+  private int[] getBoardSize() {
+    if (rdoBoardSize19.isSelected()) {
+      return new int[] {19, 19};
+    } else if (rdoBoardSize13.isSelected()) {
+      return new int[] {13, 13};
+    } else if (rdoBoardSize9.isSelected()) {
+      return new int[] {9, 9};
+    } else if (rdoBoardSize7.isSelected()) {
+      return new int[] {7, 7};
+    } else if (rdoBoardSize5.isSelected()) {
+      return new int[] {5, 5};
+    } else if (rdoBoardSize4.isSelected()) {
+      return new int[] {4, 4};
+    } else {
+      int width = Integer.parseInt(txtBoardWidth.getText().trim());
+      if (width < 2) {
+        width = 19;
+      }
+      int height = Integer.parseInt(txtBoardHeight.getText().trim());
+      if (height < 2) {
+        height = 19;
+      }
+      return new int[] {width, height};
+    }
+  }
 
   private void setShowMoveNumber() {
     txtShowMoveNumber.setEnabled(false);
@@ -2281,6 +2325,14 @@ public class ConfigDialog2 extends JDialog {
       }
     } else {
       rdoShowMoveNumberNo.setSelected(true);
+    }
+  }
+
+  private void setShowWinrateSide() {
+    if (Lizzie.frame.winrateGraph.mode == 0) {
+      rdoShowWinrateBlack.setSelected(true);
+    } else {
+      rdoShowWinrateBoth.setSelected(true);
     }
   }
 
@@ -2543,13 +2595,18 @@ public class ConfigDialog2 extends JDialog {
       // JSONArray preloads = new JSONArray();
       // Arrays.asList(chkPreloads).forEach(t -> preloads.put(t.isSelected()));
       // leelazConfig.put("engine-preload-list", preloads);
-      // int[] size = getBoardSize();
-      // if (size[0] == size[1]) {
-      //   Lizzie.config.uiConfig.put("board-size", size[0]);
-      // }
-      // Lizzie.config.uiConfig.put("board-width", size[0]);
-      // Lizzie.config.uiConfig.put("board-height", size[1]);
-      //      Lizzie.config.uiConfig.putOpt("panel-ui", chkPanelUI.isSelected());
+      int[] size = getBoardSize();
+      if (size[0] == size[1]) {
+        Lizzie.config.uiConfig.put("board-size", size[0]);
+      }
+      Lizzie.config.uiConfig.put("board-width", size[0]);
+      Lizzie.config.uiConfig.put("board-height", size[1]);
+      Lizzie.config.uiConfig.putOpt("show-name-in-board", chkShowName.isSelected());
+      Lizzie.config.showNameInBoard = chkShowName.isSelected();
+      Lizzie.frame.setAlwaysOnTop(chkAlwaysOnTop.isSelected());
+      Lizzie.config.uiConfig.put("mains-always-ontop", chkAlwaysOnTop.isSelected());
+
+      Lizzie.config.uiConfig.put("win-rate-always-black", chkAlwaysShowBlackWinrate.isSelected());
       //      Lizzie.config.minPlayoutRatioForStats =
       // Utils.txtFieldDoubleValue(txtMinPlayoutRatioForStats);
       //      Lizzie.config.uiConfig.put(
@@ -2576,6 +2633,8 @@ public class ConfigDialog2 extends JDialog {
       Lizzie.config.uiConfig.put("show-move-number", Lizzie.config.showMoveNumber);
       Lizzie.config.uiConfig.put("only-last-move-number", Lizzie.config.onlyLastMoveNumber);
 
+      if (this.rdoShowWinrateBlack.isSelected()) Lizzie.frame.winrateGraph.mode = 0;
+      if (this.rdoShowWinrateBoth.isSelected()) Lizzie.frame.winrateGraph.mode = 1;
       Lizzie.config.showBlunderBar = chkShowBlunderBar.isSelected();
       Lizzie.config.uiConfig.putOpt("show-blunder-bar", Lizzie.config.showBlunderBar);
       //   Lizzie.config.dynamicWinrateGraphWidth = chkDynamicWinrateGraphWidth.isSelected();
@@ -2584,13 +2643,25 @@ public class ConfigDialog2 extends JDialog {
       Lizzie.config.appendWinrateToComment = chkAppendWinrateToComment.isSelected();
       Lizzie.config.uiConfig.putOpt(
           "append-winrate-to-comment", Lizzie.config.appendWinrateToComment);
+      Lizzie.config.showSuggestionOrder = chkShowSuggLabel.isSelected();
+      Lizzie.config.uiConfig.putOpt("show-suggestion-order", Lizzie.config.showSuggestionOrder);
+      Lizzie.config.showSuggestionMaxRed = chkShowSuggReverseColor.isSelected();
+      Lizzie.config.uiConfig.putOpt("show-suggestion-maxred", Lizzie.config.showSuggestionMaxRed);
+
+      Lizzie.config.showSuggestionVaritions = chkShowVairationsOnMouse.isSelected();
+      Lizzie.config.uiConfig.putOpt(
+          "show-suggestion-varitions", Lizzie.config.showSuggestionVaritions);
+
+      Lizzie.config.noRefreshOnMouseMove = chkShowVairationsOnMouseNoRefresh.isSelected();
+      Lizzie.config.uiConfig.putOpt("norefresh-onmouse-move", Lizzie.config.noRefreshOnMouseMove);
       //   Lizzie.config.holdBestMovesToSgf = chkHoldBestMovesToSgf.isSelected();
       //    Lizzie.config.uiConfig.putOpt("hold-bestmoves-to-sgf",
       // Lizzie.config.holdBestMovesToSgf);
       //   Lizzie.config.showBestMovesByHold = chkShowBestMovesByHold.isSelected();
       //     Lizzie.config.uiConfig.putOpt("show-bestmoves-by-hold",
       // Lizzie.config.showBestMovesByHold);
-      Lizzie.config.colorByWinrateInsteadOfVisits = chkColorByWinrateInsteadOfVisits.isSelected();
+      //    Lizzie.config.colorByWinrateInsteadOfVisits =
+      // chkColorByWinrateInsteadOfVisits.isSelected();
       Lizzie.config.uiConfig.putOpt(
           "color-by-winrate-instead-of-visits", Lizzie.config.colorByWinrateInsteadOfVisits);
       Lizzie.config.boardPositionProportion = sldBoardPositionProportion.getValue();
@@ -2615,11 +2686,12 @@ public class ConfigDialog2 extends JDialog {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    Lizzie.frame.refresh();
   }
 
   public void switchTab(int index) {
     tabbedPane.setSelectedIndex(index);
-    if (index == 0) {
+    if (index == 1) {
       Timer timer = new Timer();
       timer.schedule(
           new TimerTask() {

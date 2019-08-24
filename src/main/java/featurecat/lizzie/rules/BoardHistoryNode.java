@@ -277,9 +277,11 @@ public class BoardHistoryNode {
   private void clearAfterMove() {
     if (Lizzie.frame.toolbar.chkAutoSub.isSelected()) {
       Lizzie.frame.toolbar.displayedSubBoardBranchLength = 1;
+      Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(1);
       Lizzie.frame.subBoardRenderer.wheeled = false;
+    } else {
+      Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(-2);
     }
-    Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(-2);
     Lizzie.frame.subBoardRenderer.bestmovesNum = 0;
   }
   /** @return data stored on this node */

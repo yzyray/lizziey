@@ -1028,8 +1028,7 @@ public boolean startAutoAna=false;
 				{
 					
 						String autoSavePng=  path + "\\" + fileOtherName + "_已分析_"+df+".png";
-						Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng);
-					
+						Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng);					
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -1057,7 +1056,12 @@ public boolean startAutoAna=false;
 	             msg.setMessage( "批量棋谱已全部分析完毕,棋谱保存在"+path);
 	             msg.setVisible(true);
             	}
+				Lizzie.frame.Batchfiles = new ArrayList<File>();
+				Lizzie.frame.BatchAnaNum=0;
 				Lizzie.frame.addInput();
+				if(Lizzie.frame.analysisTable!=null&&Lizzie.frame.analysisTable.frame.isVisible())
+				{Lizzie.frame.analysisTable.refreshTable();
+				}			
 				return;
 			}
 		}

@@ -51,6 +51,10 @@ public class BoardRenderer {
   public Optional<Branch> branchOpt = Optional.empty();
   private List<MoveData> bestMoves;
 
+  private boolean isShowingBranch = false;
+  private String mouseOverCoords = "";
+  private Branch branch;
+
   private BufferedImage cachedBackgroundImage = emptyImage;
   private boolean cachedBackgroundImageHasCoordinatesEnabled = false;
   private int cachedX, cachedY;
@@ -760,24 +764,29 @@ public class BoardRenderer {
       return;
     }
     List<String> variation = suggestedMove.get().variation;
-    Branch branch = null;
-    if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove)
-      branch =
-          new Branch(
-              Lizzie.board,
-              variation,
-              true,
-              this.displayedBranchLength > 0 ? displayedBranchLength : 199);
-    else
-      branch =
-          new Branch(
-              Lizzie.board,
-              variation,
-              reverseBestmoves,
-              this.displayedBranchLength > 0 ? displayedBranchLength : 199);
+    if (!Lizzie.config.noRefreshOnMouseMove
+        || (!isShowingBranch || !mouseOverCoords.equals(suggestedMove.get().coordinate))) {
+      branch = null;
+      if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove)
+        branch =
+            new Branch(
+                Lizzie.board,
+                variation,
+                true,
+                this.displayedBranchLength > 0 ? displayedBranchLength : 199);
+      else
+        branch =
+            new Branch(
+                Lizzie.board,
+                variation,
+                reverseBestmoves,
+                this.displayedBranchLength > 0 ? displayedBranchLength : 199);
+      mouseOverCoords = suggestedMove.get().coordinate;
+    }
     branchOpt = Optional.of(branch);
     variationOpt = Optional.of(variation);
     showingBranch = true;
+    isShowingBranch = true;
 
     g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
 
@@ -2332,6 +2341,12 @@ public class BoardRenderer {
 
   public void startNormalBoard() {
     setDisplayedBranchLength(SHOW_NORMAL_BOARD);
+    Optional<Branch> branchOpt = Optional.empty();
+  }
+
+  public void clearBranch() {
+    isShowingBranch = false;
+    showingBranch = false;
   }
 
   public boolean isInside(int x1, int y1) {

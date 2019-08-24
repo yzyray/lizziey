@@ -575,7 +575,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_X:
-        if (controlIsPressed(e)) {
+        if (e.isShiftDown()) {
+          Lizzie.frame.openConfigDialog2(0);
+        } else if (controlIsPressed(e)) {
           Lizzie.frame.openConfigDialog();
         } else {
           if (!Lizzie.frame.showControls) {
@@ -696,7 +698,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_A:
-        if (e.isAltDown() || e.isControlDown()) {
+        if (e.isAltDown()) {
+          AutoPlay autoPlay = new AutoPlay();
+          autoPlay.setVisible(true);
+        } else if (e.isControlDown()) {
           Lizzie.frame.openAvoidMoveDialog();
         } else {
           shouldDisableAnalysis = false;

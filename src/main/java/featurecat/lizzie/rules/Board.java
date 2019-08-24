@@ -1815,9 +1815,11 @@ public class Board implements LeelazListener {
   private void clearAfterMove() {
     if (Lizzie.frame.toolbar.chkAutoSub.isSelected()) {
       Lizzie.frame.toolbar.displayedSubBoardBranchLength = 1;
+      Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(1);
       Lizzie.frame.subBoardRenderer.wheeled = false;
+    } else {
+      Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(-2);
     }
-    Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(-2);
     Lizzie.frame.subBoardRenderer.bestmovesNum = 0;
     Lizzie.frame.boardRenderer.removedrawmovestone();
     Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;

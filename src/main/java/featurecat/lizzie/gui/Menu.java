@@ -520,9 +520,28 @@ public class Menu extends MenuBar {
     Suggestions.add(alwaysBlack);
 
     final JCheckBoxMenuItem isOnmouse = new JCheckBoxMenuItem();
-    isOnmouse.setText("鼠标所指推荐点显示变化图");
+    isOnmouse.setText("鼠标悬停显示变化图");
     isOnmouse.addActionListener(new ItemListeneryzy());
     Suggestions.add(isOnmouse);
+
+    final JCheckBoxMenuItem noRefreshOnMouse = new JCheckBoxMenuItem();
+    noRefreshOnMouse.setText("鼠标悬停显示变化图时,变化图不刷新");
+    Suggestions.add(noRefreshOnMouse);
+
+    noRefreshOnMouse.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.noRefreshOnMouseMove = !Lizzie.config.noRefreshOnMouseMove;
+            Lizzie.config.uiConfig.put(
+                "norefresh-onmouse-move", Lizzie.config.noRefreshOnMouseMove);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
 
     final JCheckBoxMenuItem blunder = new JCheckBoxMenuItem();
     blunder.setText("显示柱状失误条");
@@ -821,6 +840,8 @@ public class Menu extends MenuBar {
             else alwaysBlack.setState(false);
             if (Lizzie.config.showSuggestionVaritions) isOnmouse.setState(true);
             else isOnmouse.setState(false);
+            if (Lizzie.config.noRefreshOnMouseMove) noRefreshOnMouse.setState(true);
+            else noRefreshOnMouse.setState(false);
             if (Lizzie.frame.winrateGraph.mode == 1) {
               winratemode1.setState(true);
               winratemode0.setState(false);
@@ -1187,6 +1208,17 @@ public class Menu extends MenuBar {
     // aboutItem.setMnemonic('A');
     anaItem.addActionListener(new ItemListeneryzy());
     analyMenu.add(anaItem);
+
+    final JMenuItem autoPlayItem = new JMenuItem();
+    autoPlayItem.setText("自动播放(ALT+A)");
+    autoPlayItem.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            AutoPlay autoPlay = new AutoPlay();
+            autoPlay.setVisible(true);
+          }
+        });
+    analyMenu.add(autoPlayItem);
 
     final JMenuItem autoanItem = new JMenuItem();
     autoanItem.setText("自动分析(A)");
@@ -1963,6 +1995,22 @@ public class Menu extends MenuBar {
           }
         });
 
+    final JCheckBoxMenuItem autoPlay = new JCheckBoxMenuItem("自动播放");
+    chooseButton.add(autoPlay);
+    autoPlay.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.autoPlay = !Lizzie.config.autoPlay;
+            Lizzie.config.uiConfig.put("autoPlay", Lizzie.config.autoPlay);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
     chooseButton.addMenuListener(
         new MenuListener() {
 
@@ -2004,6 +2052,8 @@ public class Menu extends MenuBar {
             else move.setState(false);
             if (Lizzie.config.coords) coords.setState(true);
             else coords.setState(false);
+            if (Lizzie.config.autoPlay) autoPlay.setState(true);
+            else autoPlay.setState(false);
           }
 
           @Override
@@ -2079,13 +2129,23 @@ public class Menu extends MenuBar {
           }
         });
 
+    final JMenuItem allConfig = new JMenuItem("界面(Shift+X)");
+    settings.add(allConfig);
+
+    allConfig.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.openConfigDialog2(0);
+          }
+        });
+
     final JMenuItem theme = new JMenuItem("主题");
     settings.add(theme);
 
     theme.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.frame.openConfigDialog2(0);
+            Lizzie.frame.openConfigDialog2(1);
           }
         });
 
@@ -3184,7 +3244,7 @@ public class Menu extends MenuBar {
         }
         return;
       }
-      if (menuItem.getText().startsWith("鼠标所指")) {
+      if (menuItem.getText().startsWith("鼠标悬停")) {
         Lizzie.config.showSuggestionVaritions = !Lizzie.config.showSuggestionVaritions;
         Lizzie.config.uiConfig.put(
             "show-suggestion-varitions", Lizzie.config.showSuggestionVaritions);

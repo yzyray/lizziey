@@ -67,6 +67,8 @@ public class BottomToolbar extends JPanel {
 
   JButton rightMove;
   JButton leftMove;
+
+  JButton autoPlay;
   public JButton detail;
   public SetKomi setkomi;
 
@@ -265,6 +267,7 @@ public class BottomToolbar extends JPanel {
     komi = new JButton("贴目");
     move = new JButton("手数");
     coords = new JButton("坐标");
+    autoPlay = new JButton("自动播放");
 
     iconUp = new ImageIcon();
 
@@ -320,6 +323,7 @@ public class BottomToolbar extends JPanel {
     buttonPane.add(komi);
     buttonPane.add(move);
     buttonPane.add(coords);
+    buttonPane.add(autoPlay);
 
     rightMove.setVisible(false);
     leftMove.setVisible(false);
@@ -350,7 +354,9 @@ public class BottomToolbar extends JPanel {
     rightMove.setFocusable(false);
     leftMove.setFocusable(false);
     badMoves.setFocusable(false);
+    autoPlay.setFocusable(false);
 
+    autoPlay.setMargin(new Insets(0, 0, 0, 0));
     badMoves.setMargin(new Insets(0, 0, 0, 0));
     firstButton.setMargin(new Insets(0, 0, 0, 0));
     lastButton.setMargin(new Insets(0, 0, 0, 0));
@@ -379,6 +385,7 @@ public class BottomToolbar extends JPanel {
     rightMove.setMargin(new Insets(0, 0, 0, 0));
     leftMove.setMargin(new Insets(0, 0, 0, 0));
 
+    autoPlay.setSize(60, 26);
     badMoves.setSize(60, 26);
     liveButton.setSize(40, 26);
     kataEstimate.setSize(60, 26);
@@ -499,6 +506,14 @@ public class BottomToolbar extends JPanel {
           public void actionPerformed(ActionEvent e) {
             // Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live", "弈客直播");
             yike.show(Lizzie.frame.toolbar, liveButton.getX() + 10, liveButton.getY() - 72);
+          }
+        });
+
+    autoPlay.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            AutoPlay autoPlay = new AutoPlay();
+            autoPlay.setVisible(true);
           }
         });
 
@@ -1068,35 +1083,7 @@ public class BottomToolbar extends JPanel {
           @Override
           public void actionPerformed(ActionEvent e) {
             // TBD
-            if (chkAutoMain.isSelected()) {
-              Runnable runnable =
-                  new Runnable() {
-                    public void run() {
-                      int time = -1;
-                      try {
-                        time = 1000 * Integer.parseInt(txtAutoMain.getText().replace(" ", ""));
-                      } catch (NumberFormatException err) {
-                      }
-                      if (time <= 0) {
-                        chkAutoMain.setSelected(false);
-                        return;
-                      }
-                      while (Lizzie.board.nextMove() && chkAutoMain.isSelected())
-                        try {
-                          try {
-                            time = 1000 * Integer.parseInt(txtAutoMain.getText().replace(" ", ""));
-                          } catch (NumberFormatException err) {
-                          }
-                          Thread.sleep(time);
-                        } catch (InterruptedException e) {
-                          e.printStackTrace();
-                        }
-                      chkAutoMain.setSelected(false);
-                    }
-                  };
-              Thread thread = new Thread(runnable);
-              thread.start();
-            }
+            autoPlayMain();
 
             setTxtUnfocuse();
           }
@@ -1106,41 +1093,7 @@ public class BottomToolbar extends JPanel {
           @Override
           public void actionPerformed(ActionEvent e) {
             // TBD
-            if (chkAutoSub.isSelected()) {
-              Runnable runnable =
-                  new Runnable() {
-                    public void run() {
-                      int time = -1;
-                      try {
-                        time = Integer.parseInt(txtAutoSub.getText().replace(" ", ""));
-                      } catch (NumberFormatException err) {
-                      }
-                      if (time <= 0) {
-                        chkAutoSub.setSelected(false);
-                        return;
-                      }
-                      while (chkAutoSub.isSelected()) {
-                        if (!Lizzie.frame.subBoardRenderer.wheeled)
-                          Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(
-                              displayedSubBoardBranchLength);
-                        try {
-                          try {
-                            time = Integer.parseInt(txtAutoSub.getText().replace(" ", ""));
-                          } catch (NumberFormatException err) {
-                          }
-                          Thread.sleep(time);
-                        } catch (InterruptedException e) {
-                          e.printStackTrace();
-                        }
-                        displayedSubBoardBranchLength = displayedSubBoardBranchLength + 1;
-                      }
-                    }
-                  };
-              Thread thread = new Thread(runnable);
-              thread.start();
-            } else {
-              Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(-2);
-            }
+            autoPlaySub();
 
             setTxtUnfocuse();
           }
@@ -3122,6 +3075,10 @@ public class BottomToolbar extends JPanel {
       w = w - (txtMoveNumber.getWidth() - 1);
       txtMoveNumber.setLocation(w, 1);
     }
+    if (autoPlay.isVisible()) {
+      w = w - (autoPlay.getWidth() - 1);
+      autoPlay.setLocation(w, 0);
+    }
     if (coords.isVisible()) {
       w = w - (coords.getWidth() - 1);
       coords.setLocation(w, 0);
@@ -3230,6 +3187,76 @@ public class BottomToolbar extends JPanel {
     else move.setVisible(false);
     if (Lizzie.config.coords) coords.setVisible(true);
     else coords.setVisible(false);
+    if (Lizzie.config.autoPlay) autoPlay.setVisible(true);
+    else autoPlay.setVisible(false);
+  }
+
+  public void autoPlayMain() {
+    Runnable runnable =
+        new Runnable() {
+          public void run() {
+            int time = -1;
+            try {
+              time = 1000 * Integer.parseInt(txtAutoMain.getText().replace(" ", ""));
+            } catch (NumberFormatException err) {
+            }
+            if (time <= 0) {
+              chkAutoMain.setSelected(false);
+              return;
+            }
+            while (Lizzie.board.nextMove() && chkAutoMain.isSelected())
+              try {
+                try {
+                  time = 1000 * Integer.parseInt(txtAutoMain.getText().replace(" ", ""));
+                } catch (NumberFormatException err) {
+                }
+                Thread.sleep(time);
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+            chkAutoMain.setSelected(false);
+          }
+        };
+    Thread thread = new Thread(runnable);
+    thread.start();
+  }
+
+  public void autoPlaySub() {
+    if (chkAutoSub.isSelected()) {
+      Runnable runnable =
+          new Runnable() {
+            public void run() {
+              int time = -1;
+              try {
+                time = Integer.parseInt(txtAutoSub.getText().replace(" ", ""));
+              } catch (NumberFormatException err) {
+              }
+              if (time <= 0) {
+                chkAutoSub.setSelected(false);
+                return;
+              }
+              while (chkAutoSub.isSelected()) {
+                if (!Lizzie.frame.subBoardRenderer.wheeled)
+                  Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(
+                      displayedSubBoardBranchLength);
+                try {
+                  try {
+                    time = Integer.parseInt(txtAutoSub.getText().replace(" ", ""));
+                  } catch (NumberFormatException err) {
+                  }
+                  Thread.sleep(time);
+                } catch (InterruptedException e) {
+                  e.printStackTrace();
+                }
+                displayedSubBoardBranchLength = displayedSubBoardBranchLength + 1;
+              }
+            }
+          };
+      Thread thread = new Thread(runnable);
+      thread.start();
+    } else {
+      Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(-2);
+    }
   }
 
   public void reSetButtonLocation() {
@@ -3329,7 +3356,10 @@ public class BottomToolbar extends JPanel {
         coords.setLocation(x, 0);
         x = x + coords.getWidth() - 1;
       }
-
+      if (autoPlay.isVisible()) {
+        autoPlay.setLocation(x, 0);
+        x = x + autoPlay.getWidth() - 1;
+      }
       if (txtMoveNumber.isVisible()) {
         txtMoveNumber.setLocation(x, 1);
         x = x + txtMoveNumber.getWidth() - 1;
