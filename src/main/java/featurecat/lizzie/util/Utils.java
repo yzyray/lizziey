@@ -25,6 +25,8 @@ import javax.swing.JTextField;
 
 public class Utils {
 
+  public static boolean isPlayingSound = false;
+
   public static boolean isBlank(String str) {
     return str == null || str.trim().isEmpty();
   }
@@ -171,8 +173,22 @@ public class Utils {
   }
 
   public static void playVoiceFile() throws Exception {
-    if (!Lizzie.config.playSound || Lizzie.frame.playingSoundNums >= 4) return;
-    Lizzie.frame.playingSoundNums = Lizzie.frame.playingSoundNums + 1;
+    if (isPlayingSound || !Lizzie.config.playSound) return;
+    isPlayingSound = true;
+    Runnable runnable =
+        new Runnable() {
+          public void run() {
+            try {
+              Thread.sleep(100);
+              isPlayingSound = false;
+            } catch (Exception e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+          }
+        };
+    Thread thread = new Thread(runnable);
+    thread.start();
     BoardHistoryNode node = Lizzie.board.getHistory().getCurrentHistoryNode();
     if (node.previous().isPresent()) {
       if (node.getData().blackCaptures > node.previous().get().getData().blackCaptures) {
@@ -189,7 +205,6 @@ public class Utils {
     } else {
       playVoice("\\sound\\Stone.wav");
     }
-    Lizzie.frame.playingSoundNums = Lizzie.frame.playingSoundNums - 1;
     return;
   }
 

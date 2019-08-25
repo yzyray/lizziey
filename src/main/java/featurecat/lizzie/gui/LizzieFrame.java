@@ -228,7 +228,6 @@ public class LizzieFrame extends JFrame {
   public int bowserY = 0;
   public int bowserWidth = 1240;
   public int bowserHeight = 750;
-  public int playingSoundNums = 0;
 
   public boolean isTrying = false;
   ArrayList<Movelist> tryMoveList;
@@ -3178,7 +3177,10 @@ public class LizzieFrame extends JFrame {
               this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
       Graphics2D cg = bImg.createGraphics();
 
-      this.mainPanel.paintAll(cg);
+      try {
+        this.mainPanel.paintAll(cg);
+      } catch (Exception e) {
+      }
       try {
         ImageIO.write(bImg, ext, file);
       } catch (IOException e) {
@@ -3228,7 +3230,10 @@ public class LizzieFrame extends JFrame {
               this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
       Graphics2D cg = bImg.createGraphics();
 
-      this.mainPanel.paintAll(cg);
+      try {
+        this.mainPanel.paintAll(cg);
+      } catch (Exception e) {
+      }
 
       // 截取图片
       Rectangle rect = new Rectangle(x, y, width, height);
@@ -3303,7 +3308,10 @@ public class LizzieFrame extends JFrame {
             this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
     Graphics2D cg = bImg.createGraphics();
 
-    this.mainPanel.paintAll(cg);
+    try {
+      this.mainPanel.paintAll(cg);
+    } catch (Exception e) {
+    }
 
     // 截取图片
     Rectangle rect = new Rectangle(x, y, width, height);
@@ -3330,7 +3338,10 @@ public class LizzieFrame extends JFrame {
             this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
     Graphics2D cg = bImg.createGraphics();
 
-    this.mainPanel.paintAll(cg);
+    try {
+      this.mainPanel.paintAll(cg);
+    } catch (Exception e) {
+    }
 
     // 截取图片
     Rectangle rect = new Rectangle(x, y, width, height);

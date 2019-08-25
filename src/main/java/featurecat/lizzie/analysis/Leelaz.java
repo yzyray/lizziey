@@ -133,6 +133,7 @@ public boolean startAutoAna=false;
 	 Message msg;
 	public boolean playNow=false;
 	private boolean isZen=false;
+	private boolean isInfoLine = false;
 //private int refreshNumber=0;
 	// private boolean isEstimating=true;
 	/**
@@ -652,9 +653,8 @@ public boolean startAutoAna=false;
 						togglePonder();
 					}
 				}
-				if (!this.bestMoves.isEmpty()) {
-					notifyAutoPK();						
-					notifyAutoPlay();	
+				if (!this.bestMoves.isEmpty()) {					
+					isInfoLine=true;
 				}
 				// 临时添加为了解决SSH时的卡顿
 //				else { if(firstNoRespond)
@@ -1268,8 +1268,9 @@ public boolean startAutoAna=false;
 	}
 
 	private void notifyAutoAna() {
+		if (isClosing)
+			return;
 		if (Lizzie.frame.toolbar.isAutoAna) {
-
 			if (Lizzie.frame.toolbar.startAutoAna) {
 				if ((Lizzie.frame.toolbar.firstMove == -1||Lizzie.frame.toolbar.firstMove>=Lizzie.board.getHistory().getMainEnd().getData().moveNumber)&&!Lizzie.board.getHistory().getNext().isPresent()) {
 					Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
@@ -1281,20 +1282,17 @@ public boolean startAutoAna=false;
 					}
 					return;
 				} else {
-					analysed = false;
-					isClosing = false;
-				}
-				setResponseUpToDate();	
+					analysed = false;				
+				}				
 				if(Lizzie.frame.toolbar.firstMove != -1) {
 				if (startAutoAna) {		
 					 Timer timer = new Timer();
 				      timer.schedule(
 				          new TimerTask() {
 				            public void run() {
-				            	Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);
-				            	ponder();
-								setResponseUpToDate();	
-				              this.cancel();
+				            	Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);	
+				            	setResponseUpToDate();	
+				              this.cancel();				              
 				            }
 				          },
 				          50);
@@ -1310,15 +1308,15 @@ public boolean startAutoAna=false;
 						e.printStackTrace();
 					}
 					return;
+				}				
 				}
-				}
+				else {setResponseUpToDate();}
 				Lizzie.frame.toolbar.startAutoAna = false;				
 				
 				
 			}
 			
-			if (isClosing)
-				return;
+		
 			if (Lizzie.board.getHistory().getNext().isPresent()) {
 				if (Lizzie.frame.toolbar.lastMove != -1) {
 					if (Lizzie.frame.toolbar.lastMove < Lizzie.board.getHistory().getData().moveNumber) {
@@ -2739,7 +2737,7 @@ public boolean startAutoAna=false;
 				// c = process.getInputStream().read();
 				line.append((char) c);
 				if ((c == '\n')) {
-					
+					this.isInfoLine=false;
 					if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove && isLoaded) {
 						try {
 							parseLineForGenmovePk(line.toString());
@@ -2751,8 +2749,11 @@ public boolean startAutoAna=false;
 							parseLine(line.toString());
 						} catch (Exception e) {
 						}
-						if(!bestMoves.isEmpty())
-						notifyAutoAna();					
+						if(isInfoLine)
+						{	notifyAutoAna();		
+						notifyAutoPK();						
+						notifyAutoPlay();	
+						}
 					}
 					if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
 						pkResign();
@@ -2777,8 +2778,10 @@ public boolean startAutoAna=false;
 		}
 	}
 
-	private void closeAutoAna() {
+	private void closeAutoAna() {			
 		if (!isClosing) {
+			isClosing=true;
+			nameCmd();
 			Lizzie.frame.toolbar.stopAutoAna();
 			Lizzie.frame.addInput();
 			if (!isSaving) {
@@ -2794,7 +2797,7 @@ public boolean startAutoAna=false;
             	}
 
 			}
-
+			isClosing=false;
 		}
 	}
 
@@ -2898,7 +2901,10 @@ public boolean startAutoAna=false;
 		// Use >= instead of == for avoiding hang-up, though it cannot happen
 		return currentCmdNum >= cmdNumber - 1;
 	}
-
+//	private boolean isResponseUpToDate2() {
+//		// Use >= instead of == for avoiding hang-up, though it cannot happen
+//		return currentCmdNum >= cmdNumber - 2;
+//	}
 	public void setResponseUpToDate() {
 		// Use >= instead of == for avoiding hang-up, though it cannot happen
 		currentCmdNum = cmdNumber-1 ;
