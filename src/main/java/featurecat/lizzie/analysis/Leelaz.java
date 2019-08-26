@@ -134,6 +134,7 @@ public boolean startAutoAna=false;
 	public boolean playNow=false;
 	private boolean isZen=false;
 	private boolean isInfoLine = false;
+	public boolean isSSH = false;
 //private int refreshNumber=0;
 	// private boolean isEstimating=true;
 	/**
@@ -165,6 +166,9 @@ public boolean startAutoAna=false;
 		if (engineCommand.toLowerCase().contains("zen")) {
 			this.isZen = true;
 		}
+		if (engineCommand.toLowerCase().contains("ssh")) {
+			this.isSSH = true;
+		}
 		// maxAnalyzeTimeMillis = MINUTE * config.getInt("max-analyze-time-minutes");
 
 		// command string for starting the engine
@@ -182,8 +186,14 @@ public boolean startAutoAna=false;
 
 	public void updateCommand(String engineCommand) {
 		this.engineCommand = engineCommand;
-		if (engineCommand.contains("main")) {
+		if (engineCommand.toLowerCase().contains("override-version")) {
 			this.isKatago = true;
+		}
+		if (engineCommand.toLowerCase().contains("zen")) {
+			this.isZen = true;
+		}
+		if (engineCommand.toLowerCase().contains("ssh")) {
+			this.isSSH = true;
 		}
 	}
 
@@ -3243,7 +3253,10 @@ public boolean startAutoAna=false;
 			isPondering = true;
 			startPonderTime = System.currentTimeMillis();
 		}
-		sendCommand(String.format("lz-analyze %d %s", Lizzie.config.analyzeUpdateIntervalCentisec, parameters));
+		if(isSSH&&(Lizzie.config.analyzeUpdateIntervalCentisec<30))
+		sendCommand(String.format("lz-analyze %d %s", 30, parameters));
+		else
+			sendCommand(String.format("lz-analyze %d %s", Lizzie.config.analyzeUpdateIntervalCentisec, parameters));		
 		//Lizzie.board.getHistory().getData().tryToClearBestMoves();
 		Lizzie.board.clearbestmoves();
 	}
@@ -3275,6 +3288,9 @@ public boolean startAutoAna=false;
 				else
 					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
 			} else {
+				if(isSSH&&(Lizzie.config.analyzeUpdateIntervalCentisec<30))
+				{sendCommand("lz-analyze 30");}
+				else
 				sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
 			} // until it responds to this, incoming
 				// ponder results are obsolete
@@ -3307,6 +3323,9 @@ public boolean startAutoAna=false;
 				else
 					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
 			} else {
+				if(isSSH&&(Lizzie.config.analyzeUpdateIntervalCentisec<30))
+				{sendCommand("lz-analyze 30");}
+				else
 				sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
 			} // until it responds to this, incoming
 				// ponder results are obsolete
@@ -3327,6 +3346,9 @@ public boolean startAutoAna=false;
 				else
 					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
 			} else {
+				if(isSSH&&(Lizzie.config.analyzeUpdateIntervalCentisec<30))
+				{sendCommand("lz-analyze 30");}
+				else
 				sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
 			} // until it responds to this, incoming
 				// ponder results are obsolete
@@ -3355,6 +3377,9 @@ public boolean startAutoAna=false;
 			if (this.isKatago) {
 				sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
 			} else {
+				if(isSSH&&(Lizzie.config.analyzeUpdateIntervalCentisec<30))
+				{sendCommand("lz-analyze 30");}
+				else
 				sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
 			} // until it responds to this, incoming
 				// ponder results are obsolete
