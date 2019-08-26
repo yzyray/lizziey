@@ -126,7 +126,7 @@ public boolean startAutoAna=false;
 	public boolean isKatago = false;
 	public double scoreMean = 0;
 	public double scoreStdev = 0;
-//	private boolean isCommandLine = false;
+	private boolean isCommandLine = false;
 	public int width = 19;
 	public int height = 19;
 	public boolean firstLoad = false;
@@ -435,10 +435,7 @@ public boolean startAutoAna=false;
 
 	private void parseLineForGenmovePk(String line) {
 		//Lizzie.gtpConsole.addLineforce(line);			
-		if (line.startsWith("=")) {
-			currentCmdNum = currentCmdNum+1;
-			if(currentCmdNum>cmdNumber-1)
-				currentCmdNum=cmdNumber-1;
+		if (line.startsWith("=")) {			
 			String[] params = line.trim().split(" ");
 			//currentCmdNum = Integer.parseInt(params[0].substring(1).trim());
 			if ( Lizzie.frame.toolbar.isEnginePk && params.length == 2) {
@@ -703,23 +700,20 @@ public boolean startAutoAna=false;
 				}
 				isThinking = false;
 
-			} else if (line.startsWith("=") || line.startsWith("?")) {
-				currentCmdNum = currentCmdNum+ 1;
+			} else if (line.startsWith("=")) {			
 //				if (!isLoaded)
 					isLoaded = true;
-					try {
-						trySendCommandFromQueue();
-				} catch (Exception ex) {
-				}
-		if(currentCmdNum>cmdNumber-1)
-			currentCmdNum=cmdNumber-1;
+//					try {
+//						trySendCommandFromQueue();
+//				} catch (Exception ex) {
+//				}	
 				if (isThinking) {
 					canGetGenmoveInfo = true;
 				}
 				String[] params = line.trim().split(" ");
 
-				if (line.startsWith("?") || params.length == 1)
-					return;
+				//if (line.startsWith("?") || params.length == 1)
+				//	return;
 
 				if (isSettingHandicap) {
 					bestMoves = new ArrayList<>();
@@ -1002,13 +996,7 @@ public boolean startAutoAna=false;
 			try {
 				SGFParser.save(Lizzie.board, autoSaveFile.getPath());
 				
-				if(Lizzie.frame.toolbar.chkAnaAutoSave.isSelected())
-				{
-					
-						String autoSavePng= courseFile + "\\" + "AutoSave" + "\\" + df + ".png";	
-						Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng);
-					
-				}
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1036,12 +1024,7 @@ public boolean startAutoAna=false;
 			File autoSaveFile = new File(filename);
 			try {
 				SGFParser.save(Lizzie.board, autoSaveFile.getPath());
-				if(Lizzie.frame.toolbar.chkAnaAutoSave.isSelected())
-				{
-					
-						String autoSavePng=  path + "\\" + fileOtherName + "_已分析_"+df+".png";
-						Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng);					
-				}
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -2877,11 +2860,23 @@ public boolean startAutoAna=false;
 					if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
 						pkResign();
 					line = new StringBuilder();
-					//isCommandLine = false;
+					if(isCommandLine)
+					{
+						currentCmdNum = currentCmdNum+1;
+						if(currentCmdNum>cmdNumber-1)
+							currentCmdNum=cmdNumber-1;
+						try {
+						trySendCommandFromQueue();
+						}
+						catch (Exception e) {
+							
+						}
+					}
+					isCommandLine = false;
 				} 
-//				else if (c == '=') {
-//					isCommandLine = true;
-//				}
+				else if (c == '='||c=='?') {
+					isCommandLine = true;
+				}
 			}
 			// this line will be reached when Leelaz shuts down
 			System.out.println("Leelaz process ended.");
@@ -2903,7 +2898,7 @@ public boolean startAutoAna=false;
 			nameCmd();
 			Lizzie.frame.toolbar.stopAutoAna();
 			Lizzie.frame.addInput();
-			if (!isSaving) {
+			if (!isSaving&&Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()) {
 				isSaving = true;
 				saveAndLoad();				
 			} else {
@@ -3253,10 +3248,7 @@ public boolean startAutoAna=false;
 			isPondering = true;
 			startPonderTime = System.currentTimeMillis();
 		}
-		if(isSSH&&(Lizzie.config.analyzeUpdateIntervalCentisec<30))
-		sendCommand(String.format("lz-analyze %d %s", 30, parameters));
-		else
-			sendCommand(String.format("lz-analyze %d %s", Lizzie.config.analyzeUpdateIntervalCentisec, parameters));		
+			sendCommand(String.format("lz-analyze %d %s", getInterval(), parameters));		
 		//Lizzie.board.getHistory().getData().tryToClearBestMoves();
 		Lizzie.board.clearbestmoves();
 	}
@@ -3284,17 +3276,21 @@ public boolean startAutoAna=false;
 			featurecat.lizzie.gui.RightClickMenu.isforcing = false;
 			if (this.isKatago) {
 				if (Lizzie.config.showKataGoEstimate)
-					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec + " ownership true");
+					sendCommand("kata-analyze " + getInterval() + " ownership true");
 				else
-					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
-			} else {
-				if(isSSH&&(Lizzie.config.analyzeUpdateIntervalCentisec<30))
-				{sendCommand("lz-analyze 30");}
-				else
-				sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+					sendCommand("kata-analyze " + getInterval());
+			} else {				
+				sendCommand("lz-analyze " + getInterval());
 			} // until it responds to this, incoming
 				// ponder results are obsolete
 		}
+	}
+	
+	private int getInterval() {
+		if(isSSH&&(Lizzie.config.analyzeUpdateIntervalCentisec<Lizzie.config.analyzeUpdateIntervalCentisecSSH))
+			return Lizzie.config.analyzeUpdateIntervalCentisecSSH;
+		else
+			return Lizzie.config.analyzeUpdateIntervalCentisec;
 	}
 	
 	public void ponder2() {
@@ -3319,14 +3315,11 @@ public boolean startAutoAna=false;
 			featurecat.lizzie.gui.RightClickMenu.isforcing = false;
 			if (this.isKatago) {
 				if (Lizzie.config.showKataGoEstimate)
-					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec + " ownership true");
+					sendCommand("kata-analyze " + getInterval() + " ownership true");
 				else
-					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+					sendCommand("kata-analyze " + getInterval());
 			} else {
-				if(isSSH&&(Lizzie.config.analyzeUpdateIntervalCentisec<30))
-				{sendCommand("lz-analyze 30");}
-				else
-				sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+				sendCommand("lz-analyze " + getInterval());
 			} // until it responds to this, incoming
 				// ponder results are obsolete
 		}
@@ -3342,14 +3335,11 @@ public boolean startAutoAna=false;
 		
 			if (this.isKatago) {
 				if (Lizzie.config.showKataGoEstimate)
-					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec + " ownership true");
+					sendCommand("kata-analyze " + getInterval() + " ownership true");
 				else
-					sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
-			} else {
-				if(isSSH&&(Lizzie.config.analyzeUpdateIntervalCentisec<30))
-				{sendCommand("lz-analyze 30");}
-				else
-				sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+					sendCommand("kata-analyze " + getInterval());
+			} else {				
+				sendCommand("lz-analyze " + getInterval());
 			} // until it responds to this, incoming
 				// ponder results are obsolete
 		
@@ -3375,12 +3365,9 @@ public boolean startAutoAna=false;
 			featurecat.lizzie.gui.RightClickMenu.move = 0;
 			featurecat.lizzie.gui.RightClickMenu.isforcing = false;
 			if (this.isKatago) {
-				sendCommand("kata-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+				sendCommand("kata-analyze " + getInterval());
 			} else {
-				if(isSSH&&(Lizzie.config.analyzeUpdateIntervalCentisec<30))
-				{sendCommand("lz-analyze 30");}
-				else
-				sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+				sendCommand("lz-analyze " + getInterval());
 			} // until it responds to this, incoming
 				// ponder results are obsolete
 		}

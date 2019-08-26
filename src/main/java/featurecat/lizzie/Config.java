@@ -118,6 +118,7 @@ public class Config {
   public int limitbadplayouts = 0;
   public long maxAnalyzeTimeMillis;
   public int analyzeUpdateIntervalCentisec;
+  public int analyzeUpdateIntervalCentisecSSH;
   public boolean showHeat = false;
   public boolean showHeatAfterCalc = false;
   public String gtpConsoleStyle = "";
@@ -409,7 +410,9 @@ public class Config {
       maxAnalyzeTimeMillis = 9999 * 60 * 1000;
     }
     analyzeUpdateIntervalCentisec =
-        config.getJSONObject("leelaz").getInt("analyze-update-interval-centisec");
+        config.getJSONObject("leelaz").optInt("analyze-update-interval-centisec", 10);
+    analyzeUpdateIntervalCentisecSSH =
+        config.getJSONObject("leelaz").optInt("analyze-update-interval-centisecssh", 50);
     if (theme.fontName() != null) fontName = theme.fontName();
     else fontName = "微软雅黑";
 

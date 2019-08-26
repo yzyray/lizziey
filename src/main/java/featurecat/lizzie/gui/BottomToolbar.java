@@ -981,7 +981,7 @@ public class BottomToolbar extends JPanel {
     chkAnaAutoSave = new JCheckBox();
     anaPanel.add(chkAnaAutoSave);
     chkAnaAutoSave.setBounds(1, 22, 20, 20);
-    lblAnaAutoSave = new JLabel("存胜率图");
+    lblAnaAutoSave = new JLabel("保存棋谱");
     anaPanel.add(lblAnaAutoSave);
     lblAnaAutoSave.setBounds(21, 22, 50, 20);
     chkAnaAutoSave.addActionListener(
@@ -2678,6 +2678,7 @@ public class BottomToolbar extends JPanel {
           Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
           Lizzie.frame.toolbarHeight);
     }
+    if (Lizzie.frame.isBatchAna) chkAnaAutoSave.setSelected(true);
     if (Lizzie.frame.isBatchAna
         && Lizzie.frame.Batchfiles != null
         && Lizzie.frame.Batchfiles.size() > 1) Lizzie.frame.openAnalysisTable();

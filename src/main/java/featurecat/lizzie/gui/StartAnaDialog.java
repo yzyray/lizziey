@@ -81,7 +81,7 @@ public class StartAnaDialog extends JDialog {
   }
 
   private void initContentPanel() {
-    GridLayout gridLayout = new GridLayout(8, 2, 4, 4);
+    GridLayout gridLayout = new GridLayout(7, 2, 4, 4);
     contentPanel.setLayout(gridLayout);
 
     //  checkBoxPlayerIsBlack =
@@ -106,8 +106,8 @@ public class StartAnaDialog extends JDialog {
     contentPanel.add(Lizzie.frame.toolbar.chkAnaBlack);
     contentPanel.add(new JLabel("分析白棋"));
     contentPanel.add(Lizzie.frame.toolbar.chkAnaWhite);
-    contentPanel.add(new JLabel("自动保存胜率图"));
-    contentPanel.add(Lizzie.frame.toolbar.chkAnaAutoSave);
+    //    contentPanel.add(new JLabel("自动保存胜率图"));
+    //    contentPanel.add(Lizzie.frame.toolbar.chkAnaAutoSave);
 
     dialogPane.add(contentPanel, BorderLayout.CENTER);
   }

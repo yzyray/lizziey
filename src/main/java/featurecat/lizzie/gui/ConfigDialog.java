@@ -111,6 +111,7 @@ public class ConfigDialog extends JDialog {
   private JFormattedTextField txtMaxsuggestionmoves;
   private JFormattedTextField txtlimitBranchLength;
   private JFormattedTextField txtAnalyzeUpdateInterval;
+  private JFormattedTextField txtAnalyzeUpdateIntervalSSH;
   private JCheckBox chkPrintEngineLog;
   private JSONObject leelazConfig;
   private JTextField txtBoardSize;
@@ -901,6 +902,28 @@ public class ConfigDialog extends JDialog {
         });
     engineTab.add(txtAnalyzeUpdateInterval);
 
+    JLabel lblAnalyzeUpdateIntervalSSH = new JLabel("SSH分析更新间隔");
+    lblAnalyzeUpdateIntervalSSH.setBounds(331, 350, 157, 16);
+    engineTab.add(lblAnalyzeUpdateIntervalSSH);
+
+    JLabel lblAnalyzeUpdateIntervalCentisecSSH =
+        new JLabel(resourceBundle.getString("LizzieConfig.title.centisecond"));
+    lblAnalyzeUpdateIntervalCentisecSSH.setBounds(538, 350, 82, 16);
+    engineTab.add(lblAnalyzeUpdateIntervalCentisecSSH);
+
+    txtAnalyzeUpdateIntervalSSH =
+        new JFormattedTextField(
+            new InternationalFormatter(nf) {
+              protected DocumentFilter getDocumentFilter() {
+                return filter;
+              }
+
+              private DocumentFilter filter = new DigitOnlyFilter();
+            });
+    txtAnalyzeUpdateIntervalSSH.setColumns(10);
+    txtAnalyzeUpdateIntervalSSH.setBounds(496, 345, 40, 26);
+    engineTab.add(txtAnalyzeUpdateIntervalSSH);
+
     JLabel lblPrintEngineLog =
         new JLabel(resourceBundle.getString("LizzieConfig.title.printEngineLog"));
     lblPrintEngineLog.setBounds(6, 500, 157, 16);
@@ -1062,8 +1085,8 @@ public class ConfigDialog extends JDialog {
         });
 
     txtMaxAnalyzeTime.setText(String.valueOf(leelazConfig.getInt("max-analyze-time-minutes")));
-    txtAnalyzeUpdateInterval.setText(
-        String.valueOf(leelazConfig.getInt("analyze-update-interval-centisec")));
+    txtAnalyzeUpdateInterval.setText(Lizzie.config.analyzeUpdateIntervalCentisec + "");
+    txtAnalyzeUpdateIntervalSSH.setText(Lizzie.config.analyzeUpdateIntervalCentisecSSH + "");
     txtMaxGameThinkingTime.setText(
         String.valueOf(leelazConfig.getInt("max-game-thinking-time-seconds")));
     txtMaxsuggestionmoves.setText(String.valueOf(leelazConfig.getInt("limit-max-suggestion")));
@@ -1179,7 +1202,10 @@ public class ConfigDialog extends JDialog {
       }
       leelazConfig.putOpt(
           "analyze-update-interval-centisec", txtFieldValue(txtAnalyzeUpdateInterval));
+      leelazConfig.putOpt(
+          "analyze-update-interval-centisecssh", txtFieldValue(txtAnalyzeUpdateIntervalSSH));
       Lizzie.config.analyzeUpdateIntervalCentisec = txtFieldValue(txtAnalyzeUpdateInterval);
+      Lizzie.config.analyzeUpdateIntervalCentisecSSH = txtFieldValue(txtAnalyzeUpdateIntervalSSH);
       leelazConfig.putOpt("max-game-thinking-time-seconds", txtFieldValue(txtMaxGameThinkingTime));
       leelazConfig.putOpt("print-comms", chkPrintEngineLog.isSelected());
       leelazConfig.putOpt("show-lcb-winrate", getShowLcbWinrate());
