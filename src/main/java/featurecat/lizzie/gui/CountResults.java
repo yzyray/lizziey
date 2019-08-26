@@ -39,7 +39,7 @@ public class CountResults extends JDialog {
     super(owner);
     this.add(buttonpanel, BorderLayout.SOUTH);
     this.setResizable(false);
-
+    this.setTitle("形式判断");
     this.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
@@ -62,12 +62,12 @@ public class CountResults extends JDialog {
     boolean persisted = Lizzie.config.persistedUi != null;
     if (persisted
         && Lizzie.config.persistedUi.optJSONArray("movecount-position") != null
-        && Lizzie.config.persistedUi.optJSONArray("movecount-position").length() == 4) {
+        && Lizzie.config.persistedUi.optJSONArray("movecount-position").length() == 2) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("movecount-position");
-      setBounds(pos.getInt(0), pos.getInt(1), pos.getInt(2), pos.getInt(3));
+      setBounds(pos.getInt(0), pos.getInt(1), 240, 180);
     } else {
       Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-      setBounds(0, (int) screensize.getHeight() / 2 - 125, 340, 260); // 240
+      setBounds(0, (int) screensize.getHeight() / 2 - 125, 240, 180); // 240
     }
 
     try {
@@ -118,9 +118,9 @@ public class CountResults extends JDialog {
             iscounted = !iscounted;
           }
         });
-    button.setBounds(0, 240, 100, 20);
-    button2.setBounds(100, 240, 100, 20);
-    buttonpanel.setBounds(0, 240, 100, 20);
+    button.setBounds(0, 240, 60, 20);
+    button2.setBounds(100, 240, 60, 20);
+    buttonpanel.setBounds(0, 240, 60, 20);
     buttonpanel.add(button);
     buttonpanel.add(button2);
   }
@@ -175,10 +175,10 @@ public class CountResults extends JDialog {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setColor(Color.BLACK);
     g2.setStroke(new BasicStroke(2f));
-    g2.fillOval(50, 100, 32, 32);
+    g2.fillOval(30, 55, 20, 20);
     // g2.drawOval(260,50, 32, 32);
     g2.setColor(Color.WHITE);
-    g2.fillOval(260, 100, 32, 32);
+    g2.fillOval(170, 55, 20, 20);
     g2.setColor(Color.BLACK);
     Font allFont;
 
@@ -193,28 +193,28 @@ public class CountResults extends JDialog {
     } catch (IOException | FontFormatException e) {
       e.printStackTrace();
     }
-    allFont = new Font("allFont", Font.BOLD, 40);
+    allFont = new Font("allFont", Font.BOLD, 25);
     g2.setFont(allFont);
     if (allblackcounts >= allwhitecounts) {
       g2.setColor(Color.BLACK);
-      g2.drawString("黑", 45, 75);
+      g2.drawString("黑", 25, 50);
     } else {
       g2.setColor(Color.WHITE);
-      g2.drawString("白", 45, 75);
+      g2.drawString("白", 25, 50);
     }
-    allFont = new Font("allFont", Font.BOLD, 25);
-    g2.setFont(allFont);
-    g2.drawString("盘面领先:    " + Math.abs(allblackcounts - allwhitecounts) + "目", 115, 70);
     allFont = new Font("allFont", Font.BOLD, 20);
+    g2.setFont(allFont);
+    g2.drawString("  盘面领先:  " + Math.abs(allblackcounts - allwhitecounts) + "目", 53, 50);
+    allFont = new Font("allFont", Font.BOLD, 15);
     g2.setColor(Color.BLACK);
     g2.setFont(allFont);
-    g2.drawString("目数", 145, 170);
-    g2.drawString("提子", 145, 212);
-    g2.drawString(allblackcounts + "", 53, 170); // 黑目数
-    g2.drawString(blackEat + "", 53, 212); // 黑提子
+    g2.drawString("目数", 95, 100);
+    g2.drawString("提子", 95, 130);
+    g2.drawString(allblackcounts + "", 32, 100); // 黑目数
+    g2.drawString(blackEat + "", 32, 130); // 黑提子
     g2.setColor(Color.WHITE);
-    g2.drawString(allwhitecounts + "", 265, 170); // 白目数
-    g2.drawString(whiteEat + "", 265, 212); // 白提子
+    g2.drawString(allwhitecounts + "", 172, 100); // 白目数
+    g2.drawString(whiteEat + "", 172, 130); // 白提子
     button.repaint();
     button2.repaint();
   }

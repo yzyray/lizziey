@@ -1059,8 +1059,6 @@ public class Config {
     JSONArray movecountPos = new JSONArray();
     movecountPos.put(Lizzie.countResults.getX());
     movecountPos.put(Lizzie.countResults.getY());
-    movecountPos.put(Lizzie.countResults.getWidth());
-    movecountPos.put(Lizzie.countResults.getHeight());
     persistedUi.put("movecount-position", movecountPos);
 
     JSONArray winrateGraph = new JSONArray();
