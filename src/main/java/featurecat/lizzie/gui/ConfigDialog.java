@@ -659,8 +659,8 @@ public class ConfigDialog extends JDialog {
     lblShowLcbWinrate.setBounds(331, 555, 157, 16);
     engineTab.add(lblShowLcbWinrate);
 
-    JLabel lblShowLcbWinratehint = new JLabel("设置胜率显示方式,Lcb更可靠但低计算量下会偏低");
-    lblShowLcbWinratehint.setBounds(331, 580, 287, 16);
+    JLabel lblShowLcbWinratehint = new JLabel("设置胜率显示方式,Lcb更可靠但低计算量下会偏低(Lcb在计算量小于20时可能为0)");
+    lblShowLcbWinratehint.setBounds(201, 580, 437, 16);
     engineTab.add(lblShowLcbWinratehint);
     lblShowLcbWinratehint.setVisible(false);
 

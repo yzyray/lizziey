@@ -34,10 +34,10 @@ public class Config {
   public double replayBranchIntervalSeconds = 0.3;
   public boolean showCoordinates = true;
   public boolean colorByWinrateInsteadOfVisits = false;
-  public boolean showlcbwinrate = true;
+  public boolean showlcbwinrate = false;
   public boolean playponder = true;
   public boolean showrect = true;
-  public boolean showlcbcolor = false;
+  public boolean showlcbcolor = true;
   public boolean fastChange = true;
   public boolean showKataGoBoardScoreMean = false;
   public boolean kataGoScoreMeanAlwaysBlack = false;
@@ -398,11 +398,11 @@ public class Config {
     winrateStrokeWidth = theme.winrateStrokeWidth();
     minimumBlunderBarWidth = theme.minimumBlunderBarWidth();
     shadowSize = theme.shadowSize();
-    showlcbwinrate = config.getJSONObject("leelaz").optBoolean("show-lcb-winrate", true);
+    showlcbwinrate = config.getJSONObject("leelaz").optBoolean("show-lcb-winrate", false);
     playponder = config.getJSONObject("leelaz").optBoolean("play-ponder", true);
     showrect = config.getJSONObject("leelaz").optBoolean("show-rect", true);
     loadZen = config.getJSONObject("leelaz").optBoolean("load-zen", false);
-    showlcbcolor = config.getJSONObject("leelaz").optBoolean("show-lcb-color", false);
+    showlcbcolor = config.getJSONObject("leelaz").optBoolean("show-lcb-color", true);
     fastChange = config.getJSONObject("leelaz").optBoolean("fast-engine-change", true);
     maxAnalyzeTimeMillis =
         60 * 1000 * config.getJSONObject("leelaz").getInt("max-analyze-time-minutes");

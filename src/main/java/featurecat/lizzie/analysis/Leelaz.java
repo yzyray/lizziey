@@ -1181,9 +1181,9 @@ public boolean startAutoAna=false;
 		File autoSaveFile;
 		File autoSaveFile2 = null;	
 			autoSaveFile = new File(
-					courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.batchPkName + "\\" + "结果" + ".txt");
+					courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.batchPkName + "\\" + "结果"+ Lizzie.frame.toolbar.SF + ".txt");
 			autoSaveFile2 = new File(
-					courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.SF + "\\"  + "结果" + ".txt");		
+					courseFile + "\\" + "PkAutoSave" + "\\" + Lizzie.frame.toolbar.SF + "\\"  + "结果"+ Lizzie.frame.toolbar.SF + ".txt");		
 
 		File fileParent = autoSaveFile.getParentFile();
 		if (!fileParent.exists()) {
@@ -2362,7 +2362,7 @@ public boolean startAutoAna=false;
 		}
 
 		if (Lizzie.frame.toolbar.isEnginePk) {
-			double curWR = this.bestMoves.get(0).winrate;
+			double curWR = this.bestMoves.get(0).oriwinrate;
 
 			int time = 0;
 			int playouts = 0;
