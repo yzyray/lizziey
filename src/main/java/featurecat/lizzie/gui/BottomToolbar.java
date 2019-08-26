@@ -514,8 +514,8 @@ public class BottomToolbar extends JPanel {
     autoPlay.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            //   AutoPlay autoPlay = new AutoPlay();
-            //     autoPlay.setVisible(true);
+            AutoPlay autoPlay = new AutoPlay();
+            autoPlay.setVisible(true);
           }
         });
 

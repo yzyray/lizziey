@@ -699,8 +699,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
       case VK_A:
         if (e.isAltDown()) {
-          //   AutoPlay autoPlay = new AutoPlay();
-          //  autoPlay.setVisible(true);
+          AutoPlay autoPlay = new AutoPlay();
+          autoPlay.setVisible(true);
         } else if (e.isControlDown()) {
           Lizzie.frame.openAvoidMoveDialog();
         } else {
