@@ -424,9 +424,7 @@ public boolean startAutoAna=false;
 	 */
 
 	private void parseLineForGenmovePk(String line) {
-		//Lizzie.gtpConsole.addLineforce(line);	
-
-	
+		//Lizzie.gtpConsole.addLineforce(line);			
 		if (line.startsWith("=")) {
 			currentCmdNum = currentCmdNum+1;
 			if(currentCmdNum>cmdNumber-1)
@@ -468,16 +466,18 @@ public boolean startAutoAna=false;
 					Lizzie.board.pass();
 					if (this.currentEngineN == Lizzie.frame.toolbar.engineBlack) {
 
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveGenmove("B",
-								"pass");
+						if(!Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveGenmove("B",
+								"pass"))
+						{return;}
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).genmoveForPk("W");
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).nameCmdfornoponder();
 						Lizzie.leelaz = Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 					}
 
 					else {
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveGenmove("W",
-								"pass");
+						if(!Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveGenmove("W",
+								"pass"))
+							{return;}
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).genmoveForPk("B");
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).nameCmdfornoponder();
 						Lizzie.leelaz = Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
@@ -491,8 +491,9 @@ public boolean startAutoAna=false;
 					Lizzie.board.place(coords.get()[0], coords.get()[1]);
 					if (this.currentEngineN == Lizzie.frame.toolbar.engineBlack) {
 
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveGenmove("B",
-								params[1]);
+						if(!Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).playMoveGenmove("B",
+								params[1]))
+							{return;}
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).genmoveForPk("W");
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).nameCmdfornoponder();
 						Lizzie.leelaz = Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
@@ -500,8 +501,9 @@ public boolean startAutoAna=false;
 					}
 
 					else {
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveGenmove("W",
-								params[1]);
+						if(!Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).playMoveGenmove("W",
+								params[1]))
+							{return;}
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).genmoveForPk("B");
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).nameCmdfornoponder();
 						Lizzie.leelaz = Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
@@ -1396,6 +1398,44 @@ public boolean startAutoAna=false;
 		Lizzie.gtpConsole.addLine(currentEnginename + " 认输");
 		Lizzie.board.updateComment();
 		
+		String settingB="黑方设置:";
+		String settingW="白方设置:";
+		String settingAll="其他设置:";
+		if(Lizzie.frame.toolbar.isEnginePkBatch)
+	    {				
+			settingB=settingB + "引擎命令:"+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).engineCommand;
+			settingW=settingW + "引擎命令:"+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).engineCommand;
+			if(Lizzie.frame.toolbar.chkenginePkTime.isSelected())
+		{
+			settingB=settingB + " 时间:"+Lizzie.frame.toolbar.txtenginePkTime.getText()+"S";
+			settingW=settingW + " 时间:"+Lizzie.frame.toolbar.txtenginePkTimeWhite.getText()+"S";
+			}		
+		
+			
+			
+		if(Lizzie.frame.toolbar.chkenginePkBatch.isSelected())
+		{
+			settingAll=settingAll + " 多盘:"+Lizzie.frame.toolbar.txtenginePkBatch.getText();
+			}
+		if(Lizzie.frame.toolbar.chkenginePkContinue.isSelected())
+		{
+			settingAll=settingAll + " 续弈: 是";
+			}
+		else {
+			settingAll=settingAll + " 续弈: 否";
+		}
+		if (Lizzie.frame.toolbar.exChange) {
+			settingAll=settingAll + " 交换黑白: 是";
+		    }
+		else {
+			settingAll=settingAll + " 交换黑白: 否";
+		}
+		
+		 if (Lizzie.frame.toolbar.checkGameMaxMove) {
+			 settingAll=settingAll + " 最大手数: "+Lizzie.frame.toolbar.maxGanmeMove;
+		    }		    
+	    }    
+		
 		if(outOfMoveNum)
 		{
 			saveTimeoutFile();
@@ -1404,10 +1444,27 @@ public boolean startAutoAna=false;
 			if(!doublePass&&!outOfMoveNum) {
 		if (this.currentEngineN == Lizzie.frame.toolbar.engineBlack) {
 			// 白胜
-			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
-				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
-			else
-				Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+			
+			if(Lizzie.frame.toolbar.exChange) {
+				if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
+				{	Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
+				if(currentEngineN==Lizzie.frame.toolbar.engineWhite)Lizzie.frame.toolbar.pkBlackWinAsWhite = Lizzie.frame.toolbar.pkBlackWinAsWhite+1;
+				if(currentEngineN==Lizzie.frame.toolbar.engineBlack)Lizzie.frame.toolbar.pkWhiteWinAsWhite = Lizzie.frame.toolbar.pkWhiteWinAsWhite+1;
+				}
+				else
+				{	Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+				if(currentEngineN==Lizzie.frame.toolbar.engineBlack)Lizzie.frame.toolbar.pkBlackWinAsWhite = Lizzie.frame.toolbar.pkBlackWinAsWhite+1;
+				if(currentEngineN==Lizzie.frame.toolbar.engineWhite)Lizzie.frame.toolbar.pkWhiteWinAsWhite = Lizzie.frame.toolbar.pkWhiteWinAsWhite+1;
+				}
+					}
+					else {
+						Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+						if(currentEngineN==Lizzie.frame.toolbar.engineBlack)Lizzie.frame.toolbar.pkBlackWinAsWhite = Lizzie.frame.toolbar.pkBlackWinAsWhite+1;
+						if(currentEngineN==Lizzie.frame.toolbar.engineWhite)Lizzie.frame.toolbar.pkWhiteWinAsWhite = Lizzie.frame.toolbar.pkWhiteWinAsWhite+1;
+					}
+			
+			
+			
 			GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 			gameInfo.setResult("白("
 					+ Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename + ")胜");
@@ -1415,16 +1472,34 @@ public boolean startAutoAna=false;
 					+ Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename + ")胜");
 		} else {
 			// 黑胜
+			if(Lizzie.frame.toolbar.exChange) {
+				if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
+					{Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+					if(currentEngineN==Lizzie.frame.toolbar.engineWhite)Lizzie.frame.toolbar.pkBlackWinAsBlack = Lizzie.frame.toolbar.pkBlackWinAsBlack+1;
+					if(currentEngineN==Lizzie.frame.toolbar.engineBlack)Lizzie.frame.toolbar.pkWhiteWinAsBlack = Lizzie.frame.toolbar.pkWhiteWinAsBlack+1;
+					}
+				else
+					{Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
+					if(currentEngineN==Lizzie.frame.toolbar.engineBlack)Lizzie.frame.toolbar.pkBlackWinAsBlack = Lizzie.frame.toolbar.pkBlackWinAsBlack+1;
+					if(currentEngineN==Lizzie.frame.toolbar.engineWhite)Lizzie.frame.toolbar.pkWhiteWinAsBlack = Lizzie.frame.toolbar.pkWhiteWinAsBlack+1;
+					}
+				}
+				else {
+					Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
+					if(currentEngineN==Lizzie.frame.toolbar.engineBlack)Lizzie.frame.toolbar.pkBlackWinAsBlack = Lizzie.frame.toolbar.pkBlackWinAsBlack+1;
+					if(currentEngineN==Lizzie.frame.toolbar.engineWhite)Lizzie.frame.toolbar.pkWhiteWinAsBlack = Lizzie.frame.toolbar.pkWhiteWinAsBlack+1;
+				}
+			
 			GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
 			gameInfo.setResult("黑("
 					+ Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename + ")胜");
 			Lizzie.frame.setResult("黑("
 					+ Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename + ")胜");
 
-			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
-				Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
-			else
-				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
+//			if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
+//				Lizzie.frame.toolbar.pkWhiteWins = Lizzie.frame.toolbar.pkWhiteWins + 1;
+//			else
+//				Lizzie.frame.toolbar.pkBlackWins = Lizzie.frame.toolbar.pkBlackWins + 1;
 		}}
 		if (Lizzie.frame.toolbar.AutosavePk || Lizzie.frame.toolbar.isEnginePkBatch) {
 			if (doublePass) {
@@ -1434,6 +1509,40 @@ public boolean startAutoAna=false;
 			}
 		}
 		}
+		
+		if(Lizzie.frame.toolbar.isEnginePkBatch)
+		{
+			String resultB="";
+			String resultW="";
+			String resultOther="";
+			if(Lizzie.frame.toolbar.exChange) {
+				if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0)
+				{ 
+				resultB=resultB+"黑("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename+")胜:"+Lizzie.frame.toolbar.pkBlackWins + "局";
+				resultB=resultB+" 执黑胜"+Lizzie.frame.toolbar.pkWhiteWinAsBlack+"局 执白胜"+Lizzie.frame.toolbar.pkWhiteWinAsWhite+"局";
+				resultW="白("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+")胜:"+Lizzie.frame.toolbar.pkWhiteWins + "局";
+				resultW=resultW+" 执黑胜"+Lizzie.frame.toolbar.pkBlackWinAsBlack+"局 执白胜"+Lizzie.frame.toolbar.pkBlackWinAsWhite+"局";
+				}
+				else
+				{	 resultB="黑("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+")胜:"+Lizzie.frame.toolbar.pkBlackWins + "局";
+				resultB=resultB+" 执黑胜"+Lizzie.frame.toolbar.pkWhiteWinAsBlack+"局 执白胜"+Lizzie.frame.toolbar.pkWhiteWinAsWhite+"局";
+				resultW=resultW+"白("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename+")胜:"+Lizzie.frame.toolbar.pkWhiteWins + "局";			
+				resultW=resultW+" 执黑胜"+Lizzie.frame.toolbar.pkBlackWinAsBlack+"局 执白胜"+Lizzie.frame.toolbar.pkBlackWinAsWhite+"局";
+				}
+					}
+					else {
+						resultB="黑("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename+")胜:"+Lizzie.frame.toolbar.pkBlackWins + "局";
+						resultB=resultB+" 执黑胜"+Lizzie.frame.toolbar.pkWhiteWinAsBlack+"局 执白胜"+Lizzie.frame.toolbar.pkWhiteWinAsWhite+"局";		
+						resultW=resultW+"白("+Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename+")胜:"+Lizzie.frame.toolbar.pkWhiteWins + "局";
+						resultW=resultW+" 执黑胜"+Lizzie.frame.toolbar.pkBlackWinAsBlack+"局 执白胜"+Lizzie.frame.toolbar.pkBlackWinAsWhite+"局";
+					}
+			
+			
+			resultOther=resultOther+"双pass"+Lizzie.frame.toolbar.doublePassGame+"局";
+			resultOther=resultOther+" 超手数"+Lizzie.frame.toolbar.maxMoveGame+"局";
+			savePkTxt(settingB,settingW,settingAll,resultB,resultW,resultOther);
+			}
+		
 		if (Lizzie.frame.toolbar.isEnginePkBatch) {
 			int EnginePkBatchNumber = 1;
 			try {
@@ -2983,13 +3092,18 @@ public boolean startAutoAna=false;
 		}
 	}
 
-	public void playMoveGenmove(String colorString, String move) {
+	public boolean playMoveGenmove(String colorString, String move) {
+		if(this.resigned)
+		{
+			this.genmoveResign();
+			return false;
+		}
 		synchronized (this) {
 			played = false;
 
 			sendCommand("play " + colorString + " " + move);
 		}
-		
+		return true;
 	}
 
 	public void playMovewithavoid(Stone color, String move) {
@@ -3032,6 +3146,17 @@ public boolean startAutoAna=false;
 	}
 
 	public void genmoveForPk(String color) {
+		if(Lizzie.frame.toolbar.isPkStop)
+		{
+			Lizzie.frame.toolbar.isPkGenmoveStop=true;
+			if(color.equals("B"))
+		{
+			Lizzie.frame.toolbar.isPkStopGenmoveB=true;
+		}
+		else {
+			Lizzie.frame.toolbar.isPkStopGenmoveB=false;
+		}
+			return;}
 		String command = "genmove " + color;
 		/*
 		 * We don't support displaying this while playing, so no reason to request it

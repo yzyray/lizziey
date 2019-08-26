@@ -59,6 +59,7 @@ public class Manual extends JDialog {
     blackResign.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
+
             Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).resigned = true;
             Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).isManualB = true;
           }
@@ -80,6 +81,10 @@ public class Manual extends JDialog {
       this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
     } catch (IOException e) {
       e.printStackTrace();
+    }
+    if (Lizzie.frame.toolbar.isGenmove) {
+      manualOne.setEnabled(false);
+      playNow.setEnabled(false);
     }
     setLocationRelativeTo(getOwner());
   }

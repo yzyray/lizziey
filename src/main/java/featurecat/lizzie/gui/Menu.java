@@ -1214,8 +1214,8 @@ public class Menu extends MenuBar {
     autoPlayItem.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            AutoPlay autoPlay = new AutoPlay();
-            autoPlay.setVisible(true);
+            //    AutoPlay autoPlay = new AutoPlay();
+            //     autoPlay.setVisible(true);
           }
         });
     analyMenu.add(autoPlayItem);

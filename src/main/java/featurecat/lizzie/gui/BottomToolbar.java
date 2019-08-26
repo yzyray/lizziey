@@ -157,6 +157,8 @@ public class BottomToolbar extends JPanel {
   public int enginePkOrder = 1;
   public int autoPlayOrder = 2;
   public boolean isPkStop = false;
+  public boolean isPkGenmoveStop = false;
+  public boolean isPkStopGenmoveB;
   // JButton cancelAutoAna;
 
   JLabel lblchkShowBlack;
@@ -512,8 +514,8 @@ public class BottomToolbar extends JPanel {
     autoPlay.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            AutoPlay autoPlay = new AutoPlay();
-            autoPlay.setVisible(true);
+            //   AutoPlay autoPlay = new AutoPlay();
+            //     autoPlay.setVisible(true);
           }
         });
 
@@ -1284,31 +1286,80 @@ public class BottomToolbar extends JPanel {
           public void actionPerformed(ActionEvent e) {
             // TBD未完成
             setTxtUnfocuse();
+            if (isGenmove) {
+              if (isPkStop) {
+                if (!isPkGenmoveStop) {
+                  Message msg = new Message();
+                  msg.setMessage("Genmove模式下暂停后须等待最后一步落子完成");
+                  msg.setVisible(true);
+                  return;
+                }
+                btnEnginePkStop.setText("暂停");
+                isPkStop = false;
+                try {
+                  timeb = Integer.parseInt(txtenginePkTime.getText().replace(" ", ""));
+                } catch (NumberFormatException err) {
+                }
+                try {
+                  timew = Integer.parseInt(txtenginePkTimeWhite.getText().replace(" ", ""));
+                } catch (NumberFormatException err) {
+                }
+                if (timew > 0)
+                  Lizzie.engineManager
+                      .engineList
+                      .get(engineWhite)
+                      .sendCommand("time_settings 0 " + timew + " 1");
+                if (timeb > 0)
+                  Lizzie.engineManager
+                      .engineList
+                      .get(engineBlack)
+                      .sendCommand("time_settings 0 " + timeb + " 1");
+                if (isPkStopGenmoveB) {
+                  Lizzie.engineManager.engineList.get(engineBlack).nameCmd();
+                  Lizzie.engineManager.engineList.get(engineBlack).genmoveForPk("B");
 
-            if (isPkStop) {
-              btnEnginePkStop.setText("暂停");
-              isPkStop = false;
-              if (Lizzie.board.getData().blackToPlay) {
-
-                Lizzie.engineManager.engineList.get(engineBlack).ponder();
+                } else {
+                  Lizzie.engineManager.engineList.get(engineWhite).nameCmd();
+                  Lizzie.engineManager.engineList.get(engineWhite).genmoveForPk("W");
+                }
+                chkenginePkTime.setEnabled(false);
+                txtenginePkTime.setEnabled(false);
+                txtenginePkTimeWhite.setEnabled(false);
               } else {
-
-                Lizzie.engineManager.engineList.get(engineWhite).ponder();
+                btnEnginePkStop.setText("继续");
+                isPkStop = true;
+                isPkGenmoveStop = false;
+                chkenginePkTime.setEnabled(true);
+                txtenginePkTime.setEnabled(true);
+                txtenginePkTimeWhite.setEnabled(true);
               }
+
             } else {
-              btnEnginePkStop.setText("继续");
+              if (isPkStop) {
+                btnEnginePkStop.setText("暂停");
+                isPkStop = false;
+                if (Lizzie.board.getData().blackToPlay) {
 
-              if (Lizzie.board.getData().blackToPlay) {
+                  Lizzie.engineManager.engineList.get(engineBlack).ponder();
+                } else {
 
-                Lizzie.engineManager.engineList.get(engineBlack).nameCmd();
+                  Lizzie.engineManager.engineList.get(engineWhite).ponder();
+                }
               } else {
+                btnEnginePkStop.setText("继续");
 
-                Lizzie.engineManager.engineList.get(engineWhite).nameCmd();
+                if (Lizzie.board.getData().blackToPlay) {
+
+                  Lizzie.engineManager.engineList.get(engineBlack).nameCmd();
+                } else {
+
+                  Lizzie.engineManager.engineList.get(engineWhite).nameCmd();
+                }
+                isPkStop = true;
               }
-              isPkStop = true;
+              Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
+              //  Lizzie.engineManager.gameTime = System.currentTimeMillis();
             }
-            Lizzie.engineManager.startInfoTime = System.currentTimeMillis();
-            //  Lizzie.engineManager.gameTime = System.currentTimeMillis();
           }
         });
 
@@ -1748,8 +1799,8 @@ public class BottomToolbar extends JPanel {
       this.txtenginePkFirstPlayputsWhite.setEnabled(false);
       this.txtenginePkPlayputs.setEnabled(false);
       this.txtenginePkPlayputsWhite.setEnabled(false);
-      this.btnEnginePkStop.setEnabled(false);
-      this.btnEngineMannul.setEnabled(false);
+      //   this.btnEnginePkStop.setEnabled(false);
+      //   this.btnEngineMannul.setEnabled(false);
     } else {
       this.chkenginePkFirstPlayputs.setEnabled(true);
       this.chkenginePkPlayouts.setEnabled(true);
@@ -1757,8 +1808,8 @@ public class BottomToolbar extends JPanel {
       this.txtenginePkFirstPlayputsWhite.setEnabled(true);
       this.txtenginePkPlayputs.setEnabled(true);
       this.txtenginePkPlayputsWhite.setEnabled(true);
-      this.btnEnginePkStop.setEnabled(true);
-      this.btnEngineMannul.setEnabled(true);
+      //  this.btnEnginePkStop.setEnabled(true);
+      //  this.btnEngineMannul.setEnabled(true);
     }
   }
 
@@ -2808,6 +2859,9 @@ public class BottomToolbar extends JPanel {
         thread.start();
       } else {
         isEnginePk = true;
+        chkenginePkTime.setEnabled(false);
+        txtenginePkTime.setEnabled(false);
+        txtenginePkTimeWhite.setEnabled(false);
         Lizzie.engineManager.startEngineForPk(engineWhite);
         Lizzie.engineManager.startEngineForPk(engineBlack);
         Runnable runnable =
@@ -2930,74 +2984,6 @@ public class BottomToolbar extends JPanel {
       gameInfo.setPlayerBlack(Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
     }
   }
-
-  //  public void setButtonLocation(int boardmid) {
-  //    savedbroadmid = boardmid;
-  //    int w = Lizzie.frame.mainPanel.getWidth();
-  //
-  //    if (Lizzie.leelaz != null && Lizzie.leelaz.isKatago) {
-  //      if (boardmid + 416 > w) boardmid = w - 416;
-  //      if (boardmid - 615 < 0) {boardmid = 615;
-  //	  rightMove.setVisible(true);
-  //	  rightMove.setBounds(w-20,0 , 20, 26);}
-  //      detail.setBounds(0, 0, 20, 26);
-  //      liveButton.setBounds(boardmid - 596, 0, 40, 26);
-  //      kataEstimate.setVisible(true);
-  //      kataEstimate.setBounds(boardmid - 557, 0, 60, 26);
-  //      batchOpen.setBounds(boardmid - 498, 0, 60, 26);
-  //      openfile.setBounds(boardmid - 439, 0, 40, 26);
-  //      savefile.setBounds(boardmid - 400, 0, 40, 26);
-  //      komi.setBounds(boardmid - 361, 0, 40, 26);
-  //      refresh.setBounds(boardmid - 322, 0, 40, 26);
-  //      analyse.setBounds(boardmid - 283, 0, 40, 26);
-  //      tryPlay.setBounds(boardmid - 244, 0, 40, 26);
-  //      setMain.setBounds(boardmid - 205, 0, 70, 26);
-  //      backMain.setBounds(boardmid - 136, 0, 70, 26);
-  //      firstButton.setBounds(boardmid - 67, 0, 30, 26);
-  //      backward10.setBounds(boardmid - 38, 0, 30, 26);
-  //      backward1.setBounds(boardmid - 9, 0, 30, 26);
-  //      forward1.setBounds(boardmid + 20, 0, 30, 26);
-  //      forward10.setBounds(boardmid + 49, 0, 30, 26);
-  //      lastButton.setBounds(boardmid + 78, 0, 30, 26);
-  //      clearButton.setBounds(boardmid + 107, 0, 60, 26);
-  //      countButton.setBounds(boardmid + 166, 0, 60, 26);
-  //      heatMap.setBounds(boardmid + 225, 0, 60, 26);
-  //      txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
-  //      gotomove.setBounds(boardmid + 313, 0, 35, 26);
-  //      move.setBounds(boardmid + 347, 0, 35, 26);
-  //      coords.setBounds(boardmid + 381, 0, 35, 26);
-  //    } else {
-  //      if (boardmid + 416 > w) boardmid = w - 416;
-  //      if (boardmid - 556 < 0) {boardmid = 556;
-  //	  rightMove.setVisible(true);
-  //	  rightMove.setBounds(w-20,0 , 20, 26);}
-  //      detail.setBounds(0, 0, 20, 26);
-  //      kataEstimate.setVisible(false);
-  //      liveButton.setBounds(boardmid - 537, 0, 40, 26);
-  //      batchOpen.setBounds(boardmid - 498, 0, 60, 26);
-  //      openfile.setBounds(boardmid - 439, 0, 40, 26);
-  //      savefile.setBounds(boardmid - 400, 0, 40, 26);
-  //      komi.setBounds(boardmid - 361, 0, 40, 26);
-  //      refresh.setBounds(boardmid - 322, 0, 40, 26);
-  //      analyse.setBounds(boardmid - 283, 0, 40, 26);
-  //      tryPlay.setBounds(boardmid - 244, 0, 40, 26);
-  //      setMain.setBounds(boardmid - 205, 0, 70, 26);
-  //      backMain.setBounds(boardmid - 136, 0, 70, 26);
-  //      firstButton.setBounds(boardmid - 67, 0, 30, 26);
-  //      backward10.setBounds(boardmid - 38, 0, 30, 26);
-  //      backward1.setBounds(boardmid - 9, 0, 30, 26);
-  //      forward1.setBounds(boardmid + 20, 0, 30, 26);
-  //      forward10.setBounds(boardmid + 49, 0, 30, 26);
-  //      lastButton.setBounds(boardmid + 78, 0, 30, 26);
-  //      clearButton.setBounds(boardmid + 107, 0, 60, 26);
-  //      countButton.setBounds(boardmid + 166, 0, 60, 26);
-  //      heatMap.setBounds(boardmid + 225, 0, 60, 26);
-  //      txtMoveNumber.setBounds(boardmid + 285, 1, 28, 24);
-  //      gotomove.setBounds(boardmid + 313, 0, 35, 26);
-  //      move.setBounds(boardmid + 347, 0, 35, 26);
-  //      coords.setBounds(boardmid + 381, 0, 35, 26);
-  //    }
-  //  }
 
   public void resetEnginePk() {
     enginePkPanel.add(chkenginePkPlayouts);
