@@ -1259,13 +1259,19 @@ public class ConfigDialog extends JDialog {
       leelazConfig.put("engine-name-list", enginenames);
       //  Lizzie.config.uiConfig.put("board-size", getBoardSize());
       Lizzie.config.save();
-
     } catch (IOException e) {
       e.printStackTrace();
     }
     try {
       saveEngineConfig();
     } catch (Exception ex) {
+    }
+    if (Lizzie.config.enableLizzieCache) {
+      Lizzie.frame.menu.clearsave.setVisible(true);
+      Lizzie.frame.menu.clearthis.setVisible(true);
+    } else {
+      Lizzie.frame.menu.clearsave.setVisible(false);
+      Lizzie.frame.menu.clearthis.setVisible(false);
     }
   }
 

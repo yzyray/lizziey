@@ -3043,6 +3043,18 @@ public class BottomToolbar extends JPanel {
 
   public int setLocation(int w) {
 
+    if (autoPlay.isVisible()) {
+      w = w - (autoPlay.getWidth() - 1);
+      autoPlay.setLocation(w, 0);
+    }
+    if (coords.isVisible()) {
+      w = w - (coords.getWidth() - 1);
+      coords.setLocation(w, 0);
+    }
+    if (move.isVisible()) {
+      w = w - (move.getWidth() - 1);
+      move.setLocation(w, 0);
+    }
     if (lastButton.isVisible()) {
       w = w - (lastButton.getWidth() - 1);
       lastButton.setLocation(w, 0);
@@ -3079,34 +3091,11 @@ public class BottomToolbar extends JPanel {
       w = w - (deleteMove.getWidth() - 1);
       deleteMove.setLocation(w, 1);
     }
-    if (autoPlay.isVisible()) {
-      w = w - (autoPlay.getWidth() - 1);
-      autoPlay.setLocation(w, 0);
-    }
-    if (coords.isVisible()) {
-      w = w - (coords.getWidth() - 1);
-      coords.setLocation(w, 0);
-    }
-    if (move.isVisible()) {
-      w = w - (move.getWidth() - 1);
-      move.setLocation(w, 0);
-    }
-    if (badMoves.isVisible()) {
-      w = w - (badMoves.getWidth() - 1);
-      badMoves.setLocation(w, 0);
-    }
-    if (heatMap.isVisible()) {
-      w = w - (heatMap.getWidth() - 1);
-      heatMap.setLocation(w, 0);
-    }
-    if (countButton.isVisible()) {
-      w = w - (countButton.getWidth() - 1);
-      countButton.setLocation(w, 0);
-    }
     if (clearButton.isVisible()) {
       w = w - (clearButton.getWidth() - 1);
       clearButton.setLocation(w, 0);
     }
+
     if (backMain.isVisible()) {
       w = w - (backMain.getWidth() - 1);
       backMain.setLocation(w, 0);
@@ -3119,6 +3108,7 @@ public class BottomToolbar extends JPanel {
       w = w - (tryPlay.getWidth() - 1);
       tryPlay.setLocation(w, 0);
     }
+
     if (analyse.isVisible()) {
       w = w - (analyse.getWidth() - 1);
       analyse.setLocation(w, 0);
@@ -3130,6 +3120,18 @@ public class BottomToolbar extends JPanel {
     if (komi.isVisible()) {
       w = w - (komi.getWidth() - 1);
       komi.setLocation(w, 0);
+    }
+    if (badMoves.isVisible()) {
+      w = w - (badMoves.getWidth() - 1);
+      badMoves.setLocation(w, 0);
+    }
+    if (heatMap.isVisible()) {
+      w = w - (heatMap.getWidth() - 1);
+      heatMap.setLocation(w, 0);
+    }
+    if (countButton.isVisible()) {
+      w = w - (countButton.getWidth() - 1);
+      countButton.setLocation(w, 0);
     }
     if (savefile.isVisible()) {
       w = w - (savefile.getWidth() - 1);
@@ -3178,7 +3180,6 @@ public class BottomToolbar extends JPanel {
     else setMain.setVisible(false);
     if (Lizzie.config.backMain) backMain.setVisible(true);
     else backMain.setVisible(false);
-
     if (Lizzie.config.clearButton) clearButton.setVisible(true);
     else clearButton.setVisible(false);
     if (Lizzie.config.countButton) countButton.setVisible(true);
@@ -3290,7 +3291,6 @@ public class BottomToolbar extends JPanel {
 
     } else {
       leftMove.setVisible(false);
-
       int x = 0;
       if (liveButton.isVisible()) {
         liveButton.setLocation(x, 0);
@@ -3311,6 +3311,18 @@ public class BottomToolbar extends JPanel {
       if (savefile.isVisible()) {
         savefile.setLocation(x, 0);
         x = x + savefile.getWidth() - 1;
+      }
+      if (countButton.isVisible()) {
+        countButton.setLocation(x, 0);
+        x = x + countButton.getWidth() - 1;
+      }
+      if (heatMap.isVisible()) {
+        heatMap.setLocation(x, 0);
+        x = x + heatMap.getWidth() - 1;
+      }
+      if (badMoves.isVisible()) {
+        badMoves.setLocation(x, 0);
+        x = x + badMoves.getWidth() - 1;
       }
       if (komi.isVisible()) {
         komi.setLocation(x, 0);
@@ -3341,31 +3353,7 @@ public class BottomToolbar extends JPanel {
         clearButton.setLocation(x, 0);
         x = x + clearButton.getWidth() - 1;
       }
-      if (countButton.isVisible()) {
-        countButton.setLocation(x, 0);
-        x = x + countButton.getWidth() - 1;
-      }
-      if (heatMap.isVisible()) {
-        heatMap.setLocation(x, 0);
-        x = x + heatMap.getWidth() - 1;
-      }
-      if (badMoves.isVisible()) {
-        badMoves.setLocation(x, 0);
-        x = x + badMoves.getWidth() - 1;
-      }
 
-      if (move.isVisible()) {
-        move.setLocation(x, 0);
-        x = x + move.getWidth() - 1;
-      }
-      if (coords.isVisible()) {
-        coords.setLocation(x, 0);
-        x = x + coords.getWidth() - 1;
-      }
-      if (autoPlay.isVisible()) {
-        autoPlay.setLocation(x, 0);
-        x = x + autoPlay.getWidth() - 1;
-      }
       if (deleteMove.isVisible()) {
         deleteMove.setLocation(x, 0);
         x = x + deleteMove.getWidth() - 1;
@@ -3403,6 +3391,18 @@ public class BottomToolbar extends JPanel {
       if (lastButton.isVisible()) {
         lastButton.setLocation(x, 0);
         x = x + lastButton.getWidth() - 1;
+      }
+      if (move.isVisible()) {
+        move.setLocation(x, 0);
+        x = x + move.getWidth() - 1;
+      }
+      if (coords.isVisible()) {
+        coords.setLocation(x, 0);
+        x = x + coords.getWidth() - 1;
+      }
+      if (autoPlay.isVisible()) {
+        autoPlay.setLocation(x, 0);
+        x = x + autoPlay.getWidth() - 1;
       }
 
       if (w < x + 9) {

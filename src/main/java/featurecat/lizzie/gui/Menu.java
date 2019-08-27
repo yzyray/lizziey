@@ -37,6 +37,10 @@ public class Menu extends MenuBar {
   JMenuItem restartZen;
   JMenuItem config;
   JMenuItem moreconfig;
+
+  public JMenuItem clearsave;
+  public JMenuItem clearthis;
+
   JButton black;
   JButton white;
   JButton blackwhite;
@@ -1127,18 +1131,6 @@ public class Menu extends MenuBar {
     gameMenu.add(settime);
     gameMenu.addSeparator();
 
-    final JMenuItem setinfo = new JMenuItem();
-    setinfo.setText("设置棋局信息(I)");
-    setinfo.addActionListener(new ItemListeneryzy());
-    gameMenu.add(setinfo);
-
-    final JMenuItem setBoard = new JMenuItem();
-    setBoard.setText("设置棋盘大小(Ctrl+I)");
-    setBoard.addActionListener(new ItemListeneryzy());
-    gameMenu.add(setBoard);
-
-    gameMenu.addSeparator();
-
     final JMenuItem bestone = new JMenuItem();
     bestone.setText("落最佳一手(逗号)");
     bestone.addActionListener(new ItemListeneryzy());
@@ -1159,7 +1151,6 @@ public class Menu extends MenuBar {
     final JMenuItem setMain = new JMenuItem();
     setMain.setText("设为主分支");
     gameMenu.add(setMain);
-    gameMenu.addSeparator();
 
     setMain.addActionListener(
         new ActionListener() {
@@ -1169,10 +1160,18 @@ public class Menu extends MenuBar {
         });
 
     final JMenuItem branchStart = new JMenuItem();
-    branchStart.setText("返回上一分支(Ctrl+左)");
+    branchStart.setText("返回主分支");
     // aboutItem.setMnemonic('A');
-    branchStart.addActionListener(new ItemListeneryzy());
+    branchStart.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            while (!Lizzie.board.getHistory().getCurrentHistoryNode().isMainTrunk()) {
+              Lizzie.board.previousMove();
+            }
+          }
+        });
     gameMenu.add(branchStart);
+    gameMenu.addSeparator();
 
     final JMenuItem firstItem = new JMenuItem();
     firstItem.setText("跳转到最前(Home)");
@@ -1387,25 +1386,22 @@ public class Menu extends MenuBar {
           }
         });
 
-    editMenu.addSeparator();
-
-    final JMenuItem delete = new JMenuItem("删除(Delete)");
-    editMenu.add(delete);
-    delete.addActionListener(
+    final JCheckBoxMenuItem allowdrag = new JCheckBoxMenuItem();
+    allowdrag.setText("允许拖动和双击棋子");
+    allowdrag.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.board.deleteMove();
+            Lizzie.config.allowDrageDoubleClick = !Lizzie.config.allowDrageDoubleClick;
+            Lizzie.config.uiConfig.put(
+                "allow-drag-doubleclick", Lizzie.config.allowDrageDoubleClick);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
           }
         });
-
-    final JMenuItem deleteBranch = new JMenuItem("删除分支(Shift+Delete)");
-    editMenu.add(deleteBranch);
-    deleteBranch.addActionListener(
-        new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            Lizzie.board.deleteBranch();
-          }
-        });
+    editMenu.add(allowdrag);
 
     editMenu.addSeparator();
 
@@ -1429,36 +1425,63 @@ public class Menu extends MenuBar {
 
     editMenu.addSeparator();
 
-    final JCheckBoxMenuItem allowdrag = new JCheckBoxMenuItem();
-    allowdrag.setText("允许拖动和双击棋子");
-    editMenu.add(allowdrag);
-
-    allowdrag.addActionListener(
+    final JMenuItem delete = new JMenuItem("删除(Delete)");
+    editMenu.add(delete);
+    delete.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.config.allowDrageDoubleClick = !Lizzie.config.allowDrageDoubleClick;
-            Lizzie.config.uiConfig.put(
-                "allow-drag-doubleclick", Lizzie.config.allowDrageDoubleClick);
-            try {
-              Lizzie.config.save();
-            } catch (IOException es) {
-              // TODO Auto-generated catch block
-            }
+            Lizzie.board.deleteMove();
+          }
+        });
+
+    final JMenuItem deleteBranch = new JMenuItem("删除分支(Shift+Delete)");
+    editMenu.add(deleteBranch);
+    deleteBranch.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.board.deleteBranch();
           }
         });
 
     editMenu.addSeparator();
-    final JMenuItem clearsave = new JMenuItem();
+
+    final JMenuItem setinfo = new JMenuItem();
+    setinfo.setText("修改棋局信息(I)");
+    setinfo.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.editGameInfo();
+          }
+        });
+    editMenu.add(setinfo);
+
+    final JMenuItem setBoard = new JMenuItem();
+    setBoard.setText("修改棋盘大小(Ctrl+I)");
+    setBoard.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            SetBoardSize setBoardSize = new SetBoardSize();
+            setBoardSize.setVisible(true);
+          }
+        });
+    editMenu.add(setBoard);
+
+    clearsave = new JMenuItem();
     clearsave.setText("清除Lizzie所有选点缓存");
     // aboutItem.setMnemonic('A');
     clearsave.addActionListener(new ItemListeneryzy());
     editMenu.add(clearsave);
 
-    final JMenuItem clearthis = new JMenuItem();
+    clearthis = new JMenuItem();
     clearthis.setText("清除当前选点缓存");
     // aboutItem.setMnemonic('A');
     clearthis.addActionListener(new ItemListeneryzy());
     editMenu.add(clearthis);
+
+    if (!Lizzie.config.enableLizzieCache) {
+      clearsave.setVisible(false);
+      clearthis.setVisible(false);
+    }
 
     editMenu.addMenuListener(
         new MenuListener() {
@@ -2915,12 +2938,6 @@ public class Menu extends MenuBar {
         while (Lizzie.board.nextMove()) ;
         return;
       }
-
-      if (menuItem.getText().startsWith("设置棋盘")) {
-        SetBoardSize st = new SetBoardSize();
-        st.setVisible(true);
-        return;
-      }
       if (menuItem.getText().startsWith("设置AI用时")) {
         SetAiTimes st = new SetAiTimes();
         st.setVisible(true);
@@ -2994,13 +3011,6 @@ public class Menu extends MenuBar {
         if (newgame.isCancelled()) {
           Lizzie.frame.toolbar.resetAutoAna();
           return;
-        }
-        return;
-      }
-
-      if (menuItem.getText().startsWith("返回上一分支")) {
-        if (Lizzie.board.undoToChildOfPreviousWithVariation()) {
-          Lizzie.board.previousMove();
         }
         return;
       }
@@ -3207,10 +3217,6 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("停一")) {
         Lizzie.board.pass();
-        return;
-      }
-      if (menuItem.getText().startsWith("设置棋局信")) {
-        Lizzie.frame.editGameInfo();
         return;
       }
       if (menuItem.getText().startsWith("设置详细")) {
