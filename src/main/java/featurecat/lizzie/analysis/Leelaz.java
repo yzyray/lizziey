@@ -46,7 +46,6 @@ import org.json.JSONObject;
  */
 public class Leelaz {
 	private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("l10n.DisplayStrings");
-
 	private static final long MINUTE = 60 * 1000; // number of milliseconds in a minute
 
 	// private long maxAnalyzeTimeMillis; // , maxThinkingTimeMillis;
@@ -111,7 +110,7 @@ public boolean startAutoAna=false;
 	boolean analysed = false;
 	private boolean isSaving = false;
 	public boolean isResigning = false;
-	private boolean isClosing = false;
+	public boolean isClosing = false;
 	public boolean isColorEngine = false;
 	public int stage = -1;
 	public float komi = (float) 7.5;
@@ -1030,17 +1029,32 @@ public boolean startAutoAna=false;
 				e.printStackTrace();
 			}
 			if (Lizzie.frame.Batchfiles.size() > (Lizzie.frame.BatchAnaNum + 1)) {
-				Timer timer = new Timer();
-				timer.schedule(new TimerTask() {
-					public void run() {
-						loadAutoBatchFile();		
-						if(Lizzie.board.getHistory().getEnd().getData().moveNumber==0)
-							{if (Lizzie.frame.Batchfiles.size() > (Lizzie.frame.BatchAnaNum + 1))
-									loadAutoBatchFile();		}						
-							Lizzie.leelaz.ponder();
-						this.cancel();
-					}
-				}, 300);
+				Runnable runnable =
+				        new Runnable() {
+				          public void run() {
+								loadAutoBatchFile();		
+								if(Lizzie.board.getHistory().getEnd().getData().moveNumber==0)
+									{if (Lizzie.frame.Batchfiles.size() > (Lizzie.frame.BatchAnaNum + 1))
+											loadAutoBatchFile();		}	
+								Lizzie.leelaz.isClosing=false;
+									Lizzie.leelaz.ponder();
+				          }
+				        };				        
+				
+				    Thread thread = new Thread(runnable);
+				    thread.start();
+//				Timer timer = new Timer();
+//				timer.schedule(new TimerTask() {
+//					public void run() {
+//						loadAutoBatchFile();		
+//						if(Lizzie.board.getHistory().getEnd().getData().moveNumber==0)
+//							{if (Lizzie.frame.Batchfiles.size() > (Lizzie.frame.BatchAnaNum + 1))
+//									loadAutoBatchFile();		}	
+//						Lizzie.leelaz.isClosing=false;
+//							Lizzie.leelaz.ponder();
+//						this.cancel();
+//					}
+//				}, 300);
 			} else {
 				Lizzie.frame.isBatchAna = false;
 				Lizzie.frame.toolbar.chkAnaAutoSave.setEnabled(true);
@@ -1263,16 +1277,14 @@ public boolean startAutoAna=false;
 	}
 
 	private void notifyAutoAna() {
-		if (isClosing)
-			return;
-		if (Lizzie.frame.toolbar.isAutoAna) {
+		if (Lizzie.frame.toolbar.isAutoAna&&!isClosing) {
 			if (Lizzie.frame.toolbar.startAutoAna) {
 				if ((Lizzie.frame.toolbar.firstMove == -1||Lizzie.frame.toolbar.firstMove>=Lizzie.board.getHistory().getMainEnd().getData().moveNumber)&&!Lizzie.board.getHistory().getNext().isPresent()) {
 					Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
 					//togglePonder();
 					Lizzie.frame.toolbar.isAutoAna = false;
 					Lizzie.frame.addInput();
-					if (Lizzie.frame.isBatchAna) {						
+					if (Lizzie.frame.isBatchAna) {	
 						closeAutoAna();				
 					}
 					return;
@@ -1280,18 +1292,16 @@ public boolean startAutoAna=false;
 					analysed = false;				
 				}				
 				if(Lizzie.frame.toolbar.firstMove != -1) {
-				if (startAutoAna) {		
-					 Timer timer = new Timer();
-				      timer.schedule(
-				          new TimerTask() {
-				            public void run() {
-				            	Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);	
-				            	setResponseUpToDate();	
-				              this.cancel();				              
-				            }
-				          },
-				          50);
-					
+				if (startAutoAna) {	
+					Runnable runnable =
+					        new Runnable() {
+					          public void run() {
+					        	  Lizzie.board.goToMoveNumberBeyondBranch(Lizzie.frame.toolbar.firstMove - 1);	
+					            	setResponseUpToDate();	
+					          }
+					        };
+					    Thread thread = new Thread(runnable);
+					    thread.start();		
 					startAutoAna=false;
 				}
 				if(Lizzie.board.getHistory().getMoveNumber()!=Lizzie.frame.toolbar.firstMove-1)
@@ -1306,11 +1316,8 @@ public boolean startAutoAna=false;
 				}				
 				}
 				else {setResponseUpToDate();}
-				Lizzie.frame.toolbar.startAutoAna = false;				
-				
-				
-			}
-			
+				Lizzie.frame.toolbar.startAutoAna = false;		
+			}		
 		
 			if (Lizzie.board.getHistory().getNext().isPresent()) {
 				if (Lizzie.frame.toolbar.lastMove != -1) {
@@ -2892,27 +2899,32 @@ public boolean startAutoAna=false;
 		}
 	}
 
-	private void closeAutoAna() {			
-		if (!isClosing) {
-			isClosing=true;
-			nameCmd();
-			Lizzie.frame.toolbar.stopAutoAna();
-			Lizzie.frame.addInput();
-			if (!isSaving&&Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()) {
-				isSaving = true;
-				saveAndLoad();				
-			} else {
-				
-				if(msg==null||!msg.isVisible())
-            	{	
-				  msg=new Message();
-		             msg.setMessage("自动分析已完毕");
-		             msg.setVisible(true);
-            	}
-
-			}
-			isClosing=false;
-		}
+	private void closeAutoAna() {		
+		Runnable runnable =
+		        new Runnable() {
+		          public void run() {
+		        	  if (!isClosing) {
+		      			isClosing=true;			
+		      			Lizzie.frame.toolbar.stopAutoAna();
+		      			Lizzie.frame.addInput();
+		      			if (!isSaving&&Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()) {
+		      				isSaving = true;
+		      				saveAndLoad();				
+		      			} else {
+		      				
+		      				if(msg==null||!msg.isVisible())
+		                  	{	
+		      				  msg=new Message();
+		      		             msg.setMessage("自动分析已完毕");
+		      		             msg.setVisible(true);
+		                  	}
+		      			}
+		      			}
+		          }
+		        };
+		    Thread thread = new Thread(runnable);
+		    thread.start();
+		//	isClosing=false;
 	}
 
 	/**
@@ -3077,8 +3089,8 @@ public boolean startAutoAna=false;
 
 	public void playMoveNoPonder(String colorString, String move) {
 		synchronized (this) {
-
 			sendCommand("play " + colorString + " " + move);
+			sendCommand("name");
 			Lizzie.frame.subBoardRenderer.reverseBestmoves = true;
 			Lizzie.frame.boardRenderer.reverseBestmoves = true;
 			// bestMoves = new ArrayList<>();

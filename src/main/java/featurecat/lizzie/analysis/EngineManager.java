@@ -171,7 +171,7 @@ public class EngineManager {
     timer.start();
   }
 
-  public ArrayList<EngineData> getEngineData() {
+  public static ArrayList<EngineData> getEngineData() {
     ArrayList<EngineData> engineData = new ArrayList<EngineData>();
     Optional<JSONArray> enginesCommandOpt =
         Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));

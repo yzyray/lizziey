@@ -150,6 +150,9 @@ public class Config {
   public boolean liveButton = true;
   public boolean badMoves = true;
   public boolean autoPlay = true;
+  public boolean deleteMove = true;
+  public boolean enableLizzieCache = false;
+  public boolean showFastLinks = false;
 
   private JSONObject loadAndMergeConfig(
       JSONObject defaultCfg, String fileName, boolean needValidation) throws IOException {
@@ -368,6 +371,7 @@ public class Config {
     showNoSuggCircle = leelazConfig.optBoolean("show-nosugg-circle", true);
     limitbadMeanmoves = leelazConfig.optInt("badmoves-scoremean-limits", 0);
     limitbadplayouts = leelazConfig.optInt("badmoves-playouts-limits", 0);
+    enableLizzieCache = leelazConfig.optBoolean("enable-lizzie-config", false);
 
     firstButton = uiConfig.optBoolean("firstButton", true);
     lastButton = uiConfig.optBoolean("lastButton", true);
@@ -392,8 +396,10 @@ public class Config {
     move = uiConfig.optBoolean("move", true);
     coords = uiConfig.optBoolean("coords", true);
     autoPlay = uiConfig.optBoolean("autoPlay", true);
+    showFastLinks = uiConfig.optBoolean("show-fast-links", false);
     liveButton = uiConfig.optBoolean("liveButton", true);
     badMoves = uiConfig.optBoolean("badMoves", true);
+    deleteMove = uiConfig.optBoolean("deleteMove", true);
 
     winrateStrokeWidth = theme.winrateStrokeWidth();
     minimumBlunderBarWidth = theme.minimumBlunderBarWidth();

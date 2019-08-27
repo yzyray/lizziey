@@ -185,6 +185,7 @@ public class ConfigDialog2 extends JDialog {
 
   public JCheckBox chkAlwaysShowBlackWinrate;
   public JCheckBox chkAlwaysOnTop;
+  public JCheckBox chkShowFastLinks;
 
   //  public JCheckBox chkHoldBestMovesToSgf;
   //  public JCheckBox chkShowBestMovesByHold;
@@ -910,6 +911,13 @@ public class ConfigDialog2 extends JDialog {
     chkAlwaysOnTop.setBounds(170, 35, 97, 23);
     uiTab.add(chkAlwaysOnTop);
 
+    JLabel lblShowFastLinks = new JLabel("显示快速启动");
+    lblShowFastLinks.setBounds(372, 38, 157, 16);
+    uiTab.add(lblShowFastLinks);
+    chkShowFastLinks = new JCheckBox("");
+    chkShowFastLinks.setBounds(536, 35, 97, 23);
+    uiTab.add(chkShowFastLinks);
+
     //        JLabel lblMinPlayoutRatioForStats =
     //            new
     // JLabel(resourceBundle.getString("LizzieConfig.title.minPlayoutRatioForStats"));
@@ -1262,6 +1270,7 @@ public class ConfigDialog2 extends JDialog {
     chkAlwaysShowBlackWinrate.setSelected(
         Lizzie.config.uiConfig.getBoolean("win-rate-always-black"));
     chkAlwaysOnTop.setSelected(Lizzie.frame.isAlwaysOnTop());
+    chkShowFastLinks.setSelected(Lizzie.config.showFastLinks);
     // txtMinPlayoutRatioForStats.setText(String.valueOf(Lizzie.config.minPlayoutRatioForStats));
     chkShowCaptured.setSelected(Lizzie.config.showCaptured);
     chkShowWinrate.setSelected(Lizzie.config.showWinrate);
@@ -2637,6 +2646,9 @@ public class ConfigDialog2 extends JDialog {
       Lizzie.frame.setAlwaysOnTop(chkAlwaysOnTop.isSelected());
       Lizzie.config.uiConfig.put("mains-always-ontop", chkAlwaysOnTop.isSelected());
 
+      Lizzie.config.showFastLinks = chkShowFastLinks.isSelected();
+      Lizzie.config.uiConfig.put("show-fast-links", chkShowFastLinks.isSelected());
+
       Lizzie.config.uiConfig.put("win-rate-always-black", chkAlwaysShowBlackWinrate.isSelected());
       //      Lizzie.config.minPlayoutRatioForStats =
       // Utils.txtFieldDoubleValue(txtMinPlayoutRatioForStats);
@@ -2719,6 +2731,7 @@ public class ConfigDialog2 extends JDialog {
       e.printStackTrace();
     }
     Lizzie.frame.refresh();
+    Lizzie.frame.menu.updateFastLinks();
   }
 
   public void switchTab(int index) {

@@ -671,8 +671,14 @@ public class LizzieFrame extends JFrame {
 
   public static void openMoreEngineDialog() {
     JDialog moreEngines;
-    moreEngines = MoreEngines.createBadmovesDialog();
+    moreEngines = MoreEngines.createDialog();
     moreEngines.setVisible(true);
+  }
+
+  public static void openProgramDialog() {
+    JDialog programs;
+    programs = OtherPrograms.createDialog();
+    programs.setVisible(true);
   }
 
   public static void openChangeMoveDialog() {
@@ -1100,6 +1106,7 @@ public class LizzieFrame extends JFrame {
       // toolbar.chkAnaAutoSave.setSelected(true);
       // toolbar.chkAnaAutoSave.setEnabled(false);
       // 打开分析界面
+      Lizzie.frame.toolbar.chkAnaAutoSave.setSelected(true);
       StartAnaDialog newgame = new StartAnaDialog();
       newgame.setVisible(true);
       if (newgame.isCancelled()) {
@@ -3177,10 +3184,8 @@ public class LizzieFrame extends JFrame {
               this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
       Graphics2D cg = bImg.createGraphics();
 
-      try {
-        this.mainPanel.paintAll(cg);
-      } catch (Exception e) {
-      }
+      this.mainPanel.paintAll(cg);
+
       try {
         ImageIO.write(bImg, ext, file);
       } catch (IOException e) {
@@ -3230,10 +3235,7 @@ public class LizzieFrame extends JFrame {
               this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
       Graphics2D cg = bImg.createGraphics();
 
-      try {
-        this.mainPanel.paintAll(cg);
-      } catch (Exception e) {
-      }
+      this.mainPanel.paintAll(cg);
 
       // 截取图片
       Rectangle rect = new Rectangle(x, y, width, height);
@@ -3308,10 +3310,7 @@ public class LizzieFrame extends JFrame {
             this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
     Graphics2D cg = bImg.createGraphics();
 
-    try {
-      this.mainPanel.paintAll(cg);
-    } catch (Exception e) {
-    }
+    this.mainPanel.paintAll(cg);
 
     // 截取图片
     Rectangle rect = new Rectangle(x, y, width, height);
@@ -3338,10 +3337,7 @@ public class LizzieFrame extends JFrame {
             this.mainPanel.getWidth(), this.mainPanel.getHeight(), BufferedImage.TYPE_INT_ARGB);
     Graphics2D cg = bImg.createGraphics();
 
-    try {
-      this.mainPanel.paintAll(cg);
-    } catch (Exception e) {
-    }
+    this.mainPanel.paintAll(cg);
 
     // 截取图片
     Rectangle rect = new Rectangle(x, y, width, height);

@@ -61,14 +61,14 @@ public class BottomToolbar extends JPanel {
   JButton coords;
   JButton liveButton;
   JButton badMoves;
+  JButton autoPlay;
+  JButton deleteMove;
 
   JPanel buttonPane;
   //  JPanel buttonPane2;
 
   JButton rightMove;
   JButton leftMove;
-
-  JButton autoPlay;
   public JButton detail;
   public SetKomi setkomi;
 
@@ -245,6 +245,7 @@ public class BottomToolbar extends JPanel {
     setLayout(null);
     rightMove = new JButton("》");
     leftMove = new JButton("《");
+    deleteMove = new JButton("删除");
     badMoves = new JButton("恶手列表");
     liveButton = new JButton("直播");
     clearButton = new JButton("清空棋盘");
@@ -302,6 +303,7 @@ public class BottomToolbar extends JPanel {
     detail.setBounds(0, 0, 20, 26);
     leftMove.setBounds(19, 0, 20, 26);
     buttonPane.add(liveButton);
+    buttonPane.add(deleteMove);
     buttonPane.add(badMoves);
     buttonPane.add(clearButton);
     buttonPane.add(lastButton);
@@ -356,8 +358,10 @@ public class BottomToolbar extends JPanel {
     rightMove.setFocusable(false);
     leftMove.setFocusable(false);
     badMoves.setFocusable(false);
+    deleteMove.setFocusable(false);
     autoPlay.setFocusable(false);
 
+    deleteMove.setMargin(new Insets(0, 0, 0, 0));
     autoPlay.setMargin(new Insets(0, 0, 0, 0));
     badMoves.setMargin(new Insets(0, 0, 0, 0));
     firstButton.setMargin(new Insets(0, 0, 0, 0));
@@ -388,6 +392,7 @@ public class BottomToolbar extends JPanel {
     leftMove.setMargin(new Insets(0, 0, 0, 0));
 
     autoPlay.setSize(60, 26);
+    deleteMove.setSize(40, 26);
     badMoves.setSize(60, 26);
     liveButton.setSize(40, 26);
     kataEstimate.setSize(60, 26);
@@ -516,6 +521,13 @@ public class BottomToolbar extends JPanel {
           public void actionPerformed(ActionEvent e) {
             AutoPlay autoPlay = new AutoPlay();
             autoPlay.setVisible(true);
+          }
+        });
+
+    deleteMove.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.board.deleteMoveNoHint();
           }
         });
 
@@ -2658,6 +2670,7 @@ public class BottomToolbar extends JPanel {
     Lizzie.leelaz.startAutoAna = true;
     startAutoAna = true;
     Lizzie.board.clearBoardStat();
+    Lizzie.leelaz.isClosing = false;
     Lizzie.leelaz.ponder();
     int heightM = 70 - Lizzie.frame.toolbarHeight;
     if (heightM != 0) {
@@ -3062,6 +3075,10 @@ public class BottomToolbar extends JPanel {
       w = w - (txtMoveNumber.getWidth() - 1);
       txtMoveNumber.setLocation(w, 1);
     }
+    if (deleteMove.isVisible()) {
+      w = w - (deleteMove.getWidth() - 1);
+      deleteMove.setLocation(w, 1);
+    }
     if (autoPlay.isVisible()) {
       w = w - (autoPlay.getWidth() - 1);
       autoPlay.setLocation(w, 0);
@@ -3170,6 +3187,8 @@ public class BottomToolbar extends JPanel {
     else heatMap.setVisible(false);
     if (Lizzie.config.badMoves) badMoves.setVisible(true);
     else badMoves.setVisible(false);
+    if (Lizzie.config.deleteMove) deleteMove.setVisible(true);
+    else deleteMove.setVisible(false);
     if (Lizzie.config.move) move.setVisible(true);
     else move.setVisible(false);
     if (Lizzie.config.coords) coords.setVisible(true);
@@ -3346,6 +3365,10 @@ public class BottomToolbar extends JPanel {
       if (autoPlay.isVisible()) {
         autoPlay.setLocation(x, 0);
         x = x + autoPlay.getWidth() - 1;
+      }
+      if (deleteMove.isVisible()) {
+        deleteMove.setLocation(x, 0);
+        x = x + deleteMove.getWidth() - 1;
       }
       if (txtMoveNumber.isVisible()) {
         txtMoveNumber.setLocation(x, 1);

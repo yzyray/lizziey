@@ -117,6 +117,7 @@ public class ConfigDialog extends JDialog {
   private JTextField txtBoardSize;
   private JRadioButton rdoBoardSizeOther;
   private JCheckBox chkShowNoSugg;
+  private JCheckBox chkEnableLizzieCache;
 
   public ConfigDialog() {
     if (Lizzie.frame != null) setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
@@ -475,6 +476,14 @@ public class ConfigDialog extends JDialog {
         });
     button_9.setBounds(595, 315, 40, 26);
     engineTab.add(button_9);
+
+    JLabel lblEnableLizzieCache = new JLabel("启用Lizzie缓存");
+    lblEnableLizzieCache.setBounds(6, 350, 157, 16);
+    engineTab.add(lblEnableLizzieCache);
+
+    chkEnableLizzieCache = new JCheckBox();
+    chkEnableLizzieCache.setBounds(167, 346, 40, 26);
+    engineTab.add(chkEnableLizzieCache);
 
     JLabel lblMaxAnalyzeTime =
         new JLabel(resourceBundle.getString("LizzieConfig.title.maxAnalyzeTime"));
@@ -1095,6 +1104,7 @@ public class ConfigDialog extends JDialog {
     curPath = (new File("")).getAbsoluteFile().toPath();
     osName = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
     chkShowNoSugg.setSelected(Lizzie.config.showNoSuggCircle);
+    chkEnableLizzieCache.setSelected(Lizzie.config.enableLizzieCache);
     setBoardSize();
     setShowLcbWinrate();
     setPonder();
@@ -1217,6 +1227,8 @@ public class ConfigDialog extends JDialog {
       leelazConfig.put("engine-command", txtEngine.getText().trim());
       leelazConfig.put("show-nosugg-circle", chkShowNoSugg.isSelected());
       Lizzie.config.showNoSuggCircle = chkShowNoSugg.isSelected();
+      leelazConfig.put("enable-lizzie-config", chkEnableLizzieCache.isSelected());
+      Lizzie.config.enableLizzieCache = chkEnableLizzieCache.isSelected();
       JSONArray preloads = new JSONArray();
       Arrays.asList(chkPreloads).forEach(t -> preloads.put(t.isSelected()));
       if (engData.size() > 10) {

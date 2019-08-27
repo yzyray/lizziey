@@ -41,8 +41,8 @@ public class MoreEngines extends JPanel {
 
   JScrollPane scrollpane;
   public static JTable table;
-  public static JLabel checkBlacktxt;
-  public static JLabel checkWhitetxt;
+  // public static JLabel checkBlacktxt;
+  // public static JLabel checkWhitetxt;
   Font headFont;
   Font winrateFont;
   static JDialog engjf;
@@ -1040,7 +1040,7 @@ public class MoreEngines extends JPanel {
     };
   }
 
-  public static JDialog createBadmovesDialog() {
+  public static JDialog createDialog() {
     // Create and set up the window.
     engjf = new JDialog();
     engjf.setTitle("更多引擎设置");

@@ -1,6 +1,7 @@
 package featurecat.lizzie.gui;
 
 import featurecat.lizzie.Lizzie;
+import featurecat.lizzie.analysis.FastLink;
 import featurecat.lizzie.analysis.GameInfo;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,6 +28,7 @@ public class Menu extends MenuBar {
   public static JMenuItem[] engine = new JMenuItem[21];
   public static JMenu engineMenu;
   public static JMenu closeEngine;
+  public static JMenu fastLinks;
   public static MenuBar menuBar;
   JMenuItem closeall;
   JMenuItem forcecloseall;
@@ -48,7 +50,6 @@ public class Menu extends MenuBar {
   // private boolean onlyboard = false;
 
   public Menu() {
-
     headFont = new Font("", Font.PLAIN, 12);
     // onlyboard = Lizzie.config.uiConfig.optBoolean("only-board", false);
 
@@ -2011,6 +2012,22 @@ public class Menu extends MenuBar {
           }
         });
 
+    final JCheckBoxMenuItem deleteMove = new JCheckBoxMenuItem("删除");
+    chooseButton.add(deleteMove);
+    deleteMove.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.deleteMove = !Lizzie.config.deleteMove;
+            Lizzie.config.uiConfig.put("deleteMove", Lizzie.config.deleteMove);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
     chooseButton.addMenuListener(
         new MenuListener() {
 
@@ -2054,6 +2071,8 @@ public class Menu extends MenuBar {
             else coords.setState(false);
             if (Lizzie.config.autoPlay) autoPlay.setState(true);
             else autoPlay.setState(false);
+            if (Lizzie.config.deleteMove) deleteMove.setState(true);
+            else deleteMove.setState(false);
           }
 
           @Override
@@ -2185,8 +2204,13 @@ public class Menu extends MenuBar {
           }
         });
 
-    engineMenu = new JMenu("引擎 ", false);
-    engineMenu.setText(" 引擎  ");
+    fastLinks = new JMenu("快速启动 ");
+    fastLinks.setForeground(Color.BLACK);
+    fastLinks.setFont(headFont);
+    this.add(fastLinks);
+    updateFastLinks();
+
+    engineMenu = new JMenu(" 引擎  ");
     engineMenu.setForeground(Color.BLACK);
     headFont = new Font("", Font.BOLD, 15);
     engineMenu.setFont(headFont);
@@ -2219,7 +2243,7 @@ public class Menu extends MenuBar {
     }
 
     updateEngineMenuone();
-    ArrayList<EngineData> engineData = getEngineData();
+    ArrayList<EngineData> engineData = Lizzie.engineManager.getEngineData();
     for (int i = 0; i < engineData.size(); i++) {
       EngineData engineDt = engineData.get(i);
       Lizzie.frame.toolbar.enginePkBlack.addItem("[" + (i + 1) + "]" + engineDt.name);
@@ -2365,7 +2389,7 @@ public class Menu extends MenuBar {
       engine[i].setText("引擎" + (i + 1) + ":");
       engine[i].setVisible(false);
     }
-    ArrayList<EngineData> engineData = getEngineData();
+    ArrayList<EngineData> engineData = Lizzie.engineManager.getEngineData();
     for (int i = 0; i < engineData.size(); i++) {
       EngineData engineDt = engineData.get(i);
       if (i > (engine.length - 2)) {
@@ -2499,7 +2523,7 @@ public class Menu extends MenuBar {
             "引擎" + (i + 1) + ": " + Lizzie.engineManager.engineList.get(i).currentEnginename);
       }
     }
-    ArrayList<EngineData> engineData = getEngineData();
+    ArrayList<EngineData> engineData = Lizzie.engineManager.getEngineData();
     for (int i = 0; i < engineData.size(); i++) {
       EngineData engineDt = engineData.get(i);
       if (i > (engine.length - 2)) {
@@ -2558,80 +2582,6 @@ public class Menu extends MenuBar {
     if (mode == 3) engine[index].setIcon(icon);
   }
 
-  public ArrayList<EngineData> getEngineData() {
-    ArrayList<EngineData> engineData = new ArrayList<EngineData>();
-    Optional<JSONArray> enginesCommandOpt =
-        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-command-list"));
-    Optional<JSONArray> enginesNameOpt =
-        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-name-list"));
-    Optional<JSONArray> enginesPreloadOpt =
-        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-preload-list"));
-
-    Optional<JSONArray> enginesWidthOpt =
-        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-width-list"));
-
-    Optional<JSONArray> enginesHeightOpt =
-        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-height-list"));
-    Optional<JSONArray> enginesKomiOpt =
-        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("engine-komi-list"));
-
-    int defaultEngine = Lizzie.config.uiConfig.optInt("default-engine", -1);
-
-    for (int i = 0;
-        i < (enginesCommandOpt.isPresent() ? enginesCommandOpt.get().length() + 1 : 0);
-        i++) {
-      if (i == 0) {
-        String engineCommand = Lizzie.config.leelazConfig.getString("engine-command");
-        int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i, 19) : 19;
-        int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i, 19) : 19;
-        String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
-        float komi =
-            enginesKomiOpt.isPresent()
-                ? enginesKomiOpt.get().optFloat(i, (float) 7.5)
-                : (float) 7.5;
-        boolean preload =
-            enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i, false) : false;
-        EngineData enginedt = new EngineData();
-        enginedt.commands = engineCommand;
-        enginedt.name = name;
-        enginedt.preload = preload;
-        enginedt.index = i;
-        enginedt.width = width;
-        enginedt.height = height;
-        enginedt.komi = komi;
-        if (defaultEngine == i) enginedt.isDefault = true;
-        else enginedt.isDefault = false;
-        engineData.add(enginedt);
-      } else {
-        String commands =
-            enginesCommandOpt.isPresent() ? enginesCommandOpt.get().optString(i - 1, "") : "";
-        if (!commands.equals("")) {
-          int width = enginesWidthOpt.isPresent() ? enginesWidthOpt.get().optInt(i, 19) : 19;
-          int height = enginesHeightOpt.isPresent() ? enginesHeightOpt.get().optInt(i, 19) : 19;
-          String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
-          float komi =
-              enginesKomiOpt.isPresent()
-                  ? enginesKomiOpt.get().optFloat(i, (float) 7.5)
-                  : (float) 7.5;
-          boolean preload =
-              enginesPreloadOpt.isPresent() ? enginesPreloadOpt.get().optBoolean(i, false) : false;
-          EngineData enginedt = new EngineData();
-          enginedt.commands = commands;
-          enginedt.name = name;
-          enginedt.preload = preload;
-          enginedt.index = i;
-          enginedt.width = width;
-          enginedt.height = height;
-          enginedt.komi = komi;
-          if (defaultEngine == i) enginedt.isDefault = true;
-          else enginedt.isDefault = false;
-          engineData.add(enginedt);
-        }
-      }
-    }
-    return engineData;
-  }
-
   public void changeicon() {
 
     for (int i = 0; i < 21; i++) {
@@ -2674,6 +2624,61 @@ public class Menu extends MenuBar {
     this.black.setVisible(show);
     this.white.setVisible(show);
     this.blackwhite.setVisible(show);
+  }
+
+  public void updateFastLinks() {
+    if (!Lizzie.config.showFastLinks) {
+      fastLinks.setVisible(false);
+      return;
+    } else {
+      fastLinks.setVisible(true);
+    }
+    ArrayList<ProgramData> programData = getProgramData();
+    fastLinks.removeAll();
+    for (int i = 0; i < programData.size(); i++) {
+      JMenuItem program = new JMenuItem(programData.get(i).name);
+      int index = i;
+      program.addActionListener(
+          new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              FastLink pro = new FastLink();
+              pro.startProgram(programData.get(index).commands);
+            }
+          });
+      fastLinks.add(program);
+    }
+    JMenuItem editProgram = new JMenuItem("设置");
+    editProgram.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.openProgramDialog();
+          }
+        });
+
+    fastLinks.add(editProgram);
+  }
+
+  public ArrayList<ProgramData> getProgramData() {
+    ArrayList<ProgramData> ProgramData = new ArrayList<ProgramData>();
+    Optional<JSONArray> enginesCommandOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("program-command-list"));
+    Optional<JSONArray> enginesNameOpt =
+        Optional.ofNullable(Lizzie.config.leelazConfig.optJSONArray("program-name-list"));
+
+    for (int i = 0;
+        i < (enginesCommandOpt.isPresent() ? enginesCommandOpt.get().length() : 0);
+        i++) {
+      String commands = enginesCommandOpt.get().getString(i);
+      if (!commands.equals("")) {
+        String name = enginesNameOpt.isPresent() ? enginesNameOpt.get().optString(i, "") : "";
+        ProgramData programDt = new ProgramData();
+        programDt.commands = commands;
+        programDt.name = name;
+        programDt.index = i;
+        ProgramData.add(programDt);
+      }
+    }
+    return ProgramData;
   }
 
   class ItemListeneryzy implements ActionListener {
@@ -3011,7 +3016,6 @@ public class Menu extends MenuBar {
       }
 
       if (menuItem.getText().startsWith("精简")) {
-
         if (Lizzie.config.showSubBoard) Lizzie.config.toggleShowSubBoard();
         if (Lizzie.config.showComment) Lizzie.config.toggleShowComment();
         // if (!Lizzie.config.showComment) Lizzie.config.toggleShowComment();
@@ -3032,7 +3036,6 @@ public class Menu extends MenuBar {
         return;
       }
       if (menuItem.getText().startsWith("经典")) {
-
         if (!Lizzie.config.showSubBoard) Lizzie.config.toggleShowSubBoard();
         if (!Lizzie.config.showWinrate) Lizzie.config.toggleShowWinrate();
         if (Lizzie.config.showLargeWinrateOnly()) Lizzie.config.toggleLargeWinrate();
@@ -3262,31 +3265,6 @@ public class Menu extends MenuBar {
         }
         return;
       }
-      //      if (menuItem.getText().startsWith("胜率+计算量+")) {
-      //        Lizzie.config.showKataGoScoreMean = true;
-      //        Lizzie.config.kataGoNotShowWinrate = false;
-      //        Lizzie.config.uiConfig.put("show-katago-scoremean",
-      // Lizzie.config.showKataGoScoreMean);
-      //        Lizzie.config.uiConfig.put("katago-notshow-winrate",
-      // Lizzie.config.kataGoNotShowWinrate);
-      //        try {
-      //          Lizzie.config.save();
-      //        } catch (IOException es) {
-      //          // TODO Auto-generated catch block
-      //        }
-      //        return;
-      //      }
-      //      if (menuItem.getText().startsWith("胜率+计")) {
-      //        Lizzie.config.showKataGoScoreMean = false;
-      //        Lizzie.config.uiConfig.put("show-katago-scoremean",
-      // Lizzie.config.showKataGoScoreMean);
-      //        try {
-      //          Lizzie.config.save();
-      //        } catch (IOException es) {
-      //          // TODO Auto-generated catch block
-      //        }
-      //        return;
-      //      }
       if (menuItem.getText().startsWith("目差")) {
         Lizzie.config.showKataGoBoardScoreMean = false;
         Lizzie.config.uiConfig.put(

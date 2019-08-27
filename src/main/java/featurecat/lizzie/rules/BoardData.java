@@ -146,27 +146,30 @@ public class BoardData {
 	public void tryToSetBestMoves(List<MoveData> moves) {
 		// MoveData.getPlayouts(moves) > playouts
 		int plyouts= MoveData.getPlayouts(moves);
-		if (plyouts > playouts ||isChanged||  Lizzie.frame.urlSgf) {
-
-			// added for change bestmoves when playouts is not increased
-			if(plyouts<playouts)
-				isChanged=false;
+		if(Lizzie.config.enableLizzieCache) {
+			if (plyouts > playouts ||isChanged||Lizzie.frame.urlSgf) {
+				// added for change bestmoves when playouts is not increased
+				if(plyouts<playouts)
+					isChanged=false;
+				bestMoves = moves;
+				setPlayouts(plyouts);
+				winrate = moves.get(0).winrate;							
+				if (Lizzie.leelaz.isKatago) {
+					scoreMean = moves.get(0).scoreMean;
+					Lizzie.leelaz.scoreMean = moves.get(0).scoreMean;
+					Lizzie.leelaz.scoreStdev = moves.get(0).scoreStdev;
+				}
+			}
+		}
+		else {
 			bestMoves = moves;
 			setPlayouts(plyouts);
-			winrate = moves.get(0).winrate;
-			
-			
-			if (Lizzie.leelaz.isKatago) {
+			winrate = moves.get(0).winrate;if (Lizzie.leelaz.isKatago) {
 				scoreMean = moves.get(0).scoreMean;
 				Lizzie.leelaz.scoreMean = moves.get(0).scoreMean;
 				Lizzie.leelaz.scoreStdev = moves.get(0).scoreStdev;
 			}
-			else {
-				
-			}
-		}
-		
-	}
+		}}
 
 	public static double getWinrateFromBestMoves(List<MoveData> bestMoves) {
 		// return the weighted average winrate of bestMoves
