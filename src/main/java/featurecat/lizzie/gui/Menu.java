@@ -1226,7 +1226,7 @@ public class Menu extends MenuBar {
     autoanItem.addActionListener(new ItemListeneryzy());
     analyMenu.add(autoanItem);
 
-    final JMenuItem batchana = new JMenuItem("批量分析(Alt+O)");
+    final JMenuItem batchana = new JMenuItem("批量分析(Ctrl+O)");
     batchana.addActionListener(new ItemListeneryzy());
     analyMenu.add(batchana);
 

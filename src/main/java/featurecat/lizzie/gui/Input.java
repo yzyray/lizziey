@@ -518,7 +518,9 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_O:
-        if (e.isAltDown()) {
+        if (e.isControlDown()) {
+          Lizzie.frame.openFileWithAna();
+        } else if (e.isAltDown()) {
 
           Lizzie.frame.openBoardSync();
 
