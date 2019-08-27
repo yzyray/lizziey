@@ -900,7 +900,8 @@ public class BoardRenderer {
         switch (Lizzie.config.stoneIndicatorType) {
           case 0:
             g.setColor(Color.red);
-            drawCircle2(g, stoneX, stoneY, lastMoveMarkerRadius);
+            // g.setColor(Lizzie.board.getData().blackToPlay ? Color.BLUE : Color.RED);
+            drawPolygon(g, stoneX, stoneY, lastMoveMarkerRadius);
             break;
           case 1:
             g.setColor(Lizzie.board.getData().blackToPlay ? Color.BLACK : Color.WHITE);
@@ -963,15 +964,17 @@ public class BoardRenderer {
             && (!branchOpt.isPresent() || !Lizzie.frame.isMouseOver(i, j))) {
           boolean reverse = (moveNumberList[Board.getIndex(i, j)] > maxBranchMoves());
           if ((lastMoveOpt.isPresent() && lastMoveOpt.get()[0] == i && lastMoveOpt.get()[1] == j)) {
-            if (reverse) continue;
-            g.setColor(Color.RED.brighter()); // stoneHere.isBlack() ? Color.RED.brighter() :
+            // if (reverse) continue;
+
+            //  g.setColor(stoneHere.isBlack() ? Color.RED :Color.BLUE);
             // Color.BLUE.brighter());
-          } else {
-            // Draw white letters on black stones nomally.
-            // But use black letters for showing black moves without stones.
-            if (reverse) continue;
-            g.setColor(stoneHere.isBlack() ^ reverse ? Color.WHITE : Color.BLACK);
+            g.setColor(Color.RED.brighter());
+            drawPolygonSmall(g, stoneX, stoneY, stoneRadius);
           }
+          // Draw white letters on black stones nomally.
+          // But use black letters for showing black moves without stones.
+          if (reverse) continue;
+          g.setColor(stoneHere.isBlack() ^ reverse ? Color.WHITE : Color.BLACK);
 
           String moveNumberString = mvNum + "";
           if (Lizzie.config.showMoveNumberFromOne && Lizzie.config.allowMoveNumber > 0) {
@@ -2084,10 +2087,20 @@ public class BoardRenderer {
     g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
   }
 
-  private void drawCircle2(Graphics2D g, int centerX, int centerY, int radius) {
+  private void drawPolygon(Graphics2D g, int centerX, int centerY, int radius) {
     int[] xPoints = {centerX, centerX - (11 * radius / 11), centerX + (11 * radius / 11)};
     int[] yPoints = {
       centerY - (10 * radius / 11), centerY + (8 * radius / 11), centerY + (8 * radius / 11)
+    };
+    g.fillPolygon(xPoints, yPoints, 3);
+  }
+
+  private void drawPolygonSmall(Graphics2D g, int centerX, int centerY, int radius) {
+    int[] xPoints = {
+      centerX - radius * 16 / 15, centerX - radius * 16 / 15, centerX - radius * 4 / 11
+    };
+    int[] yPoints = {
+      centerY - radius * 16 / 15, centerY - radius * 4 / 11, centerY - radius * 16 / 15
     };
     g.fillPolygon(xPoints, yPoints, 3);
   }
