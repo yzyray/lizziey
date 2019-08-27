@@ -49,7 +49,7 @@ public class Lizzie {
       int defaultEngine = Lizzie.config.uiConfig.optInt("default-engine", -1);
       start(defaultEngine);
     } else {
-      loadEngine = LoadEngine.createBadmovesDialog();
+      loadEngine = LoadEngine.createDialog();
       loadEngine.setVisible(true);
     }
   }

@@ -2422,7 +2422,7 @@ public class Menu extends MenuBar {
             new ActionListener() {
               public void actionPerformed(ActionEvent e) {
                 JDialog chooseMoreEngine;
-                chooseMoreEngine = ChooseMoreEngine.createBadmovesDialog();
+                chooseMoreEngine = ChooseMoreEngine.createDialog();
                 chooseMoreEngine.setVisible(true);
               }
             });
@@ -2556,7 +2556,7 @@ public class Menu extends MenuBar {
             new ActionListener() {
               public void actionPerformed(ActionEvent e) {
                 JDialog chooseMoreEngine;
-                chooseMoreEngine = ChooseMoreEngine.createBadmovesDialog();
+                chooseMoreEngine = ChooseMoreEngine.createDialog();
                 chooseMoreEngine.setVisible(true);
               }
             });

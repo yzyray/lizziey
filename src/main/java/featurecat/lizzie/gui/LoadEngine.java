@@ -663,7 +663,7 @@ public class LoadEngine extends JPanel {
     };
   }
 
-  public static JDialog createBadmovesDialog() {
+  public static JDialog createDialog() {
     // Create and set up the window.
     engjf = new JDialog();
     engjf.setTitle("选择要加载的引擎(双击加载)");

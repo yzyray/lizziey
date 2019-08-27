@@ -637,7 +637,7 @@ public class ChooseMoreEngine extends JPanel {
     };
   }
 
-  public static JDialog createBadmovesDialog() {
+  public static JDialog createDialog() {
     // Create and set up the window.
     engch = new JDialog();
     engch.setTitle("选择要切换的引擎(双击直接切换)");
