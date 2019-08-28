@@ -246,19 +246,18 @@ public class LizzieFrame extends JFrame {
     // load fonts
 
     try {
-      uiFont = new Font("微软雅黑", Font.PLAIN, 12);
-      // uiFont = new Font("SansSerif", Font.TRUETYPE_FONT, 12);
-      // uiFont = // new Font("圆体", Font.TRUETYPE_FONT, 15);
-      // Font.createFont(
-      // Font.TRUETYPE_FONT,
-      //
-      // Thread.currentThread().getContextClassLoader().getResourceAsStream("fonts/MSYH.TTC"));
-      winrateFont = new Font("微软雅黑", Font.PLAIN, 12);
-      Font.createFont(
-          Font.TRUETYPE_FONT,
-          Thread.currentThread()
-              .getContextClassLoader()
-              .getResourceAsStream("fonts/OpenSans-Semibold.ttf"));
+      uiFont = new Font("SansSerif", Font.TRUETYPE_FONT, 12);
+      //          Font.createFont(
+      //              Font.TRUETYPE_FONT,
+      //              Thread.currentThread()
+      //                  .getContextClassLoader()
+      //                  .getResourceAsStream("fonts/OpenSans-Regular.ttf"));
+      winrateFont =
+          Font.createFont(
+              Font.TRUETYPE_FONT,
+              Thread.currentThread()
+                  .getContextClassLoader()
+                  .getResourceAsStream("fonts/OpenSans-Semibold.ttf"));
     } catch (IOException | FontFormatException e) {
       e.printStackTrace();
     }
