@@ -956,8 +956,24 @@ public class LizzieFrame extends JFrame {
     gameInfoDialog.dispose();
   }
 
-  public static void saveFile() {
+  public static JTextField getTextField(Container c) {
+    JTextField textField = null;
+    for (int i = 0; i < c.getComponentCount(); i++) {
+      Component cnt = c.getComponent(i);
+      if (cnt instanceof JTextField) {
+        return (JTextField) cnt;
+      }
+      if (cnt instanceof Container) {
+        textField = getTextField((Container) cnt);
+        if (textField != null) {
+          return textField;
+        }
+      }
+    }
+    return textField;
+  }
 
+  public static void saveFile() {
     FileNameExtensionFilter filter = new FileNameExtensionFilter("*.sgf", "SGF");
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     JFileChooser chooser = new JFileChooser(filesystem.getString("last-folder"));
@@ -965,6 +981,12 @@ public class LizzieFrame extends JFrame {
     JFrame frame = new JFrame();
     frame.setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     chooser.setMultiSelectionEnabled(false);
+    String fileName = Lizzie.board.getHistory().getGameInfo().getSaveFileName();
+    if (!fileName.equals("")) {
+      JTextField text;
+      text = getTextField(chooser);
+      text.setText(fileName);
+    }
     int result = chooser.showSaveDialog(frame);
     if (result == JFileChooser.APPROVE_OPTION) {
       File file = chooser.getSelectedFile();

@@ -42,6 +42,11 @@ public class GameInfo {
     return playerWhite;
   }
 
+  public String getSaveFileName() {
+    if (playerBlack.equals("") && playerWhite.equals("")) return "";
+    else return playerBlack + "_Vs_" + playerWhite;
+  }
+
   public void setPlayerWhite(String playerWhite) {
     this.playerWhite = playerWhite;
   }
