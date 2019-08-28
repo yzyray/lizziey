@@ -66,28 +66,10 @@ public class Menu extends MenuBar {
     openItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openItem);
 
-    final JCheckBoxMenuItem readKomi = new JCheckBoxMenuItem();
-    readKomi.setText("自动保存棋谱(每10秒)");
-    readKomi.addActionListener(
-        new ActionListener() {
-
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            // TODO Auto-generated method stub
-            Lizzie.config.readKomi = !Lizzie.config.readKomi;
-            Lizzie.config.uiConfig.put("read-komi", Lizzie.config.readKomi);
-            try {
-              Lizzie.config.save();
-            } catch (IOException es) {
-              // TODO Auto-generated catch block
-            }
-          }
-        });
-    fileMenu.add(readKomi);
-
     final JMenuItem openUrlItem = new JMenuItem("打开在线链接(Q)");
     openUrlItem.addActionListener(new ItemListeneryzy());
     fileMenu.add(openUrlItem);
+    fileMenu.addSeparator();
 
     final JMenuItem saveItem = new JMenuItem();
     saveItem.setText("保存棋谱(S)");
@@ -123,18 +105,6 @@ public class Menu extends MenuBar {
     fileMenu.add(saveWinrate);
 
     fileMenu.addSeparator();
-    final JMenuItem copyItem = new JMenuItem();
-    copyItem.setText("复制棋谱到剪贴板(Ctrl+C)");
-    fileMenu.add(copyItem);
-    copyItem.addActionListener(
-        new ActionListener() {
-
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            // TODO Auto-generated method stub
-            Lizzie.frame.copySgf();
-          }
-        });
 
     final JMenuItem copyBoard = new JMenuItem("复制主棋盘到剪贴板(Shift+C)");
     fileMenu.add(copyBoard);
@@ -149,6 +119,19 @@ public class Menu extends MenuBar {
                 Lizzie.frame.boardY,
                 Lizzie.frame.maxSize,
                 Lizzie.frame.maxSize);
+          }
+        });
+
+    final JMenuItem copyItem = new JMenuItem();
+    copyItem.setText("复制棋谱到剪贴板(Ctrl+C)");
+    fileMenu.add(copyItem);
+    copyItem.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.frame.copySgf();
           }
         });
 
@@ -179,6 +162,24 @@ public class Menu extends MenuBar {
     //
 
     //      }
+    final JCheckBoxMenuItem readKomi = new JCheckBoxMenuItem();
+    readKomi.setText("加载棋谱中的贴目");
+    readKomi.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            Lizzie.config.readKomi = !Lizzie.config.readKomi;
+            Lizzie.config.uiConfig.put("read-komi", Lizzie.config.readKomi);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+    fileMenu.add(readKomi);
 
     final JCheckBoxMenuItem autoSave = new JCheckBoxMenuItem();
     autoSave.setText("自动保存棋谱(每10秒)");
@@ -210,7 +211,7 @@ public class Menu extends MenuBar {
     fileMenu.add(autoSave);
 
     final JMenuItem resume = new JMenuItem();
-    resume.setText("恢复棋谱");
+    resume.setText("恢复自动保存的棋谱");
     fileMenu.add(resume);
 
     resume.addActionListener(
@@ -221,6 +222,8 @@ public class Menu extends MenuBar {
             Lizzie.board.resumePreviousGame();
           }
         });
+
+    fileMenu.addSeparator();
 
     final JMenuItem exitItem = new JMenuItem();
     exitItem.setText("强制退出");
