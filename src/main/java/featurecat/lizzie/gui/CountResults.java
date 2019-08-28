@@ -64,10 +64,10 @@ public class CountResults extends JDialog {
         && Lizzie.config.persistedUi.optJSONArray("movecount-position") != null
         && Lizzie.config.persistedUi.optJSONArray("movecount-position").length() == 2) {
       JSONArray pos = Lizzie.config.persistedUi.getJSONArray("movecount-position");
-      setBounds(pos.getInt(0), pos.getInt(1), 240, 180);
+      setBounds(pos.getInt(0), pos.getInt(1), 230, 180);
     } else {
       Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-      setBounds(0, (int) screensize.getHeight() / 2 - 125, 240, 180); // 240
+      setBounds(0, (int) screensize.getHeight() / 2 - 125, 230, 180); // 240
     }
 
     try {
