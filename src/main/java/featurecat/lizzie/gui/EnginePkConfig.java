@@ -169,7 +169,7 @@ public class EnginePkConfig extends JDialog {
     JLabel lblHints3 = new JLabel("       genmove模式下,引擎强烈建议添加 --noponder参数,否则可能争用资源并且显示混乱");
     JLabel lblHints4 = new JLabel("       genmove模式下,使用 genmove命令,只能按时间落子,认输阈值、计算量、随机落子");
     JLabel lblHints5 = new JLabel("       只受引擎参数限制(-r,-p,-v,-m),界面上的设置无效,且固定92手前不会认输");
-    JLabel lblHints6 = new JLabel("       建议使用分析模式对战,熟悉引擎参数的用户并希望低V测试可以考虑genmove模式");
+    JLabel lblHints6 = new JLabel("       建议使用分析模式对战,熟悉引擎参数的用户可以考虑使用genmove模式");
     lblHints3.setForeground(Color.RED);
     add(lblHints);
     add(lblHints2);

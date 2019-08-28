@@ -725,7 +725,9 @@ public class EngineManager {
     featurecat.lizzie.gui.Menu.engineMenu.setText(
         "引擎" + (currentEngineNo + 1) + ": " + engineList.get(currentEngineNo).currentEnginename);
     changeEngIco();
+    if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
   }
+
   //
   // private void ponderForEndpk() {
   // Lizzie.leelaz.togglePonder();

@@ -192,7 +192,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
     }
   }
 
-  private void redo() {
+  public static void redo() {
     redo(1);
   }
 
@@ -356,7 +356,6 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           Lizzie.frame.noautocounting();
           undo(10);
         } else {
-
           undo();
         }
         break;

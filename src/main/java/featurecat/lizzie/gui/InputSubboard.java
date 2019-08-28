@@ -15,10 +15,44 @@ public class InputSubboard implements MouseListener, MouseWheelListener {
     Lizzie.frame.processPressOnSub(e);
   }
 
+  //  @Override
+  //  public void mouseWheelMoved(MouseWheelEvent e) {
+  //
+  //    Lizzie.frame.processSubboardMouseWheelMoved(e);
+  //  }
+
+  private long wheelWhen;
+
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
+    // if (isinsertmode) {
+    // return;
+    // }
+    if (Lizzie.frame.processCommentMouseWheelMoved(e)) {
+      return;
+    }
+    if (Lizzie.frame.processSubboardMouseWheelMoved(e)) {
+      return;
+    }
 
-    Lizzie.frame.processSubboardMouseWheelMoved(e);
+    if (e.getWhen() - wheelWhen > 0) {
+      wheelWhen = e.getWhen();
+      if (Lizzie.board.inAnalysisMode()) Lizzie.board.toggleAnalysis();
+      if (e.getWheelRotation() > 0) {
+        if (Lizzie.frame.boardRenderer.isShowingBranch()) {
+          Lizzie.frame.doBranch(1);
+        } else {
+          Lizzie.frame.input.redo();
+        }
+      } else if (e.getWheelRotation() < 0) {
+        if (Lizzie.frame.boardRenderer.isShowingBranch()) {
+          Lizzie.frame.doBranch(-1);
+        } else {
+          Lizzie.frame.input.undo();
+        }
+      }
+      Lizzie.frame.refresh();
+    }
   }
 
   @Override

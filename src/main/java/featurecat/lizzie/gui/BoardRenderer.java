@@ -963,7 +963,16 @@ public class BoardRenderer {
         if ((mvNum > 0 || Lizzie.frame.isTrying && mvNum < 0)
             && (!branchOpt.isPresent() || !Lizzie.frame.isMouseOver(i, j))) {
           boolean reverse = (moveNumberList[Board.getIndex(i, j)] > maxBranchMoves());
-          if ((lastMoveOpt.isPresent() && lastMoveOpt.get()[0] == i && lastMoveOpt.get()[1] == j)) {
+          if (Lizzie.config.noRefreshOnMouseMove && displayedBranchLength > 0) {
+            if (displayedBranchLength == mvNum
+                || (displayedBranchLength > branchOpt.get().branchLength
+                    && mvNum == branchOpt.get().branchLength)) {
+              g.setColor(Color.RED.brighter());
+              drawPolygonSmall(g, stoneX, stoneY, stoneRadius);
+            }
+          } else if ((lastMoveOpt.isPresent()
+              && lastMoveOpt.get()[0] == i
+              && lastMoveOpt.get()[1] == j)) {
             // if (reverse) continue;
 
             //  g.setColor(stoneHere.isBlack() ? Color.RED :Color.BLUE);
@@ -1312,10 +1321,14 @@ public class BoardRenderer {
               if (flipWinrate) {
                 roundedWinrate = 100.0 - roundedWinrate;
               }
-              g.setColor(Color.BLACK);
-              if (branchOpt.isPresent() && Lizzie.board.getData().blackToPlay)
-                g.setColor(Color.WHITE);
 
+              g.setColor(Color.BLACK);
+              if (branchOpt.isPresent()) {
+                if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove) {
+                  if (Lizzie.board.getData().blackToPlay) g.setColor(Color.BLACK);
+                  else g.setColor(Color.WHITE);
+                } else if (Lizzie.board.getData().blackToPlay) g.setColor(Color.WHITE);
+              }
               String text;
               if (Lizzie.config.handicapInsteadOfWinrate) {
                 text = String.format("%.2f", Lizzie.leelaz.winrateToHandicap(move.winrate));
