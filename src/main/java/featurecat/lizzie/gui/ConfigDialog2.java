@@ -1388,7 +1388,8 @@ public class ConfigDialog2 extends JDialog {
                   GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames())
               .stream()
               .collect(Collectors.toList());
-      fontList.add(0, " ");
+      // fontList.add(0, " ");
+      fontList.add(0, "默认");
       String fonts[] = fontList.toArray(new String[0]);
 
       JLabel lblFontName = new JLabel(resourceBundle.getString("LizzieConfig.title.fontName"));

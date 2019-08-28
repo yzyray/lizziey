@@ -452,10 +452,10 @@ public class LizzieFrame extends JFrame {
           }
         });
     // Allow change font in the config
-    if (Lizzie.config.uiFontName != null) {
+    if (Lizzie.config.uiFontName != null && !Lizzie.config.uiFontName.equals("默认")) {
       uiFont = new Font(Lizzie.config.uiFontName, Font.PLAIN, 12);
     }
-    if (Lizzie.config.winrateFontName != null) {
+    if (Lizzie.config.winrateFontName != null && !Lizzie.config.winrateFontName.equals("默认")) {
       winrateFont = new Font(Lizzie.config.winrateFontName, Font.BOLD, 12);
     }
 
@@ -3321,6 +3321,17 @@ public class LizzieFrame extends JFrame {
   }
 
   public void saveImage(int x, int y, int width, int height, String path) {
+    Runnable runnable =
+        new Runnable() {
+          public void run() {
+            saveImageTh(x, y, width, height, path);
+          }
+        };
+    Thread thread = new Thread(runnable);
+    thread.start();
+  }
+
+  public void saveImageTh(int x, int y, int width, int height, String path) {
     boolean oriShowName = Lizzie.config.showNameInBoard;
     Lizzie.config.showNameInBoard = false;
     isSavingImage = true;
