@@ -91,10 +91,6 @@ public class EnginePkConfig extends JDialog {
     lblnameSetting.setBounds(5, 22, 210, 25);
     txtnameSetting.setBounds(210, 27, 100, 18);
 
-    chkSaveWinrate = new JCheckBox("保存胜率图");
-    add(chkSaveWinrate);
-    chkSaveWinrate.setBounds(310, 24, 100, 20);
-
     rdoGenmove = new JRadioButton("genmove模式对战");
     rdoAna = new JRadioButton("分析模式对战");
 
@@ -157,12 +153,16 @@ public class EnginePkConfig extends JDialog {
     lblGameMIN.setBounds(132, 65, 50, 18);
     txtGameMIN.setBounds(182, 66, 40, 18);
 
-    chkAutosave = new JCheckBox();
-    JLabel lblAutosave = new JLabel("自动保存棋谱");
+    chkAutosave = new JCheckBox("自动保存棋谱");
+    // JLabel lblAutosave = new JLabel("自动保存棋谱");
     add(chkAutosave);
-    add(lblAutosave);
-    chkAutosave.setBounds(222, 65, 20, 20);
-    lblAutosave.setBounds(242, 65, 100, 18);
+    // add(lblAutosave);
+    chkAutosave.setBounds(222, 64, 100, 20);
+    // lblAutosave.setBounds(242, 65, 100, 18);
+
+    chkSaveWinrate = new JCheckBox("保存胜率图");
+    add(chkSaveWinrate);
+    chkSaveWinrate.setBounds(320, 64, 100, 20);
 
     JLabel lblHints = new JLabel("注:  设置最大手数后,超过手数的对局将被中止并保存,不记入比分");
     JLabel lblHints2 = new JLabel("       如出现双方pass则不计入比分,但会记录棋谱");

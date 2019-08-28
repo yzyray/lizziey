@@ -2908,8 +2908,7 @@ public boolean startAutoAna=false;
 		      			if (!isSaving&&Lizzie.frame.toolbar.chkAnaAutoSave.isSelected()) {
 		      				isSaving = true;
 		      				saveAndLoad();				
-		      			} else {
-		      				
+		      			} else {		      				
 		      				if(msg==null||!msg.isVisible())
 		                  	{	
 		      				  msg=new Message();
