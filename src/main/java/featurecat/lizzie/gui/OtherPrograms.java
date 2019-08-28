@@ -67,6 +67,7 @@ public class OtherPrograms extends JPanel {
   JButton exit;
   JButton moveUp;
   JButton moveDown;
+  JButton moveFirst;
   int curIndex = -1;
 
   public String enginePath = "";
@@ -149,11 +150,14 @@ public class OtherPrograms extends JPanel {
     scan = new JButton("浏览");
     moveUp = new JButton("上移");
     moveDown = new JButton("下移");
+    moveFirst = new JButton("置顶");
 
     moveUp.setFocusable(false);
     moveUp.setMargin(new Insets(0, 0, 0, 0));
     moveDown.setFocusable(false);
     moveDown.setMargin(new Insets(0, 0, 0, 0));
+    moveFirst.setFocusable(false);
+    moveFirst.setMargin(new Insets(0, 0, 0, 0));
     scan.setFocusable(false);
     scan.setMargin(new Insets(0, 0, 0, 0));
     save.setFocusable(false);
@@ -172,8 +176,9 @@ public class OtherPrograms extends JPanel {
     scan.setBounds(5, 85, 40, 20);
     command.setBounds(50, 65, 800, 200);
 
-    moveUp.setBounds(560, 270, 40, 22);
-    moveDown.setBounds(610, 270, 40, 22);
+    moveUp.setBounds(480, 270, 40, 22);
+    moveDown.setBounds(530, 270, 40, 22);
+    moveFirst.setBounds(580, 270, 40, 22);
     save.setBounds(660, 270, 40, 22);
     cancel.setBounds(710, 270, 40, 22);
     delete.setBounds(760, 270, 40, 22);
@@ -189,6 +194,7 @@ public class OtherPrograms extends JPanel {
     delete.setEnabled(false);
     moveUp.setEnabled(false);
     moveDown.setEnabled(false);
+    moveFirst.setEnabled(false);
 
     cancel.setEnabled(false);
     scan.setEnabled(false);
@@ -205,7 +211,7 @@ public class OtherPrograms extends JPanel {
     selectpanel.add(moveUp);
     selectpanel.add(moveDown);
     selectpanel.add(delete);
-
+    selectpanel.add(moveFirst);
     //
     // selectpanel.add(checkBlacktxt);
     // selectpanel.add(checkBlack);
@@ -276,9 +282,8 @@ public class OtherPrograms extends JPanel {
             command.setEnabled(false);
             moveUp.setEnabled(false);
             moveDown.setEnabled(false);
+            moveFirst.setEnabled(false);
             delete.setEnabled(false);
-            moveUp.setEnabled(false);
-            moveDown.setEnabled(false);
             scan.setEnabled(false);
             cancel.setEnabled(false);
             curIndex = -1;
@@ -313,6 +318,7 @@ public class OtherPrograms extends JPanel {
             scan.setEnabled(false);
             cancel.setEnabled(false);
             moveUp.setEnabled(false);
+            moveFirst.setEnabled(false);
             moveDown.setEnabled(false);
             table.getSelectionModel().clearSelection();
           }
@@ -365,6 +371,42 @@ public class OtherPrograms extends JPanel {
           }
         });
 
+    moveFirst.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+
+            ArrayList<ProgramData> programData = getProgramData();
+            if (curIndex < 1 || curIndex > programData.size() - 1) return;
+            ProgramData enginedt = programData.get(curIndex);
+            int a = curIndex;
+            programData.remove(curIndex);
+            programData.add(0, enginedt);
+
+            JSONArray commands = new JSONArray();
+            JSONArray names = new JSONArray();
+            for (int i = 0; i < programData.size(); i++) {
+              ProgramData proDt = programData.get(i);
+              commands.put(proDt.commands.trim());
+              names.put(proDt.name);
+            }
+            Lizzie.config.leelazConfig.put("program-command-list", commands);
+            Lizzie.config.leelazConfig.put("program-name-list", names);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+
+            }
+            // Lizzie.engineManager.updateEngines();
+            Lizzie.frame.menu.updateFastLinks();
+            table.validate();
+            table.updateUI();
+            curIndex = 0;
+          }
+        });
+
     moveUp.addActionListener(
         new ActionListener() {
 
@@ -385,8 +427,8 @@ public class OtherPrograms extends JPanel {
               commands.put(proDt.commands.trim());
               names.put(proDt.name);
             }
-            Lizzie.config.leelazConfig.put("engine-command-list", commands);
-            Lizzie.config.leelazConfig.put("engine-name-list", names);
+            Lizzie.config.leelazConfig.put("program-command-list", commands);
+            Lizzie.config.leelazConfig.put("program-name-list", names);
             try {
               Lizzie.config.save();
             } catch (IOException es) {
@@ -422,8 +464,8 @@ public class OtherPrograms extends JPanel {
               commands.put(proDt.commands.trim());
               names.put(proDt.name);
             }
-            Lizzie.config.leelazConfig.put("engine-command-list", commands);
-            Lizzie.config.leelazConfig.put("engine-name-list", names);
+            Lizzie.config.leelazConfig.put("program-command-list", commands);
+            Lizzie.config.leelazConfig.put("program-name-list", names);
             try {
               Lizzie.config.save();
             } catch (IOException es) {
@@ -620,6 +662,7 @@ public class OtherPrograms extends JPanel {
     cancel.setEnabled(true);
     scan.setEnabled(true);
     moveUp.setEnabled(true);
+    moveFirst.setEnabled(true);
     moveDown.setEnabled(true);
     table.validate();
     table.updateUI();

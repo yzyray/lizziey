@@ -71,6 +71,7 @@ public class MoreEngines extends JPanel {
   JButton exit;
   JButton moveUp;
   JButton moveDown;
+  JButton moveFirst;
   JCheckBox chkdefault;
   JRadioButton rdoDefault;
   JRadioButton rdoLast;
@@ -168,11 +169,14 @@ public class MoreEngines extends JPanel {
     scan = new JButton("浏览");
     moveUp = new JButton("上移");
     moveDown = new JButton("下移");
+    moveFirst = new JButton("置顶");
 
     moveUp.setFocusable(false);
     moveUp.setMargin(new Insets(0, 0, 0, 0));
     moveDown.setFocusable(false);
     moveDown.setMargin(new Insets(0, 0, 0, 0));
+    moveFirst.setFocusable(false);
+    moveFirst.setMargin(new Insets(0, 0, 0, 0));
     scan.setFocusable(false);
     scan.setMargin(new Insets(0, 0, 0, 0));
     save.setFocusable(false);
@@ -212,8 +216,9 @@ public class MoreEngines extends JPanel {
     chkdefault.setBounds(350, 271, 20, 20);
     lbldefault.setBounds(370, 271, 60, 20);
 
-    moveUp.setBounds(560, 270, 40, 22);
-    moveDown.setBounds(610, 270, 40, 22);
+    moveUp.setBounds(480, 270, 40, 22);
+    moveDown.setBounds(530, 270, 40, 22);
+    moveFirst.setBounds(580, 270, 40, 22);
     save.setBounds(660, 270, 40, 22);
     cancel.setBounds(710, 270, 40, 22);
     delete.setBounds(760, 270, 40, 22);
@@ -251,6 +256,7 @@ public class MoreEngines extends JPanel {
     chkdefault.setEnabled(false);
     delete.setEnabled(false);
     moveUp.setEnabled(false);
+    moveFirst.setEnabled(false);
     moveDown.setEnabled(false);
 
     cancel.setEnabled(false);
@@ -274,6 +280,7 @@ public class MoreEngines extends JPanel {
     selectpanel.add(cancel);
     selectpanel.add(exit);
     selectpanel.add(moveUp);
+    selectpanel.add(moveFirst);
     selectpanel.add(moveDown);
     selectpanel.add(chkdefault);
     selectpanel.add(lbldefault);
@@ -366,8 +373,7 @@ public class MoreEngines extends JPanel {
             moveDown.setEnabled(false);
             chkdefault.setEnabled(false);
             delete.setEnabled(false);
-            moveUp.setEnabled(false);
-            moveDown.setEnabled(false);
+            moveFirst.setEnabled(false);
             scan.setEnabled(false);
             cancel.setEnabled(false);
             curIndex = -1;
@@ -411,6 +417,7 @@ public class MoreEngines extends JPanel {
             scan.setEnabled(false);
             cancel.setEnabled(false);
             moveUp.setEnabled(false);
+            moveFirst.setEnabled(false);
             moveDown.setEnabled(false);
             table.getSelectionModel().clearSelection();
           }
@@ -482,6 +489,62 @@ public class MoreEngines extends JPanel {
             // int pick = header.columnAtPoint(e.getPoint());
             // sortnum = pick;
             // issorted = !issorted;
+          }
+        });
+
+    moveFirst.addActionListener(
+        new ActionListener() {
+
+          @Override
+          public void actionPerformed(ActionEvent e) {
+
+            ArrayList<EngineData> engData = getEngineData();
+            if (curIndex < 1 || curIndex > engData.size() - 1) return;
+            EngineData enginedt = engData.get(curIndex);
+            int a = curIndex;
+            engData.remove(curIndex);
+            engData.add(0, enginedt);
+
+            JSONArray commands = new JSONArray();
+            JSONArray names = new JSONArray();
+            JSONArray preloads = new JSONArray();
+            JSONArray widths = new JSONArray();
+            JSONArray heights = new JSONArray();
+            JSONArray komis = new JSONArray();
+            for (int i = 0; i < engData.size(); i++) {
+              EngineData engDt = engData.get(i);
+              if (i == 0) {
+                Lizzie.config.leelazConfig.put("engine-command", engDt.commands.trim());
+                names.put(engDt.name);
+                preloads.put(engDt.preload);
+                widths.put(engDt.width);
+                heights.put(engDt.height);
+                komis.put(engDt.komi);
+              } else {
+                commands.put(engDt.commands.trim());
+                names.put(engDt.name);
+                preloads.put(engDt.preload);
+                widths.put(engDt.width);
+                heights.put(engDt.height);
+                komis.put(engDt.komi);
+              }
+            }
+            Lizzie.config.leelazConfig.put("engine-command-list", commands);
+            Lizzie.config.leelazConfig.put("engine-name-list", names);
+            Lizzie.config.leelazConfig.put("engine-preload-list", preloads);
+            Lizzie.config.leelazConfig.put("engine-width-list", widths);
+            Lizzie.config.leelazConfig.put("engine-height-list", heights);
+            Lizzie.config.leelazConfig.put("engine-komi-list", komis);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+
+            }
+            Lizzie.engineManager.updateEngines();
+            table.validate();
+            table.updateUI();
+            curIndex = 0;
           }
         });
 
@@ -813,6 +876,7 @@ public class MoreEngines extends JPanel {
     cancel.setEnabled(true);
     scan.setEnabled(true);
     moveUp.setEnabled(true);
+    moveFirst.setEnabled(true);
     moveDown.setEnabled(true);
     table.validate();
     table.updateUI();
