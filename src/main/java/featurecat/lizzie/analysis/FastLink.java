@@ -22,7 +22,7 @@ public class FastLink {
     }
   }
 
-  private static enum ParamState {
+  private static enum Params {
     NORMAL,
     QUOTE,
     DOUBLE_QUOTE
@@ -37,14 +37,14 @@ public class FastLink {
     final StringBuilder param = new StringBuilder();
     final StringTokenizer tokens = new StringTokenizer(commandLine, " '\"", true);
     boolean lastTokenQuoted = false;
-    ParamState state = ParamState.NORMAL;
+    Params state = Params.NORMAL;
 
     while (tokens.hasMoreTokens()) {
       String nextToken = tokens.nextToken();
       switch (state) {
         case QUOTE:
           if ("'".equals(nextToken)) {
-            state = ParamState.NORMAL;
+            state = Params.NORMAL;
             lastTokenQuoted = true;
           } else {
             param.append(nextToken);
@@ -52,7 +52,7 @@ public class FastLink {
           break;
         case DOUBLE_QUOTE:
           if ("\"".equals(nextToken)) {
-            state = ParamState.NORMAL;
+            state = Params.NORMAL;
             lastTokenQuoted = true;
           } else {
             param.append(nextToken);
@@ -60,9 +60,9 @@ public class FastLink {
           break;
         default:
           if ("'".equals(nextToken)) {
-            state = ParamState.QUOTE;
+            state = Params.QUOTE;
           } else if ("\"".equals(nextToken)) {
-            state = ParamState.DOUBLE_QUOTE;
+            state = Params.DOUBLE_QUOTE;
           } else if (" ".equals(nextToken)) {
             if (lastTokenQuoted || param.length() != 0) {
               commandList.add(param.toString());
