@@ -156,13 +156,13 @@ public class CountResults extends JDialog {
 
     Graphics2D g2 = (Graphics2D) g;
 
-    Image image = null;
-    try {
-      image = ImageIO.read(getClass().getResourceAsStream("/assets/background.jpg"));
-    } catch (IOException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
+    Image image = Lizzie.config.theme.background();
+    // try {
+    // ImageIO.read(getClass().getResourceAsStream("/assets/background.jpg"));
+    // } catch (IOException e1) {
+    // TODO Auto-generated catch block
+    //   e1.printStackTrace();
+    //  }
     int withtimes = (340 / image.getWidth(getOwner())) + 1;
     int highttimes = (260 / image.getHeight(getOwner())) + 1;
 
@@ -193,8 +193,7 @@ public class CountResults extends JDialog {
     } catch (IOException | FontFormatException e) {
       e.printStackTrace();
     }
-    allFont = new Font("allFont", Font.BOLD, 25);
-    g2.setFont(allFont);
+    g2.setFont(new Font("黑体", Font.BOLD, 25));
     if (allblackcounts >= allwhitecounts) {
       g2.setColor(Color.BLACK);
       g2.drawString("黑", 25, 50);
@@ -202,12 +201,13 @@ public class CountResults extends JDialog {
       g2.setColor(Color.WHITE);
       g2.drawString("白", 25, 50);
     }
-    allFont = new Font("allFont", Font.BOLD, 20);
-    g2.setFont(allFont);
-    g2.drawString("  盘面领先:  " + Math.abs(allblackcounts - allwhitecounts) + "目", 53, 50);
-    allFont = new Font("allFont", Font.BOLD, 15);
+    // allFont = new Font("allFont", Font.BOLD, 20);
+    g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    g2.setFont(new Font("黑体", Font.BOLD, 20));
+    g2.drawString("  盘面领先:" + Math.abs(allblackcounts - allwhitecounts) + "目", 53, 50);
+    // allFont = new Font("allFont", Font.BOLD, 15);
     g2.setColor(Color.BLACK);
-    g2.setFont(allFont);
+    g2.setFont(new Font("黑体", Font.BOLD, 17));
     g2.drawString("目数", 95, 100);
     g2.drawString("提子", 95, 130);
     g2.drawString(allblackcounts + "", 32, 100); // 黑目数
