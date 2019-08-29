@@ -707,7 +707,7 @@ public class ConfigDialog2 extends JDialog {
 
     LinkLabel lblOriginLizzieInfo =
         new LinkLabel(
-            "<html>这是一个个人修改版的Lizzie<br /><br /><table><tr><td>修改者:</td><td><a href=\"https://github.com/yzyray\">yzyray</a></td></tr><tr><td>源代码:</td><td><a href=\"https://github.com/yzyray/lizziey\">https://github.com/yzyray/lizziey</a></td></tr></table></html>");
+            "<html>这是一个个人修改版的Lizzie<br /><br /><table><tr><td>修改者:</td><td><a href=\"https://github.com/yzyray\">yzyray</a></td></tr><tr><td>源代码:</td><td><a href=\"https://github.com/yzyray/lizziey\">https://github.com/yzyray/lizziey</a></td></tr><tr><td>BUG或建议:</td><td><a href=\"http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=MgEGCgcBAQYKA3JDQxxRXV8\">点此发送邮件</a></td></tr></table></html>");
 
     lblOriginLizzieInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
     GroupLayout gl = new GroupLayout(aboutTab);

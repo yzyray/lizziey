@@ -2179,7 +2179,7 @@ public class Menu extends MenuBar {
     theme.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.frame.openConfigDialog2(1);
+            LizzieFrame.openConfigDialog2(1);
           }
         });
 
@@ -2189,7 +2189,7 @@ public class Menu extends MenuBar {
     about.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.frame.openConfigDialog2(1);
+            LizzieFrame.openConfigDialog2(2);
           }
         });
 
