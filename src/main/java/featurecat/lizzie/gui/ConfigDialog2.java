@@ -699,7 +699,7 @@ public class ConfigDialog2 extends JDialog {
 
     LinkLabel lblLizzieInfo =
         new LinkLabel(
-            "<html><b>Lizzie</b>是一个免费的开源围棋图形界面，允许用户使用类Leela Zero引擎实时分析棋局信息。<br /><br /><table><tr><td>作者:</td><td><a href=\"https://github.com/featurecat\">featurecat</a></td></tr><tr><td>源代码:</td><td><a href=\"https://github.com/featurecat/lizzie\">https://github.com/featurecat/lizzie</a></td></tr><tr><td>许可协议:</td><td><a href=\"https://github.com/featurecat/lizzie/blob/master/LICENSE.txt\">GPL-3.0</a></td></tr></table></html>");
+            "<html><b>Lizzie</b>是一个免费的开源围棋图形界面，允许用户使用类Leela Zero引擎实时分析棋局信息。<br /><br /><table><tr><td>作者:</td><td><a href=\"https://github.com/featurecat\">featurecat</a></td></tr><tr><td>源代码:</td><td><a href=\"https://github.com/featurecat/lizzie\">https://github.com/featurecat/lizzie</a></td></tr><tr><td>许可协议:</td><td><a href=\"https://github.com/featurecat/lizzie/blob/master/LICENSE.txt\">GPL-3.0</a></td></tr><tr><td>贡献者:</td><td><a href=\"https://github.com/featurecat/lizzie/graphs/contributors\">zsalch cngoodboy kaorahi bittsitt dfannius OlivierBlanvillain yzyray toomasr TFiFiE</a></td></tr><tr><td></td><td><a href=\"https://github.com/featurecat/lizzie/graphs/contributors\">apetresc aerisnju kuba97531 bvandenbon typohh typohh Ka-zam alreadydone odCat</a></td></tr></td></tr><tr><td></td><td><a href=\"https://github.com/featurecat/lizzie/graphs/contributors\">inohiroki ParmuzinAlexander gjm11 tomasz-warniello rexl2018 Yi-Kai infinity0 objt-ba pliuphys ygrek</a></td></tr></table></html>");
     lblLizzieInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
     LinkLabel lblOriginTitle = new LinkLabel("<html><b>修改信息</b></html>");

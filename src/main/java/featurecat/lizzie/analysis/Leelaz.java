@@ -2843,8 +2843,7 @@ public boolean startAutoAna=false;
 				// while (true) {
 				// c = process.getInputStream().read();
 				line.append((char) c);
-				if ((c == '\n')) {
-					this.isInfoLine=false;
+				if ((c == '\n')) {				
 					if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove && isLoaded) {
 						try {
 							parseLineForGenmovePk(line.toString());
@@ -2858,6 +2857,7 @@ public boolean startAutoAna=false;
 						}
 						if(isInfoLine)
 						{
+							isInfoLine=false;
 							  Runnable runnable =
 								        new Runnable() {
 								          public void run() {
