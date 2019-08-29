@@ -1274,7 +1274,7 @@ public boolean startAutoAna=false;
 		isSaving = false;
 	}
 
-	private void notifyAutoAna() {
+	private void notifyAutoAna() throws Exception {
 		if (Lizzie.frame.toolbar.isAutoAna&&!isClosing) {
 			if (Lizzie.frame.toolbar.startAutoAna) {
 				if ((Lizzie.frame.toolbar.firstMove == -1||Lizzie.frame.toolbar.firstMove>=Lizzie.board.getHistory().getMainEnd().getData().moveNumber)&&!Lizzie.board.getHistory().getNext().isPresent()) {
@@ -2857,7 +2857,16 @@ public boolean startAutoAna=false;
 						} catch (Exception e) {
 						}
 						if(isInfoLine)
-						{	notifyAutoAna();		
+						{
+							  Runnable runnable =
+								        new Runnable() {
+								          public void run() {
+								        	  try {
+								        	  notifyAutoAna();}catch (Exception e) {}
+								          }
+								        };
+								    Thread thread = new Thread(runnable);
+								    thread.start();		
 						notifyAutoPK();						
 						notifyAutoPlay();	
 						}

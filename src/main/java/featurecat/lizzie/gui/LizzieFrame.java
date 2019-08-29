@@ -2665,35 +2665,43 @@ public class LizzieFrame extends JFrame {
   }
 
   private void autosaveMaybe() {
+    Runnable runnable =
+        new Runnable() {
+          public void run() {
+            if (autoInterval > 0) {
+              long currentTime = System.currentTimeMillis();
+              if (currentTime - lastAutosaveTime >= autoInterval) {
+                Lizzie.board.autosave();
+                lastAutosaveTime = currentTime;
+                // Lizzie.board.updateComment();
+              }
+            }
+            if (Lizzie.config.appendWinrateToComment && !urlSgf) {
+              long currentTime = System.currentTimeMillis();
 
-    if (autoInterval > 0) {
-      long currentTime = System.currentTimeMillis();
-      if (currentTime - lastAutosaveTime >= autoInterval) {
-        Lizzie.board.autosave();
-        lastAutosaveTime = currentTime;
-        // Lizzie.board.updateComment();
-      }
-    }
-    if (Lizzie.config.appendWinrateToComment && !urlSgf) {
-      long currentTime = System.currentTimeMillis();
+              if (autoIntervalCom > 0 && currentTime - lastAutocomTime >= autoIntervalCom) {
+                lastAutocomTime = currentTime;
+                // Append the winrate to the comment
+                if (Lizzie.leelaz != null
+                    && Lizzie.leelaz.isPondering()
+                    && !Lizzie.board.isLoadingFile) {
+                  // if (MoveData.getPlayouts(Lizzie.board.getHistory().getData().bestMoves) >
+                  // Lizzie.board.getHistory().getData().getPlayouts())
+                  // 重要!做保存文件时不更新的判断
 
-      if (autoIntervalCom > 0 && currentTime - lastAutocomTime >= autoIntervalCom) {
-        lastAutocomTime = currentTime;
-        // Append the winrate to the comment
-        if (Lizzie.leelaz != null && Lizzie.leelaz.isPondering() && !Lizzie.board.isLoadingFile) {
-          // if (MoveData.getPlayouts(Lizzie.board.getHistory().getData().bestMoves) >
-          // Lizzie.board.getHistory().getData().getPlayouts())
-          // 重要!做保存文件时不更新的判断
-
-          if (toolbar.isEnginePk) {
-            if (Lizzie.board.getHistory().getData().comment.isEmpty())
-              SGFParser.appendCommentForPk();
-          } else {
-            SGFParser.appendComment();
+                  if (toolbar.isEnginePk) {
+                    if (Lizzie.board.getHistory().getData().comment.isEmpty())
+                      SGFParser.appendCommentForPk();
+                  } else {
+                    SGFParser.appendComment();
+                  }
+                }
+              }
+            }
           }
-        }
-      }
-    }
+        };
+    Thread thread = new Thread(runnable);
+    thread.start();
   }
 
   public void setPlayers(String whitePlayer, String blackPlayer) {
