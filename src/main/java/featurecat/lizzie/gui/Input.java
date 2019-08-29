@@ -115,6 +115,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
             Lizzie.board.nextMove();
           }
         }
+        Lizzie.frame.clearMoved();
       }
     }
   }

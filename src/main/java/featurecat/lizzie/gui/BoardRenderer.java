@@ -2340,6 +2340,10 @@ public class BoardRenderer {
     return showingBranch;
   }
 
+  public void notShowingBranch() {
+    showingBranch = false;
+  }
+
   public void setDisplayedBranchLength(int n) {
     displayedBranchLength = n;
   }
