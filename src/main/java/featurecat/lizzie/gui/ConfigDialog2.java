@@ -1153,7 +1153,7 @@ public class ConfigDialog2 extends JDialog {
     chkShowVairationsOnMouse.setBounds(170, 305, 57, 23);
     uiTab.add(chkShowVairationsOnMouse);
 
-    JLabel lblShowVairationsOnMouseNoRefresh = new JLabel("鼠标悬停显示变化图时不刷新");
+    JLabel lblShowVairationsOnMouseNoRefresh = new JLabel("鼠标悬停时 变化图不刷新");
     lblShowVairationsOnMouseNoRefresh.setBounds(372, 308, 163, 16);
     uiTab.add(lblShowVairationsOnMouseNoRefresh);
     chkShowVairationsOnMouseNoRefresh = new JCheckBox("");

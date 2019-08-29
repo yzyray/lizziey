@@ -1830,6 +1830,54 @@ public class Menu extends MenuBar {
           }
         });
 
+    final JCheckBoxMenuItem countButton = new JCheckBoxMenuItem("形势判断");
+    chooseButton.add(countButton);
+    countButton.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.countButton = !Lizzie.config.countButton;
+            Lizzie.config.uiConfig.put("countButton", Lizzie.config.countButton);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem heatMap = new JCheckBoxMenuItem("策略网络");
+    chooseButton.add(heatMap);
+    heatMap.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.heatMap = !Lizzie.config.heatMap;
+            Lizzie.config.uiConfig.put("heatMap", Lizzie.config.heatMap);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
+    final JCheckBoxMenuItem badMoves = new JCheckBoxMenuItem("恶手列表");
+    chooseButton.add(badMoves);
+    badMoves.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.badMoves = !Lizzie.config.badMoves;
+            Lizzie.config.uiConfig.put("badMoves", Lizzie.config.badMoves);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+            Lizzie.frame.toolbar.reSetButtonLocation();
+          }
+        });
+
     final JCheckBoxMenuItem komi = new JCheckBoxMenuItem("贴目");
     chooseButton.add(komi);
     komi.addActionListener(
@@ -1942,45 +1990,13 @@ public class Menu extends MenuBar {
           }
         });
 
-    final JCheckBoxMenuItem countButton = new JCheckBoxMenuItem("形势判断");
-    chooseButton.add(countButton);
-    countButton.addActionListener(
+    final JCheckBoxMenuItem deleteMove = new JCheckBoxMenuItem("删除");
+    chooseButton.add(deleteMove);
+    deleteMove.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.config.countButton = !Lizzie.config.countButton;
-            Lizzie.config.uiConfig.put("countButton", Lizzie.config.countButton);
-            try {
-              Lizzie.config.save();
-            } catch (IOException es) {
-              // TODO Auto-generated catch block
-            }
-            Lizzie.frame.toolbar.reSetButtonLocation();
-          }
-        });
-
-    final JCheckBoxMenuItem heatMap = new JCheckBoxMenuItem("策略网络");
-    chooseButton.add(heatMap);
-    heatMap.addActionListener(
-        new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            Lizzie.config.heatMap = !Lizzie.config.heatMap;
-            Lizzie.config.uiConfig.put("heatMap", Lizzie.config.heatMap);
-            try {
-              Lizzie.config.save();
-            } catch (IOException es) {
-              // TODO Auto-generated catch block
-            }
-            Lizzie.frame.toolbar.reSetButtonLocation();
-          }
-        });
-
-    final JCheckBoxMenuItem badMoves = new JCheckBoxMenuItem("恶手列表");
-    chooseButton.add(badMoves);
-    badMoves.addActionListener(
-        new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            Lizzie.config.badMoves = !Lizzie.config.badMoves;
-            Lizzie.config.uiConfig.put("badMoves", Lizzie.config.badMoves);
+            Lizzie.config.deleteMove = !Lizzie.config.deleteMove;
+            Lizzie.config.uiConfig.put("deleteMove", Lizzie.config.deleteMove);
             try {
               Lizzie.config.save();
             } catch (IOException es) {
@@ -2029,22 +2045,6 @@ public class Menu extends MenuBar {
           public void actionPerformed(ActionEvent e) {
             Lizzie.config.autoPlay = !Lizzie.config.autoPlay;
             Lizzie.config.uiConfig.put("autoPlay", Lizzie.config.autoPlay);
-            try {
-              Lizzie.config.save();
-            } catch (IOException es) {
-              // TODO Auto-generated catch block
-            }
-            Lizzie.frame.toolbar.reSetButtonLocation();
-          }
-        });
-
-    final JCheckBoxMenuItem deleteMove = new JCheckBoxMenuItem("删除");
-    chooseButton.add(deleteMove);
-    deleteMove.addActionListener(
-        new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            Lizzie.config.deleteMove = !Lizzie.config.deleteMove;
-            Lizzie.config.uiConfig.put("deleteMove", Lizzie.config.deleteMove);
             try {
               Lizzie.config.save();
             } catch (IOException es) {

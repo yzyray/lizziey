@@ -715,6 +715,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
         // this is copyed from https://github.com/zsalch/lizzie/tree/n_avoiddialog
 
+      case VK_DECIMAL:
       case VK_PERIOD:
         if (Lizzie.leelaz.isKatago) {
           Lizzie.config.showKataGoEstimate = !Lizzie.config.showKataGoEstimate;
