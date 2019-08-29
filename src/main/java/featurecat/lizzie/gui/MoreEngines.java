@@ -1108,7 +1108,7 @@ public class MoreEngines extends JPanel {
     // Create and set up the window.
     engjf = new JDialog();
     engjf.setTitle("更多引擎设置");
-
+    engjf.setModal(true);
     engjf.addWindowListener(
         new WindowAdapter() {
           public void windowClosing(WindowEvent e) {

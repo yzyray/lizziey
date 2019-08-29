@@ -622,8 +622,11 @@ public class LizzieFrame extends JFrame {
   //	  }
 
   public static void openConfigDialog() {
+    boolean oriPonder = Lizzie.leelaz.isPondering();
+    if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
     ConfigDialog configDialog = new ConfigDialog();
     configDialog.setVisible(true);
+    if (oriPonder) Lizzie.leelaz.togglePonder();
   }
 
   public void openAnalysisTable() {
@@ -662,16 +665,21 @@ public class LizzieFrame extends JFrame {
   }
 
   public static void openConfigDialog2(int index) {
+    boolean oriPonder = Lizzie.leelaz.isPondering();
     if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
     ConfigDialog2 configDialog2 = new ConfigDialog2();
     configDialog2.switchTab(index);
     configDialog2.setVisible(true);
+    if (oriPonder) Lizzie.leelaz.togglePonder();
   }
 
   public static void openMoreEngineDialog() {
+    boolean oriPonder = Lizzie.leelaz.isPondering();
+    if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
     JDialog moreEngines;
     moreEngines = MoreEngines.createDialog();
     moreEngines.setVisible(true);
+    if (oriPonder) Lizzie.leelaz.togglePonder();
   }
 
   public static void openProgramDialog() {
@@ -2716,9 +2724,12 @@ public class LizzieFrame extends JFrame {
       double scoreC = Lizzie.board.getHistory().getCurrentHistoryNode().getData().scoreMean;
       if (scoreC != 0) {
         if (Lizzie.board.getHistory().isBlacksTurn()) {
-          scoreC = scoreC + Lizzie.board.getHistory().getGameInfo().getKomi();
+          if (Lizzie.config.showKataGoBoardScoreMean)
+            scoreC = scoreC + Lizzie.board.getHistory().getGameInfo().getKomi();
         } else {
-          scoreC = -scoreC + Lizzie.board.getHistory().getGameInfo().getKomi();
+          if (Lizzie.config.showKataGoBoardScoreMean)
+            scoreC = -scoreC + Lizzie.board.getHistory().getGameInfo().getKomi();
+          else scoreC = -scoreC;
         }
         score = scoreC;
       }

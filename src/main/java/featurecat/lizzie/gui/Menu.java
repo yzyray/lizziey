@@ -704,9 +704,22 @@ public class Menu extends MenuBar {
     kataboard.add(kataboardmean);
     kataboardmean.addActionListener(new ItemListeneryzy());
 
-    final JCheckBoxMenuItem kataboardboard = new JCheckBoxMenuItem("盘面差");
+    final JCheckBoxMenuItem kataboardboard = new JCheckBoxMenuItem("盘面");
     kataboard.add(kataboardboard);
-    kataboardboard.addActionListener(new ItemListeneryzy());
+    kataboardboard.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.showKataGoBoardScoreMean = true;
+            Lizzie.config.uiConfig.put(
+                "show-katago-boardscoremean", Lizzie.config.showKataGoBoardScoreMean);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
 
     final JMenu katameanalways = new JMenu("目差视角");
     kata.add(katameanalways);
@@ -740,7 +753,7 @@ public class Menu extends MenuBar {
           }
         });
 
-    final JCheckBoxMenuItem katawinboardboard = new JCheckBoxMenuItem("盘面差");
+    final JCheckBoxMenuItem katawinboardboard = new JCheckBoxMenuItem("盘面");
     katawingraphboard.add(katawinboardboard);
     katawinboardboard.addActionListener(
         new ActionListener() {
@@ -3276,17 +3289,6 @@ public class Menu extends MenuBar {
       }
       if (menuItem.getText().startsWith("目差")) {
         Lizzie.config.showKataGoBoardScoreMean = false;
-        Lizzie.config.uiConfig.put(
-            "show-katago-boardscoremean", Lizzie.config.showKataGoBoardScoreMean);
-        try {
-          Lizzie.config.save();
-        } catch (IOException es) {
-          // TODO Auto-generated catch block
-        }
-        return;
-      }
-      if (menuItem.getText().startsWith("盘面差")) {
-        Lizzie.config.showKataGoBoardScoreMean = true;
         Lizzie.config.uiConfig.put(
             "show-katago-boardscoremean", Lizzie.config.showKataGoBoardScoreMean);
         try {
