@@ -2808,6 +2808,7 @@ public class BottomToolbar extends JPanel {
     lblenginePkResult.setText("0:0");
     pkBlackWins = 0;
     pkWhiteWins = 0;
+    isEnginePk = true;
     featurecat.lizzie.gui.Menu.engineMenu.setText("对战中");
     featurecat.lizzie.gui.Menu.engineMenu.setEnabled(false);
     analyse.setEnabled(false);
@@ -2847,7 +2848,6 @@ public class BottomToolbar extends JPanel {
         Lizzie.engineManager.isEmpty = false;
       }
       if (Lizzie.board.getHistory().isBlacksTurn()) {
-        isEnginePk = true;
         Lizzie.engineManager.startEngineForPk(engineBlack);
         Lizzie.engineManager.startEngineForPk(engineWhite);
         Runnable runnable =
@@ -2869,7 +2869,6 @@ public class BottomToolbar extends JPanel {
         Thread thread = new Thread(runnable);
         thread.start();
       } else {
-        isEnginePk = true;
         chkenginePkTime.setEnabled(false);
         txtenginePkTime.setEnabled(false);
         txtenginePkTimeWhite.setEnabled(false);
@@ -2905,7 +2904,6 @@ public class BottomToolbar extends JPanel {
       gameInfo.setPlayerBlack(Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
     } else {
       // genmove对战
-      isEnginePk = true;
       chkenginePkTime.setEnabled(false);
       txtenginePkTime.setEnabled(false);
       txtenginePkTimeWhite.setEnabled(false);

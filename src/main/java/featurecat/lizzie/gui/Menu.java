@@ -3410,4 +3410,31 @@ public class Menu extends MenuBar {
       }
     }
   }
+
+  public void toggleEngineMenuStatus(boolean isPondering, boolean isThinking) {
+    if (engineMenu == null || Lizzie.frame.toolbar.isEnginePk) return;
+    if (isThinking) {
+      engineMenu.setText(
+          "引擎"
+              + (Lizzie.engineManager.currentEngineNo + 1)
+              + ": "
+              + Lizzie.leelaz.currentEnginename
+              + " 思考中");
+    } else {
+      if (isPondering)
+        engineMenu.setText(
+            "引擎"
+                + (Lizzie.engineManager.currentEngineNo + 1)
+                + ": "
+                + Lizzie.leelaz.currentEnginename
+                + " 分析中");
+      else
+        engineMenu.setText(
+            "引擎"
+                + (Lizzie.engineManager.currentEngineNo + 1)
+                + ": "
+                + Lizzie.leelaz.currentEnginename
+                + " 已暂停");
+    }
+  }
 }

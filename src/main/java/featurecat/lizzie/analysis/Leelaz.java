@@ -131,6 +131,7 @@ public boolean startAutoAna=false;
 	public boolean playNow=false;
 	private boolean isZen=false;
 	private boolean isInfoLine = false;
+	private boolean isNotifying = false;
 	public boolean isSSH = false;
 //private int refreshNumber=0;
 	// private boolean isEstimating=true;
@@ -763,8 +764,10 @@ public boolean startAutoAna=false;
 
 						if (params[1].startsWith("pass")) {
 							Lizzie.board.pass();
+							Lizzie.frame.menu.toggleEngineMenuStatus(false,false);
 						} else {
 							Lizzie.board.place(params[1]);
+							Lizzie.frame.menu.toggleEngineMenuStatus(false,false);
 						}
 						if (Lizzie.frame.isAutocounting) {
 							if (Lizzie.board.getHistory().isBlacksTurn())
@@ -876,7 +879,6 @@ public boolean startAutoAna=false;
 	}
 
 	private void notifyAutoPlay() {
-
 		if (Lizzie.frame.toolbar.isAutoPlay) {
 			if ((Lizzie.board.getHistory().isBlacksTurn() && Lizzie.frame.toolbar.chkAutoPlayBlack.isSelected())
 					|| (!Lizzie.board.getHistory().isBlacksTurn()
@@ -2782,6 +2784,7 @@ public boolean startAutoAna=false;
 		} catch (Exception es) {
 
 		}
+		Lizzie.frame.menu.toggleEngineMenuStatus(false,false);
 	}
 
 	public void boardSize(int width, int height) {
@@ -2811,6 +2814,7 @@ public boolean startAutoAna=false;
 		} catch (Exception es) {
 
 		}
+		Lizzie.frame.menu.toggleEngineMenuStatus(false,false);
 
 	}
 
@@ -2862,13 +2866,18 @@ public boolean startAutoAna=false;
 								        new Runnable() {
 								          public void run() {
 								        	  try {
-								        	  notifyAutoAna();}catch (Exception e) {}
+								        		  if(!isNotifying)
+								        		  {  isNotifying=true;
+								        	  notifyAutoAna();
+								        	  notifyAutoPK();	
+								        	  notifyAutoPlay();	
+								        	  isNotifying=false;
+								        	  }
+								        	  }catch (Exception e) {}
 								          }
 								        };
 								    Thread thread = new Thread(runnable);
-								    thread.start();		
-						notifyAutoPK();						
-						notifyAutoPlay();	
+								    thread.start();								
 						}
 					}
 					if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
@@ -3163,6 +3172,7 @@ public boolean startAutoAna=false;
 		 */
 		sendCommand(command);
 		isThinking = true;
+		Lizzie.frame.menu.toggleEngineMenuStatus(false,true);
 		canGetGenmoveInfo = false;
 		isPondering = false;
 		genmovenoponder = false;
@@ -3302,6 +3312,7 @@ public boolean startAutoAna=false;
 			} // until it responds to this, incoming
 				// ponder results are obsolete
 		}
+		Lizzie.frame.menu.toggleEngineMenuStatus(true,false);
 	}
 	
 	private int getInterval() {
@@ -3341,6 +3352,7 @@ public boolean startAutoAna=false;
 			} // until it responds to this, incoming
 				// ponder results are obsolete
 		}
+		Lizzie.frame.menu.toggleEngineMenuStatus(true,false);
 	}
 	
 	public void pkponder() {
@@ -3392,13 +3404,14 @@ public boolean startAutoAna=false;
 	}
 
 	public void togglePonder() {
-
 		isPondering = !isPondering;
 		if (isPondering) {
-			ponder();
+			ponder();			
 		} else {
 			sendCommand("name"); // ends pondering
+			Lizzie.frame.menu.toggleEngineMenuStatus(false,false);
 		}
+	
 	}
 
 	/** End the process */

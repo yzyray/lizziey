@@ -221,15 +221,15 @@ public class BoardRenderer {
     if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isEnginePkBatch) {
       if (Lizzie.frame.toolbar.exChange) {
         if (Lizzie.frame.toolbar.EnginePkBatchNumberNow % 2 == 0) {
-          black = Lizzie.frame.toolbar.pkWhiteWins + " " + black;
-          white = white + " " + Lizzie.frame.toolbar.pkBlackWins;
+          black = black + " " + Lizzie.frame.toolbar.pkWhiteWins;
+          white = Lizzie.frame.toolbar.pkBlackWins + " " + white;
         } else {
-          black = Lizzie.frame.toolbar.pkBlackWins + " " + black;
-          white = white + " " + Lizzie.frame.toolbar.pkWhiteWins;
+          black = black + " " + Lizzie.frame.toolbar.pkBlackWins;
+          white = Lizzie.frame.toolbar.pkWhiteWins + " " + white;
         }
       } else {
-        black = Lizzie.frame.toolbar.pkBlackWins + " " + black;
-        white = white + " " + Lizzie.frame.toolbar.pkWhiteWins;
+        black = " " + black + Lizzie.frame.toolbar.pkBlackWins;
+        white = Lizzie.frame.toolbar.pkWhiteWins + white + " ";
       }
     }
 
@@ -885,7 +885,10 @@ public class BoardRenderer {
           stoneRadius * 4,
           stoneRadius * 6);
     }
-    if (Lizzie.config.allowMoveNumber == 0 && !branchOpt.isPresent() && !Lizzie.frame.isTrying) {
+    if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove) {
+    } else if (Lizzie.config.allowMoveNumber == 0
+        && !branchOpt.isPresent()
+        && !Lizzie.frame.isTrying) {
       if (lastMoveOpt.isPresent()) {
         int[] lastMove = lastMoveOpt.get();
 
@@ -974,9 +977,11 @@ public class BoardRenderer {
               && lastMoveOpt.get()[0] == i
               && lastMoveOpt.get()[1] == j)) {
             // if (reverse) continue;
-
             //  g.setColor(stoneHere.isBlack() ? Color.RED :Color.BLUE);
             // Color.BLUE.brighter());
+            if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove) {
+              continue;
+            }
             g.setColor(Color.RED.brighter());
             drawPolygonSmall(g, stoneX, stoneY, stoneRadius);
           }
@@ -1277,7 +1282,8 @@ public class BoardRenderer {
             if (!branchOpt.isPresent()) {
               drawShadow2(g, suggestionX, suggestionY, true, alpha / 255.0f);
               g.setColor(color);
-              fillCircle(g, suggestionX, suggestionY, stoneRadius);
+              if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove && isBestMove) {
+              } else fillCircle(g, suggestionX, suggestionY, stoneRadius);
             }
 
             // boolean ringedMove =
@@ -1328,6 +1334,10 @@ public class BoardRenderer {
                   if (Lizzie.board.getData().blackToPlay) g.setColor(Color.BLACK);
                   else g.setColor(Color.WHITE);
                 } else if (Lizzie.board.getData().blackToPlay) g.setColor(Color.WHITE);
+              }
+              if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove && isBestMove) {
+                if (Lizzie.board.getData().blackToPlay) g.setColor(Color.BLACK);
+                else g.setColor(Color.WHITE);
               }
               String text;
               if (Lizzie.config.handicapInsteadOfWinrate) {
