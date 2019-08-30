@@ -107,6 +107,9 @@ public class EnginePkConfig extends JDialog {
             chkRandomMove.setEnabled(false);
             txtRandomMove.setEnabled(false);
             txtRandomDiffWinrate.setEnabled(false);
+            chkRandomMove.setEnabled(false);
+            txtRandomDiffWinrate.setEnabled(false);
+            txtRandomMove.setEnabled(false);
           }
 
           @Override
@@ -119,6 +122,9 @@ public class EnginePkConfig extends JDialog {
             chkRandomMove.setEnabled(true);
             txtRandomMove.setEnabled(true);
             txtRandomDiffWinrate.setEnabled(true);
+            chkRandomMove.setEnabled(true);
+            txtRandomDiffWinrate.setEnabled(true);
+            txtRandomMove.setEnabled(true);
           }
         });
     ButtonGroup wrgroup = new ButtonGroup();
@@ -160,7 +166,7 @@ public class EnginePkConfig extends JDialog {
     chkAutosave.setBounds(222, 64, 100, 20);
     // lblAutosave.setBounds(242, 65, 100, 18);
 
-    chkSaveWinrate = new JCheckBox("保存胜率图");
+    chkSaveWinrate = new JCheckBox("保存胜率截图");
     add(chkSaveWinrate);
     chkSaveWinrate.setBounds(320, 64, 100, 20);
 
