@@ -52,7 +52,7 @@ public class NewGameDialog extends JDialog {
   private void initComponents() {
     setMinimumSize(new Dimension(100, 150));
     setResizable(false);
-    setTitle("新的一局(Genmove模式)");
+    setTitle("新对局(Genmove模式)");
     setModal(true);
     try {
       this.setIconImage(ImageIO.read(MoreEngines.class.getResourceAsStream("/assets/logo.png")));
