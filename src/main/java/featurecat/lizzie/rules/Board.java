@@ -2054,6 +2054,9 @@ public class Board implements LeelazListener {
 
   public boolean goToMoveNumberHelper(int moveNumber, boolean withinBranch) {
     if (Lizzie.frame.toolbar.isEnginePk) return false;
+    if (Lizzie.config.noRefreshOnMouseMove) {
+      Lizzie.frame.boardRenderer.clearBranch();
+    }
     int delta = moveNumber - history.getMoveNumber();
     boolean moved = false;
     for (int i = 0; i < Math.abs(delta); i++) {
