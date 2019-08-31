@@ -40,9 +40,8 @@ public class AnalysisFrame extends JDialog {
   public AnalysisFrame() {
     new BorderLayout();
     dataModel = getTableModel();
-
     setTitle("U显示/关闭,单击显示紫圈(小棋盘显示变化),右键落子,双击显示变化,Q切换总在最前");
-
+    setAlwaysOnTop(Lizzie.config.suggestionsalwaysontop);
     // JDialog dialog = new JDialog(owner,
     // "单击显示紫圈(小棋盘显示变化),右键落子,双击显示后续变化图,快捷键U显示/关闭");
     addWindowListener(

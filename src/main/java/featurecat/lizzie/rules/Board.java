@@ -2350,6 +2350,7 @@ public class Board implements LeelazListener {
     if (Lizzie.frame.readBoard != null && Lizzie.frame.syncBoard) {
       Lizzie.frame.readBoard.firstSync = true;
     }
+    double komi = history.getGameInfo().getKomi();
     Lizzie.leelaz.clear();
     Lizzie.frame.resetTitle();
     Lizzie.frame.clear();
@@ -2364,9 +2365,16 @@ public class Board implements LeelazListener {
     isPkBoardKataB = false;
     isPkBoardKataW = false;
     isKataBoard = false;
-    Lizzie.leelaz.sendCommand("komi " + Lizzie.leelaz.komi);
-    if (!Lizzie.frame.urlSgf) Lizzie.board.getHistory().getGameInfo().resetAll();
-    Lizzie.frame.komi = Lizzie.leelaz.komi + "";
+    if (Lizzie.frame.readBoard != null
+        && Lizzie.frame.readBoard.process != null
+        && Lizzie.frame.readBoard.process.isAlive()) {
+      Lizzie.board.getHistory().getGameInfo().resetAllNoKomi();
+      Lizzie.board.getHistory().getGameInfo().setKomi(komi);
+    } else {
+      Lizzie.leelaz.sendCommand("komi " + Lizzie.leelaz.komi);
+      Lizzie.frame.komi = Lizzie.leelaz.komi + "";
+      if (!Lizzie.frame.urlSgf) Lizzie.board.getHistory().getGameInfo().resetAll();
+    }
     Lizzie.frame.boardRenderer.removecountblock();
     if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
   }

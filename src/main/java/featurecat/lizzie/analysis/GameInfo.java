@@ -67,6 +67,14 @@ public class GameInfo {
     this.handicap = handicap;
   }
 
+  public void resetAllNoKomi() {
+    this.handicap = 0;
+    this.playerBlack = "";
+    this.playerWhite = "";
+    this.date = new Date();
+    this.result = "";
+  }
+
   public void resetAll() {
     this.komi = DEFAULT_KOMI;
     this.handicap = 0;

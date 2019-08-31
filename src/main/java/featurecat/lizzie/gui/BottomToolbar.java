@@ -545,8 +545,12 @@ public class BottomToolbar extends JPanel {
     komi.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            setkomi = new SetKomi();
-            setkomi.setVisible(true);
+            if (setkomi == null) {
+              setkomi = new SetKomi();
+              setkomi.setVisible(true);
+            } else {
+              setkomi.setVisible(true);
+            }
           }
         });
     move.addActionListener(

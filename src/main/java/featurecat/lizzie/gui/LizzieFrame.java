@@ -807,6 +807,8 @@ public class LizzieFrame extends JFrame {
       analysisFrame.setVisible(true);
     } else {
       analysisFrame.setVisible(false);
+      Lizzie.frame.suggestionclick = Lizzie.frame.outOfBoundCoordinate;
+      Lizzie.frame.repaint();
       try {
         Lizzie.config.persist();
       } catch (IOException e) {
