@@ -717,6 +717,15 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         // this is copyed from https://github.com/zsalch/lizzie/tree/n_avoiddialog
 
       case VK_DECIMAL:
+        if (Lizzie.frame.iscounting) {
+          Lizzie.frame.boardRenderer.removecountblock();
+          Lizzie.frame.repaint();
+          Lizzie.frame.iscounting = false;
+          Lizzie.countResults.setVisible(false);
+        } else {
+          Lizzie.frame.countstones();
+        }
+        break;
       case VK_PERIOD:
         if (Lizzie.leelaz.isKatago) {
           Lizzie.config.showKataGoEstimate = !Lizzie.config.showKataGoEstimate;
