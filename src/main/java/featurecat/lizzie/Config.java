@@ -71,6 +71,7 @@ public class Config {
   public boolean readBoardArg3 = true;
   public boolean alwaysSyncBoardStat = false;
   public boolean playSound = true;
+  public boolean notPlaySoundInSync = true;
   public boolean noRefreshOnMouseMove = false;
 
   public JSONObject config;
@@ -355,6 +356,7 @@ public class Config {
     readBoardArg2 = uiConfig.optInt("read-board-arg2", 300);
     readBoardArg3 = uiConfig.optBoolean("read-board-arg3", true);
     playSound = uiConfig.optBoolean("play-sound", true);
+    notPlaySoundInSync = uiConfig.optBoolean("not-play-sound-insync", true);
     noRefreshOnMouseMove = uiConfig.optBoolean("norefresh-onmouse-move", false);
     showEditbar = uiConfig.optBoolean("show-edit-bar", true);
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);

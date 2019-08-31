@@ -174,6 +174,7 @@ public class Utils {
 
   public static void playVoiceFile() throws Exception {
     if (isPlayingSound || !Lizzie.config.playSound) return;
+    if (Lizzie.config.notPlaySoundInSync && (Lizzie.frame.urlSgf || Lizzie.frame.syncBoard)) return;
     isPlayingSound = true;
     Runnable runnable =
         new Runnable() {

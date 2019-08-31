@@ -2226,12 +2226,29 @@ public class Menu extends MenuBar {
           }
         });
 
+    final JCheckBoxMenuItem noPlaySoundInSync = new JCheckBoxMenuItem("直播时不播放落子声");
+    settings.add(noPlaySoundInSync);
+    noPlaySoundInSync.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.config.notPlaySoundInSync = !Lizzie.config.notPlaySoundInSync;
+            Lizzie.config.uiConfig.put("not-play-sound-insync", Lizzie.config.notPlaySoundInSync);
+            try {
+              Lizzie.config.save();
+            } catch (IOException es) {
+              // TODO Auto-generated catch block
+            }
+          }
+        });
+
     settings.addMenuListener(
         new MenuListener() {
 
           public void menuSelected(MenuEvent e) {
             if (Lizzie.config.playSound) sound.setState(true);
             else sound.setState(false);
+            if (Lizzie.config.notPlaySoundInSync) noPlaySoundInSync.setState(true);
+            else noPlaySoundInSync.setState(false);
           }
 
           @Override
