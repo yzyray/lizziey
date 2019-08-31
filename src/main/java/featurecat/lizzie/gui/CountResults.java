@@ -204,7 +204,7 @@ public class CountResults extends JDialog {
     // allFont = new Font("allFont", Font.BOLD, 20);
     g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     g2.setFont(new Font("黑体", Font.BOLD, 20));
-    g2.drawString("  盘面领先:" + Math.abs(allblackcounts - allwhitecounts) + "目", 53, 50);
+    g2.drawString(" 盘面领先:" + Math.abs(allblackcounts - allwhitecounts) + "目", 53, 50);
     // allFont = new Font("allFont", Font.BOLD, 15);
     g2.setColor(Color.BLACK);
     g2.setFont(new Font("黑体", Font.BOLD, 17));
