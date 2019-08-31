@@ -939,7 +939,7 @@ public class MoreEngines extends JPanel {
         heights.put(engDt.height);
         komis.put(engDt.komi);
       } else {
-        if (!commands.equals("")) {
+        if (!engDt.commands.equals("")) {
           commands.put(engDt.commands.trim());
           names.put(engDt.name);
           preloads.put(engDt.preload);
