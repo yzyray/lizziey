@@ -23,8 +23,10 @@ public class Menu extends MenuBar {
 
   Font headFont;
   public static ImageIcon icon;
+  public static ImageIcon icon2;
   public static ImageIcon stop;
   public static ImageIcon ready;
+  public static ImageIcon ready2;
   public static JMenuItem[] engine = new JMenuItem[21];
   public static JMenu engineMenu;
   public static JMenu closeEngine;
@@ -41,6 +43,7 @@ public class Menu extends MenuBar {
   public JMenuItem clearsave;
   public JMenuItem clearthis;
 
+  JButton pondering;
   JButton black;
   JButton white;
   JButton blackwhite;
@@ -2273,6 +2276,23 @@ public class Menu extends MenuBar {
       e.printStackTrace();
     }
 
+    icon2 = new ImageIcon();
+    try {
+      icon2.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/playing2.png")));
+      // icon.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/run.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    ready2 = new ImageIcon();
+    try {
+      ready2.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/ready2.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
     stop = new ImageIcon();
     try {
       stop.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/stop.png")));
@@ -2349,6 +2369,7 @@ public class Menu extends MenuBar {
     //            Lizzie.frame.openMoreEngineDialog();
     //          }
     //        });
+
     black = new JButton(iconblack);
     black.addActionListener(
         new ActionListener() {
@@ -3414,27 +3435,28 @@ public class Menu extends MenuBar {
   public void toggleEngineMenuStatus(boolean isPondering, boolean isThinking) {
     if (engineMenu == null || Lizzie.frame.toolbar.isEnginePk) return;
     if (isThinking) {
-      engineMenu.setText(
-          "引擎"
-              + (Lizzie.engineManager.currentEngineNo + 1)
-              + ": "
-              + Lizzie.leelaz.currentEnginename
-              + " 思考中");
+      engineMenu.setIcon(icon2);
+      //      engineMenu.setText(
+      //          "引擎"
+      //              + (Lizzie.engineManager.currentEngineNo + 1)
+      //              + ": "
+      //              + Lizzie.leelaz.currentEnginename
+      //              + " 思考中");
     } else {
-      if (isPondering)
-        engineMenu.setText(
-            "引擎"
-                + (Lizzie.engineManager.currentEngineNo + 1)
-                + ": "
-                + Lizzie.leelaz.currentEnginename
-                + " 分析中");
-      else
-        engineMenu.setText(
-            "引擎"
-                + (Lizzie.engineManager.currentEngineNo + 1)
-                + ": "
-                + Lizzie.leelaz.currentEnginename
-                + " 已暂停");
+      if (isPondering) engineMenu.setIcon(icon2);
+      //        engineMenu.setText(
+      //            "引擎"
+      //                + (Lizzie.engineManager.currentEngineNo + 1)
+      //                + ": "
+      //                + Lizzie.leelaz.currentEnginename
+      //                + " 分析中");
+      else engineMenu.setIcon(ready2);
+      //        engineMenu.setText(
+      //            "引擎"
+      //                + (Lizzie.engineManager.currentEngineNo + 1)
+      //                + ": "
+      //                + Lizzie.leelaz.currentEnginename
+      //                + " 已暂停");
     }
   }
 }
