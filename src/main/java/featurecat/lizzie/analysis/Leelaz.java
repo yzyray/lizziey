@@ -3680,10 +3680,14 @@ public boolean startAutoAna=false;
 	public void toggleHeatmap() {
 		// TODO Auto-generated method stub		
         Lizzie.frame.isShowingHeatmap=!Lizzie.frame.isShowingHeatmap;
-        isheatmap = !Lizzie.frame.isShowingHeatmap;
+        isheatmap = Lizzie.frame.isShowingHeatmap;
+        heatcount = new ArrayList<Integer>();
 		if(isheatmap)
-		{ heatcount = new ArrayList<Integer>();
+		{ 
 		sendCommand("heatmap");}
+		else if(isPondering){
+			ponder();
+		}
 		//isPondering=false;
 	}
 }
