@@ -1146,8 +1146,7 @@ public boolean startAutoAna=false;
 					
 				} else {
 					autoSavePng = courseFile + "\\" + "PkAutoSave" + "\\" + df + ".png";
-				}
-
+				}				
 				Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng);
 			}
 		} catch (IOException e) {
@@ -1170,7 +1169,6 @@ public boolean startAutoAna=false;
 						} else {
 							autoSavePng2 = courseFile + "\\" + "PkAutoSave" + "\\" + df + ".png";
 						}
-
 						Lizzie.frame.saveImage(Lizzie.frame.statx,Lizzie.frame.staty,(int) (Lizzie.frame.grw * 1.03),Lizzie.frame.grh +Lizzie.frame.stath, autoSavePng2);
 					}
 				} catch (IOException e1) {

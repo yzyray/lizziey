@@ -3343,17 +3343,6 @@ public class LizzieFrame extends JFrame {
   }
 
   public void saveImage(int x, int y, int width, int height, String path) {
-    Runnable runnable =
-        new Runnable() {
-          public void run() {
-            saveImageTh(x, y, width, height, path);
-          }
-        };
-    Thread thread = new Thread(runnable);
-    thread.start();
-  }
-
-  public void saveImageTh(int x, int y, int width, int height, String path) {
     boolean oriShowName = Lizzie.config.showNameInBoard;
     Lizzie.config.showNameInBoard = false;
     isSavingImage = true;
