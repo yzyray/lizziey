@@ -53,11 +53,13 @@ public class BottomToolbar extends JPanel {
   JButton setMain;
   JButton batchOpen;
   JButton refresh;
+  JPopupMenu yike;
   JButton tryPlay;
   JButton komi;
   JButton move;
   JButton coords;
   JButton liveButton;
+  ActionListener liveButtonListener;
   JButton badMoves;
   JButton autoPlay;
   JButton deleteMove;
@@ -478,7 +480,7 @@ public class BottomToolbar extends JPanel {
           }
         });
 
-    JPopupMenu yike = new JPopupMenu();
+    yike = new JPopupMenu();
     JMenuItem yikeLive = new JMenuItem("弈客直播");
     yikeLive.addActionListener(
         new ActionListener() {
@@ -505,14 +507,6 @@ public class BottomToolbar extends JPanel {
           }
         });
     yike.add(syncBoard);
-
-    liveButton.addActionListener(
-        new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            // Lizzie.frame.bowser("https://home.yikeweiqi.com/#/live", "弈客直播");
-            yike.show(Lizzie.frame.toolbar, liveButton.getX() + 10, liveButton.getY() - 72);
-          }
-        });
 
     autoPlay.addActionListener(
         new ActionListener() {
@@ -3485,9 +3479,7 @@ public class BottomToolbar extends JPanel {
       leftMove.setVisible(false);
       setLocationLeft(0);
       buttonPane.setBounds((w - length - 19) / 2 + 19, 0, length, 26);
-      return;
-    }
-    if (rightMode) {
+    } else if (rightMode) {
       rightMove.setVisible(false);
       w = setLocationRight(w - 19);
       if (w < 0) {
@@ -3511,5 +3503,13 @@ public class BottomToolbar extends JPanel {
         rightMove.setVisible(false);
       }
     }
+    if (liveButtonListener != null) liveButton.removeActionListener(liveButtonListener);
+    liveButtonListener =
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            yike.show(Lizzie.frame.toolbar, buttonPane.getX(), buttonPane.getY() - 70);
+          }
+        };
+    liveButton.addActionListener(liveButtonListener);
   }
 }
