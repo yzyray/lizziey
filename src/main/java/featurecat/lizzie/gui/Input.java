@@ -613,7 +613,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         } else if (e.isAltDown()) {
           Lizzie.config.toggleShowComment();
         } else {
-          Lizzie.leelaz.heatmap();
+          Lizzie.leelaz.toggleHeatmap();
         }
         break;
 

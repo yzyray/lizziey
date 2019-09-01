@@ -3677,12 +3677,13 @@ public boolean startAutoAna=false;
 		gtpConsole = !gtpConsole;
 	}
 
-	public void heatmap() {
-		// TODO Auto-generated method stub
-		isheatmap = true;
-        Lizzie.frame.isShowingHeatmap=true;
-		heatcount = new ArrayList<Integer>();
-		sendCommand("heatmap");
+	public void toggleHeatmap() {
+		// TODO Auto-generated method stub		
+        Lizzie.frame.isShowingHeatmap=!Lizzie.frame.isShowingHeatmap;
+        isheatmap = !Lizzie.frame.isShowingHeatmap;
+		if(isheatmap)
+		{ heatcount = new ArrayList<Integer>();
+		sendCommand("heatmap");}
 		//isPondering=false;
 	}
 }

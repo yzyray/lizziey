@@ -1285,7 +1285,7 @@ public class Menu extends MenuBar {
     showHeatmap.addActionListener(
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Lizzie.leelaz.heatmap();
+            Lizzie.leelaz.toggleHeatmap();
           }
         });
     analyMenu.add(showHeatmap);
