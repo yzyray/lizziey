@@ -1189,8 +1189,8 @@ public class SubBoardRenderer {
           //                    }
           //                  }
           int length = 0;
-          if (showHeatAfterCalc) length = (move.playouts * 80 / maxPlayouts) + stoneRadius;
-          else length = (int) (move.policy * 80 / maxPolicy) + stoneRadius;
+          if (showHeatAfterCalc) length = (move.playouts * 60 / maxPlayouts) + stoneRadius;
+          else length = (int) (move.policy * 60 / maxPolicy) + stoneRadius;
           drawHeat(g, suggestionX - length / 2, suggestionY - length / 2, length);
           //                  drawString(
           //                      g,

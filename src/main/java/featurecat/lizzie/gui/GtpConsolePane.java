@@ -217,8 +217,10 @@ public class GtpConsolePane extends JDialog {
             }
           }
         }
-      } else if ("clear_board".equals(command)) {
+      } else if ("clear_board".equals(command.toLowerCase())) {
         Lizzie.board.clear();
+      } else if ("heatmap".equals(command.toLowerCase())) {
+        Lizzie.leelaz.heatmap();
       } else if (command.toLowerCase().startsWith("boardsize")) {
         String cmdParams[] = command.split(" ");
         if (cmdParams.length >= 2) {

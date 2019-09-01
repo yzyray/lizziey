@@ -181,7 +181,8 @@ public class LizzieFrame extends JFrame {
   private Rectangle commentRect;
   public YaZenGtp zen;
   public ReadBoard readBoard;
-  public boolean isheatmap = false;
+  public boolean isShowingPolicy = false;
+  public boolean isShowingHeatmap = false;
   public boolean isMouseOver = false;
   // Show the playouts in the title
   private ScheduledExecutorService showPlayouts = Executors.newScheduledThreadPool(1);
@@ -3109,9 +3110,9 @@ public class LizzieFrame extends JFrame {
   }
 
   public void toggleheatmap() {
-    if (!isheatmap) {
+    if (!isShowingPolicy) {
       // Lizzie.leelaz.isheatmap = true;
-      isheatmap = true;
+      isShowingPolicy = true;
       // if (!Lizzie.leelaz.isPondering()) lastponder = false;
       // else {
       // lastponder = true;
@@ -3119,7 +3120,7 @@ public class LizzieFrame extends JFrame {
       //
       if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.ponder();
     } else {
-      isheatmap = false;
+      isShowingPolicy = false;
       // if (lastponder) Lizzie.leelaz.ponder();
     }
   }

@@ -283,6 +283,7 @@ public class BoardHistoryNode {
       Lizzie.frame.subBoardRenderer.setDisplayedBranchLength(-2);
     }
     Lizzie.frame.subBoardRenderer.bestmovesNum = 0;
+    Lizzie.frame.isShowingHeatmap = false;
   }
   /** @return data stored on this node */
   public BoardData getData() {

@@ -610,8 +610,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
       case VK_T:
         if (controlIsPressed(e)) {
           Lizzie.config.toggleShowCommentNodeColor();
-        } else {
+        } else if (e.isAltDown()) {
           Lizzie.config.toggleShowComment();
+        } else {
+          Lizzie.leelaz.heatmap();
         }
         break;
 

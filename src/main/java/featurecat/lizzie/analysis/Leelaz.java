@@ -133,6 +133,8 @@ public boolean startAutoAna=false;
 	private boolean isInfoLine = false;
 	private boolean isNotifying = false;
 	public boolean isSSH = false;
+	public boolean isheatmap = false;
+	public ArrayList<Integer> heatcount = new ArrayList<Integer>();
 //private int refreshNumber=0;
 	// private boolean isEstimating=true;
 	/**
@@ -851,24 +853,24 @@ public boolean startAutoAna=false;
 				}
 
 			}
-//			if (isheatmap) {
-//				if (line.startsWith(" ") || Character.isDigit(line.charAt(0))) {
-//					try {
-//						String[] params = line.trim().split("\\s+");
-//						if (params.length == Lizzie.board.boardWidth) {
-//							for (int i = 0; i < params.length; i++)
-//								heatcount.add(Integer.parseInt(params[i]));
-//						}
-//					} catch (Exception ex) {
-//					}
-//				}
-//				if (line.contains("winrate:")) {
-//					isheatmap = false;
-//					String[] params = line.trim().split(" ");
-//					// heatwinrate = Double.valueOf(params[1]);
-//					Lizzie.frame.refresh();
-//				}
-//			}
+			if (isheatmap) {
+				if (line.startsWith(" ") || Character.isDigit(line.charAt(0))) {
+					try {
+						String[] params = line.trim().split("\\s+");
+						if (params.length == Lizzie.board.boardWidth) {
+							for (int i = 0; i < params.length; i++)
+								heatcount.add(Integer.parseInt(params[i]));
+						}
+					} catch (Exception ex) {
+					}
+				}
+				if (line.contains("winrate:")) {
+					isheatmap = false;
+				//	String[] params = line.trim().split(" ");
+					 //heatwinrate = Double.valueOf(params[1]);
+					Lizzie.frame.refresh();
+				}
+			}
 		}else  if (line.startsWith("=") || line.startsWith("?")) {
 			currentCmdNum = currentCmdNum+ 1;			
 	if(currentCmdNum>cmdNumber-1)
@@ -1009,8 +1011,6 @@ public boolean startAutoAna=false;
             msg.setMessage("自动分析已完毕,棋谱保存在"+courseFile+ "\\" + "AutoSave");
             msg.setVisible(true);
             	}
-			
-			
 			return;
 		} else {
 			String name = Lizzie.frame.Batchfiles.get(Lizzie.frame.BatchAnaNum).getName();
@@ -2859,7 +2859,7 @@ public boolean startAutoAna=false;
 						}
 						if(isInfoLine)
 						{
-							isInfoLine=false;
+							isInfoLine=false;	
 							  Runnable runnable =
 								        new Runnable() {
 								          public void run() {
@@ -2891,7 +2891,7 @@ public boolean startAutoAna=false;
 						}
 						catch (Exception e) {
 							
-						}
+						}						
 					}
 					isCommandLine = false;
 				} 
@@ -3403,6 +3403,10 @@ public boolean startAutoAna=false;
 
 	public void togglePonder() {
 		isPondering = !isPondering;
+		if(Lizzie.frame.isShowingHeatmap)
+		{	Lizzie.frame.isShowingHeatmap=false;
+		ponder();	
+		}
 		if (isPondering) {
 			ponder();			
 		} else {
@@ -3671,5 +3675,14 @@ public boolean startAutoAna=false;
 
 	public void toggleGtpConsole() {
 		gtpConsole = !gtpConsole;
+	}
+
+	public void heatmap() {
+		// TODO Auto-generated method stub
+		isheatmap = true;
+        Lizzie.frame.isShowingHeatmap=true;
+		heatcount = new ArrayList<Integer>();
+		sendCommand("heatmap");
+		//isPondering=false;
 	}
 }

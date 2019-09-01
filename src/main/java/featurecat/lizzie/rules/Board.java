@@ -1833,6 +1833,7 @@ public class Board implements LeelazListener {
       Lizzie.countResults.iscounted = false;
       Lizzie.frame.iscounting = false;
     }
+    Lizzie.frame.isShowingHeatmap = false;
   }
   /** Goes to the next coordinate, thread safe */
   public boolean nextMove() {

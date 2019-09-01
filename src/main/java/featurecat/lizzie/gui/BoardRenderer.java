@@ -760,7 +760,9 @@ public class BoardRenderer {
 
     Optional<MoveData> suggestedMove = mouseOveredMove();
 
-    if (!suggestedMove.isPresent() || Lizzie.frame.isheatmap) {
+    if (!suggestedMove.isPresent()
+        || Lizzie.frame.isShowingPolicy
+        || Lizzie.frame.isShowingHeatmap) {
       return;
     }
     List<String> variation = suggestedMove.get().variation;
@@ -1037,15 +1039,81 @@ public class BoardRenderer {
    */
   private void drawLeelazSuggestions(Graphics2D g) {
     int minAlpha = 32;
-    float winrateHueFactor = 0.9f;
+    // float winrateHueFactor = 0.9f;
     float alphaFactor = 5.0f;
     float redHue = Color.RGBtoHSB(255, 0, 0, null)[0];
     float greenHue = Color.RGBtoHSB(0, 255, 0, null)[0];
     float cyanHue = Lizzie.config.bestMoveColor;
+    if (Lizzie.frame.isShowingHeatmap) {
+      int maxPolicy = 0;
+      //    int minPolicy = 0;
+      for (Integer heat : Lizzie.leelaz.heatcount) {
+        if (heat > maxPolicy) maxPolicy = heat;
+      }
+      for (int i = 0; i < Lizzie.leelaz.heatcount.size(); i++) {
+        if (Lizzie.leelaz.heatcount.get(i) > 0) {
+          int y1 = i / Lizzie.board.boardWidth;
+          int x1 = i % Lizzie.board.boardWidth;
+          int suggestionX = x + scaledMarginWidth + squareWidth * x1;
+          int suggestionY = y + scaledMarginHeight + squareHeight * y1;
+          double percent = ((double) Lizzie.leelaz.heatcount.get(i)) / maxPolicy;
 
-    if (Lizzie.frame.isheatmap && !Lizzie.leelaz.getBestMoves().isEmpty()) {
+          // g.setColor(Color.BLACK);
+          // g.fillRect(stoneX - stoneRadius / 2, stoneY - stoneRadius / 2, stoneRadius,
+          // stoneRadius);
+
+          float hue;
+          if (Lizzie.leelaz.heatcount.get(i) == maxPolicy) {
+            hue = cyanHue;
+          } else {
+            double fraction;
+
+            fraction = percent;
+
+            // Correction to make differences between colors more perceptually linear
+            fraction *= 2;
+            if (fraction < 1) { // red to yellow
+              fraction = Math.cbrt(fraction * fraction) / 2;
+            } else { // yellow to green
+              fraction = 1 - Math.sqrt(2 - fraction) / 2;
+            }
+
+            hue = redHue + (greenHue - redHue) * (float) fraction;
+          }
+
+          float saturation = 1.0f;
+          float brightness = 0.85f;
+          float alpha =
+              minAlpha + (maxAlpha - minAlpha) * max(0, (float) log(percent) / alphaFactor + 1);
+
+          Color hsbColor = Color.getHSBColor(hue, saturation, brightness);
+          Color color =
+              new Color(hsbColor.getRed(), hsbColor.getGreen(), hsbColor.getBlue(), (int) alpha);
+          if (!branchOpt.isPresent()) {
+            drawShadow2(g, suggestionX, suggestionY, true, alpha / 255.0f);
+            g.setColor(color);
+            fillCircle(g, suggestionX, suggestionY, stoneRadius);
+
+            String text = String.format("%.1f", ((double) Lizzie.leelaz.heatcount.get(i)) / 10);
+            g.setColor(Color.WHITE);
+            drawString(
+                g,
+                suggestionX,
+                suggestionY,
+                LizzieFrame.winrateFont,
+                Font.PLAIN,
+                text,
+                stoneRadius,
+                stoneRadius * 1.9,
+                0);
+          }
+        }
+      }
+      return;
+    }
+    if (Lizzie.frame.isShowingPolicy && !Lizzie.leelaz.getBestMoves().isEmpty()) {
       Double maxPolicy = 0.0;
-      int minPolicy = 0;
+      // int minPolicy = 0;
       for (int n = 0; n < Lizzie.leelaz.getBestMoves().size(); n++) {
         if (Lizzie.leelaz.getBestMoves().get(n).policy > maxPolicy)
           maxPolicy = Lizzie.leelaz.getBestMoves().get(n).policy;

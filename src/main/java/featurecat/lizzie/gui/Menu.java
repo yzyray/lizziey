@@ -455,7 +455,7 @@ public class Menu extends MenuBar {
     panel.add(winratetMenu); // 添加到“编辑”菜单
     winratetMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
-    final JCheckBoxMenuItem commitMenu = new JCheckBoxMenuItem("评论面板(T)"); // 创建“字体”子菜单
+    final JCheckBoxMenuItem commitMenu = new JCheckBoxMenuItem("评论面板(Alt+T)"); // 创建“字体”子菜单
     panel.add(commitMenu); // 添加到“编辑”菜单
     commitMenu.addActionListener(new ItemListeneryzy()); // 添加动作监听器
 
@@ -1259,16 +1259,37 @@ public class Menu extends MenuBar {
         });
     analyMenu.addSeparator();
 
-    final JMenuItem heatItem = new JMenuItem();
-    heatItem.setText("策略网络(H)");
-    heatItem.addActionListener(new ItemListeneryzy());
-    analyMenu.add(heatItem);
+    final JCheckBoxMenuItem showPolicy = new JCheckBoxMenuItem();
+    showPolicy.setText("策略网络(H)");
+    showPolicy.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.toggleheatmap();
+          }
+        });
+    analyMenu.add(showPolicy);
 
     final JMenuItem countsItem = new JMenuItem();
     countsItem.setText("形势判断(点)");
     // aboutItem.setMnemonic('A');
-    countsItem.addActionListener(new ItemListeneryzy());
+    countsItem.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.frame.countstones();
+          }
+        });
     analyMenu.add(countsItem);
+
+    final JMenuItem showHeatmap = new JMenuItem();
+    showHeatmap.setText("HeatMap(T)");
+    showHeatmap.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            Lizzie.leelaz.heatmap();
+          }
+        });
+    analyMenu.add(showHeatmap);
+
     analyMenu.addSeparator();
 
     final JCheckBoxMenuItem badmovesItem = new JCheckBoxMenuItem("恶手列表(B)");
@@ -1289,6 +1310,8 @@ public class Menu extends MenuBar {
             if (Lizzie.config.uiConfig.optBoolean("show-badmoves-frame", false))
               badmovesItem.setState(true);
             else badmovesItem.setState(false);
+            if (Lizzie.frame.isShowingPolicy) showPolicy.setState(true);
+            else showPolicy.setState(false);
           }
 
           @Override
@@ -2817,10 +2840,6 @@ public class Menu extends MenuBar {
         Lizzie.frame.toggleBestMoves();
         return;
       }
-      if (menuItem.getText().startsWith("策略")) {
-        Lizzie.frame.toggleheatmap();
-        return;
-      }
       if (menuItem.getText().startsWith("胜率图")) {
         Lizzie.config.toggleShowWinrate();
         return;
@@ -2876,10 +2895,6 @@ public class Menu extends MenuBar {
         if (Lizzie.board.getData().blackToPlay != playerIsBlack) {
           Lizzie.leelaz.genmove("B");
         }
-        return;
-      }
-      if (menuItem.getText().startsWith("形势")) {
-        Lizzie.frame.countstones();
         return;
       }
       if (menuItem.getText().startsWith("分析")) {
