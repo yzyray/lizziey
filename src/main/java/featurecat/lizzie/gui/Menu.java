@@ -1755,17 +1755,7 @@ public class Menu extends MenuBar {
             }
           }
         });
-    readBoardArg.add(defSyncBoth);
-
-    final JMenuItem setTime = new JMenuItem("设置持续同步间隔");
-    setTime.addActionListener(
-        new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            SetBoardSyncTime setBoardSyncTime = new SetBoardSyncTime();
-            setBoardSyncTime.setVisible(true);
-          }
-        });
-    readBoardArg.add(setTime);
+    readBoardArg.add(defSyncBoth);   
 
     final JCheckBoxMenuItem alwaysSyncBoardStat = new JCheckBoxMenuItem("回退时保持棋盘一致(可能破坏历史手顺)");
     alwaysSyncBoardStat.addActionListener(
@@ -1781,6 +1771,16 @@ public class Menu extends MenuBar {
           }
         });
     readBoardArg.add(alwaysSyncBoardStat);
+    
+    final JMenuItem setTime = new JMenuItem("设置持续同步间隔");
+    setTime.addActionListener(
+        new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            SetBoardSyncTime setBoardSyncTime = new SetBoardSyncTime();
+            setBoardSyncTime.setVisible(true);
+          }
+        });
+    readBoardArg.add(setTime);
 
     // readBoardArg1= uiConfig.optString("read-board-arg1"
 
@@ -1812,7 +1812,7 @@ public class Menu extends MenuBar {
             if (Lizzie.config.readBoardArg3) noticeLast.setState(true);
             else noticeLast.setState(false);
             if (Lizzie.config.syncBoth) defSyncBoth.setState(true);
-            defSyncBoth.setState(false);
+            else defSyncBoth.setState(false);
           }
 
           @Override
