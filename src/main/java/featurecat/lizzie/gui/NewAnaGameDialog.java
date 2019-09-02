@@ -43,6 +43,8 @@ public class NewAnaGameDialog extends JDialog {
   private JTextField textPlayouts;
   private JTextField textFirstPlayouts;
   private JCheckBox chkPonder;
+  private JCheckBox chkShowBlack;
+  private JCheckBox chkShowWhite;
 
   private boolean cancelled = true;
   public GameInfo gameInfo = new GameInfo();
@@ -84,9 +86,12 @@ public class NewAnaGameDialog extends JDialog {
   }
 
   private void initContentPanel() {
-    GridLayout gridLayout = new GridLayout(8, 2, 4, 4);
+    GridLayout gridLayout = new GridLayout(10, 2, 4, 4);
     contentPanel.setLayout(gridLayout);
-
+    chkShowBlack = new JCheckBox();
+    chkShowWhite = new JCheckBox();
+    chkShowBlack.setSelected(false);
+    chkShowWhite.setSelected(false);
     checkBoxPlayerIsBlack =
         new JCheckBox(resourceBundle.getString("NewGameDialog.PlayBlack"), true);
     // checkBoxPlayerIsBlack.addChangeListener(evt -> togglePlayerIsBlack());
@@ -132,6 +137,10 @@ public class NewAnaGameDialog extends JDialog {
     contentPanel.add(textPlayouts);
     contentPanel.add(new JLabel("AI每手首位计算量(选填)"));
     contentPanel.add(textFirstPlayouts);
+    contentPanel.add(new JLabel("显示分析结果(黑)"));
+    contentPanel.add(chkShowBlack);
+    contentPanel.add(new JLabel("显示分析结果(白)"));
+    contentPanel.add(chkShowWhite);
 
     // togglePlayerIsBlack();
     textFieldKomi.setEnabled(true);
@@ -196,7 +205,8 @@ public class NewAnaGameDialog extends JDialog {
       gameInfo.setKomi(komi);
       gameInfo.setHandicap(handicap);
       Lizzie.config.playponder = chkPonder.isSelected();
-
+      Lizzie.frame.toolbar.chkShowBlack.setSelected(chkShowBlack.isSelected());
+      Lizzie.frame.toolbar.chkShowWhite.setSelected(chkShowWhite.isSelected());
       if (playerIsBlack()) {
         Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
         Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
@@ -205,8 +215,6 @@ public class NewAnaGameDialog extends JDialog {
         Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
       }
       Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
-      Lizzie.frame.toolbar.chkShowBlack.setSelected(false);
-      Lizzie.frame.toolbar.chkShowWhite.setSelected(false);
       try {
         if (FORMAT_HANDICAP.parse(textTime.getText()).intValue() > 0) {
           Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);

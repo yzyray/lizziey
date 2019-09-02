@@ -1197,6 +1197,12 @@ public class Board implements LeelazListener {
       Lizzie.frame.iscounting = false;
     }
 
+    if (Lizzie.frame.bothSync
+        && Lizzie.frame.readBoard != null
+        && Lizzie.frame.readBoard.process != null
+        && Lizzie.frame.readBoard.process.isAlive()) {
+      Lizzie.frame.readBoard.sendCommandTo("place " + x + " " + y);
+    }
     synchronized (this) {
       //      if (scoreMode) {
       //        // Mark clicked stone as dead

@@ -73,6 +73,7 @@ public class Config {
   public boolean playSound = true;
   public boolean notPlaySoundInSync = true;
   public boolean noRefreshOnMouseMove = false;
+  public boolean syncBoth = false;
 
   public JSONObject config;
   public JSONObject leelazConfig;
@@ -358,6 +359,7 @@ public class Config {
     playSound = uiConfig.optBoolean("play-sound", true);
     notPlaySoundInSync = uiConfig.optBoolean("not-play-sound-insync", true);
     noRefreshOnMouseMove = uiConfig.optBoolean("norefresh-onmouse-move", false);
+    syncBoth = uiConfig.optBoolean("sync-both", false);
     showEditbar = uiConfig.optBoolean("show-edit-bar", true);
     badmovesalwaysontop = uiConfig.optBoolean("badmoves-always-ontop", false);
     mainsalwaysontop = uiConfig.optBoolean("mains-always-ontop", false);

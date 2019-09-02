@@ -28,25 +28,21 @@ public class ReadBoard {
 
   private String engineCommand;
   // private List<String> commands;
-  private int cmdNumber;
+  //  private int cmdNumber;
   // private int currentCmdNum;
   private ArrayDeque<String> cmdQueue;
   private ScheduledExecutorService executor;
   public String currentEnginename = "";
   ArrayList<Integer> tempcount = new ArrayList<Integer>();
-  public int blackEatCount = 0;
-  public int whiteEatCount = 0;
-  public int blackPrisonerCount = 0;
-  public int whitePrisonerCount = 0;
   CountResults results;
   boolean firstcount = true;
   public int numberofcount = 0;
-  public boolean noread = false;
   public boolean firstSync = true;
+  public boolean syncBoth = Lizzie.config.syncBoth;
 
   public ReadBoard() throws IOException {
 
-    cmdNumber = 1;
+    // cmdNumber = 1;
     // currentCmdNum = 0;
     cmdQueue = new ArrayDeque<>();
     //  gtpConsole = true;
@@ -61,6 +57,11 @@ public class ReadBoard {
     commands.add("yzy");
     commands.add(Lizzie.config.readBoardArg1);
     commands.add(Lizzie.config.readBoardArg2 + "");
+    if (syncBoth) {
+      commands.add(" 0");
+    } else {
+      commands.add(" 1");
+    }
     if (Lizzie.config.readBoardArg3) {
       commands.add("0");
     } else {
@@ -113,14 +114,15 @@ public class ReadBoard {
       // System.exit(-1);
     } catch (IOException e) {
       e.printStackTrace();
+      Lizzie.frame.bothSync = false;
+      Lizzie.frame.syncBoard = false;
       // System.exit(-1);
     }
   }
 
   private void parseLine(String line) {
     synchronized (this) {
-      if (Lizzie.gtpConsole.isVisible()) Lizzie.gtpConsole.addLineforce(line);
-
+      // if (Lizzie.gtpConsole.isVisible()) Lizzie.gtpConsole.addLineforce(line);
       if (line.startsWith("re=")) {
 
         String[] params = line.substring(3, line.length() - 2).split(",");
@@ -151,6 +153,12 @@ public class ReadBoard {
       }
       if (line.startsWith("sync")) {
         Lizzie.frame.syncBoard = true;
+      }
+      if (line.startsWith("both")) {
+        Lizzie.frame.bothSync = true;
+      }
+      if (line.startsWith("noboth")) {
+        Lizzie.frame.bothSync = false;
       }
       if (line.startsWith("stopsync")) {
         Lizzie.frame.syncBoard = false;
@@ -213,7 +221,7 @@ public class ReadBoard {
         played = true;
         playedMove = playedMove + 1;
       }
-      if (Lizzie.config.alwaysSyncBoardStat) {
+      if (Lizzie.config.alwaysSyncBoardStat && !Lizzie.frame.bothSync) {
         if (m == 0 && stones[Lizzie.board.getIndex(x, y)] != Stone.EMPTY) {
           Lizzie.board.clear();
           // syncBoardStones();
@@ -263,12 +271,14 @@ public class ReadBoard {
       }
       played = true;
     }
-    if (played
-        && !Lizzie.config.alwaysGotoLastOnLive
-        && !Lizzie.config.alwaysSyncBoardStat
-        && Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()
-        && node != node2) {
-      Lizzie.board.moveToAnyPosition(node);
+    if (!Lizzie.frame.bothSync) {
+      if (played
+          && !Lizzie.config.alwaysGotoLastOnLive
+          && !Lizzie.config.alwaysSyncBoardStat
+          && Lizzie.board.getHistory().getCurrentHistoryNode().previous().isPresent()
+          && node != node2) {
+        Lizzie.board.moveToAnyPosition(node);
+      }
     }
     if (firstSync) {
       firstSync = false;
@@ -330,6 +340,7 @@ public class ReadBoard {
 
   public void shutdown() {
     Lizzie.frame.syncBoard = false;
+    Lizzie.frame.bothSync = false;
     process.destroy();
   }
 
@@ -353,13 +364,13 @@ public class ReadBoard {
     // }
   }
 
-  private void sendCommandTo(String command) {
+  public void sendCommandTo(String command) {
     // System.out.printf("> %d %s\n", cmdNumber, command);
-    try {
-      Lizzie.gtpConsole.addZenCommand(command, cmdNumber);
-    } catch (Exception ex) {
-    }
-    cmdNumber++;
+    // try {
+    if (Lizzie.gtpConsole.isVisible()) Lizzie.gtpConsole.addReadBoardCommand(command);
+    // } catch (Exception ex) {
+    // }
+    // cmdNumber++;
     try {
       outputStream.write((command + "\n").getBytes());
       outputStream.flush();

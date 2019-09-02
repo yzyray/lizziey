@@ -134,6 +134,13 @@ public class GtpConsolePane extends JDialog {
     addText(formatZenCommand(command, commandNumber));
   }
 
+  public void addReadBoardCommand(String command) {
+    if (command == null || command.trim().length() == 0) {
+      return;
+    }
+    addText(formatReadBoardCommand(command));
+  }
+
   public void addLine(String line) {
     if (line == null || line.trim().length() == 0) {
       return;
@@ -167,6 +174,11 @@ public class GtpConsolePane extends JDialog {
         "<span class=\"command\">" + ("YAZenGtp") + "> %d %s </span><br />",
         commandNumber,
         command);
+  }
+
+  public String formatReadBoardCommand(String command) {
+    return String.format(
+        "<span class=\"command\">" + ("ReadBoard") + "> %s </span><br />", command);
   }
 
   public String format(String text) {

@@ -126,6 +126,7 @@ public class LizzieFrame extends JFrame {
 
   public static boolean urlSgf = false;
   public boolean syncBoard = false;
+  public boolean bothSync = false;
   int maxMvNum;
   boolean firstSync = false;
   javax.swing.Timer timer;

@@ -2871,7 +2871,9 @@ public boolean startAutoAna=false;
 								        	  notifyAutoPlay();	
 								        	  isNotifying=false;
 								        	  }
-								        	  }catch (Exception e) {}
+								        	  }catch (Exception e) {
+								        		  isNotifying=false;
+								        	  }
 								          }
 								        };
 								    Thread thread = new Thread(runnable);
