@@ -1197,12 +1197,6 @@ public class Board implements LeelazListener {
       Lizzie.frame.iscounting = false;
     }
 
-    if (Lizzie.frame.bothSync
-        && Lizzie.frame.readBoard != null
-        && Lizzie.frame.readBoard.process != null
-        && Lizzie.frame.readBoard.process.isAlive()) {
-      Lizzie.frame.readBoard.sendCommandTo("place " + x + " " + y);
-    }
     synchronized (this) {
       //      if (scoreMode) {
       //        // Mark clicked stone as dead
@@ -1212,7 +1206,8 @@ public class Board implements LeelazListener {
       //      }
       if (!isValid(x, y) || (history.getStones()[getIndex(x, y)] != Stone.EMPTY && !newBranch))
         return;
-      if ((Lizzie.frame.urlSgf || Lizzie.frame.syncBoard)
+      if (!Lizzie.frame.bothSync
+          && (Lizzie.frame.urlSgf || Lizzie.frame.syncBoard)
           && Lizzie.board.getHistory().getCurrentHistoryNode()
               == Lizzie.board.getHistory().getMainEnd()) {
         //      newBranch = true;
@@ -1231,8 +1226,8 @@ public class Board implements LeelazListener {
           }
         }
         if (!hasVairation) {
-          Lizzie.board.getHistory().pass(color, false, true);
-          Lizzie.board.getHistory().previous();
+          Lizzie.board.pass(color, false, true);
+          Lizzie.board.previousMove();
           Lizzie.board.getHistory().place(x, y, color, true);
           Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
         }
@@ -1334,6 +1329,13 @@ public class Board implements LeelazListener {
           && !Lizzie.leelaz.isInputCommand
           && !Lizzie.frame.toolbar.isEnginePk) {
         Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
+      }
+
+      if (Lizzie.frame.bothSync
+          && Lizzie.frame.readBoard != null
+          && Lizzie.frame.readBoard.process != null
+          && Lizzie.frame.readBoard.process.isAlive()) {
+        Lizzie.frame.readBoard.sendCommandTo("place " + x + " " + y);
       }
 
       // update history with this coordinate
@@ -1447,15 +1449,8 @@ public class Board implements LeelazListener {
       if (isSuicidal > 0 || history.violatesKoRule(newState)) return;
 
       // update leelaz with board position
-      if (Lizzie.frame.isPlayingAgainstLeelaz
-          && Lizzie.frame.playerIsBlack == getData().blackToPlay) {
-        Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
-        Lizzie.leelaz.genmove((Lizzie.board.getData().blackToPlay ? "W" : "B"));
-      } else if (!Lizzie.frame.isPlayingAgainstLeelaz
-          && !Lizzie.leelaz.isInputCommand
-          && !Lizzie.frame.toolbar.isEnginePk) {
-        Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
-      }
+
+      Lizzie.leelaz.playMove(color, convertCoordinatesToName(x, y));
 
       // update history with this coordinate
       if (Lizzie.frame.urlSgf) history.addOrGoto2(newState, newBranch, changeMove);

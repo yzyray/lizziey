@@ -69,6 +69,14 @@ public class ReadBoard {
     }
     commands.add(
         String.valueOf(Lizzie.config.leelazConfig.getInt("max-game-thinking-time-seconds")));
+    commands.add(
+        Lizzie.frame.toolbar.txtAutoPlayPlayouts.getText().equals("")
+            ? " "
+            : Lizzie.frame.toolbar.txtAutoPlayPlayouts.getText());
+    commands.add(
+        Lizzie.frame.toolbar.txtAutoPlayFirstPlayouts.getText().equals("")
+            ? " "
+            : Lizzie.frame.toolbar.txtAutoPlayFirstPlayouts.getText());
     ProcessBuilder processBuilder = new ProcessBuilder(commands);
     processBuilder.redirectErrorStream(true);
     try {
@@ -124,7 +132,7 @@ public class ReadBoard {
 
   private void parseLine(String line) {
     synchronized (this) {
-      if (Lizzie.gtpConsole.isVisible()) Lizzie.gtpConsole.addLineforce(line);
+      // if (Lizzie.gtpConsole.isVisible()) Lizzie.gtpConsole.addLineforce(line);
       if (line.startsWith("re=")) {
 
         String[] params = line.substring(3, line.length() - 2).split(",");
@@ -166,11 +174,19 @@ public class ReadBoard {
         Lizzie.frame.syncBoard = false;
       }
       if (line.startsWith("play")) {
-        String[] params = line.trim().split(" ");
+        String[] params = line.trim().split(">");
         if (params.length == 3) {
+          String[] playParams = params[2].trim().split(" ");
+          int playouts = Integer.parseInt(playParams[1]);
+          int firstPlayouts = Integer.parseInt(playParams[2]);
+          Lizzie.frame.toolbar.txtAutoPlayTime.setText(playParams[0]);
+          if (playouts > 0) {
+            Lizzie.frame.toolbar.txtAutoPlayPlayouts.setText(playouts + "");
+          }
+          if (firstPlayouts > 0) {
+            Lizzie.frame.toolbar.txtAutoPlayFirstPlayouts.setText(firstPlayouts + "");
+          }
           if (params[1].equals("black")) {
-
-            Lizzie.frame.toolbar.txtAutoPlayTime.setText(params[2]);
             Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(true);
             Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
             Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
@@ -179,9 +195,7 @@ public class ReadBoard {
             Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
             Lizzie.frame.isAnaPlayingAgainstLeelaz = true;
             Lizzie.frame.toolbar.isAutoPlay = true;
-            Lizzie.leelaz.ponder();
           } else if (params[1].equals("white")) {
-            Lizzie.frame.toolbar.txtAutoPlayTime.setText(params[2]);
             Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
             Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
             Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
@@ -190,8 +204,8 @@ public class ReadBoard {
             Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
             Lizzie.frame.isAnaPlayingAgainstLeelaz = true;
             Lizzie.frame.toolbar.isAutoPlay = true;
-            Lizzie.leelaz.ponder();
           }
+          Lizzie.leelaz.ponder();
         }
       }
       if (line.startsWith("noponder")) {
