@@ -1266,14 +1266,14 @@ public class ConfigDialog extends JDialog {
       saveEngineConfig();
     } catch (Exception ex) {
     }
-    if(Lizzie.frame.menu!=null)
-    {   if (Lizzie.config.enableLizzieCache) {
-      Lizzie.frame.menu.clearsave.setVisible(true);
-      Lizzie.frame.menu.clearthis.setVisible(true);
-    } else {
-      Lizzie.frame.menu.clearsave.setVisible(false);
-      Lizzie.frame.menu.clearthis.setVisible(false);
-    }
+    if (Lizzie.frame.menu != null) {
+      if (Lizzie.config.enableLizzieCache) {
+        Lizzie.frame.menu.clearsave.setVisible(true);
+        Lizzie.frame.menu.clearthis.setVisible(true);
+      } else {
+        Lizzie.frame.menu.clearsave.setVisible(false);
+        Lizzie.frame.menu.clearthis.setVisible(false);
+      }
     }
   }
 

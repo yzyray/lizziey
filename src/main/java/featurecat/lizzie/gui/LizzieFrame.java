@@ -623,9 +623,9 @@ public class LizzieFrame extends JFrame {
   // this.getInsets().top);
   //	  }
 
-  public static void openConfigDialog() {	
-    boolean oriPonder = Lizzie.leelaz!=null&&Lizzie.leelaz.isPondering();
-    if (Lizzie.leelaz!=null&&Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
+  public static void openConfigDialog() {
+    boolean oriPonder = Lizzie.leelaz != null && Lizzie.leelaz.isPondering();
+    if (Lizzie.leelaz != null && Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
     ConfigDialog configDialog = new ConfigDialog();
     configDialog.setVisible(true);
     if (oriPonder) Lizzie.leelaz.togglePonder();

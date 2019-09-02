@@ -1755,7 +1755,7 @@ public class Menu extends MenuBar {
             }
           }
         });
-    readBoardArg.add(defSyncBoth);   
+    readBoardArg.add(defSyncBoth);
 
     final JCheckBoxMenuItem alwaysSyncBoardStat = new JCheckBoxMenuItem("回退时保持棋盘一致(可能破坏历史手顺)");
     alwaysSyncBoardStat.addActionListener(
@@ -1771,7 +1771,7 @@ public class Menu extends MenuBar {
           }
         });
     readBoardArg.add(alwaysSyncBoardStat);
-    
+
     final JMenuItem setTime = new JMenuItem("设置持续同步间隔");
     setTime.addActionListener(
         new ActionListener() {
