@@ -1035,7 +1035,7 @@ public class LizzieFrame extends JFrame {
     }
 
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
-    // JFrame frame = new JFrame();
+    this.setAlwaysOnTop(false);
     FileDialog fileDialog = new FileDialog(this, "选择棋谱");
 
     fileDialog.setLocationRelativeTo(this);
@@ -1068,6 +1068,7 @@ public class LizzieFrame extends JFrame {
     if (ponder) {
       Lizzie.leelaz.ponder();
     }
+    this.setAlwaysOnTop(Lizzie.config.mainsalwaysontop);
   }
 
   public void openFileAll() {
@@ -1078,7 +1079,7 @@ public class LizzieFrame extends JFrame {
     }
 
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
-
+    this.setAlwaysOnTop(false);
     FileDialog fileDialog = new FileDialog(this, "选择棋谱");
 
     fileDialog.setLocationRelativeTo(this);
@@ -1107,6 +1108,7 @@ public class LizzieFrame extends JFrame {
     if (ponder) {
       Lizzie.leelaz.ponder();
     }
+    this.setAlwaysOnTop(Lizzie.config.mainsalwaysontop);
   }
 
   public void openFileWithAna() {
@@ -1117,6 +1119,7 @@ public class LizzieFrame extends JFrame {
     }
     JSONObject filesystem = Lizzie.config.persisted.getJSONObject("filesystem");
     // JFrame frame = new JFrame();
+    this.setAlwaysOnTop(false);
     FileDialog fileDialog = new FileDialog(this, "选择棋谱");
 
     fileDialog.setLocationRelativeTo(this);
@@ -1147,6 +1150,7 @@ public class LizzieFrame extends JFrame {
         return;
       }
     }
+    this.setAlwaysOnTop(Lizzie.config.mainsalwaysontop);
   }
 
   public static void loadFile(File file) {

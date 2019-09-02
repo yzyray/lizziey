@@ -169,6 +169,7 @@ public class ReadBoard {
         String[] params = line.trim().split(" ");
         if (params.length == 3) {
           if (params[1].equals("black")) {
+
             Lizzie.frame.toolbar.txtAutoPlayTime.setText(params[2]);
             Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(true);
             Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
