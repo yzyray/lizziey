@@ -180,16 +180,19 @@ public class ReadBoard {
           int playouts = Integer.parseInt(playParams[1]);
           int firstPlayouts = Integer.parseInt(playParams[2]);
           Lizzie.frame.toolbar.txtAutoPlayTime.setText(playParams[0]);
+          Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
           if (playouts > 0) {
             Lizzie.frame.toolbar.txtAutoPlayPlayouts.setText(playouts + "");
-          }
+            Lizzie.frame.toolbar.chkAutoPlayPlayouts.setSelected(true);
+          } else Lizzie.frame.toolbar.chkAutoPlayPlayouts.setSelected(false);
           if (firstPlayouts > 0) {
             Lizzie.frame.toolbar.txtAutoPlayFirstPlayouts.setText(firstPlayouts + "");
-          }
+            Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.setSelected(true);
+          } else Lizzie.frame.toolbar.chkAutoPlayFirstPlayouts.setSelected(false);
           if (params[1].equals("black")) {
             Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(true);
             Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
-            Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
+
             Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
             Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
             Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
@@ -198,7 +201,6 @@ public class ReadBoard {
           } else if (params[1].equals("white")) {
             Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
             Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
-            Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
             Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
             Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
             Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
