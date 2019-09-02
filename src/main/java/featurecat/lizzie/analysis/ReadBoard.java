@@ -67,6 +67,8 @@ public class ReadBoard {
     } else {
       commands.add("1");
     }
+    commands.add(
+        String.valueOf(Lizzie.config.leelazConfig.getInt("max-game-thinking-time-seconds")));
     ProcessBuilder processBuilder = new ProcessBuilder(commands);
     processBuilder.redirectErrorStream(true);
     try {
@@ -122,7 +124,7 @@ public class ReadBoard {
 
   private void parseLine(String line) {
     synchronized (this) {
-      // if (Lizzie.gtpConsole.isVisible()) Lizzie.gtpConsole.addLineforce(line);
+      if (Lizzie.gtpConsole.isVisible()) Lizzie.gtpConsole.addLineforce(line);
       if (line.startsWith("re=")) {
 
         String[] params = line.substring(3, line.length() - 2).split(",");
@@ -162,6 +164,51 @@ public class ReadBoard {
       }
       if (line.startsWith("stopsync")) {
         Lizzie.frame.syncBoard = false;
+      }
+      if (line.startsWith("play")) {
+        String[] params = line.trim().split(" ");
+        if (params.length == 3) {
+          if (params[1].equals("black")) {
+            Lizzie.frame.toolbar.txtAutoPlayTime.setText(params[2]);
+            Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
+            Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
+            Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
+            Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
+            Lizzie.frame.isAnaPlayingAgainstLeelaz = true;
+            Lizzie.frame.toolbar.isAutoPlay = true;
+            Lizzie.leelaz.ponder();
+          } else if (params[1].equals("white")) {
+            Lizzie.frame.toolbar.txtAutoPlayTime.setText(params[2]);
+            Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
+            Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlayTime.setSelected(true);
+            Lizzie.frame.toolbar.chkAutoPlay.setSelected(true);
+            Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
+            Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
+            Lizzie.frame.isAnaPlayingAgainstLeelaz = true;
+            Lizzie.frame.toolbar.isAutoPlay = true;
+            Lizzie.leelaz.ponder();
+          }
+        }
+      }
+      if (line.startsWith("noponder")) {
+        if (Lizzie.frame.isPlayingAgainstLeelaz) {
+          Lizzie.frame.isPlayingAgainstLeelaz = false;
+          Lizzie.leelaz.isThinking = false;
+        }
+        if (Lizzie.frame.isAnaPlayingAgainstLeelaz) {
+          Lizzie.frame.isAnaPlayingAgainstLeelaz = false;
+          Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
+          Lizzie.frame.toolbar.isAutoPlay = false;
+          Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
+          Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
+          Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
+          Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
+        }
+        Lizzie.leelaz.nameCmd();
+        Lizzie.leelaz.notPondering();
       }
     }
   }
