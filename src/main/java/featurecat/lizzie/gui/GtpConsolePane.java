@@ -117,6 +117,7 @@ public class GtpConsolePane extends JDialog {
     if (command == null || command.trim().length() == 0) {
       return;
     }
+    if (console.getText().length() > 500000) console.setText("");
     lblCommand.setText(engineName + ">");
     this.command = command;
     // this.isAnalyzeCommand =

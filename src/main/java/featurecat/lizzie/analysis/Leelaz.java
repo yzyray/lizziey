@@ -680,7 +680,7 @@ public boolean startAutoAna=false;
 				// 临时添加为了解决SSH时的卡顿
 				// }
 			}
-			else //if (Lizzie.gtpConsole.isVisible())
+			else if (Lizzie.gtpConsole.isVisible())
 			Lizzie.gtpConsole.addLine(line);
 			// System.out.println(line);
 			if (line.startsWith("| ST")) {
@@ -3021,8 +3021,9 @@ public boolean startAutoAna=false;
 //    if (printCommunication) {
 //      System.out.println(currentEnginename+" "+ cmdNumber+" "+ command);
 //    }
-		//if (Lizzie.gtpConsole.isVisible())
+		//
 		cmdNumber++;
+		if (Lizzie.gtpConsole.isVisible())
 			Lizzie.gtpConsole.addCommand(command, cmdNumber, currentEnginename);			
 		//command = cmdNumber + " " + command;
 		//cmdNumber++;
