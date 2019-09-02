@@ -57,15 +57,15 @@ public class ReadBoard {
     commands.add("yzy");
     commands.add(Lizzie.config.readBoardArg1);
     commands.add(Lizzie.config.readBoardArg2 + "");
-    if (syncBoth) {
-      commands.add(" 0");
-    } else {
-      commands.add(" 1");
-    }
     if (Lizzie.config.readBoardArg3) {
       commands.add("0");
     } else {
       commands.add("1");
+    }
+    if (syncBoth) {
+      commands.add(" 0");
+    } else {
+      commands.add(" 1");
     }
     commands.add(
         String.valueOf(Lizzie.config.leelazConfig.getInt("max-game-thinking-time-seconds")));
