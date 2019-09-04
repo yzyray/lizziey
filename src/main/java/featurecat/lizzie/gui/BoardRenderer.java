@@ -1443,7 +1443,9 @@ public class BoardRenderer {
               if (!(Lizzie.config.limitMaxSuggestion > 0
                   && number > Lizzie.config.limitMaxSuggestion)) {
                 // number++;
-                Color maxColor = hue2 ? Color.RED.brighter() : Color.CYAN;
+                Color maxColor;
+                if (isBestMove) maxColor = reverseColor(Lizzie.config.bestMoveColorC);
+                else maxColor = hue2 ? Color.RED.brighter() : Color.CYAN;
                 // reverseColor(Color.getHSBColor(hue2, 1, 1), (int) alpha);
                 if ((Lizzie.leelaz.isKatago || Lizzie.board.isKataBoard)
                     && Lizzie.config.showScoremeanInSuggestion) {
@@ -1692,21 +1694,19 @@ public class BoardRenderer {
     }
   }
 
-  //  private Color reverseColor(Color color, int alpha) {
-  //    // System.out.println("color=="+color);
-  //    int r = color.getRed();
-  //    int g = color.getGreen();
-  //    int b = color.getBlue();
-  //    int r_ = 255 - r;
-  //    int g_ = (255 - g) * 400 / alpha;
-  //    if (g_ > 255) g_ = 255;
-  //    int b_ = (255 - b) * 400 / alpha;
-  //    if (b_ > 255) b_ = 255;
-  //    Color newColor = new Color(r_, g_, b_);
-  //
-  //    // System.out.println("newColor=="+newColor);
-  //    return newColor;
-  //  }
+  private Color reverseColor(Color color) {
+    // System.out.println("color=="+color);
+    int r = color.getRed();
+    int g = color.getGreen();
+    int b = color.getBlue();
+    int r_ = 255 - r;
+    int g_ = 255 - g;
+    int b_ = 255 - b;
+    Color newColor = new Color(r_, g_, b_);
+
+    // System.out.println("newColor=="+newColor);
+    return newColor;
+  }
 
   private void drawWoodenBoard(Graphics2D g) {
     if (uiConfig.getBoolean("fancy-board")) {
