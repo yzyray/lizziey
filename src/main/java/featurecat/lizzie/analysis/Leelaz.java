@@ -130,11 +130,13 @@ public boolean startAutoAna=false;
 	 Message msg;
 	public boolean playNow=false;
 	private boolean isZen=false;
-	private boolean isInfoLine = false;
-	private boolean isNotifying = false;
+	//private boolean isInfoLine = false;
+	//private boolean isNotifying = false;
 	public boolean isSSH = false;
 	public boolean isheatmap = false;
 	public ArrayList<Integer> heatcount = new ArrayList<Integer>();
+	Thread threadThis;
+	Thread threadLast;
 //private int refreshNumber=0;
 	// private boolean isEstimating=true;
 	/**
@@ -663,7 +665,8 @@ public boolean startAutoAna=false;
 					}
 				}
 				if (!this.bestMoves.isEmpty()) {					
-					isInfoLine=true;
+					  notifyAutoPK();	
+		        	  notifyAutoPlay();		
 				}
 				// 临时添加为了解决SSH时的卡顿
 //				else { if(firstNoRespond)
@@ -1266,15 +1269,16 @@ public boolean startAutoAna=false;
 			Lizzie.frame.toolbar.lastMove = Integer.parseInt(Lizzie.frame.toolbar.txtLastAnaMove.getText());
 		} catch (Exception ex) {
 		}
-	    Lizzie.board.clearBoardStat();
-		Lizzie.frame.toolbar.isAutoAna = true;
+	    //Lizzie.board.clearBoardStat();
+	    Lizzie.frame.toolbar.startAutoAna();
+		//Lizzie.frame.toolbar.isAutoAna = true;
 		startAutoAna=true;
-		Lizzie.frame.toolbar.startAutoAna = true;
-		Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);		
+		//Lizzie.frame.toolbar.startAutoAna = true;
+		//Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(true);		
 		isSaving = false;
 	}
 
-	private void notifyAutoAna() throws Exception {
+	public void notifyAutoAna()   {
 		if (Lizzie.frame.toolbar.isAutoAna&&!isClosing) {
 			if (Lizzie.frame.toolbar.startAutoAna) {
 				if ((Lizzie.frame.toolbar.firstMove == -1||Lizzie.frame.toolbar.firstMove>=Lizzie.board.getHistory().getMainEnd().getData().moveNumber)&&!Lizzie.board.getHistory().getNext().isPresent()) {
@@ -1391,6 +1395,8 @@ public boolean startAutoAna=false;
 			}
 		}
 	}
+	
+	
 
 	public void genmoveResign() {		
 		Lizzie.gtpConsole.addLine(currentEnginename + " 认输");
@@ -2856,29 +2862,7 @@ public boolean startAutoAna=false;
 						try {
 							parseLine(line.toString());
 						} catch (Exception e) {
-						}
-						if(isInfoLine)
-						{
-							isInfoLine=false;	
-							  Runnable runnable =
-								        new Runnable() {
-								          public void run() {
-								        	  try {
-								        		  if(!isNotifying)
-								        		  {  isNotifying=true;
-								        	  notifyAutoAna();
-								        	  notifyAutoPK();	
-								        	  notifyAutoPlay();	
-								        	  isNotifying=false;
-								        	  }
-								        	  }catch (Exception e) {
-								        		  isNotifying=false;
-								        	  }
-								          }
-								        };
-								    Thread thread = new Thread(runnable);
-								    thread.start();								
-						}
+						}						
 					}
 					if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
 						pkResign();

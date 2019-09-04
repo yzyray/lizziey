@@ -80,6 +80,8 @@ public class BottomToolbar extends JPanel {
   public int firstMove = -1;
   public int lastMove = -1;
   public boolean startAutoAna = false;
+  public boolean keepAutoAna = false;
+  Thread threadNotiAna;
   public int pkBlackWins = 0;
   public int pkWhiteWins = 0;
 
@@ -1781,6 +1783,7 @@ public class BottomToolbar extends JPanel {
 
   public void stopAutoAna() {
     // TODO Auto-generated method stub
+    keepAutoAna = false;
     isAutoAna = false;
     startAutoAna = false;
     if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
@@ -2641,56 +2644,65 @@ public class BottomToolbar extends JPanel {
   }
 
   public void startAutoAna() {
-    Runnable runnable =
+
+    try {
+      firstMove = Integer.parseInt(txtFirstAnaMove.getText().replace(" ", ""));
+    } catch (Exception ex) {
+      firstMove = -1;
+    }
+    try {
+      lastMove = Integer.parseInt(txtLastAnaMove.getText().replace(" ", ""));
+    } catch (Exception ex) {
+      lastMove = -1;
+    }
+    chkAutoAnalyse.setSelected(true);
+    isAutoAna = true;
+    Lizzie.leelaz.startAutoAna = true;
+    startAutoAna = true;
+    Lizzie.board.clearBoardStat();
+    Lizzie.leelaz.isClosing = false;
+    Lizzie.leelaz.ponder();
+    int heightM = 70 - Lizzie.frame.toolbarHeight;
+    if (heightM != 0) {
+      Lizzie.frame.toolbarHeight = 70;
+      Lizzie.frame.toolbar.detail.setIcon(Lizzie.frame.toolbar.iconDown);
+      Lizzie.frame.mainPanel.setBounds(
+          Lizzie.frame.mainPanel.getX(),
+          Lizzie.frame.mainPanel.getY(),
+          Lizzie.frame.mainPanel.getWidth(),
+          Lizzie.frame.mainPanel.getHeight() - heightM);
+      Lizzie.frame.toolbar.setBounds(
+          0,
+          Lizzie.frame.getHeight()
+              - Lizzie.frame.getJMenuBar().getHeight()
+              - Lizzie.frame.getInsets().top
+              - Lizzie.frame.getInsets().bottom
+              - Lizzie.frame.toolbarHeight,
+          Lizzie.frame.getWidth() - Lizzie.frame.getInsets().left - Lizzie.frame.getInsets().right,
+          Lizzie.frame.toolbarHeight);
+    }
+    if (Lizzie.frame.isBatchAna) chkAnaAutoSave.setSelected(true);
+    if (Lizzie.frame.isBatchAna
+        && Lizzie.frame.Batchfiles != null
+        && Lizzie.frame.Batchfiles.size() > 1) Lizzie.frame.openAnalysisTable();
+    start.setText("终止");
+    keepAutoAna = true;
+    Runnable runnable2 =
         new Runnable() {
           public void run() {
-            try {
-              firstMove = Integer.parseInt(txtFirstAnaMove.getText().replace(" ", ""));
-            } catch (Exception ex) {
-              firstMove = -1;
+            while (keepAutoAna) {
+              try {
+                threadNotiAna.sleep(Lizzie.config.analyzeUpdateIntervalCentisec * 10);
+              } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+              }
+              Lizzie.leelaz.notifyAutoAna();
             }
-            try {
-              lastMove = Integer.parseInt(txtLastAnaMove.getText().replace(" ", ""));
-            } catch (Exception ex) {
-              lastMove = -1;
-            }
-            chkAutoAnalyse.setSelected(true);
-            isAutoAna = true;
-            Lizzie.leelaz.startAutoAna = true;
-            startAutoAna = true;
-            Lizzie.board.clearBoardStat();
-            Lizzie.leelaz.isClosing = false;
-            Lizzie.leelaz.ponder();
-            int heightM = 70 - Lizzie.frame.toolbarHeight;
-            if (heightM != 0) {
-              Lizzie.frame.toolbarHeight = 70;
-              Lizzie.frame.toolbar.detail.setIcon(Lizzie.frame.toolbar.iconDown);
-              Lizzie.frame.mainPanel.setBounds(
-                  Lizzie.frame.mainPanel.getX(),
-                  Lizzie.frame.mainPanel.getY(),
-                  Lizzie.frame.mainPanel.getWidth(),
-                  Lizzie.frame.mainPanel.getHeight() - heightM);
-              Lizzie.frame.toolbar.setBounds(
-                  0,
-                  Lizzie.frame.getHeight()
-                      - Lizzie.frame.getJMenuBar().getHeight()
-                      - Lizzie.frame.getInsets().top
-                      - Lizzie.frame.getInsets().bottom
-                      - Lizzie.frame.toolbarHeight,
-                  Lizzie.frame.getWidth()
-                      - Lizzie.frame.getInsets().left
-                      - Lizzie.frame.getInsets().right,
-                  Lizzie.frame.toolbarHeight);
-            }
-            if (Lizzie.frame.isBatchAna) chkAnaAutoSave.setSelected(true);
-            if (Lizzie.frame.isBatchAna
-                && Lizzie.frame.Batchfiles != null
-                && Lizzie.frame.Batchfiles.size() > 1) Lizzie.frame.openAnalysisTable();
-            start.setText("终止");
           }
         };
-    Thread thread = new Thread(runnable);
-    thread.start();
+    threadNotiAna = new Thread(runnable2);
+    threadNotiAna.start();
   }
 
   private void checkMove() {
