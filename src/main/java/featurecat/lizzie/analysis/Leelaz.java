@@ -1279,7 +1279,7 @@ public boolean startAutoAna=false;
 	}
 
 	public void notifyAutoAna()   {
-		if (Lizzie.frame.toolbar.isAutoAna&&!isClosing) {
+		if (!bestMoves.isEmpty()&&!isClosing) {
 			if (Lizzie.frame.toolbar.startAutoAna) {
 				if ((Lizzie.frame.toolbar.firstMove == -1||Lizzie.frame.toolbar.firstMove>=Lizzie.board.getHistory().getMainEnd().getData().moveNumber)&&!Lizzie.board.getHistory().getNext().isPresent()) {
 					Lizzie.frame.toolbar.chkAutoAnalyse.setSelected(false);
