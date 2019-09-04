@@ -68,7 +68,9 @@ public class ReadBoard {
       commands.add("1");
     }
     commands.add(
-        String.valueOf(Lizzie.config.leelazConfig.getInt("max-game-thinking-time-seconds")));
+        Lizzie.frame.toolbar.txtAutoPlayTime.getText().equals("")
+            ? " "
+            : Lizzie.frame.toolbar.txtAutoPlayPlayouts.getText());
     commands.add(
         Lizzie.frame.toolbar.txtAutoPlayPlayouts.getText().equals("")
             ? " "
