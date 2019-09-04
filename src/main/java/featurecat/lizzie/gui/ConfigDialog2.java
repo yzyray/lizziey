@@ -2510,7 +2510,6 @@ public class ConfigDialog2 extends JDialog {
             "comment-background-color", Theme.color2Array(lblCommentBackgroundColor.getColor()));
         theme.config.put("comment-font-color", Theme.color2Array(lblCommentFontColor.getColor()));
         theme.config.put("best-move-color", Theme.color2Array(lblBestMoveColor.getColor()));
-        Lizzie.config.bestMoveColor = lblBestMoveColor.getColor();
         theme.config.put("comment-font-size", txtFieldIntValue(txtCommentFontSize));
         theme.config.put(
             "blunder-winrate-thresholds",
@@ -2606,7 +2605,6 @@ public class ConfigDialog2 extends JDialog {
     Lizzie.config.uiConfig.put(
         "comment-font-color", Theme.color2Array(lblCommentFontColor.getColor()));
     Lizzie.config.uiConfig.put("best-move-color", Theme.color2Array(lblBestMoveColor.getColor()));
-    Lizzie.config.bestMoveColor = lblBestMoveColor.getColor();
     Lizzie.config.uiConfig.put("comment-font-size", txtFieldIntValue(txtCommentFontSize));
     Lizzie.config.uiConfig.put(
         "blunder-winrate-thresholds",

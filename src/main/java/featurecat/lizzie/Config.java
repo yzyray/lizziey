@@ -99,8 +99,8 @@ public class Config {
   public Color winrateMissLineColor = null;
   public Color scoreMeanLineColor = null;
   public Color blunderBarColor = null;
-  // public float bestMoveColor;
-  public Color bestMoveColor;
+  public float bestMoveColor;
+  public Color bestMoveColorC;
   public boolean solidStoneIndicator = false;
   public int stoneIndicatorType = 1; // 0: non, 1: circle, 2: solid
   public boolean showCommentNodeColor = true;
@@ -436,12 +436,11 @@ public class Config {
     commentBackgroundColor = theme.commentBackgroundColor();
     winrateLineColor = theme.winrateLineColor();
     scoreMeanLineColor = theme.scoreMeanLineColor();
-    bestMoveColor = theme.bestMoveColor();
+    bestMoveColorC = theme.bestMoveColor();
     stoneIndicatorType = theme.stoneIndicatorType();
-    // bestMoveColor =
-    //      Color.RGBtoHSB(
-    //         bestMoveColorC.getRed(), bestMoveColorC.getGreen(), bestMoveColorC.getBlue(),
-    // null)[0];
+    bestMoveColor =
+        Color.RGBtoHSB(
+            bestMoveColorC.getRed(), bestMoveColorC.getGreen(), bestMoveColorC.getBlue(), null)[0];
     winrateMissLineColor = theme.winrateMissLineColor();
     blunderBarColor = theme.blunderBarColor();
     solidStoneIndicator = theme.solidStoneIndicator();
