@@ -1043,7 +1043,7 @@ public class BoardRenderer {
     float alphaFactor = 5.0f;
     float redHue = Color.RGBtoHSB(255, 0, 0, null)[0];
     float greenHue = Color.RGBtoHSB(0, 255, 0, null)[0];
-    float cyanHue = Lizzie.config.bestMoveColor;
+    // float cyanHue = Lizzie.config.bestMoveColor;
     if (Lizzie.frame.isShowingHeatmap) {
       int maxPolicy = 0;
       //    int minPolicy = 0;
@@ -1063,23 +1063,23 @@ public class BoardRenderer {
           // stoneRadius);
 
           float hue;
-          if (Lizzie.leelaz.heatcount.get(i) == maxPolicy) {
-            hue = cyanHue;
-          } else {
-            double fraction;
+          //  if (Lizzie.leelaz.heatcount.get(i) == maxPolicy) {
+          //   hue = cyanHue;
+          // } else {
+          double fraction;
 
-            fraction = percent;
+          fraction = percent;
 
-            // Correction to make differences between colors more perceptually linear
-            fraction *= 2;
-            if (fraction < 1) { // red to yellow
-              fraction = Math.cbrt(fraction * fraction) / 2;
-            } else { // yellow to green
-              fraction = 1 - Math.sqrt(2 - fraction) / 2;
-            }
-
-            hue = redHue + (greenHue - redHue) * (float) fraction;
+          // Correction to make differences between colors more perceptually linear
+          fraction *= 2;
+          if (fraction < 1) { // red to yellow
+            fraction = Math.cbrt(fraction * fraction) / 2;
+          } else { // yellow to green
+            fraction = 1 - Math.sqrt(2 - fraction) / 2;
           }
+
+          hue = redHue + (greenHue - redHue) * (float) fraction;
+          //  }
 
           float saturation = 1.0f;
           float brightness = 0.85f;
@@ -1091,7 +1091,9 @@ public class BoardRenderer {
               new Color(hsbColor.getRed(), hsbColor.getGreen(), hsbColor.getBlue(), (int) alpha);
           if (!branchOpt.isPresent()) {
             drawShadow2(g, suggestionX, suggestionY, true, alpha / 255.0f);
-            g.setColor(color);
+            if (Lizzie.leelaz.heatcount.get(i) == maxPolicy) {
+              g.setColor(Lizzie.config.bestMoveColor);
+            } else g.setColor(color);
             fillCircle(g, suggestionX, suggestionY, stoneRadius);
 
             String text = String.format("%.1f", ((double) Lizzie.leelaz.heatcount.get(i)) / 10);
@@ -1136,23 +1138,23 @@ public class BoardRenderer {
           // stoneRadius);
 
           float hue;
-          if (bestmove.policy == maxPolicy) {
-            hue = cyanHue;
-          } else {
-            double fraction;
+          // if (bestmove.policy == maxPolicy) {
+          // hue = cyanHue;
+          // } else {
+          double fraction;
 
-            fraction = percent;
+          fraction = percent;
 
-            // Correction to make differences between colors more perceptually linear
-            fraction *= 2;
-            if (fraction < 1) { // red to yellow
-              fraction = Math.cbrt(fraction * fraction) / 2;
-            } else { // yellow to green
-              fraction = 1 - Math.sqrt(2 - fraction) / 2;
-            }
-
-            hue = redHue + (greenHue - redHue) * (float) fraction;
+          // Correction to make differences between colors more perceptually linear
+          fraction *= 2;
+          if (fraction < 1) { // red to yellow
+            fraction = Math.cbrt(fraction * fraction) / 2;
+          } else { // yellow to green
+            fraction = 1 - Math.sqrt(2 - fraction) / 2;
           }
+
+          hue = redHue + (greenHue - redHue) * (float) fraction;
+          // }
 
           float saturation = 1.0f;
           float brightness = 0.85f;
@@ -1164,7 +1166,9 @@ public class BoardRenderer {
               new Color(hsbColor.getRed(), hsbColor.getGreen(), hsbColor.getBlue(), (int) alpha);
           if (!branchOpt.isPresent()) {
             drawShadow2(g, suggestionX, suggestionY, true, alpha / 255.0f);
-            g.setColor(color);
+            if (bestmove.policy == maxPolicy) {
+              g.setColor(Lizzie.config.bestMoveColor);
+            } else g.setColor(color);
             fillCircle(g, suggestionX, suggestionY, stoneRadius);
 
             String text =
@@ -1308,24 +1312,24 @@ public class BoardRenderer {
 
             float hue;
             boolean hue2;
-            if (isBestMove) {
-              hue = cyanHue;
-              hue2 = true;
-            } else {
-              double fraction;
+            // if (isBestMove) {
+            //   hue = cyanHue;
+            //   hue2 = true;
+            // } else {
+            double fraction;
 
-              fraction = percentPlayouts;
+            fraction = percentPlayouts;
 
-              // Correction to make differences between colors more perceptually linear
-              fraction *= 2;
-              if (fraction < 1) { // red to yellow
-                fraction = Math.cbrt(fraction * fraction) / 2;
-              } else { // yellow to green
-                fraction = 1 - Math.sqrt(2 - fraction) / 2;
-              }
-              hue2 = fraction > 0.42 ? true : false;
-              hue = redHue + (greenHue - redHue) * (float) fraction;
+            // Correction to make differences between colors more perceptually linear
+            fraction *= 2;
+            if (fraction < 1) { // red to yellow
+              fraction = Math.cbrt(fraction * fraction) / 2;
+            } else { // yellow to green
+              fraction = 1 - Math.sqrt(2 - fraction) / 2;
             }
+            hue2 = fraction > 0.42 ? true : false;
+            hue = redHue + (greenHue - redHue) * (float) fraction;
+            // }
 
             float saturation = 1.0f;
             float brightness = 0.85f;
@@ -1349,7 +1353,8 @@ public class BoardRenderer {
             boolean isMouseOver = Lizzie.frame.isMouseOver(coords[0], coords[1]);
             if (!branchOpt.isPresent()) {
               drawShadow2(g, suggestionX, suggestionY, true, alpha / 255.0f);
-              g.setColor(color);
+              if (isBestMove) g.setColor(Lizzie.config.bestMoveColor);
+              else g.setColor(color);
               if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove && isBestMove) {
               } else fillCircle(g, suggestionX, suggestionY, stoneRadius);
             }
@@ -1444,7 +1449,7 @@ public class BoardRenderer {
                   && number > Lizzie.config.limitMaxSuggestion)) {
                 // number++;
                 Color maxColor;
-                if (isBestMove) maxColor = reverseColor(Lizzie.config.bestMoveColorC);
+                if (isBestMove) maxColor = reverseColor(Lizzie.config.bestMoveColor);
                 else maxColor = hue2 ? Color.RED.brighter() : Color.CYAN;
                 // reverseColor(Color.getHSBColor(hue2, 1, 1), (int) alpha);
                 if ((Lizzie.leelaz.isKatago || Lizzie.board.isKataBoard)
