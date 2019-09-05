@@ -92,6 +92,7 @@ public class BoardRenderer {
   private int maxAlpha = 240;
   int number = 1;
   TexturePaint paint;
+  List<String> variation;
 
   public BoardRenderer(boolean isMainBoard) {
     uiConfig = Lizzie.config.uiConfig;
@@ -765,26 +766,27 @@ public class BoardRenderer {
         || Lizzie.frame.isShowingHeatmap) {
       return;
     }
-    List<String> variation = suggestedMove.get().variation;
+    // List<String>
     if (!Lizzie.config.noRefreshOnMouseMove
         || (!isShowingBranch || !mouseOverCoords.equals(suggestedMove.get().coordinate))) {
-      branch = null;
-      if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove)
-        branch =
-            new Branch(
-                Lizzie.board,
-                variation,
-                true,
-                this.displayedBranchLength > 0 ? displayedBranchLength : 199);
-      else
-        branch =
-            new Branch(
-                Lizzie.board,
-                variation,
-                reverseBestmoves,
-                this.displayedBranchLength > 0 ? displayedBranchLength : 199);
-      mouseOverCoords = suggestedMove.get().coordinate;
+      variation = suggestedMove.get().variation;
     }
+    branch = null;
+    if (Lizzie.frame.toolbar.isEnginePk && Lizzie.frame.toolbar.isGenmove)
+      branch =
+          new Branch(
+              Lizzie.board,
+              variation,
+              true,
+              this.displayedBranchLength > 0 ? displayedBranchLength : 199);
+    else
+      branch =
+          new Branch(
+              Lizzie.board,
+              variation,
+              reverseBestmoves,
+              this.displayedBranchLength > 0 ? displayedBranchLength : 199);
+    mouseOverCoords = suggestedMove.get().coordinate;
     branchOpt = Optional.of(branch);
     variationOpt = Optional.of(variation);
     showingBranch = true;
@@ -968,16 +970,15 @@ public class BoardRenderer {
         if ((mvNum > 0 || Lizzie.frame.isTrying && mvNum < 0)
             && (!branchOpt.isPresent() || !Lizzie.frame.isMouseOver(i, j))) {
           boolean reverse = (moveNumberList[Board.getIndex(i, j)] > maxBranchMoves());
-          if (Lizzie.config.noRefreshOnMouseMove && displayedBranchLength > 0) {
-            if (displayedBranchLength == mvNum
-                || (displayedBranchLength > branchOpt.get().branchLength
-                    && mvNum == branchOpt.get().branchLength)) {
-              g.setColor(Color.RED.brighter());
-              drawPolygonSmall(g, stoneX, stoneY, stoneRadius);
-            }
-          } else if ((lastMoveOpt.isPresent()
-              && lastMoveOpt.get()[0] == i
-              && lastMoveOpt.get()[1] == j)) {
+          //     if (Lizzie.config.noRefreshOnMouseMove && displayedBranchLength > 0) {
+          //    if (displayedBranchLength == mvNum
+          //         || (displayedBranchLength > branchOpt.get().branchLength
+          //            && mvNum == branchOpt.get().branchLength)) {
+          //     g.setColor(Color.RED.brighter());
+          //     drawPolygonSmall(g, stoneX, stoneY, stoneRadius);
+          //  }
+          //      } else
+          if ((lastMoveOpt.isPresent() && lastMoveOpt.get()[0] == i && lastMoveOpt.get()[1] == j)) {
             // if (reverse) continue;
             //  g.setColor(stoneHere.isBlack() ? Color.RED :Color.BLUE);
             // Color.BLUE.brighter());

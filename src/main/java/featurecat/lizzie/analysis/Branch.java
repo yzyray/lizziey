@@ -8,14 +8,14 @@ import java.util.Optional;
 
 public class Branch {
   public BoardData data;
-  public int branchLength;
+  //  public int branchLength;
 
   public Branch(Board board, List<String> variation, boolean reverseBestmoves, int length) {
     int[] moveNumberList = new int[Board.boardWidth * Board.boardHeight];
     int moveNumber = 0;
     double winrate = 0.0;
     int playouts = 0;
-    branchLength = variation.size();
+    //  branchLength = variation.size();
     if (reverseBestmoves) {
       this.data =
           new BoardData(
