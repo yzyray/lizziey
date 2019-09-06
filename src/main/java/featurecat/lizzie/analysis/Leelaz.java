@@ -3411,7 +3411,7 @@ public boolean startAutoAna=false;
 	/** End the process */
 	public void shutdown() {
 		process.destroy();
-	}
+	}	
 
 	public List<MoveData> getBestMoves() {
 		synchronized (this) {
