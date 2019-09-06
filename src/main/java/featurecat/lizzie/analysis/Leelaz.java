@@ -1352,12 +1352,14 @@ public boolean startAutoAna=false;
 				}
 				if(Lizzie.board.getHistory().isBlacksTurn()&&!Lizzie.frame.toolbar.chkAnaBlack.isSelected())
 				{
+					bestMoves = new ArrayList<>();
 					Lizzie.board.nextMove();
 					analysed = true;
 					return;
 				}
 				if(!Lizzie.board.getHistory().isBlacksTurn()&&!Lizzie.frame.toolbar.chkAnaWhite.isSelected())
 				{
+					bestMoves = new ArrayList<>();
 					Lizzie.board.nextMove();
 					analysed = true;
 					return;
@@ -1365,6 +1367,7 @@ public boolean startAutoAna=false;
 				
 				if (firstPlayouts > 0) {
 					if (bestMoves.get(0).playouts >= firstPlayouts) {
+						bestMoves = new ArrayList<>();
 						Lizzie.board.nextMove();
 						analysed = true;
 						return;
@@ -1376,6 +1379,7 @@ public boolean startAutoAna=false;
 						sum += move.playouts;
 					}
 					if (sum >= playouts) {
+						bestMoves = new ArrayList<>();
 						Lizzie.board.nextMove();
 						analysed = true;
 						return;
@@ -1384,6 +1388,7 @@ public boolean startAutoAna=false;
 
 				if (time > 0) {
 					if (System.currentTimeMillis() - startPonderTime > time) {
+						bestMoves = new ArrayList<>();
 						Lizzie.board.nextMove();
 						analysed = true;
 						return;
