@@ -70,7 +70,7 @@ public class ReadBoard {
     commands.add(
         Lizzie.frame.toolbar.txtAutoPlayTime.getText().equals("")
             ? " "
-            : Lizzie.frame.toolbar.txtAutoPlayPlayouts.getText());
+            : Lizzie.frame.toolbar.txtAutoPlayTime.getText());
     commands.add(
         Lizzie.frame.toolbar.txtAutoPlayPlayouts.getText().equals("")
             ? " "
