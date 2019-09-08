@@ -2713,7 +2713,7 @@ public class ConfigDialog2 extends JDialog {
       Lizzie.config.uiConfig.putOpt(
           "board-position-proportion", Lizzie.config.boardPositionProportion);
       Lizzie.config.limitMaxSuggestion = txtFieldIntValue(txtLimitBestMoveNum);
-      Lizzie.config.uiConfig.put("limit-best-move-num", Lizzie.config.limitMaxSuggestion);
+      Lizzie.config.uiConfig.put("limit-max-suggestion", Lizzie.config.limitMaxSuggestion);
       Lizzie.config.limitBranchLength = txtFieldIntValue(txtLimitBranchLength);
       Lizzie.config.uiConfig.put("limit-branch-length", Lizzie.config.limitBranchLength);
       suggestionMoveInfoChanged();
