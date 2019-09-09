@@ -667,6 +667,7 @@ public boolean startAutoAna=false;
 				if (!this.bestMoves.isEmpty()) {					
 					  notifyAutoPK();	
 		        	  notifyAutoPlay();		
+		        	  pkResign();
 				}
 				// 临时添加为了解决SSH时的卡顿
 //				else { if(firstNoRespond)
@@ -2868,9 +2869,7 @@ public boolean startAutoAna=false;
 							parseLine(line.toString());
 						} catch (Exception e) {
 						}						
-					}
-					if (Lizzie.frame.toolbar.isEnginePk && !Lizzie.frame.toolbar.isGenmove)
-						pkResign();
+					}				
 					line = new StringBuilder();
 					if(isCommandLine)
 					{

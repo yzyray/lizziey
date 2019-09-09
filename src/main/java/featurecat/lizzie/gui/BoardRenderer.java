@@ -229,8 +229,8 @@ public class BoardRenderer {
           white = Lizzie.frame.toolbar.pkWhiteWins + " " + white;
         }
       } else {
-        black = " " + black + Lizzie.frame.toolbar.pkBlackWins;
-        white = Lizzie.frame.toolbar.pkWhiteWins + white + " ";
+        black = black + " " + Lizzie.frame.toolbar.pkBlackWins;
+        white = Lizzie.frame.toolbar.pkWhiteWins + " " + white;
       }
     }
 
