@@ -130,7 +130,7 @@ public boolean startAutoAna=false;
 	 Message msg;
 	public boolean playNow=false;
 	private boolean isZen=false;
-	//private boolean isInfoLine = false;
+	private boolean isInfoLine = false;
 	//private boolean isNotifying = false;
 	public boolean isSSH = false;
 	public boolean isheatmap = false;
@@ -664,10 +664,8 @@ public boolean startAutoAna=false;
 						togglePonder();
 					}
 				}
-				if (!this.bestMoves.isEmpty()) {					
-					  notifyAutoPK();	
-		        	  notifyAutoPlay();		
-		        	  pkResign();
+				if (!this.bestMoves.isEmpty()) {	
+					isInfoLine=true;
 				}
 				// 临时添加为了解决SSH时的卡顿
 //				else { if(firstNoRespond)
@@ -2871,6 +2869,14 @@ public boolean startAutoAna=false;
 						}						
 					}				
 					line = new StringBuilder();
+					if(isInfoLine)
+					{
+						if (!this.bestMoves.isEmpty()) {							
+							  notifyAutoPK();	
+				        	  notifyAutoPlay();		
+				        	  pkResign();
+						}
+					}
 					if(isCommandLine)
 					{
 						currentCmdNum = currentCmdNum+1;
@@ -2884,6 +2890,7 @@ public boolean startAutoAna=false;
 						}						
 					}
 					isCommandLine = false;
+					isInfoLine=false;
 				} 
 				else if (c == '='||c=='?') {
 					isCommandLine = true;
