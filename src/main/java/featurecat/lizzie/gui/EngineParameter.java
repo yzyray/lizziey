@@ -121,6 +121,6 @@ public class EngineParameter extends JDialog {
         });
     cancelButton.setActionCommand("Cancel");
     buttonPane.add(cancelButton);
-    setLocationRelativeTo(getOwner());
+    //  setLocationRelativeTo(getOwner());
   }
 }

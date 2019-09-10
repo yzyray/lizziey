@@ -346,6 +346,7 @@ public class MoreEngines extends JPanel {
             if (!el.isEmpty()) {
               command.setText(el);
             }
+            setVisible(true);
           }
         });
     delete.addActionListener(

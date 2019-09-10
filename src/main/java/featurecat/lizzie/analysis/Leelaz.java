@@ -409,7 +409,7 @@ public boolean startAutoAna=false;
 					break;
 			}
 		}
-		Lizzie.board.getData().tryToSetBestMoves(bestMoves);
+ 		Lizzie.board.getData().tryToSetBestMoves(bestMoves);
 		return bestMoves;
 	}
 
