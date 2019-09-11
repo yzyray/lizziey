@@ -671,10 +671,10 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
         break;
 
       case VK_B:
-        //  Lizzie.frame.toggleBadMoves();
-        if (Lizzie.frame.readBoard != null) {
-          Lizzie.frame.readBoard.sendCommandTo("test");
-        }
+        Lizzie.frame.toggleBadMoves();
+        // if (Lizzie.frame.readBoard != null) {
+        //  Lizzie.frame.readBoard.sendCommandTo("test");
+        // }
         break;
       case VK_DELETE:
       case VK_BACK_SPACE:
