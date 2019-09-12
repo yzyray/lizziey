@@ -2526,14 +2526,16 @@ public class LizzieFrame extends JFrame {
       repaint();
     }
     if (coords.isPresent()) {
-      if (Lizzie.config.showrect) {
+      if (Lizzie.config.showrect
+          || Lizzie.frame.isPlayingAgainstLeelaz
+          || Lizzie.frame.isAnaPlayingAgainstLeelaz) {
         boardRenderer.drawmoveblock(
             coords.get()[0], coords.get()[1], Lizzie.board.getHistory().isBlacksTurn());
-      }
-    } else {
-      if (Lizzie.config.showrect) {
+      } else {
         boardRenderer.removeblock();
       }
+    } else {
+      boardRenderer.removeblock();
     }
   }
 
