@@ -240,7 +240,7 @@ public class LizzieFrame extends JFrame {
   JFrame frame;
   ArrayList<String> urlList;
   int urlIndex;
-  static OnlineDialog onlineDialog;
+  public static OnlineDialog onlineDialog;
   // = new OnlineDialog();;
 
   // boolean lastponder = true;

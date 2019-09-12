@@ -411,7 +411,7 @@ public class OnlineDialog extends JDialog {
     }
     done = false;
     history = null;
-    Lizzie.board.clear();
+    Lizzie.board.clearForOnline();
     switch (type) {
       case 1:
       case 5:
@@ -706,7 +706,7 @@ public class OnlineDialog extends JDialog {
     seqs = 0;
     URI uri = new URI(new String(type == 3 ? b : b2));
 
-    if (clear) Lizzie.board.clear();
+    if (clear) Lizzie.board.clearForOnline();
     if (client != null && client.isOpen()) {
       client.close();
     }
@@ -2014,7 +2014,7 @@ public class OnlineDialog extends JDialog {
   }
 
   public void req2(boolean clear) throws URISyntaxException {
-    if (clear) Lizzie.board.clear();
+    if (clear) Lizzie.board.clearForOnline();
     if (sio != null) {
       sio.close();
     }

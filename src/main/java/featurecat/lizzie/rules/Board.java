@@ -2378,8 +2378,38 @@ public class Board implements LeelazListener {
     } else {
       Lizzie.leelaz.sendCommand("komi " + Lizzie.leelaz.komi);
       Lizzie.frame.komi = Lizzie.leelaz.komi + "";
-      if (!Lizzie.frame.urlSgf) Lizzie.board.getHistory().getGameInfo().resetAll();
+      Lizzie.board.getHistory().getGameInfo().resetAll();
     }
+    Lizzie.frame.boardRenderer.removecountblock();
+    if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
+    if (Lizzie.frame.urlSgf) {
+      if (Lizzie.frame.onlineDialog != null) {
+        Lizzie.frame.onlineDialog.stopSync();
+      }
+    }
+  }
+
+  public void clearForOnline() {
+    if (Lizzie.frame.readBoard != null && Lizzie.frame.syncBoard) {
+      Lizzie.frame.readBoard.firstSync = true;
+    }
+    double komi = history.getGameInfo().getKomi();
+    Lizzie.leelaz.clear();
+    Lizzie.frame.resetTitle();
+    Lizzie.frame.clear();
+    Lizzie.frame.winrateGraph.maxcoreMean = 30;
+    hasStartStone = false;
+    startStonelist = new ArrayList<Movelist>();
+    mvnumber = new int[boardHeight * boardWidth];
+    movelistwr.clear();
+    cleanedittemp();
+    initialize();
+    isPkBoard = false;
+    isPkBoardKataB = false;
+    isPkBoardKataW = false;
+    isKataBoard = false;
+    Lizzie.leelaz.sendCommand("komi " + Lizzie.leelaz.komi);
+    Lizzie.frame.komi = Lizzie.leelaz.komi + "";
     Lizzie.frame.boardRenderer.removecountblock();
     if (Lizzie.config.showSubBoard) Lizzie.frame.subBoardRenderer.removecountblock();
   }
