@@ -72,17 +72,17 @@ public class EnginePkConfig extends JDialog {
     add(txtRandomMove);
     txtRandomMove.setBounds(372, 7, 30, 18);
 
-    JLabel lblRandomWinrate = new JLabel("手,胜率距首位");
+    JLabel lblRandomWinrate = new JLabel("手,胜率不低于首位");
     add(lblRandomWinrate);
-    lblRandomWinrate.setBounds(402, 6, 85, 18);
+    lblRandomWinrate.setBounds(402, 6, 105, 18);
 
     txtRandomDiffWinrate = new JTextField();
     add(txtRandomDiffWinrate);
-    txtRandomDiffWinrate.setBounds(480, 7, 35, 18);
+    txtRandomDiffWinrate.setBounds(500, 7, 25, 18);
 
     JLabel lblRandomWinrate2 = new JLabel("%");
     add(lblRandomWinrate2);
-    lblRandomWinrate2.setBounds(515, 6, 15, 18);
+    lblRandomWinrate2.setBounds(525, 6, 15, 18);
 
     JLabel lblnameSetting = new JLabel("多盘对战棋谱保存文件夹名(一次有效):");
     txtnameSetting = new JTextField();

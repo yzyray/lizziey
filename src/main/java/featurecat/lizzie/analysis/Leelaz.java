@@ -1829,7 +1829,7 @@ public boolean startAutoAna=false;
 		    }		 
 
 		    if (Lizzie.frame.toolbar.isRandomMove) {
-		    	settingAll=settingAll + " 随机落子: 前"+Lizzie.frame.toolbar.randomMove +"手,胜率距首位"+Lizzie.frame.toolbar.randomDiffWinrate + "%";
+		    	settingAll=settingAll + " 随机落子: 前"+Lizzie.frame.toolbar.randomMove +"手,胜率不低于首位"+Lizzie.frame.toolbar.randomDiffWinrate + "%";
 			  }
 		    
 	    }    
