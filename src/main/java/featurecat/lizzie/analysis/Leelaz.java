@@ -1625,48 +1625,12 @@ public boolean startAutoAna=false;
 				}
 				if (Lizzie.board.getHistory().isBlacksTurn()) {
 					Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineWhite);
-					Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineBlack);
-					 try {
-						 Lizzie.frame.toolbar.timeb = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTime.getText().replace(" ", ""));
-		                } catch (NumberFormatException err) {
-		                }
-		                try {
-		                	Lizzie.frame.toolbar.timew = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTimeWhite.getText().replace(" ", ""));
-		                } catch (NumberFormatException err) {
-		                }
-					 if (Lizzie.frame.toolbar.timew > 0)
-		                  Lizzie.engineManager
-		                      .engineList
-		                      .get(Lizzie.frame.toolbar.engineWhite)
-		                      .sendCommand("time_settings 0 " + Lizzie.frame.toolbar.timew + " 1");
-		                if (Lizzie.frame.toolbar.timeb > 0)
-		                  Lizzie.engineManager
-		                      .engineList
-		                      .get(Lizzie.frame.toolbar.engineBlack)
-		                      .sendCommand("time_settings 0 " + Lizzie.frame.toolbar.timeb + " 1");
+					Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineBlack);					
 					Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).genmoveForPk("B");
 
 				} else {
 					Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineBlack);
-					Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineWhite);
-					 try {
-						 Lizzie.frame.toolbar.timeb = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTime.getText().replace(" ", ""));
-		                } catch (NumberFormatException err) {
-		                }
-		                try {
-		                	Lizzie.frame.toolbar.timew = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTimeWhite.getText().replace(" ", ""));
-		                } catch (NumberFormatException err) {
-		                }
-					 if (Lizzie.frame.toolbar.timew > 0)
-		                  Lizzie.engineManager
-		                      .engineList
-		                      .get(Lizzie.frame.toolbar.engineWhite)
-		                      .sendCommand("time_settings 0 " + Lizzie.frame.toolbar.timew + " 1");
-		                if (Lizzie.frame.toolbar.timeb > 0)
-		                  Lizzie.engineManager
-		                      .engineList
-		                      .get(Lizzie.frame.toolbar.engineBlack)
-		                      .sendCommand("time_settings 0 " + Lizzie.frame.toolbar.timeb + " 1");
+					Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineWhite);					
 					Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).genmoveForPk("W");
 				}
 				Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).notPondering();
