@@ -62,6 +62,7 @@ public class BoardRenderer {
   private BufferedImage cachedStonesImage = emptyImage;
   private BufferedImage cachedStonesImagedraged = emptyImage;
   private BufferedImage blockimage = emptyImage;
+  private boolean hasBlockimage = false;
   private BufferedImage countblockimage = emptyImage;
 
   private BufferedImage cachedBoardImage = emptyImage;
@@ -610,7 +611,10 @@ public class BoardRenderer {
   }
 
   public void removeblock() {
-    blockimage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
+    if (hasBlockimage) {
+      blockimage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
+      hasBlockimage = false;
+    }
   }
 
   public void drawmoveblock(int x, int y, boolean isblack) {
@@ -627,6 +631,7 @@ public class BoardRenderer {
     g.setColor(isblack ? Color.BLACK : Color.WHITE);
     g.fillRect(
         stoneX - squareWidth / 4, stoneY - squareWidth / 4, squareWidth / 2, squareWidth / 2);
+    hasBlockimage = true;
   }
 
   public void drawbadstone(int x, int y, Stone stone) {

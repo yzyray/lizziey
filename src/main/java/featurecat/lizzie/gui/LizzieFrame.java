@@ -45,6 +45,7 @@ import java.awt.event.WindowEvent;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
@@ -239,7 +240,7 @@ public class LizzieFrame extends JFrame {
   JFrame frame;
   ArrayList<String> urlList;
   int urlIndex;
-  static OnlineDialog onlineDialog;
+  public static OnlineDialog onlineDialog;
   // = new OnlineDialog();;
 
   // boolean lastponder = true;
@@ -994,11 +995,17 @@ public class LizzieFrame extends JFrame {
     frame.setAlwaysOnTop(Lizzie.frame.isAlwaysOnTop());
     chooser.setMultiSelectionEnabled(false);
     String fileName = Lizzie.board.getHistory().getGameInfo().getSaveFileName();
+    String sf = new SimpleDateFormat("yyyyMMddHH").format(new Date());
     if (!fileName.equals("")) {
       JTextField text;
       text = getTextField(chooser);
-      text.setText(fileName);
+      text.setText(fileName + "_" + sf);
+    } else {
+      JTextField text;
+      text = getTextField(chooser);
+      text.setText(sf);
     }
+
     int result = chooser.showSaveDialog(frame);
     if (result == JFileChooser.APPROVE_OPTION) {
       File file = chooser.getSelectedFile();
@@ -2526,14 +2533,16 @@ public class LizzieFrame extends JFrame {
       repaint();
     }
     if (coords.isPresent()) {
-      if (Lizzie.config.showrect) {
+      if (Lizzie.config.showrect
+          || Lizzie.frame.isPlayingAgainstLeelaz
+          || Lizzie.frame.isAnaPlayingAgainstLeelaz) {
         boardRenderer.drawmoveblock(
             coords.get()[0], coords.get()[1], Lizzie.board.getHistory().isBlacksTurn());
-      }
-    } else {
-      if (Lizzie.config.showrect) {
+      } else {
         boardRenderer.removeblock();
       }
+    } else {
+      boardRenderer.removeblock();
     }
   }
 

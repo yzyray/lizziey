@@ -36,7 +36,7 @@ public class Config {
   public boolean colorByWinrateInsteadOfVisits = false;
   public boolean showlcbwinrate = false;
   public boolean playponder = true;
-  public boolean showrect = true;
+  public boolean showrect = false;
   public boolean showlcbcolor = true;
   public boolean fastChange = true;
   public boolean showKataGoBoardScoreMean = false;
@@ -411,7 +411,7 @@ public class Config {
     shadowSize = theme.shadowSize();
     showlcbwinrate = config.getJSONObject("leelaz").optBoolean("show-lcb-winrate", false);
     playponder = config.getJSONObject("leelaz").optBoolean("play-ponder", true);
-    showrect = config.getJSONObject("leelaz").optBoolean("show-rect", true);
+    showrect = config.getJSONObject("leelaz").optBoolean("show-rect", false);
     loadZen = config.getJSONObject("leelaz").optBoolean("load-zen", false);
     showlcbcolor = config.getJSONObject("leelaz").optBoolean("show-lcb-color", true);
     fastChange = config.getJSONObject("leelaz").optBoolean("fast-engine-change", true);

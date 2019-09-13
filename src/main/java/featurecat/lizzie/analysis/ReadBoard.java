@@ -174,6 +174,15 @@ public class ReadBoard {
       }
       if (line.startsWith("stopsync")) {
         Lizzie.frame.syncBoard = false;
+        if (Lizzie.frame.isAnaPlayingAgainstLeelaz) {
+          Lizzie.frame.isAnaPlayingAgainstLeelaz = false;
+          Lizzie.frame.toolbar.chkAutoPlay.setSelected(false);
+          Lizzie.frame.toolbar.isAutoPlay = false;
+          Lizzie.frame.toolbar.chkAutoPlayBlack.setSelected(false);
+          Lizzie.frame.toolbar.chkAutoPlayWhite.setSelected(false);
+          Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
+          Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
+        }
       }
       if (line.startsWith("play")) {
         String[] params = line.trim().split(">");
