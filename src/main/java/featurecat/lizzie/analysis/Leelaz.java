@@ -1589,7 +1589,11 @@ public boolean startAutoAna=false;
 						temp1 = Lizzie.frame.toolbar.txtenginePkPlayputs.getText();
 						Lizzie.frame.toolbar.txtenginePkPlayputs
 								.setText(Lizzie.frame.toolbar.txtenginePkPlayputsWhite.getText());
-						Lizzie.frame.toolbar.txtenginePkPlayputsWhite.setText(temp1);
+						Lizzie.frame.toolbar.txtenginePkPlayputsWhite.setText(temp1);						
+						temp1 = Lizzie.frame.toolbar.txtenginePkTime.getText();
+						Lizzie.frame.toolbar.txtenginePkTime
+								.setText(Lizzie.frame.toolbar.txtenginePkTimeWhite.getText());
+						Lizzie.frame.toolbar.txtenginePkTimeWhite.setText(temp1);
 					} else {
 						Lizzie.frame.toolbar.enginePkBlack.setEnabled(true);
 						Lizzie.frame.toolbar.enginePkWhite.setEnabled(true);
@@ -1622,13 +1626,47 @@ public boolean startAutoAna=false;
 				if (Lizzie.board.getHistory().isBlacksTurn()) {
 					Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineWhite);
 					Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineBlack);
-
+					 try {
+						 Lizzie.frame.toolbar.timeb = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTime.getText().replace(" ", ""));
+		                } catch (NumberFormatException err) {
+		                }
+		                try {
+		                	Lizzie.frame.toolbar.timew = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTimeWhite.getText().replace(" ", ""));
+		                } catch (NumberFormatException err) {
+		                }
+					 if (Lizzie.frame.toolbar.timew > 0)
+		                  Lizzie.engineManager
+		                      .engineList
+		                      .get(Lizzie.frame.toolbar.engineWhite)
+		                      .sendCommand("time_settings 0 " + Lizzie.frame.toolbar.timew + " 1");
+		                if (Lizzie.frame.toolbar.timeb > 0)
+		                  Lizzie.engineManager
+		                      .engineList
+		                      .get(Lizzie.frame.toolbar.engineBlack)
+		                      .sendCommand("time_settings 0 " + Lizzie.frame.toolbar.timeb + " 1");
 					Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).genmoveForPk("B");
 
 				} else {
 					Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineBlack);
 					Lizzie.engineManager.startEngineForPk(Lizzie.frame.toolbar.engineWhite);
-
+					 try {
+						 Lizzie.frame.toolbar.timeb = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTime.getText().replace(" ", ""));
+		                } catch (NumberFormatException err) {
+		                }
+		                try {
+		                	Lizzie.frame.toolbar.timew = Integer.parseInt(Lizzie.frame.toolbar.txtenginePkTimeWhite.getText().replace(" ", ""));
+		                } catch (NumberFormatException err) {
+		                }
+					 if (Lizzie.frame.toolbar.timew > 0)
+		                  Lizzie.engineManager
+		                      .engineList
+		                      .get(Lizzie.frame.toolbar.engineWhite)
+		                      .sendCommand("time_settings 0 " + Lizzie.frame.toolbar.timew + " 1");
+		                if (Lizzie.frame.toolbar.timeb > 0)
+		                  Lizzie.engineManager
+		                      .engineList
+		                      .get(Lizzie.frame.toolbar.engineBlack)
+		                      .sendCommand("time_settings 0 " + Lizzie.frame.toolbar.timeb + " 1");
 					Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).genmoveForPk("W");
 				}
 				Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).notPondering();
@@ -1970,6 +2008,10 @@ public boolean startAutoAna=false;
 						Lizzie.frame.toolbar.txtenginePkPlayputs
 								.setText(Lizzie.frame.toolbar.txtenginePkPlayputsWhite.getText());
 						Lizzie.frame.toolbar.txtenginePkPlayputsWhite.setText(temp1);
+						temp1 = Lizzie.frame.toolbar.txtenginePkTime.getText();
+						Lizzie.frame.toolbar.txtenginePkTime
+								.setText(Lizzie.frame.toolbar.txtenginePkTimeWhite.getText());
+						Lizzie.frame.toolbar.txtenginePkTimeWhite.setText(temp1);
 					} else {
 						Lizzie.frame.toolbar.enginePkBlack.setEnabled(true);
 						Lizzie.frame.toolbar.enginePkWhite.setEnabled(true);
@@ -2022,6 +2064,24 @@ public boolean startAutoAna=false;
 						                  }
 				                }
 				                Lizzie.frame.toolbar.isEnginePk = true;
+				           	 Runnable runnable =
+							            new Runnable() {
+							              public void run() {
+							                while (Lizzie.frame.toolbar.isEnginePk)
+							                {
+							                	try {
+													Thread.sleep(Lizzie.config.analyzeUpdateIntervalCentisec*10);
+												} catch (InterruptedException e) {
+													// TODO Auto-generated catch block
+													e.printStackTrace();
+												}
+							                  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).pkResign();
+							                Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).pkResign();
+							                }
+							              }
+							            };
+							        Thread thread = new Thread(runnable);
+							        thread.start();
 				                Lizzie.leelaz = Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack);
 				                Lizzie.leelaz.ponder();
 				              }
@@ -2052,6 +2112,24 @@ public boolean startAutoAna=false;
 				                  }
 				                }
 				                Lizzie.frame.toolbar.isEnginePk = true;
+				           	 Runnable runnable =
+							            new Runnable() {
+							              public void run() {
+							                while (Lizzie.frame.toolbar.isEnginePk)
+							                {
+							                	try {
+													Thread.sleep(Lizzie.config.analyzeUpdateIntervalCentisec*10);
+												} catch (InterruptedException e) {
+													// TODO Auto-generated catch block
+													e.printStackTrace();
+												}
+							                  Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).pkResign();
+							                Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).pkResign();
+							                }
+							              }
+							            };
+							        Thread thread = new Thread(runnable);
+							        thread.start();
 				                Lizzie.leelaz = Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite);
 				                Lizzie.leelaz.ponder();
 				              }
@@ -2071,8 +2149,7 @@ public boolean startAutoAna=false;
 				gameInfo.setPlayerWhite(
 						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineWhite).currentEnginename);
 				gameInfo.setPlayerBlack(
-						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename);
-
+						Lizzie.engineManager.engineList.get(Lizzie.frame.toolbar.engineBlack).currentEnginename);	
 			} else {
 
 				// 结束PK
@@ -2873,8 +2950,7 @@ public boolean startAutoAna=false;
 					{
 						if (!this.bestMoves.isEmpty()) {							
 							  notifyAutoPK();	
-				        	  notifyAutoPlay();		
-				        	  pkResign();
+				        	  notifyAutoPlay();						        
 						}
 					}
 					if(isCommandLine)

@@ -2912,6 +2912,23 @@ public class BottomToolbar extends JPanel {
       GameInfo gameInfo = Lizzie.board.getHistory().getGameInfo();
       gameInfo.setPlayerWhite(Lizzie.engineManager.engineList.get(engineWhite).currentEnginename);
       gameInfo.setPlayerBlack(Lizzie.engineManager.engineList.get(engineBlack).currentEnginename);
+      Runnable runnable =
+          new Runnable() {
+            public void run() {
+              while (isEnginePk) {
+                try {
+                  Thread.sleep(Lizzie.config.analyzeUpdateIntervalCentisec * 10);
+                } catch (InterruptedException e) {
+                  // TODO Auto-generated catch block
+                  e.printStackTrace();
+                }
+                Lizzie.engineManager.engineList.get(engineBlack).pkResign();
+                Lizzie.engineManager.engineList.get(engineWhite).pkResign();
+              }
+            }
+          };
+      Thread thread = new Thread(runnable);
+      thread.start();
     } else {
       // genmove对战
       chkenginePkTime.setEnabled(false);
