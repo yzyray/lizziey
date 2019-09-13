@@ -99,7 +99,7 @@ public class BoardHistoryNode {
   }
 
   public BoardHistoryNode addOrGoto2(BoardData data, boolean newBranch, boolean changeMove) {
-    if (Lizzie.leelaz != null) {
+    if (Lizzie.leelaz != null && !Lizzie.frame.toolbar.isEnginePk) {
       Lizzie.leelaz.clearBestMoves();
     }
     Optional<BoardHistoryNode> next = next(true);
@@ -207,7 +207,7 @@ public class BoardHistoryNode {
     // Lizzie.board.movelistwr.add(mv);
     // }
     // }
-    if (Lizzie.leelaz != null) {
+    if (Lizzie.leelaz != null && !Lizzie.frame.toolbar.isEnginePk) {
       Lizzie.leelaz.clearBestMoves();
     }
     Runnable runnable =
