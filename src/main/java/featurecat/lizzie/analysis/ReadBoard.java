@@ -165,6 +165,7 @@ public class ReadBoard {
       }
       if (line.startsWith("sync")) {
         Lizzie.frame.syncBoard = true;
+        if (!Lizzie.leelaz.isPondering()) Lizzie.leelaz.togglePonder();
       }
       if (line.startsWith("both")) {
         Lizzie.frame.bothSync = true;
@@ -183,6 +184,8 @@ public class ReadBoard {
           Lizzie.frame.toolbar.chkShowBlack.setSelected(true);
           Lizzie.frame.toolbar.chkShowWhite.setSelected(true);
         }
+        Lizzie.leelaz.nameCmd();
+        Lizzie.leelaz.notPondering();
       }
       if (line.startsWith("play")) {
         String[] params = line.trim().split(">");
