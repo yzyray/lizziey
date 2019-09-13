@@ -1047,7 +1047,6 @@ public class Menu extends MenuBar {
             Lizzie.frame.komi = gameInfo.getKomi() + "";
 
             Lizzie.frame.toolbar.chkenginePk.setSelected(true);
-            Lizzie.frame.toolbar.isEnginePk = true;
             Lizzie.frame.toolbar.startEnginePk();
           }
         });

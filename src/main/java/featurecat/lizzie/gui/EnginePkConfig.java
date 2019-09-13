@@ -94,6 +94,30 @@ public class EnginePkConfig extends JDialog {
     rdoGenmove = new JRadioButton("genmove模式对战");
     rdoAna = new JRadioButton("分析模式对战");
 
+    rdoAna.addFocusListener(
+        new FocusListener() {
+
+          @Override
+          public void focusGained(FocusEvent arg0) {
+            // TODO Auto-generated method stub
+            txtresignSetting.setEnabled(true);
+            txtresignSetting2.setEnabled(true);
+            txtGameMIN.setEnabled(true);
+            chkGameMIN.setEnabled(true);
+            chkRandomMove.setEnabled(true);
+            txtRandomMove.setEnabled(true);
+            txtRandomDiffWinrate.setEnabled(true);
+            chkRandomMove.setEnabled(true);
+            txtRandomDiffWinrate.setEnabled(true);
+            txtRandomMove.setEnabled(true);
+          }
+
+          @Override
+          public void focusLost(FocusEvent arg0) {
+            // TODO Auto-generated method stub
+          }
+        });
+
     rdoGenmove.addFocusListener(
         new FocusListener() {
 
@@ -115,16 +139,6 @@ public class EnginePkConfig extends JDialog {
           @Override
           public void focusLost(FocusEvent arg0) {
             // TODO Auto-generated method stub
-            txtresignSetting.setEnabled(true);
-            txtresignSetting2.setEnabled(true);
-            txtGameMIN.setEnabled(true);
-            chkGameMIN.setEnabled(true);
-            chkRandomMove.setEnabled(true);
-            txtRandomMove.setEnabled(true);
-            txtRandomDiffWinrate.setEnabled(true);
-            chkRandomMove.setEnabled(true);
-            txtRandomDiffWinrate.setEnabled(true);
-            txtRandomMove.setEnabled(true);
           }
         });
     ButtonGroup wrgroup = new ButtonGroup();

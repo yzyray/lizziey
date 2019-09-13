@@ -312,10 +312,8 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
           Lizzie.frame.komi = gameInfo.getKomi() + "";
 
           Lizzie.frame.toolbar.chkenginePk.setSelected(true);
-          Lizzie.frame.toolbar.isEnginePk = true;
           Lizzie.frame.toolbar.startEnginePk();
-        }
-        Lizzie.frame.toggleGtpConsole();
+        } else Lizzie.frame.toggleGtpConsole();
         break;
       case VK_RIGHT:
         // if (isinsertmode) {
