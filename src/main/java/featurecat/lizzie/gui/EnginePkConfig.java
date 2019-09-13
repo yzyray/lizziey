@@ -220,8 +220,28 @@ public class EnginePkConfig extends JDialog {
     }
     if (Lizzie.frame.toolbar.isGenmove) {
       rdoGenmove.setSelected(true);
+      txtresignSetting.setEnabled(false);
+      txtresignSetting2.setEnabled(false);
+      txtGameMIN.setEnabled(false);
+      chkGameMIN.setEnabled(false);
+      chkRandomMove.setEnabled(false);
+      txtRandomMove.setEnabled(false);
+      txtRandomDiffWinrate.setEnabled(false);
+      chkRandomMove.setEnabled(false);
+      txtRandomDiffWinrate.setEnabled(false);
+      txtRandomMove.setEnabled(false);
     } else {
       rdoAna.setSelected(true);
+      txtresignSetting.setEnabled(true);
+      txtresignSetting2.setEnabled(true);
+      txtGameMIN.setEnabled(true);
+      chkGameMIN.setEnabled(true);
+      chkRandomMove.setEnabled(true);
+      txtRandomMove.setEnabled(true);
+      txtRandomDiffWinrate.setEnabled(true);
+      chkRandomMove.setEnabled(true);
+      txtRandomDiffWinrate.setEnabled(true);
+      txtRandomMove.setEnabled(true);
     }
     if (Lizzie.frame.toolbar.exChange) {
       chkExchange.setSelected(true);
@@ -254,7 +274,7 @@ public class EnginePkConfig extends JDialog {
       Lizzie.frame.toolbar.pkResginWinrate = Double.parseDouble(txtresignSetting2.getText());
     } catch (NumberFormatException err) {
     }
-    double a = Double.parseDouble(txtresignSetting2.getText());
+    // double a = Double.parseDouble(txtresignSetting2.getText());
     Lizzie.frame.toolbar.AutosavePk = chkAutosave.isSelected();
     Lizzie.frame.toolbar.isGenmove = rdoGenmove.isSelected();
     Lizzie.frame.toolbar.batchPkName = txtnameSetting.getText();
