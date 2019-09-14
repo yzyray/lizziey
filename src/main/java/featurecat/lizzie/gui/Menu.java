@@ -54,6 +54,16 @@ public class Menu extends MenuBar {
   ImageIcon iconwhite2;
   ImageIcon iconbh;
   ImageIcon iconbh2;
+
+  JButton selectAllow;
+  JButton selectAvoid;
+  JButton clearSelect;
+
+  ImageIcon iconAllow;
+  ImageIcon iconAvoid;
+  ImageIcon iconAllow2;
+  ImageIcon iconAvoid2;
+  ImageIcon iconClear;
   // private boolean onlyboard = false;
 
   public Menu() {
@@ -1434,6 +1444,56 @@ public class Menu extends MenuBar {
       e.printStackTrace();
     }
 
+    iconAllow = new ImageIcon();
+    try {
+      // iconbh.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
+      iconAllow.setImage(
+          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/blueallow.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    iconAvoid = new ImageIcon();
+    try {
+      // iconbh.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
+      iconAvoid.setImage(
+          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/redavoid.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    iconAllow2 = new ImageIcon();
+    try {
+      // iconbh.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
+      iconAllow2.setImage(
+          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/blueallow2.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    iconAvoid2 = new ImageIcon();
+    try {
+      // iconbh.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
+      iconAvoid2.setImage(
+          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/redavoid2.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    iconClear = new ImageIcon();
+    try {
+      // iconbh.setImage(ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/menu.png")));
+      iconClear.setImage(
+          ImageIO.read(AnalysisFrame.class.getResourceAsStream("/assets/clear.png")));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
     final JMenuItem blackItem = new JMenuItem();
     blackItem.setText("落黑子");
     // aboutItem.setMnemonic('A');
@@ -2472,75 +2532,7 @@ public class Menu extends MenuBar {
     //          }
     //        });
 
-    black = new JButton(iconblack);
-    black.addActionListener(
-        new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            featurecat.lizzie.gui.Input.insert = 0;
-            if (Lizzie.frame.blackorwhite != 1) {
-              Lizzie.frame.blackorwhite = 1;
-              black.setIcon(iconblack2);
-              white.setIcon(iconwhite);
-              blackwhite.setIcon(iconbh);
-            } else {
-              Lizzie.frame.blackorwhite = 0;
-              black.setIcon(iconblack);
-              white.setIcon(iconwhite);
-              blackwhite.setIcon(iconbh);
-            }
-          }
-        });
-    black.setFocusable(false);
-    black.setMargin(new Insets(0, 0, 0, 0));
-    this.add(black);
-    black.setToolTipText("落黑子");
-
-    white = new JButton(iconwhite);
-    white.addActionListener(
-        new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            featurecat.lizzie.gui.Input.insert = 0;
-            if (Lizzie.frame.blackorwhite != 2) {
-              Lizzie.frame.blackorwhite = 2;
-              black.setIcon(iconblack);
-              white.setIcon(iconwhite2);
-              blackwhite.setIcon(iconbh);
-            } else {
-              Lizzie.frame.blackorwhite = 0;
-              black.setIcon(iconblack);
-              white.setIcon(iconwhite);
-              blackwhite.setIcon(iconbh);
-            }
-          }
-        });
-    white.setFocusable(false);
-    white.setMargin(new Insets(0, 0, 0, 0));
-    this.add(white);
-    white.setToolTipText("落白子");
-
-    blackwhite = new JButton(iconbh);
-    blackwhite.addActionListener(
-        new ActionListener() {
-
-          public void actionPerformed(ActionEvent e) {
-            featurecat.lizzie.gui.Input.insert = 0;
-            if (blackwhite.getIcon() == iconbh) {
-              Lizzie.frame.blackorwhite = 0;
-              black.setIcon(iconblack);
-              white.setIcon(iconwhite);
-              blackwhite.setIcon(iconbh2);
-            } else {
-              black.setIcon(iconblack);
-              white.setIcon(iconwhite);
-              blackwhite.setIcon(iconbh);
-            }
-          }
-        });
-    blackwhite.setFocusable(false);
-    blackwhite.setMargin(new Insets(0, -2, 0, -2));
-    this.add(blackwhite);
-    blackwhite.setToolTipText("交替落子");
-    toggleShowEditbar(Lizzie.config.showEditbar);
+    updateMenuAfterEngine(true);
   }
 
   public void updateEngineMenuone() {
@@ -2580,19 +2572,15 @@ public class Menu extends MenuBar {
     }
   }
 
-  public void updateEngineMenu() {
-
-    this.remove(engineMenu);
-    engineMenu = new JMenu("引擎 ", false);
-    engineMenu.setText(" 引擎  ");
-    engineMenu.setForeground(Color.BLACK);
-    headFont = new Font("", Font.BOLD, 15);
-    engineMenu.setFont(headFont);
-    this.add(engineMenu);
-    this.remove(black);
-    this.remove(white);
-    this.remove(blackwhite);
-
+  public void updateMenuAfterEngine(boolean first) {
+    if (!first) {
+      this.remove(black);
+      this.remove(white);
+      this.remove(blackwhite);
+      this.remove(selectAllow);
+      this.remove(selectAvoid);
+      this.remove(clearSelect);
+    }
     black = new JButton(iconblack);
     black.addActionListener(
         new ActionListener() {
@@ -2658,10 +2646,96 @@ public class Menu extends MenuBar {
           }
         });
     blackwhite.setFocusable(false);
-    blackwhite.setMargin(new Insets(0, -2, 0, -2));
+    blackwhite.setMargin(new Insets(0, 0, 0, 0));
     this.add(blackwhite);
     blackwhite.setToolTipText("交替落子");
     toggleShowEditbar(Lizzie.config.showEditbar);
+
+    selectAllow = new JButton(iconAllow);
+    selectAllow.addActionListener(
+        new ActionListener() {
+
+          public void actionPerformed(ActionEvent e) {
+            selectAvoid.setIcon(iconAvoid);
+            selectAllow.setIcon(iconAllow2);
+            featurecat.lizzie.gui.Input.selectMode = true;
+            Lizzie.frame.selectForceAllow = true;
+            if (!Lizzie.frame.selectForceAllow) {
+              Lizzie.frame.selectForceAllow = true;
+              Lizzie.frame.boardRenderer.removeSelectedRect();
+              Lizzie.frame.refresh();
+              featurecat.lizzie.gui.RightClickMenu.avoidcoords = "";
+              featurecat.lizzie.gui.RightClickMenu.allowcoords = "";
+            }
+            featurecat.lizzie.gui.RightClickMenu.isKeepForcing = true;
+          }
+        });
+    selectAllow.setFocusable(false);
+    selectAllow.setMargin(new Insets(0, 0, 0, -1));
+    this.add(selectAllow);
+    selectAllow.setToolTipText("强制计算指定区域");
+
+    selectAvoid = new JButton(iconAvoid);
+    selectAvoid.addActionListener(
+        new ActionListener() {
+
+          public void actionPerformed(ActionEvent e) {
+            selectAllow.setIcon(iconAllow);
+            selectAvoid.setIcon(iconAvoid2);
+            featurecat.lizzie.gui.Input.selectMode = true;
+            if (Lizzie.frame.selectForceAllow) {
+              Lizzie.frame.selectForceAllow = false;
+              Lizzie.frame.boardRenderer.removeSelectedRect();
+              Lizzie.frame.refresh();
+              featurecat.lizzie.gui.RightClickMenu.avoidcoords = "";
+              featurecat.lizzie.gui.RightClickMenu.allowcoords = "";
+            }
+            featurecat.lizzie.gui.RightClickMenu.isKeepForcing = true;
+          }
+        });
+    selectAvoid.setFocusable(false);
+    selectAvoid.setMargin(new Insets(0, 0, 0, -1));
+    this.add(selectAvoid);
+    selectAvoid.setToolTipText("强制不计算指定区域");
+
+    clearSelect = new JButton(iconClear);
+    clearSelect.addActionListener(
+        new ActionListener() {
+
+          public void actionPerformed(ActionEvent e) {
+            selectAvoid.setIcon(iconAvoid);
+            selectAllow.setIcon(iconAllow);
+            featurecat.lizzie.gui.Input.selectMode = false;
+            Lizzie.frame.boardRenderer.removeSelectedRect();
+            Lizzie.frame.refresh();
+            featurecat.lizzie.gui.RightClickMenu.avoidcoords = "";
+            featurecat.lizzie.gui.RightClickMenu.allowcoords = "";
+            featurecat.lizzie.gui.RightClickMenu.isKeepForcing = false;
+            if (Lizzie.leelaz.isPondering()) Lizzie.leelaz.ponder();
+          }
+        });
+    clearSelect.setFocusable(false);
+    clearSelect.setMargin(new Insets(0, -2, 0, -2));
+    this.add(clearSelect);
+    clearSelect.setToolTipText("清除选择的区域");
+  }
+
+  public void clearAllowAvoidButtonState() {
+    if (selectAvoid != null) selectAvoid.setIcon(iconAvoid);
+    if (selectAllow != null) selectAllow.setIcon(iconAllow);
+  }
+
+  public void updateEngineMenu() {
+
+    this.remove(engineMenu);
+    engineMenu = new JMenu("引擎 ", false);
+    engineMenu.setText(" 引擎  ");
+    engineMenu.setForeground(Color.BLACK);
+    headFont = new Font("", Font.BOLD, 15);
+    engineMenu.setFont(headFont);
+    this.add(engineMenu);
+
+    updateMenuAfterEngine(false);
 
     for (int i = 0; i < engine.length; i++) {
       try {
@@ -2786,6 +2860,12 @@ public class Menu extends MenuBar {
     this.black.setVisible(show);
     this.white.setVisible(show);
     this.blackwhite.setVisible(show);
+  }
+
+  public void toggleShowForce(boolean show) {
+    this.selectAllow.setVisible(show);
+    this.selectAvoid.setVisible(show);
+    this.clearSelect.setVisible(show);
   }
 
   public void updateFastLinks() {

@@ -62,6 +62,8 @@ public class BoardRenderer {
   private BufferedImage cachedStonesImage = emptyImage;
   private BufferedImage cachedStonesImagedraged = emptyImage;
   private BufferedImage blockimage = emptyImage;
+  private BufferedImage selectImage = emptyImage;
+  private ArrayList<BufferedImage> cachedSelectImage = new ArrayList<BufferedImage>();
   private boolean hasBlockimage = false;
   private BufferedImage countblockimage = emptyImage;
 
@@ -488,6 +490,28 @@ public class BoardRenderer {
     drawStone(g, gShadow, stoneX, stoneY, stone, x, y);
   }
 
+  public void drawSelectedRect(int x1, int y1, int x2, int y2) {
+    selectImage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
+    Graphics2D g = selectImage.createGraphics();
+    g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+    g.setColor(new Color(0, 0, 120, 45));
+    g.fillRect(min(x1 - x, x2 - x), min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
+  }
+
+  public void addSelectedRect(int x1, int y1, int x2, int y2) {
+    BufferedImage selectImage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
+    Graphics2D g = selectImage.createGraphics();
+    g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+    g.setColor(new Color(0, 0, 120, 45));
+    g.fillRect(min(x1 - x, x2 - x), min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
+    cachedSelectImage.add(selectImage);
+  }
+
+  public void removeSelectedRect() {
+    cachedSelectImage = new ArrayList<BufferedImage>();
+    selectImage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
+  }
+
   public void removecountblock() {
     countblockimage = new BufferedImage(boardWidth, boardHeight, TYPE_INT_ARGB);
   }
@@ -863,7 +887,12 @@ public class BoardRenderer {
     g.drawImage(cachedStonesImagedraged, x, y, null);
     g.drawImage(blockimage, x, y, null);
     g.drawImage(countblockimage, x, y, null);
-
+    g.drawImage(selectImage, x, y, null);
+    if (!cachedSelectImage.isEmpty()) {
+      for (int i = 0; i < cachedSelectImage.size(); i++) {
+        g.drawImage(cachedSelectImage.get(i), x, y, null);
+      }
+    }
     if (Lizzie.config.showBranchNow()) {
       g.drawImage(branchStonesImage, x, y, null);
     }
@@ -1387,8 +1416,14 @@ public class BoardRenderer {
                   && coords[1] == Lizzie.frame.suggestionclick[1]) {
                 g.setColor(color.magenta);
                 drawCircle3(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
-              } else {
-                // drawCircle4(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
+              }
+              // else {
+              // drawCircle4(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
+              // }
+              if (isMouseOver) {
+                //  g.setStroke(new BasicStroke(1));
+                g.setColor(color.RED);
+                drawCircle4(g, suggestionX, suggestionY, stoneRadius - strokeWidth / 2);
               }
               g.setStroke(new BasicStroke(1));
             }
@@ -2184,6 +2219,11 @@ public class BoardRenderer {
     g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
   }
 
+  private void drawCircle4(Graphics2D g, int centerX, int centerY, int radius) {
+    g.setStroke(new BasicStroke(radius / 10f));
+    g.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+  }
+
   private void drawPolygon(Graphics2D g, int centerX, int centerY, int radius) {
     int[] xPoints = {centerX, centerX - (11 * radius / 11), centerX + (11 * radius / 11)};
     int[] yPoints = {
@@ -2342,9 +2382,9 @@ public class BoardRenderer {
    */
   public Optional<int[]> convertScreenToCoordinates(int x, int y) {
     int marginWidth; // the pixel width of the margins
-    int boardWidthWithoutMargins; // the pixel width of the game board without margins
+    //   int boardWidthWithoutMargins; // the pixel width of the game board without margins
     int marginHeight; // the pixel height of the margins
-    int boardHeightWithoutMargins; // the pixel height of the game board without margins
+    //  int boardHeightWithoutMargins; // the pixel height of the game board without margins
 
     // calculate a good set of boardLength, scaledMargin, and
     // boardLengthWithoutMargins to use
@@ -2353,6 +2393,36 @@ public class BoardRenderer {
     marginWidth = this.scaledMarginWidth;
     marginHeight = this.scaledMarginHeight;
 
+    // transform the pixel coordinates to board coordinates
+    x =
+        squareWidth == 0
+            ? 0
+            : Math.floorDiv(x - this.x - marginWidth + squareWidth / 2, squareWidth);
+    y =
+        squareHeight == 0
+            ? 0
+            : Math.floorDiv(y - this.y - marginHeight + squareHeight / 2, squareHeight);
+
+    // return these values if they are valid board coordinates
+    return Board.isValid(x, y) ? Optional.of(new int[] {x, y}) : Optional.empty();
+  }
+
+  public Optional<int[]> convertScreenToCoordinatesForSelect(int x, int y) {
+    int marginWidth; // the pixel width of the margins
+    //  int boardWidthWithoutMargins; // the pixel width of the game board without margins
+    int marginHeight; // the pixel height of the margins
+    //   int boardHeightWithoutMargins; // the pixel height of the game board without margins
+
+    // calculate a good set of boardLength, scaledMargin, and
+    // boardLengthWithoutMargins to use
+    // int[] calculatedPixelMargins = calculatePixelMargins();
+    // setBoardLength(calculatedPixelMargins[0], calculatedPixelMargins[3]);
+    marginWidth = this.scaledMarginWidth;
+    marginHeight = this.scaledMarginHeight;
+    if (x > this.x + boardWidth - marginHeight) x = this.x + boardWidth - marginHeight;
+    if (x < this.x + marginHeight) x = this.x + marginHeight;
+    if (y > this.y + boardHeight - marginWidth) y = this.y + boardHeight - marginWidth;
+    if (y < this.y + marginWidth) y = this.y + marginWidth;
     // transform the pixel coordinates to board coordinates
     x =
         squareWidth == 0

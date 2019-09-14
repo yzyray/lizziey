@@ -164,6 +164,11 @@ public class Lizzie {
         };
     Thread thread = new Thread(runnable);
     thread.start();
+    if (Lizzie.leelaz.isKatago || Lizzie.leelaz.version < 17) {
+      frame.menu.toggleShowForce(false);
+    } else {
+      frame.menu.toggleShowForce(true);
+    }
   }
 
   public static void shutdown() {

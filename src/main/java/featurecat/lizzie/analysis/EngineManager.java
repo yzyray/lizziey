@@ -680,6 +680,11 @@ public class EngineManager {
             };
         Thread thread = new Thread(runnable);
         thread.start();
+        if (newEng.isKatago || newEng.version < 17) {
+          Lizzie.frame.menu.toggleShowForce(false);
+        } else {
+          Lizzie.frame.menu.toggleShowForce(true);
+        }
       }
       newEng.sendCommand("clear_board");
       Lizzie.board.restoreMoveNumber(index, mv);

@@ -232,6 +232,18 @@ public class LizzieFrame extends JFrame {
   public int bowserWidth = 1240;
   public int bowserHeight = 750;
 
+  private int selectX1;
+  private int selectY1;
+  private int selectX2;
+  private int selectY2;
+
+  private int selectCoordsX1;
+  private int selectCoordsY1;
+  private int selectCoordsX2;
+  private int selectCoordsY2;
+
+  public boolean selectForceAllow = true;
+
   public boolean isTrying = false;
   ArrayList<Movelist> tryMoveList;
   String tryString;
@@ -3121,6 +3133,98 @@ public class LizzieFrame extends JFrame {
     boardRenderer.removedrawmovestone();
     draggedstone = Stone.EMPTY;
     featurecat.lizzie.gui.Input.Draggedmode = false;
+  }
+
+  public void selectForceAllowAvoid() {
+    //  Lizzie.board.convertCoordinatesToName(coords[0], coords[1]);
+    int minX = min(selectCoordsX1, selectCoordsX2);
+    int minY = min(selectCoordsY1, selectCoordsY2);
+    int xCounts = Math.abs(selectCoordsX1 - selectCoordsX2);
+    int yCounts = Math.abs(selectCoordsY1 - selectCoordsY2);
+    for (int i = 0; i <= xCounts; i++) {
+      for (int j = 0; j <= yCounts; j++) {
+        int x = minX + i;
+        int y = minY + j;
+        String coordsName = Lizzie.board.convertCoordinatesToName(x, y);
+        if (selectForceAllow) {
+          if (featurecat.lizzie.gui.RightClickMenu.allowcoords != "") {
+            featurecat.lizzie.gui.RightClickMenu.allowcoords =
+                featurecat.lizzie.gui.RightClickMenu.allowcoords + "," + coordsName;
+          } else {
+            featurecat.lizzie.gui.RightClickMenu.allowcoords = coordsName;
+          }
+        } else {
+          if (featurecat.lizzie.gui.RightClickMenu.avoidcoords != "") {
+            featurecat.lizzie.gui.RightClickMenu.avoidcoords =
+                featurecat.lizzie.gui.RightClickMenu.avoidcoords + "," + coordsName;
+          } else {
+            featurecat.lizzie.gui.RightClickMenu.avoidcoords = coordsName;
+          }
+        }
+      }
+    }
+    if (selectForceAllow) {
+      Lizzie.leelaz.analyzeAvoid(
+          "allow",
+          Lizzie.board.getcurrentturn(),
+          featurecat.lizzie.gui.RightClickMenu.allowcoords,
+          1);
+    } else {
+      Lizzie.leelaz.analyzeAvoid(
+          "avoid",
+          Lizzie.board.getcurrentturn(),
+          featurecat.lizzie.gui.RightClickMenu.avoidcoords,
+          50);
+    }
+    Input.selectMode = false;
+    menu.clearAllowAvoidButtonState();
+  }
+
+  public void selectDragged(int x, int y) {
+    if (selectX1 > 0 && selectY1 > 0) boardRenderer.drawSelectedRect(selectX1, selectY1, x, y);
+    else boardRenderer.removeSelectedRect();
+    repaint();
+  }
+
+  public void selectReleased(int x, int y) {
+    if (selectX1 > 0 && selectY1 > 0) {
+      Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinatesForSelect(x, y);
+      if (boardCoordinates.isPresent()) {
+        selectX2 = x;
+        selectY2 = y;
+        boardRenderer.addSelectedRect(selectX1, selectY1, x, y);
+        int[] coords = boardCoordinates.get();
+        selectCoordsX2 = coords[0];
+        selectCoordsY2 = coords[1];
+        selectForceAllowAvoid();
+      } else {
+        selectX2 = -1;
+        selectY2 = -1;
+        selectCoordsX2 = -1;
+        selectCoordsY2 = -1;
+        boardRenderer.removeSelectedRect();
+        repaint();
+      }
+    } else {
+      boardRenderer.removeSelectedRect();
+      repaint();
+    }
+  }
+
+  public void selectPressed(int x, int y) {
+    Optional<int[]> boardCoordinates = boardRenderer.convertScreenToCoordinatesForSelect(x, y);
+    if (boardCoordinates.isPresent()) {
+      selectX1 = x;
+      selectY1 = y;
+      int[] coords = boardCoordinates.get();
+      selectCoordsX1 = coords[0];
+      selectCoordsY1 = coords[1];
+    } else {
+      selectX1 = -1;
+      selectY1 = -1;
+      selectCoordsX1 = -1;
+      selectCoordsY1 = -1;
+    }
   }
 
   public void toggleheatmap() {

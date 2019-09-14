@@ -51,7 +51,7 @@ public class RightClickMenu extends JPopupMenu {
 					if (isallow) {
 						Lizzie.leelaz.analyzeAvoid("allow", Lizzie.board.getcurrentturn(), allowcoords, 1);
 					} else {
-						Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturn(), avoidcoords, 30);
+						Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturn(), avoidcoords, 50);
 					}
 				}
 				if (Lizzie.leelaz.isPondering() && !isforcing) {
@@ -121,7 +121,7 @@ public class RightClickMenu extends JPopupMenu {
 		allow = new JMenuItem("只分析此点");
 		allow2 = new JMenuItem("增加分析此点");
 		avoid = new JMenuItem("不分析此点");
-		avoid2 = new JCheckBoxMenuItem("持续不分析");
+		avoid2 = new JCheckBoxMenuItem("持续分析/不分析");
 		cancelavoid = new JMenuItem("清除分析与不分析");
 		cleanedittemp = new JMenuItem("清除编辑缓存");
 		// test=new JMenuItem("测试删除棋子");
@@ -330,27 +330,54 @@ public class RightClickMenu extends JPopupMenu {
 		
 		isforcing = true;
 		isallow = false;
-		allowcoords = "";
+		//allowcoords = "";
 		Lizzie.leelaz.Pondering();
 		if (avoidcoords == "") {
-			Lizzie.leelaz.sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+			allowanalyzeponder();//Lizzie.leelaz.sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
 		}
 		else
-		Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturnponder(), avoidcoords, 30);
+		Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturnponder(), avoidcoords, 50);
 
 	}
 
-	public static void voidanalyze() {
-
-		
-		allowcoords = "";
+	public static void voidanalyze() {		
+		//allowcoords = "";
 		isforcing = true;
 		isallow = false;
 		Lizzie.leelaz.Pondering();
 		if (avoidcoords == "") {
+			allowanalyze();
+			//Lizzie.leelaz.sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+		}else
+		Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturn(), avoidcoords, 50);
+
+	}
+	
+	
+public static void allowanalyzeponder() {		
+		isforcing = true;
+		isallow = true;
+		//allowcoords = "";
+		Lizzie.leelaz.Pondering();
+		if (allowcoords == "") {
+			Lizzie.leelaz.sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
+		}
+		else
+		Lizzie.leelaz.analyzeAvoid("allow", Lizzie.board.getcurrentturnponder(), allowcoords, 1);
+
+	}
+
+	public static void allowanalyze() {
+
+		
+		//allowcoords = "";
+		isforcing = true;
+		isallow = true;
+		Lizzie.leelaz.Pondering();
+		if (allowcoords == "") {
 			Lizzie.leelaz.sendCommand("lz-analyze " + Lizzie.config.analyzeUpdateIntervalCentisec);
 		}else
-		Lizzie.leelaz.analyzeAvoid("avoid", Lizzie.board.getcurrentturn(), avoidcoords, 30);
+		Lizzie.leelaz.analyzeAvoid("allow", Lizzie.board.getcurrentturn(), allowcoords, 1);
 
 	}
 
