@@ -13,8 +13,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
   public static boolean Draggedmode = false;
   public static int insert = 0;
   public static boolean shouldDisableAnalysis = true;
-  public static boolean selectMode = false;
-
+ 
   public boolean nowheelPress = false;
 
   @Override
@@ -22,10 +21,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mousePressed(MouseEvent e) {
-    if (selectMode) {
-      Lizzie.frame.selectPressed(e.getX(), e.getY());
-      return;
-    }
+  
     if (Lizzie.frame.processPressOnSub(e)) {
       return;
     }
@@ -75,10 +71,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseReleased(MouseEvent e) {
-    if (selectMode) {
-      Lizzie.frame.selectReleased(e.getX(), e.getY());
-      return;
-    }
+  
     if (Draggedmode
         && !Lizzie.frame.isTrying
         && !Lizzie.frame.urlSgf
@@ -137,10 +130,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseDragged(MouseEvent e) {
-    if (selectMode) {
-      Lizzie.frame.selectDragged(e.getX(), e.getY());
-      return;
-    }
+  
     if (Draggedmode
         && !Lizzie.frame.isTrying
         && !Lizzie.frame.urlSgf
@@ -153,9 +143,7 @@ public class Input implements MouseListener, KeyListener, MouseWheelListener, Mo
 
   @Override
   public void mouseMoved(MouseEvent e) {
-    if (selectMode) {
-      return;
-    }
+  
     if (Draggedmode
         && !Lizzie.frame.isTrying
         && !Lizzie.frame.urlSgf
